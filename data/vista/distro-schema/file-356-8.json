@@ -1,0 +1,79 @@
+{
+  "fileNumber": 356.8,
+  "fileName": "CLAIMS TRACKING NON-BILLABLE REASONS",
+  "globalRoot": "356.8",
+  "globalReference": "^IBE(356.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of the reason not billable.  It is used for look-up purposes only. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the reason that a visit is not billable.  This is the name that will appear on displays and outputs.  If a claims tracking entry is  assigned a reaon not billable then it will be considered to not be  billable.  Users may select whether visits that have a reason not billable assigned should appear on the patients with visits and insurance reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ECME FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is flagging the record to be used as ECME CLOSE CLAIM REASON.  The default value is 'NO'. If the field is set to 'YES' the NON-BILLABLE  REASON will appear as an option in the ECME CLOSE CLAIM SCREEN. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ECME PAPER FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag is related to NON-BILLABLE REASONs that are marked with  ECME FLAG to be used as ECME CLOSE CLAIM REASON. If this field 'ECME PAPER FLAG' is set to 'YES', it indicates that the NON BILLABLE REASON may be potentially billable \"on paper\". When the ECME user (OPECC) is closing the e-Pharmacy claim and enters the NON BILLABLE REASON as a CLOSE CLAIM REASON, the additional prompt will be issued to the user - should the claim be billed \"on paper\"? ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This code uniquely identifies a particular RNB by group and number. Format is Group_# where group sorts like RNBs into the following: BL-Billing, CV-Insurance Coverage, DC-Documentation, MC-Miscellaneous, MN-Medical Necessity, RX-Pharmacy, VA-VA Specific. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This indicates if the RNB is inactive and should no longer be used. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "356.8", "field": .01, "type": "regular"},
+    {"name": "356.8", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(356.8,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 356.023,
+  "fileName": "HCSR WORKLIST DELETE REASON CODE",
+  "globalRoot": "356.023",
+  "globalReference": "^IBT(356.023,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the Delete Reason Code to be used when removing a 278 Request or  Inquiry from the HCSR Worklist. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of the Delete Reason Code. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "356.023", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

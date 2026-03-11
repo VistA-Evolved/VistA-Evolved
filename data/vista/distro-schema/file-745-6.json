@@ -1,0 +1,46 @@
+{
+  "fileNumber": 745.6,
+  "fileName": "CUSTOMER SERVICE STANDARDS",
+  "globalRoot": "745.6",
+  "globalReference": "^QA(745.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Customer Service Standard will be displayed along with the Issue Code in Report of Contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Customer Service Standard name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "745.62",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 745.62,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "745.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "fileNumber": 69.2,
+  "fileName": "LAB SECTION PRINT",
+  "globalRoot": "69.2P",
+  "globalReference": "^LRO(69.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP68'X",
+      "required": true,
+      "pointerTo": 68,
+      "helpText": "The name of the Lab section print pointed to the Accession file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviation to the name of the Lab section print ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REPORT HEADER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First header in path report after Post operative Diagnosis.  The routine used is LRSPRPT (CY/EM/SP patient report). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REPORT HEADER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second header in path report after Post operative Diagnosis.  The routine used is LRSPRPT (CY/EM/SP patient report). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRINT SNOMED/ICD CODES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LOWER CASE;0:UPPER CASE;",
+      "helpText": "If lower case is to be printed for SNOMED and ICD9CM codes enter 1 or LOWER CASE. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "GROSS DESCRIPTION SPACING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DOUBLE;S:SINGLE;",
+      "helpText": "If double spacing, gross descriptions for anatomic path microscopic examinations will be double spaced, otherwise single spacing will be used. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LINES IN A LABEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of lines from the top of one label to the top of the  next label.  This is used as the default value when printing  various labels. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ACCESSION PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If accession prefix is entered the path report will  have the accession number printed as follows:  PREFIX yr accession#  Ex. If S entered for the prefix, accession # is 123 and year 87  the path report will print the accession as S87 123  If you want a space after S enter a space after the 'S'.  To eliminate the prefix and date delete the entry. (ex. S//@ ). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRINT SF-515 LINES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YES- Prints all dashed lines in the SF-515 form  NO- Does not print all lines ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ASK TC CODES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "Allows coding cases for tissue committee ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ROUTINE PROCEDURE 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of times procedure is routinely performed.  For EM the number of thick sections made per block. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ROUTINE PROCEDURE 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of times routine procedure is performed.  For EM the number of grids routinely made per block. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "REPORT HEADER 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Third header in path report after Post operative Diagnosis.  The  routine used is LRSPRPT CY/EM/SP patient report).  For surgical pathology this header will be the frozen section report. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "REPORT HEADER 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fourth header in path report after post op dx.  The routine used is LRSPRPT.  For surgical pathology this header will be the diagnosis field. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "NEW PG FOR SUPPLEMENTARY RPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "If a page feed is wanted before printing the supplementary report a  'YES' is entered. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "SLIDE LABEL",
+      "dataType": "SUBFILE",
+      "rawType": "69.22A",
+      "required": false,
+      "helpText": "Enter the name of the type of preparation or technique used for specimens. ",
+      "isMultiple": true,
+      "subFileNumber": 69.22,
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INCOMPLETE REPORTS QUEUE",
+      "dataType": "SUBFILE",
+      "rawType": "69.21A",
+      "required": false,
+      "helpText": "Here are stored the temporary list of specimens logged-in for printing at time of microscopic exam.  The report will contain all past specimens with their SNOMED coding in free text form for Surg path, cytopath, and EM.  If there are gross descriptions they will be part of the print-out. ",
+      "isMultiple": true,
+      "subFileNumber": 69.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPLETED REPORTS QUEUE",
+      "dataType": "SUBFILE",
+      "rawType": "69.23A",
+      "required": false,
+      "helpText": "This is a temporary list of final path reports to be printed on demand.  Entries automatically are entered when the microscopic diagnoses or supplementary are entered for Surg path, Cytopath or Electron microscopy. ",
+      "isMultiple": true,
+      "subFileNumber": 69.23,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INTERIM REPORT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "69.29A",
+      "required": false,
+      "helpText": " This field contains the numeric sequence of this particular interim report. ",
+      "isMultiple": true,
+      "subFileNumber": 69.29,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REPORTS ON DEMAND",
+      "dataType": "POINTER",
+      "rawType": "69.27PA",
+      "required": false,
+      "helpText": "Name of the report on demand from the Lab Data file ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "69.24A",
+      "required": false,
+      "helpText": "Entry number to appropriate file ",
+      "isMultiple": true,
+      "subFileNumber": 69.24,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "GENERIC LIST",
+      "dataType": "SUBFILE",
+      "rawType": "69.26A",
+      "required": false,
+      "helpText": "Generic label name ",
+      "isMultiple": true,
+      "subFileNumber": 69.26,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER REQUEST LIST",
+      "dataType": "POINTER",
+      "rawType": "69.28PA",
+      "required": false,
+      "helpText": "Names of users from file 200 ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILE",
+      "dataType": "SUBFILE",
+      "rawType": "69.31A",
+      "required": false,
+      "helpText": "Files for temporary lists of entries. ",
+      "isMultiple": true,
+      "subFileNumber": 69.31,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LABELS",
+      "dataType": "SUBFILE",
+      "rawType": "69.25A",
+      "required": false,
+      "helpText": "ID number of label ",
+      "isMultiple": true,
+      "subFileNumber": 69.25,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SNOMED & TC CODING",
+      "dataType": "SUBFILE",
+      "rawType": "69.38",
+      "required": false,
+      "helpText": "Text entered here will appear on the preliminary pathology report  after the cum path summary. ",
+      "isMultiple": true,
+      "subFileNumber": 69.38,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TOPOGRAPHY CATEGORY",
+      "dataType": "SUBFILE",
+      "rawType": "69.211IA",
+      "required": false,
+      "helpText": "SNOMED coded topography categories ",
+      "isMultiple": true,
+      "subFileNumber": 69.211,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MORPHOLOGY ENTRY",
+      "dataType": "POINTER",
+      "rawType": "69.212PA",
+      "required": false,
+      "helpText": "SNOMED morphology entries ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "TEST LIST NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "69.33A",
+      "required": false,
+      "helpText": "The list number for a group of selected lab tests. ",
+      "isMultiple": true,
+      "subFileNumber": 69.33,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "TOPOGRAPHY",
+      "dataType": "POINTER",
+      "rawType": "69.61PA",
+      "required": false,
+      "helpText": "For entries the most recent results of tests selected below will be displayed or printed.   Ex. You may want to know the results of selected chemistries for a patient who has just had a liver biopsy.  Topography entered would be LIVER  For blood bank the tests entered will be displayed whenever a   crossmatch is ordered or when components are displayed. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "DATA CHANGE DATE",
+      "dataType": "DATE",
+      "rawType": "69.299DA",
+      "required": false,
+      "helpText": "Date of the Data change ",
+      "isMultiple": true,
+      "subFileNumber": 69.299,
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "69.2", "field": .01, "type": "regular"},
+    {"name": "69.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

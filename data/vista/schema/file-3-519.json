@@ -1,0 +1,39 @@
+{
+  "fileNumber": 3.519,
+  "fileName": "SPOOL DATA",
+  "globalRoot": "3.519",
+  "globalReference": "^XMBS(3.519,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY",
+      "dataType": "POINTER",
+      "rawType": "RP3.51'",
+      "required": true,
+      "pointerTo": 3.51,
+      "helpText": "A DINUMed pointer to the spool doc file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "3.5193",
+      "required": false,
+      "helpText": "This is the text of the spool document. ",
+      "isMultiple": true,
+      "subFileNumber": 3.5193,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.519", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

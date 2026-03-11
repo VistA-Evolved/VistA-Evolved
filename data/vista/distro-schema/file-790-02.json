@@ -1,0 +1,796 @@
+{
+  "fileNumber": 790.02,
+  "fileName": "WV SITE PARAMETER",
+  "globalRoot": "790.02",
+  "globalReference": "^WV(790.02,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE/FACILITY NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the name of the facility, division, and/or community based outpatient clinic requiring separate site parameters.  If all divisions are using the same site parameters, then enter the name of the primary or lead facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEFAULT CASE MANAGER",
+      "dataType": "POINTER",
+      "rawType": "P790.01",
+      "required": false,
+      "pointerTo": 790.01,
+      "helpText": "This is the name of the case manager or the individual that will be used to initially seed the patient's record.  Although the patient's care management can be transferred to another individual, this name is used as the default to deter loss of this patient's treatment needs within the facility and database.  Pointer to the WV Case Manager (790.01) file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUTOQUEUE NORMAL PAP LETTERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field stores a code (0 = No; 1 = Yes) that displays or hides the prompt: \"QUEUE a PAP Result Normal letter to be sent to this patient?\". This question displays after the user exits either Add a NEW Procedure or Edit a Procedure option after the results of a PAP smear procedure have been entered into the patient's record and the results/diagnosis was considered normal. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PAP RESULT NORMAL LETTER",
+      "dataType": "POINTER",
+      "rawType": "P790.404'",
+      "required": false,
+      "pointerTo": 790.404,
+      "helpText": "This field stores the name of the PAP letter that is printed when the user answers, Yes, to the prompt: \"QUEUE a PAP Result Normal letter to be sent to this patient?\" after the procedures results have been entered into a patient's record. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASK CASE MANAGER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to display or hide a question asking users if they want to select a particular case manager within the report option, Browse Patients With Needs Past Due.   If there is only one case manager at the facility(s), the answer should be no.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT #DAYS TO PRINT LETTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains a default value used to indicate the number of days prior to a patient's cervical (CX) or breast (BR) treatment needs due date, reminder letters (notifications) should be printed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AUTOQUEUE NORMAL MAM LETTERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a code (0 = No; 1 = Yes) that displays or hides the prompt: \"QUEUE a MAM Result Normal letter to be sent to this patient?\". This question displays after the user exits either Add a NEW Procedure or Edit a Procedure option after the results of a mammogram procedure have been entered into the patient's record and the results/diagnosis was considered normal. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAM RESULT NORMAL LETTER",
+      "dataType": "POINTER",
+      "rawType": "P790.404'",
+      "required": false,
+      "pointerTo": 790.404,
+      "helpText": "This field stores the name of the MAM letter that is printed when the user answers, YES, to the prompt: \"QUEUE a MAM Result Normal letter to be sent to this patient?\" after the procedures results have been entered into a patient's record. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "IMPORT MAMS FROM RADIOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to automatically import and store mammography reports, from the VISTA Radiology/Nuclear Medicine package, in the Women's Health database. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "UPDATE RESULTS/DX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the RESULTS/DIAGNOSIS field of the WV PROCEDURE  file (790.1) should be updated from a Clinical Reminder.   Answer YES if you want Clinical Reminders to be able to update the  RESULTS/DIAGNOSIS field in a WV PROCEDURE file (790.1) entry. Answer NO,  if Clinical Reminders should not update the RESULTS/DIAGNOSIS field. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "UPDATE TREATMENT NEEDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the patient's breast and cervical treatment needs  and treatment due dates should be updated in the WV PATIENT file (#790)  from a Clinical Reminder.   Answer YES if the patient's treatment need and due date values can be  updated from a Clinical Reminder. Answer NO if the treatment need and  due date values should not be updated from a Clinical Reminder.  ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "AGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "v:VA;",
+      "helpText": "The type of organization associated with this site. Currently, there is only one entry,'V' for Veterans Affairs.  This field is not editable through the Edit Site Parameters option. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "STATUS OF IMPORTED MAMMOGRAMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "o:OPEN;c:CLOSED;",
+      "helpText": "This field automatically stores a default status (O = Open; C = Closed) in the procedure edit screens when mammography reports are imported from the Radiology/Nuclear Medicine application. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "IMPORT TESTS FROM LAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not to automatically import lab test data from the VISTA Laboratory package, into the Women's Health database.   Answer NO if you do not want the Lab package to send lab test data to the Women's Health database.   Answer YES if you want the Lab package to send lab test data to the Women's Health database when a lab report is released for a cytology or surgical pathology test. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "INCLUDE ALL NON-VETERANS (RAD)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not procedure data transmitted from the Radiology/NM package for non-veterans will be accepted in the Women's Health package.   Answer YES to accept radiology procedure data for ALL non-veterans. Answer NO to not accept radiology procedure data for any non-veterans.   To accept data for some (but not all) non-veterans, answer NO and then enter the eligibility code(s) you wish to track.   Leaving this answer blank is the same as YES. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "INCLUDE ALL NON-VETERANS (LAB)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not lab test data transmitted from the Laboratory package for non-veterans will be accepted in the Women's Health package.   Answer YES to accept lab test data for ALL non-veterans. Answer NO to not accept lab test data for any non-veterans.   To accept data for some (but not all) non-veterans, answer NO and then enter the eligibility code(s) you wish to track.   Leaving this answer blank is the same as YES. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PRIMARY ELIGIBILITY CODE (RAD)",
+      "dataType": "POINTER",
+      "rawType": "790.13PA",
+      "required": false,
+      "helpText": "This multiple is a pointer to FILE 8. Facilities that do not want to track radiology procedure data for all non-veterans may select the eligibility codes of those non-veteran patients they do wish to track. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "PRIMARY ELIGIBILITY CODE (LAB)",
+      "dataType": "POINTER",
+      "rawType": "790.14PA",
+      "required": false,
+      "helpText": "This multiple is a pointer to FILE 8. Facilities that do not want to track lab test data for all non-veterans may select the eligibility codes of those non-veteran patients they do wish to track. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PAP ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the PAP procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PAP DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's PAP procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the colposcopy w/biopsy procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "COBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's colposcopy w/biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "HYST ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the hysterectomy procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "HYST DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's hysterectomy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "CRYO ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the cryotherapy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "CRYO DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's cryotherapy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "ECBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the ectocervical biopsy procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "ECBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's ectocervical biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "EMBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the endometrial biopsy procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "EMBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's endometrial biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "LEEP ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the LEEP procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 17.03,
+      "fieldName": "LEEP DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's LEEP procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 17.03
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "ECC ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the endocervical currettage procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 18.03,
+      "fieldName": "ECC DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's endocervical currettage procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 18.03
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "CONE ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the cone biopsy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 19.03,
+      "fieldName": "CONE DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's cone biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 19.03
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "HCG ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the pregnancy test procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "HCG DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's pregnancy test procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 21.01,
+      "fieldName": "STD ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the STD (sexually transmitted disease) evaluation procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 21.01
+    },
+    {
+      "fieldNumber": 21.03,
+      "fieldName": "STD DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's STD (sexually transmitted disease) evaluation procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 21.03
+    },
+    {
+      "fieldNumber": 22.01,
+      "fieldName": "LASA ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the laser ablation procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 22.01
+    },
+    {
+      "fieldNumber": 22.03,
+      "fieldName": "LASA DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's laser ablation procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 22.03
+    },
+    {
+      "fieldNumber": 23.01,
+      "fieldName": "LASC ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the laser cone procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 23.01
+    },
+    {
+      "fieldNumber": 23.03,
+      "fieldName": "LASC DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's laser cone procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 23.03
+    },
+    {
+      "fieldNumber": 24.01,
+      "fieldName": "GYNC ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the GYN ONC (gynecologic oncology) consult from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 24.01
+    },
+    {
+      "fieldNumber": 24.03,
+      "fieldName": "GYNC DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's GYN ONC (gynecologic oncology) consult procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 24.03
+    },
+    {
+      "fieldNumber": 25.01,
+      "fieldName": "MAMB ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the mammogram Dx bilateral procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 25.01
+    },
+    {
+      "fieldNumber": 25.03,
+      "fieldName": "MAMB DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's mammogram Dx bilateral procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 25.03
+    },
+    {
+      "fieldNumber": 26.01,
+      "fieldName": "MAMU ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the mammogram Dx unilateral procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 26.01
+    },
+    {
+      "fieldNumber": 26.03,
+      "fieldName": "MAMU DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's mammogram Dx unilateral procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 26.03
+    },
+    {
+      "fieldNumber": 27.01,
+      "fieldName": "CBE ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the clinical breast exam procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 27.01
+    },
+    {
+      "fieldNumber": 27.03,
+      "fieldName": "CBE DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's clinical breast exam procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 27.03
+    },
+    {
+      "fieldNumber": 28.01,
+      "fieldName": "MAMS ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the mammogram screening procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 28.01
+    },
+    {
+      "fieldNumber": 28.03,
+      "fieldName": "MAMS DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's mammogram screening procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 28.03
+    },
+    {
+      "fieldNumber": 29.01,
+      "fieldName": "GSCON ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the general surgery consult from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 29.01
+    },
+    {
+      "fieldNumber": 29.03,
+      "fieldName": "GSCON DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's general surgery consult procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 29.03
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "NDBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the needle biopsy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "NDBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's needle biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 31.01,
+      "fieldName": "OPBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the open biopsy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 31.01
+    },
+    {
+      "fieldNumber": 31.03,
+      "fieldName": "OPBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's open biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 31.03
+    },
+    {
+      "fieldNumber": 32.01,
+      "fieldName": "LMPY ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the lumpectomy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 32.01
+    },
+    {
+      "fieldNumber": 32.03,
+      "fieldName": "LMPY DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's lumpectomy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 32.03
+    },
+    {
+      "fieldNumber": 33.01,
+      "fieldName": "MAST ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the mastectomy procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 33.01
+    },
+    {
+      "fieldNumber": 33.03,
+      "fieldName": "MAST DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's mastectomy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 33.03
+    },
+    {
+      "fieldNumber": 34.01,
+      "fieldName": "FNDL ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the fine needle aspiration procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 34.01
+    },
+    {
+      "fieldNumber": 34.03,
+      "fieldName": "FNDL DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's fine needle aspiration procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 34.03
+    },
+    {
+      "fieldNumber": 35.01,
+      "fieldName": "STBX ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the stereotactic biopsy procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 35.01
+    },
+    {
+      "fieldNumber": 35.03,
+      "fieldName": "STBX DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's stereotactic biopsy procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 35.03
+    },
+    {
+      "fieldNumber": 37.01,
+      "fieldName": "CIMP ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the colposcopy impression (no Bx) procedure from the procedure look-up list.  If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 37.01
+    },
+    {
+      "fieldNumber": 37.03,
+      "fieldName": "CIMP DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's colposcopy impression (no Bx) procedure record is allowed to have an open status. The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 37.03
+    },
+    {
+      "fieldNumber": 38.01,
+      "fieldName": "BRUL ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the breast ultrasound procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 38.01
+    },
+    {
+      "fieldNumber": 38.03,
+      "fieldName": "BRUL DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's breast ultrasound procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 38.03
+    },
+    {
+      "fieldNumber": 39.01,
+      "fieldName": "TUBE ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the tubal ligation procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 39.01
+    },
+    {
+      "fieldNumber": 39.03,
+      "fieldName": "TUBE DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's tubal ligation procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 39.03
+    },
+    {
+      "fieldNumber": 40.01,
+      "fieldName": "PELUS ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the pelvic ultrasound procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 40.01
+    },
+    {
+      "fieldNumber": 40.03,
+      "fieldName": "PELUS DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's pelvic ultrasound procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 40.03
+    },
+    {
+      "fieldNumber": 41.01,
+      "fieldName": "VAGUS ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field stores a value (1 = Yes; 0 = No) that is used to display or remove the vaginal ultrasound procedure from the procedure look-up list. If the procedure is to be included in the tracking of women's health care and treatment needs, this field value should be 'Yes'. ",
+      "fieldNumber_": 41.01
+    },
+    {
+      "fieldNumber": 41.03,
+      "fieldName": "VAGUS DEF DAYS DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the number of days that a patient's vaginal ultrasound procedure record is allowed to have an open status.  The software uses this date to calculate the Complete by (Date) field that resides in the WV Procedure (790.1) file and which is displayed in the procedure edit options. Indirectly this file is used to establish a date that the open procedure is considered delinquent and reflected in the Browse Procedures and Program Snapshot reports. ",
+      "fieldNumber_": 41.03
+    }
+  ],
+  "fieldCount": 78,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "790.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

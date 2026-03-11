@@ -1,0 +1,58 @@
+{
+  "fileNumber": 798.9,
+  "fileName": "ROR LAB SEARCH",
+  "globalRoot": "798.9",
+  "globalReference": "^ROR(798.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   The criterion name must be unique and name spaced. The names that are used for National Registries must start with \"VA\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   The national registries must have this field set to \"YES\". This prevents local editing of other fields of national registry definitions. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "Select the \"INACTIVE\" code if you want to disable the criterion temporarily. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAB TEST",
+      "dataType": "SUBFILE",
+      "rawType": "798.92",
+      "required": false,
+      "helpText": "This multiple contains a list of the Lab search  indicators used by the registry update process.   If at least one of the indicators is evaluated as  True, the macro referencing the search criterion will be evaluated as True as well.   This multiple can contain several records for the same Lab test. ",
+      "isMultiple": true,
+      "subFileNumber": 798.92,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ALN", "field": },
+    {"name": "ANLT", "field": }
+  ],
+  "identifiers": [
+
+  ]
+}

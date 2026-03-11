@@ -1,0 +1,1756 @@
+{
+  "id": "billing",
+  "name": "Integrated Billing",
+  "description": "Charges, claims, insurance, means test, copay",
+  "vdlManual": "integrated-billing-user-guide.pdf",
+  "generatedAt": "2026-03-11T04:21:11.887Z",
+  "files": {
+    "count": 5,
+    "items": [
+      {
+        "fileNumber": 350,
+        "fileName": "File #350",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 399,
+        "fileName": "File #399",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 361,
+        "fileName": "File #361",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 361.1,
+        "fileName": "File #361.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 355.3,
+        "fileName": "File #355.3",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 56,
+    "items": [
+      {
+        "name": "IBD EXPAND FORMID",
+        "tag": "IDPAT",
+        "routine": "IBDFRPC3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call will convert a form id (printed at the top of an encounter form) and return information about the patient, the appointment, and the form. See routine IBDRPC3 for output descritpion. "
+      },
+      {
+        "name": "IBD GET FORMSPEC",
+        "tag": "GETFS",
+        "routine": "IBDFBK1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMTYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call will return the Form Specification file (as an array) that is used by the scanning software to recognize a form.  Lines longer than 255 characters are truncated on the server and flagged with \"~~~\" indicating the need to concatenate on the client. "
+      },
+      {
+        "name": "IBD GET INPUT OBJECT BY CLINIC",
+        "tag": "CLNLSTI",
+        "routine": "IBDFRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of input objects on all encounter forms defined for a clinic in the clinic setup.  There are 3 types of input objects, lists, hand print fields, and multiple choice fields.  Each has its own set of unique characterists for input. "
+      },
+      {
+        "name": "IBD GET INPUT OBJECT BY FORM",
+        "tag": "FRMLSTI",
+        "routine": "IBDFRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FRM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of input objects on one encounter forms . There are 3 types of input objects, lists, hand print fields, and multiple choice fields.  Each has its own set of unique characterists for input.   "
+      },
+      {
+        "name": "IBD GET ONE INPUT OBJECT",
+        "tag": "OBJLST",
+        "routine": "IBDFRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call will return specific information about any one input object regardless of type.  Developers should first use the RPC to return the available input objects (either by form or by clinic).     There are 3 types of input objects, lists (both static and dynamic), hand print fields, and multiple"
+      },
+      {
+        "name": "IBD RECEIVE FORM DATA",
+        "tag": "RECV",
+        "routine": "IBDFBK2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC is to be used by the AICS workstation software only.  It accepts data in the format returned by the scanning software and converts the data in the format expected by PCE and passes the data to PCE. "
+      },
+      {
+        "name": "IBD VALIDATE USER",
+        "tag": "VALIDAV",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDAV",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call is used to validate user information and for display on the Show User screen. "
+      },
+      {
+        "name": "IBD RECEIVE DATA",
+        "tag": "SEND",
+        "routine": "IBDFRPC4",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call is the public RPC for developers to input data from an encounter form to AICS for processing to PCE.  See routine IBDFRPC4 for detailed description of variables. "
+      },
+      {
+        "name": "IBD RETURN IMAGE ID",
+        "tag": "IMAGEID",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a numeric between 1 and 9999999 that is used as part of the file name to store the next unknown image as. "
+      },
+      {
+        "name": "IBD ELAPSED TIME",
+        "tag": "ETIME",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Store elapsed time for data entry "
+      },
+      {
+        "name": "IBD STORE WORKSTATION ERROR",
+        "tag": "WSERR",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call back is used by AICS to log entries in the AICS ERROR AND WARNING FILE when the recognition of a form is canceled or otherwise interrupted. "
+      },
+      {
+        "name": "IBD STORE IMAGE NAME",
+        "tag": "IMAGENM",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will cause the information on images saved to be stored in the AICS IMAGE LOG file. "
+      },
+      {
+        "name": "IBD GET ALL PCE DATA",
+        "tag": "GETALL",
+        "routine": "IBDFRPC5",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to retrieve all data in PCE for a particlar encounter formatted for display in a memo component. "
+      },
+      {
+        "name": "IBD GET PAST APPT LIST",
+        "tag": "APPTLST",
+        "routine": "IBDFRPC5",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC can be used to return a list of appointments for a patient.  It defaults to returning the past 1 year's kept appointments. "
+      },
+      {
+        "name": "IBARXM QUERY ONLY",
+        "tag": "RQUERY",
+        "routine": "IBARXMR",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to query only the information for pharmacy co-payment billing that has happened for the given month/year. "
+      },
+      {
+        "name": "IBARXM TRANS DATA",
+        "tag": "TRANS",
+        "routine": "IBARXMR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IBD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure is used to receive transaction information from a remote facility and reply with an acknowledgement. This RPC call does not send user data to remote side. "
+      },
+      {
+        "name": "IBARXM TRANS BILL",
+        "tag": "BILL",
+        "routine": "IBARXMR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc will receive data that a charge should be created for a pharmacy  copayment that had previously not been charged due to the patient  reaching their copayment cap amount. This RPC call does not send user data to remote side. "
+      },
+      {
+        "name": "IBARXM QUERY SUPPRESS USER",
+        "tag": "RQUERY",
+        "routine": "IBARXMR",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IBM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to query only the information for pharmacy co-payment billing that has happened for the given month/year. The RPC should be used only for queries, which will not allow the user to  see information, because the user data will not be transmitted to remote  system. "
+      },
+      {
+        "name": "IBO MT LTC COPAY QUERY",
+        "tag": "RETURN",
+        "routine": "IBOMTLTC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBBDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBEDT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure will produce a report showing both MT and LTC copay  information at a remote facility. "
+      },
+      {
+        "name": "IBCN INSURANCE QUERY",
+        "tag": "RPC",
+        "routine": "IBCNRDV",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This does a remote query on the insurance information. "
+      },
+      {
+        "name": "IBCN INSURANCE QUERY TASK",
+        "tag": "RPC",
+        "routine": "IBCNRDV",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This does a remote query on the insurance information. This is the one  that used during tasked jobs to avoid user data exchange. "
+      },
+      {
+        "name": "IBD GET FORMSPEC GLOBAL",
+        "tag": "GETFS1",
+        "routine": "IBDFBK1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBD GET SCAN PAGE INFO",
+        "tag": "SCANPG",
+        "routine": "IBDFBK1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return an array where the data reflects the page number of scannable pages, Piece 2 will display the date/time received. "
+      },
+      {
+        "name": "IBTAS 837 CLAIM DATA",
+        "tag": "GET",
+        "routine": "IBCE837H",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 837 EDICLAIMS",
+        "tag": "GET",
+        "routine": "IBCE837I",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 837 ACK",
+        "tag": "GET",
+        "routine": "IBCE837K",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS HEALTH",
+        "tag": "HEALTH",
+        "routine": "IBTASHLT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Developer tool only No paramters required. Return example: {\"STATION\": \"CHEYENNE VAMC\",                 \"HEALTH\": \"OK\", \"STATION NUMBER\": \"442\"             } "
+      },
+      {
+        "name": "IBECEA COPAY SYNCH",
+        "tag": "RETURN",
+        "routine": "IBECEA38",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 8,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBSITE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBBILL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBVISDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBSTAT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBCOMM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBUNIQ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBELGRP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure will perform actions Create, Read, Update, Delete  (CRUD) to track urgent care copays for a Veteran across all VA facilities the individual has been treated at. "
+      },
+      {
+        "name": "IBTAS FACILITY BY VISN",
+        "tag": "FACILITY",
+        "routine": "IBTASFAC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 277STAT",
+        "tag": "POST",
+        "routine": "IBCE277S",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 837 FHIR ENABLE",
+        "tag": "PUT",
+        "routine": "IBCE837S",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 837 TEST CLAIMS",
+        "tag": "GET",
+        "routine": "IBCE837T",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS 837 CLAIM NUMBER",
+        "tag": "GET",
+        "routine": "IBCE837N",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS PCR IENS",
+        "tag": "GET",
+        "routine": "IBCEMSRI",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS PCR CLAIM DATA",
+        "tag": "GET1",
+        "routine": "IBCEMSRI",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTAS PCR WRITEBACK",
+        "tag": "PUT",
+        "routine": "IBCEMSRI",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBTASDB POST",
+        "tag": "POST",
+        "routine": "IBTASDB",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARG",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBMH COPAY SYNCH",
+        "tag": "RETURN",
+        "routine": "IBMHPMPY2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 7,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBSITE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBBILL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBVISDT ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBSTAT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBCOMM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IBUNIQ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBD EXPAND FORMID",
+        "tag": "IDPAT",
+        "routine": "IBDFRPC3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call will convert a form id (printed at the top of an encounter form) and return information about the patient, the appointment, and the form. See routine IBDRPC3 for output descritpion. "
+      },
+      {
+        "name": "IBD GET FORMSPEC",
+        "tag": "GETFS",
+        "routine": "IBDFBK1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMTYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call will return the Form Specification file (as an array) that is used by the scanning software to recognize a form.  Lines longer than 255 characters are truncated on the server and flagged with \"~~~\" indicating the need to concatenate on the client. "
+      },
+      {
+        "name": "IBD GET INPUT OBJECT BY CLINIC",
+        "tag": "CLNLSTI",
+        "routine": "IBDFRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of input objects on all encounter forms defined for a clinic in the clinic setup.  There are 3 types of input objects, lists, hand print fields, and multiple choice fields.  Each has its own set of unique characterists for input. "
+      },
+      {
+        "name": "IBD GET INPUT OBJECT BY FORM",
+        "tag": "FRMLSTI",
+        "routine": "IBDFRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FRM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of input objects on one encounter forms . There are 3 types of input objects, lists, hand print fields, and multiple choice fields.  Each has its own set of unique characterists for input.   "
+      },
+      {
+        "name": "IBD GET ONE INPUT OBJECT",
+        "tag": "OBJLST",
+        "routine": "IBDFRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call will return specific information about any one input object regardless of type.  Developers should first use the RPC to return the available input objects (either by form or by clinic).     There are 3 types of input objects, lists (both static and dynamic), hand print fields, and multiple"
+      },
+      {
+        "name": "IBD RECEIVE FORM DATA",
+        "tag": "RECV",
+        "routine": "IBDFBK2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC is to be used by the AICS workstation software only.  It accepts data in the format returned by the scanning software and converts the data in the format expected by PCE and passes the data to PCE. "
+      },
+      {
+        "name": "IBD VALIDATE USER",
+        "tag": "VALIDAV",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDAV",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call is used to validate user information and for display on the Show User screen. "
+      },
+      {
+        "name": "IBD RECEIVE DATA",
+        "tag": "SEND",
+        "routine": "IBDFRPC4",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call is the public RPC for developers to input data from an encounter form to AICS for processing to PCE.  See routine IBDFRPC4 for detailed description of variables. "
+      },
+      {
+        "name": "IBD RETURN IMAGE ID",
+        "tag": "IMAGEID",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a numeric between 1 and 9999999 that is used as part of the file name to store the next unknown image as. "
+      },
+      {
+        "name": "IBD ELAPSED TIME",
+        "tag": "ETIME",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Store elapsed time for data entry "
+      },
+      {
+        "name": "IBD STORE WORKSTATION ERROR",
+        "tag": "WSERR",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call back is used by AICS to log entries in the AICS ERROR AND WARNING FILE when the recognition of a form is canceled or otherwise interrupted. "
+      },
+      {
+        "name": "IBD STORE IMAGE NAME",
+        "tag": "IMAGENM",
+        "routine": "IBDFBK1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will cause the information on images saved to be stored in the AICS IMAGE LOG file. "
+      },
+      {
+        "name": "IBD GET ALL PCE DATA",
+        "tag": "GETALL",
+        "routine": "IBDFRPC5",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to retrieve all data in PCE for a particlar encounter formatted for display in a memo component. "
+      },
+      {
+        "name": "IBD GET PAST APPT LIST",
+        "tag": "APPTLST",
+        "routine": "IBDFRPC5",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC can be used to return a list of appointments for a patient.  It defaults to returning the past 1 year's kept appointments. "
+      },
+      {
+        "name": "IBD GET FORMSPEC GLOBAL",
+        "tag": "GETFS1",
+        "routine": "IBDFBK1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBDF",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "IBD GET SCAN PAGE INFO",
+        "tag": "SCANPG",
+        "routine": "IBDFBK1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FORMID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return an array where the data reflects the page number of scannable pages, Piece 2 will display the date/time received. "
+      },
+      {
+        "name": "IBCN INSURANCE QUERY",
+        "tag": "RPC",
+        "routine": "IBCNRDV",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This does a remote query on the insurance information. "
+      },
+      {
+        "name": "IBCN INSURANCE QUERY TASK",
+        "tag": "RPC",
+        "routine": "IBCNRDV",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IBICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This does a remote query on the insurance information. This is the one  that used during tasked jobs to avoid user data exchange. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "IB EDIT BILLING INFO",
+        "type": "run-routine",
+        "securityKey": "IB EDIT",
+        "displayText": ""
+      },
+      {
+        "name": "IB BILLING SUPERVISOR MENU",
+        "type": "menu",
+        "securityKey": "IB SUPERVISOR",
+        "displayText": ""
+      },
+      {
+        "name": "IB AUTHORIZE BILL GENERATION",
+        "type": "run-routine",
+        "securityKey": "IB AUTHORIZE",
+        "displayText": ""
+      },
+      {
+        "name": "IB PRINT BILL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB BILL STATUS REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB CANCEL BILL",
+        "type": "run-routine",
+        "securityKey": "IB AUTHORIZE",
+        "displayText": ""
+      },
+      {
+        "name": "IB BILLING CLERK MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB OUTPATIENT VET REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB ACTIVATE REVENUE CODES",
+        "type": "edit",
+        "securityKey": "IB SUPERVISOR",
+        "displayText": ""
+      },
+      {
+        "name": "IB SYSTEM DEFINITION MENU",
+        "type": "menu",
+        "securityKey": "IB SUPERVISOR",
+        "displayText": ""
+      },
+      {
+        "name": "IB BILLING TOTALS REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB INPATIENT VET REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB THIRD PARTY OUTPUT MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB PATIENT BILLING INQUIRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB COPY AND CANCEL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB LIST ALL BILLS FOR PAT.",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB BILLING RATES FILE",
+        "type": "run-routine",
+        "securityKey": "IB SUPERVISOR",
+        "displayText": ""
+      },
+      {
+        "name": "IB RETURN BILL LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB LIST BILLS FOR EPISODE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB LIST OF BILLING RATES",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB EDIT RETURNED BILL",
+        "type": "run-routine",
+        "securityKey": "IB EDIT",
+        "displayText": ""
+      },
+      {
+        "name": "IB RETURN BILL",
+        "type": "run-routine",
+        "securityKey": "IB AUTHORIZE",
+        "displayText": ""
+      },
+      {
+        "name": "IB BACKGRND VETS INPT W/INS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB BACKGRND VETS OPT W/INS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB RETURN BILL MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB EDIT SITE PARAMETERS",
+        "type": "run-routine",
+        "securityKey": "IB PARAMETER EDIT",
+        "displayText": ""
+      },
+      {
+        "name": "IB SITE STATUS DISPLAY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB FILER STOP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB FILER START",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "IB SITE MGR MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 74,
+    "items": [
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD EXPAND FORMID",
+        "paramName": "FORMID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMTYPE:",
+        "rpcName": "IBD GET FORMSPEC",
+        "paramName": "FORMTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "IBD GET INPUT OBJECT BY CLINIC",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FRM:",
+        "rpcName": "IBD GET INPUT OBJECT BY FORM",
+        "paramName": "FRM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET ONE INPUT OBJECT",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMDATA:",
+        "rpcName": "IBD RECEIVE FORM DATA",
+        "paramName": "FORMDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDAV:",
+        "rpcName": "IBD VALIDATE USER",
+        "paramName": "IBDAV",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD RECEIVE DATA",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD ELAPSED TIME",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD STORE WORKSTATION ERROR",
+        "paramName": "FORMID",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD STORE IMAGE NAME",
+        "paramName": "FORMID",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDATA:",
+        "rpcName": "IBD GET ALL PCE DATA",
+        "paramName": "IBDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET PAST APPT LIST",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBARXM QUERY ONLY",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBM:",
+        "rpcName": "IBARXM QUERY ONLY",
+        "paramName": "IBM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBD:",
+        "rpcName": "IBARXM TRANS DATA",
+        "paramName": "IBD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBARXM TRANS DATA",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBARXM TRANS BILL",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBT:",
+        "rpcName": "IBARXM TRANS BILL",
+        "paramName": "IBT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBB:",
+        "rpcName": "IBARXM TRANS BILL",
+        "paramName": "IBB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBM:",
+        "rpcName": "IBARXM QUERY SUPPRESS USER",
+        "paramName": "IBM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBARXM QUERY SUPPRESS USER",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBO MT LTC COPAY QUERY",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "IBO MT LTC COPAY QUERY",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBBDT:",
+        "rpcName": "IBO MT LTC COPAY QUERY",
+        "paramName": "IBBDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBEDT:",
+        "rpcName": "IBO MT LTC COPAY QUERY",
+        "paramName": "IBEDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBCN INSURANCE QUERY",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBCN INSURANCE QUERY TASK",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET FORMSPEC GLOBAL",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD GET SCAN PAGE INFO",
+        "paramName": "FORMID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 CLAIM DATA",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 EDICLAIMS",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 ACK",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBSITE:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBSITE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBBILL:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBBILL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBVISDT:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBVISDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBSTAT:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBSTAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBCOMM:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBCOMM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBUNIQ:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBUNIQ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBELGRP:",
+        "rpcName": "IBECEA COPAY SYNCH",
+        "paramName": "IBELGRP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS FACILITY BY VISN",
+        "paramName": "ARG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 277STAT",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 FHIR ENABLE",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 TEST CLAIMS",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS 837 CLAIM NUMBER",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS PCR IENS",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS PCR CLAIM DATA",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTAS PCR WRITEBACK",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARG:",
+        "rpcName": "IBTASDB POST",
+        "paramName": "ARG",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBSITE:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBSITE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBBILL:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBBILL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBVISDT :",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBVISDT ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBSTAT:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBSTAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBCOMM:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBCOMM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBUNIQ:",
+        "rpcName": "IBMH COPAY SYNCH",
+        "paramName": "IBUNIQ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD EXPAND FORMID",
+        "paramName": "FORMID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMTYPE:",
+        "rpcName": "IBD GET FORMSPEC",
+        "paramName": "FORMTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "IBD GET INPUT OBJECT BY CLINIC",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FRM:",
+        "rpcName": "IBD GET INPUT OBJECT BY FORM",
+        "paramName": "FRM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET ONE INPUT OBJECT",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMDATA:",
+        "rpcName": "IBD RECEIVE FORM DATA",
+        "paramName": "FORMDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDAV:",
+        "rpcName": "IBD VALIDATE USER",
+        "paramName": "IBDAV",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD RECEIVE DATA",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD ELAPSED TIME",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD STORE WORKSTATION ERROR",
+        "paramName": "FORMID",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD STORE IMAGE NAME",
+        "paramName": "FORMID",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDATA:",
+        "rpcName": "IBD GET ALL PCE DATA",
+        "paramName": "IBDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET PAST APPT LIST",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBDF:",
+        "rpcName": "IBD GET FORMSPEC GLOBAL",
+        "paramName": "IBDF",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FORMID:",
+        "rpcName": "IBD GET SCAN PAGE INFO",
+        "paramName": "FORMID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBCN INSURANCE QUERY",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IBICN:",
+        "rpcName": "IBCN INSURANCE QUERY TASK",
+        "paramName": "IBICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

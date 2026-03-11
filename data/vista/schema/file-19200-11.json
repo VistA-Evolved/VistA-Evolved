@@ -1,0 +1,52 @@
+{
+  "fileNumber": 19200.11,
+  "fileName": "VPE RTN LBRY",
+  "globalRoot": "19200.11I",
+  "globalReference": "^XVV(19200.11,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE SIGNED OUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SIGNED OUT BY",
+      "dataType": "POINTER",
+      "rawType": "P19200.111'",
+      "required": false,
+      "pointerTo": 19200.111,
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19200.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": A1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^XVV(19200.111,+$P(^(0),U,13),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(19200.111,.01,0),U,2) D Y^DIQ:Y]\"\" W ?15,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": A2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(9.4,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(9.4,.01,0),U,2) D Y^DIQ:Y]\"\" W ?45,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "fileNumber": 58,
+  "fileName": "REACTION SEVERITY",
+  "globalRoot": "58",
+  "globalReference": "^DIC(58,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

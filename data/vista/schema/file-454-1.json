@@ -1,0 +1,916 @@
+{
+  "fileNumber": 454.1,
+  "fileName": "PAID COST CENTER/ORGANIZATION",
+  "globalRoot": "454.1",
+  "globalReference": "^PRSP(454.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of an organizational unit to be associated with a particular cost center/organization combination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MED CARE APPROPRIATED (Y/N?)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether the organizational unit's strength should be considered as appropriated for medical care. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPILATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which the strength report statistics were compiled. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FTE CEILING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The FTE ceiling for this organizational unit. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FTE MD CEILING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The FTE ceiling for physicians for this organizational unit. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FTE RN CEILING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The FTE ceiling for nurses for this organizational unit. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FTE LPN CEILING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The FTE ceiling for practical nurses for this organizational unit. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FTE NA CEILING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The FTE ceiling for nursing assistants for this organizational unit. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FULL-TIME PERMANENT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time permanent employees in this organizational unit. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FULL-TIME TEMPORARY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time temporary employees in this organizational unit. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PART-TIME PERMANENT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time permanent employees in this organizational unit. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PART-TIME PERMANENT FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time permanent FTE in this organizational unit. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PART-TIME TEMPORARY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time temporary employees in this organizational unit. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PART-TIME TEMPORARY FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time temporary FTE in this organizational unit. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "INTERMITTENT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of intermittent employees in this organizational unit. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "INTERMITTENT FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of intermittent FTE in this organizational unit. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TRAINEE/STIPEND/RES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of trainees, stipends and residents in this organizational unit. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TRAINEE/STIPEND/RES FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident FTE in this organizational unit. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SUMMER AID/SIS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of summer aid and stay-in-school employees in this organizational unit. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "TOTAL COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The total number of employees in this organizational unit. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TOTAL FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total number of FTE in this organizational unit. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The difference between the FTE ceiling and total FTE. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "FULL-TIME PERMANENT MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time permanent physicians in this organizational unit. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FULL-TIME TEMPORARY MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time temporary physicians in this organizational unit. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PART-TIME PERMANENT MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time permanent physicians in this organizational unit. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PART-TIME PERMANENT MD FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time permanent physician FTE in this organizational unit. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PART-TIME TEMPORARY MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time temporary physicians in this organizational unit. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PART-TIME TEMPORARY MD FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time temporary physician FTE in this organizational unit. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "INTERMITTENT MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of intermittent physicians in this organizational unit. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "INTERMITTENT MD FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of intermittent physician FTE in this organizational unit. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "TRAINEE/STIPEND/RES MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident physicians in this organizational unit. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "TRAINEE/STIPEND/RES MD FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident physician FTE in this organizational unit. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SUMMER AID/SIS MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of summer aid and stay-in-school physicians in this organizational unit. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TOTAL MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The total number of physicians in this organizational unit. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "TOTAL MD FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total number of physician FTE in this organizational unit. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MD VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The difference between the FTE MD ceiling and the total MD FTE. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "FULL-TIME PERMANENT RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time permanent nurses in this organizational unit. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "FULL-TIME TEMPORARY RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time temporary nurses in this organizational unit. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PART-TIME PERMANENT RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time permanent nurses in this organizational unit. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PART-TIME PERMANENT RN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time permanent nurse FTE in this organizational unit. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PART-TIME TEMPORARY RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time temporary nurses in this organizational unit. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PART-TIME TEMPORARY RN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time temporary nurse FTE in this organizational unit. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "INTERMITTENT RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of intermittent nurses in this organizational unit. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "INTERMITTENT RN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of intermittent nurse FTE in this organizational unit. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "TRAINEE/STIPEND/RES RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident nurses in this organizational unit. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "TRAINEE/STIPEND/RES RN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident nurse FTE in this organizational unit. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "SUMMER AID/SIS RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of summer aid and stay-in-school nurses in this organizational unit. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "TOTAL RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The total number of nurses in this organizational unit. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "TOTAL RN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total number of nurse FTE in this organizational unit. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "RN VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The difference between the nurse FTE ceiling and the total nurse FTE. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "FULL-TIME PERMANENT LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time permanent practical nurses in this organizational unit. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "FULL-TIME TEMPORARY LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time temporary practical nurses in this organizational unit. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PART-TIME PERMANENT LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time permanent practical nurses in this organizational unit. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PART-TIME PERMANENT LPN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time permanent practical nurse FTE in this organizational unit. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PART-TIME TEMPORARY LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time temporary practical nurses in this organizational unit. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "PART-TIME TEMPORARY LPN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time temporary practical nurse FTE in this organizational unit. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "INTERMITTENT LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of intermittent practical nurses in this organizational unit. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "INTERMITTENT LPN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of intermittent practical nurse FTE in this organizational unit. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "TRAINEE/STIPEND/RES LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident practical nurses in this organizational unit. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "TRAINEE/STIPEND/RES LPN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident practical nurses in this organizational unit. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "SUMMER AID/SIS LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of summer aid and stay-in-school practical nurses in this organizational unit. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "TOTAL LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The total number of practical nurses in this organizational unit. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "TOTAL LPN FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total number of practical nurse FTE in this organizational unit. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LPN VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The difference between the practical nurse FTE ceiling and the total practical nurse FTE. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "FULL-TIME PERMANENT NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time permanent nursing assistants in this organizational unit. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "FULL-TIME TEMPORARY NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of full-time temporary nursing assistants in this organizational unit. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "PART-TIME PERMANENT NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time permanent nursing assistants in this organizational unit. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PART-TIME PERMANENT NA FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time permanent nursing assistant FTE in this organizational unit. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "PART-TIME TEMPORARY NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of part-time temporary nursing assistants in this organizational unit. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "PART-TIME TEMPORARY NA FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of part-time temporary nursing assistant FTE in this organizational unit. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "INTERMITTENT NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of intermittent nursing assistants in this organizational unit. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "INTERMITTENT NA FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of intermittent nursing assistant FTE in this organizational unit. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "TRAINEE/STIPEND/RES NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident nursing assistants in this organizational unit. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "TRAINEE/STIPEND/RES NA FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of trainee, stipend and resident nursing assistant FTE in this organizational unit. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "SUMMER AID/SIS NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of summer aid and stay-in-school nursing assistants in this organizational unit. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TOTAL NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The total number of nursing assistants in this organizational unit. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "TOTAL NA FTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total number of nursing assistant FTE in this organizational unit. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "NA VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The difference between the nursing assistant FTE ceiling and the total nursing assistant FTE. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "SALARY TOTAL YTD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The total year-to-date salary expenditure for this organizational unit. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "SALARY TOTAL PROJECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The total projected salary expenditure for this organizational unit. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "LWOP COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of employees on extended LWOP for this organizational unit. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "LWOP MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of physicians on extended LWOP for this organizational unit. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "FEE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of fee basis employees for this organizational unit. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "FEE MD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of fee basis physicians for this organizational unit. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "LWOP RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of registered nurses on extended LWOP for this organizational unit. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "FEE RN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of fee basis RNs for this organizational unit. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "LWOP LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of LPNs on extended LWOP for this organizational unit. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "FEE LPN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of fee basis LPNs for this organizational unit. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "LWOP NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of nursing assistants on extended LWOP for this organizational unit. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "FEE NA COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of fee basis nursing assistants for this organizational unit. ",
+      "fieldNumber_": 89
+    }
+  ],
+  "fieldCount": 90,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "454.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

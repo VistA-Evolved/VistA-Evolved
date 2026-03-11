@@ -1,0 +1,236 @@
+{
+  "fileNumber": 142.5,
+  "fileName": "HEALTH SUMMARY OBJECTS",
+  "globalRoot": "142.5",
+  "globalReference": "^GMT(142.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Health Summary Object to be embedded in another  document. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBJECT LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a string of text, 3 to 79 characters in length, that will precede  the object embedded in another document to identify the object that follows. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HEALTH SUMMARY TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP142'",
+      "required": true,
+      "pointerTo": 142,
+      "helpText": "This is a pointer to the Health Summary Type that will be imbedded as an  object into another document. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REPORT PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a pointer to the Health Summary Type that will be imbedded as an  object into another document. elements may be excluded depending on how exclusion fields in this file are  set. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUPPRESS COMPONENTS W/O DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is set to 1 (YES) and a Health Summary component does not have  any data, the component will be suppressed.  If this field is not set to 1  (YES) and the component does not have any data, then the component will  print with the statement \"No data available\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUPPRESS HEADER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), Health Summary headers will be suppressed when printing as an object embedded in another document.  Individual data  elements may be excluded depending on how exclusion fields in this file are  set. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PRINT LABEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary Object Label will be printed prior to printing the object.  When it is set to 0 (NO) the Health  Summary Object Label will be ignored. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRINT BLANK LINE AFTER LABEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If there is a Label for the object and the Label is to be printed, then a blank line may be printed after the object label if this field is set to 1 (YES). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRINT REPORT DATE AND TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary report date and time  will be printed as part of a Health Summary object embedded in another  document, even if the Health Summary headers are to be suppressed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PRINT CONFIDENTIALITY BANNER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary confidentiality banner  will be printed as part of a Health Summary object embedded in another  document, even if the Health Summary headers are to be suppressed. suppressed. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PRINT REPORT HEADER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary report header (and  accompanying blank line) will be printed as part of a Health Summary object embedded in another document, even if the Health Summary headers are to be  suppressed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PRINT COMPONENT HEADER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary component headers will be printed as part of a Health Summary object embedded in another document,  even if the Health Summary headers are to be suppressed. Summary headers are to be suppressed.  For this field to have any effect on  the display, the field \"PRINT COMPONENT HEADERS\" must also be set to 1 (YES). ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "UNDERLINE COMPONENT HEADER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the a Component Header will be underlined  with a single dashed line.  For this field to have any effect on the display,  the field \"PRINT COMPONENT HEADERS\" must also be set to 1 (YES).    PN - Progress Notes  ------------------- <data>  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PRINT TIME-OCCURRENCE LIMITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), the Health Summary report time and  occurrence limits will be printed with the Component Header as part of a  Health Summary object embedded in another document, even if the Health  Summary headers are to be suppressed.  For this field to have any effect on  the display, the field \"PRINT COMPONENT HEADERS\" must also be set to 1 (YES) ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "FORCE BLANK LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to 1 (YES), a blank line will be printed after  each Component Header as part of a Health Summary object embedded in another  document, even if the Health Summary headers are to be suppressed.  For this  field to have any effect on the display, the field \"PRINT COMPONENT HEADERS\" must also be set to 1 (YES). ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PRINT DECEASED INFORMATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The Health Summary has a conditional line of text that prints with each  Health Summary Header for patients who are deceased.  This conditional line  contains the word \"DECEASED\" and the date and time the patient died.  When  this field is set to 1 (YES), the conditional \"Deceased\" line will be  printed as part of a Health Summary object embedded in another document,  even if the Health Summary headers are to be suppressed. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the individual who created the Health Summary object. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Object was created. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "DATE LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this object was last modified. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "NATIONAL OBJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is a flag to indicate an object as being a nationally released  object. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OBJECT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "142.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 142.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OVERWRITE NO DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores a site defined message. This message will replace the standard No Data Available message when running a TIU/HS Object.  ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "142.5", "field": .01, "type": "regular"},
+    {"name": "142.5", "field": .01, "type": "regular"},
+    {"name": "142.5", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

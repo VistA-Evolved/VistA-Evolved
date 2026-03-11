@@ -1,0 +1,272 @@
+{
+  "fileNumber": 3.081,
+  "fileName": "SIGN-ON LOG",
+  "globalRoot": "3.081P",
+  "globalReference": "^XUSEC(0,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the user signed on. To allow more than one sign-on per second the time may have values that  show hundredth of a second. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user that signed on. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEVICE $I",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the device $I that the user signed on to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "JOB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the job number of the user's job. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SIGNOFF TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the user signed-off through H^XUS. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CPU",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the CPU the user signed on to. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is a pointer to the Device file showing which device the user signed-on to.  With network devices this is not a very useful field anymore.   The 'ALDEV' X-ref is used to tell which user last sign-on to this device and the X-ref is not killed.  At the most there would be one entry  for each entry in the device file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field records the UCI account area where the user had signed on. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TASK?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TASK;",
+      "helpText": "This field is set to 1 for entries that are created by TaskMan.  A field in the Kernel Site Parameters file can be used to make TaskMan \"log sign-ons\" for tasks.  When that feature is active, TaskMan makes an entry in this file every time it runs a task. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "$ZIO (optional)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "On a system with terminal servers this may be the port and server that the user is signed-on to.  It can provide information not contained in $I. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NODE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VAX/VMS cluster node name or system name on other systems. Comes from the GETENV^%ZOSV api. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IPV4 ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the IPv4 address of the calling system. Note that under DHCP IP address are dynamically allocated so more that one client could have used the same IP address over some time period. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "WORKSTATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the workstation name if it has been provide by the underlaying OS or as part of a RPCBroker signon. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "AUTO SIGNON HANDLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used internally by the Kernel Auto Sign-on code to store the handle returned by the ClientAgent on the users system. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REMOTE STATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the station id (station #) of a remote site that did the user authentication. Having this field filled in implies that the user did not sign-on to the local system but was authenticated at some remote site that has requested data or services from this system.  The Enterprise Single Sign-on, and the CPRS remote patient data projects use this field. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REMOTE USER IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field holds the user IEN of a remote user that was authenticated at a remote site (field #14). Having this field filled in implies that the user did not sign-on to the local system but was authenticated at some remote site that has requested data or services from this system.  The Enterprise Single Sign-on, and the CPRS remote patient data projects use this field. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FORCE CLOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag to indicate that the sign-on record was closed by some action other than a normal sign-off. IRM used the 'Release User' option.  The nightly cleanup job closed the record because it was open to long. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field holds the division that the user signed into. It is used to set the division if the user sign-on is thru AUTO SIGN-ON. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "REMOTE APP",
+      "dataType": "POINTER",
+      "rawType": "P8994.5'",
+      "required": false,
+      "pointerTo": 8994.5,
+      "helpText": "If the user came into the system by a remote application like CAPRI or VistAWeb then this will point to the entry in the remote application file they used. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CPU",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the CPU the user signed on to. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "ELAPSED TIME (SECONDS)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field calculates the number of seconds between sign-on time and sign-off time. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the location of the device which was used to sign on. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "ELAPSED TIME (MINUTES)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount of time the user has been signed on. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "IPV6 ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the IPv6 address of the calling system. Note that under  DHCP IP addresses are dynamically allocated so more than one client could  have used the same IP address over some time period. Note also that under  IPv6, each client could have more than one IP address. IPv4 addresses  will be stored as IPv4-mapped IPv6 addresses, and all addresses will be  stored in expanded IPv6 format. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "LEVEL OF ASSURANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Level of Assurance (LOA) of the authenticated user sign-on per guidance  from OMB 04-04 and NIST SP 800-63-2.   LOA=1    Little or no confidence exists in the asserted identity; usually  self-asserted; essentially a persistent identifier. Requires no identity proofing, allows any type of token including a simple PIN. Examples:  Old-style RPC Broker Visitor Access; Identification by DUZ without  authentication (re-authentication using DUZ only).   LOA=2    Confidence exists that the asserted iden",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AC3", "field": },
+    {"name": "ALDEV", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "AS3", "field": },
+    {"name": "AS4", "field": },
+    {"name": "AS5", "field": },
+    {"name": "CUR", "field": },
+    {"name": "3.081", "field": .01, "type": "regular"},
+    {"name": "3.081", "field": 3, "type": "regular"},
+    {"name": "3.081", "field": 3, "type": "regular"},
+    {"name": "3.081", "field": 3, "type": "regular"},
+    {"name": "3.081", "field": 5, "type": "regular"},
+    {"name": "3.081", "field": 11, "type": "regular"},
+    {"name": "3.081", "field": 11, "type": "regular"},
+    {"name": "3.081", "field": 12, "type": "regular"},
+    {"name": "3.081", "field": 100, "type": "regular"},
+    {"name": "3.081", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "fileNumber": 161.91,
+  "fileName": "ADJUSTMENT REASON",
+  "globalRoot": "161.91",
+  "globalReference": "^FB(161.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code value. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "161.911D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.911,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "161.912D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.912,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSOCIATED SUSPEND CODE",
+      "dataType": "POINTER",
+      "rawType": "P161.27'",
+      "required": false,
+      "pointerTo": 161.27,
+      "helpText": "This field should be populated for every adjustment code that is currently applicable for use on fee claims.  The software will automatically copy this value to the SUSPEND CODE field in an invoice file after the  adjustment reason code is specified for the invoice.  If more than one  adjustment reason is specified, the one with the largest dollar impact will be used to determine the suspend code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUSPENSION DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "161.914",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.914,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REMITTANCE REMARK",
+      "dataType": "POINTER",
+      "rawType": "161.915PA",
+      "required": false,
+      "helpText": "This field contains the sub-set of remittance remarks allowed for this adjustment reason. It should only be modified when updated adjustment reason and remittance remark codes, and their relationships, are released. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CORE SCENARIO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Incorrect Documentation;2:Incorrect Claim Data;3:Billed Service Not Covered;4:Benefit for Service Not Payable;",
+      "helpText": "Used to indicate what business scenario, associated with Phase III CORE  360 Rule, this adjustment reason code is associated with, if any. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADJUSTMENT GROUP",
+      "dataType": "POINTER",
+      "rawType": "161.917PA",
+      "required": false,
+      "helpText": "Some CARCs have GROUP restrictions. Specify the allowable GROUPS for this  CARC here. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": CDES, "value": "D ARCDES^FBUTL3"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 17.9001,
+  "fileName": "M-UNIT TEST GROUP",
+  "globalRoot": "17.9001",
+  "globalReference": "^%ut(17.9001,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "17.90011",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 17.90011,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION FOR GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "17.90012",
+      "required": false,
+      "helpText": "This word processing field provides a location for the developer to enter a description of the purpose or function of the M-Unit Test Group, including if desired comments on the various routines in the group. ",
+      "isMultiple": true,
+      "subFileNumber": 17.90012,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "17.9001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

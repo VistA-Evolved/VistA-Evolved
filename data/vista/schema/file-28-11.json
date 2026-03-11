@@ -1,0 +1,203 @@
+{
+  "fileNumber": 28.11,
+  "fileName": "NOSE AND THROAT RADIUM HISTORY",
+  "globalRoot": "28.11",
+  "globalReference": "^DGNT(28.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the pointer to the PATIENT file (#2) of the patient associated with Nose/Throat Radium Treatment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NTR INDICATOR",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field contains the indicator for Nose/Throat Radium Treatment exposure.  A YES indicates that the exposure documentation has been verified and that the veteran has a diagnosis of cancer of the head and/or neck.  A NO indicates that the veteran claims no exposure, no supporting documentation is available or there is no diagnosis of cancer of the head and/or neck. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SCREENING STATUS",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:NO EXPOSURE CLAIMED;2:PENDING DOCUMENTATION;3:PENDING DIAGNOSIS;4:VERIFIED MILITARY MEDICAL RECORD AND DIAGNOSIS;5:VERIFIED SERVICE RECORD AND DIAGNOSIS;6:NO SUPPORTING DOCUMENTATION;",
+      "helpText": "This field indicates the status of the screening process for Nose/Throat Radium Treatment exposure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NTR TREATMENT",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "N:NO;Y:YES;U:UNKNOWN;",
+      "helpText": "This field contains the response to the question: 'Did you receive Nose/Throat Radium Treatments in the military?' as a SET OF CODES. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MILITARY AVIATOR PRE 1/31/1955",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field contains the response to the question: 'Did you serve as an aviator in the military before Jan 31, 1955?' as a SET OF CODES. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUBMARINE TRAINING PRE 1/1/65",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field contains the response to the question: 'Did you have submarine training in the military before Jan 1,  1965?' as a SET OF CODES. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME NTR ENTERED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date and time of the Nose/Throat Radium Treatment data entry. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NTR ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file (#200) indicating the person entering the Nose/Throat response data. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NTR PRIMARY ENTRY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:PRIMARY ENTRY;",
+      "helpText": "Designates that this record is the primary entry for the patient. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE/TIME SUPERSEDED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date/Time that the patient's primary record is superseded by a new primary record. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "VERIFICATION METHOD",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "M:MILITARY MEDICAL RECORD;S:QUALIFYING MILITARY SERVICE;N:NOT QUALIFIED;",
+      "helpText": "This field contains the type of documentation used for verifying the Nose/Throat Radium Treatment claim as a SET OF CODES. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DATE/TIME VERIFIED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date and time that the Nose/Throat Radium Treatment claim was verified. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file (#200) of the user verifying the Nose/Throat Radium Treatment exposure. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "SITE VERIFYING DOCUMENTATION",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains a pointer to the INSTITUTION file (#4) of the associated station number of the VAMC that recorded and verified the patient's Nose/Throat Radium Treatment status. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "HEAD/NECK CA DX",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field contains the response to the question: 'Has veteran been diagnosed with cancer of the head and/or neck?' as a SET OF CODES. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DATE/TIME DX VERIFIED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date/time that the diagnosis of  cancer of the head and/or neck was entered. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "DX VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file (#200) for the person performing the head/neck cancer dx verification. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "SITE VERIFYING DX",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains a pointer to the INSTITUTION file (#4) of the associated station number of the VAMC that recorded and verified the patient's cancer of head/neck diagnosis. ",
+      "fieldNumber_": 2.04
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "28.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .09, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(28.11,.09,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,9)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "fileNumber": 394.81,
+  "fileName": "VAQ - PARAMETER",
+  "globalRoot": "394.81P",
+  "globalReference": "^VAT(394.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Facility",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "  Main facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Domain",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "E-Mail address of the main facility. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Lifetime of Data",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of days PDX is valid. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Encrypt Fields",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to YES if encryption should be done, by default, for all PDX requests and unsolicited PDXs sent by the facility. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "Encryption Method",
+      "dataType": "POINTER",
+      "rawType": "P394.72'",
+      "required": false,
+      "pointerTo": 394.72,
+      "helpText": "Method of encryption to use, by default, for PDX requests and unsolicited PDXs sent by facility.  This field is only relevant when the ENCRYPT FIELDS field is set to YES. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "Default Time Limit",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Default time limit to use when a data segment accepts time limits ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "Default Occurrence Limit",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "  Default occurrence limit to use when a data segment accepts occurrence limits ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.81", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

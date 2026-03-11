@@ -1,0 +1,155 @@
+{
+  "fileNumber": 863.3,
+  "fileName": "OCX MDD LINK",
+  "globalRoot": "863.3I",
+  "globalReference": "^OCXS(863.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT SUBJECT",
+      "dataType": "POINTER",
+      "rawType": "P863.2'",
+      "required": false,
+      "pointerTo": 863.2,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCENDANT SUBJECT",
+      "dataType": "POINTER",
+      "rawType": "P863.2'",
+      "required": false,
+      "pointerTo": 863.2,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PARENT MENU GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ATTRIBUTE",
+      "dataType": "POINTER",
+      "rawType": "P863.4",
+      "required": false,
+      "pointerTo": 863.4,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LIST ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "LONG MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SHORT MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "863.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.32P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "LONG MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "BRIEF MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "MENU ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,4",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique ID for this object. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "ALO", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "F", "field": },
+    {"name": "SYN", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.3", "field": .03, "type": "regular"},
+    {"name": "863.3", "field": .04, "type": "regular"},
+    {"name": "863.3", "field": .05, "type": "regular"},
+    {"name": "863.3", "field": .06, "type": "regular"},
+    {"name": "863.3", "field": .1, "type": "regular"},
+    {"name": "863.3", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^OCXS(863.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(863.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": .06, "value": "W \"\""}
+  ]
+}

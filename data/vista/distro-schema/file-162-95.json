@@ -1,0 +1,48 @@
+{
+  "fileNumber": 162.95,
+  "fileName": "FEE BASIS CHECK CANCELLATION REASON",
+  "globalRoot": "162.95",
+  "globalReference": "^FB(162.95,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CANCELLATION REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This reason is passed back from the treasury when a check has been cancelled. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REASON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the actual code that is passed back from Austin when a check has been cancelled. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVATION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field was added to this file in the event that the treasury decides to stop using a code. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "162.95", "field": .01, "type": "regular"},
+    {"name": "162.95", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

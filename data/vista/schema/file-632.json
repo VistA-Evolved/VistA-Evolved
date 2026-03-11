@@ -1,0 +1,203 @@
+{
+  "fileNumber": 632,
+  "fileName": "HBHC VISIT",
+  "globalRoot": "",
+  "globalReference": "^HBHC(632,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient's name in Patient (2) file.  Patient must exist in DPT for HBHC selection, since LAYGO is not allowed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of HBHC visit.  Date range allowed is 1/1/1977 or later.  Field updated by package only, no user input. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLINIC NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field represents HBHC Clinic number in Hospital Location (44) file. Clinic must exist in Hospital Location file, since LAYGO is not allowed. Field updated by package only, no user input. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P631.4'",
+      "required": false,
+      "pointerTo": 631.4,
+      "helpText": "This field represents HBHC provider number, referencing HBHC Provider (631.4) file entries.  Provider must exist in HBHC Provider file, since LAYGO is not allowed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF VISIT",
+      "dataType": "POINTER",
+      "rawType": "P631.5'",
+      "required": false,
+      "pointerTo": 631.5,
+      "helpText": "This field represents 1 digit numeric code for HBHC Type of Visit, referencing HBHC Type of Visit (631.5) file entries. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents comments pertaining to this visit.  Field allows 1-30 characters of free text.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CANCELLED APPOINTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents cancelled appointment codes.  Field updated by package only, no user input. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FORM 4 TRANSMIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:Record Contains Cancelled Appointment;F:Record in Transmit File;N:Record Needs Transmitting;P:Record Prior to Package Startup Date;T:Record Transmitted;O:Record Omitted, Pre-dates 10/1/96 PCE Usage;",
+      "helpText": "This field represents Form 4 (Visit) Transmit Status.  Field will contain either 'C' (Record Contains Cancelled Appointment), 'F' (Record in Transmit File), 'N' (Record Needs Transmitting), 'O' (Record Omitted, Pre-dates 10/1/96 PCE Usage), 'P' (Record Prior to Package Startup Date),  or 'T' (Record Transmitted).  Field updated by package only, no user input. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FORM 4 FILED IN HBHC(634) DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 4 (Visit) record filed in Transmit (634) file.  Field updated by package only, no user input. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FORM 4 BATCH INITIAL MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in Austin transmission batch.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one transmission batch. Field updated by package only, no user input. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FORM 4 MAIL MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 4 (Visit) record transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FORM 4 TRANSMIT FLAG EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 4 (Visit) Transmit Status flag was requested by user to be reset (allowing editing of previously transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FORM 4 TRANSMIT FLAG EDIT DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field represents DUZ of user requesting Form 4 (Visit) Transmit Status flag be reset (allowing editing of previously transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FORM 4 RE-TRANS BATCH MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in re-transmission batch to Austin.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one re-transmission batch.  Field updated by package only, no user input. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FORM 4 RE-TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 4 (Visit) record re-transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "QA INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents a generic QA Indicator.  The Office of Geriatrics & Extended Care supplies HBHC programs with current QA Indicator information. The QA Indicator & corresponding data value for the field will change periodically at the discretion of the Geriatrics & Extended Care office. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.68'",
+      "required": false,
+      "pointerTo": 409.68,
+      "helpText": "This field represents outpatient encounter record in ^SCE (#409.68) file.  Field updated by package only, no user input.  ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CPT",
+      "dataType": "POINTER",
+      "rawType": "632.032PA",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DX",
+      "dataType": "POINTER",
+      "rawType": "632.033PA",
+      "required": false,
+      "fieldNumber_": 33
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "632", "field": .01, "type": "regular"},
+    {"name": "632", "field": 1, "type": "regular"},
+    {"name": "632", "field": 7, "type": "regular"},
+    {"name": "632", "field": 10, "type": "regular"},
+    {"name": "632", "field": 31, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

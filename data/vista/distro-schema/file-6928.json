@@ -1,0 +1,451 @@
+{
+  "fileNumber": 6928,
+  "fileName": "ENG SPACE",
+  "globalRoot": "6928I",
+  "globalReference": "^ENG(\"SP\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROOM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Identifier of a physical location (room). With the advent of bar coding, it is essential that this field uniquely and unambiguously specify a particular location. Entries may consist of one, two, or three pieces. Hyphens (if present) are treated as delimiters between pieces. First piece (always present) is room designation, second piece (optional) is building designation, and third piece (optional) is division designation (may be used for outpatient clinics, regional offices, etc. as well as for",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "BUILDING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Assigned number of the BUILDING.  This field is populated automatically when ROOM NUMBERS are entered as 'ROOM-BUILDING'. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "BUILDING FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "*P6928.3'",
+      "required": false,
+      "pointerTo": 6928.3,
+      "helpText": "Used primarily for LEASED SPACE functions.  Automatically maintained on the basis of the ROOM NUMBER field (.01). ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The division designator.  Intended for use at multi-division facilities. This field is populated automatically when ROOM NUMBERS are entered as 'ROOM-BUILDING-DIVISION'.  Division designators should not be any longer than necessary. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "LESSOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Owner of leased space. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Intended as a means of defining functional groupings of physical locations. WING's may or may not equate to an extension or annex of a building, and/or a clinical specialty area (ex: surgical wing) of a hospital. Used in the Equipment Management Module. In sorting a Preventive Maintenance Worklist by LOCATION, the system will attempt to sort by WING rather than ROOM NUMBER. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "Service to whom space is assigned. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "KEY",
+      "dataType": "POINTER",
+      "rawType": "P6927",
+      "required": false,
+      "pointerTo": 6927,
+      "helpText": "Lock/key combination in use for this space. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "OTHER KEY",
+      "dataType": "SUBFILE",
+      "rawType": "6928.03",
+      "required": false,
+      "helpText": "Use this field if this rooms lock has been combinated with a key that crosses over to a lock other than the lock selected for this room.   ",
+      "isMultiple": true,
+      "subFileNumber": 6928.03,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "FUNCTION(FREE TEXT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This free text field is triggered by the FUNCTION field of this file. . . ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "XP6928.1'",
+      "required": false,
+      "pointerTo": 6928.1,
+      "helpText": "This field points to function file for selection of rooms primary use. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LENGTH IN FT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Measured room length (feet). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "WIDTH IN FT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Measured room width (feet). ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "CEILING HT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Distance from floor to ceiling (feet). ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMPUTED SQ.FT.",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Square footage of this location.  Computed by system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "NET SQ.FT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,1",
+      "length": 9,
+      "required": false,
+      "helpText": "Actual net square footage for this room. May be compared to Criteria if Criteria (IMFP) has been calculated and entered. Should equal computed square footage minus any unusable area(s). ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "SPACE GUIDE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Net Square feet for this room/function as per IMFP space criteria ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "H-08-9 CRITERIA",
+      "dataType": "POINTER",
+      "rawType": "P7336.6'",
+      "required": false,
+      "pointerTo": 7336.6,
+      "helpText": "Criteria Chapter from H-08-9 Space Planning Criteria. Especially important when entering a project space plan (IMFP). ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BEDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of beds in this room. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "BED TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Descriptor of the kind of beds found in this room (PSYCH, NHCU, etc.). ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SPECIAL CHARACTERISTICS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Special characteristics of this location, as defined by each facility. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WALL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "VP:VINYL PAPER;CT:CERAMIC TILE;PT:PAINT;WP:WOOD PANELLING;BL:BLOCK;PL:PLASTER;OT:OTHER;",
+      "helpText": "Type of wall covering or treatments. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "WALL FINISH DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Brief (15 character max) descriptor of wall finishing. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "WALL REPLACEMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Scheduled date for replacement of wall covering or treatment. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FLOOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CP:CARPET;TL:TILE;CT:CERAMIC TILE;CE:CONCRETE;SV:SHEET VINYL;CF:CONDUCTIVE FLOORING;TE:TERRAZZO;",
+      "helpText": "TYPE OF FLOOR FINISH MATERIAL ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "FLOOR FINISH DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Brief (15 character max) descriptor of flooring.  Locally defined. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "FLOOR REPLACEMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Scheduled replacement date for floor covering. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CEILING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "G:GRID;P:PLASTER;C:CONCRETE;O:OTHER;",
+      "helpText": "Type of ceiling found in this room. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "CEILING FINISH DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Brief descriptor of ceiling finish.  Locally defined. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "CEILING REPLACEMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Scheduled date for replacement of existing ceiling. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LIGHTING",
+      "dataType": "SET",
+      "rawType": "6928.04S",
+      "required": false,
+      "helpText": "Type and quantity of permanent light fixtures. ",
+      "isMultiple": true,
+      "subFileNumber": 6928.04,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "WINDOWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of outside windows in this room. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "WINDOW TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SS:SINGLE HUNG/SINGLE GLAZED;SD:SINGLE HUNG/DOUBLE GLAZED;DS:DOUBLE HUNG/SINGLE GLAZED;DD:DOUBLE HUNG/DOUBLE GLAZED;O:OTHER;",
+      "helpText": "Type of window (if any) found in this room. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DRAPES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of draperies (sets) found in this room. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CUB. CTNS.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of ceiling mounted cubicle curtains found in this room. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "DOORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Number of doors in this room. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "UTILITIES",
+      "dataType": "POINTER",
+      "rawType": "6928.01P",
+      "required": false,
+      "helpText": "Standard hospital utilities, selected from a file of same. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "BLDG MNGT AMIS CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PSYCHIATRY;2:INTERMEDIATE;3:MEDICINE;4:NEUROLOGY;5:R.M.S.;6:S.C.I.;7:SURGERY;8:N.H.C.U.;9:DOMICILIARY;10:CLINICS;11:DENTAL;12:RESEARCH;13:ADMIN.;14:OTHER;",
+      "helpText": "Entry indicates one of the 14 divisions on the AMIS form VA-10-6007a. This will be used to generate a report from the Space Survey Report  menu for use by Building Management Service for quarterly AMIS reporting. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "RCS 10-0141(14-4)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicator of whether or not RCS 10-0141(14-4) report is to be produced from the Engineering Package. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "6928.02",
+      "required": false,
+      "helpText": "General comments pertinent to this location. ",
+      "isMultiple": true,
+      "subFileNumber": 6928.02,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "6928.018",
+      "required": false,
+      "helpText": "Alternative (informal) designations of physical locations.  For example, room 214A-137 may be better known as room 1 of the MICU. In this case, you could use MICU-1 as a synonym for room 214A-137. ",
+      "isMultiple": true,
+      "subFileNumber": 6928.018,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "INVERSE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Reversal of the standard room descriptor, using full colons as separators.  Result is of the form 'DIVISION:BUILDING:ROOM'. Maintained by the system automatically.  Intended for use in FileMan print specifications. ",
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 42,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "6928", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "6928", "field": .01, "type": "regular"},
+    {"name": "6928", "field": .01, "type": "regular"},
+    {"name": "6928", "field": .01, "type": "regular"},
+    {"name": "6928", "field": .5, "type": "regular"},
+    {"name": "6928", "field": .51, "type": "regular"},
+    {"name": "6928", "field": 1, "type": "regular"},
+    {"name": "6928", "field": 1.5, "type": "regular"},
+    {"name": "", "field": 2.6, "type": "regular"},
+    {"name": "", "field": 2.6, "type": "regular"},
+    {"name": "6928", "field": 19, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 1, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 1.5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(49,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(49,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2.6, "value": "S %I=Y,Y=$S('$D(^(4)):\"\",$D(^ENG(6928.1,+$P(^(4),U,1),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(6928.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

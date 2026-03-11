@@ -1,0 +1,578 @@
+{
+  "fileNumber": 19620.2,
+  "fileName": "DSIR BILLS",
+  "globalRoot": "19620.2",
+  "globalReference": "^DSIR(19620.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP19620'X",
+      "required": true,
+      "pointerTo": 19620,
+      "helpText": "POINTER TO 19620 IDENTIFYING THE REQUEST BEING BILLED ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE THE BILL WAS CREATED ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "POINTER TO FILE 200, NEW PERSON FILE, IDENTIFYING WHO CREATED THE BILL ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PAID IN FULL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE WHEN BILL WAS PAID IN FULL ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OPEN;1:PAID IN FULL;2:WAIVED IN FULL;3:UNPAID - CLOSED;",
+      "helpText": "BILL STATUS - SET OF VALUES AS FOLLOWS:                          '0' FOR OPEN;                        '1' FOR PAID IN FULL;                        '2' FOR WAIVED IN FULL;                        '3' FOR UNPAID - CLOSED;  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ADDRESS_3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "REQUESTOR_TYPE",
+      "dataType": "POINTER",
+      "rawType": "P19620.7'",
+      "required": false,
+      "pointerTo": 19620.7,
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BILLED TO",
+      "dataType": "POINTER",
+      "rawType": "P19620.12'",
+      "required": false,
+      "pointerTo": 19620.12,
+      "helpText": "POINTER TO FILE 19620.12, NEW REQUESTOR FILE, TO INDICATE WHO TO BILL THE  REQUEST TO. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "BILL SENT TO",
+      "dataType": "POINTER",
+      "rawType": "P19620.92'",
+      "required": false,
+      "pointerTo": 19620.92,
+      "helpText": "POINTER TO FILE 19620.92, REQUEST ADDRESS FILE, INDICATING WHERE TO SEND  THE BILL. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "TOTAL DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "TOTAL AMOUNT BEING BILLED ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "EMPLOYEE RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "CURRENT BALANCE DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "BILLED AMOUNT STILL UNPAID AND/OR WAIVED. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "TOTAL PAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "PRINTED PAGES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF PRINTED PAGES PULLED FROM ELECTRONIC RECORDS TO SATISFY THE REQUEST ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "PRINTED PAGES COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER PRINTED PAGE ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "PRINTED PAGES BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "THIS IS THE PRINTED PAGES COUNT MINUS FREE_PAGES_PER_REQ FROM 19620.8, BILLING TYPE FILE ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "X-RAY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF X-RAYS REQUESTED ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "X-RAY COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER X-RAY ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "SLIDES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF SLIDES REQUESTED ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "SLIDES COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER SLIDE ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "VIDEO TAPE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF VIDEO TAPES REQUESTED ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "VIDEO TAPE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER VIDEO TAPE ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "MICRO-FILM COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF MICRO-FILMS REQUESTED ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "MICRO-FILE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER MICRO-FILM ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "CD ROM COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF CD ROMS REQUESTED ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 9.02,
+      "fieldName": "CD ROM COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER CD ROM ",
+      "fieldNumber_": 9.02
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "DISKS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF DISKS REQUESTED ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "DISKS COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER DISK ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "ABSTRACTS COUNTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF ABSTRACTS REQUESTED ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "ABSTRACTS COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER ABSTRACT ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "ATTESTATION COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF ATTESTATIONS REQUESTED ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "ATTESTATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER ATTESTATION ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "COMPUTER FILES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF COMPUTER FILES REQUESTED ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.02,
+      "fieldName": "COMPUTER FILES COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER COMPUTER FILE ",
+      "fieldNumber_": 13.02
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "TISSUE SAMPLES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF TISSUE SAMPLES REQUESTED ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.02,
+      "fieldName": "TISSUE SAMPLES COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER TISSUE SAMPLE ",
+      "fieldNumber_": 14.02
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "FLUID SAMPLES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF FLUID SAMPLES REQUESTED. ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 15.02,
+      "fieldName": "FLUID SAMPLES COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "COST PER FLUID SAMPLE ",
+      "fieldNumber_": 15.02
+    },
+    {
+      "fieldNumber": 16.01,
+      "fieldName": "PHOTO COPY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NUMBER OF PHOTO COPIES REQUESTED.  THIS VALUE COMES FROM THE \"ADD PAPER  DOCUMENTS\" SECTION OF ROI REQUESTS. ",
+      "fieldNumber_": 16.01
+    },
+    {
+      "fieldNumber": 16.02,
+      "fieldName": "PHOTO COPY COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "COST PER PHOTO COPY ",
+      "fieldNumber_": 16.02
+    },
+    {
+      "fieldNumber": 16.03,
+      "fieldName": "PHOTO COPY BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 16.03
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "OTHER COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "OTHER COST AMOUNT ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "MANUAL SEARCH COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 18.02,
+      "fieldName": "MANUAL SEARCH COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 18.02
+    },
+    {
+      "fieldNumber": 18.03,
+      "fieldName": "MANUAL SEARCH BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 18.03
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "ELECTRONIC SEARCH COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 19.02,
+      "fieldName": "ELECTRONIC SEARCH COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 19.02
+    },
+    {
+      "fieldNumber": 19.03,
+      "fieldName": "ELECTRONIC SEARCH BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 19.03
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "DOCUMENT REVIEW COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "DOCUMENT REVIEW COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "DOCUMENT REVIEW BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": 20.03
+    }
+  ],
+  "fieldCount": 57,
+  "crossReferences": [
+    {"name": "ACBD", "field": },
+    {"name": "ADENT", "field": },
+    {"name": "ADUE", "field": },
+    {"name": "B", "field": },
+    {"name": "19620.2", "field": .01, "type": "regular"},
+    {"name": "19620.2", "field": .02, "type": "regular"},
+    {"name": "19620.2", "field": 2.02, "type": "regular"},
+    {"name": "19620.2", "field": 2.05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

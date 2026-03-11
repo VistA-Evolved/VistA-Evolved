@@ -1,0 +1,57 @@
+{
+  "fileNumber": 64.05,
+  "fileName": "NON WKLD PROCEDURES",
+  "globalRoot": "64.05I",
+  "globalReference": "^LAB(64.05,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field contains the procedure name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WKLD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " If there is a code number associated with this procedure, enter it in this field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSIGNMENT CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:Lab Mgmt;T:Tech Mgmt;C:Clerical;A:ADP;S:Sect Sp.;E:Ed;O:Other;M:Misc;TO:Total;N: Nonproductive;CO:Computer-Oriented;D:Dept Sp.;",
+      "helpText": " This field contains which section this code belongs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "64.06PA",
+      "required": false,
+      "helpText": " To which institution should this code be associated with. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "64.05", "field": .01, "type": "regular"},
+    {"name": "64.05", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(64.05,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 799.33,
+  "fileName": "ROR DATA AREA",
+  "globalRoot": "799.33",
+  "globalReference": "^ROR(799.33,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the name of the data area  referenced by the DATA AREA fields of the HL7 SEGMENT (the ROR REGISTRY PARAMETERS file) and EVENT (the ROR PATIENT EVENTS file) multiples. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "799.33", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

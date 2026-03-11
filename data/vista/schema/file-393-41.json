@@ -1,0 +1,55 @@
+{
+  "fileNumber": 393.41,
+  "fileName": "TYPE OF CATEGORY",
+  "globalRoot": "",
+  "globalReference": "^VAS(393.41,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the category that a deficiency can fall under. There are thirteen possible categories that a deficiency can fall under.  The categories were taken from the Record Review Checklist VA Form 10-2493. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the three character abbreviation for the name of the category. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the print name for the category. This field can be displayed on reports. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,3",
+      "length": 7,
+      "required": true,
+      "helpText": "This field shows the display order in which this category will be printed the enter/edit screens. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "393.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

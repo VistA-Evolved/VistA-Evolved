@@ -1,0 +1,493 @@
+{
+  "fileNumber": 221,
+  "fileName": "DENTAL TREATMENT (AMIS)",
+  "globalRoot": "221ID",
+  "globalReference": "^DENT(221,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "STATION.DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the three digit station number. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "ENTER IN THIS FIELD THE PROVIDER CODE NUMBER ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DENTAL PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "R*P220.5'",
+      "required": true,
+      "pointerTo": 220.5,
+      "helpText": "This is the dental provider.  Names are entered lastname,first name. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DENTAL PATIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT (POINTER)",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP220.2'",
+      "required": true,
+      "pointerTo": 220.2,
+      "helpText": "Category 19 includes only priority 1, continued after priority 1 inpatient care. Category 21 includes only priority 2, continued after priority 2 inpatient care. Category 22 includes only priority 3, continued after priority 3 inpatient care and active duty military personnel, military retirees, and CHAMPVA. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BED SECTION",
+      "dataType": "POINTER",
+      "rawType": "P220.4'",
+      "required": false,
+      "pointerTo": 220.4,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SCREENING/COMPLETE EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SCREENING;C:COMPLETE;",
+      "helpText": "  SCREENING EXAMINATION The screening examination includes an evaluation of the oral and perioral soft tissues and a visual estimate of dental status without a tooth by tooth charting.  Radiographs usually will not be taken, but may be if PROFESSIONALLY DETERMINED to be necessary as for an emergency.  A chart review (patient not present at time of review) is also classed as a screening exam.  When a chart review is entered the provider must also mark ADMIN PROCEDURE on the screen to avoid a \"pat",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "INTERDISCIPLINARY CONSULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INTERDISC. CONSULT;",
+      "helpText": "Count those that were instituted via Form 513 (Consultation Request), a telephone request with following Form 513 and Form 10-10 or 10-10m with progress notes attached.  All INPATIENT interdisciplinary consultations will be placed in a Priority 1 category.  If the inpatient does not fall  into Emergency, Extended Care, NHCU, Dom, or Special Provisions, s/he would be placed in the Compelling Medical Need Category.  All OUTPATIENT interdisciplinary consultations will be placed in a Priority 1 Cate",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "EVALUATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EVALUATION;",
+      "helpText": "No more than one evaluation per provider can be counted on the same visit. Evaluations are identified as medical/dental workups, (e.g., periodontal, surgical, endodontic, etc.) on those patients for whom a complete screening examination has already been performed. Evaluations may be in conjunction with review of a medical record, the initiation of an interdisciplinary consultion or with a medical or dental emergency workup on a patient for whom no definitive treatment is delivered. An evaluation",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "PRE AUTH/2ND OPINION EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:PRE-AUTH/2ND OPINION;",
+      "helpText": "A pre-authorization exam is performed on a fee basis patient in order to determine treatment needs prior to authorization of the patient to a fee- for-service provider.  A second opinion exam is performed when the original estimate on a fee basis dental case exceeds $500.00. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 6.7,
+      "fieldName": "SPOT CHECK EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STAFF;3:FEE;",
+      "fieldNumber_": 6.7
+    },
+    {
+      "fieldNumber": 6.8,
+      "fieldName": "SPOT CHECK DISCREPANCY #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The DISCREPANCY categories are defined as follows:                    1 = MINOR discrepancy only           2 = MAJOR discrepancy-- QUALITY  ONLY           3 = MAJOR discrepancy- MISREPRESENTATION ONLY ",
+      "fieldNumber_": 6.8
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADMIN PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADMIN PROCEDURE;",
+      "helpText": "An entry should be made in this field when a case, a service or a procedure has been administratively completed or terminated without an actual patient visit (i.e., chart review, telephone call, death, etc.). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "COMPLETIONS/TERMINATIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:COMPLETION;3:TERMINATION;",
+      "helpText": "COMPLETIONS   A case is completed when all treatment authorized has been accomplished. Only one count should be taken for a patient during any single period of hospitalization unless the patient is under long term care.  In the case of long term care patients, including NHC and Dom patients, a count for a completed case may be taken once in each six months if re-examination indicated need for another episode of care.  For outpatients, only one complete case count may be taken per episode of care",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "X-RAYS EXTRAORAL #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of EXTRAORAL radiographs taken on this patient for  panoramic, cephalometric or other extraoral procedures. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "X-RAYS INTRAORAL #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of INTRAORAL radiographs taken for this patient for PA, bitewing, occlusal and other intraoral procedures. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROPHY NATURAL DENTITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "In special circumstances, when a patient is of such a difficult nature that two or more appointments are needed to complete the prophylaxis,credit for each treatment episode may be recorded. If a patient is on a formal recall status, such as head and neck cancer patients who are being followed after radiation treatment,credit may be taken at each prophylaxis appointment. A prophylaxis will include a complete review of preventive oral disease instructions. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROPHY DENTURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If a patient had a prophylaxis of natural dentition and a removeable prothesis cleaned on the same visit, an entry can be made for both procedures. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "NEOPLASM CONFIRMED MALIGNANT #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Activities surrounding the confirmation should include patient/family counseling and discussion with other hospital services (laboratory, surgery, etc.) for diagnostic interpretation and treatment planning.  All confirmed malignant neoplasms on INPATIENTS will be placed in a Priority 1 Category. If the inpatient does not fall into Extended Care, NHCU, Dom, or Special Provisions, s/he would be placed in the Compelling Medical Need Category. All confirmed malignant neoplasms on OUTPATIENTS will be",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "NEOPLASM REMOVED #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "All neoplasms removed for INPATIENTS will be placed in a Priority 1 Category.  If the inpatient does not fall into Extended Care, NHCU, Dom, or Special Provisions, s/he would be placed in the Compelling Medical Need Category.  All neoplasms removed for OUTPATIENTS will be placed in the appropriate Priority 1 Category. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BIOPSY/SMEAR #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of incisional biopsies (separate lesions) plus the number of cytological smears (one smear per patient) taken.  All biopsies and cytological smears performed on INPATIENTS will be placed in a Priority 1 Category.  If the inpatient does not fall into Extended Care, NHCU, Dom, or Special Provisions, s/he would be placed in the Compelling Medical Need Category.  All biopsies and cytological smears performed on OUTPATIENTS will be placed in the appropriate Priority 1 Category. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "FRACTURE #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "For multiple fractures in the same bone (e.g., bilateral condylar or a bilateral combination of body and condyle) count only as one fracture reduction if only one surgical site/procedure was used.  The computer generated weighted value includes all post-operative visits.  All maxillofacial fractures reduced for INPATIENTS will be placed in a Priority 1 Category.  If the inpatient does not fall into Emergency, Extended Care, NHCU, Dom, or Special Provisions, s/he would be placed in the Compelling",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "OTHER SIGNIF. SURG. (CTV) ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "         OTHER SIGNIFICANT SURGERY CTV'S   1. Salivary Gland Surgery            16.0   2. Dislocation                        3.0   3. Laceration/suturing                6.0   4. Incision and Drainage              4.0   5. Orthognathic Surgery              65.0   6. Frenectomy*                        6.0   7. Alveoplasty* (per quadrant)        4.0   8. Exostoses removal*                 4.0   9. Apicoectomy                       10.0  10. Tooth hemisection,      Root amputation*                  ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SURFACES RESTORED #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "DO NOT record the number of teeth restored or the number of restorations or temporary restorations in this field. They must be recorded under Other Significant Treatment. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ROOT CANAL THERAPY #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0X",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PERIODONTAL QUADS (SURGICAL) #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "A quadrant may have fewer than eight (8) teeth present or treated, that is, a full quadrant of teeth is not required.  If two to eight teeth are present in the same arch and any number cross the midline, count as only ONE quadrant.  DO NOT INCLUDE SCALING AND CURETTAGE IN THIS AREA EVEN IF LOCAL ANESTHESIA IS USED.  If scaling and curettage are done as part of the surgical procedure, do not take additional credit by entering both the periodontal surgery and the scaling.  Included in the periodon",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PERIO QUADS (ROOT PLANE) #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This must not be part of a periodontal surgery procedure performed in the same quadrant on the same visit.  A quadrant may have fewer than eight (8) teeth present or treated, that is, a full quadrant of teeth is not required. If two to eight teeth are present in the same arch and any number cross the midline, count as only ONE quadrant.  If nine or more teeth are present in the same arch, count as two quadrants.  DO NOT COUNT AS QUADRANTS OF ROOT PLANING AND CURETTAGE A PROPHYLAXIS PERFORMED BY ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PATIENT ED. (CTV)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;3:INDIVIDUAL;4:GROUP;",
+      "helpText": "Enter the weighted value of preventive dentistry instructions.  DO NOT LIST THE NUMBER OF MINUTES.  These instructions may be given by any provider. However, NO CREDIT IS RECORDED AT THE SAME APPOINTMENT when a prophylaxis or another treatment procedure is being accomplished by the same provider (an increase in CTV credits recognizes time spent for patient instruction during other scheduled treatment procedures).  The main pupose of this field is to record a specific appointment scheduled for a ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "INDIVIDUAL CROWNS #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "The crowns cemented are not part of a fixed prosthesis. Included in this field are all types of permanent crowns such as, 3/4, porcelain fused to metal, porcelain jacket, full gold, etc. Temporary crowns are NOT to be counted in this field. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "POST & CORES #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter a post/core or overdenture coping regardless of whether that tooth will have a crown  as part of a fixed prosthesis or have an individual crown placed on it.  This field includes all types of posts/cores (i.e., cast, pre-prepared types, and/or threaded systems). ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "FIXED PARTIALS (ABUT) #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Temporary bridges for this treatment episode are NOT counted in this field. This category includes all types of fixed prostheses with the exception of Acid Etched, Resin Bonded Retainers. These types of prostheses are recorded under Splints and Special Procedures. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FIXED PARTIALS (PONT ONLY) # ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "PONTIC UNITS of temporary bridges for this treatment episode are NOT counted in this field. This field includes all types of fixed prostheses except Acid Etched, Resin  Bonded Retainers. These are reported under SPLINTS AND SPECIAL PROCEDURES. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "REMOVABLE PARTIALS #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Acrylic R.P.D.'s may be counted here ONLY if the clasp assembly contains definitive occlusal rests. Transitional (temporary) tissue supported partials are counted in the SPLINTS AND SPECIAL PROCEDURES field. R.P.D. relines or rebases are counted under OTHER SIGNIFICANT TREATMENT. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "COMPLETE DENTURES #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "All COMPLETE DENTURES are counted at the time of insertion or disposition of the dentures.  Complete Denture relines or rebases are to be credited under the field OTHER SIGNIFICANT TREATMENT. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PROSTHETIC REPAIR #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Each repair is counted at the time of delivery to the patient or other disposition.  Fixed prostheses with broken facings which have been repaired are reported in the Other Significant Treatment section. If the patient does not come to the clinic for the prosthetic repair, an entry must be made in the Admin Procedure field. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SPLINTS & SPEC. PROCS. (CTV) ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "                          WEIGHTED VALUES (CTV'S)     1. Periodontal or trauma splinting,      orthodontic bands and/or brackets                     1.0/tooth   2. Flouride carriers (custom)                            3.0/patient   3. Facial moulage                                        9.0   4. Tissue borne partial prosth.                         12.0   5. Oral hygiene aids for handicapped pts.                9.0   6. Acrylic cranial plate                                18.0   7. Mandibular gu",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "EXTRACTIONS #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "These extractions are considered as simple extractions since no flap was necessary for surgical exposure to extract the tooth or root. Flaps in conjuction with an alveoplasty do not indicate a surgical extraction. This entry includes all post-operative care and instructions. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "SURGICAL EXTRACTIONS #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0X",
+      "length": 1,
+      "required": false,
+      "helpText": "This includes any type of impaction or an erupted tooth for which an intentional flap is required.  This entry includes all post-operative care and instructions. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "OTHER SIGNIFICANT TREAT (CTV)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "                  WEIGHTED VALUES (CTV's)       1. Blood pressure recording                                1.0/patient.   2. Topical flouride treatment                              2.0/patient.   3. Drug injection (not local anesthetic)                   1.0/patient.   4. Prescription writing (Pharmacy)                         1.0/patient.   5. Temporary restoration                                   2.0/patient.   6. Nitrous oxide sedation                                  2.0/patient.   7. Compl",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "OPERATING ROOM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "These cases will not be credited to a resident provider.  They must be credited to a dental staff provider or a dental consultant or attending. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "FACTOR (NOT USED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CHANGE/DELETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CHANGE;D:DELETE;",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DATE RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 61
+    }
+  ],
+  "fieldCount": 47,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "A1", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "221", "field": .01, "type": "regular"},
+    {"name": "221", "field": .01, "type": "regular"},
+    {"name": "221", "field": .3, "type": "regular"},
+    {"name": "221", "field": .3, "type": "regular"},
+    {"name": "221", "field": .4, "type": "regular"},
+    {"name": "221", "field": .4, "type": "regular"},
+    {"name": "", "field": .5, "type": "regular"},
+    {"name": "221", "field": 1, "type": "regular"},
+    {"name": "221", "field": 2, "type": "regular"},
+    {"name": "221", "field": 3, "type": "regular"},
+    {"name": "221", "field": 60, "type": "regular"},
+    {"name": "221", "field": 61, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Z0, "value": "I $D(^(0)),$P(^(0),U,1) S Z=Y,Y=$P(^(0),U,1) X ^DD(\"DD\") W ?25,Y S Y=Z K Z"},
+    {"field": Z1, "value": "W:$D(^DENT(221,+Y,0)) ?45,$P(^(0),U,10)"},
+    {"field": Z2, "value": "W:$D(^(0)) ?52,$P(^(0),U,2)"}
+  ]
+}

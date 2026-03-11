@@ -1,0 +1,46 @@
+{
+  "fileNumber": 356.21,
+  "fileName": "CLAIMS TRACKING DENIAL REASONS",
+  "globalRoot": "356.21",
+  "globalReference": "^IBE(356.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of the entry.  You may select the Denial Reason by name or by number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the denial reason.  Select the Denial reason by name or by number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the 2 to 10 character abbreviation for this Denial Reason.  The abbreviation may be used on displays and reports if the name is too long. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "356.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

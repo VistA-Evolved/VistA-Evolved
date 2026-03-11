@@ -1,0 +1,70 @@
+{
+  "fileNumber": 864.1,
+  "fileName": "OCX MDD DATATYPE",
+  "globalRoot": "864.1",
+  "globalReference": "^OCXS(864.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BRIEF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The brief name may be used as part of a compund key for lookup in reference  files (e.g., the DIALOGUE file) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "864.11P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARENT DATA TYPE",
+      "dataType": "POINTER",
+      "rawType": "P864.1'",
+      "required": false,
+      "pointerTo": 864.1,
+      "helpText": "Supports object inheritance ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique ID for this object. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AP", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "UID", "field": },
+    {"name": "864.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "864.1", "field": .02, "type": "regular"},
+    {"name": "864.1", "field": 2, "type": "regular"},
+    {"name": "864.1", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

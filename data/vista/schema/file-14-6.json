@@ -1,0 +1,96 @@
+{
+  "fileNumber": 14.6,
+  "fileName": "UCI ASSOCIATION",
+  "globalRoot": "14.6",
+  "globalReference": "^%ZIS(14.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Answer should be a unique number, used to identify this file entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FROM UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer should be the name of a uci from which a task is being transferred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FROM VOLUME SET",
+      "dataType": "POINTER",
+      "rawType": "R*P14.5'",
+      "required": true,
+      "pointerTo": 14.5,
+      "helpText": "Answer should be the name of the volume set from which the task is being transferred. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "FROM VOLUME SET (FREE TEXT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is write protected and uneditable.  It is triggered by field 1, and holds the resolved pointer values for use in the file's cross- references. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TO VOLUME SET",
+      "dataType": "POINTER",
+      "rawType": "*P14.5'",
+      "required": false,
+      "pointerTo": 14.5,
+      "helpText": "Answer should be the name of the volume set to which the task is being transferred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "TO VOLUME SET (FREE TEXT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is write protected and uneditable.  It is triggered by field 2, and holds the resolved pointer values for use in the file's cross- references. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TO UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Answer should be the name of the uci to which the task will be transferred. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "14.6", "field": .01, "type": "regular"},
+    {"name": "14.6", "field": .01, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "14.6", "field": 1.5, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "14.6", "field": 2.5, "type": "regular"},
+    {"name": "14.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^%ZIS(14.5,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(14.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^%ZIS(14.5,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(14.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 15.3,
+  "fileName": "XDR REPOINTED ENTRY",
+  "globalRoot": "15.3",
+  "globalReference": "^VA(15.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field indicates the file in which one or more entries were merged. Whether an unused internal entry number is the result of merging an entry into another one can be determined by testing for an entry for the file number, and then under that entry an entry for the internal entry number. If the internal entry number is present as a .01 field value in the subfile under the file number, then it is the result of merging two entries. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MERGED ENTRY",
+      "dataType": "SUBFILE",
+      "rawType": "15.31A",
+      "required": false,
+      "helpText": "This is the internal entry number of an entry which was merged into another entry in the file which this field is associated with (the .01 field value in file 15.3). ",
+      "isMultiple": true,
+      "subFileNumber": 15.31,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "15.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

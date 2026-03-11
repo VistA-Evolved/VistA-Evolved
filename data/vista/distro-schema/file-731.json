@@ -1,0 +1,77 @@
+{
+  "fileNumber": 731,
+  "fileName": "VAMC MANAGEMENT",
+  "globalRoot": "731",
+  "globalReference": "^ECT(731,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FISCAL YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the fiscal year for which VAMC management data is to be collected. This is the 2-digit code representing the fiscal year, i.e., 89 stands for fiscal year 1989. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TOTAL ASSIGNED FTEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the total assigned FTEE for the VAMC for the selected fiscal year. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "731.01PA",
+      "required": false,
+      "helpText": "Service is a pointer to the National Service file.  Choose the service for which FTEE data is to be entered. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CONTRACT",
+      "dataType": "SUBFILE",
+      "rawType": "731.02AI",
+      "required": false,
+      "helpText": "Enter the contract number which uniquely identifies the contract. ",
+      "isMultiple": true,
+      "subFileNumber": 731.02,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INPATIENT WORKLOAD",
+      "dataType": "SUBFILE",
+      "rawType": "731.03A",
+      "required": false,
+      "helpText": "This multiple contains workload data for the VAMC, nursing home, or domiciliary. ",
+      "isMultiple": true,
+      "subFileNumber": 731.03,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "OUTPATIENT WORKLOAD",
+      "dataType": "POINTER",
+      "rawType": "731.04PA",
+      "required": false,
+      "helpText": "This multiple contains workload data for all outpatient facilities. ",
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "731", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

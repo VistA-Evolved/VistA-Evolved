@@ -1,0 +1,56 @@
+{
+  "fileNumber": 399.6,
+  "fileName": "CMN FORM TYPES",
+  "globalRoot": "399.6",
+  "globalReference": "^IBE(399.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "Enter a description of the CMN form type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INDUSTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ15",
+      "length": 15,
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATA NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20",
+      "length": 20,
+      "required": true,
+      "helpText": "This is the node in ^DGCR where the CMN data for a particular form is  stored.  For the \"484\" form, the data node MUST be 'CMN-484' and for the  \"10126\" form, the data node MUST be 'CMN-10126'. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "399.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

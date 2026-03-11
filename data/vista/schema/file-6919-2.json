@@ -1,0 +1,550 @@
+{
+  "fileNumber": 6919.2,
+  "fileName": "2162 ACCIDENT ARCHIVE",
+  "globalRoot": "6919.2",
+  "globalReference": "^ENAR(6919.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCAL ENGINEERING #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INITIAL;S:SUPPLEMENTAL;C:CORRECTED;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PROPERTY ONLY;I:INJURY or ILLNESS;B:BOTH;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACCIDENT CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:MOTOR VEHICLE;B:LABORATORY;C:OFFICE;G:ASSEMBLY;J:PATIENT CARE;L:STORAGE;M:GROUNDS;N:DIETETICS;Z:OTHER;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OCCURRENCE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OCCURRENCE TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ON REPORTING ACTIVITY PROPERTY;B:OFF REPORTING ACTIVITY PROPERTY;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "SPECIFIC LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TORT CLAIM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, IS POSSIBLE;N:NO, NOT POSSIBLE;",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST NAME OF INVOLVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FIRST/MIDDLE INITIALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PERSONNEL STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:EMPLOYEE;B:VOLUNTEER;C:CONTRACTOR;D:INPATIENT;E:OUTPATIENT;F:STUDENT;G:VISITOR;Z:PERSON N.E.C.;",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PAY PLAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "OCCUPATIONAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "GRADE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "HOME ADDRESS",
+      "dataType": "SUBFILE",
+      "rawType": "6919.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6919.21,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "HOME PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "WORK PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CA1/CA2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TIME ON DUTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DUTY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:FULL TIME EMPL ON DUTY;B:TEMP EMPLOYEE ON DUTY;C:PART TIME EMPL ON DUTY;D:NON-PAID EMPL ON DUTY;Z:STATUS N.E.C.;",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ACCIDENT ACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SERVICE/DIVISION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.1,
+      "fieldName": "SERVICE/DIV. NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 25.1
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SEVERITY OF INJURY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO TREATMENT REQUIRED;2:FIRST AID ONLY;3:MEDICAL TREATMENT ONLY;4:DIAGNOSIS OF ILLNESS;5:DISABLING;8:FATALITY;",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CULMINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO RESTRICTION;2:RESTRICTED;4:PERMANENT TRANSFER;5:TERMINATED;",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RESTRICTED WORK DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "LOST WORK DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INJURY/ILLNESS NATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "BODY PART AFFECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:HEAD;16:CHEAS OR ABDOMEN;45:BACK;46:SHOULDER, ARM, HAND;61:HIP, LEG, FOOT;",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CAUSE OF INJURY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:STRUCK AGAINST;B:STRUCK BY;D:SLIP,TRIP,FALL;F:CAUGHT IN, UNDER OR BETWEEN;I:ILLNESS;J:OVER EXERTION;K:ELECTRIC CURRENT;L:EXTREME TEMPERATURE;M:CHEMICALS;O:RADIATION;T:ASSULT;X:CAUSE N.E.C.;",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.5,
+      "fieldName": "NEEDLE STICK?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, INJURY INVOLVED A NEEDLE;N:NO, INJURY DIDN'T INVOLVE NEEDLE;",
+      "fieldNumber_": 32.5
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PROPERTY OWNERSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:VETERANS ADMINISTRATION;C:OTHER FEDERAL AGENCY;H:PRIVATE;L:OWNERSHIP N.E.C.;",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "AMOUNT OF DAMAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PROPERTY DAMAGED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:MOTOR VEHICLE;AG:OTHER VEHICLE;EA:BLDG./STRUCTURE;FA:EQUIPMENT;GA:SUPPLIES;IA:FURNITURE;JA:RECORDS;KA:TREES/GRASS/PLANTS;BA:BEDDING/CLOTHES;CA:INTERIOR FINISH;HA:TRASH/RUBBISH;ZA:PROPERTY N.E.C.;",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "YEAR MANUFACTURED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "WEATHER FACTOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:SNOW/ICE;B:DUST STORM;C:LIGHTNING;D:HIGH TEMPERATURE;E:LOW TEMPERATURE;F:HUMIDITY;H:FOG;J:RAIN;N:WIND STORM;P:WEATHER N.E.C.;Z:WEATHER NOT A FACTOR;",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "SOURCE OF ACCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01AA:UNPOWERED EQUIP/FURNISHINGS/SUPPLIES;11AA:POWERED EQUIP/APPLIANCES/MACHINES;33AA:BLDG MATERIAL, FEATURE OR CONDITION;44AA:TOXIC SUBSTANCE/RADIATION EXPOSURE;77AA:VEHICLE;81AA:PERSON;82ZZ:SOURCE N.E.C.;",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "CAUSE OF ACCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:EQUIPMENT OR ENVIRONMENT;BA:PERSON;CA:NATURE;FA:CAUSE UNKNOWN;",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ADDITIONAL CAUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:EQUIPMENT OR ENVIRONMENT;BA:PERSON;CA:NATURE;ZZ:NO ADDITIONAL CAUSE;",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "FIRE-FORM OF IGNITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "21:ELECTRICAL ARC;31:SMOKING MATERIAL (CIGARETTES,ETC);61:SOURCE N.E.C.;71:SOURCE UNKNOWN;",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "FIRE..MATERIAL BURNED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "11:GAS;21:LIQUID;31:SOLID;41:LIQUID & GAS;71:SOLID & GAS;81:SOLID & LIQUID;",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "FIRE..MATERIAL FORM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "GZ:ALL FIRES;",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "BEST PREVENTATIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:TRAINING;B:MORE STAFF;C:MOTIVATION;D:BETTER EQUIPMENT/MATERIAL;E:BETTER PLANNING & COORDINATION;F:IMPROVED WRITTEN PROCEEDURES;G:MORE FUNDS FOR HAZARD ELIMINATION;H:PERSONNEL ACTION;I:PREVENTATIVE N.E.C.;Z:NONE;",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:TAKEN;B:REQUIRED & ANTICIPATED;C:REQUESTED;D:NONE;",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ACCIDENT NARRATIVE",
+      "dataType": "SUBFILE",
+      "rawType": "6919.22",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6919.22,
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "WITNESSES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "CORRECTIVE NARRATION",
+      "dataType": "SUBFILE",
+      "rawType": "6919.23",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6919.23,
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "INITATOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INITIATOR TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "INITIATOR DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "INITIATOR PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "REVIEW AUTHORITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "REVIEW AUTHORITY TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "REVIEW AUTHORITY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "REVIEW AUTHORITY PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "EVALUATION OF REPORT",
+      "dataType": "SUBFILE",
+      "rawType": "6919.24",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6919.24,
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 57.5,
+      "fieldName": "REPORT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, 2162 REPORT COMPLETED;N:NO 2162 REPORT NOT COMPLETED;",
+      "fieldNumber_": 57.5
+    }
+  ],
+  "fieldCount": 62,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6919.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

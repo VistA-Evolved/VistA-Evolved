@@ -1,0 +1,37 @@
+{
+  "fileNumber": 78.1,
+  "fileName": "COMPLICATION TYPES",
+  "globalRoot": "78.1",
+  "globalReference": "^RA(78.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the type of complication that may be associated with an exam.     Initially, the system contains two complication types:  'Contrast Reaction', and 'No Complication'.  Other complication types may be entered by the rad/nuc med coordinator at each site and can be 3 to 30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTRAST MEDIUM REACTION?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to indicate that a patient has had an allergic reaction to the contrast medium used during an exam.  If this field contains a 'Yes', then it triggers a contrast medium as an allergen in the Allergy Tracking System.  As a result, whenever the patient is registered for a procedure that involves contrast material, a warning message is displayed to the receptionist.  Answering 'Yes' to this field also affects the Complications Report, since contrast medium reaction complications a",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "78.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

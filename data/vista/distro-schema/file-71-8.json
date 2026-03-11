@@ -1,0 +1,27 @@
+{
+  "fileNumber": 71.8,
+  "fileName": "RADIOPHARMACEUTICAL SOURCE",
+  "globalRoot": "71.8",
+  "globalReference": "^RAMIS(71.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VENDOR/PHARMACY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field identifies the radiopharmaceutical source.  It may contain the name of a vendor, a pharmacy, or any other source of radiopharmaceuticals for a facility. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "fileNumber": 4.2999,
+  "fileName": "MESSAGE STATISTICS",
+  "globalRoot": "4.2999IP",
+  "globalReference": "^XMBS(4.2999,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'X",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "Domain for which network mail transmission information is collected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROGRESS REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the time in $H format of the last time a queue dump  routine reported its progress.  If this field is undefined, or 'old', then  the queue is assumed to be inactive.  If not, the rest of the fields on this node indicate the status of the transmission. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE IN TRANSIT",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This points to the 3.9 (Message) file entry of the message being transmitted. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LINE LAST TRANSMITTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the line number of the message in transit. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ERRORS THIS TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of \"soft\" errors (non-fatal) that have been encountered  during the course of the entire current transmission. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RATE OF TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the transmission rate in characters per second for the current transmission.  It may be for a single line or for a block or for the entire message.  It is updated regularly during the transmission. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NETWORK DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the device (system name) that the transmission is  running on.  It may be incoming or outgoing. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DIRECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SENDING;R:RECEIVING;",
+      "helpText": "This field is used to report whether, at any given time, we are sending messages to, or receiving messages from, the site.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TRANSMISSION TASK#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The transmission task# points to the TaskMan task that has been generated to handle delivery of messages to the domain in background. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "XMIT START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field helps MailMan determine, after a fatal error, whether to start the transmission process at script 1, try 1, or to start it elsewhere. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "XMIT FINISH DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This may be useful information for debugging purposes. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "XMIT SCRIPT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This tells MailMan which script is/was being used. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "XMIT TRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This tells MailMan how many tries have been made with the current script. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "XMIT LATEST TRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This may be useful information for debugging purposes. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "XMIT SCRIPT CYCLE ITERATIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of script cycles we have tried.  This field starts off at 0. After we have tried all the scripts available, we bump up this field by 1. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "XMIT FIRST SCRIPT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field notes which script has the highest priority, that is, which script was tried first. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "XMIT IP ADDRESSES TRIED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a list of IP addresses, separated by commas, which have already been used in attempting to connect with the site.  We use this list in conjunction with the DNS server, which returns a list of valid addresses to try.  Using both lists, we can come up with the next IP address to try. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "XMIT SCRIPT RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a copy of the zeronode of the latest script used. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "XMIT AUDIT",
+      "dataType": "DATE",
+      "rawType": "4.29992D",
+      "required": false,
+      "helpText": "This multiple contains an audit of the attempts that have been made during this transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 4.29992,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MESSAGE STATISTICS MONTH",
+      "dataType": "DATE",
+      "rawType": "4.29991D",
+      "required": false,
+      "helpText": "Message statistics are summed into this area at the end of each successful message received or sent into the appropriate month according to the time the message is received. ",
+      "isMultiple": true,
+      "subFileNumber": 4.29991,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.2999", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

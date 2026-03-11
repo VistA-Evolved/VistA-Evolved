@@ -1,0 +1,70 @@
+{
+  "fileNumber": 8930.3,
+  "fileName": "USR CLASS MEMBERSHIP",
+  "globalRoot": "8930.3",
+  "globalReference": "^USR(8930.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEMBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person to whom membership in a given User Class is  being ascribed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8930'",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "This is the User Class to which the User in question is being grated  membership. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date on which the user became, or will become a member of the  User Class in question.  This can be used to determine current, past, or  future membership status within a given User Class, as well as for  scheduling transitions between Classes (e.g., members of the class \"PGY1  Residents\" will finish their rotation on June 1st, and you'd like to  schedule their trasition into the class PGY2 Residents as of that date).  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the optional date on which the User's membership in a given class  will expire (i.e., be automatically discontinued).  This can be used to  determine historical or future membership within a particular class, and to schedule transitions between classes (e.g., the current members of the  PGY1 Residents Class will become PGY2 Residents on June 1st, at which time  their membership in the class PGY1 Residents will expire, and their  membership in the class PGY2 Residents will become effectiv",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ACU", "field": },
+    {"name": "ACU1", "field": },
+    {"name": "AUC", "field": },
+    {"name": "AUC1", "field": },
+    {"name": "AUHX", "field": },
+    {"name": "AUHX1", "field": },
+    {"name": "AUHX2", "field": },
+    {"name": "B", "field": },
+    {"name": "8930.3", "field": .01, "type": "regular"},
+    {"name": "8930.3", "field": .01, "type": "regular"},
+    {"name": "8930.3", "field": .01, "type": "regular"},
+    {"name": "8930.3", "field": .01, "type": "regular"},
+    {"name": "8930.3", "field": .02, "type": "regular"},
+    {"name": "8930.3", "field": .02, "type": "regular"},
+    {"name": "8930.3", "field": .02, "type": "regular"},
+    {"name": "8930.3", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

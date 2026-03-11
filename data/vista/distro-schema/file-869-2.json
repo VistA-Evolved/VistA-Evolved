@@ -1,0 +1,411 @@
+{
+  "fileNumber": 869.2,
+  "fileName": "HL LOWER LEVEL PROTOCOL PARAMETER",
+  "globalRoot": "869.2",
+  "globalReference": "^HLCS(869.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LLP TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP869.1'",
+      "required": true,
+      "pointerTo": 869.1,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 200.01,
+      "fieldName": "HLLP DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "fieldNumber_": 200.01
+    },
+    {
+      "fieldNumber": 200.02,
+      "fieldName": "RE-TRANSMISION ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of times to re-try sending a message.  The default is 5 tries if this field is left blank. If a single message exceeds this value an Alert is sent to the HL7 mail group and the link is shutdown. ",
+      "fieldNumber_": 200.02
+    },
+    {
+      "fieldNumber": 200.03,
+      "fieldName": "BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 200.03
+    },
+    {
+      "fieldNumber": 200.04,
+      "fieldName": "READ TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": " Number of seconds the Lower Layer Protocol remains in a read  state for data to come in on the link.  The default is 10 seconds  if this field is left blank. ",
+      "fieldNumber_": 200.04
+    },
+    {
+      "fieldNumber": 200.05,
+      "fieldName": "ACK TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": " The number of seconds the Lower Layer Protocol waits for an acknowledgement  from the receiving application. If this field is less than the READ TIMEOUT  field, the READ TIMEOUT value will be used. ",
+      "fieldNumber_": 200.05
+    },
+    {
+      "fieldNumber": 200.06,
+      "fieldName": "LLP START BLOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "11:VT;",
+      "fieldNumber_": 200.06
+    },
+    {
+      "fieldNumber": 200.07,
+      "fieldName": "LLP END BLOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "28:FS;",
+      "fieldNumber_": 200.07
+    },
+    {
+      "fieldNumber": 200.08,
+      "fieldName": "PROTOCOL ID VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "21:2.1;22:2.2;",
+      "fieldNumber_": 200.08
+    },
+    {
+      "fieldNumber": 200.09,
+      "fieldName": "UNI-DIRECTIONAL WAIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of seconds the Lower Layer Protocol waits after sending a messages.  This is only used if the message doesn't want an acknowledgment. ",
+      "fieldNumber_": 200.09
+    },
+    {
+      "fieldNumber": 300.01,
+      "fieldName": "X3.28 DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "fieldNumber_": 300.01
+    },
+    {
+      "fieldNumber": 300.02,
+      "fieldName": "MAXIMUM MESSAGE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 300.02
+    },
+    {
+      "fieldNumber": 300.03,
+      "fieldName": "MAXIMUM BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 300.03
+    },
+    {
+      "fieldNumber": 300.04,
+      "fieldName": "TIMER A",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 300.04
+    },
+    {
+      "fieldNumber": 300.05,
+      "fieldName": "TIMER B",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 300.05
+    },
+    {
+      "fieldNumber": 300.06,
+      "fieldName": "TIMER D",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 300.06
+    },
+    {
+      "fieldNumber": 300.07,
+      "fieldName": "TIMER E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 300.07
+    },
+    {
+      "fieldNumber": 300.08,
+      "fieldName": "TERM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "13:CR;",
+      "fieldNumber_": 300.08
+    },
+    {
+      "fieldNumber": 300.09,
+      "fieldName": "SOH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:SOH;",
+      "fieldNumber_": 300.09
+    },
+    {
+      "fieldNumber": 300.1,
+      "fieldName": "STX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "02:STX;",
+      "fieldNumber_": 300.1
+    },
+    {
+      "fieldNumber": 300.11,
+      "fieldName": "ETB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "23:ETB;",
+      "fieldNumber_": 300.11
+    },
+    {
+      "fieldNumber": 300.12,
+      "fieldName": "ETX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "03:ETX;",
+      "fieldNumber_": 300.12
+    },
+    {
+      "fieldNumber": 300.13,
+      "fieldName": "EOT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "04:EOT;",
+      "fieldNumber_": 300.13
+    },
+    {
+      "fieldNumber": 300.14,
+      "fieldName": "ENQ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "05:ENQ;",
+      "fieldNumber_": 300.14
+    },
+    {
+      "fieldNumber": 300.15,
+      "fieldName": "RINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "60:RINT;",
+      "fieldNumber_": 300.15
+    },
+    {
+      "fieldNumber": 300.16,
+      "fieldName": "DLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "16:DLE;",
+      "fieldNumber_": 300.16
+    },
+    {
+      "fieldNumber": 300.17,
+      "fieldName": "NAK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "21:NAK;",
+      "fieldNumber_": 300.17
+    },
+    {
+      "fieldNumber": 300.18,
+      "fieldName": "ACK0",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "48:ACK0;",
+      "fieldNumber_": 300.18
+    },
+    {
+      "fieldNumber": 300.19,
+      "fieldName": "ACK1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "49:ACK1;",
+      "fieldNumber_": 300.19
+    },
+    {
+      "fieldNumber": 300.2,
+      "fieldName": "ACK2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "50:ACK2;",
+      "fieldNumber_": 300.2
+    },
+    {
+      "fieldNumber": 300.21,
+      "fieldName": "ACK3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "51:ACK3;",
+      "fieldNumber_": 300.21
+    },
+    {
+      "fieldNumber": 300.22,
+      "fieldName": "ACK4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "52:ACK4;",
+      "fieldNumber_": 300.22
+    },
+    {
+      "fieldNumber": 300.23,
+      "fieldName": "ACK5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "53:ACK5;",
+      "fieldNumber_": 300.23
+    },
+    {
+      "fieldNumber": 300.24,
+      "fieldName": "ACK6",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "54:ACK5;",
+      "fieldNumber_": 300.24
+    },
+    {
+      "fieldNumber": 300.25,
+      "fieldName": "ACK7",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "55:ACK7;",
+      "fieldNumber_": 300.25
+    },
+    {
+      "fieldNumber": 400.01,
+      "fieldName": "TCP/IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "fieldNumber_": 400.01
+    },
+    {
+      "fieldNumber": 400.02,
+      "fieldName": "TCP/IP PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 400.02
+    },
+    {
+      "fieldNumber": 400.03,
+      "fieldName": "TCP/IP SERVICE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLIENT (SENDER);S:SINGLE LISTENER;M:MULTI LISTENER;",
+      "helpText": "This field determines if the Logical Link is the client (sender) or a listener (server) of a message.  Choose from:  CLIENT (SENDER):   Indicates that this Logical Link connects to a target system, with   the current system acting as the sender.    SINGLE LISTENER:   Designates that the current system is a server (listener), using a   single M process to do the listening.    MULTI LISTENER:   Designates that the current system is a server (listener), creating   multiple background processes. ",
+      "fieldNumber_": 400.03
+    },
+    {
+      "fieldNumber": 400.04,
+      "fieldName": "PERSISTENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter 'YES' if this connection needs to remain open even if there are no messages to send.  The connection will remain open until it is disconnected by either side via shutting-down the logical link.  A setting of 'YES' is appropriate for connecting to a COTS device with  a high volume of messages. ",
+      "fieldNumber_": 400.04
+    },
+    {
+      "fieldNumber": 400.05,
+      "fieldName": "RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Retention is the maximum time in seconds in which a non-persistent LLP will wait after the associated queue has been emptied.  If further messages arrive in the queue before the retention time has expired, the LLP will continue to dequeue and send messages.  Otherwise, the LLP will become inactive and will remain inactive until further messages are queued. ",
+      "fieldNumber_": 400.05
+    },
+    {
+      "fieldNumber": 400.06,
+      "fieldName": "STARTUP NODE",
+      "dataType": "POINTER",
+      "rawType": "P14.7'",
+      "required": false,
+      "pointerTo": 14.7,
+      "helpText": "This field is ONLY for VMS sites running Dual Taskman in DCL.   This field is used to specify what Taskman node you want to job the Lower Level Protocol.  It should only be used if you have two Taskmans running and only want the LLP to run on a particular node. It will only work if you are running the dual Taskmans in DCL context on a VMS system. ",
+      "fieldNumber_": 400.06
+    }
+  ],
+  "fieldCount": 43,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "869.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HLCS(869.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(869.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 655.202,
+  "fileName": "DIRECT SERVICE CATEGORIES",
+  "globalRoot": "655.202OI",
+  "globalReference": "^SOWK(655.202,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to enter name of a direct service category. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "655.2021",
+      "required": false,
+      "helpText": "This field is used to enter description of the direct service category name. ",
+      "isMultiple": true,
+      "subFileNumber": 655.2021,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used for quick lookups. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "N", "field": },
+    {"name": "655.202", "field": .01, "type": "regular"},
+    {"name": "655.202", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "D EN^DDIOL($P(^(0),U,2),\"\",\"?$X+4\")"}
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "fileNumber": 58.1,
+  "fileName": "PHARMACY AOU STOCK",
+  "globalRoot": "58.1",
+  "globalReference": "^PSI(58.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AREA OF USE (AOU)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Area Of Use.  The AOU may represent a single ward or a combination of wards and their percentages of the total use. Areas of Use may also represent an area of the hospital with no affiliated wards, i.e. cardiac cath lab or dental clinic. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "RETURNS CREDITED TO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUTOMATIC REPLENISHMENT;W:WARD STOCK - ON DEMAND;",
+      "helpText": "For returns purposes, identify the \"usual\" method of drug distribution for this Area of Use. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .75,
+      "fieldName": "COUNT ON AMIS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:YES;1:NO;",
+      "helpText": "Some AOUs are created for internal Inpatient Pharmacy inventory purposes and should not be included in AMIS counts.  \"COUNT ON AMIS?\" will be checked when quantity dispensed is entered to determine if the data should be added to the AR/WS Stats File.  If answered \"NO\", then NO data is collected for AMIS calculation for this AOU. ",
+      "fieldNumber_": .75
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "58.11IP",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WARD/LOCATION (FOR PERCENTAGE)",
+      "dataType": "POINTER",
+      "rawType": "58.14P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This contains the date on which the AOU was inactivated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "R*P59.4'",
+      "required": true,
+      "pointerTo": 59.4,
+      "helpText": "This field will point to the AR/WS INPATIENT SITE that will receive the credit for the AMIS statistics for this AOU. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASK EXPIRATION DATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to '1' or 'Yes' for the Area of Use, the user will be prompted for Expiration Dates when on-demands or quantities dispensed (for inventories) are entered.  If this field is set to '0' or 'No', Expiration Dates can only be entered through the supervisor option 'Expiration Date Enter/Edit'. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CRASH CART FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be set to '1' (for 'yes') if this area of use is a crash cart.  This flag will be used as a screen to list only crash carts for the option 'Update Crash Cart Locations'. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CRASH CART LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field is meant to be used to record the location of an area of use that is a crash cart.  This field will be printed on the Expiration Date report and will be updated in the option 'Update Crash Cart Locations'.  Only areas of use that have the field CRASH CART FLAG set to '1' (for  'yes') will be selectable in the update option. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AEXP", "field": },
+    {"name": "ASITE", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "OND", "field": },
+    {"name": "58.1", "field": .01, "type": "regular"},
+    {"name": "58.1", "field": 4, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")),^(\"I\")]\"\",^(\"I\")'>DT W \"    *** INACTIVE ***\" "}
+  ]
+}

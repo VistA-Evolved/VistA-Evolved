@@ -1,0 +1,48 @@
+{
+  "fileNumber": 8987.2,
+  "fileName": "MSM RTHIST REPORT DATA",
+  "globalRoot": "8987.2",
+  "globalReference": "^XUCS(8987.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE_VOL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "       This is a concatenation of the Site Number and the name of Volume Group 0 (Node name) as defined in the MSM RTHIST SITE file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME OF REPORT",
+      "dataType": "DATE",
+      "rawType": "8987.21DA",
+      "required": false,
+      "helpText": "       This multiple contains all of the RTHIST information gathered by MPM. ",
+      "isMultiple": true,
+      "subFileNumber": 8987.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYSTEM CONFIG PARMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The '~' is used as a Piece delimiter for parsing. $P #   Definition ====   ========== 1      buffer cache size 2      begin burst flush 3      stop burst flush 4      flush panic level 5      flush Interval (sec) 6      flush quantity 7      maximum partitions 8      maximum concurrent partitions 9      slice size 10     RunQ slice 11     Q1 -> Q2 threshold 12     Q2 -> Q3 threshold 13     STAP size 14     STACK size    For further information see the Version 4 MSM Utility Manual, pg 12-35 thru ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8987.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

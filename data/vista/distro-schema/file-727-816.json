@@ -1,0 +1,212 @@
+{
+  "fileNumber": 727.816,
+  "fileName": "CLINIC I EXTRACT",
+  "globalRoot": "727.816",
+  "globalReference": "^ECX(727.816,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP727'",
+      "required": true,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Identifies the facility for this extract record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Internal entry number of the PATIENT file (#2) record identifying the patient associated with the clinic visit information. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The patient's social security number.   Any patient with an SSN beginning with \"00000\" is considered a \"test patient\" and will not be included in the extract.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Indicates whether the patient was an inpatient or an outpatient on the date in the DAY field (#8) for this extract record. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Date in format YYYYMMDD; date with which the clinic visit extract data is associated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FEEDER KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Feeder key is a fixed length field. The ACTION TO SEND field (#5) of the  CLINIC AND STOP CODES file (#728.44) for this clinic determines the  construction of this key. It is derived from DSS selected stop codes and  credit stop codes (or MAS selected stop codes and credit stop codes in  the absence of DSS selected ones), length of appointment, clinic  internal entry number in the CLINICS AND STOP CODES file (#728.44), and whether or not this was a no show appointment. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P42.4'",
+      "required": false,
+      "pointerTo": 42.4,
+      "helpText": "The treating specialty associated with this extract record, if the patient is an inpatient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ENCOUNTER ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's eligibility for this outpatient encounter. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRIMARY CARE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Primary Care Provider assigned to this patient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PC PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Primary Care Provider as assigned by through the PCMM application. The VA Code is always of the form \"V\"_six numeric digits;  exactly 7  characters in length.  ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Primary Care Provider's National Provider Identifier code. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ASSOCIATE PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a reference to the NEW PERSON file (#200) for the provider who is the patients Associate Provider for Primary Care as assigned with the PCMM application.  The IEN to file #200 is prefixed with the  character 2. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ASSOC. PC PROV. PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Associate Primary Care Provider as assigned by through the PCMM appilcation.  The VA Code is always of the form \"V\"_six numeric digits;   exactly 7 characters in length.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ASSOCIATE PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Associate Primary Care Provider's National Provider Identifier. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Reference to the Clinic (if any) associated with the patient encounter. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CPT CODES & MODIFIERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "The primary CPT code and modifier(s) followed by secondary CPT code(s) and modifier(s) in a concatenated string.  Only the first CPT code is required.  Each CPT code is exactly 5 characters and each modifier is  exactly 2 characters.  Each CPT code plus modifier(s) string is exactly 15 characters in length.  If there are fewer than 5 modifiers, then the segment must be padded to the right with space characters.    There may be fewer than 8 CPT codes for a visit record, but the total length of fi",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PRIMARY CARE TEAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The primary care team assigned to this patient. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.816", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

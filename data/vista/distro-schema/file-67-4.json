@@ -1,0 +1,27 @@
+{
+  "fileNumber": 67.4,
+  "fileName": "NON PATIENT WORKLOAD",
+  "globalRoot": "67.4",
+  "globalReference": "^LRT(67.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the non-patient workload entry. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "67.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

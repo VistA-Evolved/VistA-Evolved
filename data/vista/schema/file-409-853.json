@@ -1,0 +1,28 @@
+{
+  "fileNumber": 409.853,
+  "fileName": "SDEC DISPOSITION REASON",
+  "globalRoot": "409.853",
+  "globalReference": "^SDEC(409.853,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPOSITION REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This field represents the reason this patient has been dispositioned from this appointment request. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.853", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

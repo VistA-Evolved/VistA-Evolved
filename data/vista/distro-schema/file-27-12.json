@@ -1,0 +1,113 @@
+{
+  "fileNumber": 27.12,
+  "fileName": "ENROLLMENT QUERY LOG",
+  "globalRoot": "27.12",
+  "globalReference": "^DGEN(27.12,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient for whom the query was sent. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DT/TM SENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time the query was transmitted to HEC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:TRANSMITTED;1:CLOSED;2:RE-TRANSMITTED;3:RECEIVED/UPLOADED;4:RECEIVED/NO UPLOAD;",
+      "helpText": "This field will indicate the status of the query.  When a query needs to be re-sent due to non-response, the status of the original query will be changed to RE-TRANSMITTED.  If a response is no longer required, its status can be changed to CLOSED to prevent it from being re-sent. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the unique identifier assigned to query by the HL7 package. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DT/TM RESPONSE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used to document when the query reply was received. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESPONSE MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The HL7 message id contained in the query response. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NOTIFY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If the user requests to be notified when a query response is recieved, this field should be completed with the person to notify. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FIRST DT/TM",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field indicates when the query was first sent.  It will be different from the DT/TM SENT field only in the event of a retransmission. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the query reply is received, but the eligibility/enrollment upload is unsuccessful, this field should show the reason. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ADS1", "field": },
+    {"name": "ADS2", "field": },
+    {"name": "ADT1", "field": },
+    {"name": "ADT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "27.12", "field": .01, "type": "regular"},
+    {"name": "27.12", "field": .01, "type": "regular"},
+    {"name": "27.12", "field": .02, "type": "regular"},
+    {"name": "27.12", "field": .02, "type": "regular"},
+    {"name": "27.12", "field": .03, "type": "regular"},
+    {"name": "27.12", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(27.12,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

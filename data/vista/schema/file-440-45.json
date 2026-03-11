@@ -1,0 +1,46 @@
+{
+  "fileNumber": 440.45,
+  "fileName": "SOURCE MFG/STOCK NUMBER",
+  "globalRoot": "440.45",
+  "globalReference": "^PRC(440.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the identifier for the organization from whom the manufacturer's part number or vendor's stock number was obtained. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPANDED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The is the full name of the source. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field will enable screening an entry from selection when the source is no longer available. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "440.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

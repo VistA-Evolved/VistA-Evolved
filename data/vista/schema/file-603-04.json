@@ -1,0 +1,36 @@
+{
+  "fileNumber": 603.04,
+  "fileName": "CLOZAPINE TESTS",
+  "globalRoot": "603.04",
+  "globalReference": "^YSCL(603.04,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "This field should contain the word CLOZAPINE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST NAME",
+      "dataType": "POINTER",
+      "rawType": "603.41P",
+      "required": false,
+      "helpText": "This is the name of the test associated with Clozapine.  A White Blood  Count and a method of determining the Neutorphil Count must be entered.   You may enter as many of each as are appropriate.  The Neutorphil count  may be and absolute count, a percentage, or the BANDS and SEGS.  If BANDS  and SEGS are entered, a separate test must be entered for each. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "603.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

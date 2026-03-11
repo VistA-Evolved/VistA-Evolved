@@ -1,0 +1,124 @@
+{
+  "fileNumber": 58.42,
+  "fileName": "SPMP EXPORT BATCH",
+  "globalRoot": "58.42",
+  "globalReference": "^PS(58.42,",
+  "ddAccess": "Y",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the internal batch number used to identify the batch transmitted to the state. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state the batch was transmitted to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXPORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SC:SCHEDULED;MA:MANUAL;RX:SINGLE RX;VD:VOID ONLY;",
+      "helpText": "This indicates if the batch was created by a scheduled process, manually entered date range or by transmitting a single Rx to the state. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BATCH STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;X:EXPORTED;E:ERROR(S) FOUND;C:CANCELLED;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BEGIN RELEASE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the first prescription release date/time included in the batch. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "END RELEASE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last prescription release/date time included in the batch. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EXPORT FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the file exported to the state. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "EXPORTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who ran the transmission to the state. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE/TIME BATCH CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the batch was created. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE/TIME BATCH EXPORTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the batch was transmitted to the state. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PRESCRIPTIONS",
+      "dataType": "POINTER",
+      "rawType": "58.42001P",
+      "required": false,
+      "helpText": "This contains information about the prescriptions included in the batch. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "58.42", "field": .01, "type": "regular"},
+    {"name": "58.42", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(58.42,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 8, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,9),5)"}
+  ]
+}

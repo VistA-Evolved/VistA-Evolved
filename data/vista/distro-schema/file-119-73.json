@@ -1,0 +1,320 @@
+{
+  "fileNumber": 119.73,
+  "fileName": "COMMUNICATION OFFICE",
+  "globalRoot": "119.73",
+  "globalReference": "^FH(119.73,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Communication Office. It is responsible for processing the diet orders from a group of Dietetic wards. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRODUCTION FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P119.71'",
+      "required": false,
+      "pointerTo": 119.71,
+      "helpText": "This field indicates the Production Facility responsible  for preparing the food served by this Communication Office. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BEGIN BREAKFAST WINDOW",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the latest time for which breakfast orders will be accepted and is used as the time associated with the use of the 'B' (for breakfast) time in diet orders. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "BEGIN NOON WINDOW",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the latest time for which noon orders will be accepted and is used as the time associated with the use of the 'N' (for noon) time in diet orders. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BEGIN EVENING WINDOW",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the latest time for which evening orders will be accepted and is used as the time associated with the use of the 'E' (for evening) time in diet orders. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROVIDE BAGGED MEALS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If answered YES, this field indicates that bagged meals can be ordered as part of the early/late tray ordering process. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EARLY BREAKFAST TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for an early breakfast tray. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EARLY BREAKFAST TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for an early breakfast tray. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EARLY BREAKFAST TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for an early breakfast tray. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LATE BREAKFAST TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for a late breakfast tray. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LATE BREAKFAST TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for a late breakfast tray. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LATE BREAKFAST TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for a late breakfast tray. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "EARLY NOON TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for an early noon tray. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "EARLY NOON TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for an early noon tray. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "EARLY NOON TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for an early noon tray. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LATE NOON TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for a late noon tray. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LATE NOON TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for a late noon tray. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LATE NOON TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for a late noon tray. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "EARLY EVENING TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for an early evening tray. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "EARLY EVENING TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for an early evening tray. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "EARLY EVENING TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for an early evening tray. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "LATE EVENING TIME 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first delivery time for a late evening tray. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "LATE EVENING TIME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the second delivery time for a late evening tray. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "LATE EVENING TIME 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third delivery time for a late evening tray. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "LATE BREAKFAST ALARM BEGIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the beginning of the late breakfast alarm period; that is the time when persons entering diet orders will be reminded that the normal cut-off time has passed and a late tray will have to be ordered for breakfast if desired. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "LATE BREAKFAST ALARM END",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the end of the breakfast alarm period. It should be one or two minutes earlier than the last breakfast late tray delivery time. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "LATE NOON ALARM BEGIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the beginning of the noon alarm period; persons entering diet orders will be reminded that the noon cut-off has passed and a late noon tray will have to be ordered if desired. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LATE NOON ALARM END",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the end of the noon alarm period and should be one or two minutes earlier than the last noon late tray delivery time. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LATE EVENING ALARM BEGIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the beginning of the evening alarm period; that is the period when persons entering diet orders will be reminded that the evening cut-off has passed and a late evening tray will have to be ordered if desired. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LATE EVENING ALARM END",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the end of the evening alarm period and should be one or two minutes earlier than the last evening late tray delivery time. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DATE/TIME LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of the last Diet Activity report generated for this Communication Office. It is used so that the following report will show only changes after this date/time. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "LAST LABEL UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time the labels were generated for the Diet Activity Report ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "119.73", "field": .01, "type": "regular"},
+    {"name": "119.73", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "fileNumber": 8993.1,
+  "fileName": "XULM LOCK MANAGER PARAMETERS",
+  "globalRoot": "8993.1",
+  "globalReference": "^XLM(8993.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This identifies the site for which the parameters in this file apply to.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "e:ENABLED;d:DISABLED;",
+      "helpText": "This field controls whether the application can be used or not. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NODES",
+      "dataType": "SUBFILE",
+      "rawType": "8993.11",
+      "required": false,
+      "helpText": "This is the list of nodes that make up the system.  For example, if this is a system that runs on two nodes, there should be two entries in this multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 8993.11,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PARAM FILE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SYSTEM LOCKS",
+      "dataType": "SUBFILE",
+      "rawType": "8993.15I",
+      "required": false,
+      "helpText": "This multiple contains system locks that should generally be screened from view.  System locks include those for Kernel, MailMan, Cache, HL7, VDEF, and other infrastructure type applications.    ",
+      "isMultiple": true,
+      "subFileNumber": 8993.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NETWORK LATENCY DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Some networks are slower than others and consequently some data is sent  back slower than other nodes.  Because of this, some lock reports may not  arrive with all others and not be indexed correctly for display. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USE ABBREVIATED MENU?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This controlls whether the site uses an abbreviated menu of four options  as opposed to the full menu of twelve options. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ABBREVIATED MENU DEFAULT #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FULL MENU DEFAULT #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8993.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

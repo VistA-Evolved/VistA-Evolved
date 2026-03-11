@@ -1,0 +1,63 @@
+{
+  "fileNumber": 1.5213,
+  "fileName": "SQLI_KEY_FORMAT",
+  "globalRoot": "1.5213",
+  "globalReference": "^DMSQ(\"KF\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KF_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "KF_DATA_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP1.5211'",
+      "required": true,
+      "pointerTo": 1.5211,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "KF_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KF_INT_EXPR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "An M expression which converts X to it's key format ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "KF_INT_EXEC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "A line of M code which converts X to its key format ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "1.5213", "field": .01, "type": "regular"},
+    {"name": "1.5213", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

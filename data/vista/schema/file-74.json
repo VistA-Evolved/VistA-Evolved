@@ -1,0 +1,508 @@
+{
+  "fileNumber": 74,
+  "fileName": "RAD/NUC MED REPORTS",
+  "globalRoot": "74I",
+  "globalReference": "^RARPT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DAY-CASE#",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the date and case number of the imaging exam associated with this report.  The system fills in this field with information obtained from the 'RAD/NUC MED PATIENT' file (#70) according to the case number selected by the transcriptionist.   If the Site Specific Accession Number is in use then the 3-digit Site ID is appended to the beginning of the field.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the rad/nuc med patient associated with this report.  The system fills in this field with data obtained from the 'RAD/NUC MED PATIENT' file (#70) according to the case number selected by the transcriptionist. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EXAM DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the date and the time of the exam associated with this report.  The system fills in this field with data obtained from the 'RAD/NUC MED PATIENT' file (#70) according to the case number selected by the transcriptionist. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "This field contains the completed case number of the exam associated with this report.  The system fills in the data for this field with information obtained from the 'RAD/NUC MED PATIENT' file (#70). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "OTHER CASE#",
+      "dataType": "SUBFILE",
+      "rawType": "74.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 74.05,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REPORT STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "V:VERIFIED;R:RELEASED/NOT VERIFIED;PD:PROBLEM DRAFT;D:DRAFT;EF:ELECTRONICALLY FILED;X:DELETED;",
+      "helpText": "This field contains a value to indicate the status of this report.  Valid choices are: 'V' for Verified, 'R' for Released/Not Verified, 'PD' for Problem Draft, 'D' for Draft, 'EF' for Electronically Filed and 'X' for Deleted.   'V' (Verified) status refers to a report that is verified by the  interpreting physician and is available for display outside the Rad/Nuc  Med Department to appropriate users, such as ward clerks, nurses, and  physicians.   'R' (Released/Not Verified) status refers to a r",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE REPORT ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the report was entered into the system by the transcriptionist. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VERIFIED DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "As of July, 1985, this field contains the date and the time that it was indicated to the system that the report was verified by the interpreting physician.   An option allowing online verification lets the interpreting physician verify the report directly via a CRT.  As a result, there will be no discrepency between the date/time the physician verified the report and the date/time it was indicated to the system. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REPORTED DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date that the interpreting physician dictated this report. The transcriptionist enters this date from the dictation tape. If the physician is using a voice recognition system for dictation, this date is entered at the time the report is transmitted to DHCP. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VERIFYING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the 'NEW PERSON file (#200). Only 'staff' or 'resident' interpreting physicians are allowed to be selected. This field contains the name of the interpreting physician who verified the report. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "TELERADIOLOGY PHYSICIAN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field identifies the name of the teleradiologist who verified  (signed) the report. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "TELERADIOLOGY PHYSICIAN NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field identified the National Provider ID (NPI) of the teleradiologist who verified (signed) the report. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "REPORT VERIFIED BY COTS APP",
+      "dataType": "POINTER",
+      "rawType": "P771'",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "This field identifies the Commercial Off the Shelf (COTS) application  used to dictate and verify a radiology report. Examples of values for  this field, though these need not be the only permissible values, are:  RA-PSCRIBE-TCP, RA-SCIMAGE-TCP, and  RA-TALKLINK-TCP.                              If the report was dictated through the use of the VistA Radiology/Nuclear  Medicine application the field will be null. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ELECTRONIC SIGNATURE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIO",
+      "required": false,
+      "helpText": "This field is computed by the system to the electronic signature code of the verifying interpreting physician. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSCRIPTIONIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Rad/nuc med personnel who entered the report. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE REPORT PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this report was first printed.  Before a report is printed for the first time the patient location is updated, if necessary, in the 'RAD/NUC MED PATIENT' file (#70) at the Examinations multiple. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PRE-VERIFICATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time a report was pre-verified by an Interpreting Resident or Staff. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRE-VERIFICATION USER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Interpreting Resident or Staff Physician who pre-verified the report. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PRE-VERIFICATION E-SIG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the electronic signature code of the Interpreting Resident or Staff who pre-verified this report. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STATUS CHANGED TO VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will record the individual who is signed on and responsible for the changing the report status to 'verified'. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DATE INITIAL OUTSIDE RPT ENTRY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The system populates this value when the 'Outside Report Entry/Edit'  option is used. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PROBLEM STATEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a note from the transcriptionist to the interpreting physician if any problems were encountered during the transcribing of this report. This message can be between 2 and 240 characters in length and is used to describe the problem.   This field is available for use only if the status of the report is 'PD' (problem draft). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PURGED DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date and the time that the 'Purge Data' option of the system was last used to purge the clinical history, report text, and the activity log of this report. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "NO PURGE INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO PURGE;o:OK TO PURGE;",
+      "helpText": "If this field is set to 'NO PURGE', then the report will not be purged or archived.   This field is set when the corresponding field of the associated exam is set to 'NO PURGE'. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "HOSPITAL DIVISION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the hospital division where the exam associated with this exam report was performed. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "IMAGING LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the imaging location within the hospital division where the exam associated with this exam report was performed. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "INTERPRETING IMAGING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P79.1'",
+      "required": false,
+      "pointerTo": 79.1,
+      "helpText": "This is the imaging location where the interpretation was performed. It is a pointer to the Imaging Location file (#79.1). ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "74.01DA",
+      "required": false,
+      "helpText": "This is a multiple field containing a log of actions that have been taken on this report record. ",
+      "isMultiple": true,
+      "subFileNumber": 74.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PROCEDURE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is filled in by the system with the name of the rad/nuc med procedure associated with this report. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "EXAM STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is filled in by the system with the exam status of the exam associated with this report. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "CATEGORY OF EXAM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the category of the exam associated with this report. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "WARD",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the hospital ward where the inpatient associated with this exam report resided at the time this report was first printed. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "SERVICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the service treating the inpatient associated with this exam report. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "PRINCIPAL CLINIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the outpatient clinic that referred the patient associated with this exam report to rad/nuc med for the exam. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "CONTRACT/SHARING SOURCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the contract or sharing agreement that referred the patient associated with this exam report to rad/nuc med. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 109.5,
+      "fieldName": "RESEARCH SOURCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the research source that referred the patient associated with this exam report to rad/nuc med. ",
+      "fieldNumber_": 109.5
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "PRIMARY INTERPRETING RESIDENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30X",
+      "length": 30X,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the primary interpreting resident who interprets the images associated with this exam report. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "PRIMARY DIAGNOSTIC CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the primary diagnostic code associated with this exam report. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "REQUESTING PHYSICIAN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the person who requested the exam associated with this report.  This person does not have to be a physician.  (ie. It might be a nurse.) ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "PRIMARY INTERPRETING STAFF",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the primary interpreting staff who interprets the images associated with this report. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "COMPLICATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the complication that may have occurred during the exam procedure associated with this exam report. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "PRIMARY CAMERA/EQUIP/RM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the primary camera/equip/rm where the exam associated with this exam report was performed. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "BEDSECTION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the name of the bedsection of the rad/nuc med inpatient associated with this exam report. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "REPORT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "74.02",
+      "required": false,
+      "helpText": "This field contains the report text for the imaging exam. The report text is written by the interpreting physician and may be entered into the system by a transcriptionist.  A report may also be entered into DHCP when the interpreting physician uses a voice recognition system.   If the interpreting physician requests a standard report, the information in this field is copied from the 'Report Text' field of the 'Standard Reports' file. ",
+      "isMultiple": true,
+      "subFileNumber": 74.02,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "IMPRESSION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "74.03",
+      "required": false,
+      "helpText": "This field contains the 'impression text' of the rad/nuc med exam associated with this report.  The 'impression text' gives a quick summary of the 'report text'.  It is written by the interpreting physician and is entered into the system by the transcriptionist. The system will allow the interpreting physician to directly enter this information into the 'impression text' field through a voice recognition system.   If the interpreting physician requests a standard report, the information in this ",
+      "isMultiple": true,
+      "subFileNumber": 74.03,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "ADDITIONAL CLINICAL HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "74.04",
+      "required": false,
+      "helpText": "This field may contain a patient's clinical history as well as instructions to the interpreting physician.  For example, the instructions might be for the physician to interpret the exam images to rule out the possibility of the patient having a certain disease.   The 'additional clinical history' is written by the interpreting physician and is entered into the system by the transcriptionist.  Voice Recognition systems allow the interpreting physician to directly enter this information into the ",
+      "isMultiple": true,
+      "subFileNumber": 74.04,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ERROR REPORTS",
+      "dataType": "DATE",
+      "rawType": "74.06DA",
+      "required": false,
+      "helpText": "This multiple subfile contains date-stamped reports that were unverified and amended.  The previous verified data that existed before the report was amended is stored here.  As a security precaution, these fields are released to the site as uneditable. ",
+      "isMultiple": true,
+      "subFileNumber": 74.06,
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "74.02005PA",
+      "required": false,
+      "helpText": "This multiple field holds pointer values to the Image file (2005). ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 48,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "ABLTN", "field": },
+    {"name": "ABLTN1", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ARES", "field": },
+    {"name": "ASTAT", "field": },
+    {"name": "ASTF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "SET", "field": },
+    {"name": "74", "field": .01, "type": "regular"},
+    {"name": "74", "field": .01, "type": "regular"},
+    {"name": "74", "field": 2, "type": "regular"},
+    {"name": "74", "field": 5, "type": "regular"},
+    {"name": "74", "field": 5, "type": "regular"},
+    {"name": "74", "field": 5, "type": "regular"},
+    {"name": "74", "field": 5, "type": "regular"},
+    {"name": "74", "field": 7, "type": "regular"},
+    {"name": "74", "field": 9.3, "type": "regular"},
+    {"name": "74", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(0)) \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": WRITE, "value": "W $$EN2^RADD2"}
+  ]
+}

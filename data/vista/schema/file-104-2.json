@@ -1,0 +1,54 @@
+{
+  "fileNumber": 104.2,
+  "fileName": "MDRO TYPES",
+  "globalRoot": "104.2",
+  "globalReference": "^MMRS(104.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the abbreviation for the MDRO. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the full name of the MDRO. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "104.22PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "104.23",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 104.23,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "104.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

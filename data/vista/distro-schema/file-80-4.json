@@ -1,0 +1,69 @@
+{
+  "fileNumber": 80.4,
+  "fileName": "ICD CODING SYSTEMS",
+  "globalRoot": "80.4",
+  "globalReference": "^ICDS(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ICD CODING SYSTEM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a numeric representation of a ICD Coding System. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ICD CODING SYSTEM NOMENCLATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ICD Coding system, to include the ICD designator, the version number and an identifier for the type if ICD  coding system (diagnosis or procedure).  Examples: ICD-9-CM, ICD-10-CM, ICD-10-PCS, etc.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODING SYSTEM ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a unique 3 character identifier for the  coding system.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ICD FILE",
+      "dataType": "POINTER",
+      "rawType": "*P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the file number were the ICD CODING SYSTEM is stored. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "IMPLEMENTATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the ICD CODING SYSTEM was implemented in the VA.   ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "80.4", "field": .01, "type": "regular"},
+    {"name": "80.4", "field": .02, "type": "regular"},
+    {"name": "80.4", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

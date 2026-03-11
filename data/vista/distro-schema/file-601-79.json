@@ -1,0 +1,64 @@
+{
+  "fileNumber": 601.79,
+  "fileName": "MH SKIPPED QUESTIONS",
+  "globalRoot": "601.79",
+  "globalReference": "^YTT(601.79,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the unique identifier for this record. It is the IEN. Numbers  under 100,000 are part of the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "Pointer to MH TESTS AND SURVEYS file (#601.71). Specifies which instrument is being checked for skip rules. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RULE ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.82'",
+      "required": true,
+      "pointerTo": 601.82,
+      "helpText": "A pointer to the RULE ID field (#.01) of the MH RULES file  (#601.82). This specifies which rule is being fired. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SKIPPED QUESTION ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.72'",
+      "required": true,
+      "pointerTo": 601.72,
+      "helpText": "A pointer to the QUESTION NUMBER field (#.01) of the MH QUESTIONS file (#601.72). This specifies which question is to be skipped. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "601.79", "field": .01, "type": "regular"},
+    {"name": "601.79", "field": 1, "type": "regular"},
+    {"name": "601.79", "field": 2, "type": "regular"},
+    {"name": "601.79", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

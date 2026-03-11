@@ -1,0 +1,76 @@
+{
+  "fileNumber": 15.4,
+  "fileName": "MERGE IMAGES",
+  "globalRoot": "15.4",
+  "globalReference": "^XDRM(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MERGED FROM",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This field contains a variable pointer reference to the location in the primary merge file of the entry which was merged into another entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MERGED TO",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field contains a variable pointer reference to the entry in the primary file for the merge, into which the entry indicated by the MERGED FROM (#.01) field was merged. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE MERGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date on which the entry indicated by the MERGED FROM (#.01) field was merged into the entry indicated by the MERGED TO (#.02) field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FROM FILE#",
+      "dataType": "POINTER",
+      "rawType": "15.41PA",
+      "required": false,
+      "helpText": "This field specifies a file for which a data image was recorded for the entry specified by the MERGED FROM (#.01) field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TO FILE#",
+      "dataType": "POINTER",
+      "rawType": "15.42PA",
+      "required": false,
+      "helpText": "This field specifies a file for which a data image was recorded for the entry specified by the MERGED TO (#.02) field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "POINTERS CHANGED",
+      "dataType": "SUBFILE",
+      "rawType": "15.43A",
+      "required": false,
+      "helpText": "This multiple field contains data on locations where a pointer value was changed.  The #.01 field contains the information which would be specified as subscripts in the array passed in a call to FILE^DIE.  The array subscripts are separated by a ';', and are in the form FILE;IENS;FIELD. The value which was present before the data was changed is stored in field #1.01. ",
+      "isMultiple": true,
+      "subFileNumber": 15.43,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "15.4", "field": .01, "type": "regular"},
+    {"name": "15.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,430 @@
+{
+  "fileNumber": 6920,
+  "fileName": "WORK ORDER #",
+  "globalRoot": "6920I",
+  "globalReference": "^ENG(6920,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORK ORDER #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Identifier of each individual work action.  Composed of the shop abbreviation, date generated, and a computer generated sequential component.  Users may delete work orders when necessary, but they should never change a work order number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ORIGINAL WORK ORDER #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is automatically populated whenever a new work request is entered. Unlike the .01 field, the 'ORIGINAL WORK ORDER #' will not be affected if the work request is transferred from one shop to another. The main purpose of this field is to allow requesters outside of Engineering Service to check on the status of work requests which they enter themselves. If requesters make a note of the WORK ORDER #'s assigned to their work requests as they enter them, they will always be able to use thes",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date (and time if desired) when work request was originally entered. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUEST MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PHONE;W:WRITTEN;D:DELIVERED;V:VERBAL;C:COMPUTER;",
+      "helpText": "Indicator of how the work was actually requested. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P6928'",
+      "required": false,
+      "pointerTo": 6928,
+      "helpText": "Physical location where work is to be performed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BED #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Optional field. Filled in at time of request if the work requested is associated with a specific bed in a patient room. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TASK DESCRIPTION (60 char)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A brief statement that describes the work being requested. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CONTACT PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the person to be contacted if there are questions about the nature of the work that has been requested. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Identifies the user who actually entered the work request. Field is automatically populated when work order is entered via Electronic Work Order Module. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Telephone number or extension of the individual requesting the work. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SHOP",
+      "dataType": "POINTER",
+      "rawType": "RP6922'",
+      "required": true,
+      "pointerTo": 6922,
+      "helpText": "The Engineering Section to which the Work Order is assigned. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which work order was assigned to the current shop. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PRIMARY TECH ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "*P6929'",
+      "required": false,
+      "pointerTo": 6929,
+      "helpText": "Technician who bears primary responsibility for completion of task. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "TECHNICIANS ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "6920.02PA",
+      "required": false,
+      "helpText": "Employee(s) assigned to perform this work. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:EMERGENCY;H:HIGH;A:AVERAGE;L:LOW;M:MODIFICATION;",
+      "helpText": "Relative priority of this work request. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "EQUIPMENT ID#",
+      "dataType": "POINTER",
+      "rawType": "P6914'",
+      "required": false,
+      "pointerTo": 6914,
+      "helpText": "Entry in the Equipment File (#6914) to which this work order is to be charged. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LOCAL IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This optional field may contain any type of identifier that has meaning at your site. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PMI NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Property Management Number.  Applicable only to work requests that are chargeable to equipment.  This data element is likely to be phased out in the near future. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "EQUIPMENT CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Generic name for affected equipment. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.9,
+      "fieldName": "MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "P6912'",
+      "required": false,
+      "pointerTo": 6912,
+      "helpText": "Manufacturer of affected equipment. ",
+      "fieldNumber_": 21.9
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "*EQUIPMENT MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is no longer used and it will be deleted by a future release. (Text representation of manufacturer. Used to be automatically triggered.) ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.3,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Model number assigned to equipment under repair by the manufacturer. ",
+      "fieldNumber_": 22.3
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "SERIAL NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Serial number of affected equipment.  Assigned by manufacturer. ",
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "OWNER/DEPARTMENT",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "The service or section for whom work is to be performed. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PARTS ORDERED ON ACC.#",
+      "dataType": "POINTER",
+      "rawType": "P410'",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "The Control Point Activity Transaction for parts or services required to complete this task. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:IN PROGRESS;2:PENDING;3:WAITING ON PARTS;4:WAITING ON VENDOR SERVICE;5:DISAPPROVED;6:COMPLETED;",
+      "helpText": "Added with Version 6.4. May be helpful when printing reports of M&R activity. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "NOTIFICATION PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COMPLETED STATUS;S:STATUS CHANGED;N:NO MESSAGE;",
+      "helpText": "This field will be checked to determine if a mail message should be sent to the requestor when the status of an electronic work order is modified. ENG SOFTWARE OPTIONS 'NOTIFY W.O. REQUESTOR' must be 'A' for this field to be asked during entry of a electronic work order. Note that a mail message will always be sent when a work order is disapproved. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "NOTIFICATION MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0I",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the message number of a computer generated notification message sent to the requester. Any further notification messages are sent as responses to this message. ",
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "WORK ACTION",
+      "dataType": "POINTER",
+      "rawType": "6920.035PA",
+      "required": false,
+      "helpText": "Type of work performed or requested. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 35.2,
+      "fieldName": "PM STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PASS;C:CORRECTIVE ACTION TAKEN/REQUESTED;D0:DEFERRED;D1:DEFERRED, COULD NOT LOCATE;D2:DEFERRED, IN USE;D3:DEFERRED, OUT OF SERVICE OR LOANED OUT;",
+      "helpText": "Outcome of preventive maintenance inspection.  Useable for PM work orders only. ",
+      "fieldNumber_": 35.2
+    },
+    {
+      "fieldNumber": 35.5,
+      "fieldName": "WORK CENTER CODE",
+      "dataType": "POINTER",
+      "rawType": "P6921'",
+      "required": false,
+      "pointerTo": 6921,
+      "helpText": "Category of task to which this work order most closely corresponds. ",
+      "fieldNumber_": 35.5
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DATE COMPLETE (or closed)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date on which work order is closed out. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "TOTAL HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Total man-hours by all assigned employees.  Calculated by the system automatically. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 37.5,
+      "fieldName": "TOTAL LABOR COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "Total labor cost chargeable to this work order.  System will compute this value by multiplying the HOURS of each TECHNICIAN ASSIGNED times his WAGE and totaling the results. ",
+      "fieldNumber_": 37.5
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TOTAL MATERIAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "Approximate cost of materials needed to complete this task. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "WORK PERFORMED (140 char max)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Brief description of work actually performed (may be extracted from COMMENTS field). The WORK PERFORMED field will be saved in the EQUIPMENT (Inventory) File (No. 6914) where it will be a permanent part of the device history. In contrast, the COMMENTS field will be removed from disk (on-line) storage when the work order is archived. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "6920.01A",
+      "required": false,
+      "helpText": "General comments regarding this work request. ",
+      "isMultiple": true,
+      "subFileNumber": 6920.01,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ENG. TURN AROUND TIME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Number of days between work order request and work order completion. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "TECH TURN AROUND TIME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Number of days between assignment of shop and work order completion. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "VENDOR SERVICE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Approximate cost of vendor services needed to complete this task. ",
+      "fieldNumber_": 47
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "6920", "field": .01, "type": "regular"},
+    {"name": "6920", "field": .01, "type": "regular"},
+    {"name": "6920", "field": .05, "type": "regular"},
+    {"name": "6920", "field": 3, "type": "regular"},
+    {"name": "6920", "field": 6, "type": "regular"},
+    {"name": "6920", "field": 9, "type": "regular"},
+    {"name": "6920", "field": 16, "type": "regular"},
+    {"name": "6920", "field": 18, "type": "regular"},
+    {"name": "6920", "field": 18, "type": "regular"},
+    {"name": "6920", "field": 19, "type": "regular"},
+    {"name": "6920", "field": 20, "type": "regular"},
+    {"name": "6920", "field": 31, "type": "regular"},
+    {"name": "6920", "field": 32, "type": "regular"},
+    {"name": "6920", "field": 32, "type": "regular"},
+    {"name": "6920", "field": 36, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ENG(\"SP\",+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(6928,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 6, "value": "W:$D(^(1)) \"   \",$P(^(1),U,2)"}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 720.4,
+  "fileName": "EC PROCEDURE REASON",
+  "globalRoot": "720.4",
+  "globalReference": "^ECR(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the procedure reason used to further define the patient's procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is answered 'YES', the procedure reason will be displayed during data entry for the user to select.  If this field is answered 'NO', the procedure reason will be considered inactive and will not be displayed or selectable during data entry. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "720.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

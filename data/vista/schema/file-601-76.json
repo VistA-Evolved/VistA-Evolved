@@ -1,0 +1,120 @@
+{
+  "fileNumber": 601.76,
+  "fileName": "MH INSTRUMENT CONTENT",
+  "globalRoot": "601.76",
+  "globalReference": "^YTT(601.76,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT CONTENT ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "This is a unique identifier for this Instrument Content. This is the IEN.  Numbers under 100,000 are part of the national database and should not be  edited locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "A pointer to the MH TESTS AND SURVEYS file (#601.71). This associates questions to their instrument. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUESTION SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Order of the question in the instruments. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUESTION ID",
+      "dataType": "POINTER",
+      "rawType": "P601.72'",
+      "required": false,
+      "pointerTo": 601.72,
+      "helpText": "Pointer to the MH QUESTIONS file (#601.72). It associates instruments to  their questions. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESIGNATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The \"number\" (e.g., \"1\", \"F2\", \"1.2.a\") displayed along with the question text. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUESTION TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "Cmw",
+      "required": false,
+      "helpText": "Allows display of question text through this computed field. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CHOICETYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Associates a ChoiceType (a group of multiple choice alternatives) to this  question in this instrument. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "QUESTIONDISPLAYID",
+      "dataType": "POINTER",
+      "rawType": "P601.88'",
+      "required": false,
+      "pointerTo": 601.88,
+      "helpText": "Specifies display attributes like font, color and bold for this question. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INTRODISPLAYID",
+      "dataType": "POINTER",
+      "rawType": "P601.88'",
+      "required": false,
+      "pointerTo": 601.88,
+      "helpText": "Specifies display attributes like font, color and bold for this intro. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MHCHOICEDISPLAYID",
+      "dataType": "POINTER",
+      "rawType": "P601.88'",
+      "required": false,
+      "pointerTo": 601.88,
+      "helpText": "Specifies display attributes like font, color and bold for this set of  alternatives. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "601.76", "field": .01, "type": "regular"},
+    {"name": "601.76", "field": 1, "type": "regular"},
+    {"name": "601.76", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

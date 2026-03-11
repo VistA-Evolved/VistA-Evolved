@@ -1,0 +1,38 @@
+{
+  "fileNumber": 58.16,
+  "fileName": "AOU INVENTORY TYPE",
+  "globalRoot": "58.16",
+  "globalReference": "^PSI(58.16,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the name of an inventory type, i.e. injections, external, internal, oral liquid, or oral solid.  This will be used to group items in each Area of Use. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "58.18",
+      "required": false,
+      "helpText": "This contains information that describes this inventory type.   This is purely for documentation of the scheme you have adopted at  your site. ",
+      "isMultiple": true,
+      "subFileNumber": 58.18,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.16", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

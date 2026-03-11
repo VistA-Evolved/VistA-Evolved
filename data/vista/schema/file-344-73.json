@@ -1,0 +1,67 @@
+{
+  "fileNumber": 344.73,
+  "fileName": "RCDPE COMMENT HISTORY",
+  "globalRoot": "344.73",
+  "globalReference": "^RCY(344.73,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECEIPT #",
+      "dataType": "POINTER",
+      "rawType": "RP344'",
+      "required": true,
+      "pointerTo": 344,
+      "helpText": "This is the receipt number for the comment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LINE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field is the number of the receipt line that the comment was entered  for. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who entered the comment against the receipt line. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the receipt line comment was entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECEIPT COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60X",
+      "length": 60X,
+      "required": true,
+      "helpText": "This field is the comment entered against the receipt line. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.73", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

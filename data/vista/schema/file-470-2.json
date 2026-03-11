@@ -1,0 +1,54 @@
+{
+  "fileNumber": 470.2,
+  "fileName": "PATIENT FUNDS FORMS",
+  "globalRoot": "470.2I",
+  "globalReference": "^PRPF(470.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FORM TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "SUBFILE",
+      "rawType": "470.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.21,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DEPOSIT;W:WITHDRAWAL;B:BOTH;",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "470.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

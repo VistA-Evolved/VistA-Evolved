@@ -1,0 +1,132 @@
+{
+  "fileNumber": 800000.2,
+  "fileName": "HMP LIST",
+  "globalRoot": "800000.2",
+  "globalReference": "^HMPD(800000.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the HMP List. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:STATIC;1:DYNAMIC;",
+      "helpText": "This field defines a data entry as static or dynamic. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,5",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the NUMBER of the File being referenced. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "RP800000.21'",
+      "required": true,
+      "pointerTo": 800000.21,
+      "helpText": "A VistA data domain from the HMP LIST DOMAIN File. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ATTRIBUTE",
+      "dataType": "POINTER",
+      "rawType": "RP800000.22'",
+      "required": true,
+      "pointerTo": 800000.22,
+      "helpText": "This is a pointer to the HMP ATTRIBUTE File. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REFRESH THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Amount of time, in days, required to pass before an automatic refresh will occur. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NEXT REFRESH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of next refresh based on the value of REFRESH THRESHOLD. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "GENERATION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code to implement the refresh of a domain. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "COLUMNS",
+      "dataType": "SUBFILE",
+      "rawType": "800000.202",
+      "required": false,
+      "helpText": "These are references to data which will be extracted. ",
+      "isMultiple": true,
+      "subFileNumber": 800000.202,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "800000.203",
+      "required": false,
+      "helpText": "Description of the data to be extracted. ",
+      "isMultiple": true,
+      "subFileNumber": 800000.203,
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "DATA",
+      "dataType": "SUBFILE",
+      "rawType": "800000.209",
+      "required": false,
+      "helpText": "The actual data being sent. ",
+      "isMultiple": true,
+      "subFileNumber": 800000.209,
+      "fieldNumber_": .9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ADD", "field": },
+    {"name": "AREFRESH", "field": },
+    {"name": "B", "field": },
+    {"name": "800000.2", "field": .01, "type": "regular"},
+    {"name": "800000.2", "field": .03, "type": "regular"},
+    {"name": "800000.2", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

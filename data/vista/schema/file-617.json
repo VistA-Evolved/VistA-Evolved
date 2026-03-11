@@ -1,0 +1,56 @@
+{
+  "fileNumber": 617,
+  "fileName": "MH WAIT LIST",
+  "globalRoot": "617",
+  "globalReference": "^YSG(\"WAIT\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Waiting List. Ordinarily it indicates the service for which the patient will wait, e.g., 'Inpatient ADTP'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "If the Waiting List is set up for a ward, it is designated here. Points to the hospital's Ward Location file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SORT BY ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether the list will be sorted on SC/NSC priority. If 'Yes' is selected, the list is broken into SC and NSC sections. If 'No' is selected, a single list, prioritized automatically by duration on the list is kept. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "617.01PA",
+      "required": false,
+      "helpText": "This is the name of the patient placed on the list. Points to the  patient file. Patient must be registered on MAS data base to be added. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "617", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

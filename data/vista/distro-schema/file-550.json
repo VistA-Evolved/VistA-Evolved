@@ -1,0 +1,151 @@
+{
+  "fileNumber": 550,
+  "fileName": "CMOP SYSTEM",
+  "globalRoot": "550",
+  "globalReference": "^PSX(550,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the free text name of the CMOP system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "The current processing status of this facility.  ACTIVE  status indicates the facility is participating in transmitting data to the CMOP.  INACTIVE status indicates that CMOP processing is not  currently available.  'N' for 'Active Non-CS only'  'C' for 'Active CS only'  'B' for 'Active both CS and Non-CS' ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "XMIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:NO CURRENT TRANSMISSION;T:TRANSMITTING DATA;R:DATA RECOVERY ;",
+      "helpText": "  This field contains a set of codes indicating the current status of the job which transmits data to the CMOP.  Only one transmission may process at a given time. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CMOP DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "R*P4.2'",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is a valid MailMan domain for the Consolidated Mail Outpatient Pharmacy system receiving the facility-transmitted data. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTIVATE/INACTIVATE DT/TM",
+      "dataType": "DATE",
+      "rawType": "550.04DA",
+      "required": false,
+      "helpText": "The date/time of the Activate/Inactivate action. ",
+      "isMultiple": true,
+      "subFileNumber": 550.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST BATCH TRANSMITTED",
+      "dataType": "POINTER",
+      "rawType": "P550.2'",
+      "required": false,
+      "pointerTo": 550.2,
+      "helpText": "The batch number of the last completed transmission. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AUTO TRANSMIT",
+      "dataType": "SET",
+      "rawType": "550.07SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 550.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PURGE DT/TM",
+      "dataType": "DATE",
+      "rawType": "550.08DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 550.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "The task number of the currently running transmission job. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "AUTO TRANSMIT CS",
+      "dataType": "SET",
+      "rawType": "550.09SA",
+      "required": false,
+      "helpText": "This multiple is used to track and control the background jobs that gather and transmit CMOP controlled substance prescription transmissions. ",
+      "isMultiple": true,
+      "subFileNumber": 550.09,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NON-CS DAYS TO TRANSMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of days into the future the NON-CS process will look to pick up prescriptions for a patient already in the transmission. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CS DAYS TO TRANSMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of days into the future the CS process will look to pick up prescriptions for a patient already in the transmission. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AG", "field": },
+    {"name": "AP", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ST", "field": },
+    {"name": "TR", "field": },
+    {"name": "550", "field": .01, "type": "regular"},
+    {"name": "550", "field": 1, "type": "regular"},
+    {"name": "550", "field": 1, "type": "regular"},
+    {"name": "550", "field": 2, "type": "regular"},
+    {"name": "550", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(550,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

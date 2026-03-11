@@ -1,0 +1,58 @@
+{
+  "fileNumber": 443.3,
+  "fileName": "IFCAP PURGE INPROCESS",
+  "globalRoot": "443.3",
+  "globalReference": "^PRC(443.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROUTINE ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VARIABLE STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROCESS START TIME ($H)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

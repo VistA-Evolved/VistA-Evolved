@@ -1,0 +1,46 @@
+{
+  "fileNumber": 791810.4,
+  "fileName": "ROES ELIGIBILITY",
+  "globalRoot": "791810.4",
+  "globalReference": "^RMPF(791810.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of an eligibility that makes a veteran eligible for ROES orders. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the abbreviation for the eligibility name. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DETERMINED BY PSAS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT DETERMINED BY PSAS;1:DETERMINED BY PSAS;",
+      "helpText": "This field flags eligibilities that Audiology and Speech Pathology Service may select as probable determinations for veterans whose eligibility cannot be determined from the DHCP database. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791810.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

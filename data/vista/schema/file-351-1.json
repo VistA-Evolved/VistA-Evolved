@@ -1,0 +1,75 @@
+{
+  "fileNumber": 351.1,
+  "fileName": "IB CONTINUOUS PATIENT",
+  "globalRoot": "351.1P",
+  "globalReference": "^IBE(351.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the DFN of the patient who has been a continuous inpatient since July 1, 1986. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on which the patient has been discharged from the hospital or nursing home after a continuous stay since July 1,1986. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who is adding the entry to the file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the entry was added to the file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER LAST UPDATING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the last user who has edited this entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time that the entry was edited. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

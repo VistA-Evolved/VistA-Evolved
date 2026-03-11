@@ -1,0 +1,199 @@
+{
+  "fileNumber": 53.45,
+  "fileName": "INPATIENT USER PARAMETERS",
+  "globalRoot": "53.45P",
+  "globalReference": "^PS(53.45,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INPATIENT USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "  This is a user for whom the Inpatient Medications package can be tailored. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAY SELECT DISPENSE DRUGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  Unless the user is a pharmacist, the user can be set up to allow Unit Dose orders to be entered by Orderable Item or Dispense Drug. If selection is by dispense drug the order's Orderable Item will be determined based on that dispense drug. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ALLOW USER TO RENEW ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If this is set to 'YES', this ward clerk/pharmacy technician may  actually renew orders for patients on this ward. If this is set to 'NO'  (or not set), this clerk/technician can only mark orders to be renewed.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ALLOW USER TO HOLD ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If this is set to 'YES', this ward clerk/pharmacy technician may actually place Inpatient orders on hold or take orders off of hold.  If this is set to 'NO' (or not set), this clerk/technician can only mark orders for  hold/unhold, and only a pharmacist or nurse can hold/unhold the orders. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ALLOW USER TO D/C ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If this is set to 'YES', this ward clerk/pharmacy technician may actually cancel patients' Inpatient orders.  If this is set to 'NO' (or not set), this clerk/technician can only mark orders to be cancelled by another user. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PRINT PROFILE IN ORDER ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If you answer 'YES' here, you will be given the opportunity to print a profile for a patient after entering Unit Dose orders for the patient. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "*LABEL PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is a device to which labels created by this user will print.  If a device is entered here, it will be used instead of any device selected for the ward or pharmacy to print label created by this user. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TYPE OF USER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "3:PHARMACIST;2:PHARMACY TECHNICIAN;1:NURSE;0:WARD STAFF;",
+      "helpText": "  This is used to define what type of user this user is.  The type of user helps define what actions the user can or cannot take on Inpatient  Medications orders.  If no entry is made here, the user is assumed to be WARD STAFF. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ALLOW AUTO-VERIFY FOR USER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is used to determine if the user can enter Unit Dose orders as ACTIVE, allowing the user to skip the extra step of manually verifying those orders entered by this user. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "USE WARD LABEL SETTINGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This allows the pharmacist (or pharmacy technician) that may be working  on the ward(s) to use the label settings defined for the ward(s) instead  of the label setting defined for the pharmacy.   PLEASE NOTE that if you have defined a LABEL PRINTER, that printer will always be used to print labels instead of either the ward or pharmacy label printer. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INPATIENT PROFILE ORDER SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MEDICATION NAME;1:START DATE OF ORDER;",
+      "helpText": "  This is the sort order in which the Inpatient Profile will show inpatient orders.  Enter 'MEDICATION NAME' (or '0') to show the orders alphabetically by drug name.  Enter 'START DATE OF ORDER' (or '1') to show the orders chronologically by start date, with the most recent dates showing first.   PLEASE NOTE - The profile will always first show orders by status (active, non-verified, and then non-active), and within status, schedule type (continuous, one-time, and then PRN). ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ORDER ENTRY PROCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR;1:ABBREVIATED;2:WARD;",
+      "helpText": "  This is the type of order entry process to be used by this user.  The REGULAR order entry is the full set of prompts for the entry of an order, after which the user is shown a full view of the order and allowed to take  immediate action on the order. The ABBREVIATED order entry gives the user  fewer prompts for the entry of an order, after which the user is shown a  full view of the order and is allowed to take immediate action on the order. The WARD order entry gives the user the same prompts",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "LABEL PRINTER POINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is a device to which labels created by this user will print. If a device is entered here, it will be used instead of any device selected for the ward or pharmacy to print labels created by this user. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "53.4501",
+      "required": false,
+      "helpText": "  These are any comments, notes, instructions, etc. that a user may enter for an order. ",
+      "isMultiple": true,
+      "subFileNumber": 53.4501,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPENSE DRUG",
+      "dataType": "POINTER",
+      "rawType": "53.4502P",
+      "required": false,
+      "helpText": "  This is the medication(s) that will actually be dispensed by the pharmacy for the Unit Dose order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "53.4504",
+      "required": false,
+      "helpText": "  This is any comments about the order that the provider needs to pass along to the pharmacy and/or ward personnel. ",
+      "isMultiple": true,
+      "subFileNumber": 53.4504,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SPECIAL INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "53.455",
+      "required": false,
+      "helpText": "This is any special instructions (using abbreviations whenever possible)  needed for this order.  This would include the physician's reason for  ordering a PRN.  This field utilizes the abbreviations and expansions  from the MEDICATION INSTRUCTION (#51) file.   ",
+      "isMultiple": true,
+      "subFileNumber": 53.455,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OTHER PRINT INFO",
+      "dataType": "SUBFILE",
+      "rawType": "53.456",
+      "required": false,
+      "helpText": "For use by Pharmacy to print additional information on IV labels and  reports. This is very similar to the REMARKS (#.1) field in the IV (#100)  multiple of the PHARMACY PATIENT(#55) file, except OTHER PRINT INFO is  shown on the label and the IV REPORTS. ",
+      "isMultiple": true,
+      "subFileNumber": 53.456,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

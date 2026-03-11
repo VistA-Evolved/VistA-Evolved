@@ -1,0 +1,66 @@
+{
+  "fileNumber": 104.3,
+  "fileName": "MDRO WARD MAPPINGS",
+  "globalRoot": "104.3",
+  "globalReference": "^MMRS(104.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Geographical Unit. This name will be displayed on  all reports that are run. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P104'",
+      "required": false,
+      "pointerTo": 104,
+      "helpText": "This is the site that this mapping is defined for. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WARD LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "104.302PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AC:ACUTE CARE;CLC:CLC;OBS:OBS;OT:OTHER;",
+      "helpText": "This is the type of care provided to patients on this unit. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IPEC UNIT ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the ID number that identifies this unit in IPEC.  This is only for Acute Care and CLC units reported to IPEC. Do NOT assign a Unit ID to any unit that is considered OBS or Other. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "104.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MMRS(104,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(104,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(104.3,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

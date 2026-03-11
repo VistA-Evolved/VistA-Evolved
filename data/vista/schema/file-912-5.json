@@ -1,0 +1,39 @@
+{
+  "fileNumber": 912.5,
+  "fileName": "ESP POLICE TRAINING",
+  "globalRoot": "912.5P",
+  "globalReference": "^ESP(912.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ATTENDEE",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the police officer receiving credit for the training. The officer's name must be entered into the NEW PERSON file (200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRAINING DATE",
+      "dataType": "DATE",
+      "rawType": "912.55D",
+      "required": false,
+      "helpText": "This field is used to record the date that training was received. ",
+      "isMultiple": true,
+      "subFileNumber": 912.55,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "912.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

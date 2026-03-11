@@ -1,0 +1,40 @@
+{
+  "fileNumber": 101.22,
+  "fileName": "OTP MEDICATION DISPENSE",
+  "globalRoot": "101.22",
+  "globalReference": "^ORD(101.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the PATIENT File (#2) and is the patient that received the medication. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OTP DISPENSE RECORD",
+      "dataType": "DATE",
+      "rawType": "101.221D",
+      "required": false,
+      "helpText": "This is the Opioid Treatment Program dispense record. It is a multiple record field that contains patient(s) dispense record information. ",
+      "isMultiple": true,
+      "subFileNumber": 101.221,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "101.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 2006.912,
+  "fileName": "DICOM GATEWAY MODALITY DICTIONARY",
+  "globalRoot": "2006.912",
+  "globalReference": "^MAGDICOM(2006.912,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HOSTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the hostname of the computer used for the DICOM Gateway. Names of computers typically look like xxx-yyyzzzzz where xxx is the three-letter abbreviation for the name of the institution, yyy is the abbreviation for the name of the department, and zzzzz is the identifier assigned to the computer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the location for which the DICOM Gateway operates. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time when the MODALITY field multiple (#3) was last updated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODALITY",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9122A",
+      "required": false,
+      "helpText": "Subfile to hold modalities information. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9122,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.912", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

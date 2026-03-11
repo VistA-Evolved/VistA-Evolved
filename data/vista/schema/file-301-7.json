@@ -1,0 +1,218 @@
+{
+  "fileNumber": 301.7,
+  "fileName": "IVM ADDRESS CHANGE LOG",
+  "globalRoot": "301.7",
+  "globalReference": "^IVM(301.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ADDRESS CHANGE DT/TM",
+      "dataType": "DATE",
+      "rawType": "RDXI",
+      "required": true,
+      "helpText": "This field will hold the date and time of the last Address Update. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Patient associated with this address update. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ADDRESS CHANGE USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user who has changed this patient's primary address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADDRESS CHANGE SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HEC:HEC;VAMC:VAMC;HBSC:HBSC;NCOA:NCOA;BVA:BVA;VAIN:VAINS;USPS:USPS;VET360:VET360;",
+      "helpText": "This field will hold the source of the last address change. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "ADDRESS CHANGE SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIOR ADDRESS CHANGE DT/TM",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field will hold the date and time of the prior address update. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIOR ADDRESS CHANGE USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the prior user who changed this patient's primary address. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRIOR ADDRESS CHANGE SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field will hold the prior Site that changed this patient's address. This field is only populated when the PRIOR ADDRESS SOURCE is listed as VAMC. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PRIOR ADDRESS CHANGE SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HEC:HEC;VAMC:VAMC;HBSC:HBSC;NCOA:NCOA;BVA:BVA;VAIN:VAINS;USPS:USPS;",
+      "helpText": "This field will hold the source of the prior address change. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRIOR PHONE NUMBER [RESIDENCE]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number [4-20 characters] to this patient's prior place of residence. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRIOR STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the first line of this patient's prior residence street address [3-35 characters]. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PRIOR STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the second line of this patient's prior residence street address [3-30 characters]  if the space provided in 'street address' was not  sufficient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRIOR CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the prior city in which this patient resided [2-15 characters]. If the space provided is not sufficient please abbreviate the city to  the best of your ability. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRIOR COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the prior county in which this patient resided [3-30 characters]. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRIOR STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Select from the available listing the prior state in which this patient resided. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PRIOR ZIP+4",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Answer with either the 5 digit format (e.g. 12345) or the nine digit format (e.g. 12345-6789 or 123456789) for the prior zip code. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRIOR PROVINCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the province [1-20 characters] to this patient's prior place of residence. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PRIOR POSTAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the postal code [1-10 characters] to this patient's prior place of residence. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PRIOR COUNTRY",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "This field will hold the value of Country in the prior address. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PRIOR BAD ADDRESS INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:UNDELIVERABLE;2:HOMELESS;3:OTHER;4:ADDRESS NOT FOUND;",
+      "helpText": "This field will hold the prior Bad Address Indicator. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PRIOR STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the third line of this applicant's residence street address [3-30 characters] if the space provided in 'street address' and 'street address 2' was not sufficient. ",
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "301.7", "field": .01, "type": "regular"},
+    {"name": "301.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 183,
+  "fileName": "CRHD HANDOFF PARAMETERS",
+  "globalRoot": "183",
+  "globalReference": "^CRHD(183,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENTITY",
+      "dataType": "SUBFILE",
+      "rawType": "183.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 183.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "183", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

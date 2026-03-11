@@ -1,0 +1,90 @@
+{
+  "fileNumber": 748.3,
+  "fileName": "SURVEY RESPONSE DATA",
+  "globalRoot": "748.3IP",
+  "globalReference": "^QA(748.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SURVEY",
+      "dataType": "POINTER",
+      "rawType": "RP748",
+      "required": true,
+      "pointerTo": 748,
+      "helpText": "This field is a pointer to the SURVEY file, 748.  It links the answers in this file to a specific survey. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUESTION NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "748.31",
+      "required": false,
+      "helpText": "This field is the internal file number (IFN) of a specific question in file 748.25.   ",
+      "isMultiple": true,
+      "subFileNumber": 748.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARTICIPANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This is the hashed version of the participant DUZ.  It is hashed via ^XUSHSHP and all user-viewable outputs of this field are converted to <Hidden> for confidentiality.   This field is used to determine if a user has already participated in a survey.  No pointer to file 200 is used since the DUZ is hashed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SURVEY COMPLETION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "c:COMPLETED;s:SUSPENDED;i:IN PROGRESS;",
+      "helpText": "This is the status of a survey at any given moment.  It may be:          c = completed  - the participant is finished totally          s = suspended  - the participant has stopped taking                         the survey for a while and will resume                         at a later time          i = in progress - a person is actually participating                          at the moment ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST QUESTION ANSWERED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is a memo field used as to inform a participant which question was the last one he answered. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST QUESTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used by the programming to know with which question to resume after a survey has been suspended by a participant. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEMOGRAPHIC QUESTION",
+      "dataType": "SUBFILE",
+      "rawType": "748.36A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 748.36,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "748.3", "field": .01, "type": "regular"},
+    {"name": "748.3", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "fileNumber": 410.6,
+  "fileName": "DELIVERY SCHEDULE",
+  "globalRoot": "410.6I",
+  "globalReference": "^PRCS(410.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the reference for the delivery schedule used by the Control Point Clerk.  It is associated with delivery schedules for each item of a request for repetitive, non-repetitive, or a non-repetitive/ repetitive form type.  File  #410.6  is pointed to by the Delivery Reference Number field (#1) of the Delivery Schedule sub-field (#410.212) of the Item sub-field (#410.02) of the Control Point Activity file, #410. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the delivery date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P410.8",
+      "required": false,
+      "pointerTo": 410.8,
+      "helpText": "This is the delivery location. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QTY TO BE DELIVERED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the quantity of items to be delivered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUB-CONTROL POINT",
+      "dataType": "POINTER",
+      "rawType": "P410.4",
+      "required": false,
+      "pointerTo": 410.4,
+      "helpText": "This is the sub-control point which purchased the items. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QTY RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the quantity of items received. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the items were received. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "410.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

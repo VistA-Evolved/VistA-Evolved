@@ -1,0 +1,58 @@
+{
+  "fileNumber": 50.8,
+  "fileName": "IV STATS",
+  "globalRoot": "50.8P",
+  "globalReference": "^PS(50.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IV ROOM",
+      "dataType": "POINTER",
+      "rawType": "RP59.5'X",
+      "required": true,
+      "pointerTo": 59.5,
+      "helpText": "Looks at the IV Room file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "LAST COMPILATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date when the IV STATS file was last successfully compiled. When an IV cost report is run, this date is displayed on the user's screen.  If the last compilation date is more than one day in the past, a message is printed warning the user that the cost data may not be  accurate. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "50.801P",
+      "required": false,
+      "helpText": "Identifies patients which have statistical information in the IV STATS file (50.8). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "50.803D",
+      "required": false,
+      "helpText": "  Date of order (the statistics file stores the entries in date order). the IV package. ",
+      "isMultiple": true,
+      "subFileNumber": 50.803,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AIVC", "field": },
+    {"name": "50.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

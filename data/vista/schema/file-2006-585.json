@@ -1,0 +1,103 @@
+{
+  "fileNumber": 2006.585,
+  "fileName": "USER APPLICATION",
+  "globalRoot": "2006.585",
+  "globalReference": "^MAGDICOM(2006.585,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that specifies the name of the service that is called for the application described in the current entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOP CLASS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5852A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5852,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CALLED AE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the equipment being called for the application that is described in the current entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CALLING AE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the equipment from which the application is called that is described in the current entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESTINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the TCP/IP address of the called application entity. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port number to which the equipment connects calls the application that is described in this entry.   TCP/IP port numbers are integers between 1 and 65535. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "GE:General Electric;KODAK:Kodak;",
+      "helpText": "The value of this parameter is a string. This string can be one of a limited number of values. This value identifies the kind of PACS that hosts the current storage provider.   Supported types are currently: GE (General Electric) and KODAK. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The value of this field is a positive integer number. This number identifies the relative priority of transmissions to the SCP that is described in this record.   This field is optional. If no value is specified, a default value of 500 will be used. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SCP TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider Type as entered in the SCU_LIST.DIC file. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.585", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

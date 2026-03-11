@@ -1,0 +1,89 @@
+{
+  "fileNumber": 442.5,
+  "fileName": "PAT TYPE",
+  "globalRoot": "442.5",
+  "globalReference": "^PRCD(442.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of the method of processing. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the method of processing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROCESSING CONTROL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PAYMENT PROCESSING;2:DOCUMENT PROCESSING;",
+      "helpText": "This field defines whether the PAT type controls how the payment of the PAT is processed, or how the PAT is routed through IFCAP. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an abbreviation for the method of processing. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains internal program code for screen display. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REC RPT REQUIRED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates whether a receiving report is required for this method of processing. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "442.54",
+      "required": false,
+      "helpText": "This is a description of the processing used for this PAT type. ",
+      "isMultiple": true,
+      "subFileNumber": 442.54,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "442.5", "field": .01, "type": "regular"},
+    {"name": "442.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?35,\"   \",$P(^(0),U,2)"}
+  ]
+}

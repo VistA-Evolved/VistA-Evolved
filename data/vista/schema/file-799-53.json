@@ -1,0 +1,55 @@
+{
+  "fileNumber": 799.53,
+  "fileName": "ROR LOCAL FIELD",
+  "globalRoot": "799.53",
+  "globalReference": "^ROR(799.53,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "You can either select an existing local field  definition or add a new one. Field names must be  unique within the registry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE OF INACTIVATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this field has a value, the definition of local field will be considered inactive and will not be  presented to the users after this date.    Use this field to disable unnecessary local fields (and keep their values) instead of deleting them. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "This field identifies the registry that the local field is associated with. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The DESCRIPTION field stores explanations of the  local field and/or its purpose. This text is presented to the user during editing of the field. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "799.53", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ROR(798.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(798.1,.01,0),U,2) D Y^DIQ:Y]\"\" W ?35,\"   \",Y S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "fileNumber": 350.2,
+  "fileName": "IB ACTION CHARGE",
+  "globalRoot": "350.2I",
+  "globalReference": "^IBE(350.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a description unique name for this entry that identifies it.  It is not used in the calculation of the charge but rather for editing purposes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the charge rate for this entry became effective. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IB TRANSACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This is the IB TRANSACTION TYPE that this rate is for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UNIT CHARGE, FIXED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this charge is a fixed amount, this field contains the fixed amount. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this charge is inactive put in the inactive date.  If the charge is not to be used the inactive date should equal the active date.  If the charge was effective for a time period but that charge no longer is valid then enter the date that this is inactive.  No entry is  necessary in this field if a more recent active date is added for an IB ACTION TYPE. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ADDITIONAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is a fixed additional dollar amount that will be added to the basic charge after it has been computed. An example of this would be the additional charge of $200 added to HCFA Ambulatory Surgery rate groups for inter-ocular lens implants. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COPAYMENT TIER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the tier related to this copayment charge.  The value is used to  determine if the associated charge amount should be used. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "UNIT CHARGE LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "If this charge is not fixed (ie an exact cost) the field contains the logic to calculate the cost per unit.  It may need to use the logic in the IB transaction type file to find this cost. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ADDITIONAL AMOUNT LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is M code to be executed which returns the $T value to determine if the Additional Amount (#.06) field should be added to the charge value. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "350.2", "field": .01, "type": "regular"},
+    {"name": "350.2", "field": .02, "type": "regular"},
+    {"name": "350.2", "field": .02, "type": "regular"},
+    {"name": "350.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

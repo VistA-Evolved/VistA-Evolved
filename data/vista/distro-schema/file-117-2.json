@@ -1,0 +1,267 @@
+{
+  "fileNumber": 117.2,
+  "fileName": "DIETETIC COST OF MEALS",
+  "globalRoot": "117.2D",
+  "globalReference": "^FH(117.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Enter Month and Year. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BEG INV GRP 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter Beginning Inventory Cost for Food Group I. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BEG INV GRP 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter Beginning Inventory Cost For Food Group II. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BEG INV GRP 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Beginning Inventory Cost of Food Group III. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BEG INV GRP 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Beginning Inventory Cost for Food Group IV. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BEG INV GRP 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Beginning Inventory Cost for Food Group V. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BEG INV GRP 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Beginning Inventory Cost for Food Group VI. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ISSUE COST GRP 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the Issue Cost For Food Group I. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ISSUE COST GRP 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter The Issue Cost for Food Group II. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ISSUE COST GRP 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the Issue Cost for Food Group III. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ISSUE COST GRP 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the Issue Cost for food Group IV. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ISSUE COST GRP 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the Issue Cost of Food Group V. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ISSUE COST GRP 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the Issue Cost of Food Group VI. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CLOS INV GRP 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group I. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CLOS INV GRP 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group II. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CLOS INV GRP 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group III. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "CLOS INV GRP 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group IV. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "CLOS INV GRP 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group V. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CLOS INV GRP 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the Closing Inventory Cost for Food Group VI. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "% COST GRP 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Percent Cost Recommended for Food Group I. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "% COST GRP 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Percent Cost Recommended for Food Group II. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "% COST GRP 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Percent Cost Recommended for Food Group III. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "% COST GRP 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Percent Cost Recommended for Food Group IV. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "% COST GRP 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The % Cost Recommended for Food Group V. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "% COST GRP 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The % Cost Recommended for Food Group VI. ",
+      "fieldNumber_": 24
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "117.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

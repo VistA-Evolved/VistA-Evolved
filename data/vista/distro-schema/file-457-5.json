@@ -1,0 +1,47 @@
+{
+  "fileNumber": 457.5,
+  "fileName": "PAY ENTITLEMENT",
+  "globalRoot": "457.5",
+  "globalReference": "^PRST(457.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the pay entitlement character string. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A code that identifies the pay entitlement string. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ENTITLEMENT STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The pay entitlement character string. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "457.5", "field": .01, "type": "regular"},
+    {"name": "457.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

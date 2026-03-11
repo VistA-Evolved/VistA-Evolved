@@ -1,0 +1,276 @@
+{
+  "fileNumber": 195.2,
+  "fileName": "RECORD TYPES",
+  "globalRoot": "195.2",
+  "globalReference": "^DIC(195.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This describes the record as to function. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the record type to be selected by a few characters. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P195.1'I",
+      "required": false,
+      "pointerTo": 195.1,
+      "helpText": "This allows the record type to be associated with one or many applications. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INQUIRY DISPLAY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This is used by the system to allow application modification of displays. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECORD LABEL FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P194.4'",
+      "required": false,
+      "pointerTo": 194.4,
+      "helpText": "This defines the label format to be used when printing a record label. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUEST NOTICE FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P194.4'",
+      "required": false,
+      "pointerTo": 194.4,
+      "helpText": "This defines the label format to be used when printing a request for a record. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CONTROL OF FINDING RECORDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "f:FILE ROOM SUPERVISOR ONLY!;a:ANY USER;",
+      "helpText": "This allows the application to limit the designation of a missing record as found. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQUEST PURGE CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the number of days to retain requests before purging. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PENDING REQUEST CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the number of days before a request is considered not filled by the system. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PULL LIST PURGE CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the number of days to retain pull lists before the pull lists are purged by the purge option. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OVERDUE RECORD CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the number of days that a charged record is allowed to be charged before it is considered by the system as overdue. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "BARCODE RENEWAL CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of days required to consider re-printing a barcode label.     ",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "# PREVIOUS MOVEMENTS TO RETAIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "This defines the number of movements to not be purged by the purge option. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CURRENT BORR REQUEST TIME MIN.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the time in the future when the current borrower may request the record again. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CAN RECORD BE REQUESTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "No means the record cannot be requested. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "IS RECORD TEMPORARY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This means that the record can only be charged out once. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ASK FOR CONTENT DESCRIPTOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Yes means the system will query the user to add free text for record description. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MULTIPLE VOLUMES ALLOWED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Yes means the system will allow creation of multiple volumes for this type of record. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "OK TO PURGE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "NO means that all the purge parameters will be ignored by the purge option and no data is purged until this parameter is set to YES. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "RETIRE RECORD CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field will contain the number of days required for a record to be considered for retirement.     ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PENDING CHECK-IN CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This describes the number of days a pending request will be displayed for a record when the record is being checked in. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "OK TO RETIRE RECORDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines a date when the record is no longer available to be  charged out. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "LINKED RECORDS",
+      "dataType": "POINTER",
+      "rawType": "195.22PA",
+      "required": false,
+      "helpText": "This points to other record types which should be automatically created by the system when this record is created. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ALLOWABLE FILE ROOMS",
+      "dataType": "POINTER",
+      "rawType": "195.21IPA",
+      "required": false,
+      "helpText": "This defines which borrower/file areas may be allowed to check in  this type of record. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "195.23",
+      "required": false,
+      "helpText": "This free text allows the record to be described more fully. ",
+      "isMultiple": true,
+      "subFileNumber": 195.23,
+      "fieldNumber_": 150
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "195.2", "field": .01, "type": "regular"},
+    {"name": "195.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

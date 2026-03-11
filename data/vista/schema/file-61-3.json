@@ -1,0 +1,133 @@
+{
+  "fileNumber": 61.3,
+  "fileName": "FUNCTION FIELD",
+  "globalRoot": "61.3I",
+  "globalReference": "^LAB(61.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the function. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CORRESPONDING ANTIGEN/ANTIBODY",
+      "dataType": "POINTER",
+      "rawType": "*P61.3'X",
+      "required": false,
+      "pointerTo": 61.3,
+      "helpText": " Indicate which antigen or antibody that may be known by another name. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPATIBILITY FACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,3",
+      "length": 5,
+      "required": false,
+      "helpText": "If an antigen enter the incidence (as a decimal)  in the population.  If an antibody enter the  frequency the corresponding antigen is absent  in the population. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The characters following \"F-\" in the SNOMED reference book. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The function's area by body system. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "61.31A",
+      "required": false,
+      "helpText": "This is a multiple field.  Enter synonyms or common misspellings of this function. ",
+      "isMultiple": true,
+      "subFileNumber": 61.31,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IDENTIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AN:BLOOD GROUP ANTIGEN;AB:BLOOD GROUP ANTIBODY;HL:HLA ANTIGEN;",
+      "helpText": "This is a blood bank identifier. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOURNAL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "61.32A",
+      "required": false,
+      "helpText": "This is a multiple field.  You may enter Journal references that apply to this function. ",
+      "isMultiple": true,
+      "subFileNumber": 61.32,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a 1 to 5 character abbreviation for this function which is used as a unique code for it. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "61.37",
+      "required": false,
+      "helpText": " If there are some additional comments which should be associated the  function to assist the user. ",
+      "isMultiple": true,
+      "subFileNumber": 61.37,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "61.34PAI",
+      "required": false,
+      "helpText": " If additional workload codes should be counted every time this function is performed, enter them here. ",
+      "fieldNumber_": 500
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "61.3", "field": .01, "type": "regular"},
+    {"name": "61.3", "field": 2, "type": "regular"},
+    {"name": "61.3", "field": 4, "type": "regular"},
+    {"name": "61.3", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"},
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

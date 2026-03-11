@@ -1,0 +1,107 @@
+{
+  "fileNumber": 62.07,
+  "fileName": "EXECUTE CODE",
+  "globalRoot": "62.07I",
+  "globalReference": "^LAB(62.07,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The user given name of the code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXECUTE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The MUMPS code. EXAMPLE:  For the SMAC name the code is S CUP=CUP+1 I CUP>8 S CUP=1,TRAY=TRAY+1. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PURGE CONTROL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DAILY:D;MONTHLY:M;QUARTERLY:Q;YEARLY:Y;",
+      "helpText": "This field contains the time interval to purge.  Set of codes for Daily, Monthly, Quarterly, or Yearly. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:IDENTITY;V:VERIFICATION;A:ACCESSION;L:LOADLIST;E:EDIT;C:COMMENT;X:XECUTE;D:DATA;W:WORKLOAD;",
+      "helpText": "The type of code as categorized by the set of codes.  Identity, verfication, accession, loadlist, edit, or comment. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HELP PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The user entered help prompt for the execute code name. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUBSCRIPT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the entry is type \"X\", eXecute, this is used in the \"X\" cross-reference. Otherwise, nothing should be placed in this field. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "62.071",
+      "required": false,
+      "helpText": "This field contains information about how the execute code is used, or what it does. ",
+      "isMultiple": true,
+      "subFileNumber": 62.071,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "EXECUTE WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "62.09IPA",
+      "required": false,
+      "helpText": "College of American Pathologists Workload codes associated  with the execute code are stored here. ",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "SITE NOTES DATE",
+      "dataType": "DATE",
+      "rawType": "62.7501D",
+      "required": false,
+      "helpText": " The date of this particular note. ",
+      "isMultiple": true,
+      "subFileNumber": 62.7501,
+      "fieldNumber_": 501
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "62.07", "field": .01, "type": "regular"},
+    {"name": "62.07", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

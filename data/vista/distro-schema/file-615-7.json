@@ -1,0 +1,37 @@
+{
+  "fileNumber": 615.7,
+  "fileName": "S/R RELEASE CRITERIA",
+  "globalRoot": "615.7",
+  "globalReference": "^YSR(615.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CRITERIA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Short narrative of behavior required for release from seclusion/restraint. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "615.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

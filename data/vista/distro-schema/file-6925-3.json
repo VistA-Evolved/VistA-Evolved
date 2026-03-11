@@ -1,0 +1,65 @@
+{
+  "fileNumber": 6925.3,
+  "fileName": "PROJECT EPA CATEGORY",
+  "globalRoot": "6925.3",
+  "globalReference": "^ENG(6925.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Group to which the environmental cateogry belongs. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "A-106 LAW/REG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponding A-106 category for environmental law or regulation code. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "A-106 CATEGORY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponding A-106 enviromental category code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RELATED PROJECT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.8'",
+      "required": false,
+      "pointerTo": 7336.8,
+      "helpText": "This field contains a related Project Category which will be used to screen the available Environmental Categories for NRM projects. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "6925.3", "field": .01, "type": "regular"},
+    {"name": "6925.3", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

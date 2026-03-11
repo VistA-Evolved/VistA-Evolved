@@ -1,0 +1,204 @@
+{
+  "fileNumber": 351,
+  "fileName": "MEANS TEST BILLING CLOCK",
+  "globalRoot": "351I",
+  "globalReference": "^IBE(351,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFERENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This field consists of the station number concatenated with the internal number of the entry.  The purpose of this number is to provide a unique reference for each billing clock which has been opened at each station. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient for whom the billing clock is being opened. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLOCK BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which the billing clock has been opened. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CURRENT;2:CLOSED;3:CANCELLED;",
+      "helpText": "The status of the billing clock will be CURRENT if charges are being created for that clock.  The clock will be CLOSED after 365 days or the date the patient is no longer a Means Test copay patient, whichever is earlier.  Billing clocks which may have been \"left open\" due to a lack of billable activity will be closed during the nightly compilation job.  Billing clocks which must be deleted for any reason will have a status of CANCELLED. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "1ST 90 DAY INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field represents the total co-payment (not including the per diem charge) amount which has been billed to the patient for his first 90 days of Hospital or Nursing Home care. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "2ND 90 DAY INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field represents the total co-payment (not including the per diem charge) amount which has been billed to the patient for his second 90 days of Hospital or Nursing Home care. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "3RD 90 DAY INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field represents the total co-payment (not including the per diem charge) amount which has been billed to the patient for his third 90 days of Hospital or Nursing Home care. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "4TH 90 DAY INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field represents the total co-payment (not including the per diem charge) amount which has been billed to the patient for his fourth 90 days of Hospital or Nursing Home care. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NUMBER INPATIENT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the total number of days that the patient has spent in the Hospital or Nursing Home since the Clock Begin Date. The field is used to determine the co-payment charges billed to the patient for care received. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CLOCK END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on which the billing clock was closed.  This date should not be more than 365 days after the Clock Begin Date. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person performing a transaction in an application that causes the application to create an entry in this file.  This field may be null if the entry was created by an off-line compilation job. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This the date/time that an entry was added to this file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "USER LAST UPDATING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person performing a transaction in an application which causes the application to update this entry.  This entry may be null if the entry was last updated in an off-line compilation job. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that this entry was last updated. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "UPDATE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Brief description of reason for updating billing clock. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "QUERY SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:QUERY SENT;",
+      "helpText": "This field is used to track if a query has been sent for this clock.  A query should only be sent one time for syncing purposes.  Once the clock has been synced, no subsequent queries should occur for this clock. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "CLOCK VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the clock version used to verify Means Test Billing Clocks are synced across all a patient's VA Medical Centers. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SYNC ERROR",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field is set to \"Yes\" when a patient's Means Test Billing Clock  Version Number is out of sync across the patient's VA Medical Centers.  ",
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "ACT", "field": },
+    {"name": "ACT1", "field": },
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "351", "field": .01, "type": "regular"},
+    {"name": "351", "field": .02, "type": "regular"},
+    {"name": "351", "field": .02, "type": "regular"},
+    {"name": "351", "field": .02, "type": "regular"},
+    {"name": "351", "field": .03, "type": "regular"},
+    {"name": "351", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W ?16,$E(Y,1,25),@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W ?44,$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .04, "value": "W ?55,@(\"$P($P($C(59)_$S($D(^DD(351,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": 9002313.4,
+  "fileName": "BPS NCPDP OTHER PHARMACY ID QUALIFIER",
+  "globalRoot": "9002313.4",
+  "globalReference": "^BPS(9002313.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "The list of pharmacy codes for the NCPDP field E95-Z9 Other Pharmacy ID  Qualifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "The name of the pharmacy codes for the NCPDP field E95-Z9 Other Pharmacy  ID Qualifier. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.4", "field": .01, "type": "regular"},
+    {"name": "9002313.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

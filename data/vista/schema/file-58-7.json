@@ -1,0 +1,103 @@
+{
+  "fileNumber": 58.7,
+  "fileName": "PADE SYSTEM SETUP",
+  "globalRoot": "58.7",
+  "globalReference": "^PS(58.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PADE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the Pharmacy Automated Dispensing Equipment (PADE) system like Pyxis, OmniCell, AccuDose etc., that supports single/multiple cabinets, located in Inpatient Wards and Outpatient Clinics to stock items (drug/non-drug) for dispensing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DNS NAME/IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DNS name or the IP address of the PADE System. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the port number associated with the PADE System. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "SEND DRUG FILE MESSAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW DRUGS;U:UPDATES;B:BOTH;X:NONE;",
+      "helpText": "This parameter will determine if the user will be prompted to send HL7  drug formulary messages to PADE when using the DRUG ENTER/EDIT option.   When set to \"N\" (for New DRUGS), the user will be prompted to send a  message to PADE only when the DRUG ENTER/EDIT option is used to create   NEW entries. If the parameter is set to \"U\" (for UPDATES) then the user  will only be prompted to send  messages when updating/changing current  entries with the DRUG ENTER/EDIT OPTION. IF this parameter is set t",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the PADE inactivation date. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "SEND CHECKIN/SURG HL7 FOR INPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This parameter applies to ADMITTED patient only. Enter \"YES\" if HL7  scheduling messages should still be sent when checking in clinic appointments (IP appointments) or surgical cases (via manual  option/background task)or background job when the system finds that the patient is ADMITTED. This is vendor dependent and should only be set to \"NO\" when it is known that these messages could cause the inpatient to be removed from their IP location on the vendor device. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "DAYS TO PULL AHEAD FOR BG JOB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Check-in for a clinic will generate HL7 messages to PADE in real time. Clinics that do not have check-in, there is a nightly job that can be  scheduled to run on a daily basis that will generate HL7 messages to  PADE. If there is a need for you to send clinic appointments for future  days as well then populating this field will help to pull those  appointments in your nightly job. We allow a maximum of 30 days, but keep this to a minimum as it may impact your network traffic. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "RE-SEND ORDERS AT CHECK-IN",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This parameter allows clinic orders to be resent when a patient checks  into a clinic appointment (either directly or via PADE background job)  sharing the same send area as the orders. This parameter follows the same  hierarchy to determine if clinic orders will be resent, as is used for  the routine sending of PADE order messages. That hierarchy is (1) Clinic (2) PADE Clinic Group (3) VistA Clinic Group (4) PADE Wildcard Clinic  Name and the parameter is available at all of these levels. If se",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "58.74P",
+      "required": false,
+      "helpText": "All Medical Center Divisions associated with this PADE have to be defined  here. The wards and clinics under these divisions if they are associated  with this PADE then they need to be defined so that the HL7 messages  triggered by events like admission/discharge/transfer, clinic  appointments, surgery cases, check-ins, inpatient medication orders or  drug formulary updates, will be sent to PADE. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "fileNumber": 19200.114,
+  "fileName": "VPE PROGRAMMER PARAMETER",
+  "globalRoot": "19200.114I",
+  "globalReference": "^XVV(19200.114,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "HELP TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "19200.124",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19200.124,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "EXTENDED HELP TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "19200.11421",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19200.11421,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19200.114", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": A1, "value": "W:$D(^(\"I\")) ?35,$E(^(\"I\"),1,245)"}
+  ]
+}

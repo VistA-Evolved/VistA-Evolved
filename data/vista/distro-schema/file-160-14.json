@@ -1,0 +1,36 @@
+{
+  "fileNumber": 160.14,
+  "fileName": "NON CANCER-DIRECTED SURGERY",
+  "globalRoot": "160.14",
+  "globalReference": "^ONCO(160.14,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Identifies codes for surgical procedure(s) performed in an effort to diagnose ane/or stage disease. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the surgical procedure(s) performed in an effort to diagnose ane/or stage disease. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "160.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "fileNumber": 2005.84,
+  "fileName": "IMAGE INDEX FOR SPECIALTY/SUBSPECIALTY",
+  "globalRoot": "2005.84",
+  "globalReference": "^MAG(2005.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the Specialty or SubSpecialty that an  images is captured to and will be used in sorting during image display.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASS",
+      "dataType": "POINTER",
+      "rawType": "RP2005.82'",
+      "required": true,
+      "pointerTo": 2005.82,
+      "helpText": "This field is a pointer to the IMAGE INDEX FOR CLASS file.  Select the appropriate class for this specialty. For example, non-document images  are of class type 'CLIN'.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPEC LEVEL",
+      "dataType": "POINTER",
+      "rawType": "P2005.84'",
+      "required": false,
+      "pointerTo": 2005.84,
+      "helpText": "This field contain the specialty level for the specialty being entered. For example specialties VASCULAR and UROLOGY are part of the specialty  level SURGERY. This field will be used in indexing images and provide a broad level of sorting. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter an abbreviation for this specialty. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field is used to inactivate an entry in this file. It affects which specialties can be selected in the filtering option of VistA Imaging Display. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "ASPEC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.84", "field": .01, "type": "regular"},
+    {"name": "2005.84", "field": 1, "type": "regular"},
+    {"name": "2005.84", "field": 2, "type": "regular"},
+    {"name": "2005.84", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

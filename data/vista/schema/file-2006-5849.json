@@ -1,0 +1,199 @@
+{
+  "fileNumber": 2006.5849,
+  "fileName": "TELEREADER READ/UNREAD LIST",
+  "globalRoot": "2006.5849",
+  "globalReference": "^MAG(2006.5849,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONSULT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP123'",
+      "required": true,
+      "pointerTo": 123,
+      "helpText": "The date and time the consult was requested. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACQUISITION DIVISION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The site where the images are acquired. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGE INDEX FOR SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P2005.84'",
+      "required": false,
+      "pointerTo": 2005.84,
+      "helpText": "The specific specialty as requested by the acquisition site. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IMAGE INDEX FOR PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "P2005.85'",
+      "required": false,
+      "pointerTo": 2005.85,
+      "helpText": "The procedure performed by the acquisition site. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CONSULT ORDERED/FORWARDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Date/Time that the consult was ordered or forwarded to the remote site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REMOTE SITE RESPONSE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Date/Time that the remote site responds to the IFC request by creating a remote consult. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACQUISITION START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The start date and time of the acquisition of images. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NEXT ACQUISITION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time of the acquisition of additional images. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LAST ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time of the last activity. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NUMBER OF IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of images acquired. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:Cancelled;W:Waiting;R:Read;L:Locked;U:Unread;D:Deleted;",
+      "helpText": "The status of the exam; read, unread, etc., in the TeleReader program. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FULL NAME OF READER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the person who will be reading the exam. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "READER'S INITIALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The initials of the person responsible for reading the exam. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "READER DUZ AT ACQUISITION SITE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Reader's DUZ at the Acquisition Site. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "READER DUZ AT READING SITE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The DUZ of the person reading the exam at the Reader's Site. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "READER SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The division where the reader is located. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "READING START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time when the exam is selected to be read. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "READING STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time when the reader completes the reading of the exam. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "REPAIR DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.5849", "field": .01, "type": "regular"},
+    {"name": "2006.5849", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

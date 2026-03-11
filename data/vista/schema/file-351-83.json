@@ -1,0 +1,150 @@
+{
+  "fileNumber": 351.83,
+  "fileName": "IB MH VISIT TRACKING",
+  "globalRoot": "351.83",
+  "globalReference": "^IBMH(351.83,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field identifies the veteran who has been seen for a Mental Health  visit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field stores the site where the bill was processed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date when the patient received Mental Health Care. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:FREE;2:BILLED;3:REMOVED;4:VISIT ONLY;",
+      "helpText": "This field contains the visit status of the Mental Health Care visit.   The status can be:    FREE if the veteran's visit is exempt, under the Cleland-Dole Act of 2022.   BILLED if the Visit was charged a copay, regardless of the copay's billing status.    REMOVED if the Visit was entered in error.   VISIT ONLY if the visit needs to be tracked and there is no copay associated with the visit. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the bill number under which a tracked Mental Health  Care copay was billed.  It must be in the form of <site#>-<Bill Number>.   or the words ON HOLD.   It is not a mandatory field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SC/SA;2:CLELAND-DOLE ACT;3:ENTERED IN ERROR;4:DUPLICATE VISIT;5:NO COPAY ADDED;6:FRM OVERRIDE;",
+      "helpText": "This field contains an extra comment to help describe why a veteran's  visit was considered FREE, REMOVED, or VISIT ONLY. If used, the options  to select from are Special Authority, Cleland-Dole Act, or FRM Override (for FREE), Entered in Error or Duplicate Visit (for REMOVED), or No Copay Added (for VISIT ONLY). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "UNIQUE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is used to determine the originating source of the record.  It  consists of the site number, an underscore, and the Internal Entry Number of the record at the originating site.  Only the originating site can update the record.   ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "INTEGRATED BILLING ACTION",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This field contains pointer to the entry in file 350 that is associated  with this entry. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "UPDATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EXISTING;1:NEW OR UPDATED;",
+      "helpText": "This flag is used to determine if a record should be pushed out to other  sites.  It is set to 1 when the record is added or updated and set to 0  after the updates are propagated to other sites a veteran has been  treated at. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "EXCEPTIONS?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This flag is used to determine if a record was unsuccessfully pushed to  other sites.  Should be used in conjunction with EXCEPTION REASON Field  (3.02). Set to 0 or NULL if transmission was finally successful. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "EXCEPTION REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO FREE VISITS;",
+      "helpText": "This field is used to explain why a record did not transmit  successfully.  Used only if:   A) There were no Free visits remaining at the receiving facility. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "EXCEPTION SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is used to identify with VAMC did not successfully update  their Visit Tracking file because of the Exceptions noted in field 3.02  (Exception Reason). ",
+      "fieldNumber_": 3.03
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ARS", "field": },
+    {"name": "AT", "field": },
+    {"name": "AUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "VD", "field": },
+    {"name": "351.83", "field": .01, "type": "regular"},
+    {"name": "351.83", "field": .03, "type": "regular"},
+    {"name": "351.83", "field": .05, "type": "regular"},
+    {"name": "351.83", "field": .07, "type": "regular"},
+    {"name": "351.83", "field": .08, "type": "regular"},
+    {"name": "351.83", "field": 1.01, "type": "regular"},
+    {"name": "351.83", "field": 3.01, "type": "regular"},
+    {"name": "351.83", "field": 3.03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 118.3,
+  "fileName": "STANDING ORDERS",
+  "globalRoot": "118.3sI",
+  "globalReference": "^FH(118.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a standing order. It may be such things as 'double portions', 'extra coffee', or even preferences such as 'no fish.' ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LABEL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field specifies whether the label should be printed or not for this order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this standing order by ward or dietetic personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "118.3", "field": .01, "type": "regular"},
+    {"name": "118.3", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

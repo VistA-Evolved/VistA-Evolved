@@ -1,0 +1,62 @@
+{
+  "fileNumber": 741.4,
+  "fileName": "QA OCCURRENCE CLINICAL REFERRAL",
+  "globalRoot": "741.4I",
+  "globalReference": "^QA(741.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON (SCREEN CODE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a short code used to identify the reason for clinical referral. It must be one to two digits and it may be followed by one upper case letter, e.g., 4, 12, 1B, 23X, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REASON - EXPANDED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the long version of the reason for clinical referral. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCREEN",
+      "dataType": "POINTER",
+      "rawType": "P741.1'",
+      "required": false,
+      "pointerTo": 741.1,
+      "helpText": "This is the screen that this reason for clinical referral is associated with. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REASON - SHORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the shortened version of the reason for clinical referral. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "741.4", "field": .01, "type": "regular"},
+    {"name": "741.4", "field": .01, "type": "regular"},
+    {"name": "741.4", "field": 2, "type": "regular"},
+    {"name": "741.4", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(1)):\"\",$D(^QA(741.1,+$P(^(1),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(741.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W:$D(^(2)) \"   \",$P(^(2),U,1)"}
+  ]
+}

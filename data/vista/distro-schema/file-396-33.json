@@ -1,0 +1,38 @@
+{
+  "fileNumber": 396.33,
+  "fileName": "2507 STATUS",
+  "globalRoot": "396.33",
+  "globalReference": "^DVB(396.33,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the status of the request ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the code for the status ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "396.33", "field": .01, "type": "regular"},
+    {"name": "396.33", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""}
+  ]
+}

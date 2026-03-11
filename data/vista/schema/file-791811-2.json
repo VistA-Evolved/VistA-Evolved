@@ -1,0 +1,56 @@
+{
+  "fileNumber": 791811.2,
+  "fileName": "HEARING AID COMPONENTS",
+  "globalRoot": "791811.2I",
+  "globalReference": "^RMPF(791811.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPONENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the component.  Components may be associated with a line item in the Remote Inventory Product File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ORDER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the order code or abbreviation for the component.  It may be used to select the component in the ordering process. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AVAILABLE W/BUNDLED PRICING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AVAIL WITH EXTRA COMP ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;0:YES;",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "791811.2", "field": .01, "type": "regular"},
+    {"name": "791811.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

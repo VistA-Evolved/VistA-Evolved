@@ -1,0 +1,37 @@
+{
+  "fileNumber": 409.67,
+  "fileName": "CLINIC GROUP",
+  "globalRoot": "409.67",
+  "globalReference": "^SD(409.67,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "409.671S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 409.671,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "409.67", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

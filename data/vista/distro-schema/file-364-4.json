@@ -1,0 +1,191 @@
+{
+  "fileNumber": 364.4,
+  "fileName": "IB EDI TRANSMISSION RULE",
+  "globalRoot": "364.4",
+  "globalReference": "^IBE(364.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0X",
+      "length": 6,
+      "required": true,
+      "helpText": "This is the rule # given to identify this rule.  Rules 1-99 are reserved for National EDI rules and are not editable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EARLIEST ACTIVATE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is a date in the future when this rule will automatically be used. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSMISSION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:EDI only;2:MRA only;3:Both EDI and MRA;",
+      "helpText": "This is the type of transmission that the rule will be executed for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:OUTPATIENT only;2:INPATIENT only;3:Both INPT and OUTPT;",
+      "helpText": "This is the type of care that the rule will be executed for. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FORM TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INSTITUTIONAL (UB-04) only;2:PROFESSIONAL (CMS-1500 and J430D) only;3:Both INST (UB-04) and PROF (CMS-1500 and J430D);",
+      "helpText": "This is the form type that the rule will be executed for. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date on which this edit will not longer be used to determine 'transmittable' for a bill. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INSURANCE COMPANY OPTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:APPLY ONLY TO SPECIFIC COMPANIES;2:DO NOT APPLY TO SPECIFIC COMPANIES;3:APPLY TO ALL COMPANIES;",
+      "helpText": "This is the option to determine which insurance companies to apply this rule to.  If 1 or 2 are chosen, the list of insurance companies to be included or excluded should be entered in the appropriate multiple within this file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the rule used for identification purposes on lookup. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "BILL TYPE RESTRICTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "364.41A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 364.41,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TYPE OF RULE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:LIMIT TO FORM TYPE;1:LIMIT TO SOME BILL TYPES;2:MRA REQUEST RESTRICTIONS;9:LOCALLY DEFINED;",
+      "helpText": "This flag puts the rule into a 'type' category for conflict checking.  It is also a flag that can indicate this rule needs to be executed to determine if an MRA request is valid for the MEDIGAP insurance that is next in line for COB or if the claim should be directly shuttled to the MEDIGAP carrier.   TYPE OF RULE = 0 (LIMIT TO FORM TYPES) is used to further limit the transmission of PROFESSIONAL (CMS-1500) or INSTITUTIONAL (UB-04) form types. If you pick one form type, no bills of the other for",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RULE CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the MUMPS call that will execute the edit's logic and will set  $T to 1 for edit passed or to 0 for edit failed.  You can assume the following variables are available:   IBIFN = ien of the bill in file 399   IB(.03) = Current value of the bill's transmission type   IB(.05) = Current value of the bill's form type   IB(.07) = Current value of the bill's insurance option ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXCLUDED INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "364.42PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INCLUDED INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "364.43PA",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RULE DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "364.44",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 364.44,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "RULE ADDED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person responsible for adding this rule to this file. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "RULE ADDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this rule entry was first added to this file. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "RULE LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who last edited this rule entry. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "RULE LAST EDITED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date this rule was edited. ",
+      "fieldNumber_": 10.04
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "364.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "364.4", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .08, "value": "W \"   \",$P(^(0),U,8)"}
+  ]
+}

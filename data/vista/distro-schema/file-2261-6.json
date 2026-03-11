@@ -1,0 +1,41 @@
+{
+  "fileNumber": 2261.6,
+  "fileName": "ASISTS OCCURRENCE OF SHARPS INJURY",
+  "globalRoot": "2261.6",
+  "globalReference": "^OOPS(2261.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter an occurrence of sharps injury. This field will describe an occurrence of a sharps injury. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This code will identify the occurrence of a sharps injury. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.6", "field": .01, "type": "regular"},
+    {"name": "2261.6", "field": .01, "type": "regular"},
+    {"name": "2261.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

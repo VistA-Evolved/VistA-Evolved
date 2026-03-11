@@ -1,0 +1,102 @@
+{
+  "fileNumber": 408.32,
+  "fileName": "MEANS TEST STATUS",
+  "globalRoot": "408.32",
+  "globalReference": "^DG(408.32,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter in this field the internal entry number associated with this status. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter in this field the name of the financial test status. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .019,
+      "fieldName": "TYPE OF TEST",
+      "dataType": "POINTER",
+      "rawType": "RP408.33'I",
+      "required": true,
+      "pointerTo": 408.33,
+      "fieldNumber_": .019
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter in this field the code associated with the financial test status. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DISCRETIONARY;M:MANDATORY;N:NOT APPLICABLE;",
+      "helpText": "Enter in this field the type of care the financial test status is associated with. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "408.321",
+      "required": false,
+      "helpText": "Enter in this field the description associated with the financial test status. ",
+      "isMultiple": true,
+      "subFileNumber": 408.321,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "408.3275DA",
+      "required": false,
+      "helpText": "Enter in this field the effective date of the financial test status. ",
+      "isMultiple": true,
+      "subFileNumber": 408.3275,
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter in this field the message associated with the financial test status. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "408.32", "field": .01, "type": "regular"},
+    {"name": "408.32", "field": .019, "type": "regular"},
+    {"name": "408.32", "field": .02, "type": "regular"},
+    {"name": "408.32", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .019, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(408.33,+$P(^(0),U,19),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(408.33,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

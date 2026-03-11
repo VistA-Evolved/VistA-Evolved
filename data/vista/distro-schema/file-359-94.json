@@ -1,0 +1,97 @@
+{
+  "fileNumber": 359.94,
+  "fileName": "HAND PRINT FIELD",
+  "globalRoot": "359.94",
+  "globalReference": "^IBE(359.94,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "    The name of the field.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text that labels the field on the form. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The column the label begins at. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The row the label begins at. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LABEL APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Allows the form designer to specify the appearance of the label. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TYPE OF DATA",
+      "dataType": "POINTER",
+      "rawType": "R*P357.6'X",
+      "required": true,
+      "pointerTo": 357.6,
+      "helpText": "Points to the package interface file. That is where information about the data and how to map it to DHCP is stored. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP357.1'",
+      "required": true,
+      "pointerTo": 357.1,
+      "helpText": "The block the field belongs to. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DHCP DATA ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "R*P359.1'X",
+      "required": true,
+      "pointerTo": 359.1,
+      "helpText": "Specifies what data the hand print field is for. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "359.94", "field": .01, "type": "regular"},
+    {"name": "359.94", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 344.9,
+  "fileName": "RCDPE DM REPORT PARAMETERS",
+  "globalRoot": "344.9",
+  "globalReference": "^RCDM(344.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the name of the Diagnostic Measures report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENABLED/DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DISABLED;1:ENABLED;",
+      "helpText": "This field determines whether the AR Diagnostic Measures report will be  run as part of the PRCA Nightly JOB Process ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the routine to execute if this AR Diagnostic Measures  report is enabled in the PRCA NIGHTLY JOBS. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

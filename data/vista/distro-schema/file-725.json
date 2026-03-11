@@ -1,0 +1,74 @@
+{
+  "fileNumber": 725,
+  "fileName": "EC NATIONAL PROCEDURE",
+  "globalRoot": "725I",
+  "globalReference": "^EC(725,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the procedure for this entry. A national procedure name cannot be edited or deleted. A local procedure name can be modified using the tools provided on the Event Capture Management Menu within the Event Capture software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NATIONAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the national number for this procedure. The national number is distributed with the national entries.   If you add a procedure locally, you should define a unique national number for your local procedure. The first character must be an uppercase alpha character followed by 4 alphanumeric characters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the inactive date for this procedure.   National procedures will be determined inactive by the Decision Support System (DSS) Program Office and updated with subsequent releases of the Event Capture software.   Options within the Event Capture Management Menu provide users the ability to inactivate any locally defined procedures. These local inactive procedures may be reactivated for use in the Event Capture software. You can reactivate an inactive procedure by entering an \"@\"",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the synonym for this procedure. Synonym is the locally recognized name for this procedure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CPT",
+      "dataType": "POINTER",
+      "rawType": "*P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "The Current Procedural Terminology (CPT) code equivalent for this national or local procedure. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "DL", "field": },
+    {"name": "E", "field": },
+    {"name": "725", "field": .01, "type": "regular"},
+    {"name": "725", "field": 1, "type": "regular"},
+    {"name": "725", "field": 1, "type": "regular"},
+    {"name": "725", "field": 1, "type": "regular"},
+    {"name": "725", "field": 2, "type": "regular"},
+    {"name": "725", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

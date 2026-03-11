@@ -1,0 +1,292 @@
+{
+  "fileNumber": 445.2,
+  "fileName": "INVENTORY TRANSACTION",
+  "globalRoot": "445.2Ps",
+  "globalReference": "^PRCP(445.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "RP445'X",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This is the inventory point affected by the transaction.  Each time an item has activity against it, the inventory point will be added as a new entry to this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Transaction ID defined in two parts: A Transaction is any event that affects the inventory level (e.g., receiving, distribution, etc.).  The ID uniquely  identifies the transaction (e.g., Distribution Order No., P.O. No.). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE OF TRANSACTION",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of the original transaction (e.g., P.O. date for receiving; date Distribution Order was entered). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "DATE POSTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the transaction affected the inventory. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF TRANSACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "RC:RECEIVING;R:DISTR.(REGULAR);U:USAGE;A:MANUAL ADJ.;C:DISTR.(CALL-IN);S:SET/PACKS;P:PHYSICAL COUNT;E:DISTR.(EMERGENCY);Q:QTY ON SUPPLY STATION;",
+      "helpText": "This code indicates the type of transaction (i.e., RC= receiving supplies into inventory; R or C or E= Distribution to another Inventory Point; U= Usage (e.g., patient, in-house); A= Manual adjustment to inventory; S=Assemble Sets/Packs; P= Physical Count; Q= Quantity adjusted to supply station value. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ITEM NO.",
+      "dataType": "POINTER",
+      "rawType": "R*P441'",
+      "required": true,
+      "pointerTo": 441,
+      "helpText": "This is a pointer the Item Master File, #441 (Note: The item must be in the Inventory file for this Inventory Point). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PACKAGING UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unit of issue from this Inventory Point. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number indicating whether the inventory was incremented by the quantity, or whether the inventory was decremented. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "INVENTORY VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used to store the total dollar inventory value of the  transaction. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "SELL VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used to store the total dollar sales value of the transaction. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AVG.UNIT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,3",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the average unit cost which is used to value the net effect to the Inventory of this transaction. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SELLING UNIT PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,3",
+      "length": 11,
+      "required": false,
+      "helpText": "This is used for cost accounting (i.e., the higher of the actual cost or the average at the time the transaction occurred). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "POSTED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field stores the user which created the activity against this item in the inventory point. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REASON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is no longer used. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "ADDITIONAL REASON TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to explain the reason for the activity against this item in the inventory point.  It allows the user to enter a reason for making adjustments to items. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ISSUABLE/NONISSUABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:ISSUABLE;N:NON-ISSUABLE;",
+      "helpText": "This code is used to denote transfers between Issuable and Non-Issuable Inventory adjustments. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "LOG TRANSACTION CODE",
+      "dataType": "POINTER",
+      "rawType": "*P420.4'",
+      "required": false,
+      "pointerTo": 420.4,
+      "helpText": "This field is no longer used. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SOURCE CODE",
+      "dataType": "POINTER",
+      "rawType": "P420.8'",
+      "required": false,
+      "pointerTo": 420.8,
+      "helpText": "This field is no longer used. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACCOUNT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is no longer used. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "VOUCHER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the voucher number which appears on the voucher summary report and is used for reconciliation. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "OTHER INVENTORY POINT AFFECTED",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This is designated for the name of the other inventory point affected (i.e., in the case where there is a transaction that affects two inventory points). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ADJUSTMENT APPROVED DATE@TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used for adjustment transactions.  When an adjustment is made in the warehouse inventory point, this field is used to indicate the date and time the adjustment was approved by the accountable and approving officials. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ADJUSTMENT APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used for adjustment transactions.  When an adjustment is made in the warehouse inventory point, this field is used to indicate the user who entered the adjustment as approved. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SUPPLY STATION USER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the person who took the supplies from the automated supply station. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "RECIPIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the name of patient or area receiving supplies from an automated supply station.  For example, floor stock, trashed, etc. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "TRANSACTION/P.O. NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the transaction number from file 410.  The field is set to the transaction number when the warehouse posts an issue book to a primary.  This field is used for lookups during the 'Reprint a Picking Ticket' option. ",
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 411,
+      "fieldName": "ISSUE BOOK LINE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used to store the issue book line number.  The issue book line number is used to look up on the issue book line to determine the subacct for fms. ",
+      "fieldNumber_": 411
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "ANXT", "field": },
+    {"name": "AX1", "field": },
+    {"name": "AX2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "T", "field": },
+    {"name": "V", "field": },
+    {"name": "445.2", "field": .01, "type": "regular"},
+    {"name": "445.2", "field": .01, "type": "regular"},
+    {"name": "445.2", "field": .01, "type": "regular"},
+    {"name": "445.2", "field": .01, "type": "regular"},
+    {"name": "445.2", "field": 1, "type": "regular"},
+    {"name": "445.2", "field": 3, "type": "regular"},
+    {"name": "445.2", "field": 4, "type": "regular"},
+    {"name": "445.2", "field": 13, "type": "regular"},
+    {"name": "445.2", "field": 410, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

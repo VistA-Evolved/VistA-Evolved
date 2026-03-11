@@ -1,0 +1,510 @@
+{
+  "fileNumber": 408.31,
+  "fileName": "ANNUAL MEANS TEST",
+  "globalRoot": "408.31ID",
+  "globalReference": "^DGMT(408.31,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF TEST",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Enter in this field the date of test for this annual test. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .019,
+      "fieldName": "TYPE OF TEST",
+      "dataType": "POINTER",
+      "rawType": "RP408.33'I",
+      "required": true,
+      "pointerTo": 408.33,
+      "helpText": "This field contains the type of test, pointer to file 408.33. ",
+      "fieldNumber_": .019
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter in this field a patient associated with this annual test. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P408.32'X",
+      "required": true,
+      "pointerTo": 408.32,
+      "helpText": "Enter in this field the status of the test. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INCOME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This field is computed by the system.  It is a summation of each applicable family member's income in the Individual Annual Income file (#408.21) for the previous calendar year from date of test.   If the veteran is married, the spouse's income will only be collected and subsequently included in the test under certain conditions.  The veteran and spouse must either live together or if they do not live together, the veteran must have contributed at least $600 to the spouse's support during the pr",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NET WORTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field is computed by the system.  Is a summation of the veteran, spouse (if applicable), and dependent child(ren) if applicable net worth, minus any debts in the Individual Annual Income file (#408.21) for the previous calendar year from date of test.   If the veteran is married, the spouse's net worth will only be collected and subsequently included in the means test under certain conditions. The veteran and spouse must either live together or if they do not live together, the veteran must",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who completed the test. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME COMPLETED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date/time the test was initially completed. In the case where a means test is verified by IVM, this date/time will be the same as the date/time the original means test was completed at the medical center. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CATEGORY CHANGED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the last user who changed the means test category. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE/TIME CATEGORY CHANGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date/time the means test category was changed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ADJUDICATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date/time the test was adjudicated. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "AGREED TO PAY DEDUCTIBLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter in this field whether the veteran agrees to pay the deductible.  The veteran must also sign the 1010f form agreeing to pay the deductible. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "THRESHOLD A",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed by the system.  It contains the income threshold A as determined by the system for the veteran.  The threshold is determined by the system in the following manner:   Cat A Vet Income+Cat A First Dep+(Cat A Per Dep*(Num Dep-First Dep))   The means test thresholds are released annually by VHA and include the veteran and dependent income for the year. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "THRESHOLD B",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed by the system.  It contains the income threshold B as determined by the system for the veteran.  The threshold is determined by the system in the following manner:   Cat B Vet Income+Cat B First Dep+(Cat B Per Dep*(Num Dep-First Dep))   The means test thresholds are released annually by VHA and include the veteran and dependent income for the year. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DECLINES TO GIVE INCOME INFO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter whether the veteran declines to provide income information.  If the veteran declines; s/he is considered to be Category C and must agree to pay the deductible. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DEDUCTIBLE EXPENSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This field is computed by the system.  It is the summation of the veteran's deductible expenses in the Individual Annual Income file (#408.21). ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PREVIOUS YEARS THRESHOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is filled in by the system.  The field is set to 'YES' if the previous years means test parameters are applied to the test. This should only occur when the new parameters are not yet available to the field. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "NO LONGER REQUIRED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date the means test was no longer required. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "TOTAL DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is computed by the system.  It is a summation of the dependents  and spouse (if applicable).   If the veteran is married, the spouse's will only be collected and subsequently included under certain conditions.  The veteran and spouse  must either live together or if they do not live together, the veteran must  have contributed at least $600 to the spouse's support during the previous  calendar year. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "HARDSHIP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "HARDSHIP REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "Date the hardship needs to be reviewed. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "SOURCE OF INCOME TEST",
+      "dataType": "POINTER",
+      "rawType": "RP408.34'",
+      "required": true,
+      "pointerTo": 408.34,
+      "helpText": "This field is maintained by the means test software.  It is a pointer to the SOURCE OF INCOME TEST file (#408.34).  It indicates where the income test originated.  For example, if this field points to the VAMC entry, this means that the income test was obtained at the VA Medical Center by a user using the appropriate Means Test (or other income test) software.   This field MUST NOT BE ALTERED in any way.  It is entered by the software and should never be edited or deleted.  Altering this data in",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "DATE VETERAN SIGNED TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date the veteran signed the financial test IF the test is from a source other than the VAMC (i.e. IVM). ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "DATE IVM VERIFIED MT COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date returned from the IVM Center that the means test was verified and completed. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "REFUSED TO SIGN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field returns an indicator from the IVM Center that the veteran refused to sign the means test. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "GMT THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed by the system.  It contains the GMT income  threshold as determined by the system for the veteran.   The GMT  threshold will be determined by locating the record in the GMT Thresholds  file that corresponds to the FIPS code of the veteran's address and using  the income amount for the veteran plus the number of dependents. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "MEANS TEST SIGNED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:DELETED;",
+      "helpText": "This field will indicate whether or not HEC has determined that a valid signature exists for this means test. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BULLETIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY INCOME TEST FOR YEAR?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be filled in automatically by the means test software.  It will indicate whether this income test is the primary income test for this patient for this income year.  If this field contains a 1, this income test is considered the primary income test for the patient for the income year. If the field contains a 0, it means that the patient has another income test for the year which is considered the primary income test.   This field is set by the means test software and MUST NOT BE A",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "HARDSHIP EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will indicate when the hardship is effective. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DATE/TIME TEST LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will indicate when the test was created or last edited. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "TEST-DETERMINED STATUS",
+      "dataType": "POINTER",
+      "rawType": "P408.32'",
+      "required": false,
+      "pointerTo": 408.32,
+      "helpText": "This field will be used to record the status determined by the income screening or networth adjudication.  It will not change as the result of a hardship determination or changes in eligibility.  It will be used to automatically re-complete the test if the test is again required after going to a status which indcates that it is not required based on changes in eligibility. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "SITE GRANTING HARDSHIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This will indicate the station down to the division level of the user who entered the hardship determination. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "SITE CONDUCTING TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This will indicate the site down to the division level of the user who completed the test. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "LINKED RX COPAY/MEANS TEST",
+      "dataType": "POINTER",
+      "rawType": "P408.31'",
+      "required": false,
+      "pointerTo": 408.31,
+      "helpText": "If an Rx copay test is created automatically based on a means test, they share the same income screening.  This field should be used to link the two tests together.  It will be used to shift the income screening back and forth to the test that currently requires the income screening.  For example, if a means test becomes not required, an Rx copay test may be automatically created and all the income screening information would be re-pointed to the Rx copay test away from the means test.  If a mea",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "REASON FOR EXEMPTION",
+      "dataType": "POINTER",
+      "rawType": "*P714.1'",
+      "required": false,
+      "pointerTo": 714.1,
+      "helpText": "Select the reason why the veteran qualifies for an exemption from Long Term Care co-payments. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "LINKED LTC CO-PAY/MEANS TEST",
+      "dataType": "POINTER",
+      "rawType": "P408.31'",
+      "required": false,
+      "pointerTo": 408.31,
+      "helpText": "If this is a LTC CO-PAY TEST (type 3), this field will point to the LTC CO-PAY EXEMPTION TEST (type 4) associated with this test.  If this is a LTC CO-PAY EXEMPTION TEST (type 4), this field will point to the MEANS TEST (type 1) associated with this the test. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "HARDSHIP REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will indicate the reason for the Hardship. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "1010EC FORM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEC 2002;",
+      "helpText": "This field indicates which version of the 10-10EC form was used to complete the LTC copay test. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "MEANS TEST VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Before Feb 2005 Format;1:Feb 2005;",
+      "helpText": "Prior to February 2005, dependent income data was not separated out of  the data entered for the patient.  Previous to February 2005, dependent  data was added to patient income figures and stored with that patient's  respective record.  Subsequent to February 2005, Means Test was designed  so that dependent income data would not be included with patient income  data but instead be stored with the respective dependent Means Test  records. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "HARDSHIP EXPIRED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The system shall set the Hardship Expired value to Yes when an  expiration is received in a Z10 HL7 message from ES. The user may not  edit this field. ",
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "HARDSHIP EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The Hardship Expiration Date is set by the system at December 31  of the current calendar year when the Hardship is entered. The date will  be updated only when a new value is sent from the Enrollment System based  on changes made in the Enrollment System. ",
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INCOME DATA PURGED PER IRS/SSA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this field contains a date, the income data fields in this record have been purged as required by Internal Revenue Service and/or Social Security Administration. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BT FINANCIAL INDICATOR",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicator states a Veteran's eligibility for Beneficiary Travel based on their income. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "408.311",
+      "required": false,
+      "helpText": "This field contains comments on the test. ",
+      "isMultiple": true,
+      "subFileNumber": 408.311,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 46,
+  "crossReferences": [
+    {"name": "AAPD", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AD2", "field": },
+    {"name": "ADFN", "field": },
+    {"name": "ADFN1", "field": },
+    {"name": "AE", "field": },
+    {"name": "AENR202", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AID", "field": },
+    {"name": "AID1", "field": },
+    {"name": "AID2", "field": },
+    {"name": "AP", "field": },
+    {"name": "AS", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "AS3", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "408.31", "field": .01, "type": "regular"},
+    {"name": "408.31", "field": .01, "type": "regular"},
+    {"name": "408.31", "field": .01, "type": "regular"},
+    {"name": "408.31", "field": .01, "type": "regular"},
+    {"name": "408.31", "field": .01, "type": "regular"},
+    {"name": "408.31", "field": .019, "type": "regular"},
+    {"name": "408.31", "field": .019, "type": "regular"},
+    {"name": "408.31", "field": .019, "type": "regular"},
+    {"name": "", "field": .019, "type": "regular"},
+    {"name": "408.31", "field": .02, "type": "regular"},
+    {"name": "408.31", "field": .02, "type": "regular"},
+    {"name": "408.31", "field": .02, "type": "regular"},
+    {"name": "408.31", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "408.31", "field": .02, "type": "regular"},
+    {"name": "408.31", "field": .03, "type": "regular"},
+    {"name": "408.31", "field": .03, "type": "regular"},
+    {"name": "408.31", "field": .07, "type": "regular"},
+    {"name": "408.31", "field": .11, "type": "regular"},
+    {"name": "408.31", "field": .16, "type": "regular"},
+    {"name": "408.31", "field": .2, "type": "regular"},
+    {"name": "408.31", "field": .2, "type": "regular"},
+    {"name": "408.31", "field": 2.02, "type": "regular"},
+    {"name": "408.31", "field": 2.03, "type": "regular"},
+    {"name": "408.31", "field": 2.08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .019, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(408.33,+$P(^(0),U,19),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(408.33,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(408.32,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(408.32,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .23, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(408.34,+$P(^(0),U,23),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(408.34,.01,0),U,2) D Y^DIQ:Y]\"\" W ?61,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "W:$D(^(\"PRIM\")) ?68,$S(^(\"PRIM\"):\"PRIMARY\",1:\"NOT PRIMARY\")"}
+  ]
+}

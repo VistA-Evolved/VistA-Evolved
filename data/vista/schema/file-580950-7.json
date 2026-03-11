@@ -1,0 +1,68 @@
+{
+  "fileNumber": 580950.7,
+  "fileName": "*AJK1UB MESSAGE",
+  "globalRoot": "580950.7",
+  "globalReference": "^DIZ(580950.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This field contains the number of a transmission message which has NOT yet been transmitted from this facility.  It is checked whenever the transmission process is run to see if messages need to be retransmitted, for any reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NUMBER OF RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NEW/UPDATE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NEW;0:UPDATE;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMISSION PENDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag is removed when it is verified that all remote recipients have received the message. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AO", "field": },
+    {"name": "B", "field": },
+    {"name": "580950.7", "field": .01, "type": "regular"},
+    {"name": "580950.7", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(580950.7,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(580950.7,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

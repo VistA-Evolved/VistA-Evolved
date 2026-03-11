@@ -1,0 +1,28 @@
+{
+  "fileNumber": 631.6,
+  "fileName": "HBHC CLINIC",
+  "globalRoot": "631.6P",
+  "globalReference": "^HBHC(631.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP44'X",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field represents HBHC clinic in Hospital Location (44) file. Clinic must exist in Hospital Location file, since LAYGO is not allowed. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

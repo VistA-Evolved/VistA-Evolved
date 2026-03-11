@@ -1,0 +1,39 @@
+{
+  "fileNumber": 366.1,
+  "fileName": "IB INSURANCE INCONSISTENT DATA",
+  "globalRoot": "366.1",
+  "globalReference": "^IBCN(366.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'X",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient for which the inconsistencies  exist.  This is a DINUM pointer to the PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSURANCE",
+      "dataType": "SUBFILE",
+      "rawType": "366.16A",
+      "required": false,
+      "helpText": "Patient insurances with inconsistencies. ",
+      "isMultiple": true,
+      "subFileNumber": 366.16,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

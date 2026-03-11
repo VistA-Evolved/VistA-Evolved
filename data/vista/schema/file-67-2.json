@@ -1,0 +1,80 @@
+{
+  "fileNumber": 67.2,
+  "fileName": "STERILIZER",
+  "globalRoot": "67.2IO",
+  "globalReference": "^LRT(67.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the sterilizer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Location of the sterilizer. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .104,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of provider ",
+      "fieldNumber_": .104
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE INSTALLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of installation of the sterilizer. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Short description categorizing the sterilizer. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "Sterilizer's record number in the lab data file. ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "67.2", "field": .01, "type": "regular"},
+    {"name": "67.2", "field": .1, "type": "regular"},
+    {"name": "67.2", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W:$D(^(\".1\")) \"   \",$P(^(\".1\"),U,1)"},
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$E($P(^(\"0\"),U,3),4,5)_\"-\"_$E($P(^(\"0\"),U,3),6,7)_\"-\"_$E($P(^(\"0\"),U,3),2,3)"},
+    {"field": 9, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,9)"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "fileNumber": 455.1,
+  "fileName": "8B ERROR MESSAGE",
+  "globalRoot": "455.1",
+  "globalReference": "^PRST(455.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field contains an arbitrary number assigned to each error message. However, these numbers are referred to by various edit programs and should not be altered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "455.11",
+      "required": false,
+      "helpText": "This field contains the text of the error message. ",
+      "isMultiple": true,
+      "subFileNumber": 455.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "455.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

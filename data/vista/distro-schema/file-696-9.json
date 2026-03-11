@@ -1,0 +1,39 @@
+{
+  "fileNumber": 696.9,
+  "fileName": "COMPLICATION",
+  "globalRoot": "696.9",
+  "globalReference": "^MCAR(696.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of complications associated with various medical procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "696.91S",
+      "required": false,
+      "helpText": "This field is used as a screen to differentiate the various areas of Medicine with which this complication is associated. ",
+      "isMultiple": true,
+      "subFileNumber": 696.91,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "696.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

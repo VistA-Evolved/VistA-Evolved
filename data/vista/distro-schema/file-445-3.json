@@ -1,0 +1,176 @@
+{
+  "fileNumber": 445.3,
+  "fileName": "INTERNAL DISTRIBUTION ORDER/ADJ.",
+  "globalRoot": "445.3Is",
+  "globalReference": "^PRCP(445.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0X",
+      "length": 6,
+      "required": true,
+      "helpText": "Enter 'NEW' to add a new order to the file, or enter the number identifying the order.  This sequential number is updated automatically by the system when a new order is added.  Each inventory point will use their own set of numbers. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIMARY INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "R*P445'I",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This is the Primary Inventory point from which the Order originated. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SECONDARY INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "R*P445'XI",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This is a pointer to the Generic Inventory File, #445. This field contains the Secondary Inventory/Distribution point to which the Order/Adjustment is made. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the Order was entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REGULAR ORDER;C:CALL-IN ORDER;E:EMERGENCY;",
+      "helpText": "This is a code indicating the type of order (i.e., r=regular order; c=call-in order; e=emergency). ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who entered the Order. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RELEASED TO FILL;P:POSTED;B:BACKORDERED;F:BACK-ORDER FILLED;",
+      "helpText": "This is a code indicating the status of the order (i.e., R=order ready to be filled; P=order has been posted; B=order has been posted and is back-ordered; Blank=order entered by Secondary, not released to Primary). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PICKING TICKET PRINTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This code (i.e.,Y=Yes) is intended to help prevent filling orders twice.  Entering Y, when picking ticket is printed, causes the flag REPRINT to be displayed on any subsequent printings of the same picking ticket. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ITEM NO.",
+      "dataType": "POINTER",
+      "rawType": "445.37PIA",
+      "required": false,
+      "helpText": "This is a pointer to the multiple, #445.37. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store any remarks for the distribution order. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE POSTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the distribution order was posted. It is automatically populated and is used to determine if the order is ready to be purged. Purging occurs when an order was posted more than 2 days ago.  See POST^PRCPOPP for purging logic. (PRC*5*204) ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Release Date/Time field will be used as a flag to indicate an order was transmitted to a supply station.  The value stored in this field will be the actual date and time that the order was transmitted to the supply station. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is used to store the patient name for distribution orders placed by Surgery for scheduled operations/procedures. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "SCHEDULED OPERATION",
+      "dataType": "POINTER",
+      "rawType": "P130'",
+      "required": false,
+      "pointerTo": 130,
+      "helpText": "This field is used to store the scheduled surgical operations for distribution orders. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "INVENTORY PATIENT LINK",
+      "dataType": "POINTER",
+      "rawType": "P446.1'",
+      "required": false,
+      "pointerTo": 446.1,
+      "helpText": "This field is used internally by the program to determine which entry in file 446.1 (INVENTORY PATIENT ITEMS) is used to track patient costs. ",
+      "fieldNumber_": 131
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ANXT", "field": },
+    {"name": "ASR1", "field": },
+    {"name": "ASR2", "field": },
+    {"name": "B", "field": },
+    {"name": "445.3", "field": .01, "type": "regular"},
+    {"name": "445.3", "field": 1, "type": "regular"},
+    {"name": "445.3", "field": 1, "type": "regular"},
+    {"name": "445.3", "field": 2, "type": "regular"},
+    {"name": "445.3", "field": 129, "type": "regular"},
+    {"name": "445.3", "field": 130, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCP(445,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(445,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",$E($P(^(0),U,4),4,5)_\"-\"_$E($P(^(0),U,4),6,7)_\"-\"_$E($P(^(0),U,4),2,3)"},
+    {"field": 3.5, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(445.3,3.5,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,8)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 5, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(445.3,5,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,6)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

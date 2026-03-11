@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2041.5,
+  "fileName": "VIST EYE DIAGNOSIS",
+  "globalRoot": "2041.5",
+  "globalReference": "^ANRV(2041.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EYE DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the field citing the veteran's visual diagnosis.  You can choose from a list of common diagnoses or type in a specific diagnosis or choose \"other\". ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2041.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,750 @@
+{
+  "fileNumber": 421.5,
+  "fileName": "INVOICE TRACKING",
+  "globalRoot": "421.5I",
+  "globalReference": "^PRCF(421.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the ID number of certified invoices. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station number of the service generating  the invoice. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DOCUMENT LOCATOR NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the system generated number for tracking purposes at Austin. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "CERTIFICATION REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether service certification is required for this invoice. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INVOICE/BILL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the invoice/bill number assigned by the vendor. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE OF INVOICE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date of the vendor invoice. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE INVOICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date the invoice was received in Fiscal Service. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROMPT PAY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:NORMAL;C:CONTRACT;D:DAIRY;E:EXEMPT;I:FEE WITH INTEREST;M:MEAT;N:FEE WITH NO INTEREST;O:OLDER PAYMENT;P:PRODUCE;R:RECURRING PAYMENTS;V:PRIME VENDORS;X:PAY IMMEDIATE IFCAP;Z:PRE PROMPT PAY ORDERS;",
+      "helpText": "This field indicates the prompt pay type of the invoice. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "PURCHASE ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the IFCAP PO number in expanded form, i.e. 503-A10001. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PURCHASE ORDER POINTER",
+      "dataType": "POINTER",
+      "rawType": "*P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This is the pointer to the Procurement and Accounting Transactions file, #442. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This is the name of the vendor generating the invoice. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VENDOR STUB NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CALM stub name. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VENDOR ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CALM ID number. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DISCOUNT PERCENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the percentage to be deducted from the  invoice when prompt payment is made. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DISCOUNT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of days in which a discount can be taken. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISCOUNT TERMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EOM;P:PROX;X:STANDARD;",
+      "helpText": "These are the terms defining the discount amount/days (i.e., net-30). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "DISCOUNT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0O",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the dollar amount of the discount. ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "DATE GOODS/SERVICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date the items were received at the station. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "APPROVED SHIPPING AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0OX",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount authorized for shipping charges. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "AMOUNT CERTIFIED FOR PAYMENT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0XO",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the amount certified for payment. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LIQUIDATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PARTIAL;C:COMPLETE;",
+      "helpText": "This field indicates the status of liquidation, whether partial or complete. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SUBACCOUNT 1",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the subaccount being charged. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SUBACCOUNT 2",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the second subaccount being charged. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LIQUIDATION AMOUNT 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0O",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount liquidated for subaccount 1. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LIQUIDATION AMOUNT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2O",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount liquidated for subaccount 2. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "MONEY MANAGEMENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "X:EXEMPT - PAY IMMEDIATELY;B:NOT EXEMPT - DELAY PAYMENT FOR MONEY MANAGEMENT;",
+      "helpText": "This field indicates when payment is to be made. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "INTEREST INDICATOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "X:INTEREST & PAYMENT;I:INTEREST ONLY;P:PAYMENT ONLY;",
+      "helpText": "This field indicates the type of payment to be made. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PAYMENT TO BE SENT TO: ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CAPPS;1:CALM;",
+      "helpText": "This field indicates the system in Austin to which payment is to be sent. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE PAYMENT RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date payment is released from CALM. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "REASON FOR SUSPENSION",
+      "dataType": "SUBFILE",
+      "rawType": "421.523",
+      "required": false,
+      "helpText": "This is the reason for suspending payment. ",
+      "isMultiple": true,
+      "subFileNumber": 421.523,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DATE OF SUSPENSION LETTER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when the suspense letter is sent to the vendor. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SUSPENSION LETTER REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates whether suspension of payment is required. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PARTIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a two-character alphanumeric field which is appended to the Purchase Order number before it is transmitted to FMS.  This expanded number then becomes the Document ID Number for the Payment Voucher (PV) as it is processed by FMS.  There are 974 valid alphanumeric codes for the Partial Number. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "FMS PAYMENT VOUCHER #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 11-character Document ID Number given to the Payment Voucher (PV) as it is being transmitted to FMS.  This number provides the primary lookup for the local copy of the PV in the Generic Code Sheet Stack File. The normal format for the Payment Voucher # is SSSAFNNNNPP where      SSS is the Station Number      A is an alphabetic code identifying the Common Numbering Series      F is the last digit of the Fiscal Year   NNNN is the document sequence number within the series     PP is the",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ONE TIME PAYMENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates a one time payment. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PROMPT PAYMENT TERMS",
+      "dataType": "SUBFILE",
+      "rawType": "421.531A",
+      "required": false,
+      "helpText": "This is a multiple field which contains the payment terms for this invoice. ",
+      "isMultiple": true,
+      "subFileNumber": 421.531,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "GROSS AMOUNT OF INVOICE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0OX",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the total amount of the invoice. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "GROSS SHIPPING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0OX",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the gross amount of shipping charges. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "NET DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of days when net payment is due. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "FMS LINE",
+      "dataType": "POINTER",
+      "rawType": "421.541PA",
+      "required": false,
+      "helpText": "This is a multiple field which contains a set of accounting data associated with the FMS accounting line. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "MEMO 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reserved for use by Austin. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "MEMO 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reserved for use by Austin. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "MEMO 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reserved for use by Austin. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Incomplete;3:Invoice Returned to Vendor;5:Pending Service Certification;10:Awaiting Voucher Audit Review;11:Vendor ID Incomplete;15:In Accounting;20:Transaction Complete;",
+      "helpText": "This is the status indicator of invoice for processing. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PO SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the suffix number assigned by Fiscal for tracking purposes. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "EXPANDED PO NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "IFCAP PO number to include suffix, i.e. 503-A10001-0001. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "CURRENT INVOICE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates service which currently has invoice for certification. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "D/T CHARGED TO CURRENT LOC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the invoice was sent to the service. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 54.5,
+      "fieldName": "CHARGED TO CURRENT LOCATION BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person charging the invoice to the service. ",
+      "fieldNumber_": 54.5
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "DISCOUNT PAYMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date payment is to be made by in order to receive payment. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "NET PAYMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date payment is to be made to avoid penalties. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "DATE DUE IN FISCAL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date invoice is due in Fiscal. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "DATE RETURNED TO FISCAL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date invoice was returned to Fiscal. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "CERTIFIED FOR PAYMENT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person certifying invoice is true and correct for payment. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "COMPLETED IN ACCOUNTING BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Accounting technician completing the invoice. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CERTIFIED BY VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "Electronic signature of certifying official. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 61.5,
+      "fieldName": "CERTIFIED BY VALIDATION VER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used for encoding and decoding the Validation Code created for the Payment/Invoice Tracking record at the time that the certification of the invoice is entered into the system. ",
+      "fieldNumber_": 61.5
+    },
+    {
+      "fieldNumber": 61.7,
+      "fieldName": "CERTIFIED BY ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 61.7
+    },
+    {
+      "fieldNumber": 61.9,
+      "fieldName": "CERTIFIED BY SIG DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that a valid electronic signature was entered certifying an invoice for payment. ",
+      "fieldNumber_": 61.9
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "COMPLETED BY VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "Electronic signature of completing technician. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 62.5,
+      "fieldName": "COMPLETED BY VALIDATION VER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,5O",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used to encode and decode the Validation Code for the Payment/Invoice Tracking record at the time that the technician who completes the record enters their valid electronic signature into the system. ",
+      "fieldNumber_": 62.5
+    },
+    {
+      "fieldNumber": 62.7,
+      "fieldName": "COMPLETED BY ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 62.7
+    },
+    {
+      "fieldNumber": 62.9,
+      "fieldName": "COMPLETED BY SIG DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the person completing the details of a Payment/Invoice Tracking record entered a valid electronic signature. ",
+      "fieldNumber_": 62.9
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "BULLETIN SENT TO SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates if overdue bulletin sent to certifying service. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "DATE BULLETIN SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date bulletin sent to certifying service. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This is the MailMan message number of overdue bulletin. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "CONTROL POINT CERTIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the control point officer or clerk who certifies that the invoice is true and correct for payment. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "CONTROL POINT VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Electronic signature of certifying control point officer or clerk. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 67.5,
+      "fieldName": "CONTROL POINT VALIDATION VER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used to encode and decode the Validation Code for the Payment/Invoice Tracking record at the time that the control point officer or clerk who certifies the record enters their valid electronic signature into the system. ",
+      "fieldNumber_": 67.5
+    },
+    {
+      "fieldNumber": 67.7,
+      "fieldName": "CONTROL POINT ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 67.7
+    },
+    {
+      "fieldNumber": 67.9,
+      "fieldName": "CONTROL POINT SIG DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that a valid electronic signature was entered by a control point officer or clerk certifying an invoice for payment. ",
+      "fieldNumber_": 67.9
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "CERTIFYING CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the control point to which the invoice is referred for certification, as indicated by the obligation document. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "CERTIFYING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "421.51PA",
+      "required": false,
+      "helpText": "Services which are required to certify invoice as true and correct. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "FMS TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value in the FMS Transaction Date field determines when the Payment Voucher will be transmitted to FMS by the Generic Code Sheet module.  With the new Hold Code Sheet functionality, Obligations may be entered to take effect in the future.  This field will enable the user to ensure that the Payment Voucher does not arrive at FMS before its Obligation documents. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ACCOUNTING PERIOD MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the calendar month and year of the accounting period you would like this Payment Voucher (PV) transaction to affect in FMS.  Note:  For the PV to be accepted by FMS, the value must be an Accounting Period, which is open at the time of receipt.   For ease of data entry, this field stores Calendar Month and Calendar Year. During transmission to FMS, this value is converted to Fiscal Year and the Sequence number of that month within that Fiscal Year before being placed in the transmission rec",
+      "fieldNumber_": 72
+    }
+  ],
+  "fieldCount": 75,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "421.5", "field": .01, "type": "regular"},
+    {"name": "421.5", "field": .01, "type": "regular"},
+    {"name": "", "field": 4.5, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "421.5", "field": 5, "type": "regular"},
+    {"name": "421.5", "field": 6, "type": "regular"},
+    {"name": "421.5", "field": 27, "type": "regular"},
+    {"name": "421.5", "field": 50, "type": "regular"},
+    {"name": "", "field": 51, "type": "regular"},
+    {"name": "421.5", "field": 52, "type": "regular"},
+    {"name": "421.5", "field": 57, "type": "regular"},
+    {"name": "421.5", "field": 61.9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": ZA, "value": "W \"   \",$P(^(0),U,3) W:$D(^(2)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(421.5,50,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(2),U,1)_\"\":\"\",2),$C(59),1)\"),\"   \",$P(^(2),U,3)"}
+  ]
+}

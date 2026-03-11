@@ -1,0 +1,46 @@
+{
+  "fileNumber": 704.001,
+  "fileName": "CP_CONSOLE_ACL",
+  "globalRoot": "704.001",
+  "globalReference": "^MDC(704.001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This ITEM_ID represents the Global Unique Identifier (GUID) of a console  item and Clinical Observation (CliO) record.  An appropriate GUID is  alphanumeric and 38 characters in length.   An example ITEM_ID is:  {479AC2F0-9829-4C76-A9AC-E8A234526BE4} ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER_ID",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the end-user given access permission to the item (ITEM_ID). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACCESS_LEVEL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Read Only;1:Read+Write;2:Read+Write+Delete;3:Full Control;",
+      "helpText": "This is the level of edit access to the item (ITEM_ID) the end-user  (USER_ID) has been permitted.  In addition, \"Full Control\" will grant the  user full edit privileges as well as the ability to grant access of this  item to another user.  This access permission is granted via the Access  Control List Manager; a function within the CP Console application.   ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

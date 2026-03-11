@@ -1,0 +1,67 @@
+{
+  "fileNumber": 362.3,
+  "fileName": "IB BILL/CLAIMS DIAGNOSIS",
+  "globalRoot": "362.3IP",
+  "globalReference": "^IBA(362.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "R*P80'X",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "Enter an active diagnosis for this bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P399'X",
+      "required": true,
+      "pointerTo": 399,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number that represents the order in which the diagnoses will be printed on a bill.  Each number must be unique for a bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "POA INDICATOR",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:No Information;W:Clinically Undetermined;1:Blank/Exempt from POA Reporting;",
+      "helpText": "Enter the value that correctly indicates if this condition was present at the time the patient was admitted. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AIFN", "field": },
+    {"name": "AIFN1", "field": },
+    {"name": "AO", "field": },
+    {"name": "AO1", "field": },
+    {"name": "B", "field": },
+    {"name": "362.3", "field": .01, "type": "regular"},
+    {"name": "362.3", "field": .01, "type": "regular"},
+    {"name": "362.3", "field": .02, "type": "regular"},
+    {"name": "362.3", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "362.3", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""}
+  ]
+}

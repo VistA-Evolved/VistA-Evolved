@@ -1,0 +1,75 @@
+{
+  "fileNumber": 2006.5764,
+  "fileName": "DICOM LOCAL INSTRUMENT STATISTICS",
+  "globalRoot": "2006.5764",
+  "globalReference": "^MAGDICOM(2006.5764,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that represents the name of an instrument. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONNECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT CONNECTED;1:CONNECTED;",
+      "helpText": "The value of this field is a code that indicates whether or not the C-Store program for this instrument is currently running. A value of 1 indicates that the program has started successfully. A value of 0 indicates that no connection is currently active. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST CONNECTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date/time string that represents the timestamp for the time that the most recent connection was either established or relinquished. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSOCIATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No Association;1:Association established;",
+      "helpText": "The value of this field is a code that indicates whether or not an association is currently established for this instrument. A value of 1 indicates that an association is established. A value of 0 indicates that no association is currently established. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST ASSOCIATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date/time string that represents the fimestamp for the time that the most recent association was either established or terminated. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "2006.57641DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.57641,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5764", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

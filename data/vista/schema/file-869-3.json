@@ -1,0 +1,278 @@
+{
+  "fileNumber": 869.3,
+  "fileName": "HL COMMUNICATION SERVER PARAMETERS",
+  "globalRoot": "869.3",
+  "globalReference": "^HLCS(869.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "Stub field used to create one [and only one] entry ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "The domain name for this environment must be unique to all environments running at your site. For example, if your production domain is SITE.MED.VA.GOV and this is your test system, you must have an entry in your domain file that is different such as TEST.SITE.MED.VA.GOV. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT PROCESSING ID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:production;T:training;",
+      "helpText": "What type of environment is this account? The messaging system will not permit messages to be sent from one type of environment to a different type. The third Processing ID used by HL7 is DEBUG. This mode must be defined on the EVENT DRIVER protocol on both the sending and receiving systems.   An error will be logged when the PID for an inbound message is inappropriate for the receiving system.   Note: Ideally, TRAINING and PRODUCTION designations are maintained in separate accounts. Application",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This entry will be used in the sending facility field of HL7 message headers unless the application overrides this function by defining a facility in the Application Parameter file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This mail group should contain local IRM staff responsible for monitoring the messaging system. This group will be used for delivery of alerts or notification of significant events related to Messaging System operations. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFAULT NUMBER INCOMING FILERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the default number of background filers that will be started ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DEFAULT NUMBER OUTGOING FILERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the default number of outgoing filers that will be started ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "INCOMING FILER TASK NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "869.32",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.32,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "OUTGOING FILER TASK NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "869.33",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.33,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PURGE COMPLETED MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days \"Successfully Completed\" messages are retained before they are purged.  If no value is entered, the default is 7 days.  Used as the actual value when the \"Purge Messages\" option is scheduled through TaskMan, and as the default when run interactively. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PURGE AWAITING ACK MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days \"Awaiting Application Acknowledgement\" messages are retained before they are purged.  If no value is entered, the default is 30 days.  Used as the actual value when the \"Purge Messages\" option is scheduled through TaskMan, and as the default when run interactively. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PURGE ALL MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days that any status message are retained before they are purged(except for ERROR status messages).  If no value is entered, the default is 90 days.  Used as the actual value when the \"Purge Messages\" option is scheduled through TaskMan, and as the default when run interactively. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PURGE ERROR STATUS MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days error status messages are retained before they are  purged.  90 days is used as the actual value when the \"Purge Messages\"  option is scheduled through TaskMan, and as the default when run  interactively. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DEFAULT RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Used by the TCP/IP Link Manager. The maximum time, in seconds, in which the process supporting a non-persistent TCP/IP client logical link will wait for new messages before terminating. Upon expiration of the retention time, the process will terminate,  and the logical link will become inactive and remain inactive until further messages are queued.   The value entered here is the DEFAULT RETENTION time.  This value will be used if the RETENTION field (#400.05) in the HL LOWER LEVEL PROTOCOL PARA",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "LINK MANAGER TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is internally edited by the Link Manager.  When the Link Manager starts, this field is updated with the value of the Link Manager's task number. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "STOP LINK MANAGER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag indicating whether the Link Manager should be stopped. This field is updated by the TCP/IP Link Manager as well as through the TCP/IP Link Manager Start/Stop option. Use this option rather than directly editing this field to start/stop the TCP/IP Link Manager. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "LM LAST KNOWN $H",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is updated periodically by the Link Manager with the $Horolog value at the time of the update.  The Systems Link Monitor uses this information along with the LINK MANAGER TASK NUMBER to determine whether the Link Manager is running. Therefore, the use of this field should be restricted for internal use only and should not edited. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "LINK MONITOR VIEWS",
+      "dataType": "SUBFILE",
+      "rawType": "869.31",
+      "required": false,
+      "helpText": "Use this multiple to define VIEWS that can be used in the System Link Monitor option.  A VIEW is a list of Logical Links to display in the System Link Monitor. ",
+      "isMultiple": true,
+      "subFileNumber": 869.31,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "PING IP",
+      "dataType": "SUBFILE",
+      "rawType": "869.34",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.34,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "PING DOMAIN (PARTIAL)",
+      "dataType": "SUBFILE",
+      "rawType": "869.35",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.35,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "DON'T PING PORT",
+      "dataType": "SUBFILE",
+      "rawType": "869.36",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.36,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "DON'T PING LINK NAME (PARTIAL)",
+      "dataType": "SUBFILE",
+      "rawType": "869.391",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.391,
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "DON'T PING IP",
+      "dataType": "SUBFILE",
+      "rawType": "869.392",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.392,
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "DON'T PING DOMAIN (FULL)",
+      "dataType": "SUBFILE",
+      "rawType": "869.393",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 869.393,
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 772,
+      "fieldName": "LAST IEN, FILE 772",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0XI",
+      "length": 15,
+      "required": false,
+      "helpText": "This field holds an IEN, which can be a whole number up to 19 digits. This field is used by HL7 process to create and store the IEN for file #772. It can't be altered.  Otherwise, it may cause serious problem to the  message transaction when HL7 process is running. ",
+      "fieldNumber_": 772
+    },
+    {
+      "fieldNumber": 773,
+      "fieldName": "LAST IEN, FILE 773",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0XI",
+      "length": 15,
+      "required": false,
+      "helpText": "This field holds an IEN, which can be a whole number up to 19 digits. This field is used by HL7 process to create and store the IEN for file #773. It can't be altered.  Otherwise, it may cause serious problem to the  message transaction when HL7 process is running. ",
+      "fieldNumber_": 773
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "869.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 443.9,
+  "fileName": "IFCAP PENDING ARCHIVE",
+  "globalRoot": "443.9P",
+  "globalReference": "^PRC(443.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PO NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P442'X",
+      "required": false,
+      "pointerTo": 442,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "PO NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PURGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ARCHIVE ONLY;2:PURGE ONLY;3:ARCHIVE & PURGE;",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MOP ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "443.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "443.9", "field": .01, "type": "regular"},
+    {"name": "443.9", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

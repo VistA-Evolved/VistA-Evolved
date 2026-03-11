@@ -1,0 +1,39 @@
+{
+  "fileNumber": 68.4,
+  "fileName": "WORKLIST HEADINGS",
+  "globalRoot": "68.4P",
+  "globalReference": "^DIC(68.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P68'X",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "Name of accession area.  Points to the ACCESSION file (#68).  Programmer privileges required. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "68.41",
+      "required": false,
+      "helpText": "Contains a line number for the special heading. ",
+      "isMultiple": true,
+      "subFileNumber": 68.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "68.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

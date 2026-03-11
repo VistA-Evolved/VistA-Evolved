@@ -1,0 +1,298 @@
+{
+  "fileNumber": 790,
+  "fileName": "WV PATIENT",
+  "globalRoot": "790",
+  "globalReference": "^WV(790,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient's name.  It is a pointer to the Patient (#2) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAILING ADDRESS-STREET",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "The street mailing address of this patient.  This is computed from data in the Patient file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAILING ADDRESS-CITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The city mailing address for this patient.  This information in this field is obtained from the Patient file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAILING ADDRESS-STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "The State portion of this patient's mailing address, obtained from the Patient file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAILING ADDRESS-ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "The zip code portion of this patient's mailing address is obtained from the Patient file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SSN#",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This computed field gathers the patient's social security number from the Patient file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CASE MANAGER",
+      "dataType": "POINTER",
+      "rawType": "RP790.01'",
+      "required": true,
+      "pointerTo": 790.01,
+      "helpText": "This field contains the name of the person who is currently managing the women's health care needs of this patient. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CX TX NEED",
+      "dataType": "POINTER",
+      "rawType": "P790.5'",
+      "required": false,
+      "pointerTo": 790.5,
+      "helpText": "This field contains the name of the current or next cervical procedure or treatment need scheduled for this patient. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "CX TX NEED DUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date when this cervical procedure or treatment need should be completed. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DES DAUGHTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field indicates if this patient's mother took diethylstilbestrol (DES) when she was pregnant with this patient. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PAP REGIMEN",
+      "dataType": "POINTER",
+      "rawType": "P790.03'",
+      "required": false,
+      "pointerTo": 790.03,
+      "helpText": "This field stores the current PAP regimen for the patient. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PAP REGIMEN START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores a date on which the patient began or will begin her current PAP regimen. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "BR TX NEED",
+      "dataType": "POINTER",
+      "rawType": "P790.51'",
+      "required": false,
+      "pointerTo": 790.51,
+      "helpText": "This field contains the name of the the current or next breast study procedure needed for this patient. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "BR TX NEED DUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date by which the breast treatment procedure should be completed. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "DATE OF FIRST ENCOUNTER",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date of the patient's first clinic visit. Although a date is automatically stuffed when the Automatically Load Patients [WV AUTOLOAD PATIENTS] option is run, the information can be edited through the Edit/Print Patient Case Data option. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "REFERRAL SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P790.07'",
+      "required": false,
+      "pointerTo": 790.07,
+      "helpText": "This field stores information on who referred the patient or how the patient found out about the womens health care services at the facility. This field points to entries in the WV Referral Source (#790.07) file. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "FAMILY HX OF BR CA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:no family history;1:2nd degree relative;2:1st degree relative;3:>1 1st degree relatives;4:personal history;9:unknown;",
+      "helpText": "This field identifies if the patient or the patient's relatives have had breast cancer. The information may be selected from a set of codes to indicate unknown, personal history, no family history, a 2nd degree relative (cousin, aunt, grandmother), a 1st degree relative (mother OR sister) or multiple 1st degree relatives (mother AND sister). ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "DATE INACTIVE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date on which this patient's record became inactive.  ANY date (past, present or future) will cause this patient's data to be excluded from all reports that assess treatment needs (i.e., Snapshot of the Program Today report and Browse Patients with Needs Past Due). ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "BREAST TX FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The name of the facility responsible for performing breast diagnostic procedures for this patient if treatment is performed at another facility. Facility choices are limited to entries in the Institution (#4) file. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "CERVICAL TX FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The name of the facility that is responsible for providing the gynecological tests/exams for this patient if treatment is performed at another facility. Facility choices are limited to entries in the Institution (#4) file. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "CST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;D:Declined to Answer;U:Unknown;",
+      "helpText": "This field indicates if the patient has experienced any sexual trauma (rape, sexual assault, etc.) as a civilian. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "MATERNITY CARE COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "*P790.011'",
+      "required": false,
+      "pointerTo": 790.011,
+      "helpText": "This field contains the name of the person who is coordinating the  maternity care of this patient. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "790.06",
+      "required": false,
+      "helpText": "This field stores special notes regarding the patient and her health care needs. ",
+      "isMultiple": true,
+      "subFileNumber": 790.06,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPOINTMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "790.09A",
+      "required": false,
+      "helpText": "This multiple contains the patient's future appointments. ",
+      "isMultiple": true,
+      "subFileNumber": 790.09,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPLETE ADDRESS",
+      "dataType": "SUBFILE",
+      "rawType": "790.12A",
+      "required": false,
+      "helpText": "This multiple field contains the patient's complete mailing address. ",
+      "isMultiple": true,
+      "subFileNumber": 790.12,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PREGNANCY STATUSES",
+      "dataType": "DATE",
+      "rawType": "790.05D",
+      "required": false,
+      "helpText": "This field stores the data associated with the patient's pregnancy status. ",
+      "isMultiple": true,
+      "subFileNumber": 790.05,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LACTATION STATUSES",
+      "dataType": "DATE",
+      "rawType": "790.16D",
+      "required": false,
+      "helpText": "This field stores the data associated with the patient's lactation status. ",
+      "isMultiple": true,
+      "subFileNumber": 790.16,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "ALVSIT", "field": },
+    {"name": "APDLOG", "field": },
+    {"name": "APRLOG", "field": },
+    {"name": "APVSIT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "790", "field": .01, "type": "regular"},
+    {"name": "790", "field": .1, "type": "regular"},
+    {"name": "790", "field": .16, "type": "regular"},
+    {"name": "790", "field": .17, "type": "regular"},
+    {"name": "790", "field": .29, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790.01,+$P(^(0),U,10),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790.01,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

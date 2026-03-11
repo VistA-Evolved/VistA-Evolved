@@ -1,0 +1,209 @@
+{
+  "fileNumber": 357,
+  "fileName": "ENCOUNTER FORM",
+  "globalRoot": "357I",
+  "globalReference": "^IBE(357,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  The name of the encounter form. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SIMPLEX/DUPLEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SIMPLEX;1:DUPLEX,LONG-EDGE BINDING;2:DUPLEX,SHORT-EDGE BINDING;",
+      "helpText": "   Allows forms to be printed either one-sided or two-sided.   SIMPLEX - refers to a form that will print on one side of the paper. DUPLEX  - refers to a form that will print on both sides of the paper.   .SHORT-EDGE BINDING - prints from top to bottom on the front page and    prints from bottom to top on the back page.   .LONG-EDGE BINDING  - prints from top to bottom on the front page and    prints from top to bottom on the back page.    ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  A brief description of the contents of the form and its intended use. This description will be displayed to the user. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE OF USE",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "0:RESERVED FOR UTILITY;1:OUTPATIENT ENCOUNTER FORM;",
+      "helpText": "This field will be used to categorize forms by type of use. It is possible that the form generator that is part of the Encounter Form Utilities may be used to create forms other than encounter forms. The utilities use a couple of forms (WORKCOPY, TOOL KIT), TYPE OF USE is RESERVED FOR UTILITY, that are not real forms. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COMPILED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;F:COMPILATION FAILED;",
+      "helpText": "This indicates whether a compiled version of the form exists. The compiled version is much faster to print. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USE ICR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "   If this field is set to 'YES', the computer will attempt to read hand- written print; for example, ICD diagnostic codes hand-written in an 'Other Diagnosis' encounter form block.   ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TOOLKIT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field, if set to YES, means that the form can not be deleted and can not be added to a clinic setup. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RIGHT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "  The number of characters wide the form is. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PAGE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  This is the number of usable lines on the page. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "NUMBER OF PAGES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "   The encounter form may have multiple pages.   This field is to indicate the total number of pages for the entire form.    ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SCANNED/MANUAL DATA ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "CREATING SCANNABLE FORMS    Each form created for scanning should contain at a minimum the following data elements:    1) Primary provider. 2) At least 1 procedure, usually the Evaluation and Management (EM) code. 3) Reason for visit (diagnosis).    These steps must be taken during form design for each form type that is to be scanned:    1) The form field SCANNABLE? should be set to YES. 2) The form field USE ICR? (prompted as 'Should ICR be used to auto-    matically read hand print on this for",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "FORM TYPE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the current form definition entry associated with this form.  Each time the form is edited and printed or recompiled and printed a new  form definition is created leaving the old definition for use with existing forms (its used in scanning). ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PAPER SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LETTER (8 1/2 x 11);",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ORIENTATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "p:PORTRAIT;",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "TEXT SIZE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:133 COLUMNS x 80 LINES;2:96 COLUMNS x 72 LINES;3:80 COLUMNS x 60 LINES;",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the version of AICS that created the form.  This was implemented in version 2.1.  All forms with a null entry can be treated as version 2.0 forms. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PAGE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "357.02I",
+      "required": false,
+      "helpText": "   Enter all pages that will have scannable data on them.   ",
+      "isMultiple": true,
+      "subFileNumber": 357.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODING SYSTEM UPDATES",
+      "dataType": "POINTER",
+      "rawType": "357.03PA",
+      "required": false,
+      "helpText": "This subfile stores tracking information on encounter form blocks' updates related to a specific coding system. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "ADEF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AT", "field": },
+    {"name": "AU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .01, "type": "regular"},
+    {"name": "357", "field": .04, "type": "regular"},
+    {"name": "357", "field": .07, "type": "regular"},
+    {"name": "357", "field": .13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

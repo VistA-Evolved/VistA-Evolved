@@ -1,0 +1,27 @@
+{
+  "fileNumber": 366.12,
+  "fileName": "PHARMACY BENEFITS MANAGER (PBM) APPLICATION",
+  "globalRoot": "366.12",
+  "globalReference": "^IBCNR(366.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A Pharmacy Benefits Manager (PBM) application name that identifies an electronic interface application. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.12", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

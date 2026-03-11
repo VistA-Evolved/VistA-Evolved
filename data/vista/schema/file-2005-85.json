@@ -1,0 +1,69 @@
+{
+  "fileNumber": 2005.85,
+  "fileName": "IMAGE INDEX FOR PROCEDURE/EVENT",
+  "globalRoot": "2005.85",
+  "globalReference": "^MAG(2005.85,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the procedure/event for the image being captured.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASS",
+      "dataType": "POINTER",
+      "rawType": "P2005.82'",
+      "required": false,
+      "pointerTo": 2005.82,
+      "helpText": "This field points to the IMAGE INDEX FOR CLASS file.  Select the  appropriate image class for the procedure being entered. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "2005.852P",
+      "required": false,
+      "helpText": "This field points to the IMAGE INDEX FOR SPECIALTY/SUBSPECIALTY file. Select the appropriate specialty for the procedure being entered; it is  possible to have multiple specialties for one procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter 2-5 characters abbreviation for the procedure. This can be used as part of abstract label on image display. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field is used to inactivate an entry in this file. It affects which procedures / events can be selected in the filtering option of VistA Imaging Display. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.85", "field": .01, "type": "regular"},
+    {"name": "2005.85", "field": 1, "type": "regular"},
+    {"name": "2005.85", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

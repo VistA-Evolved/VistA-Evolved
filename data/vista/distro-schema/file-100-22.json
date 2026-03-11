@@ -1,0 +1,113 @@
+{
+  "fileNumber": 100.22,
+  "fileName": "OE/RR PRINT FIELDS",
+  "globalRoot": "100.22",
+  "globalReference": "^ORD(100.22,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the record number associated with the OE/RR PRINT FIELD entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the OE/RR PRINT FIELD entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEFAULT CAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the caption to be used for printing this field, when no other is offered. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXAMPLE ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store sample data for this OE/RR PRINT FIELDS entry. It should be representative of the raw data to which the VARIABLE field will be set (i.e., if ORSTDT=2910430.0700 is a possible value of the VARIABLE for the START DATE/TIME field, then the example entry for that field might be set to 2910430.0700. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VARIABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the variable which will be printed for this OE/RR PRINT FIELD in each record.  If it is NOT an environmental variable (e.g., DT), then it will be SET by executing the CODE FOR SETTING VARIABLE node. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FORMATTING FUNCTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field names the extrinsic function, currently found in ^ORU, which is used for formatting the output of a given OE/RR PRINT FIELD (e.g., NAME^ORU, or DATE^ORU).  Enter the line tag only, omitting the routine name. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:COMPILE;1:EXECUTE;",
+      "helpText": "When a print field in used in a print format it is generally compiled based on the variable and the code for setting the variable.  This is the default for most print fields.    For more complex print fields it is also possible to execute code directly to do the printing.  Setting this field to EXECUTE (1) will allow this functionality.  It will use the code in the field: CODE FOR SETTING VARIABLE to perform its function.   When this field is used there is generally just one print field for the ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PACKAGE RESTRICTION",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field should only have a value if this print field is for package specific code.  This would be fields like Lab Accession # or Consult Urgency.  Entries with this field set will be compared to the package value of the order being printed.  If it doesn't match this print field will be skipped for that order. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE FOR SETTING VARIABLE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the Standard MUMPS code used for SETTING the VARIABLE printed in each record for this OE/RR PRINT FIELDS entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WORD PROCESSING",
+      "dataType": "SUBFILE",
+      "rawType": "100.222",
+      "required": false,
+      "helpText": "If present, the word-processing type data in this field will be presented in lieu of the EXAMPLE ENTRY data, when the FORMATTING FUNCTION is specified to be WORD (e.g., REASON FOR REQUEST). ",
+      "isMultiple": true,
+      "subFileNumber": 100.222,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

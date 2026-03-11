@@ -1,0 +1,96 @@
+{
+  "fileNumber": 409.91,
+  "fileName": "ACRP REPORT TEMPLATE",
+  "globalRoot": "409.91",
+  "globalReference": "^SDD(409.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the 'ACRP Ad Hoc Report' template being stored. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person that originally created and stored this template. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this template was originally stored. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The last person to file parameter specifications to this template record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date parameter specifications were stored in this template record. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A brief description of the purpose of this template. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REPORT PARAMETERS",
+      "dataType": "SET",
+      "rawType": "409.916SA",
+      "required": false,
+      "helpText": "This multiple stores the four types of parameters that a template always consists of (FORMAT, PERSPECTIVE, LIMITATIONS and PRINT ORDER). ",
+      "isMultiple": true,
+      "subFileNumber": 409.916,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADDITIONAL PRINT FIELDS",
+      "dataType": "SET",
+      "rawType": "409.917SA",
+      "required": false,
+      "helpText": "This multiple contains a list of additional print field selected to be included in the output of detailed format reports (if any). ",
+      "isMultiple": true,
+      "subFileNumber": 409.917,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 403.53,
+  "fileName": "RECALL REMINDERS PARAMETERS",
+  "globalRoot": "403.53",
+  "globalReference": "^SD(403.53,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter in this field the name of a Recall \"subset\". If your site chooses to have all clinical areas send out recall notifications the same number of  days before a recall date, all areas would be using Recall Letters, and  all areas want to scan patient scheduled appointments the same number of  days, you would need to only enter one entry.  This entry can be your  site's name. But, if your site has areas that want to have different  settings for notification type, timeframe to send out cards/let",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF NOTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LETTERS;C:CARDS;",
+      "helpText": "How should this Recall Reminder Division send out Notifications.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUTO PRINT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Please put in the number of days ahead of the Recall Reminder date that  you would like to send out Notification. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CLEAN UP DAY SETTING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "A background job runs nightly to delete recall reminders from the RECALL  REMINDERS file if an appointment has been scheduled for the patient at  the requested clinic. The background job scans the scheduled  appointments, and if an appointment has been scheduled within the CLEAN  UP DAY SETTING number of days (before or after) of the requested  appointment date, then the appointment is considered to have fulfilled  the recall reminder request, and the recall reminder is deleted. A copy  of the r",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "403.53", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

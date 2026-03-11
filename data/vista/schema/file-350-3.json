@@ -1,0 +1,123 @@
+{
+  "fileNumber": 350.3,
+  "fileName": "IB CHARGE REMOVE REASONS",
+  "globalRoot": "350.3I",
+  "globalReference": "^IBE(350.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "A number which is used to uniquely identify the entry in this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the reason that the charges are being cancelled. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a unique abbreviation for this cancellation reason that can assist in quick lookup of this entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LIMIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RX;2:OP MEANS TEST;3:GENERIC;4:OTHER;",
+      "helpText": "This field is a set of codes that identifies which type of charge the IB Charge Removal Reason can be used for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CAN CANCEL URGENT CARE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field determines whether or not the cancellation reason can be used  when cancelling an Urgent Care Copay.  Yes means that the Urgent Care  Care Copay (CC URGENT CARE) can be cancelled using that reason. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "UC VISIT PROCESSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REMOVE-ERROR;2:VISIT ONLY;3:FREE OR VISIT ONLY;4:REMOVE-DUPLICATE;",
+      "helpText": "This field tells the CC option within IB CANCEL/EDIT/ADD CHARGE how to  update the Urgent Care Visit Tracking DB (351.82) if an Urgent Care Copay  (i.e. CC URGENT CARE) is cancelled.  The visit update options after  the copay is cancelled are:     1:  Status becomes REMOVED with a reason of ENTERED IN ERROR   2:  Status becomes VISIT ONLY with a reason of NO COPAY ADDED   3:  Status becomes (<3 Free visit) FREE with a reason MISSION ACT or     (All free visits used) VISIT ONLY with NO COPAY ADDE",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field will inactivate the Cancellation reason and prevent it from  being used to cancel copayments.    Yes:          The Cancellation reason is Inactive  No or Blank:  The Cancellation reason is Active. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MH VISIT PROCESSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REMOVE-ERROR;2:VISIT ONLY;3:FREE OR VISIT ONLY;4:REMOVE-DUPLICATE;",
+      "helpText": "This field tells the CC option within IB CANCEL/EDIT/ADD CHARGE how to  update the MH Visit Tracking file (351.82) if a Mental Health Copay is  cancelled. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CAN CANCEL MH VISIT",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field determines whether or not the cancellation reason can be used  when cancelling a Cleland Dole eligible Copay. Yes means that the Cleland  Dole eligible Copay can be cancelled using that reason. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the start date for a Charge Remove Reason, if one  exists. If none exists, then set the field to NULL. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the end date for a Charge Remove Reason, if one  exists. If none exists, then set the field to NULL. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "350.3", "field": .01, "type": "regular"},
+    {"name": "350.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

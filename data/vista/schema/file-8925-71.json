@@ -1,0 +1,120 @@
+{
+  "fileNumber": 8925.71,
+  "fileName": "TIU TEXT EVENTS",
+  "globalRoot": "8925.71",
+  "globalReference": "^TIU(8925.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name to identify this text search string. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "Flag to determine if this entry should be searched in TIU documents. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CASE SENSITIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates if searching for this text is case sensitive. This field is no longer used as of patch TIU*1.0*324 ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INCLUDE SPACES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used as of patch TIU*1.0*324. Indicates if spaces should be stripped from text before searching for text string. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT TO SEARCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text string to search for in the document. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ALERT MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text to be used for the CPRS alert message. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "SIGNER ALERT MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text to be used for the CPRS alert to be sent to the signer of the document that informs them of the notifications that have been sent. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEARCH STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text string to search for.  It must match the entry in the TEXT TO SEARCH field (#1). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CPRS TEAM",
+      "dataType": "POINTER",
+      "rawType": "8925.714PA",
+      "required": false,
+      "helpText": "This multiple will contain pointers to the OE/RR LIST (#100.21) file to  indicate which Provider Teams to be alerted upon matching the search string to a piece of text in the Progress Note. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VISIT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "8925.715P",
+      "required": false,
+      "helpText": "This multiple stores pointers from the HOSPITAL LOCATION (#44) file to  limit which locations are to be included in the Progress Note search.   If a location is entered into this multiple, the search will be limited  to those notes that match this location.  If this multiple is left empty,  then all locations will be searched. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "VISIT LOCATION STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the document's visit location is contained in this string then this event will trigger an alert. ",
+      "fieldNumber_": 5.1
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

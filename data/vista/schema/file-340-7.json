@@ -1,0 +1,377 @@
+{
+  "fileNumber": 340.7,
+  "fileName": "AR METRICS",
+  "globalRoot": "340.7",
+  "globalReference": "^RCSTAT(340.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the statistics were captured. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "RPP NO. BILLS ADDED MANUALLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of times a bill was manually added to a  Repayment Plan on a given day. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "RPP NO. BILLS NP ADDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of bills added to Repayment Plans by the  Repayment Plan Nightly Process. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "RPP NO. PLANS INTO REVIEW ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that were flagged for Review on a given day by either the Repayment Plan Nightly Process or when bills were manually added to a Repayment Plan. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "RPP NO. PLANS REMOVED REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that were removed from Review on a given day by either the Repayment Plan Nightly Process or when the terms of the plan were edited. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "RPP NO. PLANS NEW CS AUTO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of active Repayment Plans whose debtors had  bills sent to the Treasury Cross Servicing Program with the Repayment  Plans AUTO ADD (automatically adding new bills to active repayment plans)  set to Yes. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "RPP NO. PLANS NEW CS NO AUTO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of active Repayment Plans whose debtors had  bills sent to the Treasury Cross Servicing Program with the Repayment  Plans AUTO ADD (automatically adding new bills to active repayment plans)  set to No. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "RPP NO. PLANS CS ENTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of new Repayment Plans created on a given  date for debtors who have debt referred to the Treasury Cross Servicing Program. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "RPP NO. PLANS CS REMOVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of active plans whose debtors with debt in the Treasury Cross Servicing Program recalled all of that debt  successfully. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "RPP NO. FORBEARANCES GRANTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This fields stores the Number of Forbearances granted daily. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "NO. PLANS NEW TO CURRENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of New to a status of Current. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "NO. PLANS CURRENT TO LATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Current to a status of Late. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "NO. PLANS LATE TO DELINQUENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Late to a status of Delinquent. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "NO. PLANS DELINQ TO DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Delinquent to a status of Defaulted. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "NO. PLANS DEFAULT TO TERM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Defaulted to a status of Terminated. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "NO. PLANS LATE TO CURRENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Late to a status of Current. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "NO. PLANS DELINQUENT TO LATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Delinquent to a status of Late. ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 1.18,
+      "fieldName": "NO. PLANS DELINQ TO CURRENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Delinquent to a status of Current. ",
+      "fieldNumber_": 1.18
+    },
+    {
+      "fieldNumber": 1.19,
+      "fieldName": "NO. PLANS DEFAULT TO DELINQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Defaulted to a status of Delinquent. ",
+      "fieldNumber_": 1.19
+    },
+    {
+      "fieldNumber": 1.21,
+      "fieldName": "NO. PLANS DEFAULTED TO LATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Defaulted to a status of Late. ",
+      "fieldNumber_": 1.21
+    },
+    {
+      "fieldNumber": 1.22,
+      "fieldName": "NO. PLANS DEFAULT TO CURRENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Defaulted to a status of Current. ",
+      "fieldNumber_": 1.22
+    },
+    {
+      "fieldNumber": 1.23,
+      "fieldName": "NO. PLANS CURRENT TO PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Current to a status of Paid In Full. ",
+      "fieldNumber_": 1.23
+    },
+    {
+      "fieldNumber": 1.24,
+      "fieldName": "NO. PLANS LATE TO PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Late to a status of Paid In Full. ",
+      "fieldNumber_": 1.24
+    },
+    {
+      "fieldNumber": 1.25,
+      "fieldName": "NO. PLANS DELINQUENT TO PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Delinquent to a status of Paid In Full. ",
+      "fieldNumber_": 1.25
+    },
+    {
+      "fieldNumber": 1.26,
+      "fieldName": "NO. PLANS DEFAULTED TO PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Defaulted to a status of Paid in Full. ",
+      "fieldNumber_": 1.26
+    },
+    {
+      "fieldNumber": 1.27,
+      "fieldName": "NO. PLANS CLOSED ADMIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have been  Closed using the reason of Administrative. ",
+      "fieldNumber_": 1.27
+    },
+    {
+      "fieldNumber": 1.28,
+      "fieldName": "NO. PLANS CLOSED DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have been  manually Closed due to Debtor Default. ",
+      "fieldNumber_": 1.28
+    },
+    {
+      "fieldNumber": 1.29,
+      "fieldName": "NO. PLANS NEW TO CLOSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of New to a status of Closed. ",
+      "fieldNumber_": 1.29
+    },
+    {
+      "fieldNumber": 1.31,
+      "fieldName": "NO. PLANS CURRENT TO CLOSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Current to a status of Closed. ",
+      "fieldNumber_": 1.31
+    },
+    {
+      "fieldNumber": 1.32,
+      "fieldName": "NO. PLANS LATE TO CLOSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Late to a status of Closed. ",
+      "fieldNumber_": 1.32
+    },
+    {
+      "fieldNumber": 1.33,
+      "fieldName": "NO. PLANS DELINQ TO CLOSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of Delinquent to a status of Closed. ",
+      "fieldNumber_": 1.33
+    },
+    {
+      "fieldNumber": 1.34,
+      "fieldName": "NO. PLANS NEW TO PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of Repayment Plans that have moved from a  status of NEW to PAID IN FULL. ",
+      "fieldNumber_": 1.34
+    },
+    {
+      "fieldNumber": 1.35,
+      "fieldName": "NO. PLANS NEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of new Repayment Plans created. ",
+      "fieldNumber_": 1.35
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "NO. SECS AT CS PROCESSING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores how long it took the AT CS review portion of the  Repayment Plan Nightly Process to run (in seconds). ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "NO. SECS RPP ADD BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the length of time (in seconds) it took to complete the Add New Bills section of the Repayment Plan Nightly Process. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "NO. SECS RPP STATUS UPDATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the length of time (in seconds) it took to complete the  Repayment Plan Status Update portion of the Repayment Plan Nightly  Process. ",
+      "fieldNumber_": 2.03
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "340.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

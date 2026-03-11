@@ -1,0 +1,58 @@
+{
+  "fileNumber": 2006.5838,
+  "fileName": "DICOM LAB TEMP LIST",
+  "globalRoot": "2006.5838",
+  "globalReference": "^MAG(2006.5838,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUBFILE NUMBER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "63.08:Surgical Pathology;63.2:Autopsy Organ/Tissue;63.09:Cytopathology;63.02:Electron Microscopy;",
+      "helpText": "This is the sub-file of the LAB DATA (#63) file which contains  the record to which the image is temporarily associated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAB LRDFN",
+      "dataType": "POINTER",
+      "rawType": "RP63'",
+      "required": true,
+      "pointerTo": 63,
+      "helpText": "This is the main LAB record with which the image is temporarily associated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INVERSE DATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,6",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the IEN of the record in the sub-file identified by the SUBFILE NUMBER (#.01) field to which the image is temporarily associated. The main LAB record is identified by the LAB LRDFN (#2) field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2005'",
+      "required": true,
+      "pointerTo": 2005,
+      "helpText": "The image is usually the group-parent of the group of images that is linked to the entity in the temporary file.   (When the image group consists of one single image, that image won't have a \"group parent\", and this field will be the image itself.) ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5838", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

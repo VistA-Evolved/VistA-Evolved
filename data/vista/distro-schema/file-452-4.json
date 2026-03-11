@@ -1,0 +1,69 @@
+{
+  "fileNumber": 452.4,
+  "fileName": "PRSE EDUCATION PROGRAM/CLASS CATEGORY",
+  "globalRoot": "452.4I",
+  "globalReference": "^PRSE(452.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROGRAM CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains a name which is used to categorize or group related programs or classes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PAID CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a code that PAID associates with a program or class category. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROGRAM/CLASS",
+      "dataType": "POINTER",
+      "rawType": "452.42PA",
+      "required": false,
+      "helpText": "This field contains the names of classes associated with this category ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This field indicates the service associated with this category. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user who entered this category. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CODE", "field": },
+    {"name": "SER", "field": },
+    {"name": "452.4", "field": .01, "type": "regular"},
+    {"name": "452.4", "field": .05, "type": "regular"},
+    {"name": "452.4", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 71.2,
+  "fileName": "PROCEDURE MODIFIERS",
+  "globalRoot": "71.2",
+  "globalReference": "^RAMIS(71.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the procedure modifier.  Procedure modifiers are used to further describe the procedure performed and can be from 2-30 characters in length.   Following are examples of procedure modifiers which are included in the system:  Portable, Operating Room, Bilateral, Left, Right.  Sites may add additional procedure modifiers. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF IMAGING",
+      "dataType": "POINTER",
+      "rawType": "71.23PA",
+      "required": false,
+      "helpText": "This field contains the name of the type of imaging from the 'Imaging Type' file.  Enter imaging types for which this modifier is valid. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AMIS CREDIT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "b:BILATERAL;o:OPERATING ROOM;p:PORTABLE;",
+      "helpText": "This is the AMIS credit indicator used in workload reports for this modifier.  If this modifier is a bilateral, operating room or portable type of modifier, this field should be used to indicate that. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "71.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

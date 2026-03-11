@@ -1,0 +1,62 @@
+{
+  "fileNumber": 5.11,
+  "fileName": "ZIP CODE",
+  "globalRoot": "5.11I",
+  "globalReference": "^VIC(5.11,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the five-digit or nine-digit ZIP Code number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city referenced by the ZIP Code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COUNTY",
+      "dataType": "POINTER",
+      "rawType": "RP5.1'",
+      "required": true,
+      "pointerTo": 5.1,
+      "helpText": "This is the county in which the ZIP Code area is located. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state in which this ZIP Code area is located. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "5.11", "field": .01, "type": "regular"},
+    {"name": "5.11", "field": .01, "type": "regular"},
+    {"name": "5.11", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VIC(5.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(5.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",$S($D(^DIC(5,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

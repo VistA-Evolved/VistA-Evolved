@@ -1,0 +1,180 @@
+{
+  "fileNumber": 350.1,
+  "fileName": "IB ACTION TYPE",
+  "globalRoot": "350.1",
+  "globalReference": "^IBE(350.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the  unique name of this action type.  The name should begin with the namespace of the application that will use this action type and should describe the function being billed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a short description that can be output on space limited reports. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHARGE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P430.2'",
+      "required": false,
+      "pointerTo": 430.2,
+      "helpText": "This is the pointer to the ACCOUNT RECEIVABLE CATEGORY file.  This data will get passed to AR when an IB ACTION for this ACTION type gets passed to AR. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "Enter the name of the Service/Section that will be using this action type.  This is required by Accounts Receivable. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEW;2:CANCEL;3:UPDATE;81:MEDICARE DEDUCTIBLE;82:CHAMPVA LIMIT;91:HOSPITAL ADMISSION;92:NHCU ADMISSION;93:LTC ADMISSION;",
+      "helpText": "This field tells the IB filer the order in which to file entries with AR.  A new entry must be filed before it can be cancelled.  An update action type will generate two actions, a cancel of previous entry, and an updated entry containing the correct data.  The update will be filed after the cancel.  The ordering must be maintained so that the last full entry in the INTEGRATED BILLING ACTION file for a parent is the most current entry.  (an inverse date x-ref on the parent field will indicate th",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CANCELLATION ACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This is the IB ACTION TYPE entry that will be the 'CANCEL' type for this entry.  If this is a 'CANCEL' type entry, then this will be itself. Every 'NEW' type entry should have an associated 'CANCEL' and 'UPDATE' type entry. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "UPDATE ACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This is the IB ACTION TYPE entry that will be the 'UPDATE' type for this entry.  If this entry is an UPDATE type then it will be itself. For every 'NEW' type of entry, there should be an associated 'CANCEL' and 'UPDATE' type. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "USER LOOKUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the action that may be used for look-up and  printing on reports.  The name will only exist for IB ACTION TYPE entries whose SEQUENCE NUMBER is \"1\" for NEW. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NEW ACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This is the IB ACTION TYPE entry that is the 'NEW' type for this entry. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PLACE ON HOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to flag those IB Actions (as identified by the IB Action Type) which may be 'held up' in Integrated Billing until reimbursement from an Insurance company for the billing of the same event has been received.   The field will be set to 'YES' if the Action Type is one which represents a billable action which may be billed to a patient's insurance company as well as to the patient. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BILLING GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INPT/NHCU FEE SERVICE;2:INPT/NHCU COPAY;3:INPT/NHCU PER DIEM;4:OPT COPAY;5:RX COPAY;6:CHAMPVA;7:TRICARE;8:LTC OPT;9:LTC INPT;",
+      "helpText": "This field is a set of codes used to enter the group for manual charge processing. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether or not this Action Type has been inactivated. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PARENT TRACE LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the executable code that will expand the field RESULTING FROM in the INTEGRATED BILLING ACTION File to return in Y(n) the zeroth node of the entry creating this entry.  If the entry is caused by a top level entry then Y(0) will equal the zeroth node of the file.  If an entry is caused by a lower level entry then in addition to Y(0), Y(1) will be the zeroth node of the next lower level, Y(2) will be the zeroth node of the third level, etc.  If a node described in the RESULTING FROM field ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SET LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the executable MUMPS code that will calculate the BRIEF DESCRIPTION stored in file 350.  This is used by the IB application interface routines. This may execute the PARENT TRACE LOGIC to return data from the application. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FULL PROFILE LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the standard MUMPS code that will calculate the full profile of an IB ACTION entry as approved by the DBA agreements between integrating applications. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ELIGIBILITY LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field the standard mumps code to determine  eligibility to use the IB ACTION TYPE for the desired debtor. ",
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "ANEW", "field": },
+    {"name": "ANEW1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "350.1", "field": .01, "type": "regular"},
+    {"name": "350.1", "field": .02, "type": "regular"},
+    {"name": "350.1", "field": .04, "type": "regular"},
+    {"name": "350.1", "field": .04, "type": "regular"},
+    {"name": "350.1", "field": .05, "type": "regular"},
+    {"name": "350.1", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

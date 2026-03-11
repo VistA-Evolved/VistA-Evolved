@@ -1,0 +1,391 @@
+{
+  "fileNumber": 53.79,
+  "fileName": "BCMA MEDICATION LOG",
+  "globalRoot": "53.79",
+  "globalReference": "^PSB(53.79,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the PATIENT File (#2) and is the patient that received the medication. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text room-bed and ward location of the patient for Inpatient  Medication orders or Clinic Name for Clinic orders at the time of the med  pass. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Division of the ward that this patient was on during the med pass. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ENTERED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time the med pass was filed.  Defaults to NOW on record creation. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the NEW PERSON file (#200).  Contains the user passing meds. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Fileman Date/Time containing the actual time the med was administered. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ACTION BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to the NEW PERSON file (#200).  Contains the user passing meds. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ADMINISTRATION MEDICATION",
+      "dataType": "POINTER",
+      "rawType": "RP50.7'",
+      "required": true,
+      "pointerTo": 50.7,
+      "helpText": "Pointer to ORDERABLE ITEM (#50.7) containing the medication entered for the order. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "G:GIVEN;H:HELD;R:REFUSED;N:NOT GIVEN;RM:REMOVED;I:INFUSING;S:STOPPED;C:COMPLETED;M:MISSING DOSE;",
+      "helpText": "Status of administration (H:Held,R:Refused,G:Given,N:NOT GIVEN) ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ORDER REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains the IEN to the actual order in PHARMACY PATIENT (#55) followed by a U for Unit Dose or V for IV ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ORDER SCHEDULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CONTINUOUS;P:PRN;O:ONE-TIME;OC:ON-CALL;",
+      "helpText": "Contains the schedule type of the order. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SCHEDULED ADMINISTRATION TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a continuous order this field will contain the actual administration date and time the medication was ordered for. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ORDER ADMINISTRATION VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "If a continuous order this field contains the minutes early (<1) or Late (>1) that the medication was given. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ORDER DOSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text field containing the dosage from the original order. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "INJECTION SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text field containing the injection site of medication that are injected. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "SCHEDULED REMOVAL TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Medications Requiring Removal (MRR) have times that they are to be removed from the patient after they were previously Given.  These medications are only those that point to an Orderable Item file entry that has the Prompt  For Removal In BCMA field set to value 1-3. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "DERMAL SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text body location where a Dermal medication was applied. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "PRN REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text field containing the PRN reason for a PRN med being given. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "PRN EFFECTIVENESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text field containing the effectiveness of a PRN medication. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "PRN EFFECTIVENESS ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file NEW PERSON (#200) with the IEN of the user logging the PRN effectiveness. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "PRN EFFECTIVENESS ENTERED AT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time the PRN effectiveness was charted. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "PRN EFFECTIVENESS MINUTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of minutes from administration to the charting of PRN effectiveness. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "IV UNIQUE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique ID number of an IV bag, which is generated from Inpatient Medications. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PRN REASON FLAG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The PRN REASON FLAG field is to indicate whether the BCMA Med Log file entry is PRN activity and has an associated PRN REASON which has been set  to require BCMA user attention or action. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "WITNESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the DATE/TIME that this administration of a High Risk/High Alert  medication was witnessed. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "ADMIN WITNESSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Contains the user that was required to Witness the passing of meds due to  Drug High Risk/Alert. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "53.793",
+      "required": false,
+      "helpText": "Multiple containing the comments entered for each med pass. ",
+      "isMultiple": true,
+      "subFileNumber": 53.793,
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "WITNESS COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comment the witness may want to enter while witnessing an administration for a High Risk/High Alert medication. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "WITNESS HR ORDER CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT HIGH RISK/ALERT;1:HIGH RISK/ALERT-NO WITNESS REQUIRED IN BCMA;2:RECOMMEND WITNESS IN BCMA-HIGH RISK/ALERT;3:WITNESS REQUIRED IN BCMA-HIGH RISK/ALERT;",
+      "helpText": "This field contains the highest level of all the High Risk/High Alert drug indicators that were found in the order when this medication was  passed. ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "WITNESSED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will track whether the Witness was bypassed for a High  Risk/High Alert drug during medication passing. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": .35,
+      "fieldName": "INFUSION RATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the infusion rate for an IV bag, which is passed by Inpatient Medications. ",
+      "fieldNumber_": .35
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DISPENSE DRUG",
+      "dataType": "POINTER",
+      "rawType": "53.795P",
+      "required": false,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "ADDITIVES",
+      "dataType": "POINTER",
+      "rawType": "53.796P",
+      "required": false,
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "SOLUTIONS",
+      "dataType": "POINTER",
+      "rawType": "53.797P",
+      "required": false,
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "AUDIT LOG",
+      "dataType": "DATE",
+      "rawType": "53.799D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 53.799,
+      "fieldNumber_": .9
+    }
+  ],
+  "fieldCount": 35,
+  "crossReferences": [
+    {"name": "AADT", "field": },
+    {"name": "ACHKPRN", "field": },
+    {"name": "AEDT", "field": },
+    {"name": "AOIP", "field": },
+    {"name": "AOIP1", "field": },
+    {"name": "AORD2", "field": },
+    {"name": "APRN2", "field": },
+    {"name": "AU06", "field": },
+    {"name": "AU09", "field": },
+    {"name": "AU16", "field": },
+    {"name": "AU21", "field": },
+    {"name": "AU22", "field": },
+    {"name": "AU28", "field": },
+    {"name": "AU29", "field": },
+    {"name": "AU32", "field": },
+    {"name": "AU33", "field": },
+    {"name": "AVARCHK", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "53.79", "field": .01, "type": "regular"},
+    {"name": "53.79", "field": .04, "type": "regular"},
+    {"name": "53.79", "field": .06, "type": "regular"},
+    {"name": "53.79", "field": .06, "type": "regular"},
+    {"name": "53.79", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "53.79", "field": .08, "type": "regular"},
+    {"name": "53.79", "field": .09, "type": "regular"},
+    {"name": "53.79", "field": .12, "type": "regular"},
+    {"name": "53.79", "field": .13, "type": "regular"},
+    {"name": "", "field": .13, "type": "regular"},
+    {"name": "53.79", "field": .14, "type": "regular"},
+    {"name": "53.79", "field": .16, "type": "regular"},
+    {"name": "", "field": .17, "type": "regular"},
+    {"name": "53.79", "field": .21, "type": "regular"},
+    {"name": "", "field": .22, "type": "regular"},
+    {"name": "", "field": .22, "type": "regular"},
+    {"name": "53.79", "field": .22, "type": "regular"},
+    {"name": "", "field": .24, "type": "regular"},
+    {"name": "53.79", "field": .25, "type": "regular"},
+    {"name": "53.79", "field": .28, "type": "regular"},
+    {"name": "53.79", "field": .29, "type": "regular"},
+    {"name": "53.79", "field": .32, "type": "regular"},
+    {"name": "53.79", "field": .33, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .08, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PS(50.7,+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50.7,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .11, "value": "W:$D(^(.1)) \"   \",$P(^(.1),U,1)"}
+  ]
+}

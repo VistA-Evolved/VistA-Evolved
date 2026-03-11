@@ -1,0 +1,26 @@
+{
+  "fileNumber": 2006.17,
+  "fileName": "MUSE VERSIONS",
+  "globalRoot": "2006.17",
+  "globalReference": "^MAG(2006.17,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.17", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

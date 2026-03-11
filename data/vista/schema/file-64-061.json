@@ -1,0 +1,206 @@
+{
+  "fileNumber": 64.061,
+  "fileName": "LAB ELECTRONIC CODES",
+  "globalRoot": "64.061",
+  "globalReference": "^LAB(64.061,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "IEN Internal Entry Number of LAB ELECTRONIC CODES FILE 64.061 ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Electronic code name used in electronic messaging. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOINC ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HL7 ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAB ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASSOCIATED FILES",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "64.614AV",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 64.614,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HL7 TABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ATTRIBUTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "U:UPDATE/STATUS;S:SPECIMEN;P:PRIORITY;E:EVENT;M:MEASUREMENTS;G:GENERAL;C:CHALLENGE;PR:PROPERTY;A:ADJUSTMENT;CL:CLASS;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LOINC TABLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of the LOINC table from the LOINC Users' Guide. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUBTYPE",
+      "dataType": "POINTER",
+      "rawType": "P64.062'",
+      "required": false,
+      "pointerTo": 64.062,
+      "helpText": "This field is used to further define properties. Can be used as screen element. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SCREEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field contains a screen value triggered by SUBTYPE (#10) field. Look can be done on this file by indicating how the returned value should be screened. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LEX ABBREV",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this entry is an SCT Hierarchical term, this field contains the  Lexicon abbreviation for this concept. This abbreviation should be passed  to the Lexicon (LEX API) for term look-up. This abbreviation is used by  the LEX API to scope the returned values when a SCT text term's SCT code is requested. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:EM;CH:CH;BB:BB;MI:MI;SP:SP;AU:AU;CY:CY;",
+      "helpText": "This field contains the LAB DATA (#63) file subscript. The entry  indicates the subfile subscript where data should be stored.   When selecting database data storage location, screen on this field. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 63.1,
+      "fieldName": "FILE/SUBFILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This file contains the subfile where the data should be stored for this  subscript. ",
+      "fieldNumber_": 63.1
+    },
+    {
+      "fieldNumber": 63.2,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This filed contains the field number of the subfile or the subscript;  where results should be stored. ",
+      "fieldNumber_": 63.2
+    },
+    {
+      "fieldNumber": 63.3,
+      "fieldName": "SCT TOP CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'X",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field points to the SNOMED CT Top Level Concepts (hierarchy). Only  those entries associated with SNOMED mapping may have this association  established. ",
+      "fieldNumber_": 63.3
+    },
+    {
+      "fieldNumber": 63.5,
+      "fieldName": "STORAGE FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the file that this SCT concept term is stored in the  Laboratory Package number space. Enter a valid file number between  60-69.9999. ",
+      "fieldNumber_": 63.5
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "VR", "field": },
+    {"name": "64.061", "field": .01, "type": "regular"},
+    {"name": "64.061", "field": .01, "type": "regular"},
+    {"name": "64.061", "field": .01, "type": "regular"},
+    {"name": "64.061", "field": 1, "type": "regular"},
+    {"name": "64.061", "field": 2, "type": "regular"},
+    {"name": "64.061", "field": 3, "type": "regular"},
+    {"name": "64.061", "field": 5, "type": "regular"},
+    {"name": "64.061", "field": 7, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 7, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(64.061,7,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 8, "value": "W \"   \",$P(^(0),U,8)"}
+  ]
+}

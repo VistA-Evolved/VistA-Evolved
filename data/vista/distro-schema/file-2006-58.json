@@ -1,0 +1,66 @@
+{
+  "fileNumber": 2006.58,
+  "fileName": "DICOM LOG",
+  "globalRoot": "2006.58",
+  "globalReference": "^MAGDMLOG(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "JOB",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "The value of this field is an integer number that identifies the MUMPS-job that created the current log-file.   While there may be 'old' log-files remaining from a job with the same number, the \"B\" cross-reference for this field will only keep track of the log-file that is currently open for any given job. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that identifies the date and time on which the current log-file was created.   This value is encoded in $Horolog Format. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that is used as a header for the current log-file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5801A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5801,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LINE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5802A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5802,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.58", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

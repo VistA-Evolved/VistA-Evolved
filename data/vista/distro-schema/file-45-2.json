@@ -1,0 +1,85 @@
+{
+  "fileNumber": 45.2,
+  "fileName": "PTF TRANSFERRING FACILITY",
+  "globalRoot": "45.2I",
+  "globalReference": "^DGTF(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The three digit number assigned to the station number associated with this PTF record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Station number ID associated with this station. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the station name. The station name must be between 3-32 characters. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This field contains the state where the station is located. This is a pointer to the state file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISTRICT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the district for this station number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the county code for this station. The entry must be three characters in length. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "45.2", "field": .01, "type": "regular"},
+    {"name": "45.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"},
+    {"field": 4, "value": "W:$D(^(\"0\")) $S($D(^DIC(5,+$P(^(\"0\"),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "fileNumber": 2006.03,
+  "fileName": "IMAGE BACKGROUND QUEUE",
+  "globalRoot": "2006.03",
+  "globalReference": "^MAGQUEUE(2006.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the internal entry number (IEN) of the QUEUE entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the queue holding the entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This field references the site parameter file. The Site parameter entry  defines all of the attributes of Vista Imaging local area network. This  includes facility user preferences, network write locations, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to the user creating the entry in the queue. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYSTEM VOLUME GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The identification of the system used to create the entry in the queue. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUEST DATE & TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the entry was placed into the queue. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMPLETION STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The status of the handing of the request by the Background Processor. The field is null until the entry is processed in the background. A positive value indicates a successful completion of the request. A negative value indicates a failure to complete the request. Explanatory text follows the numeric status in this field ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMPLETION DATE & TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the background processor finished the request. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IMAGE POINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pointer to file 2005. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "QUEUE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Type of Background or DICOM processor queued process. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "QUEUED SEQUENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this field is blank then this queued process record represents is in its initial instantiation. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FILEPATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Complete Filepath passed from the foreground to the Background Processor. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUEUE DATA ITEM 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fifth parameter passed from the foreground to the Background Processor. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .001, "value": "W \"   \",Y"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MAG(2006.1,+$P(^(0),U,12),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2006.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

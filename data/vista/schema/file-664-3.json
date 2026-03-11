@@ -1,0 +1,58 @@
+{
+  "fileNumber": 664.3,
+  "fileName": "PROSTHETIC LAB HOURS DATE",
+  "globalRoot": "664.3D",
+  "globalReference": "^RMPR(664.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date that the Technician(s) performed labor to provide item/service to the patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLIANCE/REPAIR",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "Appliance/Repair entry in file #660 associated with the labor costs from the VAF 10-2529-3 Job Section. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the INSTITUTION file (#4).  If a site is multidivisional, entries are screened out by site number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TECHNICIAN",
+      "dataType": "POINTER",
+      "rawType": "664.33PA",
+      "required": false,
+      "helpText": "This is the name(s) of the technician(s) who perform the work on the  associated VAF 10-2529-3.  This is a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "664.3", "field": .01, "type": "regular"},
+    {"name": "664.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

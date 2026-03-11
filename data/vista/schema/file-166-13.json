@@ -1,0 +1,38 @@
+{
+  "fileNumber": 166.13,
+  "fileName": "REGIONAL TREATMENT MODALITY",
+  "globalRoot": "166.13",
+  "globalReference": "^ONCO(166.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the REGIONAL TREATMENT MODALITY code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the REGIONAL TREATMENT MODALITY code description. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "166.13", "field": .01, "type": "regular"},
+    {"name": "166.13", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

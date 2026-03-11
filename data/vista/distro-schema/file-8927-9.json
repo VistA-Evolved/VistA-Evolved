@@ -1,0 +1,69 @@
+{
+  "fileNumber": 8927.9,
+  "fileName": "TIU UNAUTHORIZED ABBREVIATION",
+  "globalRoot": "8927.9",
+  "globalReference": "^TIU(8927.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UNAUTHORIZED ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30XI",
+      "length": 30XI,
+      "required": true,
+      "helpText": "Once an UNAUTHORIZED ABBREVIATION field is  created, it cannot be modified or deleted. The STATUS field is set to ACTIVE initially, but only LOCAL class entry can be toggled  or inactivated.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSXa",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;L:LOCAL;",
+      "helpText": "The value for the CLASS field is either \"NATIONAL\" or \"LOCAL\". When adding a new \"Unauthorized Abbreviation\" entry, the CLASS field is automatically defaulted to \"LOCAL\" and cannot be edited locally. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ABBREVIATION EXACT MATCH",
+      "dataType": "SET",
+      "rawType": "RSXa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The value of this field is either YES or NO. If the value is \"YES\", the system will flag an abbreviation only if the text is matched exactly. If the value is \"NO\", the system will flag an abbreviation with the same spelling regardless of case sensitivity. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "The STATUS of an unauthorized abbreviation is either 'ACTIVE' or 'INACTIVE'. If this field is set to ACTIVE, the abbreviation is identified as unauthorized and is prohibited from being used in the CPRS user's note.  If this field is set to INACTIVE, the abbreviation is no longer unauthorized. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field is used to provide more information about the abbreviation and the reason of the entry. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8927.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(8927.9,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(8927.9,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(8927.9,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

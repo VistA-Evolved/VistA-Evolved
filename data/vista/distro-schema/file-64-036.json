@@ -1,0 +1,143 @@
+{
+  "fileNumber": 64.036,
+  "fileName": "LAB DSS LAR EXTRACT",
+  "globalRoot": "64.036",
+  "globalReference": "^LAR(64.036,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQ #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": " This is an incremental number for entries into this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "POINTED TO FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the point to the file that identifies the specimen source. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the IEN of the pointed to file identified in POINTED TO FILE (#1) field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE ORDERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": " This field contains the date the order was placed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TIME ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the time the order was placed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE RESULTS AVAIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the results were available (verified and released). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIME RESULTS AVAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the time the results were available (verified and released). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "P61'",
+      "required": false,
+      "pointerTo": 61,
+      "helpText": "This field contains the pointer to TOPOGRAPHY FIELD (#61) file to identify the specimen source. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RESULTS",
+      "dataType": "SUBFILE",
+      "rawType": "64.368",
+      "required": false,
+      "helpText": "This is a multiple that contains result information for the extracted tests. ",
+      "isMultiple": true,
+      "subFileNumber": 64.368,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "EXTRACTION DATA",
+      "dataType": "DATE",
+      "rawType": "64.369DA",
+      "required": false,
+      "helpText": "This is a multiple field to extraction parameters. Usually there is only one created and it is created for the first entry. Test extraction result data is stored the next available internal entry number. ",
+      "isMultiple": true,
+      "subFileNumber": 64.369,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SPECIMEN COLLECTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": " The date specimen was collected. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SPECIMEN COLLECTION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " The time the specimen was collected. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the ordering provider of record for this set of test results. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "64.036", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

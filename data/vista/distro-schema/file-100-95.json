@@ -1,0 +1,137 @@
+{
+  "fileNumber": 100.95,
+  "fileName": "QUICK ORDER AUDIT",
+  "globalRoot": "100.95",
+  "globalReference": "^OR(100.95,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the Quick Order reference number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE TIME",
+      "dataType": "DATE",
+      "rawType": "RDa",
+      "required": true,
+      "helpText": "This is the Date/Time the Quick Order was selected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who selected the Quick Order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient for whom the order was made. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "LAST4",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "This the last four of the patients ssn and is used to help identify the individual patient. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUICK ORDER",
+      "dataType": "POINTER",
+      "rawType": "P101.41a",
+      "required": false,
+      "pointerTo": 101.41,
+      "helpText": "This is the QUICK ORDER name. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'a",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the Provider who requested the order be placed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "P:PRIMARY DRUG;A:ALTERNATIVE DRUG;",
+      "helpText": "There are two selections available for Quick Orders, Primary or  Alternate.  The primary is the clinically preferred drug. The Alternate is any drug that is considered to be an alternate to the primary drug.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44a",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the Hospital location where the order was created. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ORDER",
+      "dataType": "POINTER",
+      "rawType": "P100'a",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the order number associated with the Quick Order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DRUG",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9999",
+      "length": 9999,
+      "required": false,
+      "helpText": "This is the DRUG associated with the QUICK ORDER. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PATIENT DFN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ999999999",
+      "length": 999999999,
+      "required": false,
+      "helpText": "This is the patient ien from file the patient file ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

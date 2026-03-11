@@ -1,0 +1,85 @@
+{
+  "fileNumber": 123.9,
+  "fileName": "CONSULTS PARAMETERS FILE",
+  "globalRoot": "123.9",
+  "globalReference": "^GMR(123.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the name of the Hospital site. It should be the same as that found in the INSTITUTION File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MULTI-DIVISION/MULTI-SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a parameter for determining if a site has multiple divisions, multiple  sites, or neither. If there are multiple divisions or sites, Consults will prompt for the site or division that the medical service is in. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION/SITE MEDICAL SERVICE",
+      "dataType": "POINTER",
+      "rawType": "123.92P",
+      "required": false,
+      "helpText": "In a hospital that supports multiple divisions/sites, this field will allow all of the hospitals divisions/sites medical services to be entered. It is recommended that the divisions/sites medical services be prefixed with an identifier for the division/site, i.e., 'WACO MEDICINE'. If the hospital has a '1' in the Multi-Division/Site parameter field, then when a site enters the medicine package interface, the Division/Site Medical service to use will be asked for, i.e., 'ENTER DIVISION/SITE MEDIC",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USE CPRS 513 PRINT TEMPLATES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If a site used OE/RR 2.5 print templates to print Form 513 in Consult/Request Tracking V 2.5 wants to continue using these templates in version 3.0,   entering a 'Y' here will cause Form 513 to use the fields defined in CPRS print templates. If a site wishes to use the generic Form 513 print routine provided with Consult/Request Tracking V 3.0, enter a 'N' in this field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASK FOR SIGNIFICANT FINDINGS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field sets a parameter that is checked when TIU results are entered for a consult request. If this parameter is set to 1 ('YES') then the person entering the result is asked if the result is a significant finding. If this parameter is set to 0 ('NO'), then the entering clinician will see no prompt asking whether this is a significant finding. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "GMRCR PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "123.99P",
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "PRE-V3 ACTION IENS FROM 123.1",
+      "dataType": "SUBFILE",
+      "rawType": "123.9999",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 123.9999,
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "123.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 690.7,
+  "fileName": "Instrument HL7 Coding",
+  "globalRoot": "690.7",
+  "globalReference": "^MCAR(690.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the clinical instrument or system.  It will be used to match against the 4th piece of the MSH record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROCESSING ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will contain the name of the routine used to process this instrument. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAIL GROUP FOR ERRORS",
+      "dataType": "POINTER",
+      "rawType": "P3.8",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field will contain the Mail Group to be notified in the event of an error from the device. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "690.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

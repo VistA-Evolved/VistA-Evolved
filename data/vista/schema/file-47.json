@@ -1,0 +1,47 @@
+{
+  "fileNumber": 47,
+  "fileName": "MAS FORMS AND SCREENS",
+  "globalRoot": "47I",
+  "globalReference": "^DIC(47,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name given to any form or screen that is utilized within the MAS DHCP software package.  For example, 'DG1010-1' designates the VA Form 10-10, \"Application for Medical Benefits\", first page which is printed at the end of a Registration containing demographic, NOK, Service Data, and other pertinent data collected on a veteran applying for care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of the chosen form or screen utilized within the MAS DHCP software package.  For example, 'DG1010-1' designates the namespace for the ADT module (DG) and the VA Form number (1010) and -1 indicates the first page of the form.  This is the VA Form 10-10, \"Application for Medical Benefits\" which is printed at the end of a Registration containing demographic, NOK, Service Data, and other pertinent data collected on a veteran applying for care. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "47.01",
+      "required": false,
+      "helpText": "The text is a word-processing field (free text with ability to place in specified format) that shows the actual text or contents of the chosen form or screen. ",
+      "isMultiple": true,
+      "subFileNumber": 47.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

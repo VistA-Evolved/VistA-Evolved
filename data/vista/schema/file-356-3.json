@@ -1,0 +1,59 @@
+{
+  "fileNumber": 356.3,
+  "fileName": "CLAIMS TRACKING SI/IS CATEGORIES",
+  "globalRoot": "356.3I",
+  "globalReference": "^IBE(356.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Severity of Illness (SI) or Intensity of Service (IS) general category.     Enter the name as it appears in the Interqual manual. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*GENERAL OR SPECIAL UNIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL UNIT CODE;2:GENERAL UNIT;",
+      "helpText": "Enter whether this criteria is for general medical surgical ward or for a specialized unit as defined in the Interqual manual.  Specialized units include not only ICU's and CCU's but some other non-critical care units that one might not normally expect to see included in the list.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the 2 digit number to assist in looking up SI/IS criteria.   Do not edit this code as it will be used in the national roll-up of QM  Utilization Review data to identify the category. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LEVEL OF CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CRITICAL CARE;2:ACUTE CARE - BODY SYSTEM;3:ACUTE CARE - OTHER;",
+      "helpText": "This field stores the three levels of care for the SI/IS categories. This field is displayed as an identifier when the SI/IS category is selected. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "356.3", "field": .01, "type": "regular"},
+    {"name": "356.3", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(356.3,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

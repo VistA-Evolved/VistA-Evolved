@@ -1,0 +1,45 @@
+{
+  "fileNumber": 800000.22,
+  "fileName": "HMP LIST ATTRIBUTE",
+  "globalRoot": "800000.22",
+  "globalReference": "^HMPD(800000.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of an eHMP data domain's attribute. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the short name of an eHMP data domain's attribute. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the actual name of an eHMP data domain's attribute. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "800000.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

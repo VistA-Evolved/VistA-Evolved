@@ -1,0 +1,192 @@
+{
+  "fileNumber": 69.86,
+  "fileName": "HOWDY SITE FILE",
+  "globalRoot": "69.86",
+  "globalReference": "^LRHY(69.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAB TEST (TO EXCLUDE)",
+      "dataType": "POINTER",
+      "rawType": "69.862P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COLLECTION SAMPLE (TO EXCLUDE)",
+      "dataType": "POINTER",
+      "rawType": "69.864P",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SITE SPECIMEN (TO EXCLUDE)",
+      "dataType": "POINTER",
+      "rawType": "69.861P",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COLLECTION TYPES (TO EXCLUDE)",
+      "dataType": "SET",
+      "rawType": "69.868S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 69.868,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LABEL PRINTERS",
+      "dataType": "POINTER",
+      "rawType": "69.863P",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ORDER LABEL ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the routine to print order labels. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "EXCLUDE CLINICS",
+      "dataType": "POINTER",
+      "rawType": "69.8616P",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CHECK FOR FUTURE ORDERS (DAYS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The number of days Howdy searches for orders in the future. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CHECK FOR PAST ORDERS (DAYS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The number of days Howdy searches for orders in the past ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ORDER LABEL TESTS",
+      "dataType": "POINTER",
+      "rawType": "69.8625P",
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "EXCLUDE URGENCY",
+      "dataType": "POINTER",
+      "rawType": "69.867P",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "GREETING",
+      "dataType": "SUBFILE",
+      "rawType": "69.8632",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 69.8632,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "WELCOME TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Welcome statement. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "YOUR HOST IS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the host. (Chief P&LM) ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "HOST TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Title of the Host ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "SPACER LABEL PRINTER",
+      "dataType": "POINTER",
+      "rawType": "69.8645P",
+      "required": false,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "DELETE SAME DAY DUPLICATES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Used to delete duplicate lab tests from the same day. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "BINGO BOARD DEVICE",
+      "dataType": "POINTER",
+      "rawType": "69.8654P",
+      "required": false,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "HOWDY BOT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Used to run Howdy as a non human user. ",
+      "fieldNumber_": 56
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "69.86", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

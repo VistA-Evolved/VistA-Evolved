@@ -1,0 +1,94 @@
+{
+  "fileNumber": 7335.7,
+  "fileName": "REGULATORY AGENCY",
+  "globalRoot": "7335.7",
+  "globalReference": "^OFM(7335.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name for a regulatory agency.   NOTE: Care should be taken when entering new regulatory agencies as new entries may not be eligible for prioritization points. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREV",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains an abbreviation or acronym for the regulatory agency. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STREET ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the first line of the regulatory agency's street address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STREET ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the second line of the regulatory agency's street address. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city in which the regulatory agency is located. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is a pointer to the State File (#5). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the 5 or 9 digit zip code of the regulatory agency. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEFICIENCY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACCREDITATION;2:SAFETY;0:OTHER;",
+      "helpText": "This field is used during Minor Design and Minor Miscellaneous Prioritization Methodology.  Prioritization points are given for Accreditation deficiency citations and another section gives points for Safety deficiency citations. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7335.7", "field": .01, "type": "regular"},
+    {"name": "7335.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

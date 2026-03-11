@@ -1,0 +1,257 @@
+{
+  "fileNumber": 120.8,
+  "fileName": "PATIENT ALLERGIES",
+  "globalRoot": "120.8IPs",
+  "globalReference": "^GMR(120.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient to whom this allergy/adverse reaction pertains. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REACTANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the agent to which the patient had this reaction.  This is the  name of the reactant and will be the result of a look up on either the GMR Allergies (120.82), National Drug (50.6), Drug Ingredients (50.416),  Local Drug (50) or VA Drug Class (50.605) files. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GMR ALLERGY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is a variable pointer to help relate this allergy to some record in one of the files to which this field points.  The files that are pointed to are the GMR Allergies (120.82) file, National Drug (50.6) file, Drug (50) file, Drug Ingredients (50.416) file and VA Drug Class (50.605) file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DRUG INGREDIENTS",
+      "dataType": "POINTER",
+      "rawType": "120.802PA",
+      "required": false,
+      "helpText": "List of drug ingredients to which patient had reaction for this allergy/adverse reaction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG CLASSES",
+      "dataType": "POINTER",
+      "rawType": "120.803PA",
+      "required": false,
+      "helpText": "List of VA drug classes to which patient had reaction for this allergy/adverse reaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "ALLERGY TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This field contains the type(s) for this causative agent.  The user can enter the type(s) separated by commas, or the following codes:  D=Drug, F=Food, O=Other.  If codes are used, do not use commas to separate multiple codes.  Examples of valid entries are:  DRUG or DRUG, FOOD or D or DF or OTHER. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORIGINATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date/time this allergy/adverse reaction was entered into the system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORIGINATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Person who entered this allergy/adverse reaction into the system. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OBSERVED/HISTORICAL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "o:OBSERVED;h:HISTORICAL;",
+      "helpText": "Indicates whether this allergy/adverse reaction has been observed by some personnel, or if it is historical data gathered about the patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*REPORTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field will allow the data in this file to be unreportable to other packages.  Examples of this include drug-drug interactions which do not have to be shown as allergies/adverse reactions.     Note: This field is no longer supported. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REACTIONS",
+      "dataType": "POINTER",
+      "rawType": "120.81P",
+      "required": false,
+      "helpText": "These are the reactions observed for this allergy/adverse reaction. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CHART MARKED",
+      "dataType": "DATE",
+      "rawType": "120.813DA",
+      "required": false,
+      "helpText": "A list of those people who indicate that the patient's chart has been marked for this reactant. ",
+      "isMultiple": true,
+      "subFileNumber": 120.813,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ID BAND MARKED",
+      "dataType": "DATE",
+      "rawType": "120.814DA",
+      "required": false,
+      "helpText": "A list of those people who indicated that the patient's ID band has been marked for this reactant. ",
+      "isMultiple": true,
+      "subFileNumber": 120.814,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ORIGINATOR SIGN OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the originator of this allergy/adverse reaction signed off on it, so that it may be verified.  An allergy/adverse reaction that is not signed off is not part of the patient's reportable reactions. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MECHANISM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ALLERGY;P:PHARMACOLOGIC;U:UNKNOWN;",
+      "helpText": "This field indicates the mechanism of the reaction.    ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether this allergy has been verified by a verifier.  The data in this field will only get put in place if the verifier has signed off using the electronic signature. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "VERIFICATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date/time this allergy/adverse reaction has been verified. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "VERIFIER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The verifier of the allergy/adverse reaction. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ENTERED IN ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Indicates if this allergy was entered in error. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DATE/TIME ENTERED IN ERROR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date/time the allergy/adverse reaction was entered in error. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "USER ENTERING IN ERROR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person who entered this allergy/adverse reaction in error. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "COMMENTS",
+      "dataType": "DATE",
+      "rawType": "120.826D",
+      "required": false,
+      "helpText": "List of comments entered about this reaction. ",
+      "isMultiple": true,
+      "subFileNumber": 120.826,
+      "fieldNumber_": 26
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "ADRG01", "field": },
+    {"name": "ADRG2", "field": },
+    {"name": "ADRG22", "field": },
+    {"name": "ADRG3", "field": },
+    {"name": "ANKA01", "field": },
+    {"name": "AODT", "field": },
+    {"name": "ASGN", "field": },
+    {"name": "ASGN1", "field": },
+    {"name": "AVER0", "field": },
+    {"name": "AVER1", "field": },
+    {"name": "AVER2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "V", "field": },
+    {"name": "120.8", "field": .01, "type": "regular"},
+    {"name": "120.8", "field": .01, "type": "regular"},
+    {"name": "120.8", "field": .01, "type": "regular"},
+    {"name": "120.8", "field": .01, "type": "regular"},
+    {"name": "120.8", "field": .02, "type": "regular"},
+    {"name": "120.8", "field": 4, "type": "regular"},
+    {"name": "120.8", "field": 15, "type": "regular"},
+    {"name": "120.8", "field": 19, "type": "regular"},
+    {"name": "120.8", "field": 20, "type": "regular"},
+    {"name": "120.8", "field": 22, "type": "regular"},
+    {"name": "120.8", "field": 22, "type": "regular"},
+    {"name": "120.8", "field": 22, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": WRITE, "value": "D:+$G(^(\"ER\")) EN^DDIOL(\"***ENTERED IN ERROR***\",\"\",\"?0\") S GMRAHLPX=$G(^GMR(120.8,Y,0)) K GMRAHLPX"}
+  ]
+}

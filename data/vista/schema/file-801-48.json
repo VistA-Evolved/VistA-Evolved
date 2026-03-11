@@ -1,0 +1,99 @@
+{
+  "fileNumber": 801.48,
+  "fileName": "REMINDER DIALOG LINK TYPE",
+  "globalRoot": "801.48",
+  "globalReference": "^PXRMD(801.48,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LINK NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Link Type. This should be a descriptive name to  identify what the linking functionality is trying to do. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "P801.41'",
+      "required": false,
+      "pointerTo": 801.41,
+      "helpText": "This field is used to determine which element in CPRS should be acted on  when the user takes an action on this sequence in CPRS. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROMPT",
+      "dataType": "POINTER",
+      "rawType": "P801.42'",
+      "required": false,
+      "pointerTo": 801.42,
+      "helpText": "This field should only be populated if the action is to be on a prompt  assigned to the ITEM field value. If the action is on the ITEM itself  then this field should be set to null. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "P801.47'",
+      "required": false,
+      "pointerTo": 801.47,
+      "helpText": "This field should be set if a function should be applied to the user action in CPRS. If a function is not needed then this field should be set to null. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CHECKED;UC:UNCHECKED;S:SUPPRESS;US:UNSUPPRESS;V:VALUE;R:REQUIRED;UR:UNREQUIRED;H:HIDE;D:DISABLE;E:ENABLE;",
+      "helpText": "This field determine what action to take on the Item and/or PROMPT fields assign to this Link Type. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.485",
+      "required": false,
+      "helpText": "This field is used to describe what this Reminder Link entry does. ",
+      "isMultiple": true,
+      "subFileNumber": 801.485,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FUNCTION ARGUMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "801.486",
+      "required": false,
+      "helpText": "This multiple stores additional function input arguments. The values  store in this multiple are specific to each function. ",
+      "isMultiple": true,
+      "subFileNumber": 801.486,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DIALOG SEQUENCES",
+      "dataType": "SUBFILE",
+      "rawType": "801.487",
+      "required": false,
+      "helpText": "This field identifies the dialog sequences of the element or group  containing this link that will cause this link to execute and the dialog  sequences of the element or group identified in the ITEM field that are  affected by this link.     If this multiple is blank, then all instances of this link will execute  and all instances of the element or group identified in the ITEM field  are affected by this link. This is considered a many-to-many association.   If an entry in this multiple only spe",
+      "isMultiple": true,
+      "subFileNumber": 801.487,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

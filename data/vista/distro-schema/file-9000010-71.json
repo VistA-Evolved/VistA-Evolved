@@ -1,0 +1,181 @@
+{
+  "fileNumber": 9000010.71,
+  "fileName": "V STANDARD CODES",
+  "globalRoot": "9000010.71",
+  "globalReference": "^AUPNVSC(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a code such as SNOMED CT.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient for whom the code is being recorded.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "RP9000010'",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "This is the encounter or occasion of service defined in the Visit file that represents when and where the standardized code was recorded for the patient.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ7",
+      "length": 7,
+      "required": true,
+      "helpText": "A coding system is stored as one of the standard three-character abbreviations as defined in the Lexicon Coding Systems file #757.03.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROBLEM LIST ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P9000010.71",
+      "required": false,
+      "pointerTo": 9000010.71,
+      "helpText": "This field identifies what Problem List entry is related to the problem treated at the visit.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MAGNITUDE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement has been recorded for an entry in this file, this is the magnitude of the measurement.  ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement has been recorded for an entry in this file, this is the unit of the measurement.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "MAPPED SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "If this entry was created because of codes that were mapped to PCE data types such as Education Topics, Exams, Health Factors, Immunizations, and Skin Tests this field will contain the file number and internal entry number of the corresponding data type entry in the format: file number;IEN.  ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the code was recorded by the provider. This date and time may be different from the Visit Date and Time. For example, for clinic appointment visits, the Visit Date and Time is the date and time of the appointment, not the time the provider performed the clinical event.                                   The date may be an imprecise date.                                     Date and time may be before or after the Visit Date, with the restriction the date cannot be a futu",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field can be used to document the provider who ordered the code factor recorded.  ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who recorded the code.  ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any measurement data is being edited from the original entry of data.  ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FOR ELECTRONICALLY SIGNED;2:FOR VERIFIED BY PACKAGE;",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'",
+      "required": false,
+      "pointerTo": 839.7,
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "9000010.71", "field": .01, "type": "regular"},
+    {"name": "9000010.71", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

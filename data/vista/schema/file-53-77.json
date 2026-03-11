@@ -1,0 +1,159 @@
+{
+  "fileNumber": 53.77,
+  "fileName": "BCMA UNABLE TO SCAN LOG",
+  "globalRoot": "53.77",
+  "globalReference": "^PSB(53.77,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER ID",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The user at the time of the scan event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT ID",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The patient (if known) involved in the scan event.  This information may automatically be derived from user supplied data. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "UAS EVENT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The location where the scan event occurred.  The attempt to scan should be at the patient's bedside, therefore this patient's location data is derived from the patient's file.   ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UAS EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the scan event documentation occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "UAS TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "MUAS:MEDICATION UNABLE TO SCAN;WUAS:WRISTBAND UNABLE TO SCAN;MKEY:MEDICATION KEYED ENTRY;WKEY:WRISTBAND KEYED ENTRY;MMME:MEDICATION MAN MED ENTRY;MSCN:MEDICATION VIA SCANNER;WSCN:WRISTBAND VIA SCANNER;",
+      "helpText": "The type of scan event.  The value stored is one of a FileMan set.  The value that is placed here is determined by the user's actions when attempting to scan a medication/wristband during an administration.  Those types beginning with the \"M\" are events dealing with medications; those beginning with \"W\" are events with wristbands. \"*UAS\"  occur when the user actually uses the \"unable to scan\" functionality to document the activity.  \"*SCN\" are types that occur during normal scanning activities. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "UAS REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When documenting an \"Unable To Scan Event\", the user must select an  approximate reason as to why the usual BCMA scanning system must be  bypassed.  That \"Unable To Scan Reason\" is stored in this field. These  are the values available in the GUI application for this field:   Damaged Medication Label Damaged Wristband Dose Discrepancy Inactive Patient Manual Medication Entry No Bar Code Scanning Equipment Failure Unable to Determine ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "UAS E-MESSAGE ID",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "A MailMan message will be sent per documented Unable To Scan Events.   That message is referenced by this field, confirming a \"given notice\" of the Unable To Scan event and documentation. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field logs the Pharmacy Patient order number of the order involved in the Unable To Scan event, if the order number is available and pertinent. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ENTERED COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Optional comment entered by the user when documenting a BCMA Unable To  Scan event.   ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DISPENSE DRUG",
+      "dataType": "POINTER",
+      "rawType": "53.771P",
+      "required": false,
+      "helpText": "The dispensed drug from the order associated with the UTS event. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ADDITIVE",
+      "dataType": "POINTER",
+      "rawType": "53.7711P",
+      "required": false,
+      "helpText": "List of additives from the order associated with the UTS event. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SOLUTIONS",
+      "dataType": "POINTER",
+      "rawType": "53.7712P",
+      "required": false,
+      "helpText": "The list of solutions contained in the medication associated with the UTS event. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "UNIQUE ITEM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will document the identifier of the IV bag associated with the unable to scan event.  This item cannot be identified via a specific medication identifier since an IV is made up of one or more Solutions and one or more Additives. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "IV ORDERABLE ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is to document the Orderable Item assigned to the IV bag that is contained in the order that is associated with the unable to scan event. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ORDERABLE ITEM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The Orderable Item Name of the medication that is contained in an order that is associated with the UTS event.  When the medication only  contains a solution with no additive, the Orderable Item Name will  include both the Pharmacy Orderable Item and the Dosage Form. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "ASFDT", "field": },
+    {"name": "B", "field": },
+    {"name": "53.77", "field": .01, "type": "regular"},
+    {"name": "53.77", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

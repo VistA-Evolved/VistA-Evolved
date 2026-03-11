@@ -1,0 +1,47 @@
+{
+  "fileNumber": 134,
+  "fileName": "OPERATING ROOM TYPE",
+  "globalRoot": "134",
+  "globalReference": "^SRO(134,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the name of the Operating Room Type.  Entries in this file should not be modified locally !!   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the code corresponding to the Operating Room Type.  This information is standard nationally and should not be modified locally.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "134.01",
+      "required": false,
+      "helpText": "This is the description of the operating room type.   ",
+      "isMultiple": true,
+      "subFileNumber": 134.01,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "134", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

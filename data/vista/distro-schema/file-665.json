@@ -1,0 +1,294 @@
+{
+  "fileNumber": 665,
+  "fileName": "PROSTHETICS PATIENT",
+  "globalRoot": "665IP",
+  "globalReference": "^RMPR(665,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient, same as the PATIENT file in MAS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the Station that maintains the Patient's 2319. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "DATE OF CLOTHING ALLOWANCE",
+      "dataType": "DATE",
+      "rawType": "665.02DA",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains the dates of clothing allowance determinations. ",
+      "isMultiple": true,
+      "subFileNumber": 665.02,
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PROSTHETIC DISABILITY CODE",
+      "dataType": "POINTER",
+      "rawType": "665.01IP",
+      "required": false,
+      "helpText": "This field stores the Prosthetic Disability Code for the patient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PSC ISSUE CARD",
+      "dataType": "DATE",
+      "rawType": "665.012ID",
+      "required": false,
+      "helpText": "This field stores the information of Prosthetic Service Card issued to a patient. ",
+      "isMultiple": true,
+      "subFileNumber": 665.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "OTHER DATA",
+      "dataType": "SUBFILE",
+      "rawType": "665.014",
+      "required": false,
+      "helpText": "This is a word-processing field that records other patient data. ",
+      "isMultiple": true,
+      "subFileNumber": 665.014,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "HOME OXYGEN ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SC/OP;2:SC/IP;3:NSC/IP;4:NSC/OP;",
+      "helpText": "Enter the Home Oxygen eligibility code. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 19.11,
+      "fieldName": "SPECIAL NSC/OP CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL LEGISLATION;2:A & A;3:PHC;4:ELIGIBILITY REFORM;",
+      "helpText": "Entry is made only for NSC/OP eligible patients. ",
+      "fieldNumber_": 19.11
+    },
+    {
+      "fieldNumber": 19.12,
+      "fieldName": "HOME OXYGEN CONTRACT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P669.9'",
+      "required": false,
+      "pointerTo": 669.9,
+      "helpText": "The Home Oxygen program is administered via a contract to a vendor. Each patient receives services from only one vendor.  That vendor usually has a contract with a medical center (site) to provide those services.  This is the site that administers that contract. ",
+      "fieldNumber_": 19.12
+    },
+    {
+      "fieldNumber": 19.13,
+      "fieldName": "HOME OXYGEN LETTER TO BE SENT",
+      "dataType": "POINTER",
+      "rawType": "P665.2'",
+      "required": false,
+      "pointerTo": 665.2,
+      "helpText": "Indicates that a letter needs to be sent for this patient. ",
+      "fieldNumber_": 19.13
+    },
+    {
+      "fieldNumber": 19.14,
+      "fieldName": "HO LETTER 1 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when Home Oxygen letter 1 was printed or deleted. ",
+      "fieldNumber_": 19.14
+    },
+    {
+      "fieldNumber": 19.15,
+      "fieldName": "HO LETTER 1 CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINTED;D:DELETED;",
+      "helpText": "The code signifies if Home Oxygen letter 1 was printed or deleted. ",
+      "fieldNumber_": 19.15
+    },
+    {
+      "fieldNumber": 19.16,
+      "fieldName": "HO LETTER 2 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when Home Oxygen Letter 2 was printed or deleted. ",
+      "fieldNumber_": 19.16
+    },
+    {
+      "fieldNumber": 19.17,
+      "fieldName": "HO LETTER 2 CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINTED;D:DELETED;",
+      "helpText": "The code which signifies Home Oxygen Letter 2 was printed or deleted. ",
+      "fieldNumber_": 19.17
+    },
+    {
+      "fieldNumber": 19.18,
+      "fieldName": "HO LETTER 3 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when Home Oxygen Letter 3 was printed or deleted. ",
+      "fieldNumber_": 19.18
+    },
+    {
+      "fieldNumber": 19.19,
+      "fieldName": "HO LETTER 3 CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINTED;D:DELETED;",
+      "helpText": "The code signifies that signifies a HOme Oxygen Letter 3 was printed or deleted. ",
+      "fieldNumber_": 19.19
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "HOME OXYGEN ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date when the patient was activated as a home oxygen  patient. The first prescription date will be the same as this date. ",
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 19.3,
+      "fieldName": "HOME OXYGEN PRESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "665.193DA",
+      "required": false,
+      "helpText": "Contains data specific to this prescription such as the dates, items, services, vendors, quantity, cost, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 665.193,
+      "fieldNumber_": 19.3
+    },
+    {
+      "fieldNumber": 19.4,
+      "fieldName": "HOME OXYGEN ITEM",
+      "dataType": "POINTER",
+      "rawType": "665.194IP",
+      "required": false,
+      "fieldNumber_": 19.4
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "HOME OXYGEN INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that the home oxygen treatment was discontinued. Do not enter this field until the actual date of discontinuance. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 19.6,
+      "fieldName": "HOME OXYGEN INACTIVAT. REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DISCONTINUED BY PATIENT;R:Rx EXPIRED;M:MD DISCONTINUED;P:PATIENT DECEASED;I:INPATIENT STATUS;E:ENTERED IN ERROR;",
+      "helpText": "Enter a code (P, R, M, D, I, or E) for the reason for discontinue of home oxygen therapy. ",
+      "fieldNumber_": 19.6
+    },
+    {
+      "fieldNumber": 19.7,
+      "fieldName": "HOME OXYGEN INACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who inactivated home oxygen patient. ",
+      "fieldNumber_": 19.7
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "HEIGHT (INCHES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field stores the height (in inches) of the patient. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "WEIGHT (POUNDS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field stores the weight of the patient in pounds. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "EYE COLOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLACK;BL:BLUE;GR:GREEN;GY:GRAY;BR:BROWN;H:HAZEL;W:WHITE;P:PINK;",
+      "helpText": "This field stores the eye color of the patient. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "HAIR COLOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLACK;BR:BROWN;A:AUBURN;GY:GRAY;W:WHITE;BL:BLONDE;R:RED;",
+      "helpText": "This field stores the hair color of the patient. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CRITICAL COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "665.03",
+      "required": false,
+      "helpText": "Stores patient notes/critical comments for prosthetics. ",
+      "isMultiple": true,
+      "subFileNumber": 665.03,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "AHO", "field": },
+    {"name": "ALTR", "field": },
+    {"name": "APNEW", "field": },
+    {"name": "APO", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "665", "field": .01, "type": "regular"},
+    {"name": "665", "field": 19.13, "type": "regular"},
+    {"name": "665", "field": 19.2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,684 @@
+{
+  "fileNumber": 164,
+  "fileName": "ICDO TOPOGRAPHY",
+  "globalRoot": "164I",
+  "globalReference": "^ONCO(164,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field, artificially created, provides easy direct access to the file.   The first two digits are the ASCII value of the first character of the  ICD-O code.  The last three digits are the numeric portion of the ICD-O  code, omitting the decimal point.   Do not confuse this code with the 5-digit MORPHOLOGY code.  One ICD-O TOPOGRAPHY code may have several corresponding MORPHOLOGY codes. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "FREE TEXT FIELD FOR NAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SURGERY CODING",
+      "dataType": "POINTER",
+      "rawType": "P164.2'",
+      "required": false,
+      "pointerTo": 164.2,
+      "helpText": "POINTS TO LIST OF SEER SURGERY CODES. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .065,
+      "fieldName": "REPORTING SITE GROUP",
+      "dataType": "POINTER",
+      "rawType": "P164.14'",
+      "required": false,
+      "pointerTo": 164.14,
+      "helpText": "This is the site group under which the topography is classified on reports. ",
+      "fieldNumber_": .065
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PAIRED ORGAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LATERALITY CODE REQUIRED;",
+      "helpText": "RECORDS THE EXISTENCE OF PAIRED ORGANS, THOSE ORGANS THAT ARE TWO IN NUMBER, SUCH AS KIDNEY, TESTES, ARMS, LEGS, LUNGS, ETC. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MALE ONLY;2:FEMALE ONLY;",
+      "helpText": "RECORDS THE PATIENT'S SEX. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FREE TEXT FIELD RECORDING CODE NUMBER ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SUBFILE",
+      "rawType": "164.01A",
+      "required": false,
+      "helpText": "MULTIPLE FIELD ALLOWING FOR RECORDING OF TYPE. ",
+      "isMultiple": true,
+      "subFileNumber": 164.01,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TNM CODING APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Enter 'Y' if TNM coding is applicable to this anatomical site, or 'N' if TNM coding does not apply.   If no entry is made, it is assumed that TNM coding *is* applicable. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MM SKIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Applicable;",
+      "helpText": "This field contains a flag which, when set to 1, indicates that this topographic site is one to which malignant melanoma staging may apply. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "T & N CODES",
+      "dataType": "POINTER",
+      "rawType": "P164'",
+      "required": false,
+      "pointerTo": 164,
+      "helpText": "POINTER TO FILE CONTAINING THE T(UMOR) AND N(ODES) CODES. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "AJCC STAGING GROUP",
+      "dataType": "POINTER",
+      "rawType": "P164.33'",
+      "required": false,
+      "pointerTo": 164.33,
+      "helpText": "CONTAINS THE POINTERS FOR CHAPTERS IN THE AMERICAN JOINT COMMISSION ON CANCER MANUAL FOR THE STAGING OF CANCER, 3RD EDITION.  EACH CHAPTER DEALS WITH A DIFFERENT PRIMARY SITE. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "T-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.06I",
+      "required": false,
+      "helpText": "RECORDS THE T(UMOR) DESCRIPTION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.06,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "N-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.065I",
+      "required": false,
+      "helpText": "RECORDS THE LYMPH N(ODE) DESCRIPTION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.065,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "4TH EDITION N-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.09I",
+      "required": false,
+      "helpText": "This multiple contains the N-codes from the AJCC Manual on Staging of Cancer, 4th edition (1992). ",
+      "isMultiple": true,
+      "subFileNumber": 164.09,
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "STAGE GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "164.066I",
+      "required": false,
+      "helpText": "RECORDS THE STAGING GROUPING IN ACCORDANCE WITH THE AJCC MANUAL FOR THE STAGING OF CANCER. ",
+      "isMultiple": true,
+      "subFileNumber": 164.066,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "EXTENSION CODING",
+      "dataType": "POINTER",
+      "rawType": "P164'",
+      "required": false,
+      "pointerTo": 164,
+      "helpText": "POINTS TO THE FILE CONTAINING THE SEER EXTENSION CODES. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "EXTENSION CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for  this topography in the first edition of SEER Extent of Disease Codes and  Coding Instructions. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.01,
+      "fieldName": "EXTENSION CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": " This field identifies the set of codes used to characterize extension for this topography in the second edition of SEER Extent of Disease Codes and  Coding Instructions.  ",
+      "fieldNumber_": 43.01
+    },
+    {
+      "fieldNumber": 43.02,
+      "fieldName": "EXTENSION CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": " This field identifies the set of codes used to characterize extension for this topography in the third edition of SEER Extent of Disease Codes and  Coding Instructions.  ",
+      "fieldNumber_": 43.02
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LYMPH NODE ENCODING",
+      "dataType": "POINTER",
+      "rawType": "P164'",
+      "required": false,
+      "pointerTo": 164,
+      "helpText": "POINTS TO THE FILE CONTAINING THE LYMPH NODE CODES. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LYMPH NODE CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node  involvement for this topography in the first edition of SEER Extent of  Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.01,
+      "fieldName": "LYMPH NODE CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node involvement for this topography in the second edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 53.01
+    },
+    {
+      "fieldNumber": 53.02,
+      "fieldName": "LYMPH NODE CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": " This field identifies the set of codes used to characterize lymph node involvement for this topography in the third edition of SEER Extent of Disease Codes and Coding Instructions.  ",
+      "fieldNumber_": 53.02
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "SNOMED ENCODING",
+      "dataType": "POINTER",
+      "rawType": "164.04P",
+      "required": false,
+      "helpText": "POINTS TO THE FILE CONTAINING THE SNOMED CODES FOR HISTO-MORPHOLOGY. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "SNOMED DECODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.05",
+      "required": false,
+      "helpText": "RECORDS THE TEXT GENERATED BY THE SNOMED CODES. ",
+      "isMultiple": true,
+      "subFileNumber": 164.05,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "SURGERY CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize cancer-related surgery for this topography in the first edition of the Data Acquisition Manual. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 63.01,
+      "fieldName": "SURGERY CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize cancer-related surgery for this topography in the second edition of the Data Acquisition Manual. ",
+      "fieldNumber_": 63.01
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "AJCC CHAP#-NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "RECORDS THE AJCC CHAPTER NUMBER AND THE NAME OF THE SECTION IT DESCRIBES. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ajcc cp#",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "COMPUTED FIELD FOR THE AJCC CHAPTER NUMBER, EACH NUMBER IS ASSOCIATED WITH A DIFFERENT TYPE OF CANCER. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "4TH EDITION T-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.0101IA",
+      "required": false,
+      "helpText": "This multiple contains T codes from the fourth edition of the AJCC Manual on Staging of Cancer. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DEFAULT PRIMARY SITE GROUP",
+      "dataType": "POINTER",
+      "rawType": "P164.2'",
+      "required": false,
+      "pointerTo": 164.2,
+      "helpText": "This field maps ICD-O second edition topography codes to the SITE-GROUP FOR ONCOLOGY File (#164.2).  Its chief purpose is  to facilitate conversions from non-DHCP databases by creating  a .01 field for the ONCOLOGY PRIMARY File (#165.5). ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "5TH EDITION T-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0103",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0103,
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "5TH EDITION N-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0104",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0104,
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "5TH EDITION M-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0105",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "5TH EDITION T-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0106",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0106,
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "SURGERY CODE GROUP-5TH ED",
+      "dataType": "POINTER",
+      "rawType": "P164'",
+      "required": false,
+      "pointerTo": 164,
+      "helpText": "This field contains a pointer to the Topography which has the surgery codes for the group that this Topography is in.  The Topography which contains the codes has this field pointing to itself. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "5TH ED-SURGICAL APPROACH CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0108",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0108,
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "5TH EDITION N-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0109",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0109,
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "5TH EDITION M-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.02",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.02,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "5TH ED-SURGERY PRIMARY SITE",
+      "dataType": "SUBFILE",
+      "rawType": "164.0111",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0111,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "5TH ED-SURGICAL MARGINS",
+      "dataType": "SUBFILE",
+      "rawType": "164.0112",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0112,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "5TH ED-SCOPE LYMPH NODE SURG",
+      "dataType": "SUBFILE",
+      "rawType": "164.0113",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0113,
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "5TH ED-NUMBER LYMPH ND REMOVED",
+      "dataType": "SUBFILE",
+      "rawType": "164.0114",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0114,
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "5TH ED-SURGERY OTHER REG SITES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0115",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0115,
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "5TH ED-RECONSTRUCTION",
+      "dataType": "SUBFILE",
+      "rawType": "164.0116I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0116,
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "5TH ED-BIOPSY PROCEDURE CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0117",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0117,
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "5TH ED-GUIDANCE CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0118",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0118,
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "6TH EDITION (T) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0119",
+      "required": false,
+      "helpText": "This field contains the Sixth Edition Primary Tumor (T) codes.  T codes record the extent of the primary tumor. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0119,
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "6TH EDITION (T) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.012",
+      "required": false,
+      "helpText": "This field contains the full text of the Sixth Edition Primary Tumor (T) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.012,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "6TH EDITION (N) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0121",
+      "required": false,
+      "helpText": "This field contains the Sixth Edition Regional Lymph Nodes (N) codes.  N codes record the absence or presence and extent of regional lymph node metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0121,
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "6TH EDITION (N) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0122",
+      "required": false,
+      "helpText": "This field contains the full text of the Sixth Edition Regional Lymph Nodes (N) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0122,
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "6TH EDITION (M) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0123",
+      "required": false,
+      "helpText": "This field contains the Sixth Edition Distant Metastasis (M) codes. M codes record the absence or presence of distant metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0123,
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "6TH EDITION (M) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0124",
+      "required": false,
+      "helpText": "This field contains the full text of the Sixth Edition Distant Metastasis (M) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0124,
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "7TH EDITION (T) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0125",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Primary Tumor (T) codes.  T codes record the extent of the primary tumor. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0125,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "7TH EDITION (T) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0126",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Primary Tumor (T) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0126,
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "7TH EDITION (N) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0127",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Regional Lymph Nodes (N) codes. N codes record the absence or presence and extent of regional lymph node metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0127,
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "7TH EDITION (N) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0128",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Regional Lymph Nodes (N) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0128,
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "7TH EDITION (M) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.0129",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Distant Metastasis (M) codes. M codes record the absence or presence of distant metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0129,
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "7TH EDITION (M) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.03",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Distant Metastasis (M) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.03,
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "SCHEMA DISCRIMINATOR CODE",
+      "dataType": "SUBFILE",
+      "rawType": "164.0131",
+      "required": false,
+      "helpText": "Contains the schema discriminator codes needed for CSv2 subsite identification. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0131,
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "SCHEMA DISCRIMINATOR HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.0132",
+      "required": false,
+      "helpText": "Contains the schema discriminator code HELP text needed for CSv2 subsite identification. ",
+      "isMultiple": true,
+      "subFileNumber": 164.0132,
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "RX HOSP AND SUMM SURG BREAST",
+      "dataType": "SUBFILE",
+      "rawType": "164.0133",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0133,
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "RX HOSP AND SUMM RECON BREAST",
+      "dataType": "SUBFILE",
+      "rawType": "164.0134A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.0134,
+      "fieldNumber_": 134
+    }
+  ],
+  "fieldCount": 64,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "164", "field": .01, "type": "regular"},
+    {"name": "164", "field": .065, "type": "regular"},
+    {"name": "164", "field": 1, "type": "regular"},
+    {"name": "164", "field": 30, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL($P(^(0),U,2)_\"  \"_$P(^(0),U,9),\"\",\"?52\")"}
+  ]
+}

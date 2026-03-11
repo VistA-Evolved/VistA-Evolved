@@ -1,0 +1,72 @@
+{
+  "fileNumber": 443.2,
+  "fileName": "IFCAP PURGE PARAMETERS",
+  "globalRoot": "443.2",
+  "globalReference": "^PRC(443.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DAILY STOP TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RUN ALL DAY SATURDAY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RUN ALL DAY SUNDAY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RUN ALL DAY ON HOLIDAYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VOLUME SET:CPU",
+      "dataType": "SUBFILE",
+      "rawType": "443.26",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 443.26,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "443.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

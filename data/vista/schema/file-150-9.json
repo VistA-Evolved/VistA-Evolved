@@ -1,0 +1,86 @@
+{
+  "fileNumber": 150.9,
+  "fileName": "VISIT TRACKING PARAMETERS",
+  "globalRoot": "150.9",
+  "globalReference": "^DIC(150.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "A single entry, the number '1', which represents this site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MOBIL CLINIC FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL DHCP;2:MOBILE CLINIC;12:BOTH '1' & '2';",
+      "helpText": "Flag which was named \"full DHCP\", this did not function as a master switch. It is left for compatability to mobil clinic code. Packages need to use the package switch for turning on visit tracking for their application. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:IHS;C:CONTRACT;T:TRIBAL;O:OTHER;6:638;V:VA;",
+      "helpText": "If the visit TYPE is not given or the users' agency code is not known, then the value given here will be used as a last resort. Otherwise an error condition will occur, as this is a required field in the VISIT file [9000010,.03]. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP9999999.06'",
+      "required": true,
+      "pointerTo": 9999999.06,
+      "helpText": "If the visit INS is not given or the users' DUZ(2) is not known, then the value given here will be used as the last resort.  Otherwise an error condition will occur, as this is a required field in the VISIT file [9000010.07]. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "150.93P",
+      "required": false,
+      "helpText": "The Visit Tracking Parameter file has the Package field which is used as a table.  The table will provide hospitals the capability of turning the visit creation on and off for the packages listed in this multiple. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "LAST USED SEQUENCE OF VISIT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the last sequence used in a visit id used.  Do not change this field or you can cause problems in reporting you work load.  This is a base 27 number with each digit form 0123456789BCDFGHJKMNPQRTVWX in order. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 402,
+      "fieldName": "SITE PART OF VISIT ID",
+      "dataType": "POINTER",
+      "rawType": "R*P150.2'I",
+      "required": true,
+      "pointerTo": 150.2,
+      "helpText": "This is a three letter identifier for this computer system that is unique in the VA, or \"TEST\" of a test account.  This is appended after a \"-\" on to the sequence number to form the unique Visit Id in the VA system.  It is  important that this is set to the correct value and not changed. ",
+      "fieldNumber_": 402
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "150.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

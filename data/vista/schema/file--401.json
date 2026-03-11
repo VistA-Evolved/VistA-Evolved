@@ -1,0 +1,239 @@
+{
+  "fileNumber": .401,
+  "fileName": "SORT TEMPLATE",
+  "globalRoot": ".401",
+  "globalReference": "^DIBT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "READ ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'I",
+      "required": false,
+      "pointerTo": 1,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER #",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WRITE ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TEMPLATE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ARCHIVING SEARCH;",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SEARCH COMPLETE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field will be filled in automatically by the search option, but only if the search runs to completion.  It will contain the date/time that the search last ran.  If it was not allowed to run to completion, this field will be empty. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".4012",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4012,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TOTAL RECORDS SELECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "  This field is filled in automatically by the FileMan search option. If the search is allowed to run to completion, the total number of records that met the search criteria is stored in this field.  If the last search was not allowed to run to completion, this field will be null. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SEARCH SPECIFICATIONS",
+      "dataType": "SUBFILE",
+      "rawType": ".4011",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4011,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 1620,
+      "fieldName": "SORT FIELDS",
+      "dataType": "COMPUTED",
+      "rawType": "CmJ50",
+      "length": 50,
+      "required": false,
+      "fieldNumber_": 1620
+    },
+    {
+      "fieldNumber": 1621,
+      "fieldName": "SORT FIELD DATA",
+      "dataType": "SUBFILE",
+      "rawType": ".4014",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4014,
+      "fieldNumber_": 1621
+    },
+    {
+      "fieldNumber": 1622,
+      "fieldName": "BY(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the static, unchanging part of an open global reference for either a global or a cross-reference that contains the list of record numbers to sort through on the first pass.  The leading up-arrow can be omitted.   For example:  DIZ(662001,\"A\", or TMP(\"NMSP\",$J, ",
+      "fieldNumber_": 1622
+    },
+    {
+      "fieldNumber": 1623,
+      "fieldName": "L(0)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the total number of subscripts that must be sorted through on the global referenced by BY(0), including 1 for the record number.  Ex., to sort through the \"B\" x-ref, we sort through the cross-referenced value itself, then the record number, so L(0)=2. ",
+      "fieldNumber_": 1623
+    },
+    {
+      "fieldNumber": 1624,
+      "fieldName": "SORT RANGE DATA FOR BY(0)",
+      "dataType": "SUBFILE",
+      "rawType": ".4011624",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4011624,
+      "fieldNumber_": 1624
+    },
+    {
+      "fieldNumber": 1815,
+      "fieldName": "ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  If this sort template is compiled, the first characters of the name of that compiled routine will appear on this node.  Compiled sort routines are re-created each time the sort/print runs.  These characters are concatenated with the next available number from the COMPILED ROUTINE file to create the routine name.   If this node is present, a new compiled sort routine will be created during the FileMan sort/print. ",
+      "fieldNumber_": 1815
+    },
+    {
+      "fieldNumber": 1816,
+      "fieldName": "PREVIOUS ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This node is present only to be consistant with other sort templates. It's presence will indicate that at some time the SORT template was compiled and will contain the beginning characters used to create the name of the compiled routine. ",
+      "fieldNumber_": 1816
+    },
+    {
+      "fieldNumber": 1819,
+      "fieldName": "COMPILED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1819
+    },
+    {
+      "fieldNumber": 6666,
+      "fieldName": "ENTRIES",
+      "dataType": "COMPUTED",
+      "rawType": "Cm",
+      "required": false,
+      "helpText": "For SEARCH Templates, the list of the entries found and stored  when the Template was created is accessed.  The value of the .01 Field for each entry is displayed. ",
+      "fieldNumber_": 6666
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "BUILD(S)",
+      "dataType": "COMPUTED",
+      "rawType": "Cmp9.6",
+      "required": false,
+      "helpText": "The Build File (#9.6) is searched for Builds containing the Sort Template.   A list of the identified Builds is created for display.   Multiple Builds will be shown if appropriate. ",
+      "fieldNumber_": 21400
+    },
+    {
+      "fieldNumber": 21409,
+      "fieldName": "CANONIC FOR THIS FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES",
+      "helpText": "The Sort Template identified as CANONIC will always be presented  to the user for selection at the Sort By: prompt. ",
+      "fieldNumber_": 21409
+    },
+    {
+      "fieldNumber": 491620,
+      "fieldName": "PRINT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 491620
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".401", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "", "field": 21409, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N D,D1,D2 S D2=^(0) S:$X>30 D1(1,\"F\")=\"!\" S D=$P(D2,U,2) S:D D1(2)=\"(\"_$$DATE^DIUTL(D)_\")\",D1(2,\"F\")=\"?30\" S D=$P(D2,U,5) S:D D1(3)=\" User #\"_D,D1(3,\"F\")=\"?50\" S D=$P(D2,U,4) S:D D1(4)=\" File #\"_D,D1(4,\"F\")=\"?59\" D EN^DDIOL(.D1)"},
+    {"field": WRITE1, "value": "N D1 S D1=$S($D(^DIBT(+Y,2))!$D(^(\"BY0\")):\"SORT\",$D(^(\"DIS\")):\"SEARCH\",$D(^(1)):\"INQ\",1:\"\") D EN^DDIOL(D1,\"\",\"?73\")"},
+    {"field": WRITED, "value": "I $G(DZ)?1\"???\".E N % S %=0 F  S %=$O(^DIBT(Y,\"%D\",%)) Q:%'>0  I $D(^(%,0))#2 D EN^DDIOL(^(0),\"\",\"!?5\")"}
+  ]
+}

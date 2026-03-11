@@ -1,0 +1,79 @@
+{
+  "fileNumber": 2006.67,
+  "fileName": "MAG RAD CPT MATCHING",
+  "globalRoot": "2006.67",
+  "globalReference": "^MAG(2006.67,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "RP81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "CPT code for creating an entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AMA BODY REGION",
+      "dataType": "POINTER",
+      "rawType": "P2006.672'",
+      "required": false,
+      "pointerTo": 2006.672,
+      "helpText": "This field contains generic body region descriptive information derived from the AMA CPT book.  The values used are from the  Radiology procedures section; it provides a general frame of reference when assigning Body Part asociations. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VRAD BODY REGION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Provides another means for grouping body part designations. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MATCH GROUP",
+      "dataType": "POINTER",
+      "rawType": "P2006.67'",
+      "required": false,
+      "pointerTo": 2006.67,
+      "helpText": "This field points to another CPT entry in this file.  It is used to identify another procedure that is \"similar\" to this one for automatic prior exams matching.  As many CPTs as desired may point to the same MATCH GROUP CPT value--this will have the effect where any one of those procedures are thus part of the same group of exams for matching.  I.e., looking for matching priors for any one of those values would be able to retrieve exams that correspond to all of the CPTs so defined. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BODY PART",
+      "dataType": "POINTER",
+      "rawType": "2006.674P",
+      "required": false,
+      "helpText": "Searching for prior exams may be done by matching the Body Part(s) of the current exam with prior exams of the same Body Part as defined in this file. Note that prior exams matching logic may use Body Part in combination with Modality to find matching CPT codes. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MODALITY",
+      "dataType": "POINTER",
+      "rawType": "2006.675P",
+      "required": false,
+      "helpText": "Searching for prior exams may be done by matching the Modality(s) of the current exam with prior exams of the same Modality.  Note that the matching may optionally be based on Modality and Body Part in  combination. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BODYPART", "field": },
+    {"name": "CPTMATCH", "field": },
+    {"name": "MDL", "field": },
+    {"name": "2006.67", "field": .01, "type": "regular"},
+    {"name": "2006.67", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

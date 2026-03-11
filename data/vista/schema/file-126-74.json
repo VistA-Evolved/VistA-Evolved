@@ -1,0 +1,38 @@
+{
+  "fileNumber": 126.74,
+  "fileName": "GMRY IV CATHETER",
+  "globalRoot": "126.74I",
+  "globalReference": "^GMRD(126.74,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IV CATHETER TYPE/SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the type and size of the IV catheter used to start  intravenous lines. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PORT",
+      "dataType": "SUBFILE",
+      "rawType": "126.741",
+      "required": false,
+      "helpText": "This field contains the name of lumen if the catheter has more than one lumen. ",
+      "isMultiple": true,
+      "subFileNumber": 126.741,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "126.74", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

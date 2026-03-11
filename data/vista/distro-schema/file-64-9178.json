@@ -1,0 +1,39 @@
+{
+  "fileNumber": 64.9178,
+  "fileName": "LSRP AUDIT CONFIG",
+  "globalRoot": "64.9178",
+  "globalReference": "^LABAUD(64.9178,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUDIT FILE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "The file that can be audited through the Lab audit tool. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AUDIT FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "64.9278",
+      "required": false,
+      "helpText": "These are the field numbers to be audited in the associated file. ",
+      "isMultiple": true,
+      "subFileNumber": 64.9278,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "64.9178", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

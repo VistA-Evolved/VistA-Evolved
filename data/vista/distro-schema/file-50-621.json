@@ -1,0 +1,176 @@
+{
+  "fileNumber": 50.621,
+  "fileName": "PMI-ENGLISH",
+  "globalRoot": "50.621",
+  "globalReference": "^PS(50.621,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMON BRAND NAMES",
+      "dataType": "SUBFILE",
+      "rawType": "50.6211",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6211,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BLANK LINE",
+      "dataType": "SUBFILE",
+      "rawType": "50.6212",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6212,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PHONETICS",
+      "dataType": "SUBFILE",
+      "rawType": "50.6213",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6213,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HOW TO TAKE",
+      "dataType": "SUBFILE",
+      "rawType": "50.6214",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6214,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USES",
+      "dataType": "SUBFILE",
+      "rawType": "50.6215",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6215,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SIDE EFFECTS",
+      "dataType": "SUBFILE",
+      "rawType": "50.6216",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6216,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WARNINGS",
+      "dataType": "SUBFILE",
+      "rawType": "50.6217",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6217,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OVERDOSE",
+      "dataType": "SUBFILE",
+      "rawType": "50.6218",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6218,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MISSED DOSE",
+      "dataType": "SUBFILE",
+      "rawType": "50.6219",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6219,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DRUG INTERACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "50.631",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.631,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRECAUTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "50.62111",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.62111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STORAGE",
+      "dataType": "SUBFILE",
+      "rawType": "50.62112",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.62112,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MEDIC ALERT",
+      "dataType": "SUBFILE",
+      "rawType": "50.62113",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.62113,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "50.62114",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.62114,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "50.62115",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.62115,
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.621", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "fileNumber": 217,
+  "fileName": "NURQ QI SUMMARY",
+  "globalRoot": "217P",
+  "globalReference": "^NURQ(217,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SURVEY",
+      "dataType": "POINTER",
+      "rawType": "RP748'X",
+      "required": true,
+      "pointerTo": 748,
+      "helpText": "This field contains the survey for which this QI Summary pertains. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of person or group who entered this data. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "Service associated with this QI Summary. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISCIPLINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person(s) or units responsible for this report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "217.04P",
+      "required": false,
+      "helpText": "This field contains the hospital locations associated with this nursing survey. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATA SOURCE",
+      "dataType": "SUBFILE",
+      "rawType": "217.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 217.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "METHODOLOGY",
+      "dataType": "SUBFILE",
+      "rawType": "217.06",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 217.06,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "SAMPLE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of observations. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "FREQUENCY",
+      "dataType": "POINTER",
+      "rawType": "P217.3'",
+      "required": false,
+      "pointerTo": 217.3,
+      "helpText": "How often do you report this information, i.e., monthly, quarterly, etc. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "MONITORING PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Period of time data was collected, i.e., June , 1995; April-June 1996; etc. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RECEIVER OF RESULTS",
+      "dataType": "SUBFILE",
+      "rawType": "217.08",
+      "required": false,
+      "helpText": "This information is being (or was) sent to which individual, committee, etc., on a specific date. ",
+      "isMultiple": true,
+      "subFileNumber": 217.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REFERENCES",
+      "dataType": "SUBFILE",
+      "rawType": "217.09",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 217.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OTHER",
+      "dataType": "SUBFILE",
+      "rawType": "217.011",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 217.011,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "F", "field": },
+    {"name": "217", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

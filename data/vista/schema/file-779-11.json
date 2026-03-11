@@ -1,0 +1,78 @@
+{
+  "fileNumber": 779.11,
+  "fileName": "HLO ERROR SCREENS",
+  "globalRoot": "779.11",
+  "globalReference": "^HLD(779.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCREEN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name to identify the screen. It should be namespaced and descriptive.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "779.111",
+      "required": false,
+      "helpText": "This should contain a full description of how this screen should be used, i.e., its purpose.  ",
+      "isMultiple": true,
+      "subFileNumber": 779.111,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the screen.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time the screen was created.     ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF SCREEN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:EXCLUDE;1:INCLUDE;",
+      "helpText": "This field is used to determine the type of error screen to be applied to the error list.  There are two types:  EXCLUDE (0) - excludes the error messages from being displayed INCLUDE (1) - includes the error messages on the display.    ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ERRORS",
+      "dataType": "SUBFILE",
+      "rawType": "779.115",
+      "required": false,
+      "helpText": "This is a list of strings used to determine what errors should display. Each string is compared to each error that would otherwise be included in the display.  If the string matches a string that occurs within the error, the error is either:  INCLUDE type screens - the error will be included in the display. EXCLUDE type screens - the error will be excluded from the display.  This is the verbatim text of the error to be screened. A list of possible errors is in the HLO Technical Manual. Alternate",
+      "isMultiple": true,
+      "subFileNumber": 779.115,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

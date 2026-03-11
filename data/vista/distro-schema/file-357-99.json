@@ -1,0 +1,44 @@
+{
+  "fileNumber": 357.99,
+  "fileName": "PRINT MANAGER CLINIC GROUPS",
+  "globalRoot": "357.99",
+  "globalReference": "^IBD(357.99,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name given to the group of clinics. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLINICS",
+      "dataType": "POINTER",
+      "rawType": "357.9901PA",
+      "required": false,
+      "helpText": "A list of clinics contained in the group. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "357.9911PA",
+      "required": false,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

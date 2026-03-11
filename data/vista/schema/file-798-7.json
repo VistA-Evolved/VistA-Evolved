@@ -1,0 +1,128 @@
+{
+  "fileNumber": 798.7,
+  "fileName": "ROR LOG",
+  "globalRoot": "798.7",
+  "globalReference": "^RORDATA(798.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the date/time when this log  was created.   You can access records of this file only if you have appropriate security key(s) for any registry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Other;1:Registry Update;2:Data Extraction;3:Acknowledgement;4:Hist. Extraction;5:Report;6:Access Violation;7:ROR TASK;8:Registry Setup;",
+      "helpText": "The value of this field indicates the activity performed by the process that created the log. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "JOB NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "Value of the JOB NUMBER field is the job number  ($JOB) of the process that has created this log. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "798.73P",
+      "required": false,
+      "helpText": "This multiple contains a list of the registries  that were processed. Events recorded in the log are associated with these registries.   Records of this multiple are indexed by the \"ARD\" index (whole file). So, it is possible to get a list of log files associated with the particular registry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MESSAGE",
+      "dataType": "DATE",
+      "rawType": "798.74D",
+      "required": false,
+      "helpText": "This multiple contains all messages recorded in  the log. ",
+      "isMultiple": true,
+      "subFileNumber": 798.74,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time when the  log was closed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "PROCESSED PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field indicates the number of  processed patients. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "PATIENTS WITH ERRORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field indicates the number of  patients processed with errors. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,3",
+      "length": 16,
+      "required": false,
+      "helpText": "The value of this field indicates the rate of  patient processing (patients per second). ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The USER field points to the VistA user associated with the log (its internal value is the DUZ at the moment when the log was created). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field stores the number of the task that  created the log. If the log is created from a  foreground job, this field will be empty. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "798.7", "field": .01, "type": "regular"},
+    {"name": "798.7", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

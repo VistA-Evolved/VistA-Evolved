@@ -1,0 +1,227 @@
+{
+  "fileNumber": 161.5,
+  "fileName": "FEE CH REPORT OF CONTACT",
+  "globalRoot": "161.5PI",
+  "globalReference": "^FBAA(161.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ASSOCIATED REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P162.2'X",
+      "required": false,
+      "pointerTo": 162.2,
+      "helpText": "This is the report of contact associated with a notification/ request in contract hospital. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP161.2'",
+      "required": true,
+      "pointerTo": 161.2,
+      "helpText": "This is the Fee Basis Vendor, associated with the Contract Hospital Notification/Request. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VETERAN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the name of the veteran who is requesting contract hospital services from the VA. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INITIAL DATE OF CONTACT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field corresponds to the Date/Time field of the Fee Notification/Request file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AUTHORIZATION FROM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time of admission of the veteran. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF CONTACT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "T:telephone;P:personal;",
+      "helpText": "This is a way of identifying how the report of contact was initiated. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PERSON CONTACTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person who called. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "PHONE # OF PERSON CONTACTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The phone number of the person with whom initial contact was made. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STREET ADDRESS[1] OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of person who called. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STREET ADDRESS[2] OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a continuation line for the street address of the person who called. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CITY OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the person who called. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATE OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the person who called. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ZIP CODE OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the zip code associated with the address of the person who called. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the attending physician treating the patient at the contract hospital. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ATTEND.PHYSICIAN TELEPHONE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number where the attending physician may be reached. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TENTATIVE DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial diagnosis given at the time of notification. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "INSURANCE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to document any other insurance the veteran may have. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MODE OF TRANSPORTATION",
+      "dataType": "POINTER",
+      "rawType": "P392.4'",
+      "required": false,
+      "pointerTo": 392.4,
+      "helpText": "This field allows the user to enter in the planned transportation of the veteran at time of transfer from contract hospital. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "VETERAN HAVE OTHER INSURANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "If the user answers 'Yes' to this question then they will be asked Insurance type. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DATE/TIME OF CONTACT",
+      "dataType": "DATE",
+      "rawType": "161.517D",
+      "required": false,
+      "helpText": "This multiple allows the CH user to enter contacts that were made with the VA on behalf of a patient who was admitted to a non-VA facility for treatment. ",
+      "isMultiple": true,
+      "subFileNumber": 161.517,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "APPROVING OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the official who is approving/disapproving the contract hospitalization. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE/TIME OF ADMISSION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date and time the veteran was admitted to a non-VA facility for care. ",
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "161.5", "field": .01, "type": "regular"},
+    {"name": "161.5", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "fileNumber": 791814,
+  "fileName": "ROES ELIGIBILITY CONFIRMATION",
+  "globalRoot": "791814",
+  "globalReference": "^RMPF(791814,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the PATIENT file at the facility where file kept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE REQUEST ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the request is entered.  It is to be filled in automatically by the program entering the request. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERING USER (ASPS)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person entering the request for the eligibility confirmation. Usually this person will be an Audiologist. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the request or approval will expire. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SUGGESTED ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the eligibility code that the entering user suggests. It will be seen by the PSAS user from the menu option RMPFDE2 that displays eligibilities waiting for approval. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "EMAIL MSG NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This is the internal number of the message sent to PSAS ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PSAS ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "THIS IS THE ELIGIBILITY CODE THAT PSAS SELECTS TO APPROVE IT MAY OR MAY NOT BE THE SAME AS THE ONE SUGGESTED BY ASPS ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "APPROVE/REJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REJECTED;1:APPROVED;2:WAITING;",
+      "helpText": "\"0\" SHOWS THE REQUEST IS REJECTED \"1\" SHOWS THE REQUEST IS APPROVED \"2\" SHOWS WAITING FOR ACTION ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "USER (PSAS)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "THIS IS THE NAME OF THE PERSON ACTING ON THE REQUEST. USUALLY A PERSON FROM PSAS, IN AN OFFICIAL STATUS. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "ACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the PSAS official acted on the request ",
+      "fieldNumber_": 2.04
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "791814", "field": .01, "type": "regular"},
+    {"name": "791814", "field": .04, "type": "regular"},
+    {"name": "791814", "field": 2.02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

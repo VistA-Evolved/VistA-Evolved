@@ -1,0 +1,71 @@
+{
+  "fileNumber": 601.85,
+  "fileName": "MH ANSWERS",
+  "globalRoot": "601.85",
+  "globalReference": "^YTT(601.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ANSWER ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is a unique record number. It is the IEN. There is a record for each  answer to each instrument. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMINISTRATION ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.84'",
+      "required": true,
+      "pointerTo": 601.84,
+      "helpText": "Ties this answer to a specific administration. Through the administration  we know patient, instrument, date/time, etc. It is a pointer to the  ADMINISTRAION ID field (#.01) of the MH ADMINISTRATIONS file (#601.84). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUESTION ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.72'",
+      "required": true,
+      "pointerTo": 601.72,
+      "helpText": "Specifies which question is being answered. Pointer to the QUESTION  NUMBER field (#.01) of the MH QUESTIONS file (#601.72). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ANSWERS",
+      "dataType": "SUBFILE",
+      "rawType": "601.853",
+      "required": false,
+      "helpText": "Free text answer ",
+      "isMultiple": true,
+      "subFileNumber": 601.853,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHOICE ID",
+      "dataType": "POINTER",
+      "rawType": "P601.75'",
+      "required": false,
+      "pointerTo": 601.75,
+      "helpText": "For multiple choice tests, the choice selected. Pointer to the CHOICE  ID field (#.01) of the MH CHOICES file (#601.75). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "601.85", "field": .01, "type": "regular"},
+    {"name": "601.85", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

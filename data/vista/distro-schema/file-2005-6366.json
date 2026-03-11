@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2005.6366,
+  "fileName": "CODE SCHEME DESIGNATOR",
+  "globalRoot": "2005.6366",
+  "globalReference": "^MAGV(2005.6366,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE SCHEME DESIGNATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the coding scheme used to define an irradiation instance code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a description of the code scheme. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.6366", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "fileNumber": 910,
+  "fileName": "ESP MASTER NAME INDEX",
+  "globalRoot": "910I",
+  "globalReference": "^ESP(910,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the name in 'Last,First Middle' format between 3-30 characters. Do not use numerics or lowercase alphabetic characters.  With the exception of the comma, period, space, hyphen, dash, and apostrophe, punctuation characters should be avoided.    DO NOT ENTER A SPACE BETWEEN THE COMMA AND THE FIRST NAME. DO NOT DELETE A MASTER NAME ENTRY.  THIS WILL REMOVE THE NAME FROM ALL REFERENCED FILES.  EDIT THE NAME TO CORRECT ANY ERRORS, OR CONTACT YOUR IRM REPRESENTATIVE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the individual's social security number as nine digits, i.e., 123456789. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date of birth between December 31, 1870 and today's date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .0301,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed field which determines individual's age based on DOB and today's date. ",
+      "fieldNumber_": .0301
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PATIENT;V:VISITOR;E:EMPLOYEE;O:OUTSIDER;PO:POLICE OFFICER;",
+      "helpText": "Enter 'P' for Patient, 'V' for Visitor, 'E' for Employee,  'O' for Outsider, or 'PO' for Police Officer. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "From the available listing choose the service/section where the individual works. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PLACE OF EMPLOYMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the place where the individual is employed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ID BADGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the ID badge # issued.  It is 2-6 characters, no hyphens or  spaces allowed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Enter 'M' if this individual is a male, or 'F' if female. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RACE",
+      "dataType": "POINTER",
+      "rawType": "P10'",
+      "required": false,
+      "pointerTo": 10,
+      "helpText": "Select from the available listing the proper race of this individual. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DRIVER'S LICENSE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the individual's driver's license number [3-20 characters]. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "STATE OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "From the available listing choose the state that issued the driver's license. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "HOME ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the first line of this individual's home address. It must be 3-35 characters. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "HOME ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If necessary, enter the second line of this individual's home address. It must be 3-35 characters. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city where this individual resides [2-30 characters]. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state where this individual resides.  You must choose from the available listing. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Enter the zip code for the city in which this individual resides. Enter the 5 digit zip code or ZIP + 4, ie. 12345-1234. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "PHONE NUMBER [RESIDENCE]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the individual's home telephone number. Answer must be [4-20 characters]. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "STREET ADDRESS [WORK]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the first line of the address of the individual's place of employment. Answer must be [3-35 characters]. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "STREET ADDRESS [LINE 2] [WORK]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If necessary, enter the second line of the address of the individual's place of employment.  Answer must be [3-30 characters]. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "CITY [WORK]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city of this individual's place of employment. Answer must be [2-30 characters]. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "STATE [WORK]",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state of this individual's place of employment. You must choose from the available listing. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "ZIP [WORK]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Enter the zip code for the city in which this individual is employed. Enter the 5 digit zip code or ZIP + 4, ie. 12345-1234. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "OFFICE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number of this individual's place of employment. Answer must be [4-20 characters]. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "HEIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the individual's height in the format 6-07 for 6 feet and 7 inches. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the individual's weight.  Select between 1 and 999. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "HAIR COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the hair color of the individual.  You must choose from the available listing. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "EYE COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the individual's eyes.  You must choose from the available listing. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "SKIN TONE",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the skin tone of the individual.  You must select from the available listing. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "SCARS/MARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any identifying scars or marks for the individual.  Answer must be 3-50 characters in length. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "AKA",
+      "dataType": "SUBFILE",
+      "rawType": "910.01",
+      "required": false,
+      "helpText": "Enter the Also Known As name.  Answer must be [2-30 characters]. ",
+      "isMultiple": true,
+      "subFileNumber": 910.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "910.02",
+      "required": false,
+      "helpText": "This is a word-processing field where you may enter additional information which you feel is pertinent to this individual. ",
+      "isMultiple": true,
+      "subFileNumber": 910.02,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 32,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BS5", "field": },
+    {"name": "C", "field": },
+    {"name": "DOB", "field": },
+    {"name": "SOUN", "field": },
+    {"name": "SSN", "field": },
+    {"name": "910", "field": .01, "type": "regular"},
+    {"name": "910", "field": .01, "type": "regular"},
+    {"name": "910", "field": .01, "type": "regular"},
+    {"name": "910", "field": .02, "type": "regular"},
+    {"name": "910", "field": .02, "type": "regular"},
+    {"name": "910", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(910,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

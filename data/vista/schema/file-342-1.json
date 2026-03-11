@@ -1,0 +1,132 @@
+{
+  "fileNumber": 342.1,
+  "fileName": "AR GROUP",
+  "globalRoot": "342.1I",
+  "globalReference": "^RC(342.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name assigned to the AR GROUP by the site.  An AR GROUP has an associated type (AGENT CASHIER, RETURN PAYMENT, etc.) that has a name assigned by the site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP342.2'X",
+      "required": true,
+      "pointerTo": 342.2,
+      "helpText": "The field represents the type of AR GROUP that is defined.  There are several types of AR GROUPs, such as: AGENT CASHIER, RETURN PAYMENT, etc. This allows information to be defined for AR GROUPS, such as, Address and phone numbers. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STREET ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the first street address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "STREET ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the second street address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "STREET ADDRESS #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the third street address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the City address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field represents the state address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This field represents the zip code address for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the phone number for the AR GROUP defined and is used on profiles, patient statements, receipts, etc. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "HOURS OF OPERATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the hours of operation for the AR GROUP defined and is used on certain Follow-up letters ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "MINIMUM REFERRAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is used for referral of bills to Regional Counsel (RC) or Department of Justice (DOJ).  Depending on the amount of the bill, the bill will be forwarded to either the RC or DOJ.  This field is only valid for RC and DOJ type AR GROUPS and will define the minimum amount the bill must be for it to be referred to this AR GROUP. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "MAXIMUM REFERRAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is used for referral of bills to Regional Counsel (RC) or Department of Justice (DOJ).  Depending on the amount of the bill, the bill will be forwarded to either the RC or DOJ.  This field is only valid for RC and DOJ type AR GROUPS and will define the maximum amount the bill must be for it to be referred to this AR GROUP. ",
+      "fieldNumber_": 2.02
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "342.1", "field": .01, "type": "regular"},
+    {"name": "342.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RC(342.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(342.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

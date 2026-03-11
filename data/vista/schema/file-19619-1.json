@@ -1,0 +1,133 @@
+{
+  "fileNumber": 19619.1,
+  "fileName": "VEJD SYSTEM USERS",
+  "globalRoot": "19619.1",
+  "globalReference": "^VEJD(19619.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VISTA USER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DNS USER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NT USER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NT EMAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DEFAULT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFAULT PROVIDER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;O:OTHER;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VOICE SERVER REVIEWER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VOICE SERVER LINE TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PCEMD CPT/DX LINKAGE EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PCEMD SEQUENCING EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PCEMD REPORT VIEWER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "APPLICATION INFO",
+      "dataType": "SET",
+      "rawType": "19619.132S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19619.132,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CCM MRU PATIENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "19619.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

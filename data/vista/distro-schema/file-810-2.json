@@ -1,0 +1,124 @@
+{
+  "fileNumber": 810.2,
+  "fileName": "REMINDER EXTRACT DEFINITION",
+  "globalRoot": "810.2",
+  "globalReference": "^PXRM(810.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The NAME of the extract (VA-IHD QUERI, VA-MH QUERI etc.). Extracts for  national rollup are prefixed with 'VA-'.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF TOTALS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CT:COMPLIANCE TOTALS ONLY;CF:COMPLIANCE AND FINDING TOTALS;",
+      "helpText": "This is the type of extract totals that will be reported by the extract.                                     Compliance Totals Only are similar to Reminder Due Summary reports, with the difference being multiple patient lists are used to evaluate multiple reminders, resulting in compliance totals based on the reminder status (applicable, not applicable (N/A), due, and not due).  Example:  PATIENT LIST 1  REMINDER 1 COMPLIANCE TOTALS for Applicable, N/A, Due, Not Due  REMINDER 2 COMPLIANCE TOTALS",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "810.23",
+      "required": false,
+      "helpText": " ",
+      "isMultiple": true,
+      "subFileNumber": 810.23,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT FREQUENCY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Q:QUARTERLY;M:MONTHLY;Y:YEARLY;",
+      "helpText": "This is the frequency of the extract run. The frequency may be monthly,  quarterly, yearly or by financial year.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST REPORTING PERIOD/YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the date range of the last extract run. The format is period/year, e.g. Q1/2002 denotes first quarter of 2002.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the latest extract was run. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NEXT REPORTING PERIOD/YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the date range of the next extract to be run. The format is period/year, e.g. Q1/2002 denotes first quarter of 2002..   This field is updated automatically on the successful completion of each extract run.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEXT RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of the next scheduled extract run. This field is only set for extracts that are scheduled to run as an option.   Example: the two national extracts that are being released with 2.0, VA-IHD QUERI and VA-MH QUERI, are being released as options (PXRM EXTRACT  VA-IHD QUERI and PXRM EXTRACT VA-MH QUERI) that sites will need to schedule using TaskMan. When the extract is done with processing, the extract code will determine the next run date and add that value to this field.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXTRACT RULES",
+      "dataType": "SUBFILE",
+      "rawType": "810.21I",
+      "required": false,
+      "helpText": "This multiple contains the sequential list of extract criteria:  - list rule sets used by this extract to build    patient lists - reminders that should be run against a      patient list - counting rules for how findings should be    counted.   ",
+      "isMultiple": true,
+      "subFileNumber": 810.21,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of the extract definition. National extract definitions  cannot be edited.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "810.24D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 810.24,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

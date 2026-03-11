@@ -1,0 +1,78 @@
+{
+  "fileNumber": 18.04,
+  "fileName": "VISTALINK LISTENER STARTUP LOG",
+  "globalRoot": "18.04",
+  "globalReference": "^XOB(18.04,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BOX-VOLUME PAIR",
+      "dataType": "POINTER",
+      "rawType": "RP14.7'",
+      "required": true,
+      "pointerTo": 14.7,
+      "helpText": "This field indicates the BOX-VOLUME pair for the entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field indicates the port number used by the VistALink Listener entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STARTING;2:RUNNING;3:STOPPING;4:STOPPED;5:FAILED;",
+      "helpText": "This field indicates the current status of the VistALink Listener entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER RESPONSIBLE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user responsible for the current status of the VistALink Listener entry. This information is only entered if available at the time of the status update. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME OF LAST STATUS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date/time that the current status of the VistALink Listener entry occurred. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ASSOCIATED CONFIGURATION",
+      "dataType": "POINTER",
+      "rawType": "P18.03'",
+      "required": false,
+      "pointerTo": 18.03,
+      "helpText": "This field indicates the VistALink Listener configuration (if one  exists) that is associated with the Listener log file entry. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "18.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(18.04,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "fileNumber": 2006.5821,
+  "fileName": "CT CONVERSION PARAMETERS",
+  "globalRoot": "2006.5821",
+  "globalReference": "^MAGDICOM(2006.5821,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer to the Institution table (#4). This pointer identifies the site to which the current record applies. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string is the name of the manufacturer of the CT scanner for which parameters are described in this record. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string identifies the model name of the CT scanner for which the conversion parameters are described in this record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a FileMan date (date only, no time). This date identifies the day on which the conversion parameters were established that are described in this record. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CONVERSION PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string represents the conversion parameters (DICOM to Targa conversion) that were applied for the CT scanner on the date specified elsewhere in this record. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5821", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

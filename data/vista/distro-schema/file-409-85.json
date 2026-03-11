@@ -1,0 +1,449 @@
+{
+  "fileNumber": 409.85,
+  "fileName": "SDEC APPT REQUEST",
+  "globalRoot": "409.85",
+  "globalReference": "^SDEC(409.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient that is to be on the SDEC APPT REQUEST  list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NEW;E:ESTABLISHED;",
+      "helpText": "This field represents the status of the patient in regards to being a  'NEW' or 'ESTABLISHED' patient. An ESTABLISHED patient has been seen within the past 24 months. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CREATE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents the date that the appointment request was made. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field represents the Institution assigned to identify the specific  location. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "APPT:APPOINTMENT;MOBILE:MOBILE;W2VA:WELCOME TO VA;RTC:RETURN TO CLINIC;",
+      "helpText": "This field represents the type of appointment request that being  requested. . ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQ SPECIFIC CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44'a",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field represents the clinic that this appointment request is for.   If the patient has been assigned to the APPT REQUEST list, enter the clinic that the patient is waiting for an appointment. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "REQ SERVICE/SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'a",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This field represents the CLINIC STOP code (also referred to as  SERVICE/SPECIALTY) that is associated with this appointment. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "REQ APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P409.1'a",
+      "required": false,
+      "pointerTo": 409.1,
+      "helpText": "This field represents the appointment type for this request. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORIGINATING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that entered this appointment request. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and optional Time that this appointment request entry  was entered. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ASAP;F:FUTURE;",
+      "helpText": "This represents the appointment priority.    Future indicates that the patient needs an appointment in the  future and a desired date will be entered by the user.  ASAP indicates  that the patient needs an appointment before the currently next available  appointment (as soon as a slot opens).  The desired date for ASAP will be  set by the system as the current date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GROUP 1;2:GROUP 2;3:GROUP 3;4:GROUP 4;5:GROUP 5;6:GROUP 6;7:GROUP 7;8:GROUP 8;",
+      "helpText": "The ENROLLMENT PRIORITY field represents the appointment Enrollment  Priority. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REQUESTED BY",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:PROVIDER;2:PATIENT;",
+      "helpText": "This field identifies who requested the appointment - the patient or a  provider. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field represents the provider that requested the appointment if the  appointment was requested by a provider. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SCHEDULED DATE OF APPT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the appointment date and optional time scheduled for the patient. This appointment may be used as a reason for closing 'this' appointment  request. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "DATE APPT. MADE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the appointment was created. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.2,
+      "fieldName": "APPT CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic this appointment was created for. ",
+      "fieldNumber_": 13.2
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "APPT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the institution the clinic appointment belongs to. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 13.4,
+      "fieldName": "APPT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This is the stop code/specialty of a clinic associated with the patient  appointment. This may be different that the STOP CODE defined in the REQ  SERVICE/SPECIALTY field. ",
+      "fieldNumber_": 13.4
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "APPT CREDIT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This is the credit stop code optionally assigned to the HOSPITAL LOCATION  file associated with the scheduled appointment. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 13.6,
+      "fieldName": "APPT STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 3-digit station number assigned to the facility plus up to 3  optional modifiers. ",
+      "fieldNumber_": 13.6
+    },
+    {
+      "fieldNumber": 13.7,
+      "fieldName": "APPT CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who assigned the appointment to the REQUEST entry. ",
+      "fieldNumber_": 13.7
+    },
+    {
+      "fieldNumber": 13.8,
+      "fieldName": "APPT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:Scheduled/Kept;I:Inpatient;NS:No-Show;NSR:No_Show, Rescheduled;CP:Canceled by Patient;CPR:Canceled by Patient, Rescheduled;CC:Canceled by Clinic;CCR:Canceled by Clinic, Rescheduled;NT:No Action Taken;",
+      "helpText": "This field identifies the status of the appointment that is associated  with this appointment request. ",
+      "fieldNumber_": 13.8
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SERVICE CONNECTED PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The SERVICE CONNECTED PERCENTAGE is used to determine the service  connected priority. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SERVICE CONNECTED PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field represents whether the appointment has a Service Connected  Priority. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE DISPOSITIONED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This represents the date that the patient is dispositioned from the  Appointment Request list. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DISPOSITIONED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This represents the user who dispositioned the patient from the  appointment request list. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DEATH;NC:REMOVED/NON-VA CARE;SA:REMOVED/SCHEDULED-ASSIGNED;CC:REMOVED/VA CONTRACT CARE;NN:REMOVED/NO LONGER NECESSARY;ER:ENTERED IN ERROR;TR:TRANSFERRED TO EWL;CL:CHANGED CLINIC;MC:MRTC PARENT CLOSED;",
+      "helpText": "This field represents the reason this patient has been dispositioned from  this appointment Request. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.1,
+      "fieldName": "DISPOSITION CLOSED BY CLEANUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter Yes if Disposition is related to Open Request becoming Closed due  to the running of Cleanup Utility.  Otherwise enter No. ",
+      "fieldNumber_": 21.1
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CID/PREFERRED DATE OF APPT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This CID/PREFERRED DATE OF APPT field represents the date that the  patient or provider has requested for the appointment.     If the priority is ASAP, this is the date the patient is placed on the REQUEST List (SCHEDULING). If the priority is FUTURE, the user enters the date that the  patient/provider is requesting that the appointment is to be scheduled. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "O:OPEN;C:CLOSED;",
+      "helpText": "This field represents the current status of this appointment request. If the APPT Request entry is dispositioned, the status =  CLOSED, otherwise, the APPT Request entry status = OPEN. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This Free Text field represents information related to the appointment  request.     example: see progress note date 5/01/02 this would direct the scheduling  clerk to a note that may contain lab, xray orders that need to be  completed prior to the appointment. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "MULTIPLE APPOINTMENT RTC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field represents that Multiple Appointments need to be made.   If set to NO (0 zero), Multiple Appointment (Return to Clinic) are not  scheduled.   If set to YES (1), Multiple Appointment (Return to Clinic) could be  scheduled. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "MULT APPT RTC INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The MULT APPT RTC INTERVAL represents the number of Days between  appointments. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "MULT APPT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the number of appointments that may be needed. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.3,
+      "fieldName": "MULT APPTS MADE",
+      "dataType": "POINTER",
+      "rawType": "409.852P",
+      "required": false,
+      "helpText": "These are the MRTC Appointments that have been made for this appointment  request. ",
+      "fieldNumber_": 43.3
+    },
+    {
+      "fieldNumber": 43.5,
+      "fieldName": "MRTC CALC PREF DATES",
+      "dataType": "DATE",
+      "rawType": "409.851D",
+      "required": false,
+      "helpText": "This multiple field holds the dates that are requested for multiple  appointments. ",
+      "isMultiple": true,
+      "subFileNumber": 409.851,
+      "fieldNumber_": 43.5
+    },
+    {
+      "fieldNumber": 43.8,
+      "fieldName": "PARENT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P409.85'",
+      "required": false,
+      "pointerTo": 409.85,
+      "helpText": "This field represents the parent appointment request. ",
+      "fieldNumber_": 43.8
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PATIENT CONTACT",
+      "dataType": "DATE",
+      "rawType": "409.8544D",
+      "required": false,
+      "helpText": "This multiple records the patient contact events. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8544,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "VS AUDIT",
+      "dataType": "DATE",
+      "rawType": "409.8545DA",
+      "required": false,
+      "helpText": "This multiple is like an audit trail for specific fields and is used by  VistA Scheduling GUI. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8545,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ORDER ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field is the HL7 Message ID used for Return to Clinic orders. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "TIME SENSITIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Used to indicate time sensitive Return to Clinic order. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PREREQUISITE",
+      "dataType": "SUBFILE",
+      "rawType": "409.8548",
+      "required": false,
+      "helpText": "A list of all prerequisites associated with this Return to Clinic order. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8548,
+      "fieldNumber_": 48
+    }
+  ],
+  "fieldCount": 43,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "SC", "field": },
+    {"name": "SCC", "field": },
+    {"name": "409.85", "field": .01, "type": "regular"},
+    {"name": "409.85", "field": 2, "type": "regular"},
+    {"name": "409.85", "field": 8, "type": "regular"},
+    {"name": "409.85", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

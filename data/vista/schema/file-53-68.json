@@ -1,0 +1,250 @@
+{
+  "fileNumber": 53.68,
+  "fileName": "BCMA MISSING DOSE REQUEST",
+  "globalRoot": "53.68",
+  "globalReference": "^PSB(53.68,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains a system generated unique request number for each missing dose request entered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Automatically stuffed at record creation time with a value of NOW. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Automatically stuffed at record creation time with the current value of DUZ. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Automatically stuffed at record creation time with the current value of DUZ(2). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SENT TO MAILGROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Once submitted this field contains the Mail group the request was sent to. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PRINTED ON DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If printing is enabled this contains the printer that the request printed on. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLOSED;1:UNRESOLVED;",
+      "helpText": "Status of the request as Closed or Unresolved. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Pointer to the PATIENT file (#2) of the patient missing the medication. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "WARD LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "Pointer to the WARD LOCATION file (#42) with the selected ward for the report. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DRUG REQUESTED",
+      "dataType": "POINTER",
+      "rawType": "P50'X",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "Pointer to DRUG file (#50) with the medication needed. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DOSE NEEDED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text description of the dosage needed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "REASON NEEDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DROPPED;2:EMPTY PACKAGE;3:NOT AVAILABLE;4:WRONG DOSE/DRUG DELIVERED;5:PACKAGE CONTENTS DAMAGED;6:PACKAGE INTEGRITY DAMAGED;7:BARCODE/IEN ILLEGIBLE;",
+      "helpText": "Set of codes containing the reason a medication is missing. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "ADMINISTRATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time the medication is to be administered. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "NEEDED BY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time the medication will be needed to meet the next administration. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ROOM/BED",
+      "dataType": "POINTER",
+      "rawType": "P405.4'",
+      "required": false,
+      "pointerTo": 405.4,
+      "helpText": "The room/bed of the patient when the request is entered. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "DOSE DELIVERED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Was a dose delivered to complete this missing med request. (y/n) ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "DOSE DELIVERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to NEW PERSON file (#200) with the user who resolved the request. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "DELIVERY TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time the medication was delivered/resolved. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "PHARMACY REASON NEEDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WS/FILL ON REQUEST;2:FOUND IN DRAWER;3:PHARMACIST ERROR;4:EXPIRED/NO ORDER;5:ATC ERROR;6:NOT ENOUGH PRNS;7:TECHNICIAN ERROR;8:ON PRE-EXCHANGE/PICK LIST;9:PATIENT TRANSFERRED;10:NURSE ADMIN ERROR;",
+      "helpText": "Set of coded for resolution reason. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "UNIQUE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique ID number of an IV bag, which is generated from  Inpatient Medications. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "ADDITIVES",
+      "dataType": "POINTER",
+      "rawType": "53.686PA",
+      "required": false,
+      "helpText": "Pointer to the additives file. Filled in automatically with the ordered additives when a missing dose is submitted. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "SOLUTIONS",
+      "dataType": "POINTER",
+      "rawType": "53.687PA",
+      "required": false,
+      "helpText": "Pointer to the SOLUTIONS file. Filled in automatically with the ordered additives when a missing dose is submitted. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Pointer to the HOSPITAL LOCATION file (#44) for the selected clinic for  the report. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "ADTE", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "53.68", "field": .01, "type": "regular"},
+    {"name": "53.68", "field": .02, "type": "regular"},
+    {"name": "53.68", "field": .07, "type": "regular"},
+    {"name": "", "field": .24, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

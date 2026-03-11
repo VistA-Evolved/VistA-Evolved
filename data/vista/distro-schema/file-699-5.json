@@ -1,0 +1,399 @@
+{
+  "fileNumber": 699.5,
+  "fileName": "GENERALIZED PROCEDURE/CONSULT",
+  "globalRoot": "699.5ID",
+  "globalReference": "^MCAR(699.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690",
+      "required": true,
+      "pointerTo": 690,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUBSPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P697.2'",
+      "required": true,
+      "pointerTo": 697.2,
+      "helpText": "Only subspecailty in the PROCEDURE/SUBSPECIALTY file will be chosen. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "R*P697.2'",
+      "required": true,
+      "pointerTo": 697.2,
+      "helpText": "Only procedure in the PROCEDURE/SUBSPECIALTY file will be chosen. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INDICATION",
+      "dataType": "SUBFILE",
+      "rawType": "699.52",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.52,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROBLEM ORIENTED CONSULT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is automatically stuffed if an entry is made though the various Medicine package sub-modules' Problem-Oriented Consult Option. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "OUTPUT-FORMATTED POC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field formats the PROBLEM ORIENTED CONSULT? field (#2) for the output report. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INDICATION COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used in the Problem-Oriented Consult Enter/Edit and Print. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MEDICATIONS",
+      "dataType": "POINTER",
+      "rawType": "699.53P",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROVIDER/PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TECHNIQUE",
+      "dataType": "POINTER",
+      "rawType": "699.501P",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COMPLICATIONS",
+      "dataType": "POINTER",
+      "rawType": "699.51P",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "CONSULTATION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P699.82'",
+      "required": false,
+      "pointerTo": 699.82,
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SUBJECTIVE",
+      "dataType": "SUBFILE",
+      "rawType": "699.532",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.532,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OBJECTIVE",
+      "dataType": "SUBFILE",
+      "rawType": "699.533",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.533,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ASSESSMENT/FINDINGS",
+      "dataType": "SUBFILE",
+      "rawType": "699.534",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.534,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PLAN",
+      "dataType": "SUBFILE",
+      "rawType": "699.535",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.535,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ABNORMAL;N:NORMAL;I:INCOMPLETE EXAMINATION;",
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "699.54P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure.  ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASE ON-LINE VERIFIED;ROV:RELEASE OFF-LINE VERIFIED;RNV:RELEASE NOT VERIFIED;S:SUPERSEDED;SRV:SUPERSEDING RELEASE ON-LINE VERIFIED;SROV:SUPERSEDING RELEASE OFF-LINE VERIFIED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "699.52005P",
+      "required": false,
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 41,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "699.5", "field": .01, "type": "regular"},
+    {"name": "699.5", "field": .01, "type": "regular"},
+    {"name": "699.5", "field": .02, "type": "regular"},
+    {"name": "699.5", "field": .02, "type": "regular"},
+    {"name": "699.5", "field": .05, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"},
+    {"name": "699.5", "field": 900, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(697.2,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(697.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(699.5,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

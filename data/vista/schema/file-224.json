@@ -1,0 +1,140 @@
+{
+  "fileNumber": 224,
+  "fileName": "DENTAL PERSONNEL (AMIS)",
+  "globalRoot": "224DI",
+  "globalReference": "^DENT(224,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "STATION.DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the three digit station number. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STAFF DENTIST (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RESIDENT (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HYGIENIST (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EFDAS (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DENTAL ASSIST. (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DENTAL TECH. (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CLERICAL (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "NOTE:  Enter only actual days worked.  Exclude annual leave, sick leave, military leave, leave without pay, and authorized absences.  Refer to the DHCP Dental Package User Manual for special conditions. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CONSULT ATTEND (VISITS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CHANGE/DELETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CHANGE;D:DELETE;",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P3'",
+      "required": false,
+      "pointerTo": 3,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DATE RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 61
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "224", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .3, "value": "W ?16,$P(^(0),U,10)"}
+  ]
+}

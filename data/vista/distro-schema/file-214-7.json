@@ -1,0 +1,85 @@
+{
+  "fileNumber": 214.7,
+  "fileName": "NURS REVIEW CLASSIFICATION",
+  "globalRoot": "214.7I",
+  "globalReference": "^NURSA(214.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REVIEW DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time of the review of a classification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Name of patient whose classification is being reviewed.  Points to the PATIENT (#2) File. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASSIFICATION REVIEWED",
+      "dataType": "POINTER",
+      "rawType": "R*P214.6'",
+      "required": true,
+      "pointerTo": 214.6,
+      "helpText": "The classification being reviewed.  Points to the NURS CLASSIFICATION (#214.6) file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASSIFICATION CHANGED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if the classification was changed.  Answer Yes or No. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NEW CLASSIFICATION DATE/TIME",
+      "dataType": "POINTER",
+      "rawType": "*P214.6'",
+      "required": false,
+      "pointerTo": 214.6,
+      "helpText": "This field contains the new classification for the patient if it was changed.  Points to the NURS CLASSIfICATION (#214.6) file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REVIEWER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Person who reviewed the classification.  Points to the NEW PERSON (#200) file. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AZ1", "field": },
+    {"name": "AZ2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "214.7", "field": .01, "type": "regular"},
+    {"name": "214.7", "field": .01, "type": "regular"},
+    {"name": "214.7", "field": .02, "type": "regular"},
+    {"name": "214.7", "field": .02, "type": "regular"},
+    {"name": "214.7", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

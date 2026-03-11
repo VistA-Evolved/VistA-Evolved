@@ -1,0 +1,68 @@
+{
+  "fileNumber": 727.29,
+  "fileName": "DSS LOINC FILE",
+  "globalRoot": "727.29",
+  "globalReference": "^ECX(727.29,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOINC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The unique LOINC with check digit code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DSS LAR TEST NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the DSS assigned test number (DSS Test ID) for the LAR Test. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DSS TEST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DSS assigned test name for the laboratory test. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DSS REPORTING UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are the units of measurement that DSS accepts for the LAR Tests. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LOINC NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the LOINC Code provided to DSS by STS. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AL", "field": },
+    {"name": "B", "field": },
+    {"name": "727.29", "field": .01, "type": "regular"},
+    {"name": "727.29", "field": .01, "type": "regular"},
+    {"name": "727.29", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

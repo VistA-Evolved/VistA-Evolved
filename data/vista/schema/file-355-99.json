@@ -1,0 +1,95 @@
+{
+  "fileNumber": 355.99,
+  "fileName": "MASTER TYPE OF PLAN",
+  "globalRoot": "355.99",
+  "globalReference": "^IBEMTOP(355.99,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PLAN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ150a",
+      "length": 150a,
+      "required": true,
+      "helpText": "This is a standard Source of Payment published by the Public Health Data Standards Consortium (PHDSC).   This is used to associate entries from the TYPE OF PLAN (#355.1) file to standard PHDSC Source of Payment codes and should not be edited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHDSC SOURCE OF PAYMENT CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the Public Health Standards Consortium (PHDSC) Source of Payment  code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P355.99",
+      "required": false,
+      "pointerTo": 355.99,
+      "helpText": "This is the MASTER TYPE OF PLAN that represents the next higher, or broader, category to which this MASTER TYPE OF PLAN entry belongs.   An MASTER TYPE OF PLAN's parent code may be computed from its PHDSC  SOURCE OF PAYMENT CODE by truncating the code's last digit.    Example:   PHDSC SOURCE OF PAYMENT CODE=31, PARENT CODE=3  PHDSC SOURCE OF PAYMENT CODE=123, PARENT CODE=12.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P355.99'",
+      "required": false,
+      "pointerTo": 355.99,
+      "helpText": "This is populated when one Term/Concept replaces another Term/Concept.  This field is controlled by standardization and should only be changed by  standardization processes. This field contains a pointer to a VHA  standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master Entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20aIX",
+      "length": 20aIX,
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique, arbitrarily-assigned integer assigned to  reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "355.9901DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 355.9901,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.99", "field": .01, "type": "regular"},
+    {"name": "355.99", "field": 1, "type": "regular"},
+    {"name": "355.99", "field": 99.97, "type": "regular"},
+    {"name": "355.99", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

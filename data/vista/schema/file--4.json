@@ -1,0 +1,254 @@
+{
+  "fileNumber": .4,
+  "fileName": "PRINT TEMPLATE",
+  "globalRoot": ".4",
+  "globalReference": "^DIPT(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "READ ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'I",
+      "required": false,
+      "pointerTo": 1,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER #",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WRITE ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TEMPLATE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FILEGRAM;2:EXTRACT;3:EXPORT;7:SELECTED EXPORT FIELDS;",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".4001",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4001,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DESTINATION FILE",
+      "dataType": "POINTER",
+      "rawType": "*P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This field holds the number of the file that is designed to receive data from other files by using the Extract Tool. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "FILEGRAM/EXTR FILE",
+      "dataType": "SUBFILE",
+      "rawType": ".41A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .41,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EXPORT FIELD",
+      "dataType": "SUBFILE",
+      "rawType": ".42A",
+      "required": false,
+      "helpText": "This multiple holds information about each field being exported. ",
+      "isMultiple": true,
+      "subFileNumber": .42,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "EXPORT FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P.44'",
+      "required": false,
+      "pointerTo": .44,
+      "helpText": "This field contains the foreign format used to make the export template. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EXPORT TEMPLATE CREATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If YES, this Selected Fields for Export template has been used to create an Export template. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "MULTIPLE PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a list of field numbers representing the deepest multiple contained in this Export template. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 704,
+      "fieldName": "HEADER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "fieldNumber_": 704
+    },
+    {
+      "fieldNumber": 707,
+      "fieldName": "SUB-HEADER SUPPRESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES",
+      "fieldNumber_": 707
+    },
+    {
+      "fieldNumber": 709.1,
+      "fieldName": "LANGUAGE OF HEADING",
+      "dataType": "POINTER",
+      "rawType": "P.85",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "The identified language is used when producing the Heading of prints using this template. ",
+      "fieldNumber_": 709.1
+    },
+    {
+      "fieldNumber": 1620,
+      "fieldName": "PRINT FIELDS",
+      "dataType": "COMPUTED",
+      "rawType": "XCmJ50",
+      "length": 50,
+      "required": false,
+      "fieldNumber_": 1620
+    },
+    {
+      "fieldNumber": 1815,
+      "fieldName": "ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1815
+    },
+    {
+      "fieldNumber": 1816,
+      "fieldName": "PREVIOUS ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1816
+    },
+    {
+      "fieldNumber": 1819,
+      "fieldName": "COMPILED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1819
+    },
+    {
+      "fieldNumber": 1819.1,
+      "fieldName": "LANGUAGE IN WHICH COMPILED",
+      "dataType": "POINTER",
+      "rawType": "P.85",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "The identified language is used when this Print Template is compiled. ",
+      "fieldNumber_": 1819.1
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "BUILD(S)",
+      "dataType": "COMPUTED",
+      "rawType": "Cmp9.6",
+      "required": false,
+      "helpText": "This computed field searches the Build File(#9.6) for Builds containing the Print Template. A list of the identified Builds is created for display.  Multiple Builds will be shown if appropriate. ",
+      "fieldNumber_": 21400
+    },
+    {
+      "fieldNumber": 21409,
+      "fieldName": "CANONIC FOR THIS FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES",
+      "helpText": "The Print Template identified as CANONIC will always be presented  to the user for selection at the First Print FIELD: prompt. ",
+      "fieldNumber_": 21409
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "FG", "field": },
+    {"name": ".4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": ".4", "field": 8, "type": "regular"},
+    {"name": "", "field": 1815, "type": "regular"},
+    {"name": "", "field": 21409, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRIT, "value": "I $P(^(0),U,8) N D1 S @(\"D1=$P($P($C(59)_$S($D(^DD(.4,8,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,8)_\"\":\"\",2),$C(59),1)\") D EN^DDIOL(\"**\"_D1_\"**\",\"\",\"?0\")"},
+    {"field": WRITE, "value": "N D,D1,D2 S D2=^(0) S:$X>30 D1(1,\"F\")=\"!\" S D=$P(D2,U,2) S:D D1(2)=\"(\"_$$DATE^DIUTL(D)_\")\",D1(2,\"F\")=\"?30\" S D=$P(D2,U,5) S:D D1(3)=\" User #\"_D,D1(3,\"F\")=\"?50\" S D=$P(D2,U,4) S:D D1(4)=\" File #\"_D,D1(4,\"F\")=\"?59\" D EN^DDIOL(.D1)"},
+    {"field": WRITED, "value": "I $G(DZ)?1\"???\".E N % S %=0 F  S %=$O(^DIPT(Y,\"%D\",%)) Q:%'>0  I $D(^(%,0))#2 D EN^DDIOL(^(0),\"\",\"!?5\")"}
+  ]
+}

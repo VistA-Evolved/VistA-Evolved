@@ -1,0 +1,194 @@
+{
+  "fileNumber": 408.13,
+  "fileName": "INCOME PERSON",
+  "globalRoot": "408.13",
+  "globalReference": "^DGPR(408.13,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the name of the relative of the veteran.  The name should be entered in the same format as that for the veteran:  LASTNAME,FIRSTNAME MIDDLENAME. If a space is entered between the comma and the first name, it will automatically be removed.  The relation's full name should be used to avoid potential duplicates. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Enter the sex of the relative.  This question must be answered in order for this relative to remain on file.  Enter M or Male for male or F or FEMALE for female. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "RDXO",
+      "required": true,
+      "helpText": "Enter the date on which this relative was born.  This information is necessary for use in the income screening and means test portions of MAS.   The date entered must not be during the current calendar year.  That is, it must be on or before December 31 or the prior calendar year.  The reason for this is that this data is used for collecting income information for the purposes of comparing this data with the Internal Revenue Service (IRS). Children born during the current calendar year can not b",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Answer with the individual's social security number.  Answer must be 9  numbers in length. The SSN will be sent to the SSA for verification.  This status will be displayed next to the SSN.  Once an SSN has received a status of Verified, it is locked from user updating and a  \"VERIFIED\" will be displayed by the SSN field.  Only HEC staff are able  to change a Spouse or Dependents verified SSN.  If SSA indicates the  SSN is invalid, \"INVALID\" will appear next to the invalid SSN of the individual. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PSEUDO SSN REASON",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:REFUSED TO PROVIDE;S:SSN UNKNOWN/FOLLOW-UP REQUIRED;N:NO SSN ASSIGNED;",
+      "helpText": "This field is used to document the reason the individual was assigned a  pseudo SSN.  Based on your selection, the Pseudo SSN Report (Dependent)  option located in the Means Test Menu can provide you a current report of the reasons entered at this prompt.  The following reasons are  available for selection:   Refused to Provide - use this reason when the individual was asked for  his/her SSN and refused to provide the number.   SSN Unknown/Follow-up required - use this reason when the individual",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SSN VERIFICATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "4:VERIFIED;2:INVALID;",
+      "helpText": "This field designates whether or not the SSN has been verified. This field will be received in the HL7 record.  It is not editable by the user.  Once the SSN is verified by the SSA, it is no longer editable. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "MAIDEN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the spouse's maiden name in 'LAST,FIRST MIDDLE SUFFIX' format.   Entry of the LAST name only is permitted and the comma may be omitted.   If the response contains no comma, one will be appended to the value.   Including the comma, the value must be at least 3 characters in length. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The first line of the spouse's residence street address. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The second line of the spouse's residence street address. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The third line of the spouse's residence street address. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The city where the spouse's residence is located. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state where the spouse's residence is located. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The zip code where the spouse's residence is located. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The telephone number for the spouse's residence. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "SPOUSE ADDR LAST DT/TM UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date and time of the last update to the  Spouse's address.   VistA shall upload all of the Spouse Address fields during the HL7 Z10  receiver process if 1. the Address Line 1 (field 1.2) is NOT null 2. the received Changed Date/Time is greater than the Spouse Address Last     Date/Time Updated that is on VistA.   Any change to the following Spouse Address fields will trigger an update: Street Address [Line 1], Street Address [Line 2], Street Address [Line 3], City, St",
+      "fieldNumber_": 1.9
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADOB", "field": },
+    {"name": "AE", "field": },
+    {"name": "AENR01", "field": },
+    {"name": "AENR02", "field": },
+    {"name": "AENR03", "field": },
+    {"name": "AENR09", "field": },
+    {"name": "AENR1", "field": },
+    {"name": "AENR11", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AIVM", "field": },
+    {"name": "B", "field": },
+    {"name": "BS", "field": },
+    {"name": "BS5", "field": },
+    {"name": "SSN", "field": },
+    {"name": "408.13", "field": .01, "type": "regular"},
+    {"name": "408.13", "field": .01, "type": "regular"},
+    {"name": "408.13", "field": .02, "type": "regular"},
+    {"name": "408.13", "field": .03, "type": "regular"},
+    {"name": "408.13", "field": .03, "type": "regular"},
+    {"name": "408.13", "field": .09, "type": "regular"},
+    {"name": "408.13", "field": .09, "type": "regular"},
+    {"name": "408.13", "field": .09, "type": "regular"},
+    {"name": "408.13", "field": .09, "type": "regular"},
+    {"name": "408.13", "field": .09, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "408.13", "field": .1, "type": "regular"},
+    {"name": "408.13", "field": 1.1, "type": "regular"},
+    {"name": "408.13", "field": 1.2, "type": "regular"},
+    {"name": "408.13", "field": 1.3, "type": "regular"},
+    {"name": "408.13", "field": 1.4, "type": "regular"},
+    {"name": "408.13", "field": 1.5, "type": "regular"},
+    {"name": "408.13", "field": 1.6, "type": "regular"},
+    {"name": "408.13", "field": 1.7, "type": "regular"},
+    {"name": "408.13", "field": 1.8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 6916.2,
+  "fileName": "HAND RECEIPT TEXT",
+  "globalRoot": "6916.2",
+  "globalReference": "^ENG(6916.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the version of the hand receipt. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "6916.21",
+      "required": false,
+      "helpText": "This is the wording of the standard text approved by VA Central Office for use in the hand receipt program.  It must not be locally modified. ",
+      "isMultiple": true,
+      "subFileNumber": 6916.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the patch that distributed this version of the hand receipt text. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the checksum of the standard hand receipt text, which is calculated and stored to validate the integrity of the text. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6916.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

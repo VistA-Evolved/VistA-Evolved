@@ -1,0 +1,360 @@
+{
+  "fileNumber": 396.17,
+  "fileName": "CAPRI TEMPLATES",
+  "globalRoot": "396.17",
+  "globalReference": "^DVB(396.17,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0a",
+      "length": 12,
+      "required": false,
+      "helpText": "This field is used to maintain a tracking ID # used internally in  the CAPRI Delphi client. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'a",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Pointer field to the PATIENT (#2) file to link the document to a patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACCEPTABLE CLINICAL EVIDENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores the boolean response from the Delphi Capri GUI  'Template Screen' form. Select Y if Acceptable Clinical Evidence was used for the list of exams, or N if Acceptable Clinical Evidence was not  Used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DOCUMENT MANAGER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is the DUZ of the CAPRI User responsible for managing the document in CAPRI. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This field is used to record the exact date/time the document was  originally started.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME UPDATED",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This field records the last time data was saved back to VistA.  It will  be updated during auto-saves, at signature, and if the user saves their  document from within CAPRI.  It will not be updated if a reviewer works  with the document unless information is changed in the form fields. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE/TIME LOCKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be filled in at the time the note is transferred to TIU.   This will prevent further modification of the document contents by  reviewer or author. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TEMPLATES UTILIZED",
+      "dataType": "SUBFILE",
+      "rawType": "396.176",
+      "required": false,
+      "helpText": "A document may be made up of more than one of the predefined C&P  templates.  This word processing field will store each template utilized during the documentation process on a separate line. ",
+      "isMultiple": true,
+      "subFileNumber": 396.176,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TIU DOCUMENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "After the document is completed and transferred into TIU as an ASCII  report, the new TIU file/document number will be stored in this field for  auditing/validation purposes later.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FORM DATA",
+      "dataType": "SUBFILE",
+      "rawType": "396.178",
+      "required": false,
+      "helpText": "All of the MS Windows generated ascii code to re-populate GUI form fields will be stored in this field.  A standard Windows API is used to generate this text.   WARNING:  DO NOT EDIT THIS FIELD OR THE DOCUMENT MAY BECOME CORRUPT AND INACCESSIBLE FROM THE GUI. ",
+      "isMultiple": true,
+      "subFileNumber": 396.178,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "FORM SAVE BUFFER",
+      "dataType": "DATE",
+      "rawType": "396.19D",
+      "required": false,
+      "helpText": "Snapshots of the user's template data each time they exit the template in  the GUI will be stored here.  They'll be used in case of template  corruption or if the user wishes to revert to an earlier version of their  work.  Once a form is signed and successfully in TIU, then the data in  this field will be removed. ",
+      "isMultiple": true,
+      "subFileNumber": 396.19,
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FORM TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text in this field will be displayed in CAPRI as the document title  in lists and reports. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If the document is created for someone, the individual who created the  document will be placed into this field.  For example, a clerk may create  a document for a physician in advance of an appointment. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "P:REVIEW PENDING;N:NOT REQUIRED;S:SENT BACK;C:COMPLETE;D:DRAFT/NOT READY;A:AWAITING SIGNATURE;U:UNCOSIGNED;L:DELETED;O:OUTDATED TEMPLATE;F:PERMANENT FAILURE;E:TRANSMISSION ERROR;G:SIGNED;",
+      "helpText": "This field is used when the reviewer functionality is activated within  the CAPRI GUI to find documents that may be new and need review.  In  addition, if the field is set to SENT BACK, then the original author will  be notified in the CAPRI GUI that they have a document returned to them  from the reviewer.  The field will be set to the current document status  and may be cycled through several values before the document is finally  completed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "IEPD VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250",
+      "length": 250,
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "WORKSHEET ORIGINATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is the DUZ of the CAPRI User creating the worksheet.  This data is saved at the creation of a worksheet and it is not to be edited. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REVIEW DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "396.1714D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 396.1714,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "FORM SAVED DATA",
+      "dataType": "SUBFILE",
+      "rawType": "396.1715",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 396.1715,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "LOCKED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to find forms that require some action by the user. Once the template has been uploaded to TIU, the value in this field will  be deleted. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "IN USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Once a form has been opened in the GUI, this field will be populated with  identifying information - user DUZ^date/time file was opened.  It  will be left in edit mode in the GUI fileman components until the user  exits.  The data will then be cleared and the field exited on the GUI  side. If the application is terminated prematurely, the lock is automatically dropped.   By leaving the field in edit mode throughout the session, until the user  closes their template, other CAPRI instances will be",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "AMIE EXAMS",
+      "dataType": "POINTER",
+      "rawType": "396.1718P",
+      "required": false,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "FLAG NEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N;1:Y;",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FLAG GREEN FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N;1:Y;",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "FLAG EXCLAMATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N;1:Y;",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PERFORMANCE USE DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "THIS FIELD IS USED FOR DATA ANALYSIS AND QUALITY IMPROVEMENT. DATA WILL BE STORED IN THIS FORMAT: MERGED TEMPATE (Y/N)^TOTAL TIME FORM WAS IN USE^DOCUMENTATION CLUSTERS^ DOCUMENTATION CLUSTER TIME INTERVAL ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TIU DOCUMENT",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This field is used to link the completed template with the TIU document. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "2507 EXAM?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "THIS FIELD RECORDS THE RESPONS TO THE \"IS THIS REPORT A C&P EVALUATION IN  RESPONSE TO A REQUEST (2507) SUBMITTED BY THE VA?\" ON THE SIGNATURE  VALIDATION FORM IN CAPRI DURING SIGNOFF OF AN EXAM. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "VHA Internal DBQ Referral",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores the response from the Delphi CAPRI GUI  'Template Screen Form'.  Select Y if this DBQ is a Self Referral or N if  it is not. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CMT TRANSMISSION DATA",
+      "dataType": "SUBFILE",
+      "rawType": "396.1726A",
+      "required": false,
+      "helpText": "This field serves to track XML documents that have been completed and attempted to be sent to DAS.  This will allow the user to resend the XML document if a transmission error is encountered. ",
+      "isMultiple": true,
+      "subFileNumber": 396.1726,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CMT PDF TEMPLATE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "396.1727",
+      "required": false,
+      "helpText": "This field serves to track PDF documents that have been completed and  attempted to be sent to Data Access Service (DAS). This will allow the user to resend the PDF document if a transmission error is encountered. ",
+      "isMultiple": true,
+      "subFileNumber": 396.1727,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "SIGNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is the DUZ of the user signing the document. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "COSIGNER REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This represents if the signer requires a cosigner. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COSIGNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the DUZ of the required Cosigner determined at document signing. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "FT", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "ID", "field": },
+    {"name": "RS", "field": },
+    {"name": "TR", "field": },
+    {"name": "396.17", "field": .01, "type": "regular"},
+    {"name": "396.17", "field": 1, "type": "regular"},
+    {"name": "396.17", "field": 2, "type": "regular"},
+    {"name": "396.17", "field": 5, "type": "regular"},
+    {"name": "396.17", "field": 9, "type": "regular"},
+    {"name": "396.17", "field": 10, "type": "regular"},
+    {"name": "396.17", "field": 11, "type": "regular"},
+    {"name": "396.17", "field": 16, "type": "regular"},
+    {"name": "396.17", "field": 30, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 9, "value": "W:$D(^(4)) \"   \",$P(^(4),U,1)"}
+  ]
+}

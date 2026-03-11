@@ -1,0 +1,105 @@
+{
+  "fileNumber": 50.60699,
+  "fileName": "MASTER DOSAGE FORM",
+  "globalRoot": "50.60699",
+  "globalReference": "^PSMDF(50.60699,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RXNORM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "The RxNorm Name associated with the Dosage Form. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RXCUI CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The RxNorm Concept Unique Identifier (RXCUI) is the numeric code representing the RxNorm concept. This file contains Dose Form concepts and codes.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TERM TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "The RxNorm Term Type (TTY) indicates drug concepts at different levels of  specificity. For example, the Term Type \"DF\" represents Dose Form, and the Term Type \"DFG\" represents Dose Form Group, or a grouping of dose forms. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "ASSOCIATED VA DOSAGE FORMS",
+      "dataType": "SUBFILE",
+      "rawType": "50.60699901A",
+      "required": false,
+      "helpText": "This field contains the VA Dosage Forms associated with this RxNorm  Master Dosage Form. ",
+      "isMultiple": true,
+      "subFileNumber": 50.60699901,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P50.60699'",
+      "required": false,
+      "pointerTo": 50.60699,
+      "helpText": "This is populated when one RxNorm dosage form Term/Concept replaces another dosage form Term/Concept. This field is controlled by standardization and should only be changed by standardization processes. This field contains a pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master Entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20",
+      "length": 20,
+      "required": true,
+      "helpText": "VHA Unique ID (VUID) is a unique, arbitrarily assigned integer assigned  to reference terms that are used across the VHA enterprise ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "50.6069901DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference  term.  ",
+      "isMultiple": true,
+      "subFileNumber": 50.6069901,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "50.60699", "field": .01, "type": "regular"},
+    {"name": "50.60699", "field": 99.97, "type": "regular"},
+    {"name": "50.60699", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

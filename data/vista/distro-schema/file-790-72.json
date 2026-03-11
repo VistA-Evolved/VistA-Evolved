@@ -1,0 +1,46 @@
+{
+  "fileNumber": 790.72,
+  "fileName": "WV AGE RANGE DEFAULT",
+  "globalRoot": "790.72",
+  "globalReference": "^WV(790.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the user whose (age range) defaults (for the Procedure Statistics Report and the Screening Rates for PAPs and MAMs reports) are being stored. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AGE RANGE FOR PROC STATS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the user's age range default value for the Procedure Statistics report. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AGE RANGE FOR SCRN RATES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the user's age range default value for the Screening Rates for PAPs and MAMs reports. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "790.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

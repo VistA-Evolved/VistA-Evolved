@@ -1,0 +1,80 @@
+{
+  "fileNumber": 409.833,
+  "fileName": "SDEC RESOURCE USER",
+  "globalRoot": "409.833",
+  "globalReference": "^SDEC(409.833,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RESOURCENAME",
+      "dataType": "POINTER",
+      "rawType": "RP409.831",
+      "required": true,
+      "pointerTo": 409.831,
+      "helpText": "This is the Resource (SDEC RESOURCE) that is to be linked to a  user (NEW PERSON). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USERNAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user (NEW PERSON file) that will be linked to a  Resource (SDEC RESOURCE file). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OVERBOOK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Define if this user has Overbook privileges. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MODIFY SCHEDULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Define if this user can Modify Schedules. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MODIFY APPOINTMENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Define if this user can Modify Appointments. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MASTEROVERBOOK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Define if this user has Master Overbook capabilities. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "409.833", "field": .01, "type": "regular"},
+    {"name": "409.833", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

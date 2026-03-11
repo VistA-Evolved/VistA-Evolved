@@ -1,0 +1,158 @@
+name,prefix,tier
+"Kernel",XU,1
+"VA FileMan",DI,1
+"Registration",DG,1
+"Scheduling",SD,1
+"Order Entry Results Reporting",OR,1
+"Outpatient Pharmacy",PSO,1
+"Inpatient Medications",PSJ,1
+"Lab Service",LR,1
+"Radiology Nuclear Medicine",RA,1
+"Text Integration Utility",TIU,1
+"Problem List",GMPL,1
+"GMV",GMV,1
+"Adverse Reaction Tracking",GMRA,1
+"Integrated Billing",IB,1
+"Accounts Receivable",PRCA,1
+"Surgery",SR,2
+"Consult Request Tracking",GMRC,2
+"Dietetics",FH,2
+"Nursing Service",NUR,2
+"Barcode Medication Administration",PSB,2
+"PCE Patient Care Encounter",PX,2
+"Mental Health",YS,2
+"AN",AN,2
+"DEN",DEN,2
+"Oncology",ONC,2
+"RM",RM,2
+"Record Tracking",RT,2
+"BCH",BCH,2
+"Womens Health",WV,2
+"HD",HD,2
+"IMM",IMM,2
+"CMOP",PSX,2
+"Drug Accountability",PSA,2
+"National Drug File",PSN,2
+"Controlled Substances",PSD,2
+"IV",IV,2
+"PPP",PPP,2
+"Health Summary",GMTS,2
+"Clinical Reminders",PXRM,2
+"Emergency Department Integration Software",EDP,2
+"Clinical Procedures",MD,2
+"Prosthetics",RMPR,2
+"Dental",DENT,2
+"Spinal Cord Dysfunction",SPN,2
+"Medicine",MC,2
+"Pharmacy Data Management",PSS,2
+"Social Work",SOW,2
+"IFCAP",PRC,3
+"Engineering",EN,3
+"PAID",PRS,3
+"Event Capture",EC,3
+"DPT",DPT,3
+"DSS",DSS,3
+"QA",QA,3
+"Fee Basis",FB,3
+"DRG Grouper",ICD,3
+"MCAR",MCAR,3
+"IC",IC,3
+"HINQ",DVB,3
+"Automated Information Collection System",IBD,3
+"IBCN",IBCN,3
+"MP",MP,3
+"VIC",VIC,3
+"ARJ",ARJ,3
+"ARC",ARC,3
+"Health Level Seven",HL,4
+"MailMan",XM,4
+"Toolkit",XT,4
+"RPC Broker",XWB,4
+"KMP",KMP,4
+"XOB",XOB,4
+"Web Services Client",XOBW,4
+"XHD",XHD,4
+"XUS",XUS,4
+"XPAR",XPAR,4
+"XPD",XPD,4
+"ZIS",ZIS,4
+"FM",FM,4
+"DINZ",DINZ,4
+"XQ",XQ,4
+"SAGG Project",KMPS,4
+"VFD",VFD,4
+"HMP",HMP,4
+"VDEF",VDEF,4
+"TMP",TMP,4
+"Imaging",MAG,5
+"Incomplete Records Tracking",DGJ,5
+"Authorization Subscription",USR,5
+"Release Of Information - DSSI",DSIR,5
+"VBECS",VBEC,5
+"Hospital Based Home Care",HBH,5
+"Integrated Home Telehealth",WEBI,5
+"Automated Lab Instruments",LA,5
+"National Laboratory Test",NLT,5
+"Auto Replenishment Ward Stock",PSGW,5
+"Pharmacy Enterprise Customization System",PREC,5
+"Pharmacy Product System - National",PREN,5
+"Pharmacy Benefits Management",PSU,5
+"Functional Independence",RMIM,5
+"Visual Impairment Service Team",ANRV,5
+"Quasar",ACKQ,5
+"Care Management",ORRC,5
+"General Medical Record - Vitals",GMRV,5
+"Automated Medical Information Exchange",DVBA,5
+"Patient Assessment Documentation",NUPA,5
+"Clinical Monitoring System",QAM,5
+"General Medical Record - Generator",GMRG,5
+"General Medical Record - IO",GMRY,5
+"Remote Order Entry System",RMPF,5
+"Police and Security",ES,5
+"Event Driven Reporting",EDR,5
+"E Claims Management Engine",BPS,5
+"Beneficiary Travel",DGBT,5
+"Integrated Patient Fund",PRPF,5
+"Equipment Turn-In Request",PRCN,5
+"Generic Code Sheet",GEC,5
+"Capacity Management - RUM",KMPR,5
+"Capacity Management Tools",KMPD,5
+"Clinical Information Resource Network",RG,5
+"Master Patient Index VistA",MPIF,5
+"Electronic Signature",XOBE,5
+"Lexicon Utility",LEX,5
+"Health Data and Informatics",HDI,5
+"CPT HCPCS Codes",ICPT,5
+"VPE Shell",VEEM,5
+"List Manager",VALM,5
+"M XML Parser",MXML,5
+"FileMan Delphi Components",FMDC,5
+"Patch Module",A1AE,5
+"National Online Information Sharing",FSC,5
+"National VistA Support",NVS,5
+"National Health Information Network",NHIN,5
+"Patient Data Exchange",VAQ,5
+"Virtual Patient Record",VPR,5
+"Network Health Exchange",AFJX,5
+"Foundations",XOBU,5
+"VistALink",XOBV,5
+"VistALink Security",XOBS,5
+"DSS Extracts",ECX,5
+"Wounded Injured and Ill Warriors",WII,5
+"VistA Web",WEBV,5
+"Patient Representative",QAC,5
+"Income Verification Match",IVM,5
+"Enrollment Application System",EAS,5
+"Occurrence Screen",QAO,5
+"Utilization Management Rollup",IBQ,5
+"Quality Assurance Integration",QAQ,5
+"Survey Generator",QAP,5
+"Shift Handoff Tool",CRHD,5
+"Interim Management Support",ECT,5
+"Asists",OOPS,5
+"Voluntary Timekeeping",ABSV,5
+"Sea Island Systems Registration",SIS,5
+"Incident Reporting",QAN,5
+"Library",LBR,5
+"Clinical Case Registries",ROR,5
+"Methicillin Resistant Staph Aurerus Initiative Reports",MMRS,5

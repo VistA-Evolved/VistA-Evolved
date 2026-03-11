@@ -1,0 +1,39 @@
+{
+  "fileNumber": 58.3,
+  "fileName": "PHARMACY BACKORDER",
+  "globalRoot": "58.3P",
+  "globalReference": "^PSI(58.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "This contains the name of the item being backordered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AOU",
+      "dataType": "POINTER",
+      "rawType": "58.31PA",
+      "required": false,
+      "helpText": " Enter the name of the Area Of Use for which the item has been backordered ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "58.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

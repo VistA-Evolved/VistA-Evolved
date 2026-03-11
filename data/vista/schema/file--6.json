@@ -1,0 +1,126 @@
+{
+  "fileNumber": .6,
+  "fileName": "DD AUDIT",
+  "globalRoot": ".6",
+  "globalReference": "^DDA(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:EDIT;N:NEW;D:DELETE;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE UPDATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ATTRIBUTE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ATTRIBUTE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "OLD VALUE(S)",
+      "dataType": "SUBFILE",
+      "rawType": ".601",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .601,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "NEW VALUE(S)",
+      "dataType": "SUBFILE",
+      "rawType": ".602",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .602,
+      "fieldNumber_": 2.1
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": ".6", "field": .01, "type": "regular"},
+    {"name": ".6", "field": .03, "type": "regular"},
+    {"name": ".6", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$$NAKED^DIUTL(\"$$DATE^DIUTL($P(^(0),U,3))\")"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P($G(^DD(200,.01,0)),U,2) D:C]\"\" Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

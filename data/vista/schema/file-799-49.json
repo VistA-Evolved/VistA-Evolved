@@ -1,0 +1,67 @@
+{
+  "fileNumber": 799.49,
+  "fileName": "ROR AIDS INDICATOR DISEASE",
+  "globalRoot": "799.49",
+  "globalReference": "^ROR(799.49,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISEASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The DISEASE NAME field stores a short name of the disease.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INITIAL DIAGNOSIS VALUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The INITIAL DIAGNOSIS VALUES field contains a list of valid diagnoses for this particular disease (as they are defined in the CDC form), separated by semicolons. Each initial diagnosis should consist of internal and external values separated by colon.   For example: '1:Definitive;2:Presumptive'.   The full set of possible diagnoses should be also defined for the INITIAL DIAGNOSIS field of the AIDS INDICATOR DISEASE multiple of the ROR ICR STUDY file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEQUENTIAL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "The SEQUENTIAL NUMBER field stores a sequential  number of the indicator disease in part VIII of the CDC form (the first column from top to bottom and then the second column in the same way).   If this field has no value then the record is  considered inactive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The DESCRIPTION field stores the text associated with the AIDS indicator disease in part VIII of the CDC form. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "METHOD DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "799.492",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 799.492,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "799.49", "field": .01, "type": "regular"},
+    {"name": "799.49", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL($J(Y,3),\"\",\"?40\")"}
+  ]
+}

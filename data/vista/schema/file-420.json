@@ -1,0 +1,159 @@
+{
+  "fileNumber": 420,
+  "fileName": "FUND CONTROL POINT",
+  "globalRoot": "420P",
+  "globalReference": "^PRC(420,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "RP411'X",
+      "required": true,
+      "pointerTo": 411,
+      "helpText": "This is a pointer to the Admin. Activity Site Parameter file, #411.  This field contains the station number of each station for which your fiscal office is responsible. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTROL POINT NAME",
+      "dataType": "SUBFILE",
+      "rawType": "420.01I",
+      "required": false,
+      "helpText": "This is the name of the Fund Control Point. ",
+      "isMultiple": true,
+      "subFileNumber": 420.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FUND RELEASING OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "420.05P",
+      "required": false,
+      "helpText": "This is the official authorized to release funds. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION OVERCOMMIT SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OVERCOMMIT NOT ALLOWED FOR ALL FCP'S;1:CURRENT QUARTER OVERCOMMIT ALLOWED;2:FUTURE QUARTERS OVERCOMMIT ALLOWED;3:CURRENT AND FUTURE QUARTERS OVERCOMMIT ALLOWED;4:INDIVIDUAL CP SWITCH USED;5:OVERCOMMIT ALLOWED;",
+      "helpText": "This is the set of codes for setting the overcommit switch for a control point. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "STATION ROLLOVER OF EOQ BAL.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:ALL FCPs CAN SPEND PRIOR FUNDS;3:INDIVIDUAL FCP ROLLOVER EOQ BALANCE IN EFFECT;",
+      "helpText": "This is used to store roll over data. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUPPLY FUND CAP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,2",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the TOTAL SUPPLY FUND CAP for the station. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INVENTORY VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,2",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the current value of the inventory on hand ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DUE-IN VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,2",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the value of all orders due in ordered under the supply fund. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOTAL CAP AVAILABLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,2X",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the total available cap at the station for placing orders within supply fund. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRINT ON DEMAND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the user wishes to print on demand,  using yes or no as an entry. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATION OPEN QUARTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the most recent open quarter date. The date is always the first day of a quarter. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EDI ORDER RELEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is used to release EDI orders to vendors directly without fiscal review if the data is 'Y' for yes. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SITE ALL/DELIVERY ORDER SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALL ORDERS;D:DELIVERY ORDERS ONLY;",
+      "helpText": "This is used to release orders directly without fiscal review. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "UNQ1", "field": },
+    {"name": "UNQ25D5", "field": },
+    {"name": "UNQ26", "field": },
+    {"name": "UNQ27", "field": },
+    {"name": "UNQ28", "field": },
+    {"name": "UNQ29", "field": },
+    {"name": "420", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

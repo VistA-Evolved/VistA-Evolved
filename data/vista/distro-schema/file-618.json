@@ -1,0 +1,211 @@
+{
+  "fileNumber": 618,
+  "fileName": "MENTAL HEALTH CENSUS",
+  "globalRoot": "618IP",
+  "globalReference": "^YSG(\"CEN\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "RP42'X",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "This field is a pointer to the Hopsital location file.  It contains the ward name as found on the G&L. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a free text field used to print abrreviated names of wards for various reports.  It is suggested that this be less than 15 characters and clearly distinguish wards. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FACE SHEET ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This field specifies the order of the wards on various reports, for example on the Bed Census report.  Face sheet order must be present and each ward must have a unique number.  It is suggested that these numbers not be sequential but separated by at least 5 so later additions or movements can be easily accomplished. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "LIST SUBTOTAL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a set field that casues a census sub-total to be displayed on the Bed Census \"face sheet\".  This is useful to indicate census over several wards ie 3 \"acute\" units. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "ZERO SUBTOTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This set field specifies whether the sub-total count should be reset to 0. This is used to either show serveral distinct sub-totals or to keep a running sub-total. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "SUBTOTAL TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field is displayed as the title of any sub-total displayed on the Bed Census \"face sheet\".  If no sub-total is displayed this field is ignored.  If a sub-total is requested and this field is empty, the default \"sub-total\" will be displayed.  It is suggested that all subtotal titles contain the phrase \"sub-total\" eg Acute sub-total. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "LINE FEED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field if set will add a blank line following a ward on the Bed Census \"face sheet\".  This is for ease of reading only. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "WARD NOT DIVIDED INTO TEAMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NOT DIVIDED INTO TEAMS/ONLY 1 TEAM;0:HAS MULTIPLE TEAMS;",
+      "helpText": "This set field indicates whether a ward has multiple teams.  If not divided into teams, admissions will be automatically assigned the specified \"single team\".  If this field is set users will not be asked team information when editing patient data. when editing patient data. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 2.8,
+      "fieldName": "DEFAULT TEAM",
+      "dataType": "POINTER",
+      "rawType": "R*P618.2'",
+      "required": true,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the MENTAL HEALTH TEAM FILE 618.2.  It specifies a \"team\" to be used when the ward is not broken up into teams.  This will allow automatic assignments. ",
+      "fieldNumber_": 2.8
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEAM ROTATION 1",
+      "dataType": "POINTER",
+      "rawType": "*P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the team file and specifes the team up for the next admission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "TEAM ROTATION 2",
+      "dataType": "POINTER",
+      "rawType": "*P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the team file and specifies the second team up for an admission. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "TEAM ROTATION 3",
+      "dataType": "POINTER",
+      "rawType": "*P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the team file and specifies the third team up for an admission. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "TEAM ROTATION 4",
+      "dataType": "POINTER",
+      "rawType": "*P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the team file and specifies the fourth team up for an admission. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "TEAM ROTATION 5",
+      "dataType": "POINTER",
+      "rawType": "*P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This field points to the team file and specifies the fifth team up for an admission. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COST OF TREATMENT PER DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the estimated cost of treatment per day on this ward.  This figure is used to estimate the DRG break-even days.  It is OK to change this figure and run reports to see how cost/day affects break even. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "This is a pointer to the Treating Specialty file.  It is currently not used by this system but added for later use. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "P42.4'",
+      "required": false,
+      "pointerTo": 42.4,
+      "helpText": "This is a pointer to the Med Specialty/Bedsection file.  It is not currently used by the system but added for later use. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BOARDED ON PSYCHIATRY",
+      "dataType": "POINTER",
+      "rawType": "618.04P",
+      "required": false,
+      "helpText": "This field is currently not used by the system but will be the indicator for those patients sleeping on a psychiatric ward but assigned to other services. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVATE WARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is an 'ACTIVITY' flag.  If this ward is NOT in active use then the  flag will be set to '1', if active it will be set set to '0'. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "ABS", "field": },
+    {"name": "AFS", "field": },
+    {"name": "B", "field": },
+    {"name": "SYN", "field": },
+    {"name": "618", "field": .01, "type": "regular"},
+    {"name": "618", "field": 1, "type": "regular"},
+    {"name": "618", "field": 2, "type": "regular"},
+    {"name": "618", "field": 4.2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

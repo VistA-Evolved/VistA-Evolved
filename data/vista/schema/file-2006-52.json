@@ -1,0 +1,73 @@
+{
+  "fileNumber": 2006.52,
+  "fileName": "DICOM MESSAGE TEMPLATE DICTIONARY",
+  "globalRoot": "2006.52",
+  "globalReference": "^MAGDICOM(2006.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field identifies the template that is defined in this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIMSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DIMSE stands for DICOM Message Service Element.   The value of this field is a command that is recognized in a DICOM communication stream. The template described in this entry describes the list of data fields that are exchanged for this command. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOPCLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "SOP stands for Service-Object pair.   The value of this field is the name of the SOP-class on which the DIMSE command in this entry will operate. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPENAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a text that identifies the kind of event for the SOP-class on which this template operates. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPEID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the kind of event for the SOP-class on which this template operates. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5204A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5204,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.52", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

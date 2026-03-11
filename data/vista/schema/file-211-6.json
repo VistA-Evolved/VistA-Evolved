@@ -1,0 +1,37 @@
+{
+  "fileNumber": 211.6,
+  "fileName": "NURS TOUR OF DUTY",
+  "globalRoot": "211.6",
+  "globalReference": "^NURSF(211.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TOUR OF DUTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Time of specific tour of duty. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEAL INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether or not a meal time factor has been included in the tour of duty. \"Yes\" = a meal time has been provided . ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "211.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

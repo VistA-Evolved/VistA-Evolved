@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2005.71,
+  "fileName": "IMAGING DICOM FIELDS",
+  "globalRoot": "2005.71",
+  "globalReference": "^MAG(2005.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "SOP type for the image being converted to DICOM. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MODULE",
+      "dataType": "SUBFILE",
+      "rawType": "2005.712A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2005.712,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

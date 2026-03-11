@@ -1,0 +1,75 @@
+{
+  "fileNumber": 7100.5,
+  "fileName": "NOIS STATUS HISTORY",
+  "globalRoot": "7100.5",
+  "globalReference": "^FSCD(\"STATUS HIST\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "RP7100'",
+      "required": true,
+      "pointerTo": 7100,
+      "helpText": "This is the NOIS call for the status change. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user that made the status change. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the status change occurred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP7106.1'",
+      "required": true,
+      "pointerTo": 7106.1,
+      "helpText": "This is the status the status was changed to. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PREVIOUS STATUS",
+      "dataType": "POINTER",
+      "rawType": "P7106.1'",
+      "required": false,
+      "pointerTo": 7106.1,
+      "helpText": "This is the status of the call before the change. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "S", "field": },
+    {"name": "U", "field": },
+    {"name": "7100.5", "field": .01, "type": "regular"},
+    {"name": "7100.5", "field": 1, "type": "regular"},
+    {"name": "7100.5", "field": 2, "type": "regular"},
+    {"name": "7100.5", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^FSC(\"STATUS\",+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(7106.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

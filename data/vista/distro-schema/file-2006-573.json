@@ -1,0 +1,64 @@
+{
+  "fileNumber": 2006.573,
+  "fileName": "GE PACS QUERY/RETRIEVE",
+  "globalRoot": "2006.573",
+  "globalReference": "^MAGDGEQR(2006.573,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The value of this field is a code that indicates whether or not the data in the current entry is completely entered.   When the value of this field is not present, or when it is present and equal to 0, the record is incomplete. When the value of this field is equal to 1, the record is complete. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STUDY DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the date on which the study that is referenced in this entry was performed.   This date is encoded as yyyy.mm.dd ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is equal to the name of the patient for whom the study in question is performed.   This value is copied from ^DPT so that the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies a patient. This code is equal to the patient's Social Security Number.   This value is copied from ^DPT so that the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the (short) case number for the study that is referenced in this entry.   A long case number consists of two groups of digits separated by a dash. The first group is 6 digits, and is derived from the date. The second group is an integer number that uniquely identifies the study for that date.   For this field, just that second number is entered. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.573", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

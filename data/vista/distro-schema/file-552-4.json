@@ -1,0 +1,45 @@
+{
+  "fileNumber": 552.4,
+  "fileName": "CMOP MASTER DATABASE",
+  "globalRoot": "552.4P",
+  "globalReference": "^PSX(552.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY BATCH REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "RP552.1'",
+      "required": true,
+      "pointerTo": 552.1,
+      "helpText": "The unique identification number for the data transmission.        ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RX NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "552.41A",
+      "required": false,
+      "helpText": "The number for the prescription.                                     ",
+      "isMultiple": true,
+      "subFileNumber": 552.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "552.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

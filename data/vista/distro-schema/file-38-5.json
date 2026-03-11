@@ -1,0 +1,86 @@
+{
+  "fileNumber": 38.5,
+  "fileName": "INCONSISTENT DATA",
+  "globalRoot": "38.5P",
+  "globalReference": "^DGIN(38.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient for which the inconsistencies exist.  This is a DINUMed pointer to the PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INITIALLY IDENTIFIED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date the inconsistency was initially identified on your system. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IDENTIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field will contain the name of the user (via a pointer to the NEW PERSON file) that was editing the data when the inconsistency was created. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If an inconsistency exists for a patient for more than 7 days and the record is called up again through a registration option without correcting this inconsistency, a new bulletin will be generated and the date of the edit will be stored in this field. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If an inconsistency exists for a patient for more than 7 days and the record is called up again through a registration option without correcting the inconsistency, a new bulletin will be generated and the user who last edited this record will be stored. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BULLETIN SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date a bulletin of these inconsistencies was last generated. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INCONSISTENCY",
+      "dataType": "POINTER",
+      "rawType": "38.51PA",
+      "required": false,
+      "helpText": "This multiple will contain the inconsistencies for this patient. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "38.5", "field": .01, "type": "regular"},
+    {"name": "38.5", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

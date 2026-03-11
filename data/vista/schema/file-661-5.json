@@ -1,0 +1,75 @@
+{
+  "fileNumber": 661.5,
+  "fileName": "PROSTHETIC STOCK LOCATION",
+  "globalRoot": "661.5",
+  "globalReference": "^RMPR(661.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the stock location. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field points to the Institution file (4). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an address for the stock location. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field indicates whether a stock location is active (A) or inactive (I). Stock locations should not be deleted once they have participated in inventory transactions because other inventory files will inevitably point to the Stock Location file. Instead stock locations should be marked as inactive when no longer in use (due to stock room re-organisation or any other reason). The system will not allow receipts into inactive locations, but issues and outward transfers will be permitted (althoug",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS CHANGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This fields records the date when the status of a stock location is changed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records the pointer of the user who last updated the stock location record. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "661.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

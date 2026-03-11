@@ -1,0 +1,103 @@
+{
+  "fileNumber": 704.111,
+  "fileName": "OBS_VIEW",
+  "globalRoot": "704.111",
+  "globalReference": "^MDC(704.111,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VIEW_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the view's Global Unique IDentifier(GUID). This value is  maintained nationally and represents this view throughout the  enterprise. A sample VIEW ID could be \"{11AA9949-B1FA-40A5-A208-5BB8255BE961}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the NAME of this view. A sample NAME could be \"ICU HEMODYNAMICS\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TIME_INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "A view is displayed to the user as part of a \"page\" on the screen.  That page is divided into TIME INTERVALs.  This field is the number of  minutes within an interval when the page is initially displayed to the  user.  The maximum is 1440 (1 day). A sample TIME INTERVAL could be \"60\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "X_AXIS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Terminology;1:Date/Time;",
+      "helpText": "This field indicates whether the initial layout of the view's  horizontal axis shows terminology information or date/time information.   The information not indicated to display horizontally will initially  display vertically. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of this view to display to the user when this view  is being used.   A sample DISPLAY NAME could be \"ICU Hemodynamics\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALLOW_PIVOT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether the user is allowed to \"pivot\" how information is displayed.   For example:    If initially this view's terminology information displays  horizontally and date/time information displays vertically, a '1' value  (\"YES\") in this field gives the user the option to display this view's  terminology information vertically and the date/time information  horizontally. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NATIONAL_TITLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this view is a NATIONAL TITLE,  maintained nationally, and cannot be modified at/by a site. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether this view is ACTIVE or not.  An ACTIVE  view can be incorporated into a flowsheet. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is free-text comment to further describe the use and purpose  of this view.   A sample COMMENT could be \"National ICU Flowsheet View\". ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .05, "value": "W \"   \",$P(^(0),U,5)"}
+  ]
+}

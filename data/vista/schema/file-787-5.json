@@ -1,0 +1,111 @@
+{
+  "fileNumber": 787.5,
+  "fileName": "EEO CENTRAL INVESTIGATORS",
+  "globalRoot": "787.5",
+  "globalReference": "^EEO(787.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This required field is referenced by file (#785) to identify a Region specific investigator for each EEO complaint. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "787.51S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 787.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field points to the State file (#5), and represents the state in which the Investigator resides. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The street address on which the assigned investigator resides. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the city in which the assigned EEO investigator resides.                              ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INVESTIGATOR STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "LAST XMIT UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "TRANSMIT FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.1
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "OLD INVESTIGATOR'S IENS(787)",
+      "dataType": "SUBFILE",
+      "rawType": "787.5999",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 787.5999,
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "787.5", "field": .01, "type": "regular"},
+    {"name": "787.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

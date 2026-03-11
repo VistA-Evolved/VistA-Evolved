@@ -1,0 +1,114 @@
+{
+  "fileNumber": 720.3,
+  "fileName": "EC EVENT CODE SCREENS",
+  "globalRoot": "720.3",
+  "globalReference": "^ECJ(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field contains the information that makes up the event code screen.   This information is grouped in the following order: Location # - DSS Unit # - Category # - Procedure # ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this event code screen was inactivated. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this event code screen was created. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 52.1,
+      "fieldName": "PROCEDURE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field contains the name of this procedure. Procedures can be selected from either the CPT file (#81) or EC NATIONAL PROCEDURE file (#725). ",
+      "fieldNumber_": 52.1
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the synonym for the procedure associated with this event code screen. This synonym can be created locally, using the Procedure Synonym/Default Volume (Enter/Edit) option, which will allow easy recognition of standard procedures codes. Access to this option is restricted to the Event Capture Management Menu. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the default volume associated with this event code screen. It contains the number of procedures performed or the time actually spent performing the procedures. This default volume can be created using the Procedure Synonym/Default Volume (Enter/Edit) option. Access to this option is restricted to the Event Capture Management Menu.  ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ASSOCIATED CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'X",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic associated with this event code screen. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PROCEDURE REASONS INDICATOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is answered 'YES', procedure reason(s) may be added to the event code screen.  This will allow the user to select a procedure reason for a patient's procedure during Event Capture data entry. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CHARGE CAPTURE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the charge capture code for data collected prior to the development of the Event Capture software. This code will be utilized by DSS pilot sites only. This code is not utilized in the Event Capture software. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AP", "field": },
+    {"name": "AST", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "SY", "field": },
+    {"name": "SYN", "field": },
+    {"name": "720.3", "field": .01, "type": "regular"},
+    {"name": "720.3", "field": .01, "type": "regular"},
+    {"name": "720.3", "field": .01, "type": "regular"},
+    {"name": "720.3", "field": 1, "type": "regular"},
+    {"name": "720.3", "field": 53, "type": "regular"},
+    {"name": "720.3", "field": 53, "type": "regular"},
+    {"name": "720.3", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

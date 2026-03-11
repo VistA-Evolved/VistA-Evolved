@@ -1,0 +1,66 @@
+{
+  "fileNumber": 8930.6,
+  "fileName": "USR RECORD STATUS",
+  "globalRoot": "8930.6",
+  "globalReference": "^USR(8930.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the status name used in selecting or displaying the status of the document. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SYMBOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the symbol to be displayed in some applications, which corresponds to the status of the document (e.g., $ may indicate unsigned, etc.). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "APPLIES TO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DOCMT:document;DEFN:document definition;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8930.61",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8930.61,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8930.6", "field": .01, "type": "regular"},
+    {"name": "8930.6", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

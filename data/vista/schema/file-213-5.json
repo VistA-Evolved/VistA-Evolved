@@ -1,0 +1,59 @@
+{
+  "fileNumber": 213.5,
+  "fileName": "NURS AMIS DAILY EXCEPTION REPORT",
+  "globalRoot": "213.5D",
+  "globalReference": "^NURSA(213.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "Date to which this unclassified patient AMIS data pertains. The date the patient was not classified.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AMIS TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:3 PM TOTALS;1:MIDNIGHT TOTALS;",
+      "helpText": "This flag indicates the type of AMIS totals contained in this field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "213.51P",
+      "required": false,
+      "helpText": "The unclassified patient information associated with a particular time/date.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STAFF EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "213.52PA",
+      "required": false,
+      "helpText": "This field stores data from the Nursing Acuity/Separation-Activation Run for a period of thirty days. The Employee Activation/Separation Report is generated from this file. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "213.5", "field": .01, "type": "regular"},
+    {"name": "213.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(213.5,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

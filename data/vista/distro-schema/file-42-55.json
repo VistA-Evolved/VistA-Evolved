@@ -1,0 +1,88 @@
+{
+  "fileNumber": 42.55,
+  "fileName": "PRIORITY GROUPING",
+  "globalRoot": "42.55I",
+  "globalReference": "^DIC(42.55,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal entry number of the priority group as determined by VA FileMan.  This internal number may be utilized by the MAS package to determine programming flow.  These entries should NOT be edited nor should any entries be added or removed. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "Enter the name of the priority group.  This data is distributed by the MAS package under the direction of MAS VACO and must not be altered in any way. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a brief description about the priority grouping.  This data is distributed by the MAS package and should not be altered. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "h:HOSPITAL;n:NURSING HOME;o:OUTPATIENT;a:ALL;",
+      "helpText": "Enter the type of care whether it be for inpatient (hospital or nursing home) or outpatient. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SC/NSC",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:SC OR NSC;1:NSC;2:SC;",
+      "helpText": "Enter whether this priority grouping is for an SC or NSC vet.  This data is distributed by the MAS package and MUST NOT be altered. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this priority grouping is currently active, enter yes.  Otherwise, answer no. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "42.56",
+      "required": false,
+      "helpText": "This multiple contains alternate names by which this priority grouping can be referenced.  If a user enters either the name or one of these synonyms, this priority group will be selected. ",
+      "isMultiple": true,
+      "subFileNumber": 42.56,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "42.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) ?30,$P(^(\"0\"),U,2)"}
+  ]
+}

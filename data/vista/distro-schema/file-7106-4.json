@@ -1,0 +1,57 @@
+{
+  "fileNumber": 7106.4,
+  "fileName": "NOIS FUNCTIONAL AREA",
+  "globalRoot": "7106.4",
+  "globalReference": "^FSC(\"FUNC\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the functional area. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will inactive selection of this functional area when set to YES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Web link associated with the functional area. This link is displayed if the user is associated with this area. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7106.41",
+      "required": false,
+      "helpText": "This is a description of this functional area. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.41,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7106.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

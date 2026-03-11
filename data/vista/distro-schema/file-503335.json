@@ -1,0 +1,557 @@
+{
+  "fileNumber": 503335,
+  "fileName": "VOLUNTARY TIME CARD",
+  "globalRoot": "503335PI",
+  "globalReference": "^ABS(503335,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP503330'",
+      "required": true,
+      "pointerTo": 503330,
+      "helpText": "  This field contains the name of the volunteer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMBINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the Organization/Schedule/Service combination for the time card. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "*P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "helpText": "  This field contains the Organization for the time card. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "ORGANIZATION NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "  This field extracts the name of the Organization in field 1.1 from file 503334. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P503332'",
+      "required": false,
+      "pointerTo": 503332,
+      "helpText": "  This field contains the service assignment for the time card. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "SERVICE NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "  This field extracts the name of the Service in field 1.2 from file 503335. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "MONTH TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the Month and Year, in FileManager format, that the time card was transmitted to the Austin DPC. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SUSPENDED;1:READY FOR TRANSMISSION;2:ERROR -  NOT TRANSMITTED;3:TRANSMITTED;4:RETRANSMITTED;",
+      "helpText": "  This field contains the current transmission status of the time card. ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DELAY TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field is set to 'YES' if this particular time card is to be delayed in its transmission to Austin. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the full FileManager date that the time card was transmitted to the Austin DPC. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "TRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  Thie field contains the name of the user who transmitted the time card to Austin. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "DATE RETRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  In the event that a time card needs to be re-transmitted to the Austin DPC, this field will contain the full date, in FileManager format, that the card was re-transmitted. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "RETRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  In the event that a time card needs to be re-transmitted to the Austin DPC, this field will contain the name of user who re-transmitted the time card. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This field contains the 3-4 character station number used by the Austin DPC to identify the specific voluntary activity. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the Month/Year of the time card. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "ON ORG DETAIL LIST",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field contains a flag to indicate whether this particular time card is to print on a specific Organization Detail Listing. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "ON SERV DETAIL LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to print selected records for the Service Detail List option. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DAY 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the first day of the month. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DAY 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the second day of the month. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DAY 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the third day of the month. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the fourth day of the month. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DAY 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the fifth day of the month. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DAY 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked for the sixth day of the month. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DAY 7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the seventh day of the month. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DAY 8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked for the eighth day of the month. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DAY 9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the ninth day of the month. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DAY 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the tenth day of the month. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DAY 11",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the eleventh day of the month. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DAY 12",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twelfth day of the month. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DAY 13",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the thirteenth day of the month. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DAY 14",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the fourteenth day of the month. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DAY 15",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the fifteenth day of the month. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DAY 16",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the sixteenth day of the month. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DAY 17",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours the volunteer worked on the seventeenth day of the month. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DAY 18",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours the volunteer worked on the eighteenth day of the month. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DAY 19",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours the volunteer worked on the nineteenth day of the month. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DAY 20",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours the volunteer worked on the twentieth day of the month. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DAY 21",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-first day of the month. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DAY 22",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-second day of the month. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DAY 23",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-third day of the month. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DAY 24",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-fourth day of the month. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DAY 25",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-fifth day of the month ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DAY 26",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-sixth day of the month. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DAY 27",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-seventh day of the month. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DAY 28",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-eighth day of the month. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DAY 29",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the twenty-ninth day of the month. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DAY 30",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the thirtieth day of the month. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DAY 31",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  This field contains the number of hours that the volunteer worked on the thirty-first day of the month. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "TIME CARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the actual data string which will be transmitted to the Austin DPC. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "HOSPITAL USE ONLY",
+      "dataType": "POINTER",
+      "rawType": "P503337'",
+      "required": false,
+      "pointerTo": 503337,
+      "helpText": "  This field contains the Award Code or 'BD' which is entered in card columns 49-50 of the time card. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TOTAL HOURS WORKED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "  This field contains the total hours worked for this time card.  It is the sum of fields 5 thru 35. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "49/50",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the Award Code or 'BD' which is entered in card columns 49-50 of the time card. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "VISITS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "B", "field": },
+    {"name": "503335", "field": .01, "type": "regular"},
+    {"name": "503335", "field": 1.1, "type": "regular"},
+    {"name": "503335", "field": 1.2, "type": "regular"},
+    {"name": "503335", "field": 1.5, "type": "regular"},
+    {"name": "503335", "field": 1.9, "type": "regular"},
+    {"name": "503335", "field": 2.1, "type": "regular"},
+    {"name": "503335", "field": 2.3, "type": "regular"},
+    {"name": "503335", "field": 4, "type": "regular"},
+    {"name": "503335", "field": 37, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 4, "value": "W \"   \",$E($P(^(0),U,5),4,5)_\"-\"_$E($P(^(0),U,5),6,7)_\"-\"_$E($P(^(0),U,5),2,3)"},
+    {"field": W1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 2006.5763,
+  "fileName": "DICOM PACS STATISTICS",
+  "globalRoot": "2006.5763",
+  "globalReference": "^MAGDAUDT(2006.5763,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The value of this field is a date string (no time part) that identifies the day on which the statistics in the current entry were collected. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The value of this field is a date string (no time part) that identifies the day on which the statistics in the current entry were collected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "2006.57631A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.57631,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

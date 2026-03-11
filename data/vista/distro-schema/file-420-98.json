@@ -1,0 +1,57 @@
+{
+  "fileNumber": 420.98,
+  "fileName": "IFCAP/FMS FCP RECONCILIATION REPORT",
+  "globalRoot": "420.98",
+  "globalReference": "^PRCU(420.98,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains the message ID number for the fund control point reconciliation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the station number to which the reconciliation message is addressed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FMS FCP NOT IN IFCAP;2:FMS FCP NOT IN SNAPSHOT FILE;3:SNAPSHOT FCP NOT IN FMS;4:FCP ALREADY ADJUSTED;",
+      "helpText": "This field contains the error type which generated the message. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FCP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the fund control point for which the message was generated. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "420.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "fileNumber": 50.6,
+  "fileName": "VA GENERIC",
+  "globalRoot": "50.6O",
+  "globalReference": "^PSNDF(50.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the National Drug number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "The VA Generic name for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "The date when this VA GENERIC ITEM was made inactive. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "50.65",
+      "required": false,
+      "helpText": "This multiple stores the coding system(s) associated with the codes  identifying this VA Generic. ",
+      "isMultiple": true,
+      "subFileNumber": 50.65,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE TIME",
+      "dataType": "DATE",
+      "rawType": "50.6009DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 50.6009,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APRO", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "50.6", "field": .01, "type": "regular"},
+    {"name": "50.6", "field": .01, "type": "regular"},
+    {"name": "50.6", "field": 1, "type": "regular"},
+    {"name": "50.6", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

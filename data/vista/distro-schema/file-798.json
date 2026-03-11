@@ -1,0 +1,232 @@
+{
+  "fileNumber": 798,
+  "fileName": "ROR REGISTRY RECORD",
+  "globalRoot": "798",
+  "globalReference": "^RORDATA(798,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP798.4",
+      "required": true,
+      "pointerTo": 798.4,
+      "helpText": "The PATIENT NAME field identifies a patient in the registry. You can select a patient either from the local registry or the ROR PATIENT file, or you can add a new patient from the PATIENT file.   You can only select records of those registries that you have appropriate security key(s) for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'I",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "The REGISTRY field identifies the registry that  the record belongs to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The DATE ENTERED field is automatically populated by the trigger associated with the REGISTRY field when the patient is added to the registry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CONFIRMED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "A trigger associated with the STATUS field  automatically populates the DATE CONFIRMED field with the current date and time when the patient is confirmed in the registry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "CONFIRMED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A trigger associated with the STATUS field  automatically populates this field with a pointer to the record of the user who confirmed the  patient. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Confirmed;4:Pending;5:Deleted;",
+      "helpText": "The STATUS field indicates current status of the  registry record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "SELECTION RULE",
+      "dataType": "POINTER",
+      "rawType": "798.01P",
+      "required": false,
+      "helpText": "The SELECTION RULE multiple contains a list of selection rules that the patient passed when added to the registry. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "DATE SELECTED",
+      "dataType": "DATE",
+      "rawType": "CD",
+      "required": false,
+      "helpText": "Value of this field is calculated as the earliest date of selection rules from the SELECTION RULE multiple (3.1). If that multiple is empty, then the date part of the DATE ENTERED field (1) will be used. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "LOCATION SELECTED",
+      "dataType": "COMPUTED",
+      "rawType": "Cp4",
+      "required": false,
+      "helpText": "Computation algorithm of this field returns the LOCATION field (2) value of the earliest selection rules from the SELECTION RULE multiple (3.1). ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UPDATE DEMOGRAPHICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Usually, you should not edit this field. Set the  value of this field to \"YES\" if you want patient demographic data to be sent to the AAC. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "DEMOGRAPHICS UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The DEMOGRAPHICS UPDATED field stores the  date/time of the last change in the patient's demographic data that was detected by the Clinical Case Registries software. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "UPDATE LOCAL REGISTRY DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Usually, you should not edit this field. Set the value of this field to \"YES\" if you have changed any local registry data of the patient and want  this data to be sent to the AAC. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "LOCAL DATA UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The LOCAL DATA UPDATED field stores the date/time of the last change in the patient's local registry data. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE DELETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Trigger associated with the STATUS field (3) automatically populates this field with the current date and time when the patient is deleted from the registry. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Trigger associated with the STATUS field (3) automatically populates this field with a pointer to the record of the user who deleted the patient from the registry. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is a computed field that indicates if the  patient's record in the registry is active and  should be considered by the software. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "DATA ACKNOWLEDGED UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The DATA ACKNOWLEDGED UNTIL field contains a date that the patient data has been extracted up to and successfully transmitted. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "DATA EXTRACTED UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains a date that registry data of  the patient has been extracted up to. Actual transmission of this data is not confirmed. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The MESSAGE ID field contains the identifier of  latest individual HL7 message created for this registry record.   Value of this field should have the following format: BatchID-N, where BatchID is the identifier of the HL7 batch message (see the INTERNAL BATCH ID field of the LAST BATCH CONTROL ID multiple of the ROR REGISTRY PARAMETERS file), and N is the sequential number of the message in the batch. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DON'T SEND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Set this field to \"YES\" if you do not want any  data to be sent to the national registry for this record. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PENDING PATIENT COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is any user input concerning a patient who hasn't been confirmed into a registry. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LOCAL FIELD",
+      "dataType": "POINTER",
+      "rawType": "798.02P",
+      "required": false,
+      "helpText": "The LOCAL FIELD multiple contains a list of local  field values for the registry patient along with the corresponding dates and comments. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ALF", "field": },
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "798", "field": .01, "type": "regular"},
+    {"name": "798", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "798", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

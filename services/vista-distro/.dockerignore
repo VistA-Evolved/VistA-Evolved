@@ -2,9 +2,10 @@
 # Prevent unnecessary files from entering the build context
 
 .git
+**/.git
 *.md
-!routines/README.md
 build.env
 docker-compose.yml
+build.ps1
 .env
 .env.*

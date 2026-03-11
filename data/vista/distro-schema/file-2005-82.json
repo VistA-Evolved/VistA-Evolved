@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2005.82,
+  "fileName": "IMAGE INDEX FOR CLASS",
+  "globalRoot": "2005.82",
+  "globalReference": "^MAG(2005.82,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter the name of class for the image. For example ADMIN for administrative  images.  This field is required for all images and is requested during  image capture. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field is used to inactivate an entry in this file. It affects which  classes can be selected in the filtering option of VistA Imaging Display. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.82", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

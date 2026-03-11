@@ -1,0 +1,75 @@
+{
+  "fileNumber": 6914.3,
+  "fileName": "NX SGL",
+  "globalRoot": "6914.3I",
+  "globalReference": "^ENG(6914.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Standard general ledger account number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACCOUNT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Brief description of the account. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FA TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fixed Asset Type as defined in the Fixed Asset Package of the Financial Management System. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation for account that could be used to further identify the .01 field when there is not room for the full account description. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DEACTIVATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "As of the date entered in this field, new FA Documents can't be sent to Austin with this SGL. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FA GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "6914.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6914.31,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6914.3", "field": .01, "type": "regular"},
+    {"name": "6914.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

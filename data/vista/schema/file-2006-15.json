@@ -1,0 +1,55 @@
+{
+  "fileNumber": 2006.15,
+  "fileName": "DICOM UID ROOT",
+  "globalRoot": "2006.15",
+  "globalReference": "^MAGD(2006.15,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OWNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that identifies the organization to which the UID root code that is stored in this record is assigned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "UID ROOT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that represents this organization's UID root code.   Values for this code must be obtained from the International Standards Organization (ISO) or from their national representative bodies (for the USA, this is ANSI).   The format of an UID root code looks like a list of integer numbers, separated by periods.   For VA hospitals, the value for this field will be automatically entered.   Other organizations first need to obtain their \"root code\" from the appropri",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST DATETIME UID GENERATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the last DICOM UID was generated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TICK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is incremented every time a new DICOM UID is generated. This field is reset to one ('1') daily when a new DICOM UID is  generated for the first time during the day. This field supplements LAST  DATETIME UID GENERATED field (2006.15,2) to prevent duplicate DICOM UIDs within one second interval of generation requests. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

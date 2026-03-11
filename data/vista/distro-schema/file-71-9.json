@@ -1,0 +1,81 @@
+{
+  "fileNumber": 71.9,
+  "fileName": "RADIOPHARMACEUTICAL LOT",
+  "globalRoot": "71.9",
+  "globalReference": "^RAMIS(71.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER/ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field identifies the radiopharmaceutical lot.  Alternatively, identifying names or numbers of batches, vials, syringes, or kits may also be recorded here. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOURCE",
+      "dataType": "POINTER",
+      "rawType": "RP71.8'X",
+      "required": true,
+      "pointerTo": 71.8,
+      "helpText": "This field identifies the source of this radiopharmaceutical lot, batch, vial, syringe, or kit. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date this radiopharmaceutical unit expires. This field must be entered in order to print dosage tickets for exams associated with this radiopharmaceutical unit.   This date must be no more than 2 years in the future, and no more than 1 year in the past. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "KIT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the kit number for this radiopharmaceutical unit, if applicable. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RADIOPHARM",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "When a particularLot should not be used anymore, enter  Y  in this field to inactive the Lot #. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "TX", "field": },
+    {"name": "71.9", "field": .01, "type": "regular"},
+    {"name": "71.9", "field": .01, "type": "regular"},
+    {"name": "71.9", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RAMIS(71.8,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(71.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": 4, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": WRITE, "value": "D EN^DDIOL($$EN5^RAPSAPI,\"\",\"?30\")"}
+  ]
+}

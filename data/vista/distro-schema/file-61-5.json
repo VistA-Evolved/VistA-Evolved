@@ -1,0 +1,81 @@
+{
+  "fileNumber": 61.5,
+  "fileName": "PROCEDURE FIELD",
+  "globalRoot": "61.5I",
+  "globalReference": "^LAB(61.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The characters following \"P-\" in the SNOMED reference book. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "ASK RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If a result of a procedure should be prompted for, enter 'Yes'. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "61.51A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains synonyms or common misspellings of this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 61.51,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOURNAL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "61.52A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains Journal references that apply to this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 61.52,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a 1 to 5 character abbreviation for the procedure.  It is used as a unique code for it. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "61.5", "field": .01, "type": "regular"},
+    {"name": "61.5", "field": 2, "type": "regular"},
+    {"name": "61.5", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

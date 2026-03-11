@@ -1,0 +1,27 @@
+{
+  "fileNumber": 633.1,
+  "fileName": "HBHC ERROR MESSAGES FOR VISITS",
+  "globalRoot": "633.1",
+  "globalReference": "^HBHC(633.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR MESSAGE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents error message text giving reason why Patient Care Encounter (PCE) visit did not pass validity check for completeness/accuracy to be added to HBHC Visit (632) & HBHC Transmit (634) files.  Entries in this file should NOT be added or edited.  ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "633.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

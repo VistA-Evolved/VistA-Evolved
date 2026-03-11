@@ -1,0 +1,82 @@
+{
+  "fileNumber": 232.5,
+  "fileName": "CPE ROLE",
+  "globalRoot": "232.5",
+  "globalReference": "^EDPB(232.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the role for use in the EDIS application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The abbreviation for the role. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "XML ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the xml abbreviation for the role. Previously, logic had been  hardcoded to check the role type.   'P' = \"@md\" 'N' = \"@rn\" 'R' = \"@res\"   These values will remain the same, however they are now part of the file,  and can be more easily enhanced to add roles in the future. The roles  will now be able to be built without having to release a KIDS build to  do so. All role settings are now table driven.   This is accessed and used to build information out of the CLRSTAFF tag in EDPQDBS. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT WORKSHEET",
+      "dataType": "POINTER",
+      "rawType": "P232.6'",
+      "required": false,
+      "pointerTo": 232.6,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEFAULT BOARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALLOW ACUITY EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "XML STAFF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This holds the staff name that is related to building the XML needed for  the client portion of the application. This is built from the LOAD tag in  EDPBST. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "232.5", "field": .01, "type": "regular"},
+    {"name": "232.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "fileNumber": 8930.1,
+  "fileName": "USR AUTHORIZATION/SUBSCRIPTION",
+  "globalRoot": "8930.1IP",
+  "globalReference": "^USR(8930.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOCUMENT DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "R*P8925.1'",
+      "required": true,
+      "pointerTo": 8925.1,
+      "helpText": "This is a Document Definition of Type Class, Document Class, or Title from the Document Definition File 8925.1 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP8930.6'",
+      "required": true,
+      "pointerTo": 8930.6,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTION",
+      "dataType": "POINTER",
+      "rawType": "RP8930.8'",
+      "required": true,
+      "pointerTo": 8930.8,
+      "helpText": "This is the action to be permitted for a given document type and status. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8930'",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "This is the User Class which is being authorized to perform an action on a  document of the type and status indicated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AND FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "&:AND;!:OR;",
+      "helpText": "This field allows the ADPAC to indicate whether the conditions specified  by User Class and User Role should be logically \"AND'ed,\" or logically \"OR'ed,\"  as they will be unless otherwise specified.  i.e., if you want to specify  that an unsigned discharge summary may be signed by a user, where:  User Class = Provider AND User Role = Author,  then you'll want to set this field to AND. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USER ROLE",
+      "dataType": "POINTER",
+      "rawType": "P8930.2'",
+      "required": false,
+      "pointerTo": 8930.2,
+      "helpText": "This identifies the role of the user with respect to the document in question (e.g., Author/Dictator, Expected Signer, Expected Cosigner, Attending Physician, etc.). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8930.11",
+      "required": false,
+      "helpText": "  For most entries, the meaning of the entry will be clear from the description of the associated event in the TIU Event file.  In some cases, that may not suffice, in which case this field may be used to further   For example, if an entry associates the Signature event with a document of status completed, it might help to note in the description field that such a signature is a walkup signature.   It should not be necessary to describe consequences in this field - those descriptions may be gott",
+      "isMultiple": true,
+      "subFileNumber": 8930.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREREQUISITE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONSEQUENCE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AC3", "field": },
+    {"name": "AR", "field": },
+    {"name": "AR1", "field": },
+    {"name": "AR2", "field": },
+    {"name": "AR3", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "8930.1", "field": .01, "type": "regular"},
+    {"name": "8930.1", "field": .01, "type": "regular"},
+    {"name": "8930.1", "field": .01, "type": "regular"},
+    {"name": "8930.1", "field": .02, "type": "regular"},
+    {"name": "8930.1", "field": .02, "type": "regular"},
+    {"name": "8930.1", "field": .03, "type": "regular"},
+    {"name": "8930.1", "field": .03, "type": "regular"},
+    {"name": "8930.1", "field": .04, "type": "regular"},
+    {"name": "8930.1", "field": .04, "type": "regular"},
+    {"name": "8930.1", "field": .06, "type": "regular"},
+    {"name": "8930.1", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^USR(8930.6,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8930.6,.01,0),U,2) D Y^DIQ:Y]\"\" W \" \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": W.03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^USR(8930.8,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8930.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \" \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": W.04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^USR(8930,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8930,.01,0),U,2) D Y^DIQ:Y]\"\" W \" \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": W.05, "value": "W \" \",@(\"$P($P($C(59)_$S($D(^DD(8930.1,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": W.06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^USR(8930.2,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8930.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \" \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

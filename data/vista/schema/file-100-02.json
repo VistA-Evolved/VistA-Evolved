@@ -1,0 +1,181 @@
+{
+  "fileNumber": 100.02,
+  "fileName": "NATURE OF ORDER",
+  "globalRoot": "100.02I",
+  "globalReference": "^ORD(100.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Nature of Order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a single character abbreviation that is used in HL7 messages between CPRS and the ancillary packages. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NON-INTERACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INTERACTIVE;1:NON-INTERACTIVE;",
+      "helpText": "This field identifies this entry for interactive or non-interactive use. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field is used to inactivate a nature of order. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FRONT/BACKDOOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:frontdoor;B:backdoor;X:both;",
+      "helpText": "This field is used to identify entries that are used during an OE/RR dialog (frontdoor), and entries that are used by ancillary services (backdoor). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DC ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a flag that determines if this nature is to be used only when discontinuing an order. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CREATE ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if an entry will be created in the Order Action multiple for this order; if not, then only a status update will occur. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PRINT CHART COPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if this entry/action should generate a Chart copy. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRINT DAILY SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if this entry/action should appear on the Daily Order Summary. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DEFAULT SIGNATURE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ON CHART w/written orders;1:ELECTRONIC;2:NOT SIGNED;3:NOT REQUIRED;4:ON CHART w/printed orders;5:NOT REQUIRED due to cancel;6:SERVICE CORRECTION to signed order;",
+      "helpText": "This is the signature status that will be assigned to an order having this nature; if a signature is not applicable, this field should be null. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRINT WORK COPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if this entry/action should generate a Work Copy. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "INCLUDE IN ACTIVE ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This determines if orders dc'd with this nature are included in the Active Orders list; if so, they will be shown for the number of hours specified by the Active Orders Context Hours parameter, as with other dc'd orders. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference  terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "100.0299DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 100.0299,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "100.02", "field": .01, "type": "regular"},
+    {"name": "100.02", "field": .02, "type": "regular"},
+    {"name": "100.02", "field": .03, "type": "regular"},
+    {"name": "100.02", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

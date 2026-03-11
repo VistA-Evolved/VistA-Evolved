@@ -1,0 +1,67 @@
+{
+  "fileNumber": 776.999,
+  "fileName": "HL7 MONITOR PARAMETERS",
+  "globalRoot": "776.999",
+  "globalReference": "^HLEV(776.999,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the name of the parameter entry.  (Only one entry,  internal entry number 1 should exist.)  The value of this field has no affect on software execution. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS-MASTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field should be set to ACTIVE if the master job should run, and  INACTIVE if the master job should not run.  This field also controls individual monitor jobs.  (Note that setting this field has no affect on queued future Taskman jobs - either the master job or the monitor jobst - until these jobs start.  If this field is set to INACTIVE, when queued jobs start they check this field and immediately stop.) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUEUE MIN-MASTER JOB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "When a master job runs, it's first action is to queue a new master job task in the future.  This field is used to determine the number minutes in the future that the task is queued. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PURGE HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The Event Monitor system purges itself, retaining data in it's files for the number hours specified by this field. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATUS-EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field is similar to the STATUS-MASTER field, (and you should read  the description of that field), but only controls individual monitor jobs.  If this field is set to INACTIVE, no new monitor jobs will be queued. And, if any monitor jobs are already queued, they will stop immediately when they start. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "776.999", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

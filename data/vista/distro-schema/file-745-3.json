@@ -1,0 +1,73 @@
+{
+  "fileNumber": 745.3,
+  "fileName": "*QUALITY MATRIX",
+  "globalRoot": "745.3I",
+  "globalReference": "^QA(745.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name for the Service, Level, Quality Aspect or a  combination of any of the three. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Medical;2:Surgical;3:Psychiatric;4:Extended Care;",
+      "helpText": "This is the service: Medical, Surgical, Psychiatric, or Extended Care. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:Primary;S:Secondary;T:Tertiary;I:Inpatient;L:Long;",
+      "helpText": "This is the level of care as defined by the Quality Matrix: Primary, Secondary, Tertiary, Inpatient, or Long. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "QUALITY ASPECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Needed;2:Competent;3:Caring;4:Cost Effective;5:Timely;6:Minimizes Risk;7:Achievable Benefits;",
+      "helpText": "These are the Quality Aspects as defined by the Quality Matrix. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field is used to label a Quality Matrix entry Inactive when it will no longer be used. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "745.3", "field": .01, "type": "regular"},
+    {"name": "745.3", "field": .01, "type": "regular"},
+    {"name": "745.3", "field": .02, "type": "regular"},
+    {"name": "745.3", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

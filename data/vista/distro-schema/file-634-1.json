@@ -1,0 +1,47 @@
+{
+  "fileNumber": 634.1,
+  "fileName": "HBHC EVALUATION/ADMISSION ERROR(S)",
+  "globalRoot": "634.1P",
+  "globalReference": "^HBHC(634.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient name in Patient (2) file.  The evaluation/admission record in HBHC Patient (631) file is missing data or contains data inconsistencies.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HBHC EVALUATION",
+      "dataType": "POINTER",
+      "rawType": "P631'",
+      "required": false,
+      "pointerTo": 631,
+      "helpText": "This field represents evaluation/admission record in HBHC Patient (631) file.  Field updated by package only, no user input. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELDS TO UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string supplied for DIE call) of evaluation/admission data in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

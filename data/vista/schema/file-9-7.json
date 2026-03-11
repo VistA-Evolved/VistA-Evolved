@@ -1,0 +1,289 @@
+{
+  "fileNumber": 9.7,
+  "fileName": "INSTALL",
+  "globalRoot": "9.7",
+  "globalReference": "^XPD(9.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name and version number of this Package (i.e. Kernel 8.0T1) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Loaded from Distribution;1:Queued for Install;2:Start of Install;3:Install Completed;4:De-Installed;",
+      "helpText": "This is the status of this package at this site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PACKAGE FILE LINK",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field contains the link to the Package File. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE LOADED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the time the Transport Global was loaded at the site. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STARTING PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.7'I",
+      "required": false,
+      "pointerTo": 9.7,
+      "helpText": "This is the first package in a multi-package install. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTALL ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the order to install this package in a multi-package install. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUEUED TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0I",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the Task number for this package if this package was queued to be installed at a later time. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the comment from the HFS file that contained this package. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "REQUIRED TO CONTINUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If required (answer = YES) the entire build will be aborted if this build does  not successfully load.  If not required (answer = NO) the other builds within  this build will continue to be processed.  ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SETNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the SETNAME that will be used to disable options and protocols during the installation of this package. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DISABLE OPTION DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of minutes to wait after the Options and Protocols have been disabled, but before the Routines have been installed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "INSTALLED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who installed this package. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INSTALL START TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time the install started. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ROUTINE INSTALL TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the routine install completed time. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRE-INIT CHECK POINTS",
+      "dataType": "SUBFILE",
+      "rawType": "9.713",
+      "required": false,
+      "helpText": "This contains all the check points needed for the Pre-Init routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.713,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "9.714P",
+      "required": false,
+      "helpText": "This contains the VA Fileman files that were installed by this package. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "BUILD COMPONENTS",
+      "dataType": "POINTER",
+      "rawType": "9.715P",
+      "required": false,
+      "helpText": "This contains a list of the components of this package. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "POST-INIT CHECK POINTS",
+      "dataType": "SUBFILE",
+      "rawType": "9.716",
+      "required": false,
+      "helpText": "This contains all the check points needed for the Post-Init routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.716,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "INSTALL COMPLETE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time the install finished. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GLOBALS",
+      "dataType": "SUBFILE",
+      "rawType": "9.718",
+      "required": false,
+      "helpText": "This multiple contains a list of globals that were installed by this package. ",
+      "isMultiple": true,
+      "subFileNumber": 9.718,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "9.702",
+      "required": false,
+      "helpText": "This is where all messages about the install will be saved. ",
+      "isMultiple": true,
+      "subFileNumber": 9.702,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "VOLUME SET",
+      "dataType": "SUBFILE",
+      "rawType": "9.703A",
+      "required": false,
+      "helpText": "This multiple contains the Volumes Sets that will be updated with the new routines and compiled cross references, print and input templates. ",
+      "isMultiple": true,
+      "subFileNumber": 9.703,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ROUTINES",
+      "dataType": "SUBFILE",
+      "rawType": "9.704A",
+      "required": false,
+      "helpText": "This multiple contains a list of all Routines that were installed for this package.  It also includes routines that were generated during the install.  The Routines came from calls to DIEZ, DIPZ, and DIKZ. ",
+      "isMultiple": true,
+      "subFileNumber": 9.704,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INSTALL ANSWERS",
+      "dataType": "SUBFILE",
+      "rawType": "9.701",
+      "required": false,
+      "helpText": "This multiple contains the answers to all the install Questions. ",
+      "isMultiple": true,
+      "subFileNumber": 9.701,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DISTRIBUTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the distribution date of the build that is being installed.  This is not a user input field. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "BUILD VERSION#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field holds the build version number from the patch module on FORUM. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "SEQ#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the Release Sequence # from the Patch Module on FORUM. ",
+      "fieldNumber_": 62
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "AS", "field": },
+    {"name": "ASP", "field": },
+    {"name": "B", "field": },
+    {"name": "9.7", "field": .01, "type": "regular"},
+    {"name": "9.7", "field": 3, "type": "regular"},
+    {"name": "9.7", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "D ID97^XPDET"}
+  ]
+}

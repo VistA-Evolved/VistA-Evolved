@@ -1,0 +1,36 @@
+{
+  "fileNumber": 9002313.21,
+  "fileName": "BPS NCPDP PROFESSIONAL SERVICE CODE",
+  "globalRoot": "9002313.21",
+  "globalReference": "^BPS(9002313.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code identifying pharmacist intervention when a conflict code has been identified or service has been rendered.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the NCPDP PROFESSIONAL SERVICE CODE use to override DUR rejects (e.g., PHARMACIST CONSULTED OTHER SOURCE,PRESCRIBER CONSULTED). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 601.96,
+  "fileName": "MH STAGED DOCUMENTS",
+  "globalRoot": "601.96",
+  "globalReference": "^YTT(601.96,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80X",
+      "length": 80X,
+      "required": true,
+      "helpText": "This is a name that can be used to retrieve a staged document.  It is helpful to use namespacing to avoid collisions.  For example, names beginning with YTT represent instrument specifications.  Names beginning  with YTL represent instrument lists. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REVISION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This optional field may be used to store a version number for the  document content. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DIGEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This optional field may be used to store a hash to validate the content  of the document. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTENT",
+      "dataType": "SUBFILE",
+      "rawType": "601.961",
+      "required": false,
+      "helpText": "This word processing field contains the content of the document.  It is  generally a JSON-formatted document. ",
+      "isMultiple": true,
+      "subFileNumber": 601.961,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.96", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

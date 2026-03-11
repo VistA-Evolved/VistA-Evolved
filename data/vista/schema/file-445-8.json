@@ -1,0 +1,127 @@
+{
+  "fileNumber": 445.8,
+  "fileName": "INSTRUMENT KITS",
+  "globalRoot": "445.8Ps",
+  "globalReference": "^PRCP(445.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT KIT ITEM",
+      "dataType": "POINTER",
+      "rawType": "RP441'X",
+      "required": true,
+      "pointerTo": 441,
+      "helpText": "This field is used to store the item master number defined as the instrument kit item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEMS",
+      "dataType": "POINTER",
+      "rawType": "445.81P",
+      "required": false,
+      "helpText": "This field stores the list of items which are used to assemble the instrument kit. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "RP445'",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This field stores the name of the inventory point responsible for setting up the instrument kit definition. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER CREATING INSTRUMENT KIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the user which created the instrument kit item entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the instrument kit item was created. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER LAST EDIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the user which last changed the instrument kit item definition. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE LAST EDIT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the instrument kit definition was last changed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOTAL ASSEMBLY CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field is used to store the total charge for assembling the instrument kit.  The total assembly charge will be costed to the receiving secondary inventory location and patient during distribution order posting.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SPECIAL INSTRUCTIONS/REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "445.801",
+      "required": false,
+      "helpText": "This field stores any special instructions or remarks relative to the assembly or distribution of this instrument kit. ",
+      "isMultiple": true,
+      "subFileNumber": 445.801,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "METHOD OF STERILIZATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STEAM;G:GAS;CG:COLD GAS;PA:PERACETIC ACID;",
+      "helpText": "This field is used to indicate the method of sterilization for the instrument kit. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "METHOD OF WRAPPING/PACKAGING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "PP:PEEL DOWN POUCH;C:CONTAINER;M:MUSLIN/CLOTH;NW:NON-WOVEN WRAP;",
+      "helpText": "This field is used to indicate the method of wrapping/packaging for the instrument kit. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "445.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

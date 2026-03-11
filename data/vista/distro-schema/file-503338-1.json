@@ -1,0 +1,112 @@
+{
+  "fileNumber": 503338.1,
+  "fileName": "VOLUNTARY LABEL CONFIGURATION",
+  "globalRoot": "503338.1",
+  "globalReference": "^ABS(503338.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NUMBER OF LABEL COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF LABEL ROWS PER PAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER OF LINES PER LABEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NUMBER OF COL/LABEL - OPTIONAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This contains the number of columns per label.  This field is optional and will normally be blank since the program will use the page width of the sheet to calculate the number of individual columns. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MANUFACTURER & STOCK #",
+      "dataType": "SUBFILE",
+      "rawType": "503338.15",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503338.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LEFT MARGIN OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number of columns that the printed label is to print from the left margin of the label. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOP MARGIN OFFSET (FIRST PAGE)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TOP MARGIN OFFSET (OTHER PGS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LASER LABEL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Set this field to YES if the labels are designed for laser printer output.  If set to YES, the user will not be asked the ALIGNMENT question during printing. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "503338.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

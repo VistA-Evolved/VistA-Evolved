@@ -1,0 +1,166 @@
+{
+  "fileNumber": 80.1,
+  "fileName": "ICD OPERATION/PROCEDURE",
+  "globalRoot": "80.1IO",
+  "globalReference": "^ICD0(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "ICD-9 or ICD-10 procedure code ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "*P80.4'",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "This is the coding system to which the code belongs. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains Operations Identifiers. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "MDC24",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CRANIAL;2:LIMB;3:OTHER;",
+      "helpText": "Set of codes refers to body site of procedure, when for a  Multiple Significant Trauma (MDC 24) ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "ICD EXPANDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is a flag indicating that the ICD code was expanded by the VA (local code). ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "EXCLUDE FROM LOOKUP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This is a computed field to indicate if a record in the Operations/Procedure file #80.1 should be excluded from  lookup.  Records excluded from lookup either have no  activation history (sub-file 80.166) or have been modified by the VA (ICD EXPANDED field 1.7).  If this computed field returns a 1, then it should not be used for lookup or  included in lookup cross-references. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEX",
+      "dataType": "DATE",
+      "rawType": "80.11D",
+      "required": false,
+      "helpText": "This is a history of the Sex designation (Male/Female) for the procedure and includes the Sex with the date it became effective. ",
+      "isMultiple": true,
+      "subFileNumber": 80.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MAJOR O.R. PROC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Major O.R procedure for this procedure code.  See routine D MAJ^ICDHLPD for a listing of acceptable values for this field. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "STATUS",
+      "dataType": "DATE",
+      "rawType": "80.166DA",
+      "required": false,
+      "helpText": "This multiple contains versioned information for an ICD code. A new entry is created whenever an ICD code's status is changed.  ",
+      "isMultiple": true,
+      "subFileNumber": 80.166,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "OPERATION/PROCEDURE",
+      "dataType": "DATE",
+      "rawType": "80.167D",
+      "required": false,
+      "helpText": "This is a history of the operation/procedure (short text) to include the date the text was first used along with the text. ",
+      "isMultiple": true,
+      "subFileNumber": 80.167,
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "DESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "80.168D",
+      "required": false,
+      "helpText": "This is a history of the descriptive text to include the date the text  was first used and the text used. ",
+      "isMultiple": true,
+      "subFileNumber": 80.168,
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "DRG GROUPER",
+      "dataType": "DATE",
+      "rawType": "80.171D",
+      "required": false,
+      "helpText": "This is a history of the DRG Grouper Major Diagnostic Codes and DRGs for an ICD procedure code and contains the date the MDCs/DRGs became effective along with the MDCs and DRGs.   ",
+      "isMultiple": true,
+      "subFileNumber": 80.171,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "DRG PROCEDURE IDENTIFIER CODES",
+      "dataType": "POINTER",
+      "rawType": "80.173P",
+      "required": false,
+      "helpText": "This is a listing of identifier codes used in  the DRG rules processing to determine DRG. ",
+      "fieldNumber_": 73
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "ACT4", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD2", "field": },
+    {"name": "AD3", "field": },
+    {"name": "ADS", "field": },
+    {"name": "ADSS1", "field": },
+    {"name": "ADSS2", "field": },
+    {"name": "AST", "field": },
+    {"name": "ASTS1", "field": },
+    {"name": "ASTS2", "field": },
+    {"name": "D", "field": },
+    {"name": "80.1", "field": .01, "type": "regular"},
+    {"name": "80.1", "field": 1.1, "type": "regular"},
+    {"name": "80.1", "field": 1.1, "type": "regular"},
+    {"name": "80.1", "field": 1.1, "type": "regular"},
+    {"name": "80.1", "field": 1.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.1, "value": "D EN^DDIOL((\" \"_$$IDOPF^ICDID(+Y)),\"\",\"?0\")"}
+  ]
+}

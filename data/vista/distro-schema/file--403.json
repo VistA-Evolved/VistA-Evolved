@@ -1,0 +1,207 @@
+{
+  "fileNumber": .403,
+  "fileName": "FORM",
+  "globalRoot": ".403",
+  "globalReference": "^DIST(.403,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the name of the form, 3-30 characters in length.  The form name must be unique and cannot be numeric or start with a punctuation character.  It should also be namespaced. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "READ ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Non-programmers can enter only their own VA FileMan access code(s). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WRITE ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Non-programmers can enter only their own VA FileMan access code(s). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CREATOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the DUZ of the person who created the form.  The ScreenMan options to create the form automatically put a value into this field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the form was created.  The ScreenMan options to create the form automatically put a value into this field. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the form was last used.  ScreenMan automatically puts a value into this field when the form is invoked. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The TITLE property can be used by the form designer to help identify a form.  It is cross referenced and need not be unique.  ScreenMan does not automatically display the TITLE to the user, but the form designer can choose to define a caption-only field that displays the title to the user. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PRIMARY FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter a file number, greater than or equal to 2, which represents the data dictionary number of the primary file for this form. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DISPLAY ONLY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag that indicates none of the blocks on the form are edit blocks.  This flag is set during form compilation. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FORM ONLY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag that indicates none of the fields on the form are data dictionary fields.  This flag is set during form compilation. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMPILED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag that indicates that the form is compiled.  This flag is set during form compilation. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed when the form is first invoked, before any of the pages are loaded and displayed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "POST ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed before ScreenMan returns to the calling application. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "POST SAVE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed when the user saves changes.  It is  executed only if all data is valid, and after all data has been filed. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".40315",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .40315,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATA VALIDATION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed when the user attempts to save changes to the form.  If the code sets DDSERROR, the user is unable to save changes.  If the code sets DDSBR, the user is taken to the specified field.   In addition to $$GET^DDSVAL, PUT^DDSVAL, and HLP^DDSUTL, you  can use MSG^DDSUTL to print on a separate screen messages to the user  about the validity of the data. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RECORD SELECTION PAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter the page number of the page that is used for record selection.   If you define a Record Selection Page, the user can select another entry in the file, and, if LAYGO is allowed, add another entry into the file without exiting the form.  The Record Selection Page should be a pop-up page that contains one form-only field that performs a pointer-type read into the Primary File of the form.  The Record Selection Page property should be set equal to the Page Number of the Record Selection Page. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PAGE",
+      "dataType": "SUBFILE",
+      "rawType": ".4031I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4031,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "BUILD(S)",
+      "dataType": "COMPUTED",
+      "rawType": "Cmp9.6",
+      "required": false,
+      "helpText": "The Build File (#9.6) is searched for Builds containing the ScreenMan Form.   A list of the identified Builds is created for display.   Multiple Builds will be shown if appropriate. ",
+      "fieldNumber_": 21400
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AY", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "F1", "field": },
+    {"name": ".403", "field": .01, "type": "regular"},
+    {"name": ".403", "field": .01, "type": "regular"},
+    {"name": ".403", "field": .01, "type": "regular"},
+    {"name": ".403", "field": 6, "type": "regular"},
+    {"name": ".403", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N D,D1,D2 S D2=^(0) S:$X>30 D1(1,\"F\")=\"!\" S D=$P(D2,U,5) S:D D1(2)=\"(\"_$$DATE^DIUTL(D)_\")\",D1(2,\"F\")=\"?30\" S D=$P(D2,U,4) S:D D1(3)=\"User #\"_D,D1(3,\"F\")=\"?50\" S D=$P(D2,U,8) S:D D1(4)=\" File #\"_D,D1(4,\"F\")=\"?59\" D EN^DDIOL(.D1)"},
+    {"field": WRITED, "value": "I $G(DZ)?1\"???\".E N D S D=0 F  S D=$O(^DIST(.403,Y,15,D)) Q:D'>0  I $D(^(D,0))#2 D EN^DDIOL(^(0),\"\",\"!?5\")"}
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "fileNumber": 408.11,
+  "fileName": "RELATIONSHIP",
+  "globalRoot": "408.11",
+  "globalReference": "^DG(408.11,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This filed contains the internal entry number for this type of relationship in conjunction with income screening data. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of an allowable relationship for an individual to a patient.  The list of allowable relationships is provided by MAS VACO based on documentation from the Internal Revenue Service.  This data is used in the income screening and means test modules of MAS and must not be added to, edited, or removed from this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter yes, if this relationship is allowable through DHCP.  Otherwise, respond no.  This information is provided by MAS VACO for use in the income screening and means test modules of MAS.  It must not be altered in any way at the local level. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MALE;F:FEMALE;E:EITHER;",
+      "helpText": "Enter the sex of a person of this relationship.  In some cases, such as 'SELF', 'SPOUSE', or 'OTHER', the sex could be either male or female.  In that case, enter EITHER.   This information is provided and maintained by the MAS package.  Alteration of this data in any way could have negative impacts on the performance of the MAS package at your facility. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ALLOWABLE FOR MEANS TEST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this relationship is an acceptable relationship for means test purposes, respond YES here.  If the relationship is acceptable for only income screening and IVM (income verification matching) purposes and not for means test, answer NO here.   This information is provided by MAS VACO and maintained by the MAS software module.  It must not be altered in any way at the local facility level. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "408.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

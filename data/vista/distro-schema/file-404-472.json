@@ -1,0 +1,65 @@
+{
+  "fileNumber": 404.472,
+  "fileName": "PCMM HL7 ERROR CODE",
+  "globalRoot": "404.472",
+  "globalReference": "^SCPT(404.472,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the unique ID assigned by Austin for each error code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEGMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The three letter designation of the applicable HL7 segment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The segment field where the error occurred. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The short desciption is used in the Listman display where users select errors for retransmission. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.482",
+      "required": false,
+      "helpText": "The is the full description of this error. ",
+      "isMultiple": true,
+      "subFileNumber": 404.482,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "404.472", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

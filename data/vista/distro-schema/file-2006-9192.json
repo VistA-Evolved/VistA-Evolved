@@ -1,0 +1,185 @@
+{
+  "fileNumber": 2006.9192,
+  "fileName": "DICOM AE SECURITY MATRIX",
+  "globalRoot": "2006.9192",
+  "globalReference": "^MAGV(2006.9192,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the unique name, case-insensitive, associated with an AE Title. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCAL AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Local Application Entity Title. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "REMOTE AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Remote Application Entity Title. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "FORCE RECONCILIATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the AE Instance is used to import images that have to be reconciled then this field should be set to YES.  The default value for this field is NO. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "ORIGIN INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;D:DOD;F:FEE;N:NON-VA;I:IHS;",
+      "helpText": "This field indicates where the image originated from. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the site associated with an AE title. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IP address associated with an AE Title. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PORT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the port number associated with an AE title. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that the HDIG listener should return a DICOM reject message if the received DICOM object is unacceptable. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WARNING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that the HDIG listener should return a DICOM warning message for duplicate or illegal UIDs. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RESERR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that the HDIG listener should return a DICOM resource error message to sender if a resource (VistA DB, RAID, etc.) is unavailable. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VALIDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that detailed DICOM validation should be applied on incoming object (a minimum validation for key elements is always performed). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RELAX VALIDATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"1\" if relaxed validation should be applied to incoming objects instead of detailed validation. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SERVICE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:RADIOLOGY;CON:CONSULT;",
+      "helpText": "Defines the type of service, Radiology or Consult, the selected remote AE does. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DICOM SERVICE AND ROLE",
+      "dataType": "SET",
+      "rawType": "2006.919212S",
+      "required": false,
+      "helpText": "These are the DICOM services and roles associated with this entry. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.919212,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "N RESPONSE DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of minutes the HDIG will wait before responding to a DIMSE N-ACTION request from this Remote AE TITLE. (MAG*3.0*79). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "N RESPONSE RETRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of times an HDIG will attempt to re-deliver a DIMSE N-RESPONSE message to this Remote AE TITLE (MAG*3.0*79). ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.9192", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

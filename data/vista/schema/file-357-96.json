@@ -1,0 +1,252 @@
+{
+  "fileNumber": 357.96,
+  "fileName": "ENCOUNTER FORM TRACKING",
+  "globalRoot": "",
+  "globalReference": "^IBD(357.96,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINTED FORM ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "Uniquely identifies an instance of a printed encounter form. This is the same as the ien. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient that had the appointment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time of the appointment for which the encounter form was printed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TYPE",
+      "dataType": "POINTER",
+      "rawType": "P357.95'",
+      "required": false,
+      "pointerTo": 357.95,
+      "helpText": "If the encounter form has a FORM DEFINITION TABLE, this field points to it. The pointer equals the .01 field of the FORM DEFINITION TABLE entry and is used as the form type id.                                          ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "When the form was printed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME RECEIVED IN DHCP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the form is received in DHCP. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SOURCE OF FORM ID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:IB;2:PANDAS;3:TELEFORM;4:PEN;5:WORKSTATION;99:OTHER;",
+      "helpText": "This field documents which means of data capture is being used. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FORM TYPE ID (EXTERNAL SOURCE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the form was created externally to DHCP and was assigned an id externally, then this field can be used to document that. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXTERNAL PRINTED FORM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external format of the form id (internal entry number) that can be printed on forms and used for look-up.   ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic of the appointment. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PROCESSING STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRINTED;2:SCANNED;3:SCANNED TO PCE;4:SCANNED W/PCE ERROR;5:DATA ENTRY;6:DATA ENTRY TO PCE;7:DATA ENTRY W/PCE ERROR;11:PENDING PAGES;12:ERROR DETECTED,NOT TRANSMITTED;20:AVAILABLE FOR DATA ENTRY;",
+      "helpText": "This is the processing status of the form.  This field is automatically updated by the system.  When a form is printed for a patient an entry is created in this file and the processing status is set to printed. When data is received by DHCP from the scanner the status is updated to Scanned.  After the data is processed by PCE the status is updated to show the correct status.    For multi-page forms, when not all pages have been scanned, the status is set to Pending Pages.  The data is stored in ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ERROR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This can be used to document any error that occurred. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EDITING DETECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is automatically set if data entry on a form has been detected by PCE or Scheduling options.  Data entry by AICS options will be indicated in the Processing Status field.  If the processing status field contains data and this field contains data then the visit was entered and then edited. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "NO APPOINTMENT ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:APPOINTMENT EXISTS;1:NO APPOINTMENT ENTRY;",
+      "helpText": "This field gets set to 1, \"No Appointment Entry\" automatically when a forms tracking entry is created by routine IBDF18C if there is no corresponding appointment entry detected in ^DPT(dfn,\"s\",appt/datetime for the patient.   Forms tracking uses this Cross-reference to find forms not associated with appointments. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "TOTAL SECONDS TO INPUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the total elapsed time in seconds that it took to process this  form, including the processing time in PCE if data was sent to PCE in the foreground.  This field is automatically updated by the AICS Data Entry option and by the AICS Workstation software.  See the processing status to determine which method of input was used. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "USER INPUTTING DATA",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the user that processed the data on the form, either through the AICS Data Entry options or through Scanning.  This field is automatically updated by the AICS Data Entry option and by the AICS Workstation software.  See the processing status to determine which method of input was used. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DYNAMIC LIST ITEMS",
+      "dataType": "SUBFILE",
+      "rawType": "357.961I",
+      "required": false,
+      "helpText": "This is used to store a lookup table for lists printed on forms where the list was created at print time rather than design time. ",
+      "isMultiple": true,
+      "subFileNumber": 357.961,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OVERFLOW DATA",
+      "dataType": "SUBFILE",
+      "rawType": "357.962",
+      "required": false,
+      "helpText": "This multiple is used to store the overflow data on forms whereby the list was created at print time rather than design time. ",
+      "isMultiple": true,
+      "subFileNumber": 357.962,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STORED IMAGES",
+      "dataType": "SUBFILE",
+      "rawType": "357.963A",
+      "required": false,
+      "helpText": "This subfile will contain the image name, paths, workstation ID, and users for all pages of the form tracking entry that was saved as an image. ",
+      "isMultiple": true,
+      "subFileNumber": 357.963,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SCANNED PAGES",
+      "dataType": "SUBFILE",
+      "rawType": "357.969",
+      "required": false,
+      "helpText": "A list of pages that should be scanned. ",
+      "isMultiple": true,
+      "subFileNumber": 357.969,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RAW SCANNED DATA",
+      "dataType": "SUBFILE",
+      "rawType": "357.9601A",
+      "required": false,
+      "helpText": "This mulitiple holds the raw data from pages that have been scanned, pending the receipt of more pages. The data will not be processed until all pages that should be scanned are received. ",
+      "isMultiple": true,
+      "subFileNumber": 357.9601,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "A1", "field": },
+    {"name": "A2", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADATNA", "field": },
+    {"name": "ADATNA1", "field": },
+    {"name": "AEXT", "field": },
+    {"name": "AN", "field": },
+    {"name": "APTAP", "field": },
+    {"name": "APTAP1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "357.96", "field": .01, "type": "regular"},
+    {"name": "357.96", "field": .02, "type": "regular"},
+    {"name": "357.96", "field": .02, "type": "regular"},
+    {"name": "357.96", "field": .03, "type": "regular"},
+    {"name": "357.96", "field": .03, "type": "regular"},
+    {"name": "357.96", "field": .03, "type": "regular"},
+    {"name": "357.96", "field": .04, "type": "regular"},
+    {"name": "357.96", "field": .04, "type": "regular"},
+    {"name": "357.96", "field": .06, "type": "regular"},
+    {"name": "357.96", "field": .09, "type": "regular"},
+    {"name": "357.96", "field": .14, "type": "regular"},
+    {"name": "357.96", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,10),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

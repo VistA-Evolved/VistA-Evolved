@@ -1,0 +1,171 @@
+{
+  "fileNumber": 57.5,
+  "fileName": "WARD GROUP",
+  "globalRoot": "57.5I",
+  "globalReference": "^PS(57.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is a generic name for a grouping of wards. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "57.51P",
+      "required": false,
+      "helpText": "  This is the wards that make up this ward group. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PICK LIST DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "  This is sets of data pertaining to pick lists run for this ward group.   The corresponding fields are:      PIECES       DATA TYPE      ----------   ---------------------------------------------       1,6,11,16 - PICK LIST INTERNAL NUMBER (DA)       2,7,12,17 - DATE PICK LIST WAS RUN       3,8,13,18 - COVERAGE START DATE/TIME       4,9,14,19 - COVERAGE STOP DATE/TIME      5,10,15,20 - INTERNAL NUMBER OF USER WHO RAN THE PICK LIST      Data from the last four (4) pick lists run are kept.  When ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "M:MAS;P:PHARMACY;",
+      "helpText": "  Differentiates between MAS ward groups and PHARMACY ward groups.  Only  PHARMACY ward groups are selectable in the PICK LIST options and no two  PHARMACY ward groups may contain the same ward (for dose counting and  tracking purposes).  MAS ward groups may be set up as desired, and are  selectable (along with PHARMACY ward groups) in all other print options. PHARMACY ward groups) in all other print options. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LENGTH OF PICK LIST (in hours)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  If an entry is found here when a pick list is run for this ward group, the Unit Dose package will add the number of hours found to the start date to produce a DEFAULT stop date. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "PICK LIST - ROOM/BED SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ROOM-BED;1:BED-ROOM;",
+      "helpText": "  The Pick List normally sorts patients' orders by ROOM-BED.  To have the Pick List sort orders by BED-ROOM, enter a '1' here.  Any change in this field will NOT affect Pick Lists already run.  PLEASE NOTE that if the pick list is flagged to NOT sort by ROOM-BED, this flag will be ignored. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "PICK LIST - OMIT WARD SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO (SORT BY WARD);1:YES (DO NOT SORT BY WARD);",
+      "helpText": "  The Pick List normally sorts orders by TEAM, WARD, ROOM-BED...  To have the Pick List omit the WARD sort, answer 'YES' here, and the Pick List will sort by TEAM, ROOM-BED (and NOT by WARD).  Any change here will NOT affect any Pick Lists that have already been run. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "PICK LIST - OMIT ROOM-BED SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES (DO NOT SORT BY ROOM-BED);0:NO (SORT BY ROOM-BED);",
+      "helpText": "  The PICK LIST normally sorts orders by ...TEAM, WARD, ROOM-BED, PATIENT NAME...  To have the pick list NOT sort by ROOM-BED at all, answer 'YES' here.  Any change here will NOT affect pick lists that have already been run. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "PICK LIST - FORM FEED/PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This is a flag that tells the package to start a new page for each patient found when printing the pick list. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "PICK LIST - FORM FEED/WARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag that tells the pick list to start a new page for each ward found when printing.  This flag is ignored if the \"NEW PAGE PER PATIENT\" flag is turned on. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "PICK LIST - LINES ON FORM FEED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag that tells the pick list to print the \"FILLED BY\" and the \"CHECKED BY\" lines after each ward or patient.  This is used only if either of the \"PICK LIST FORM FEED/PATIENT\" or \"PICK LIST FORM FEED/WARD\" site parameters is turned on. ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "PRINT NON-ACTIVE ORDERS FIRST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  For each patient, a pick list will print active orders and any orders that have expired or have been discontinued within 24 hours of the start date of the pick list.  Normally, for each patient, the patient's active orders are printed first.  This will allow pick lists run for this ward group to print each patient's expired and dc'd orders first. This does not affect pick lists that have already been run. ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "*BAXTER ATC DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is the device corresponding to the Baxter ATC dispensing machine for which all pick lists run for this ward group will be sent. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "USE OLD ATC INTERFACE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  Beginning in version 3.2 of the Inpatient Medications package, an  attempt has been made to increase the speed of the ATC/Unit Dose interface.  This new interface may not work for all sites.  If your site is one of  those, answer 'YES' to have the interface use the old method. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ATC DEVICE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the device corresponding to the ATC dispensing machine for which all pick lists run for this ward group will be sent. ",
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AP", "field": },
+    {"name": "ATNC", "field": },
+    {"name": "B", "field": },
+    {"name": "57.5", "field": .01, "type": "regular"},
+    {"name": "57.5", "field": .01, "type": "regular"},
+    {"name": "57.5", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "D FIELD^DID(57.5,3,\"\",\"POINTER\",\"PSJIDD\"),EN^DDIOL($P($P(PSJIDD(\"POINTER\"),$P($G(^PS(57.5,Y,0)),U,2)_\":\",2),\";\")) K PSJIDD"},
+    {"field": 32, "value": "S %I=Y,Y=$S('$D(^(3)):\"\",$D(^%ZIS(1,+$P(^(3),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(3.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

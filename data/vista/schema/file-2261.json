@@ -1,0 +1,39 @@
+{
+  "fileNumber": 2261,
+  "fileName": "ASISTS CHARACTERIZATION OF INJURY",
+  "globalRoot": "2261",
+  "globalReference": "^OOPS(2261,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the correct code that will identify this injury. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261", "field": .01, "type": "regular"},
+    {"name": "2261", "field": .01, "type": "regular"},
+    {"name": "2261", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

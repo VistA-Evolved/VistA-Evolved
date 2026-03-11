@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2261.21,
+  "fileName": "ASISTS INCIDENT WEATHER FACTORS",
+  "globalRoot": "2261.21",
+  "globalReference": "^OOPS(2261.21,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WEATHER FACTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the weather factor contributing to the incident. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WEATHER FACTOR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the weather factor code. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2261.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

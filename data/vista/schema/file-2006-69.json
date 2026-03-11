@@ -1,0 +1,259 @@
+{
+  "fileNumber": 2006.69,
+  "fileName": "MAG VISTARAD SITE PARAMETERS",
+  "globalRoot": "2006.69",
+  "globalReference": "^MAG(2006.69,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VISTARAD SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Field contains the name of the site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENABLE STATUS UPDATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answering this question \"YES\" will enable VistaRad to update the Radiology Package Interpreting Radiologist fields (#12 & #15), and the Exam Status field (#3).  Otherwise, use of VistaRad provides read-only access to VISTA data. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECENT EXAMS DAYS LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The RECENT Exams list shows all exams having a Status of Interpreted or Transcribed.  The list can be further restricted to show only exams up to 'N' days old--use this field to define a value for 'N'.  Note that for most sites, Exams are likely to be marked Complete within 3 to 4 working days of being Interpreted, at which point they no longer show up on the RECENT Exams list.  If NOT defined, the system defaults to  a value of 6. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UNREAD EXAMS DAYS LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The UNREAD Exams list shows all exams having a Status of EXAMINED.  The list can be further restricted to show only exams up to 'N' days old--use this field to define a value for 'N'.  If NOT defined, the system defaults to a value of 30. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PREFETCH ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Exam images that have been archived, e.g. to jukebox storage, may be retrieved to magnetic disk at the time a new exam is registered for a patient.  Enabling this allows immediate retrieval of the patient's prior exams when the radiologist is ready to read the new exam. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LIST ONLY EXAMS HAVING IMAGES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Some sites may have a mix of exams that do, and do not, have images stored digitally.  In this case, the UNREAD, ACTIVE and PENDING exams lists may be optionally configured to either list only the exams that have images available for display on the VistaRad workstation, or to list all exams, including those that do not have images available for display. NOTE that the Patient Exams List always lists ALL exams, regardless of whether images exist or not. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BACKGROUND COMPILE EXAM LISTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The process of compiling UNREAD & RECENT exam lists from the radiology database may be relatively lengthy.  To enable these lists to reach the radiology workstation rapidly, they can be compiled periodically in the background on the Vista system.  Enabling this option generally should provide for very fast retrieval of the exam lists. Note, however, that on the UNREAD Exams list the most recently completed (\"EXAMINED\") exams may not appear on the list, up to a time limit defined below; however, ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "UNREAD BKGND COMPILE INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "If compiling exams lists in the background, this field is used to define the number of minutes to wait in between each successive compile of the UNREAD Exams List.  If not specified, the default value used will be 6 minutes. For sites that tend to have more than 100 Unread exams on average, it is  recommended to use a value of 3 or 4 minutes; less than 100, use 2 or 3 minutes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "RECENT BKGND COMPILE INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The Recent List Background Compile is managed by Taskman, where a Scheduled Option should be defined for periodically compiling this list (recommended to compile every two to three hours).  Use this field to let VistARad know what you have defined in TaskMan as the interval between compiles.  This value is used to provide a warning message to the VistaRad user should it appear that the Background Compile has not run for more than this expected interval of time.  Obviously, this field only is use",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REMOTE LIST ONLY REMOTE CACHE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This question only applies to sites that use the Imaging Routing Gateway to route images to a remote facility for reading.   At the remote reading workstation, the Unread & Recent Exams lists may display either all exams, or only the subset of the exams that have been routed to the remote site. Enter YES to display only the routed exams. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SITE SENDS TO REMOTE CACHE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This question only applies to sites that use the Imaging Routing Gateway to route images to a remote facility for reading.   Answering this question YES turns on extra processing that is needed to manage the remote exams properly in VistARad. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REQUISITION FOR RAD STAFF ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;",
+      "helpText": "Setting this value to YES will prevent non-radiology personnel from viewing the Radiology Requisition from Vistarad. Some sites have data that appears on the requisition which is strictly for internal radiology staff use.  This prompt provides a way to restrict access to that report. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ENA DICT PREF-YES ALL LOCKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This setting affects some behavior of VistARad's dictation system interface.  When a locked exam is opened, the accession number is sent across the interface via the Dictation dialog.  Normally, whenever more than one locked exam is opened, the dialog displays an entry for each of the exams, and defaults YES (i.e. send the accession number across) for only one of the exams; the user may manually change the selection for any or all of the exams to YES if desired.    A user preference exists to al",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "UNREAD LIST PRIORITY SEQ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Unread lists show a column, PRIORITY, that is typically used as a  sort item for the list.  Four values are possible (from the Radiology Exam order, file 75.1).  This field allows the site to define the preferred sort ordering for these 4 values.  The default order is:    Stat, Urgent, Pre-op, Routine To achieve this ordering, the value for this field would be specified:    S,U,P,R Any sequence of these 4 letters may be defined, and then will be used by the list program. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ENABLE ASSIGN EXAMS FEATURE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This feature allows an exam to be assigned to a specific Radiologist,  or Radiology Tech, for interpretation or follow-up. This feature works only if ISI's \"Rad Tech Tool\" has been installed and configured at the site. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "ENABLE DYNAMIC QUERY FEATURE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The Dynamic Query feature, and all supporting program logic and functionality, shall be enabled only if this field has a value = \"Y\". ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DYNAMIC QUERY RECORD LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "To prevent dynamic query compiles processing very large result sets, this value may be defined to abort a query that exceeds the number specified here. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "ENABLE EXAM LIST STATISTICS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "If enabled, this feature counts the frequency of use of each of the exam lists.  The data is aggregated weekly by site.  These statistics may be viewed by using the PRINT EXAM LIST STATISTICS menu option. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "ENABLE MANAGER REV-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes, Level-1;2:Yes, Level-2;",
+      "helpText": "The Revision-2 modifications remove two obsolete exam lists from the Manager's top tab row; in their place the Assigned-UNREAD and Assigned-WAITING tab entries are inserted (\"Level-1\").  \"Level-2\" also removes the Background compile of RECENT exams from server-side processing, so the option \"MAGJ SCHED RECENT LIST COMPILE\" no longer needs to be defined in Taskman. The obsolete exam lists are \"Recent\", and \"All Active Exams\"; these are still accessible on the Custom tab, if desired. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DYNAMIC QUERY DAYS LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter a value to limit how many days back the dynamic query compile may go.  This will prevent the user from entering a Study From Date value earlier than \"Today\" minus the  value you enter here. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "READY FOR INTERP IMAGING TYPE",
+      "dataType": "POINTER",
+      "rawType": "P79.2'",
+      "required": false,
+      "pointerTo": 79.2,
+      "helpText": "In the typical Radiology workflow, dictation/report entry occurs for exams after images have been acquired.  In some circumstances it is desirable to initiate a report entry session PRIOR to image acquisition. Ultrasound workflow is the notable example for this.  To support this, a reserved EXAMINATION STATUS value must be defined, having a specific VISTARAD CATEGORY value, \"Ready for Interpretation\",  that is defined to enable this alternate workflow. This Examination Status value must have an ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "READY FOR INTERP TRIGGER VALUE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "A reserved value defined in the CAMERA/EQUIP/RM file should be defined for triggering the Exam Status to advance from the WAITING FOR EXAM status to the status defined having the VISTARAD CATEGORY value, \"Ready for Interpretation\".  Enter the reserved CAMERA/EQUIP/RM value here. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "ENABLE NOTES FEATURE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This feature allows any ISI Rad user to enter and/or view notes related to the exam.  These notes are displayed within the ISI Rad application only, appended to either the exam Report or Requisition. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "ENABLE ISIRad DICTATION OPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This option allows the user to select the \"ISI Rad\" Dictation setting, which provides the user a way to manually enter Radiology reports in a ISI Rad data entry form.  The reports are stored using the Radiology HL7 interface. This option works only if the requisite Radiology package programs and HL7 configurations have been installed and configured at the site. ",
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "RECENT", "field": },
+    {"name": "UNREAD", "field": },
+    {"name": "2006.69", "field": .01, "type": "regular"},
+    {"name": "2006.69", "field": 1, "type": "regular"},
+    {"name": "2006.69", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

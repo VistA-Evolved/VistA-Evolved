@@ -1,0 +1,731 @@
+{
+  "fileNumber": 65,
+  "fileName": "BLOOD INVENTORY",
+  "globalRoot": "65I",
+  "globalReference": "^LRD(65,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UNIT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The unit identification on the blood product label. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Collecting facility ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INVOICE#",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Number on invoice accompanying unit ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMPONENT",
+      "dataType": "POINTER",
+      "rawType": "R*P66'X",
+      "required": true,
+      "pointerTo": 66,
+      "helpText": "Name of blood product ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date/time component received.  Allows current and past times but disallows future times. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXPIRATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Expiration date/time of unit ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ABO GROUP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:A;B:B;O:O;AB:AB;NA:N/A;",
+      "helpText": "ABO blood group of unit. If ABO group is not applicable to the unit or component (ex. a mixed pool of compatible ABO types) enter NA for N/A (not applicable) ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "RH TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "POS:POSITIVE;NEG:NEGATIVE;NA:N/A;",
+      "helpText": "Rh type of unit.  If RH TYPE not applicable to the unit or component enter NA for N/A (not applicable or necessary). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "LOG-IN PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person entering unit in file. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Cost of unit ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "VOLUME (ml)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Volume of unit or component ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TYPING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Charge assigned by organization performing antigen typing ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SHIPPING INVOICE#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Invoice (order) number identified with returned shipment to supplier. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RETURN CREDIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Credit given for returning unit to supplier or sending unit elsewhere ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The division where the unit resides. If the unit is being transferred to another division, enter the New division. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "BAG LOT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "You may enter the bag lot number if preparing a component  from a unit in inventory. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT XMATCHED/ASSIGNED",
+      "dataType": "SUBFILE",
+      "rawType": "65.01IA",
+      "required": false,
+      "helpText": "On the left of NAME is the internal number in lab results file.  On the right of NAME is the last characters of the patient's SSN. ",
+      "isMultiple": true,
+      "subFileNumber": 65.01,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME UNIT RELOCATION",
+      "dataType": "DATE",
+      "rawType": "65.03DA",
+      "required": false,
+      "helpText": "These are dates/times the unit is relocated from one location to another.  EXAMPLE:  From blood bank to surgery or from surgery to blood bank. ",
+      "isMultiple": true,
+      "subFileNumber": 65.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RETURN TO SUPPLIER;T:TRANSFUSE;D:DISCARD;S:SEND ELSEWHERE;M:MICROBIOLOGY/RESEARCH;MO:MODIFY;SA:SALVAGED;",
+      "helpText": "Final disposition of the unit ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "DISPOSITION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date of final disposition ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "DISPOSITION ENTERING PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person entering final disposition ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "POOLED/DIVIDED UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Number of units in pool OR number of aliquots into which  a unit of blood/blood component has been divided ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "SHIP TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If unit is returned to sender or shipped elsewhere enter  name/location of facility where sent. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPOSITION COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "65.06A",
+      "required": false,
+      "helpText": "These are final disposition comments. ",
+      "isMultiple": true,
+      "subFileNumber": 65.06,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "PATIENT TRANSFUSED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Name of patient transfused ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.12,
+      "fieldName": "PARENT FILE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the file whose demographic data is stored for the patient transfused. ",
+      "fieldNumber_": 6.12
+    },
+    {
+      "fieldNumber": 6.15,
+      "fieldName": "TRANSFUSED PATIENT ABO",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the transfused patient's ABO. ",
+      "fieldNumber_": 6.15
+    },
+    {
+      "fieldNumber": 6.16,
+      "fieldName": "TRANSFUSED PATIENT RH",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the transfused patient's Rh type. ",
+      "fieldNumber_": 6.16
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Physician of patient transfused ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Treating specialty to which the patient is assigned at the  time the unit was transfused. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "TRANSFUSION RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,5I",
+      "length": 13,
+      "required": false,
+      "helpText": "Internal number in subfile 63.085 TRANSFUSION RECORD ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "TRANSFUSION REACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer 'YES' if the patient experienced an adverse reaction  as a result of transfusion of designated blood/blood component ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "PROVIDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P200'O",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If the physician is an entry in the New Person file the pointer number  is stored here. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 6.7,
+      "fieldName": "TREATING SPECIALTY NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P45.7'O",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "If the treating specialty is an entry in the treating specialty file  the pointer number is stored here. ",
+      "fieldNumber_": 6.7
+    },
+    {
+      "fieldNumber": 6.8,
+      "fieldName": "TRANSFUSION REACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P65.4'",
+      "required": false,
+      "pointerTo": 65.4,
+      "helpText": "Indicates the type of transfusion reaction ",
+      "fieldNumber_": 6.8
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSFUSION COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "65.07A",
+      "required": false,
+      "helpText": "These are comments regarding the transfusion of the specific unit, including whether only a part of the unit was transfused and the reason(s). ",
+      "isMultiple": true,
+      "subFileNumber": 65.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RESTRICTED FOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "The patient indicated here is the only one who may be  transfused with this unit. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "POS/INCOMPLETE SCREENING TESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If autologous donor has a positive syphilis serology, HBsAg, or HIV  antibody test YES is entered.  This flag is intended to warn NOT to  transfuse this unit to anyone other than the DONOR ! ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "DONATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUTOLOGOUS;D:DIRECTED;",
+      "helpText": " This field indicates which type of donation will be used to log this unit. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MODIFIED TO/FROM",
+      "dataType": "POINTER",
+      "rawType": "65.091IPA",
+      "required": false,
+      "helpText": "If unit is modified identifies what products are made and what are the new unit ID's.  If unit is a pool identifies what product was pooled and what units are in the pool. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ABO INTERPRETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:A;B:B;O:O;AB:AB;ND:NOT DONE;",
+      "helpText": "Interpretation of ABO testing ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "TECH ENTERING-ABO INTERP",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person performing ABO testing ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "ABO TESTING COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Comment related to ABO testing ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "ABO MOVED FROM DONOR FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 10.4
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RH  INTERPRETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NEG:NEGATIVE;POS:POSITIVE;ND:NOT DONE;",
+      "helpText": "Interpretation of Rh testing ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "TECH ENTERING-RH INTERP",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person performing Rh testing ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "RH TESTING COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Comment related to Rh testing ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 11.4,
+      "fieldName": "RH MOVED FROM DONOR FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 11.4
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE RE-ENTERED",
+      "dataType": "DATE",
+      "rawType": "65.15DA",
+      "required": false,
+      "helpText": "Re-entry date of the unit in the file ",
+      "isMultiple": true,
+      "subFileNumber": 65.15,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PEDIATRIC ALIQUOT MADE",
+      "dataType": "SUBFILE",
+      "rawType": "65.16",
+      "required": false,
+      "helpText": "If portions of unit taken for pediatric units enter the  pediatric unit IDs here ",
+      "isMultiple": true,
+      "subFileNumber": 65.16,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "RBC ANTIGEN PRESENT",
+      "dataType": "POINTER",
+      "rawType": "65.04PA",
+      "required": false,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "RBC ANTIGEN ABSENT",
+      "dataType": "POINTER",
+      "rawType": "65.05PA",
+      "required": false,
+      "helpText": "Comment to RBC antigen ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "HLA ANTIGEN PRESENT",
+      "dataType": "POINTER",
+      "rawType": "65.08PA",
+      "required": false,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "HLA ANTIGEN ABSENT",
+      "dataType": "POINTER",
+      "rawType": "65.09PA",
+      "required": false,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "CMV ANTIBODY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEG;1:POS;",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "DONOR CELLS+ANTI D(slide rgt)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "DONOR CELLS+RH CTRL(slide rgt)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "DONOR CELLS+ANTI D (37)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DONOR CELLS+RH CTRL (37)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "DONOR CELLS+ANTI D (AHG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "DONOR CELLS+RH CTRL (AHG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "DONOR CELLS+ANTI D (AHG) CC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "DONOR CELLS+RH CTRL CC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "DONOR CELLS+ANTI A(slide)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "DONOR CELLS+ANTI B(slide)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "DONOR CELLS+ANTI A,B(slide)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "DONOR PLASMA+A1 CELLS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "DONOR PLASMA+B CELLS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DIRECT AHG(BS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "TEST/PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "65.3PA",
+      "required": false,
+      "helpText": " This field contains the test performed on this unit. ",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "DATA CHANGE DATE",
+      "dataType": "DATE",
+      "rawType": "65.099DA",
+      "required": false,
+      "helpText": "Date the report value was changed ",
+      "isMultiple": true,
+      "subFileNumber": 65.099,
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 71,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AA", "field": },
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "AO", "field": },
+    {"name": "AP", "field": },
+    {"name": "APS", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AR", "field": },
+    {"name": "AT", "field": },
+    {"name": "AU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "65", "field": .01, "type": "regular"},
+    {"name": "65", "field": .01, "type": "regular"},
+    {"name": "65", "field": .01, "type": "regular"},
+    {"name": "65", "field": .01, "type": "regular"},
+    {"name": "65", "field": .02, "type": "regular"},
+    {"name": "65", "field": .04, "type": "regular"},
+    {"name": "65", "field": .04, "type": "regular"},
+    {"name": "65", "field": .04, "type": "regular"},
+    {"name": "65", "field": .05, "type": "regular"},
+    {"name": "65", "field": .06, "type": "regular"},
+    {"name": "65", "field": .06, "type": "regular"},
+    {"name": "65", "field": .16, "type": "regular"},
+    {"name": "65", "field": 4.1, "type": "regular"},
+    {"name": "65", "field": 4.1, "type": "regular"},
+    {"name": "65", "field": 4.1, "type": "regular"},
+    {"name": "65", "field": 4.2, "type": "regular"},
+    {"name": "65", "field": 5, "type": "regular"},
+    {"name": "65", "field": 8, "type": "regular"},
+    {"name": "65", "field": 10, "type": "regular"},
+    {"name": "65", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .01, "value": "W:$D(^(0)) ?41,$J($P(^(0),U,7),2),?44,$P(^(0),U,8)"},
+    {"field": .04, "value": "W:$D(^(0)) ?49,$S($D(^LAB(66,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .06, "value": "W \"\""},
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$S($D(^LAB(66,+$P(^(\"0\"),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 7, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,8)"},
+    {"field": WRITE, "value": "W ?20,$J($P(^(0),U,7),2),\" \",$P(^(0),U,8),\" \",$S($D(^LAB(66,+$P(^(0),U,4),0)):$P(^(0),U),1:\"\")"}
+  ]
+}

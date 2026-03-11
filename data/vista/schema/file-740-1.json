@@ -1,0 +1,68 @@
+{
+  "fileNumber": 740.1,
+  "fileName": "AD HOC MACRO",
+  "globalRoot": "740.1",
+  "globalReference": "^QA(740.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name for the sort/print macro. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "s:SORT;p:PRINT;",
+      "helpText": "This field describes what type of macro this is, i.e. sort or print. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "The parent file is the file that this macro belongs to.  A macro built on one particular parent file will only work with that same file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHECKSUM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This field contains the checksum value of the sort/print menu that this macro was created from. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD",
+      "dataType": "SUBFILE",
+      "rawType": "740.11A",
+      "required": false,
+      "helpText": "This multiple field contains the data elements that the user chose when building the macro.  The order of entries in this field is the same as the order in which they were chosen by the user. ",
+      "isMultiple": true,
+      "subFileNumber": 740.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "740.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

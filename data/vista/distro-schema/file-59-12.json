@@ -1,0 +1,60 @@
+{
+  "fileNumber": 59.12,
+  "fileName": "OUTPATIENT PHARMACY MANAGEMENT DATA",
+  "globalRoot": "59.12D",
+  "globalReference": "^PS(59.12,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date for which the prescription data applies. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILL COUNTS",
+      "dataType": "SUBFILE",
+      "rawType": "59.121A",
+      "required": false,
+      "helpText": "This sub-file contains data on the division, patient category, equivalent fills, methadone, total prescriptions, medication requests, and  investigational drugs. ",
+      "isMultiple": true,
+      "subFileNumber": 59.121,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF FILL",
+      "dataType": "SUBFILE",
+      "rawType": "59.122A",
+      "required": false,
+      "helpText": "This sub-file contains the number of prescriptions filled by the fee basis  and staff providers, dispensed at the window, sent by mail, and filled by  participating pharmacies. ",
+      "isMultiple": true,
+      "subFileNumber": 59.122,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST",
+      "dataType": "SUBFILE",
+      "rawType": "59.123A",
+      "required": false,
+      "helpText": "This sub-file contains the average cost of prescriptions filled by staff and fee providers, the average cost of prescriptions filled, the average  cost of equivalent fills, average cost of methadone program prescriptions, the total cost of prescriptions filled, total cost of methadone program  prescriptions, total cost of prescriptions filled by participating  pharmacies, and the average cost of prescriptions filled by participating  pharmacies. ",
+      "isMultiple": true,
+      "subFileNumber": 59.123,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.12", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

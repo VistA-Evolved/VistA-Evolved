@@ -1,0 +1,49 @@
+{
+  "fileNumber": 47.76,
+  "fileName": "SOURCE OF NOTIFICATIONS",
+  "globalRoot": "47.76",
+  "globalReference": "^DG(47.76,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE OF NOTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The SOURCE OF NOTIFICATION field identifies the entity who first notified  the VA of the patient's death. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NOTIFICATION CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "The code that uniquely identifies the SOURCE OF NOTIFICATION record. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The ACTIVE value indicates whether the SOURCE OF NOTIFICATION is  active (1) and available for selection or is historical (0) and is NOT  available for selection. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "47.76", "field": .01, "type": "regular"},
+    {"name": "47.76", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

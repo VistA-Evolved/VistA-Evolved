@@ -1,0 +1,36 @@
+{
+  "fileNumber": 53.44,
+  "fileName": "PHYSICIANS' ORDERS",
+  "globalRoot": "53.44P",
+  "globalReference": "^PS(53.44,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "  This is the provider who directly entered orders. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "53.4401P",
+      "required": false,
+      "helpText": "  This is the patients for whose orders a physician has taken action on. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

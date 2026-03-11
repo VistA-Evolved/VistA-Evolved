@@ -1,0 +1,49 @@
+{
+  "fileNumber": 9000001,
+  "fileName": "PATIENT/IHS",
+  "globalRoot": "9000001sIP",
+  "globalReference": "^AUPNPAT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field points to the Patient file (#2) and has the same internal number as that file.  Thus, the patient's name is the Patient file (#2) name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "LOCATION OF HOME",
+      "dataType": "SUBFILE",
+      "rawType": "9000001.12",
+      "required": false,
+      "helpText": "This is the directions to get to the patients home. ",
+      "isMultiple": true,
+      "subFileNumber": 9000001.12,
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 4101,
+      "fieldName": "HEALTH RECORD NO.",
+      "dataType": "POINTER",
+      "rawType": "9000001.41IPA",
+      "required": false,
+      "helpText": "This multiple contains the different health record identifiers by facility. IHS uses a 6 character identifier. The VA uses the social security number which may be up to 10  characters.   ",
+      "fieldNumber_": 4101
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "9000001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

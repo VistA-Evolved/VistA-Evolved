@@ -1,0 +1,91 @@
+{
+  "fileNumber": 757.33,
+  "fileName": "MAPPINGS",
+  "globalRoot": "757.33I",
+  "globalReference": "^LEX(757.33,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAPPING ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "The purpose of this field is to hold the mapping ID. The mapping ID  may be a VUID or a Lexicon ID. If it is a VUID it is assigned for each  individual map by the VETS system. Each mapping ID must indentify  uniquely the mapping of one source code to one, and only one, target code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAPPING DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "P757.32'",
+      "required": false,
+      "pointerTo": 757.32,
+      "helpText": "This is the Mapping Definition for a specific mapping record which defines source coding system is being mapped to which  target coding system.  This Mapping Definition is stored in the Mapping Definition file #757.32. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOURCE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is a code from the Source Coding System of the Mapping Definition (file 757.32).  It is the basis of the mapping  (source) and will be mapped to a code from another coding  system. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TARGET CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is a code from the Target Coding System of the Mapping Definition (file 757.32).  It is the result of the mapping  (target) based on the source code from another coding system. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS HISTORY",
+      "dataType": "DATE",
+      "rawType": "757.333D",
+      "required": false,
+      "helpText": "This multiple field contains a series of records indicating the mapping status (active or inactive) over time. ",
+      "isMultiple": true,
+      "subFileNumber": 757.333,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAPPING ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This field contains an integer that determines the order of preference for when a single source code maps to multiple target codes. The order will be determined by domain stewards responsible for the maintenance of the mapping in question. If there is only one target for the source code the value of this field will default to 1. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MATCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL;0:PARTIAL;",
+      "helpText": "If the target code is a true match for the source code then the value will be set to 1 indicating a fully  compatible match.  If the target code is a partial match for the source code then the value will be set to 0  indicating a partial match and that human review is  necessary to evaluate the mapping. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AMAPDEF", "field": },
+    {"name": "B", "field": },
+    {"name": "757.33", "field": .01, "type": "regular"},
+    {"name": "757.33", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

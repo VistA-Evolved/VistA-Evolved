@@ -1,0 +1,46 @@
+{
+  "fileNumber": 409.832,
+  "fileName": "SDEC RESOURCE GROUP",
+  "globalRoot": "409.832",
+  "globalReference": "^SDEC(409.832,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Free-Text entry to define the Resource Group name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time in which this Resource Group was inactivated. Time is optional. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESOURCE",
+      "dataType": "POINTER",
+      "rawType": "409.8321P",
+      "required": false,
+      "helpText": "These are the Resources (SDEC RESOURCE) that belong to this Resource Group. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "409.832", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

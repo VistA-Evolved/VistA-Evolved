@@ -1,0 +1,99 @@
+{
+  "fileNumber": 420.3,
+  "fileName": "PRCD FUND/APPROPRIATION CODE",
+  "globalRoot": "420.3I",
+  "globalReference": "^PRCD(420.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is fund code defined in fund file (420.14). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROGRAM.LIM.ANALYSIS ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the program, limitation, and analysis account numbers applicable to this appropriation. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPROPRIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the applicable appropriation code. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FY PATTERN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the fiscal year (FY) associated with the Appropriation Limitation Department (YALD) code.  The current  FY is indicated with  an \"x\" and the second FY with a \"y\". ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPROP. PATTERN FOR A/R SVC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the appropriation pattern for the Accounts Receivable Service. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ALD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is used to store ALD CODE data. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FUND CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is used to store FUND CODE data. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REVOLVING FUND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is a revolving fund indicator. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "420.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "420.3", "field": 2, "type": "regular"},
+    {"name": "420.3", "field": 4, "type": "regular"},
+    {"name": "420.3", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"\""},
+    {"field": WRITE, "value": "W:$D(PRCALD(\"APPR\")) \"     \",$P(^(0),\"^\") W:'$D(PRCALD(\"APPR\")) \"     \",$P(^(0),\"^\",3)"}
+  ]
+}

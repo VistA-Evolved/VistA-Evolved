@@ -1,0 +1,97 @@
+{
+  "fileNumber": 344.91,
+  "fileName": "RCDPE DM REPORT ARCHIVE",
+  "globalRoot": "344.91",
+  "globalReference": "^RCDM(344.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the Name of the Report stored in the Archive. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the month/year corresponding to the extracted data. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REPORT QUEUED;2:REPORT STARTED;3:REPORT COMPLETED;",
+      "helpText": "This is the current status of this report entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "START RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the generation of this report was started. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "END RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the generation of this report ended. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXTRACT MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the number that identifies the mail message sent with the  extracted information. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EXTRACT MESSAGE SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field, if set to YES, means that a mail message containing the  report for this entry was transmitted to the Forum Mail Group. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT",
+      "dataType": "SUBFILE",
+      "rawType": "344.911A",
+      "required": false,
+      "helpText": "This field contains the report e-mailed to the DM extracts group. ",
+      "isMultiple": true,
+      "subFileNumber": 344.911,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "344.91", "field": .01, "type": "regular"},
+    {"name": "344.91", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "fileNumber": 364.5,
+  "fileName": "IB DATA ELEMENT DEFINITION",
+  "globalRoot": "364.5",
+  "globalReference": "^IBA(364.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name to be used to uniquely identify this data element. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SECURITY LEVEL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NATIONAL,NO EDIT;L:LOCAL;",
+      "helpText": "If this field is set to N (NATIONAL,NO EDIT), this is a secured data element and will not be allowed to be edited or deleted. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE OF ELEMENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "F:NON-MULTIPLE FILEMAN FIELD;E:EXTRACTED VIA CODE;C:CONSTANT VALUE;",
+      "helpText": "The type of data element being defined as needed by one or more forms.  This field determines the type of retrieval needed to get the actual data element's value for a given bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ELEMENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "I:INDIVIDUAL ELEMENT;G:GROUP ELEMENT;",
+      "helpText": "This defines whether the data element to be extracted is a single piece of data or is a string of related data.  Fileman field references must be designated as individual elements. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BASE FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the number of the Fileman file to be used as a 'base' to extract data for this field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FILEMAN FIELD REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The valid Fileman field reference or simple Fileman navigation to be used to extract using the $$GET^DIQ utility. Note this will not return true multiple entries.  Word-processing type fields are able to be retrieved, however.  No syntax check is made on this field so the user must be careful to type a valid Fileman expression.  This must be designated as an INDIVIDUAL element, not a group element. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FILEMAN RETURN FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERNAL;E:EXTERNAL;",
+      "helpText": "This is the format for the retrieved data for Fileman-type data elements.  It is recommended to use Internal format whenever possible to keep the data element definitions in this file as generic as possible to avoid duplication.   The format capabilities of the forms generator should be used to interpret and reformat the data element when needed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CONSTANT VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The specific value that this data element should return for this data element. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXTRACT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code to be executed by the forms generator to return the value(s) of the data element.  If no ARRAY ROOT field is completed for this data element, the code should set the variable IBXDATA or the array IBXDATA(1) through IBXDATA(n) where n=the total # of iterations of the data element retrieved.  If the ARRAY  ROOT field has been completed for this data element, this code should set the variable referenced there.  IBXIEN is assumed to be the internal entry number of the  file (referenced by t",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARRAY ROOT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " The local or global base root where multiple-valued output or word processing data is to be stored for this data element.  IBXDATA is the default if there is no data in this field.  Example of a global array: ^TMP($J) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "364.53",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 364.53,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "364.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

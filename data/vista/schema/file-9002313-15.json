@@ -1,0 +1,67 @@
+{
+  "fileNumber": 9002313.15,
+  "fileName": "BPS ASLEEP PAYERS",
+  "globalRoot": "9002313.15",
+  "globalReference": "^BPS(9002313.15,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAYER PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP355.3'",
+      "required": true,
+      "pointerTo": 355.3,
+      "helpText": "This is the Group Insurance Plan for this asleep payer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RETRY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is a counter for the number of times the payer has been retried for  processing prober claims. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IGNORE ASLEEP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DON'T IGNORE;1:IGNORE;",
+      "helpText": "This is a flag indicating the payer should be ignored as being asleep.   This is set to ignore if the payer's maximum retries has been reached. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROBER CLAIM",
+      "dataType": "POINTER",
+      "rawType": "P9002313.59'",
+      "required": false,
+      "pointerTo": 9002313.59,
+      "helpText": "This is the transaction in the BPS TRANSACTION file that will be used to probe the payer to see if they are no longer asleep. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RETRY TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the system should retry the asleep payer. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

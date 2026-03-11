@@ -1,0 +1,62 @@
+{
+  "fileNumber": 727.2,
+  "fileName": "DSS LAB TESTS",
+  "globalRoot": "727.2",
+  "globalReference": "^ECX(727.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "The DSS LAB TEST file (#727.2) has ONE top level file entry which stores local data (i.e., local lab test names and blood/urine/feces specimen names) for each of the laboratory tests that are tracked using the Decision Support System. This entry is called \"LOCAL DSS LAR SETUP\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DSS LAB TEST",
+      "dataType": "SUBFILE",
+      "rawType": "727.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 727.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BLOOD SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "727.22P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "URINE SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "727.23P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FECES SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "727.24P",
+      "required": false,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "S", "field": },
+    {"name": "727.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

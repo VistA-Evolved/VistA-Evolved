@@ -1,0 +1,167 @@
+{
+  "fileNumber": 392.2,
+  "fileName": "BENEFICIARY TRAVEL CERTIFICATION",
+  "globalRoot": "392.2DI",
+  "globalReference": "^DGBT(392.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE CERTIFIED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date of annual income certification used in the  Beneficial Travel Claim process. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field points to the patient file and contains the IFN for the  patient related to this Beneficiary Travel certification date. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ELIGIBLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a set of codes (yes or no) indicating whether this person is  eligible for Beneficiary Travel. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AMOUNT CERTIFIED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is to be used to record the annual income reported by the  patient. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the new person file and contains the IFN  of the person who last edited this Beneficiary Travel Certification  date/time.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date this Beneficiary Travel Certification  entry was last edited on. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ADDRESS LINE [1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the first line of the address associated with this  Beneficiary Travel Certification date/time. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ADDRESS LINE [2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the second line of the address associated with this  Beneficiary Travel Certification date/time. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ADDRESS LINE [3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the third line of the address associated with this  Beneficiary Travel Certifiction date/time. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the free text 2-30 character name of the City associated  with this Beneficiary Travel Certification date/time.   ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field points to the State File and contains the IFN of the State  associated with this Beneficiary Travel Certification date/time. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the 5-digit zip code associated with this Beneficiary  Travel Certification date/time. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "COUNTY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains three numeric characters in length for the County Code  associated with this Beneficiary Travel Certification date/time. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MEANS TEST STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Means Test Status associated with this Beneficiary  Travel Certification date/time. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PRIMARY ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the primary eligibility associated with this Beneficiary  Travel Certification date/time. ",
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AENR01", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "IVM01", "field": },
+    {"name": "IVM2", "field": },
+    {"name": "392.2", "field": .01, "type": "regular"},
+    {"name": "392.2", "field": .01, "type": "regular"},
+    {"name": "392.2", "field": .01, "type": "regular"},
+    {"name": "392.2", "field": 2, "type": "regular"},
+    {"name": "392.2", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(392.2,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

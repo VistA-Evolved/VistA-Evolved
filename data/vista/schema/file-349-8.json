@@ -1,0 +1,26 @@
+{
+  "fileNumber": 349.8,
+  "fileName": "CCPC ERROR TYPE",
+  "globalRoot": "349.8",
+  "globalReference": "^RCPSS(349.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "349.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

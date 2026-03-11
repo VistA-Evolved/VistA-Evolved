@@ -1,0 +1,63 @@
+{
+  "fileNumber": 361.4,
+  "fileName": "EDI TEST CLAIM STATUS MESSAGE",
+  "globalRoot": "361.4",
+  "globalReference": "^IBM(361.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLAIM",
+      "dataType": "POINTER",
+      "rawType": "RP399'X",
+      "required": true,
+      "pointerTo": 399,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the latest date the claim was sent as a test claim. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "361.41D",
+      "required": false,
+      "helpText": "This multiple contains the date/time, batch and user information for the  transmission of previously transmitted claims for test purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 361.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE",
+      "dataType": "DATE",
+      "rawType": "361.42D",
+      "required": false,
+      "helpText": "This multiple contains the information about the status messages received in the test queue for the test claim. ",
+      "isMultiple": true,
+      "subFileNumber": 361.42,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ALT", "field": },
+    {"name": "ARD", "field": },
+    {"name": "ATD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "361.4", "field": .01, "type": "regular"},
+    {"name": "361.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

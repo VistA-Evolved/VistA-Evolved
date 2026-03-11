@@ -1,0 +1,99 @@
+{
+  "fileNumber": 120.52,
+  "fileName": "GMRV VITAL QUALIFIER",
+  "globalRoot": "120.52",
+  "globalReference": "^GMRD(120.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field supplies a list of possible qualifiers for a vital measurement record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the synonym for the qualifier. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VITAL TYPE",
+      "dataType": "POINTER",
+      "rawType": "120.521PA",
+      "required": false,
+      "helpText": "This multiple contains a list of vital types associated with this site.   The site field on the vital measurement record is screened by the data contained in the vital type field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "120.522",
+      "required": false,
+      "helpText": "This multiple stores the code(s) representing this GMRV VITAL QUALIFIER  within this coding system. ",
+      "isMultiple": true,
+      "subFileNumber": 120.522,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "120.5299DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 120.5299,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ACAT", "field": },
+    {"name": "ACHR", "field": },
+    {"name": "AOLD", "field": },
+    {"name": "ATYP", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "BCAT", "field": },
+    {"name": "BCHR", "field": },
+    {"name": "BTYP", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "120.52", "field": .01, "type": "regular"},
+    {"name": "120.52", "field": .01, "type": "regular"},
+    {"name": "120.52", "field": .02, "type": "regular"},
+    {"name": "120.52", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

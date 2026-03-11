@@ -1,0 +1,27 @@
+{
+  "fileNumber": 58.71,
+  "fileName": "PADE SEND AREA",
+  "globalRoot": "58.71",
+  "globalReference": "^PS(58.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PADE SEND AREA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "These are the pre-defined locations on the PADE vendor system where the messages will be sent to. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

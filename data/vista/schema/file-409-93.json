@@ -1,0 +1,51 @@
+{
+  "fileNumber": 409.93,
+  "fileName": "SDES ERROR CODES",
+  "globalRoot": "409.93",
+  "globalReference": "^SDEC(409.93,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR CODE/NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the error code number or value, as used by developers to identify  the error to be used. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ERROR CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AP:APPOINTMENT;AR:APPOINTMENT REQUEST;PR:PROVIDER;CR:CLINIC/RESOURCE;PT:PATIENT;DT:DATE/TIME;O:OTHER;",
+      "helpText": "This is the error category for the error (Provider, Appointment,  Appointment request, etc.) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ250",
+      "length": 250,
+      "required": true,
+      "helpText": "This is the error text, which explains the details of the error. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.93", "field": .01, "type": "regular"},
+    {"name": "409.93", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(409.93,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 1, "value": "W:$D(^(1)) \"   \",$P(^(1),U,1)"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2044,
+  "fileName": "VIST LOCAL BENEFITS AND SERVICES",
+  "globalRoot": "2044",
+  "globalReference": "^ANRV(2044,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the text of the local benefit or service that is available. This is free text from 3-40 characters in length. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2044", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 6002.04,
+  "fileName": "VBEC INTEGRITY",
+  "globalRoot": "6002.04",
+  "globalReference": "^VBEC(6002.04,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the routine being monitored by the Blood Bank team to  ensure FDA compliance. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the checksum for the routine listed in field .01. These checksums were calculated using ^%ZOSF(\"RSUM\"). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6002.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

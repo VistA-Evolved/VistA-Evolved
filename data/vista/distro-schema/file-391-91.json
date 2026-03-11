@@ -1,0 +1,115 @@
+{
+  "fileNumber": 391.91,
+  "fileName": "TREATING FACILITY LIST",
+  "globalRoot": "391.91",
+  "globalReference": "^DGCN(391.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the patient in question that was seen at this treating facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'Ia",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the institution where the patient was treated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE LAST TREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the patient was treated at the facility. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ADT/HL7 EVENT REASON",
+      "dataType": "POINTER",
+      "rawType": "P391.72'",
+      "required": false,
+      "pointerTo": 391.72,
+      "helpText": "This field tracks the reason for an event experienced by a patient at a given facility.  Some event reasons might be patient admission, patient discharge, etc. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ROI SIGNED INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The MyHealtheVet (MHV) application allows veterans to create an online  account.  Once created, the veteran can choose to share the information  in their personal health record with all their health care providers,  inside and outside the VA.    A registered MHV user completes a remote proofing process with MHV and  when that process is finalized, an update message is sent to the Master  Veteran Index (MVI) to set the ROI SIGNED INDICATOR field to YES.  MVI,  in turn, updates this same field on ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SOURCE ID TYPE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "NI:National unique individual identifier;PI:Patient internal identifier;PN:Person number;EI:Employee number;SS:Social Security number;NPI:National provider identifier;",
+      "helpText": "The SOURCE ID TYPE field defines the data source for this entry.   The source ID type is a reference to the HL7 Table 0203, Identifier Type,  and the VA Identity Management user defined values: NI (National  Identifier), PI (Patient Identifier), PN (Person Number), EI (Employee  Identifier), SS (Social Security Number), and NPI (National Provider  Identifier). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ASSIGNING AUTHORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "ASSIGNING AUTHORITY stores a portion of the data used to assemble fully  qualified identifiers used for either the HL7 v2.4 or v3.0 standard.  It  is based on the Health Level Seven (HL7) standardized table 0363 and  contains the universal ID subcomponent of the assigning authority  component in the standard PID-3 identifier.    The fully qualified HL7 identifier is composed of the PATIENT (#.01),  INSTITUTION (#.02), SOURCE ID (#11), ASSIGNING AUTHORITY (#10), and  SOURCE ID TYPE (#.09), which ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SOURCE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "SOURCE ID is the unique system assigned identifier at the identified  facility for the patient record.  The value of SOURCE ID varies,  depending on the source facility.    If SOURCE ID is from the Master Patient Index, the value is the  Integration Control Number (ICN).  If SOURCE ID is from the Department of  Defense (DoD), the value is the Electronic Data Interchange Personal  Identifier (EDIPI), which is their equivalent of an ICN.  In the future,  SOURCE ID may come from other sources due t",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "IDENTIFIER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Active;H:Merged;",
+      "helpText": "The IDENTIFIER STATUS field supports joint VA/DoD medical centers,  Veteran's Record Management (VRM), and Virtual Lifetime Electronic Record  (VLER) initiatives.  This field allows the capture of the resolved  duplicate events and exposes the related identifier and identifier status  to the consuming applications.       A value of \"A\" indicates that the patient record is an active record on  the identifying system (e.g., VAMC or DoD).  A value of \"H\" indicates  that the patient record was ident",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AINST", "field": },
+    {"name": "AINST2", "field": },
+    {"name": "APAT", "field": },
+    {"name": "APAT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "391.91", "field": .01, "type": "regular"},
+    {"name": "391.91", "field": .01, "type": "regular"},
+    {"name": "391.91", "field": .01, "type": "regular"},
+    {"name": "391.91", "field": .02, "type": "regular"},
+    {"name": "391.91", "field": .02, "type": "regular"},
+    {"name": "391.91", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

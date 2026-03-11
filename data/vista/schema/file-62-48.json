@@ -1,0 +1,149 @@
+{
+  "fileNumber": 62.48,
+  "fileName": "LA7 MESSAGE PARAMETER",
+  "globalRoot": "62.48",
+  "globalReference": "^LAHM(62.48,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONFIGURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the descriptive name for all Lab Messaging  configurations.  Each external partner that the Lab system exchanges messages with should have an entry in the file, e.g. OERR, Universal  Interface. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROTOCOL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HL7:HEALTH LEVEL SEVEN;X12:ANSI X.12;1238:ASTM 1238;1381:ASTM 1381;1394:ASTM 1394;LOCAL:LOCAL;",
+      "helpText": "This field should contain the type of messages that are used by this configuration.  This field is primarily for documentation. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This field is used to turn this configuration on or off. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GRACE PERIOD FOR MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Grace period determines the number of days that messages for this configuration are kept on the system before purging when the message status is \"purgable\".  If this field is left blank, the system assumes 3 days.  These messages are found in the LA7 MESSAGE QUEUE file (#62.49). When messages have status of \"error\" they remain on the system until their corresponding error message is removed from the XTMP global by a KERNEL cleanup task.  The messages then become \"purgable\". ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOG ERRORS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "If turned on, errors or exceptional conditions that occur during message processing are stored in the ^XTMP global for review.  To review the log, in programmer mode, type D PRINT^LA7LOG. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PROCESS IN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is executable MUMPS code. It should contain a call to an application routine that will process the incoming message.  For a Universal Interface setup, it should contain the call D QUE^LA7UIIN. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROCESS DOWNLOAD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains executable MUMPS code.  It should contain the call point in a routine that will process building a message to be sent to the receiving system.  For a Universal Interface configuration it should contain the call D EN^LA7UID1. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HL7 NON-DHCP APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P770'",
+      "required": false,
+      "pointerTo": 770,
+      "helpText": "This field is a pointer to the HL7 NON-DHCP APPLICATION PARAMETER file (#770).  The field is used by the Universal Interface to create an Health Level Seven message using the Vista HL7 v1.5 package. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MULTIPLE ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MULTIPLE PATIENTS;1:SINGLE PATIENT;2:SINGLE ORDER;",
+      "helpText": "Determines when building a HL7 message if message should contain only one patient/order or multiple patients/orders.   Default is multiple patients per message if possible.   This allows site to configure message building when communicating with a non-VA system that can not handle a message that has more than one patient in the message. It applies to both order (ORM) and result (ORU) messages.   When communicating with a VA facility this field can be left blank (default) or set to 0 - MULTIPLE P",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INTERFACE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LAB UI;10:LEDI;20:POC;21:POCA;30:HDR;40:OCS;99:OTHER;",
+      "helpText": "This field determines how and for what purpose this configuration is used. It allows the laboratory software to generate, handle and process messages.   LAB UI - Used to identify configurations that are for processing          laboratory automated instrument data via a generic interface          manager.     LEDI - Designate entries involved with Laboratory Electronic Data          Interchange (LEDI). Used to identify interfaces involved in          the generation, transmission and processing of",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ALERT CONDITION",
+      "dataType": "SET",
+      "rawType": "62.481S",
+      "required": false,
+      "helpText": "This field allows the user to identify whether to receive alerts when there are new results, new orders or when an error is logged to the ^XTMP global. ",
+      "isMultiple": true,
+      "subFileNumber": 62.481,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "NON-VA ORDER SNOMED CODES",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "62.482IV",
+      "required": false,
+      "helpText": "Allows mapping a SNOMED CT code to specimen (topography) and/or collection sample which an external system requires and which is different from the SNOMED CT code assigned to the concept by the Dept of Veterans Affairs. ",
+      "isMultiple": true,
+      "subFileNumber": 62.482,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "REMOTE SYSTEM ID",
+      "dataType": "SUBFILE",
+      "rawType": "62.483A",
+      "required": false,
+      "helpText": "This field is used to locate the correct configuration in this file when a message is received from a remote system. Most messaging protocols contain information about the system that originated the message and the system that is the destination. Since there can be several senders and receivers, this field can be used to determine the correct receiver by using a special lookup on this field. The Universal Interface utilizes this field in the following manner.   The VISTA Health Level Seven (HL7)",
+      "isMultiple": true,
+      "subFileNumber": 62.483,
+      "fieldNumber_": 90
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "62.48", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "fileNumber": 2006.924,
+  "fileName": "STORAGE PROVIDER AVAILABILITY",
+  "globalRoot": "2006.924",
+  "globalReference": "^MAGV(2006.924,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STORAGE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP2006.917'",
+      "required": true,
+      "pointerTo": 2006.917,
+      "helpText": "This is a Storage Provider. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOURCE PLACE",
+      "dataType": "POINTER",
+      "rawType": "P2006.1'",
+      "required": false,
+      "pointerTo": 2006.1,
+      "helpText": "This is a Place. This maps the storage provider (with its Place) to a specific client  Place. It essentially defines a logical network path. Allows us to say, for example, that from Place A, you can only  write to the Archive storage provider in Place B between certain hours. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "START TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The start time for the availability window. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "END TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The end time for the availability window. If the end time is greater than the start time, it is taken to be  a window in a single day.  Example: Start time of 8PM, End time of 10 PM results in a two hour window each day between 8PM and 10PM. If the end time is less than the start time, it is taken to be a  window that spans across midnight, encompassing two days. Example: Start time of 10PM, End time of 2AM results in a four hour window, starting at 10PM on the first day,  and ending at 2AM on t",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.924", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

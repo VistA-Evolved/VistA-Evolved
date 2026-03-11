@@ -1,0 +1,97 @@
+{
+  "fileNumber": 811.5,
+  "fileName": "REMINDER TERM",
+  "globalRoot": "811.5",
+  "globalReference": "^PXRMD(811.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the term. The names of national terms are prefixed with \"VA-\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date when the term was created. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.51",
+      "required": false,
+      "helpText": "This is a description of the term. ",
+      "isMultiple": true,
+      "subFileNumber": 811.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FINDINGS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "811.52V",
+      "required": false,
+      "helpText": "This multiple identifies which finding items have been selected to represent the term. If there is more than one finding item, they will all be evaluated and the most recent finding will represent the term. ",
+      "isMultiple": true,
+      "subFileNumber": 811.52,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the term. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. For national terms, only the finding list can be edited. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization, group, or individual that sponsors this definition. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Review Date is used to determine when the term should be reviewed to verify that it is current with the latest standards and guidelines. You can find all terms whose review date has passed using the Clinical Reminder Review Date Report.  ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "811.53D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the term. ",
+      "isMultiple": true,
+      "subFileNumber": 811.53,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(811.5,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

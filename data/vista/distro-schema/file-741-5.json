@@ -1,0 +1,61 @@
+{
+  "fileNumber": 741.5,
+  "fileName": "QA OCCURRENCE EXCEPTION",
+  "globalRoot": "741.5I",
+  "globalReference": "^QA(741.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text of the reason for exception to the screen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short mnemonic code for this exception. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "POINTER",
+      "rawType": "P741.1'",
+      "required": false,
+      "pointerTo": 741.1,
+      "helpText": "This is the screen this exception is associated with. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EXCEPTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "If this field is set to inactive the exception is no longer selectable. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "741.5", "field": .01, "type": "regular"},
+    {"name": "741.5", "field": .02, "type": "regular"},
+    {"name": "741.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(741.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(741.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

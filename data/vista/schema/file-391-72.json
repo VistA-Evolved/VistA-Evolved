@@ -1,0 +1,72 @@
+{
+  "fileNumber": 391.72,
+  "fileName": "ADT/HL7 EVENT REASON",
+  "globalRoot": "391.72",
+  "globalReference": "^VAT(391.72,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT REASON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the coded value for the event reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HL7 APPLICATION PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "This field allows different HL7 Application Parameters to be linked to the same event reason. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HL7 EVENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P779.001'",
+      "required": true,
+      "pointerTo": 779.001,
+      "helpText": "This field links an event type (ADT) to a specific event reason. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text that the user will see on reports and displays. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "391.721",
+      "required": false,
+      "helpText": "This is the full-length description of the event reason code.  This text will not be displayed to the user. ",
+      "isMultiple": true,
+      "subFileNumber": 391.721,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "391.72", "field": .01, "type": "regular"},
+    {"name": "391.72", "field": .02, "type": "regular"},
+    {"name": "391.72", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HL(771,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(771,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HL(779.001,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(779.001,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

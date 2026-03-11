@@ -1,0 +1,99 @@
+{
+  "fileNumber": 226,
+  "fileName": "DENTAL NON CLINICAL TIME",
+  "globalRoot": "226DI",
+  "globalReference": "^DENT(226,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DENTAL PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P220.5'",
+      "required": false,
+      "pointerTo": 220.5,
+      "helpText": "This field contains the Dental Provider.  The 4 digit Provider Id saved  in the Provider Number field (#.4) is being phased out, although we will  continue to keep that field for historical records. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "STATION.DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Provider names are entered last name, first name.  This field contains  the old 4 digit Provider Id which is being phased out and replaced with a  new 8 digit Id.  This field will remain for historical records. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "NON CLINICAL TIME CATEGORY",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "A:ADMIN;R:RESEARCH;F:FEE BASIS;E:EDUC & TRAIN;",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "TIME SPENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P3'",
+      "required": false,
+      "pointerTo": 3,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DATE RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 61
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "226", "field": .01, "type": "regular"},
+    {"name": "226", "field": .01, "type": "regular"},
+    {"name": "226", "field": .3, "type": "regular"},
+    {"name": "226", "field": .4, "type": "regular"},
+    {"name": "226", "field": .4, "type": "regular"},
+    {"name": "226", "field": 60, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .3, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": Z0, "value": "I $D(^(0)),$P(^(0),U,1) S Z=Y,Y=$P(^(0),U,1) X ^DD(\"DD\") W ?21,Y S Y=Z K Z"},
+    {"field": Z1, "value": "W:$D(^DENT(226,+Y,0)) ?42,$P(^(0),U,3)"}
+  ]
+}

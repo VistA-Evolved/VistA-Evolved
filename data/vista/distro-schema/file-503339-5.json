@@ -1,0 +1,70 @@
+{
+  "fileNumber": 503339.5,
+  "fileName": "VOLUNTARY MIGRATION LOG",
+  "globalRoot": "503339.5",
+  "globalReference": "^ABS(503339.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the site or station number of the Parent site for this Station. It must equal the value obtained from $$KSP^XUPARAM(\"INST\"). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "503339.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503339.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VALIDATION RESULTS",
+      "dataType": "DATE",
+      "rawType": "503339.52DI",
+      "required": false,
+      "helpText": "This multiple contains results of data analysis of the existing VTK data in preparation for exporting the data to the new VSS application. ",
+      "isMultiple": true,
+      "subFileNumber": 503339.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORGANIZATION CODES",
+      "dataType": "SUBFILE",
+      "rawType": "503339.53",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503339.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SERVICE CODES",
+      "dataType": "SUBFILE",
+      "rawType": "503339.54",
+      "required": false,
+      "helpText": "Multiple of the National Service Codes supported by the new VSS application. This multiple is pre-populated.  Do NOT enter a new Service Code unless you  have approval from System Implementation. ",
+      "isMultiple": true,
+      "subFileNumber": 503339.54,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "IN", "field": },
+    {"name": "503339.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

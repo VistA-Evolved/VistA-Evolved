@@ -1,0 +1,39 @@
+{
+  "fileNumber": 58.35,
+  "fileName": "RETURN DRUG",
+  "globalRoot": "58.35",
+  "globalReference": "^PSD(58.35,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PHARMACY LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP58.8'",
+      "required": true,
+      "pointerTo": 58.8,
+      "helpText": "This is the Pharmacy Location from where the drug is being returned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RETURN BATCH",
+      "dataType": "SUBFILE",
+      "rawType": "58.351AI",
+      "required": false,
+      "helpText": "Batch sub-file. ",
+      "isMultiple": true,
+      "subFileNumber": 58.351,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

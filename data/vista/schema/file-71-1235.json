@@ -1,0 +1,58 @@
+{
+  "fileNumber": 71.1235,
+  "fileName": "RADIOLOGY PROCEDURE MAP TO CC CONSULT",
+  "globalRoot": "71.1235",
+  "globalReference": "^RA(71.1235,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60I",
+      "length": 60I,
+      "required": true,
+      "helpText": "This is the radiology procedure that will be mapped to a specific  community care consult title. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMUNITY CARE CONSULT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ63I",
+      "length": 63I,
+      "required": true,
+      "helpText": "The consult title entered here will be used with the corresponding  procedure in the auto-referral option instead of the generic title used  for the imaging location. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5I",
+      "length": 5I,
+      "required": false,
+      "helpText": "This is the CPT code of the mapped procedure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF IMAGING",
+      "dataType": "POINTER",
+      "rawType": "RP79.2'I",
+      "required": true,
+      "pointerTo": 79.2,
+      "helpText": "This is the Imaging Type of the procedure to consult mapping.  ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.1235", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

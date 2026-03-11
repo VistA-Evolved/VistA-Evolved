@@ -1,0 +1,39 @@
+{
+  "fileNumber": 741.8,
+  "fileName": "QA OCCURRENCE SEVERITY OF OUTCOME",
+  "globalRoot": "741.8I",
+  "globalReference": "^QA(741.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEVERITY LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0I",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the severity level number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEVERITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the severity level text. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "741.8", "field": .01, "type": "regular"},
+    {"name": "741.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

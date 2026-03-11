@@ -1,0 +1,141 @@
+{
+  "fileNumber": 790.08,
+  "fileName": "WV LAB TESTS",
+  "globalRoot": "790.08",
+  "globalReference": "^WV(790.08,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LAB ACCESSION#",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the Lab Accession number value from File 63 of the Lab package (e.g., CY 99 1). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient associated with this lab test. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the requesting provider for the lab test. The source of this value is either the PHYSICIAN field (63.09, .07) or the SURGEON/PHYSICIAN field (63.08, .07) of the LAB DATA file (#63). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HEALTH CARE FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the name of the health care facility where this procedure was performed. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "WARD/CLINIC/LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field contains the name of the ward, clinic, or location where the procedure was performed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE OF PROCEDURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date on which the procedure was performed. Dates in the future may not be entered. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ENTERING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the name of the person initially creating this record. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "DATE FIRST ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date on which this procedure record was first entered. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .34,
+      "fieldName": "FACILITY WHERE ACESSIONED",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Select the facility where this procedure was accessioned. ",
+      "fieldNumber_": .34
+    },
+    {
+      "fieldNumber": 2.18,
+      "fieldName": "LAB DATA FILE IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the LAB DATA file (#63) for the patient, if this procedure entry is a lab test. ",
+      "fieldNumber_": 2.18
+    },
+    {
+      "fieldNumber": 2.19,
+      "fieldName": "LAB INVERSE DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the inverse date/time of a lab test from the LAB DATA file (#63) for the patient, if this procedure entry is a lab test. ",
+      "fieldNumber_": 2.19
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "LAB SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a character string that distinguishes the type of lab test performed. The letters \"CY\" will represent a cytology test and the letters \"SP\" will represent a surgical pathology test. ",
+      "fieldNumber_": 2.2
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "790.08", "field": .01, "type": "regular"},
+    {"name": "790.08", "field": .02, "type": "regular"},
+    {"name": "790.08", "field": .07, "type": "regular"},
+    {"name": "790.08", "field": .12, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .07, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .12, "value": "W \"   \",$E($P(^(0),U,12),4,5)_\"-\"_$E($P(^(0),U,12),6,7)_\"-\"_$E($P(^(0),U,12),2,3)"}
+  ]
+}

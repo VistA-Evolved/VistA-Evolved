@@ -1,0 +1,96 @@
+{
+  "fileNumber": 7107.6,
+  "fileName": "NOIS FORMAT",
+  "globalRoot": "7107.6",
+  "globalReference": "^FSC(\"FORMAT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the NOIS format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "B:BRIEF;D:DETAILED;C:CUSTOM;F:FORMAT;T:TEMPLATE;S:SORT;",
+      "helpText": "This is the type of NOIS format. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this is a template type of format, this is the name of the print template used by the NOIS CALL file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SPECIAL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "STATISTIC:STATISTIC;EXTRACT:EXTRACT;",
+      "helpText": "This designates the format for special use. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the owner of the format. If there is no owner it can be used by anyone. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an identifier to describe this format. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "If this is a custom format, this code defines the format. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELDS",
+      "dataType": "POINTER",
+      "rawType": "7107.62P",
+      "required": false,
+      "helpText": "These NOIS fields are used to define this format. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7107.6", "field": .01, "type": "regular"},
+    {"name": "7107.6", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .5, "value": "W:$D(^(.5)) \"   \",$P(^(.5),U,1)"}
+  ]
+}

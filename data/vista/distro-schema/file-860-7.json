@@ -1,0 +1,37 @@
+{
+  "fileNumber": 860.7,
+  "fileName": "ORDER CHECK PATIENT RULE EVENT",
+  "globalRoot": "860.7P",
+  "globalReference": "^OCXD(860.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP860.1'X",
+      "required": true,
+      "pointerTo": 860.1,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RULE EVENT",
+      "dataType": "POINTER",
+      "rawType": "860.71P",
+      "required": false,
+      "helpText": "     The list of rules that have been triggered for this patient.   ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "860.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

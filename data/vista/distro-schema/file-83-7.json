@@ -1,0 +1,36 @@
+{
+  "fileNumber": 83.7,
+  "fileName": "DRG HAC GROUPS",
+  "globalRoot": "83.7",
+  "globalReference": "^ICDD(83.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HAC ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Standard Hospital Acquired Conditions (HACs) Identifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HAC NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Hospital Acquired Condition full text name. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "83.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

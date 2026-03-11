@@ -1,0 +1,68 @@
+{
+  "fileNumber": 2006.923,
+  "fileName": "RETENTION POLICY STORAGE PROVIDER MAP",
+  "globalRoot": "2006.923",
+  "globalReference": "^MAGV(2006.923,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RETENTION POLICY",
+      "dataType": "POINTER",
+      "rawType": "RP2006.914'",
+      "required": true,
+      "pointerTo": 2006.914,
+      "helpText": "This is a Retention Policy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STORAGE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP2006.917'",
+      "required": true,
+      "pointerTo": 2006.917,
+      "helpText": "This is a Storage Provider. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOURCE PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This is a Place. Represents the \"place\" of the client. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SYNCHRONOUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether the storage provider should be written to synchronously  for the specified retention policy on initial acquisition. Enter \"Yes\" for synchronous, \"No\" for asynchronous. Note that this flag is ignored when processing asynchronous  queued requests. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OFFSITE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Indicates whether the storage provider is remote  (true: \"1\") or local (false: \"0\").  ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.923", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

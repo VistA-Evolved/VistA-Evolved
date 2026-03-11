@@ -1,0 +1,58 @@
+{
+  "fileNumber": 46.11,
+  "fileName": "RAI MDS MONITOR",
+  "globalRoot": "46.11",
+  "globalReference": "^DGRU(46.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NEW NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The contents of the #.01 field of the Master file entry relates to, after the edit/add is completed. For example, an Insurance Company name was changed from \"USBS\" to \"USBS INC.\".  This field will contain \"USBS INC.\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OLD DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contents of the #.01 field of the Master File this entry relates to, before the data was edited/added. For example, if the name of an Insurance company is changed from \"USBS\" to \"USBS INC.\", this field will contain \"USBS\".  It is used in the Master File Update (MFU) HL7 message as the identifier.  If a new  Insurance company is added, this field is left blank. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,3",
+      "length": 11,
+      "required": true,
+      "helpText": "The file number of the Master File this change relates too. This field is triggered by the Master File being changed.  The file number is used to destinguish what type of Master File Update will be created.  For example, if this field contains 200 (New Person file),  a \"STAFF\" type MFU will be created.  If this were to contain 42 (Ward Location file), a \"LOCATION\" type MFU would be created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INTERNAL ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The internal entry number of the entry which was modified or added. This field is triggered by the Master File being changed and is used as the first part of the identifier in the MFU HL7 message. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "46.11", "field": .01, "type": "regular"},
+    {"name": "46.11", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

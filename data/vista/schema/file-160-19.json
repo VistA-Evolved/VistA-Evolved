@@ -1,0 +1,85 @@
+{
+  "fileNumber": 160.19,
+  "fileName": "FACILITY",
+  "globalRoot": "160.19",
+  "globalReference": "^ONCO(160.19,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": " A code assigned to each facility identifying who is sending the record.  For facilities with a 7-digit FIN, enter the 7-digit facility- specific code in the range 6020009-6953290 that was assigned by the COC before January 1, 2001.  NOTE: 7-digit FIN codes consist of a constant \"6\" following a       6-digit facility-specific code (e.g. 6_020009 = 6020009).       Enter all 7 digits, including the \"6\" prefix.        For facilities with a 8-digit FIN greater than or equal to 10000000 that was assi",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name of the facility. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City where the hospital is located. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " Enter the 2 character state abbreviation.  AK  Alaska            KY  Kentucky         NY  New York AL  Alabama           LA  Louisiana        OH  Ohio AR  Arkansas          MA  Massachusetts    OK  Oklahoma AZ  Arizona           MD  Maryland         OR  Oregon CA  California        ME  Maine            PA  Pennsylvania CO  Colorado          MI  Michigan         RI  Rhode Island CT  Connecticut       MN  Minnesota        SC  South Carolina DC  Dist of Columbia  MO  Missouri         SD  South Dak",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ACTIVE;",
+      "helpText": "Denotes wheather or not an ACOS NUMBER is active or not. No data means the entry is active. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  The NPI (National Provider Identifier) for the facility. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "160.19", "field": .01, "type": "regular"},
+    {"name": "160.19", "field": .01, "type": "regular"},
+    {"name": "160.19", "field": .02, "type": "regular"},
+    {"name": "160.19", "field": .02, "type": "regular"},
+    {"name": "160.19", "field": .03, "type": "regular"},
+    {"name": "160.19", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W $E($P(^(0),U,2),1,37)"},
+    {"field": .03, "value": "W ?54,$P(^(0),U,3)"},
+    {"field": .04, "value": "W ?77,$P(^(0),U,4)"}
+  ]
+}

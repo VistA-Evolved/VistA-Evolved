@@ -1,0 +1,27 @@
+{
+  "fileNumber": 920.71,
+  "fileName": "IMM EXTERNAL AGENCY",
+  "globalRoot": "920.71",
+  "globalReference": "^PXV(920.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AGENCY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the agency name. This value must be 2-80 characters in length. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "920.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

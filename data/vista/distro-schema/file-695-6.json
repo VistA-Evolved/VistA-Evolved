@@ -1,0 +1,27 @@
+{
+  "fileNumber": 695.6,
+  "fileName": "HEART CATHETER",
+  "globalRoot": "695.6",
+  "globalReference": "^MCAR(695.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of the various types of Heart catheters used for a heart Catheterization. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "695.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

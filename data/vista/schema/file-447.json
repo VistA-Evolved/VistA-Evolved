@@ -1,0 +1,55 @@
+{
+  "fileNumber": 447,
+  "fileName": "INVENTORY LOCK MANAGEMENT",
+  "globalRoot": "447s",
+  "globalReference": "^PRCP(447,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE-ENTRY-SUBENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the number of the file being locked. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the user which has locked this file or process in inventory. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE@TIME LOCKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This fielf is used to store the date and time this file or process was locked. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the inventory process/option which was locked. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "447", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 577.4,
+  "fileName": "VDEF EVENT SUBTYPES",
+  "globalRoot": "577.4",
+  "globalReference": "^VDEFHL7(577.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUBTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "SUBTYPE corresponds to an application domain or subdomain.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a description of the application trigger event that this subtype  is associated with. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "577.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

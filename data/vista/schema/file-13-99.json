@@ -1,0 +1,93 @@
+{
+  "fileNumber": 13.99,
+  "fileName": "MASTER RELIGION",
+  "globalRoot": "13.99",
+  "globalReference": "^DGMR(13.99,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "The name of the standard Health Level Seven (HL7) religion Term/Concept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This field contains the code representing the Health Level Seven (HL7)  Term/Concept. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "ASSOCIATED VA RELIGIONS",
+      "dataType": "SUBFILE",
+      "rawType": "13.99901A",
+      "required": false,
+      "helpText": "This field contains the VA Religion(s) associated with this Health  Level Seven (HL7) Master File entry.   entry. ",
+      "isMultiple": true,
+      "subFileNumber": 13.99901,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P13.99'",
+      "required": false,
+      "pointerTo": 13.99,
+      "helpText": "This is populated when one Term/Concept replaces another Term/Concept.  This field is controlled by standardization and should only be changed by standardization processes.  ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master Entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20",
+      "length": 20,
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique, arbitrarily-assigned integer assigned to  reference terms, and used to identify the terms across the VHA enterprise. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "13.9901DA",
+      "required": false,
+      "helpText": "This sub-file contains the current status of the term/concept and the  date/time the term/concept's status went into effect. ",
+      "isMultiple": true,
+      "subFileNumber": 13.9901,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AREPLACETERM", "field": },
+    {"name": "B", "field": },
+    {"name": "13.99", "field": .01, "type": "regular"},
+    {"name": "13.99", "field": 99.97, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

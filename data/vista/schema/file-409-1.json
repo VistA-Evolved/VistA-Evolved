@@ -1,0 +1,97 @@
+{
+  "fileNumber": 409.1,
+  "fileName": "APPOINTMENT TYPE",
+  "globalRoot": "409.1",
+  "globalReference": "^SD(409.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Internal reference number assigned automatically as each new entry is placed in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Name of the appointment type, i.e. Class II Dental is designated for veterans who are scheduling an appointment to be treated for a  dental condition that was related to active duty. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IGNORE MEANS TEST BILLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:IGNORE;",
+      "helpText": "A '1' placed in this field denotes that any veteran who is categorized by this particular appointment type will be exempt for having to complete and Means Test and from any form of billing for care received. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "A '1' indicates that this particular appointment type is inactive and no longer used per instructions from VA Central Office. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A similar name or abbreviation to identify this appointment type. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DUAL ELIGIBILITY ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If an appointment type will allow dual eligibility for this particular appointment type.  Dual eligibility is when a veteran has a primary eligibility, i.e. NSC VETERAN, but is also a VA employee and will have a second or dual eligibility of EMPLOYEE. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEFAULT ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "P8'",
+      "required": false,
+      "pointerTo": 8,
+      "helpText": "A specific eligibility code can be entered in this field as the default eligibility allowed for this appointment type.  If a veteran is for example WWII and the default eligibility for appointment type is WWI, user will be unable to schedule this visit utilizing this appointment type. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "409.11",
+      "required": false,
+      "helpText": "A word-processing field describing the definition and/or use of each appointment type in this file. ",
+      "isMultiple": true,
+      "subFileNumber": 409.11,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

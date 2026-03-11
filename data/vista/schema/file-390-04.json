@@ -1,0 +1,37 @@
+{
+  "fileNumber": 390.04,
+  "fileName": "MHV ACTION SELECTION",
+  "globalRoot": "390.04",
+  "globalReference": "^DGMHV(390.04,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SOCIALIZATION;R:REGISTRATION;A:AUTHENTICATION;M:SECURE MESSAGING;",
+      "helpText": "This field contains an (A)ction prompt location, or a field that prompts  for (A)ction. This includes the SOCIALIZATION, REGISTRATION,  AUTHENTICATION, and SECURE MESSAGING prompts. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a description of the (A)ction prompt location. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "390.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

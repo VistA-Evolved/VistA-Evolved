@@ -1,0 +1,58 @@
+{
+  "fileNumber": 801.43,
+  "fileName": "REMINDER FINDING ITEM PARAMETER",
+  "globalRoot": "801.43",
+  "globalReference": "^PXRMD(801.43,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Finding item parameters can be created for individual finding items. These parameters will be used in preference to the REMINDER FINDING TYPE PARAMETER file when auto generating dialog. More than one parameter may be created for a given finding item.   The parameter specifies the default dialog for a finding item. Dialog may be an individual question (dialog item) or a group of questions (dialog group). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FINDING ITEM",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "The individual finding item corresponds to the reminder finding item.    Auto generation of dialog from the reminder definition uses the dialog in this file in preference to the REMINDER FINDING TYPE PARAMETER file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DISABLED;",
+      "helpText": "Disabled finding item dialog entries are excluded from dialog generation. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DIALOG ELEMENT/GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P801.41'",
+      "required": true,
+      "pointerTo": 801.41,
+      "helpText": "This is the dialog group or dialog element for this finding item. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "801.43", "field": .01, "type": "regular"},
+    {"name": "801.43", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

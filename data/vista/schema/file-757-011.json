@@ -1,0 +1,50 @@
+{
+  "fileNumber": 757.011,
+  "fileName": "EXPRESSION TYPE",
+  "globalRoot": "757.011",
+  "globalReference": "^LEX(757.011,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a table of the types of expressions found in the Expression file (#757.01). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WORD INDEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INDEX;0:DO NOT INDEX;",
+      "helpText": "This field tells the indexing routines which types of terms are to be indexed in the master word index. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STANDARD INDEXES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INDEX;0:DO NOT INDEX;",
+      "helpText": "This field tells the indexing routines which type of terms are to be indexed (indexes other than the master word index). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "757.011", "field": .01, "type": "regular"},
+    {"name": "757.011", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(757.011,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(757.011,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

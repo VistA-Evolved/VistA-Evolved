@@ -1,0 +1,240 @@
+{
+  "fileNumber": 503334.1,
+  "fileName": "VOLUNTARY ORGANIZATION NATIONAL OFFICIAL",
+  "globalRoot": "503334.1",
+  "globalReference": "^ABS(503334.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NAME PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NAME SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "ORGANIZATION NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ40",
+      "length": 40,
+      "required": false,
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P503338'",
+      "required": false,
+      "pointerTo": 503338,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "NAME LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "NAME LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "ADDRESS LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "ADDRESS CITY/ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATE ABBREVIATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NATIONAL CERTIFYING OFFICIAL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N;1:Y;",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REVIEW MINUTES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N;1:Y;",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NATIONAL REPRESENTATIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "AREA OF JURISDICTION",
+      "dataType": "SUBFILE",
+      "rawType": "503334.112",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503334.112,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE APPOINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "AJR REVIEW MONTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:JANUARY;2:FEBRUARY;3:MARCH;4:APRIL;5:MAY;6:JUNE;7:JULY;8:AUGUST;9:SEPTEMBER;10:OCTOBER;11:NOVEMBER;12:DECEMBER;",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "503334.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "503334.1", "field": .5, "type": "regular"},
+    {"name": "503334.1", "field": .5, "type": "regular"},
+    {"name": "503334.1", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "503334.1", "field": 9, "type": "regular"},
+    {"name": "503334.1", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ABS(503334,+$P(^(0),U,11),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(503334,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

@@ -1,0 +1,400 @@
+{
+  "fileNumber": 601,
+  "fileName": "MH INSTRUMENT",
+  "globalRoot": "601",
+  "globalReference": "^YTT(601,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Three to five character instrument CODE or name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "601.02",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "isMultiple": true,
+      "subFileNumber": 601.02,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEST ENTRY MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERACTIVE ONLY;",
+      "helpText": "This field will be set to \"I\" only if the instrument should be administered 'Interactively'. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEST CLERICAL ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of items on the clerical (paper form). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEST CLERICAL ENTRY STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This a string of valid entry option on the clerical (paper form). Such as '012345' or 'ABCDE '. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TEST UNIT PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the dollar amount (price) for administering the test/interview. This is the price per single test/interview. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ADMINISTRATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the MUMPS code used to administer the instrument.  Such as: D ^YTDRIV ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REPORT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the MUMPS code used to report the instrument's results. Such as: D ^YTMMPI ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CLERK TEST TRANSFORMATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is MUMPS code used to select or convert clerk entered input and alter order of items.  This is used by the developer only. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TEST COPYRIGHT HOLDER",
+      "dataType": "POINTER",
+      "rawType": "P601.3'",
+      "required": false,
+      "pointerTo": 601.3,
+      "helpText": "This is the name of the copyright holder, usually a shortened code representing the copyright name.  Stored is the pointer value, pointing to the COPYRIGHT HOLDER file #601.3. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TEST COPYRIGHT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the specific copyright.  Useful for identifing versions of the instrument. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TEST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VOCATIONAL;",
+      "helpText": "If the test is 'VOCATIONAL' in nature and use, this field will be set to \"V\", otherwise it will be blank. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRINT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the instrument displayed and printed title.  It is the complete name of the instrument. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TEST MAX SCALE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the numeric maximum lenght of the scale. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TEST SCALE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the scale type, a 1 to 4 character identification.  Such as: ' RAW', '   T', and 'STEN'. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TEST SCALE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "601.01AI",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "isMultiple": true,
+      "subFileNumber": 601.01,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "GENERAL REPORT TEXT NO.",
+      "dataType": "SUBFILE",
+      "rawType": "601.06A",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "isMultiple": true,
+      "subFileNumber": 601.06,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MALE REPORT TEXT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "601.08A",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "isMultiple": true,
+      "subFileNumber": 601.08,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "FEMALE REPORT TEXT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "601.1A",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "isMultiple": true,
+      "subFileNumber": 601.1,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "INSTRUMENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERVIEW;T:TEST;B:BATTERY;U:UTILITY;",
+      "helpText": "This is a SET of CODES: \"I\" for Interview, \"T\" for Test, \"B\" for  Battery of tests (Group of tests) and \"U\" for Utility (such as DEMO). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "EXEMPT TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field, if SET to \"Y\", indicates that the test is EXEMPT from APA  guidlines for training.  All Mental Health professionals have access  to exempt tests. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "NUMBER OF ITEMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of questions. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "NUMBER OF TEST SCALES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of scales used to report patient evaluations for the specific instrument. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "TEST AUTHORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the instrument's AUTHOR. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TEST PUBLISHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the PUBLISHER. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TEST FORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the TEST FORM for the instrument administered. For example: \"1987 Revision\", \"R\", \"FIRO-B\" or \"SHORT FORM 370 QUESTIONS\". ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "TEST NORMS DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "601.12",
+      "required": false,
+      "helpText": "This is a word processing field which describes the TEST NORMS. For example: \"Tentative norms based upon a sample of 85 college men  and 88 college woman.\" or \"No norms provided.  Average score is probably  near 4.5\". ",
+      "isMultiple": true,
+      "subFileNumber": 601.12,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "TEST USES",
+      "dataType": "SUBFILE",
+      "rawType": "601.13",
+      "required": false,
+      "helpText": "This is a word processing field that describes the USES of the test. ",
+      "isMultiple": true,
+      "subFileNumber": 601.13,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "TEST REPORT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "601.14",
+      "required": false,
+      "helpText": "This is a word processing field which describes the reports that can be derived from the testing instrument. ",
+      "isMultiple": true,
+      "subFileNumber": 601.14,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INTERVIEW SOURCE",
+      "dataType": "SUBFILE",
+      "rawType": "601.15",
+      "required": false,
+      "helpText": "This is the SOURCE from which the INTERVIEW was derived.  For Example: \"Based upon the Duke University interview developed by Hugh Angle.\" ",
+      "isMultiple": true,
+      "subFileNumber": 601.15,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "INTERVIEW DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "601.16",
+      "required": false,
+      "helpText": "This is a word processing field which describes the INTERVIEW. For example: \"A relatively comprehensive history aimed at the alcoholic  or problem drinker.\" ",
+      "isMultiple": true,
+      "subFileNumber": 601.16,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "OPERATIONAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;",
+      "helpText": "    This field when SET to \"N\" indicates that the instrument is NOT  operational.  This allows the instrument to remain in the data base but can NOT be USED. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SPECIAL ADMIN CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is executeable MUMPS code which helps or directs the administration of the instrument. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "FORM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the CLERICAL form for the instrument, such as \"AUI-R\" or \"Revised\". ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "LICENSE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;",
+      "helpText": "This field, if SET to \"N\", indicates that NO LICENSE agreement exists  for the instrument. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "FORM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This a the FORM NUMBER for the CLERICAL form of the instrument, such as form number \"A\" or form number \"1987\". ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "EXEMPT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of person flagging the instrument as 'Yes' in the 'EXEMPT TEST' field. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "DAY LIMIT FOR RESTART",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field will reflect the value for the maximum number of days that may elapse between an interuption of this instrument and the restart of this  instrument.  This value, in days, will be used for this instrument ONLY and override the value in the Mental Health Site file.   Note that in both fields the day limit is inclusive, so that as long as the elapsed days do not exceed this value then the instrument may be  restarted. ",
+      "fieldNumber_": 38
+    }
+  ],
+  "fieldCount": 38,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AI", "field": },
+    {"name": "ATN", "field": },
+    {"name": "B", "field": },
+    {"name": "601", "field": .01, "type": "regular"},
+    {"name": "601", "field": 20, "type": "regular"},
+    {"name": "601", "field": 20, "type": "regular"},
+    {"name": "601", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

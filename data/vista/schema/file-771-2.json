@@ -1,0 +1,44 @@
+{
+  "fileNumber": 771.2,
+  "fileName": "HL7 MESSAGE TYPE",
+  "globalRoot": "771.2I",
+  "globalReference": "^HL(771.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREVIATED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The three character HL7 message type abbreviation (e.g., MSH). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The full HL7 message type name (e.g., Message Header). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "771.23P",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

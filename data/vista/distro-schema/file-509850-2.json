@@ -1,0 +1,55 @@
+{
+  "fileNumber": 509850.2,
+  "fileName": "A&SP PATIENT",
+  "globalRoot": "509850.2P",
+  "globalReference": "^ACK(509850.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The NAME field contains the name of the patient seen in the Audiology and Speech Pathology clinics. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ASP FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The ASP FILE NUMBER field contains an existing LOCAL file number  associated with this Audiology and Speech Pathology patient.  Some  Audiology and Speech Pathology Services may use locally-determined file  numbers to track and control clinic files.  This field does NOT contain  the patient's social security number.  Use of this field is optional and  is controlled by the USE ASP CLINIC FILE NUMBER site parameter. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INITIAL VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The INITIAL VISIT DATE field contains the date (if known) of this  patient's first visit to the Audiology and/or Speech Pathology clinic  at this site.  This field can be left blank. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIAGNOSTIC CONDITION",
+      "dataType": "POINTER",
+      "rawType": "509850.22P",
+      "required": false,
+      "helpText": "The DIAGNOSTIC CONDITION field contains the ICD-9CM diagnostic condition  code for the A&SP patient.  Disease codes listed in this field appear in  the A&SP Problem List. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "509850.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "fileNumber": 162.4,
+  "fileName": "VA FORM 10-7078",
+  "globalRoot": "162.4I",
+  "globalReference": "^FB7078(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This number is internally generated and tracked by the IFCAP software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .013,
+      "fieldName": "USER WHO CANCELLED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the supervisor who cancelled the 7078. ",
+      "fieldNumber_": .013
+    },
+    {
+      "fieldNumber": .014,
+      "fieldName": "DATE CANCELLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that a supervisor cancelled the 7078. ",
+      "fieldNumber_": .014
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "FEE PROGRAM",
+      "dataType": "POINTER",
+      "rawType": "RP161.8'",
+      "required": true,
+      "pointerTo": 161.8,
+      "helpText": "This field contains the valid Fee Program associated with this 7078, as defined in the Fee Basis Program file (i.e. Outpatient Medical, Contract Hospital, Community Nursing Home). ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VENDOR",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RVO",
+      "required": true,
+      "helpText": "This is the vendor that is entered in the request/ notification process. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VETERAN",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the veteran that was entered in the request/ notification process. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUTHORIZATION FROM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that is entered in the 'Authorization From Date' field during the request/notification process. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DATE OF ADMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that is entered in the 'Date of Admission' field during the request/notification process. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AUTHORIZATION TO DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date you determine the VA will no longer cover the veteran. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "DATE OF DISCHARGE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the actual date of discharge. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AUTHORITY",
+      "dataType": "POINTER",
+      "rawType": "RP43.4'",
+      "required": true,
+      "pointerTo": 43.4,
+      "helpText": "This field is the Admitting Authority used for the authorization. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ESTIMATED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This dollar amount is the best estimate of costs that will be incurred by the veteran. This dollar amount is passed to IFCAP. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AUTHORIZED SERVICES",
+      "dataType": "SUBFILE",
+      "rawType": "162.47",
+      "required": false,
+      "helpText": "This is a word processing field that should contain a statement similar to the following:  \"Hospitalization and Professional care necessary until the   patients condition is stabilized or improved enough to permit   transfer without hazard to a VA or other Federal facility for   continued treatment.\" or \"Hospitalization and Professional Care\". ",
+      "isMultiple": true,
+      "subFileNumber": 162.47,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "USER ENTERING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the user that enters the authorization. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COMPLETE;I:INCOMPLETE;DC:CANCELLED;",
+      "helpText": "The status of the 7078/authorization remains 'Incomplete' until a discharge date is entered. At that time the status is updated to complete and a corresponding authorization is built in file 161. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE OF ISSUE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the user sets up the 7078. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REASON FOR PENDING DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FOLLOW-UP/NOT STABLE;2:AWAITING DISCHARGE/TRANSFER;",
+      "helpText": "If the status of a 7078 is Incomplete, that is the discharge date has not been entered, the user is prompted with this field. Once the status of the 7078 is Complete this field is set to null. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REFERRING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The VA physician who made the referral on behalf of the veteran to the non-VA hospital for inpatient health care services. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "REFERRING PROVIDER NPI",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 292,
+      "fieldName": "USER AUDIT",
+      "dataType": "DATE",
+      "rawType": "162.492D",
+      "required": false,
+      "helpText": "The user audit tracks users that enter or edit the authorization.  This includes edits to the authorization rate or patient movements for nursing home authorizations. ",
+      "isMultiple": true,
+      "subFileNumber": 162.492,
+      "fieldNumber_": 292
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "162.4", "field": .01, "type": "regular"},
+    {"name": "162.4", "field": 1, "type": "regular"},
+    {"name": "162.4", "field": 2, "type": "regular"},
+    {"name": "162.4", "field": 2, "type": "regular"},
+    {"name": "162.4", "field": 2, "type": "regular"},
+    {"name": "162.4", "field": 3, "type": "regular"},
+    {"name": "162.4", "field": 4, "type": "regular"},
+    {"name": "162.4", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,2),1:\"\") D NAME^DICM2 W \"   \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 9, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(162.4,9,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,9)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

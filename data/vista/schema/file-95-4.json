@@ -1,0 +1,84 @@
+{
+  "fileNumber": 95.4,
+  "fileName": "LAB MAPPING TRANSPORT",
+  "globalRoot": "95.4",
+  "globalReference": "^LAHM(95.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the identifier used to uniquely identify the site/test/specimen combination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Pointer to the institution in the VistA INSITUTION file (#4) which this test/specimen record is related to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the name of the code system related to this record. Code system is free text to support multiple code systems. Generally the name of the code system is that used and/or assigned by the HL7 standard to recognized code systems.   The software used to process entries from this file contain the business rules and knowledge of the corresponding code system. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:LOADED;.5:DEFER;.7:PROCESSING EXECPTION;1:PROCESSED;2:DISCARD;",
+      "helpText": "Holds the status of this record as it's loaded, processed and dispositioned by the site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAPPING STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the free text mapping status of this term when it's applied to it's related file entry. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Records the date/time that this entry is processed and the data is applied to the target file.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "FIELD REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "95.401A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 95.401,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "95.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

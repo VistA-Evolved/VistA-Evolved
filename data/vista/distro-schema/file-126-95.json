@@ -1,0 +1,74 @@
+{
+  "fileNumber": 126.95,
+  "fileName": "GMRY NUR SHIFT/OTHER",
+  "globalRoot": "126.95",
+  "globalReference": "^GMRD(126.95,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "This is an arbitrary name for the single entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the starting hour for the night shift in military text  format.  For example: 2300.  Only one entry is required.  This data is used to print a patient intake/output report by shift. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the starting hour for the day shift.  For example: 0700. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EVENING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the starting hour for the evening shift such as 1500. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ML'S OF FLUSH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field identifies a default value for the amount of solution generally  used in flushing IV ports and locks. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GMRY ON/OFF LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OFF-LINE;0:ON-LINE;",
+      "helpText": "The manager can set this field to enable or disable the application. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "126.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

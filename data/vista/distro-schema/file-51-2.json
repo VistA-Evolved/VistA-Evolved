@@ -1,0 +1,128 @@
+{
+  "fileNumber": 51.2,
+  "fileName": "MEDICATION ROUTES",
+  "globalRoot": "51.2I",
+  "globalReference": "^PS(51.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a route of administration for a medication. a patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an abbreviation for the medication route entered.  If an abbreviation is found for a medication route, the abbreviation will be used on various reports. the Latin form of the medication route name. In most cases, medication routes can be selected by abbreviation. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NATIONAL DRUG FILE ONLY;1:ALL PACKAGES;",
+      "helpText": "  The National Drug File uses far more Med Routes than need to be selected by Inpatient personnel.  This field is used to screen out Med Routes not needed by the Inpatient packages. med route is for use only by the National Drug File. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OUTPATIENT EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Medication route's expansion to be use in the Outpatient Pharmacy. Pharmacy. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "OTHER LANGUAGE EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language expansion. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the medication route was inactivated. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IV FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field shall designate IV medication routes. This will help determine how Inpatient Medication orders entered through CPRS will be finished in the Pharmacy package. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STANDARD MED ROUTE CHANGE LOG",
+      "dataType": "DATE",
+      "rawType": "51.27DA",
+      "required": false,
+      "helpText": "This multiple will track all changes made to the STANDARD MEDICATION  ROUTE (#10) Field, which is the pointer to the STANDARD MEDICATION ROUTES  (#51.23) File. ",
+      "isMultiple": true,
+      "subFileNumber": 51.27,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PROMPT FOR INJ. SITE IN BCMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The purpose of this field is to provide a way to indicate that a medication route needs to have a prompt for injection site in BCMA. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DSPLY ON IVP/IVPB TAB IN BCMA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STANDARD MEDICATION ROUTE",
+      "dataType": "POINTER",
+      "rawType": "*P51.23'",
+      "required": false,
+      "pointerTo": 51.23,
+      "helpText": "This is a pointer to the Standard Medication Routes (#51.23) File. This  link will allow standardization of the local Medication Route, to be used  for various purposes, such as using a Standard Med Route for Vendor order  checks. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AUDC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "51.2", "field": .01, "type": "regular"},
+    {"name": "51.2", "field": .01, "type": "regular"},
+    {"name": "51.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "D:$D(^(0)) EN^DDIOL($P(^(0),U,3),\"\",\"?$X+4\")"}
+  ]
+}

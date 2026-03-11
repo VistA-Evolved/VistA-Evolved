@@ -1,0 +1,75 @@
+{
+  "fileNumber": 19620.29,
+  "fileName": "DSIR BILLS HISTORY",
+  "globalRoot": "19620.29",
+  "globalReference": "^DSIR(19620.29,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL",
+      "dataType": "POINTER",
+      "rawType": "RP19620.2'",
+      "required": true,
+      "pointerTo": 19620.2,
+      "helpText": "POINTER TO FILE 19620.2, BILLS FILE ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE MODIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE THE BILL WAS MODIFIED ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "POINTER TO FILE 200, NEW PERSON FILE, INDICATING WHO MODIFIED THE BILL ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MODIFIED FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,5",
+      "length": 15,
+      "required": false,
+      "helpText": "FIELD NUMBER IN THE BILLS FILE (19620.2) THAT WAS MODIFIED ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "VALUE OF FIELD BEFORE IT WAS MODIFIED. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "VALUE OF FIELD AFTER MODIFICATION ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.29", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

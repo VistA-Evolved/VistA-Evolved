@@ -1,0 +1,36 @@
+{
+  "fileNumber": 421.9,
+  "fileName": "INVOICE PARTIAL COUNTER",
+  "globalRoot": "421.9",
+  "globalReference": "^PRCF(421.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first nine characters of the FMS document number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST PARTIAL # ASSIGNED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last two characters of the FMS document number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "421.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

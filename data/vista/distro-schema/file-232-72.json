@@ -1,0 +1,255 @@
+{
+  "fileNumber": 232.72,
+  "fileName": "EDP WORKSHEET COMPONENT",
+  "globalRoot": "232.72",
+  "globalReference": "^EDPB(232.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the component name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the display label for the component. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The data provider is how Flex (the UI piece of EDIS) associates a data  field with its data source. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REFERENCE;V:VISIT;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MONIKER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WIDGET NAME",
+      "dataType": "POINTER",
+      "rawType": "P232.73'",
+      "required": false,
+      "pointerTo": 232.73,
+      "helpText": "The widget name is the Flex component used to display the data element in  the GUI. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PACKAGE LINK",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field identifies which package this component is associated with. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default value for the component, in the event the value is  static. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SUMMARY LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text used for the summary label display within the UI. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SUMMARY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the order in which this component will appear within the summary. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "AVAILABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:true;0:false;",
+      "helpText": "This field indicates whether or not the component is available for use. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "VISIBILITY TRIGGER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data flag used by Flex to determine whether a data component  should be visible or not in the GUI. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ASSOCIATED FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This identifies the file in which the data for this component is located. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "ASSOCIATED FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This holds the field number in which the data is located for this  component. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "LOAD EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This holds the fully qualified load event used by the UI for building the  component. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "LOAD API",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the API that is used to load the component. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "SAVE API",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the save API for a component, if applicable. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ALTERNATE LOAD LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "PREVIEW TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "PREVIEW ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ALTERNATE SAVE LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for alternate save logic in the event the 'Save API'  field will not handle a more complex data structure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "232.725",
+      "required": false,
+      "helpText": "This field holds the list of parameters to be used by the save/load api  fields. ",
+      "isMultiple": true,
+      "subFileNumber": 232.725,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEFAULT VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This holds the default value for a component. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUIRED COMPONENTS",
+      "dataType": "POINTER",
+      "rawType": "232.727P",
+      "required": false,
+      "helpText": "These are the required components for this component. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ROLES",
+      "dataType": "POINTER",
+      "rawType": "232.728P",
+      "required": false,
+      "helpText": "This holds the roles for the given component. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VALIDATOR",
+      "dataType": "POINTER",
+      "rawType": "232.729P",
+      "required": false,
+      "helpText": "This field holds the validators for the components. This is used by the  UI to validate information. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "232.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

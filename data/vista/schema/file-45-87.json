@@ -1,0 +1,114 @@
+{
+  "fileNumber": 45.87,
+  "fileName": "PTF TRANSACTION REQUEST LOG",
+  "globalRoot": "45.87D",
+  "globalReference": "^DGP(45.87,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE INITIATED",
+      "dataType": "DATE",
+      "rawType": "MRD",
+      "required": true,
+      "helpText": "This field contains the date and time the user initially submitted the transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user name who submitted the transaction. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAIL MSG #",
+      "dataType": "POINTER",
+      "rawType": "P3.9'O",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This field contains the Mailman message number which  contains the transaction that was sent to Austin. that was sent to Austin. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BLOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the transaction type for the request. For example, it can contain the following:             o  N099 for PTF record deletion             o  N150 for RPO of a specific admission at a VAMC             o  N151 for RPO of all admissions at a VAMC ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Social Security Number(SSN) of the patient for which you desire information. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ADMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "Enter the date/time of an admission for the patient(SSN) selected. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ADMITTING FACILITY/SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the facility number and suffix of the VAMC that has admitted the patient in the past.   This field is filled in by the user when sending a N150 transaction. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REQUESTING FACILITY/SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the facility number and the suffix of the VAMC requesting information. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient associated with the transaction submitted. However, it is not required.  If filled in then the SSN field will automatically be updated with the patient's SSN, as it appears in the PATIENT file.   If the user has an SSN of a patient not in the site's PATIENT file, the user can enter that SSN directly into the SSN field. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ADMITTING INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field allows the user to select the VAMC from which admission information is desired.  This field is optional but if filled in, the VAMC's station number, as it appears in the INSTITUTION file, will be stuffed into the ADMITTING FACILITY/SUFFIX field as a default. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "45.87", "field": .01, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

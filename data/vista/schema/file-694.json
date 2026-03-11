@@ -1,0 +1,804 @@
+{
+  "fileNumber": 694,
+  "fileName": "HEMATOLOGY",
+  "globalRoot": "694ID",
+  "globalReference": "^MCAR(694,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field identifies the time and date of entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the medical patient name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:Normal;A:Abnormal;T:Technically unsatisfactory;ND:Non-Diagnostic;",
+      "helpText": "This field summarizes the results of this procedure. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "R*P697.2'X",
+      "required": true,
+      "pointerTo": 697.2,
+      "helpText": "This field identifies a pointer to the procedure location file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "ANATOMIC SITE",
+      "dataType": "POINTER",
+      "rawType": "R*P697'X",
+      "required": true,
+      "pointerTo": 697,
+      "helpText": "This field identifies a pointer to the anatomy file. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in-house location of the patient. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "BIOPSY COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a free text field, enter any pertinent biopsy comments. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORIGINAL CONSULT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date of consult. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "PROVISIONAL DX REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a free text field, enter provisional DX remarks. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NO. CELLS COUNTED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This field identifies the number of cells counted. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CELLULARITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;I:INCREASED;D:DECREASED;",
+      "helpText": "One of a set of descriptors of the occurrance of cellularity. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "CELLULARITY MODIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SL:SLIGHTLY;MO:MODERATELY;SE:SEVERELY;MA:MARKEDLY;",
+      "helpText": "One of a set of adjectives used to further define cellularity. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "M:E RATIO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field identifies the M:E ratio. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "IRON STORES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:0;1:1+;2:2+;3:3+;4:4+;",
+      "helpText": "From set of positive values. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MEGAKARYOCYTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;I:INCREASED;R:REDUCED;",
+      "helpText": "This field identifies the megakaryocyte count. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "MEGAKARYOCYTES MODIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SL:SLIGHTLY;MO:MODERATELY;SE:SEVERLY;MA:MARKEDLY;",
+      "helpText": "This field identifies the megakaryocyte count modifier. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DIFF(Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies no. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NEUTROPHILS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the neutrophil description. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "BANDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of bands found. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "METAMYELOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the metamyelocyte count field. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MYELOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the myelocyte count. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PROMYELOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the promyelocyte count field. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MYELOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the myeloblast count field. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "EOSINOPHILS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of eosinophils found. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BASOPHILS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of basophils found. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LYMPHOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of lymphocytes found. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ORTHOCHROMATIC NORMOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the normoblast count filed. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "POLYCHROMATIC NORMOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the polychromatic normoblast count field. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "BASOPHILIC NORMOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of basophilic normoblasts found. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PRONORMOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the pronormoblast count field. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "LYMPHOBLASTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of lymphoblasts found. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PLASMA CELLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the plasma cell count field. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MONOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the monocyte count field. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "HISTIOCYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of histiocytes found. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "OTHER CELL TYPE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the other cell type count field. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "OTHER CELL TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the other cell type descriptor. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DATE PERFORMED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Documentation of procedure date. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "FINAL DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "694.035PA",
+      "required": false,
+      "helpText": "Enter Medical diagnosis from the medical diagnosis/ICD codes file. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DECALCIFICATION OF SPECIMEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Did decalcification of the specimen occur? ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "SPECIMEN SUBMITTED FOR PLASTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies the specimen submitted for plastic field. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PROVISIONAL DX",
+      "dataType": "POINTER",
+      "rawType": "694.038PA",
+      "required": false,
+      "helpText": "This field identifies the provisional diagnosis field. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "RELEASE REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies the release report field. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "MICROSCOPIC DESCRIPTION",
+      "dataType": "POINTER",
+      "rawType": "694.01PA",
+      "required": false,
+      "helpText": "This field identifies the microscopic description field. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "FINAL DIAGNOSIS REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "694.041",
+      "required": false,
+      "helpText": "Free text field for diagnostic remarks. ",
+      "isMultiple": true,
+      "subFileNumber": 694.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "FIXATIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Formalin;B:B-5;Z:Zenker's;C:Carnoy's;",
+      "helpText": "This field identifies for BMB only ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "NUMBER OF PIECES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies for BMB only ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "PIECE 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is for BMB only. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PIECE 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is for BMB only ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "PIECE 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is for BMB only ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PIECE 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is for BMB only ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "PIECE 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is for BMB only ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PERFORMED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the health care provider who performed this procedure. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the health care provider who approved the results. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "APPROVAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date on which the results were approved. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "MICRO DESCRIPTION REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "694.054",
+      "required": false,
+      "helpText": "This field identifies the micro description remark field. ",
+      "isMultiple": true,
+      "subFileNumber": 694.054,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "COMPLICATIONS",
+      "dataType": "POINTER",
+      "rawType": "694.055PA",
+      "required": false,
+      "helpText": "Free text field whose purpose is to document procedural difficulties. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PERIPHERAL BLOOD SMEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field documents the results of the peripheral smear. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "INDICATION",
+      "dataType": "POINTER",
+      "rawType": "694.057P",
+      "required": false,
+      "helpText": "Entry from the indication file. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "OTHER INDICATION",
+      "dataType": "SUBFILE",
+      "rawType": "694.058",
+      "required": false,
+      "helpText": "This field identifies the other indication field. ",
+      "isMultiple": true,
+      "subFileNumber": 694.058,
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This 1-79 character field is produced on the summary of patient procedures. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "694.02P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASE ON-LINE VERIFIED;ROV:RELEASE OFF-LINE VERIFIED;RNV:RELEASE NOT VERIFIED;S:SUPERSEDED;SRV:SUPERSEDING RELEASE ON-LINE VERIFIED;SROV:SUPERSEDING RELEASE OFF-LINE VERIFIED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "694.02005P",
+      "required": false,
+      "helpText": "This field points to an object in the Image File. ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 81,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "694", "field": .01, "type": "regular"},
+    {"name": "694", "field": .01, "type": "regular"},
+    {"name": "694", "field": 1, "type": "regular"},
+    {"name": "694", "field": 1, "type": "regular"},
+    {"name": "", "field": 51, "type": "regular"},
+    {"name": "694", "field": 900, "type": "regular"},
+    {"name": "694", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(697.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(697.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(694,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

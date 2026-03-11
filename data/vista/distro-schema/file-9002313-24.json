@@ -1,0 +1,36 @@
+{
+  "fileNumber": 9002313.24,
+  "fileName": "BPS NCPDP DAW CODE",
+  "globalRoot": "9002313.24",
+  "globalReference": "^BPS(9002313.24,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code indicating whether or not the prescriber's instructions regarding generic substitution were followed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the DAW code (e.g., SUBSTITUTION NOT ALLOWED BY PRESCRIBER). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.24", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

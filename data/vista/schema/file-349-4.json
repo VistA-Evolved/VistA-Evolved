@@ -1,0 +1,56 @@
+{
+  "fileNumber": 349.4,
+  "fileName": "AR RC TRANSACTION CODES",
+  "globalRoot": "349.4",
+  "globalReference": "^RCT(349.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Transaction Code that is sent to or from the Regional Counsel Office. These codes should not be altered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPANDED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the expanded name of the code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P430.3'",
+      "required": false,
+      "pointerTo": 430.3,
+      "helpText": "This is the status the AR Bill will be in after this transaction code is applied. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONTRACTUAL ADJUSTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will determine if the Transaction will be posted as  a Contractual Adjustment. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "349.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

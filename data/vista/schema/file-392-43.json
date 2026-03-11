@@ -1,0 +1,27 @@
+{
+  "fileNumber": 392.43,
+  "fileName": "BT COMMON CARRIER MODE OF TRANSPORTATION",
+  "globalRoot": "392.43",
+  "globalReference": "^DGBT(392.43,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODE OF TRANSPORTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the free text 3-30 characters in length (name or type) mode of transportation used in the Beneficiary Travel Claims for Common  Carrier. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.43", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

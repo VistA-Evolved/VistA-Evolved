@@ -1,0 +1,107 @@
+{
+  "fileNumber": 129.2,
+  "fileName": "RXNORM CONCEPT NAMES AND SOURCES",
+  "globalRoot": "129.2",
+  "globalReference": "^ETSRXN(129.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RXCUI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ8",
+      "length": 8,
+      "required": true,
+      "helpText": "RxNorm Unique identifier for concept (concept ID) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE (SAB)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The abbreviation of the source the concept was found in.  Some examples of potential sources would be the VA National Drug File (VANDF), National Drug File (NDFRT), RxNorm Concept Library (RXNORM) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TERM_TYPE (TTY)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The type of term (ingredient, drug class, generic drug, clinical drug,  etc.) associated with the concept in the original source file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "\"Most useful\" source asserted identifier (if the source vocabulary has  more than one identifier), or a RxNorm -generated source entry identifier  (if the source vocabulary has none.) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUPPRESSION_FLAG (SUPPRESS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Suppressible flag. Values = O, Y, N, or E.    Reflects the suppressible status of the attribute.      N - Attribute is not suppressed.    O - Attribute is suppressed at source level.    Y - Attribute is suppressed by RxNorm        editors.    E - Attribute is an unquantified, non-        prescribable drug with related        quantified prescribable drugs. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CONTENT_VIEW_FLAG (CVF)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This fields denotes whether or not a concept is currently prescribable. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RXAUI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ8",
+      "length": 8,
+      "required": true,
+      "helpText": "This field is the unique identifier for the atom (RxNorm Atom ID) ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT (STR)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3000",
+      "length": 3000,
+      "required": false,
+      "helpText": "Free Text string containing the concept ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date that this RXCUI record was added to the  database and will be based on the date that the RXCONSO file was distributed. ",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "129.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

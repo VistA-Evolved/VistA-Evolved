@@ -1,0 +1,1060 @@
+{
+  "fileNumber": 19,
+  "fileName": "OPTION",
+  "globalRoot": "19I",
+  "globalReference": "^DIC(19,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The formal name of an option, prefaced with the package name.   Each option must be preceded by its package prefix (a 2-4 character) code specified in the PACKAGE file, or the letter \"Z\" or \"A\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "X ACTION PRESENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field will be set to '1' if the option has an entry action. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REV KEY PRESENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field will be set to '1' if this option has a reverse key assigned to it. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "HEADER PRESENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is set to 1 by a trigger on field #26 when MUMPS code is entered into it. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name as the option as it will be displayed to the user within the menu system. ** The 'C' X-ref has been moved to the uppercase field. ** ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "UPPERCASE MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OUT OF ORDER MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to temporarily disable an option. If it is filled in, the message here will be displayed whenever the user attempts to select the option. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to deny access to users which have this option as part of their menu. If an option has a lock, then only users which hold the matching key can access it. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "REVERSE/NEGATIVE LOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This field may contain a pointer to the Key File.  If it does, the user may not access this option if he or she holds that key. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "19.06",
+      "required": false,
+      "helpText": "This field contains a brief explanation of the particular option. It will be displayed in the menu system to the user when '???' are entered to the selection choice of the parent menu. ",
+      "isMultiple": true,
+      "subFileNumber": 19.06,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field defaults to the DUZ of the user who originally set up this option. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "HELP FRAME",
+      "dataType": "POINTER",
+      "rawType": "P9.2",
+      "required": false,
+      "pointerTo": 9.2,
+      "helpText": "This field contains a pointer to the help text which describes this option.  The help text is displayed to the user on entering '?OPTION'. ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 3.8,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "If this field is null, the option will run at the current priority, otherwise, priorities range from 1-10, a low number indicating lower priority. The priority is in effect while the current option is being executed. ",
+      "fieldNumber_": 3.8
+    },
+    {
+      "fieldNumber": 3.9,
+      "fieldName": "PROHIBITED TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This specifies a time range during which this option cannot be accessed. The time should be entered in military format. For example, to prohibit an option from running between 9 AM and 2 PM, enter 0900-1400. ",
+      "fieldNumber_": 3.9
+    },
+    {
+      "fieldNumber": 3.91,
+      "fieldName": "TIMES/DAYS PROHIBITED",
+      "dataType": "SUBFILE",
+      "rawType": "19.391",
+      "required": false,
+      "helpText": "  This subfile may contain dasy and time during which this option may not be envoked.  This subfile replaces field 3.9, Prohibited Times, in the 0th node of the Option File. ",
+      "isMultiple": true,
+      "subFileNumber": 19.391,
+      "fieldNumber_": 3.91
+    },
+    {
+      "fieldNumber": 3.92,
+      "fieldName": "QUEUING REQUIRED",
+      "dataType": "SUBFILE",
+      "rawType": "19.392A",
+      "required": false,
+      "helpText": "By entering days and times in the subfile the option's output can be restricted to days and times not included in this file. The Menu System passes a flag to the Device Handler causing it to force queuing during the days and times included in this file. ",
+      "isMultiple": true,
+      "subFileNumber": 19.392,
+      "fieldNumber_": 3.92
+    },
+    {
+      "fieldNumber": 3.93,
+      "fieldName": "OUTPUT RESTRICTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field will contain a '1' if output from this option is restricted to certain days and times. ",
+      "fieldNumber_": 3.93
+    },
+    {
+      "fieldNumber": 3.95,
+      "fieldName": "RESTRICT DEVICES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This indicates whether the option is allowed to run on selected devices only.  If this field contains a 'y', the option will be enabled only for the devices entered in the field 'PERMITTED DEVICE.' ",
+      "fieldNumber_": 3.95
+    },
+    {
+      "fieldNumber": 3.96,
+      "fieldName": "PERMITTED DEVICE",
+      "dataType": "POINTER",
+      "rawType": "19.396P",
+      "required": false,
+      "helpText": "  This subfile may contain a list of devices upon which this option is permitted to run. ",
+      "fieldNumber_": 3.96
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:action;E:edit;I:inquire;M:menu;P:print;R:run routine;O:protocol;Q:protocol menu;X:extended action;S:server;L:limited;C:ScreenMan;W:Window;Z:Window Suite;B:Broker (Client/Server);",
+      "helpText": "    This field indicates the 'category' or type of option. A print-type option, for instance, will call FileMan to print something. Menu-type options point to other options in the tree-structured menu system. The other fields in the options file are filled in depending on the type. There are several fields that will tell a print-type option what to print and how to print it, for example.  These same fields may be meaningless to another options type. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MENU",
+      "dataType": "POINTER",
+      "rawType": "19.01IP",
+      "required": false,
+      "helpText": "This field points to the descendent options of this menu. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "Short Menu Text",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains a short version of the Menu Text field (field # 1) for use with multi-column displays.  It is a mandatory field. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISPLAY OPTION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field controls the action of the Menu system if the user has automenu turned on.  If this field is set then the menu system will stop and ask 'Press return to continue'. before showing the menu again. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field indicates the package with which this option is associated. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DELEGABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "If this field is marked 'no' in the option file then the XQSMD software will not delegate this option to a user. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "E ACTION PRESENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field will contain a '1' if the option has an entry action in field #20. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains mumps code which will be executed on leaving this option.  It is applicable to all option types. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code that is executed upon entry to this option for all option  types.  When an option is first envoked this code is executed, but if you drop back into the option from a higher-level option  (with a simple [RETURN]), for instance, it is NOT executed.  See Header field (field # 26). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "XQUIT MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "19.021",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19.021,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "XQUIT EXECUTABLE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "     This field contains code which is executed by the menu system when an XQUIT variable is detected after the execution of this option's ENTRY ACTION.  If the execution of this field produces the variable XQNOBACK the Menu System will not attempt to return the user to their previous option, but leave the user at the present stack location.  In the case of jumps, the user may be returned to an option that is quite far away if XQNOBACK is not defined.  Obviously, the problem that resulted in an ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ53",
+      "length": 53,
+      "required": false,
+      "helpText": "Indicate the name of the tag, routine, and parameters. e.g. ROUTINE, or TAG^ROUTINE(parameters).  ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "HEADER",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field of MUMPS code is executed each time the option is envoked, whether the user is moving down through the tree of options, or backing up through the options already envoked; unlike the entry action which is only executed when envoking an option from above, and not when backing up into it. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DIC {DIC}",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Used in conjunction with EDIT and INQUIRE type options to lookup an entry. for use. The global reference of the file to be used in lookup (without the '^'). For example: DPT( ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DIC(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in conjunction with the EDIT and INQUIRE type options for finding an entry.   Enter the parameters used in file-lookups.  A = Ask and reask entry  C = Cross reference suppression is turned off  E = Echo back the entry  F = Forget storing the lookup value (for space bar recall)  I = Ignore any special lookup program  L = Learning (LAYGO - adding a new entry) allowed  M = Look up entry using all available indexes  N = Allow internal entry number as input  O = Look up an entry in the old way  ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DIC(A)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in conjunction with the EDIT and INQUIRE type option for finding  an entry. Enter the prompt to be displayed instead of the usual 'Select FILENAME NAME' format.  Example:     DIC(A)=\"Please enter patient name: \"               Would display to user -  Please enter patient name:               Rather than the usual -  Select PATIENT NAME: ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DIC(B)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in conjunction with the EDIT and INQUIRE type options for finding  an entry. Enter the default value you want displayed to user when selecting the entry to use.  Example:   DIC(B)=\"JONES,JOHN\"  Would produce the display - Select PATIENT NAME: JONES,JOHN//  Rather than the usual display - Select PATIENT NAME: ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DIC(S)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in conjunction with INQUIRE and EDIT type options for screening entry selection.  Enter executable MUMPS code that will screen out entries that should NOT be selected.  An entry is only selectable when the  executable code produces a truth value of 1.  For example:      DIC(S)=I $P(^(0),U,2)=\"M\" allows only males to be selected if the second piece of the entry's zero node contained an 'M' for Male or 'F' for Female. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DIC(W)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in conjunction with the EDIT and INQUIRE type options for matching user input.  Enter MUMPS code that will be executed each time a match  (matches) is found for user input.   Example:  DIC(W)=W:$D(^(.1)) \"Patient is currently on ward \",^(.1)        produces the display - JONES,JOHN  Patient is currently on ward 2SE   NOTE:  This will override identifier displays. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "D.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in conjunction with the INQUIRE and EDIT type options for selecting an entry.  Enter the subscript of the cross reference to be used for entry look-up.  example:  D.=C Would only check for user input against the \"C\" cross-reference. If DIC(0) contains an \"M\" meaning multi-index look-up, then this value will be used as a starting point for the multi-index look-up. To restrict the look-up only to a single index then DIC(0) must NOT contain an \"M\". ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DR{DDS}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the form from the Form File enclosed in square brackets, e.g., \"[MYFORM]\". ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "DDSFILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the root of the file being edited or displayed entered without the up-arrow, e.g., \"DIC(19,\". ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DDSFILE(1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the global root of the subfile being edited or displayed. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "DDSPAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This optional variable contains the page number of the first page to display to the user when the ScreenMan form is invoked.  If this variable is not defined, then by default the first page the user sees is Page 1. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "DDSPARM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This optional variable contains a string of alphabetic characters that controls ScreenMan's behavior.  The acceptable characters are:    C   Return the variable DDSCHANG=1 if ScreenMan detects that the user      saved a Change to the database.    E   Return Error messages in ^TMP(\"DIERR\",$J) and return DIERR if      ScreenMan encounters problems when initially trying to load the form.      If DDSPARM does not contain an \"E\", ScreenMan prints messages      directly on the screen, and returns the ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DIE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Used in the EDIT type option. The global reference of the file to be used in the edit.  example:  DPT( ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DR {DIE}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the EDIT type option.  Enter the string of field numbers (delimited by semi-colons) to be edited or a bracketed input template name.  example:          .01;.03;3;.351          or          [INPUT TEMPLATE NAME] ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "*DR()",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "NO UP-ARROW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO UP-ARROWING ALLOWED;OUTOK:UP-ARROW OUT OK, NO BRANCHING;BACK:BACK JUMPING OK, NO EXIT;BACKOUTOK:EXIT AND BACK JUMPING OK;",
+      "helpText": "Used in the EDIT type option. If an 'N' is entered, no up-arrowing (^) is allowed while editing either for exiting the edit entirely or branching to other fields. If an 'OUTOK' is entered, you may up-arrow (^) entirely out of the edit but not be allowed to jump to other fields. If an 'BACK' is entered, you may jump to a previously edited field but not entirely out. If an 'BACKOUTOK' is entered, you may jump back to previously edited fields and up-arrow (^) to exit. If no entry is in this field, ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "*DIE(W)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Enter a WRITE statement in this field and the WRITE statement will be used instead of VA FileMan's regular prompt for the field being edited. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DIC {DIP}",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The global reference of the file to be used in PRINT type option.  example: DPT( ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Used in the PRINT type option.  The page number that should appear on first page of report. (This number ONLY effects page numbering, NOT at which entry the report should begin printing).  If this field is left blank,  then page 1 is assumed. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "L.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  This entry should always contain a 0. If a 1 is entered for this field, all predetermined ranges of sorts (fields TO and FR), print fields (field FLDS) and header (DHD) are overriden and the user will be asked for sort ranges, print fields and header. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "FLDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  Enter the fields to be printed (delimited by commas) or the bracketed print template name. Fileman formatting criteria can also be entered.  example:         .01;\"PATIENT NAME\";C1,.02,.1          or          [PRINT TEMPLATE NAME] ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the PRINT type option. Enter the fields to be sorted by (delimited  by commas) or a bracketed sort template name.  Example:         '.1,.01         or         [SORT TEMPLATE NAME] ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "FR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Used in the PRINT type option. Enter the 'start with' values (delimited by  commas) used in sorting.  Example:           2NE,SMITH   (if sort fields were ward & name, start with ward 2NE and patient SMITH) ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Used in the PRINT type option. The 'go to' values (delimited by commas) used in sorting.  example:           2NE,SMITH   (If sort fields were ward & name, end sort after ward  2NE and patient SMITH) ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "DHD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  Enter the free text heading you want printed as the header of your output.   (Do not include quotes in your header) ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "DCOPIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Used in the PRINT type option. The number of copies desired. SDP space must be available on your system for this option. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "DIS(0)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in the PRINT type option. This is executable M code which sets $T to select desired entries for the sort process. If the code produces a truth value of 1, the entry will be printed. (A truth value of 0 will not allow the entry to be printed.) At the time the code is executed, the internal entry number (IEN) of the entry is stored in the variable D0.   For example, the following would print patients who were NOT born in the 1970's:   DIS(0)=I $P(^DPT(D0,0),U,3)<2700101!($P(^(0),U,3)>2791231)",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 69.1,
+      "fieldName": "DIS(1)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may be used in PRINT options along with DIS(0) and the other DIS(n) fields. Each DIS field is examined in order (beginning with 0) for M code that will produce a $T value to determine whether or not the data pointed to by D0 should be printed. See the description of D(0) (field #69) for more information.  ",
+      "fieldNumber_": 69.1
+    },
+    {
+      "fieldNumber": 69.2,
+      "fieldName": "DIS(2)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may be used in PRINT options along with DIS(0) and the other DIS(n) fields. Each DIS field is examined in order (beginning with 0) for M code that will produce a $T value to determine whether or not the data pointed to by D0 should be printed. See the description of D(0) (field #69) for more information.  ",
+      "fieldNumber_": 69.2
+    },
+    {
+      "fieldNumber": 69.3,
+      "fieldName": "DIS(3)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may be used in PRINT options along with DIS(0) and the other DIS(n) fields. Each DIS field is examined in order (beginning with 0) for M code that will produce a $T value to determine whether or not the data pointed to by D0 should be printed. See the description of D(0) (field #69) for more information.  ",
+      "fieldNumber_": 69.3
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "IOP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The default output device.  Enter a valid Device Name or \"HOME\" to mean output will always go to the home device. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "DHIT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  Enter a string of MUMPS code that will be executed for every entry after all the fields specified in FLDS have been printed. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "DIOBEG",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  Enter a string of MUMPS code that will be executed before the printout starts. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "DIOEND",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used in the PRINT type option.  Enter a string of MUMPS code that will be executed after the printout has finished but before returning to the calling program. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "BY(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This variable can be set when you want to sort using a specified cross-reference (even MUMPS), or a list of record numbers in any global, or a list of results on a search template.  The only criteria is that the last subscript to sort through is an internal entry number (record number) for the file being printed.  This variable should contain the static part of a cross-reference or an open global reference, without the leading up-arrow.  Or, if printing from a list of search results, the variabl",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 76.1,
+      "fieldName": "L(0)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This variable should ONLY be set if BY(0) is set, and is REQUIRED if BY(0) is set.  It should be equal to the total number of variable subscripts that FileMan needs to sort through in order to reach the record number, PLUS 1 for the record number itself.  For example, if BY(0) defines a regular cross-reference, L(0)=2 (1 for the cross-referenced field value, and 1 for the record number, D0).  If sorting through a list of record numbers in ^TMP($J,D0), L(0)=1 (1 for the record number, D0). ",
+      "fieldNumber_": 76.1
+    },
+    {
+      "fieldNumber": 76.2,
+      "fieldName": "FR(0,N)",
+      "dataType": "SUBFILE",
+      "rawType": "19.02",
+      "required": false,
+      "helpText": "Sort FROM criteria associated with the subscripts defined by the BY(0) input variable. ",
+      "isMultiple": true,
+      "subFileNumber": 19.02,
+      "fieldNumber_": 76.2
+    },
+    {
+      "fieldNumber": 76.3,
+      "fieldName": "TO(0,N)",
+      "dataType": "SUBFILE",
+      "rawType": "19.03",
+      "required": false,
+      "helpText": "Sort TO criteria associated with the subscripts defined by the BY(0) input variable. ",
+      "isMultiple": true,
+      "subFileNumber": 19.03,
+      "fieldNumber_": 76.3
+    },
+    {
+      "fieldNumber": 76.4,
+      "fieldName": "DISPAR(0,N)",
+      "dataType": "SUBFILE",
+      "rawType": "19.04",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19.04,
+      "fieldNumber_": 76.4
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "DISUPNO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPPRESS HEADER IF NO RECORDS;",
+      "helpText": "If there are no matches found in a SEARCH, or if there are no records to print in a PRINT, VA FileMan still prints a header and a message informing the user that there were 0 matches, or no records to print. If this input variable is set to 1, that print of the header will be suppressed and nothing will print. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "DIPCRIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRINT SEARCH/SORT CRITERIA;",
+      "helpText": "When set to 1, causes SEARCH or SORT criteria to print in the heading of the first page of a report, along with the standard header.  If called from SEARCH option, both SEARCH and SORT criteria print. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "DIASKHD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Do not ask user for a header;1:Ask user for a header;",
+      "helpText": "  If this field is set to '1' then the variable DIASKHDR will be defined when FileMan is called to print.  The user will then be prompted for a header for the report. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 79.5,
+      "fieldName": "DISTEMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field MUST be defined in order to call the FileMan routine to RE-DO a search using the search criteria from an existing SEARCH TEMPLATE (routine ENS^DIS).  The field must contain the name of a SEARCH TEMPLATE.  This template name can be enclosed in square brackets but the brackets are not required.  Note that if there are already search results on the template, they will be replaced by a new list of search results when this option is run. ",
+      "fieldNumber_": 79.5
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "DIC {DIQ}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the INQUIRY type option.  The global reference of the file to be used in the inquiry.  example: DPT( ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "DR {DIQ}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in the INQUIRY type option.  Enter the GLOBAL SUBSCRIPTS that you want displayed on the inquiry.  Any fields residing in these global nodes will be displayed in standard captioned output format. Multiple subscripts can be delimited by a semi-colon or a range of subscripts may be used delimiting the starting subscript and ending subscript with a colon.  NOTE: Field security is not matched against user access for this option. Data will be displayed regardless of user READ access to those fiel",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "DIQ(0)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:Computed Fields;R:Record Number (IEN);B:Both Computed Fields and Record Number (IEN);",
+      "helpText": "This field determines if you want Computed Fields and Record Number (IEN) displayed with each record. Leave this field blank if you don't want Record Number or Computed Fields displayed. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "SUPRESS DEVICE PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the timestamp for when the option was created. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "TIMESTAMP OF PRIMARY MENU",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the timestamp of when this primary menu tree was rebuilt. ",
+      "fieldNumber_": 99.1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "*ORDER PRINT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 100.1,
+      "fieldName": "*ORDER CANCEL ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 100.1
+    },
+    {
+      "fieldNumber": 100.2,
+      "fieldName": "*ORDER PURGE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 100.2
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "INDEPENDENTLY INVOCABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "This field is only to document those options that the site can't randomly add to other options.   If this field is NO then this option requires that some option or action has been done before it can be called. If this field is YES then this option can be invoked at any time. It is up to the developer to set this field.   The MENU system doesn't look at this at any time. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "*QUEUED TO RUN AT WHAT TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field is OBSOLETE,  Please use the new Option scheduling File. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "*DEVICE FOR QUEUED JOB OUTPUT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is OBSOLETE,  Please use the new Option scheduling File. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "*RESCHEDULING FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is OBSOLETE,  Please use the new Option scheduling File. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "*QUEUED TO RUN ON VOLUME SET",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is OBSOLETE,  Please use the new Option scheduling File. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "SCHEDULING RECOMMENDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;s:STARTUP;",
+      "helpText": "This field should be filled in by developers to allow reports of options that a site should consider seting up for background scheduling. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 209.2,
+      "fieldName": "KEEP FROM DELETING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:Yes;",
+      "helpText": "This field is to keep the DELETE UNREFERENCED OPTIONS routine from selecting this option for deletion even if it isn't referenced in the normal ways.  Like \"Parent of Queuable Options\" (ZTMQUEUABLE OPTIONS) or XUCOMMAD. Normal options don't need to set this field. ",
+      "fieldNumber_": 209.2
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "SERVER BULLETIN",
+      "dataType": "POINTER",
+      "rawType": "P3.6",
+      "required": false,
+      "pointerTo": 3.6,
+      "helpText": "  This field may contain a pointer to the bulletin which will override the default bulletin XQSERVER for a server-type option.  This bulletin will be usedto notify the users in the event of a security breach, etc. ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "SERVER ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUN IMMEDIATELY;Q:QUEUE SERVER ROUTINE;N:NOTIFY MAIL GROUP (DO NOT RUN);I:IGNORE REQUESTS;",
+      "helpText": "A set of codes which tell the menu system what to do when a request for this server option is received from the mail system. ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "SERVER MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "  This field amy contain a pointer to the Mail Group file.  This mail group will be notified in the even of a security breach etc. when a server-type option is envoked. ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "SERVER AUDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This set of codes will determine whethere or not auditing will take place. If auditing is turned on with a 'Y' (YES) response the menu system will record: 1. The server option requested, 2. Date/time of the request, 3. User (Postmaster), 4. Device (none), 5. Job #, 6. Date/time of exit from the option, 7. CPU, 8. Request result (error message, \"task completed normally\", etc. ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 224,
+      "fieldName": "SUPRESS BULLETIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, SUPRESS IT;N:NO (DEFAULT) SEND A BULLETIN;",
+      "helpText": "If this field contains a 'Y' no bulletin will be fired when a server request is recieved.  The default is to send a bulletin.  If there is no bulletin in field #220 (SERVER BULLETIN) then the default bulletin XQSERVER is fired off. ",
+      "fieldNumber_": 224
+    },
+    {
+      "fieldNumber": 225,
+      "fieldName": "SERVER REPLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO REPLY (DEFAULT);E:REPLY ON ERROR ONLY;R:SEND REPLY IN ALL CASES;",
+      "helpText": "This field controls the transmission of replies to server requests via network mail.  If the field contains 'R' a reply will be transmitted to the sender of the server request.  If the field contains an 'E' a network reply will be transmitted only in the event that an error was trapped during the attemp to run a server option, Entry or Exit Actions, or the routine associated with a server option. ",
+      "fieldNumber_": 225
+    },
+    {
+      "fieldNumber": 226,
+      "fieldName": "SAVE REQUEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Do not save request;1:Save request in Postmaster basket;",
+      "helpText": "If there is a 1 in this field or if this field is null, then the server request message is saved in a mailbox for the Postmaster that is named \"S.\"option_name. ",
+      "fieldNumber_": 226
+    },
+    {
+      "fieldNumber": 227,
+      "fieldName": "SERVER DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5",
+      "required": false,
+      "pointerTo": 3.5,
+      "fieldNumber_": 227
+    },
+    {
+      "fieldNumber": 228,
+      "fieldName": "ZTSK RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a number between 1 and 365 to incicate the number of days that a  server task should be retained by Task Manager in ^ZTSK.  The default is 14 days if nothing is entered in this field.  For long-term retention see field 226 which allows you to save the server message in a Postmaster mailbox. ",
+      "fieldNumber_": 228
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "ICON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 320,
+      "fieldName": "RPC",
+      "dataType": "POINTER",
+      "rawType": "19.05P",
+      "required": false,
+      "fieldNumber_": 320
+    },
+    {
+      "fieldNumber": 1613,
+      "fieldName": "PRIMARY MENU",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field will have a value only if the Option is a 'high-level' menu Option, which could be assigned to a typical user.  For example, the value of this field might be \"PHARMACIST\", or \"ADMISSIONS CLERK\" ",
+      "fieldNumber_": 1613
+    },
+    {
+      "fieldNumber": 1840,
+      "fieldName": "PROTECTED VARIABLES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds a list of variables that need to be protected when another package call KILL^XUSCLEAN.  These should all be documented package wide variables. The format is that of a list of variable names separated by commas. i.e. DUZ,DTIME,DT ",
+      "fieldNumber_": 1840
+    },
+    {
+      "fieldNumber": 1916,
+      "fieldName": "*SPECIAL QUEUEING",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "S:STARTUP;",
+      "helpText": "This field is OBSOLETE,  Please use the new Option scheduling File. ",
+      "fieldNumber_": 1916
+    }
+  ],
+  "fieldCount": 106,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AOA", "field": },
+    {"name": "AOB", "field": },
+    {"name": "AOC", "field": },
+    {"name": "AOD", "field": },
+    {"name": "AOE", "field": },
+    {"name": "AOF", "field": },
+    {"name": "AOG", "field": },
+    {"name": "AOH", "field": },
+    {"name": "AOI", "field": },
+    {"name": "AOJ", "field": },
+    {"name": "AOR", "field": },
+    {"name": "AORK", "field": },
+    {"name": "AREDO", "field": },
+    {"name": "ASTARTUP", "field": },
+    {"name": "AZT", "field": },
+    {"name": "AZTIO", "field": },
+    {"name": "AZTVOL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "19", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "19", "field": .15, "type": "regular"},
+    {"name": "19", "field": 1, "type": "regular"},
+    {"name": "19", "field": 1, "type": "regular"},
+    {"name": "19", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "19", "field": 1.1, "type": "regular"},
+    {"name": "19", "field": 2, "type": "regular"},
+    {"name": "19", "field": 3, "type": "regular"},
+    {"name": "", "field": 3.01, "type": "regular"},
+    {"name": "19", "field": 3.01, "type": "regular"},
+    {"name": "19", "field": 3.7, "type": "regular"},
+    {"name": "19", "field": 3.7, "type": "regular"},
+    {"name": "19", "field": 3.8, "type": "regular"},
+    {"name": "19", "field": 3.9, "type": "regular"},
+    {"name": "19", "field": 3.95, "type": "regular"},
+    {"name": "19", "field": 4, "type": "regular"},
+    {"name": "19", "field": 4, "type": "regular"},
+    {"name": "19", "field": 14, "type": "regular"},
+    {"name": "", "field": 15, "type": "regular"},
+    {"name": "", "field": 20, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"},
+    {"name": "19", "field": 200, "type": "regular"},
+    {"name": "19", "field": 201, "type": "regular"},
+    {"name": "19", "field": 203, "type": "regular"},
+    {"name": "19", "field": 1916, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

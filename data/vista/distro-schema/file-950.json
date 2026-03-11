@@ -1,0 +1,36 @@
+{
+  "fileNumber": 950,
+  "fileName": "XML ENTITY CATALOG",
+  "globalRoot": "950",
+  "globalReference": "^MXML(950,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VALUE",
+      "dataType": "SUBFILE",
+      "rawType": "950.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 950.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "950", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

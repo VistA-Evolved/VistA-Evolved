@@ -76,6 +76,31 @@ process.on('uncaughtException', (err) => {
 });
 
 // ----------------------------------------------------------------------
+// Master Plan: Startup RPC Validation (Layer 1 of 5-layer verification)
+// Validates all registered RPCs exist in VistA before accepting traffic.
+// In dev: logs warnings. In rc/prod: refuses to start.
+// ----------------------------------------------------------------------
+import { validateAllRpcsAtStartup } from './lib/require-rpc-startup.js';
+
+if (process.env.SKIP_RPC_VALIDATION !== 'true') {
+  try {
+    const rpcResult = await validateAllRpcsAtStartup();
+    if (rpcResult.missing.length > 0) {
+      log.warn({
+        missing: rpcResult.missing.length,
+        available: rpcResult.available,
+        total: rpcResult.totalRegistered,
+      }, 'Startup RPC validation: some RPCs unavailable');
+    }
+  } catch (err) {
+    if (process.env.PLATFORM_RUNTIME_MODE === 'rc' || process.env.PLATFORM_RUNTIME_MODE === 'prod') {
+      throw err;
+    }
+    log.warn({ error: (err as Error).message }, 'Startup RPC validation skipped (VistA may not be running)');
+  }
+}
+
+// ----------------------------------------------------------------------
 // Start the server (build + listen + lifecycle)
 // ----------------------------------------------------------------------
 import { startServer } from './server/start.js';

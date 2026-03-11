@@ -1,0 +1,71 @@
+{
+  "fileNumber": 392.6,
+  "fileName": "BENEFICIARY TRAVEL DENIAL LETTERS",
+  "globalRoot": "392.6",
+  "globalReference": "^DGBT(392.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the denial letter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MILEAGE LETTER TEXT PART 1",
+      "dataType": "SUBFILE",
+      "rawType": "392.61",
+      "required": false,
+      "helpText": "Mileage letter text part 1 ",
+      "isMultiple": true,
+      "subFileNumber": 392.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MILEAGE LETTER TEXT PART 2",
+      "dataType": "SUBFILE",
+      "rawType": "392.62",
+      "required": false,
+      "helpText": "Mileage letter text part 2 ",
+      "isMultiple": true,
+      "subFileNumber": 392.62,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SP MODE LETTER TEXT PART 1",
+      "dataType": "SUBFILE",
+      "rawType": "392.63",
+      "required": false,
+      "helpText": "SP Mode letter text part 1 ",
+      "isMultiple": true,
+      "subFileNumber": 392.63,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SP MODE LETTER TEXT PART 2",
+      "dataType": "SUBFILE",
+      "rawType": "392.64",
+      "required": false,
+      "helpText": "SP Mode letter text part 2 ",
+      "isMultiple": true,
+      "subFileNumber": 392.64,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

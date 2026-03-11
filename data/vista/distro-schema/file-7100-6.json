@@ -1,0 +1,79 @@
+{
+  "fileNumber": 7100.6,
+  "fileName": "NOIS CALL USER",
+  "globalRoot": "7100.6",
+  "globalReference": "^FSCD(\"CALL USER\",",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "RP7100'",
+      "required": true,
+      "pointerTo": 7100,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "User for personal field entries on this nois call. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text associated with personal field entry for this user and NOIS call. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Number associated with personal field entry for this user and NOIS call. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LONG TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "A text message associated with personal field for user and NOIS call. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "7100.65",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 7100.65,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AUC", "field": },
+    {"name": "AUC1", "field": },
+    {"name": "B", "field": },
+    {"name": "7100.6", "field": .01, "type": "regular"},
+    {"name": "7100.6", "field": .01, "type": "regular"},
+    {"name": "7100.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

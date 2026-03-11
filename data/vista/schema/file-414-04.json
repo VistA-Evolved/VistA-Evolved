@@ -1,0 +1,56 @@
+{
+  "fileNumber": 414.04,
+  "fileName": "RECORD CHECKSUM",
+  "globalRoot": "414.04",
+  "globalReference": "^PRCV(414.04,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHECKSUM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Checksum name for your specific application. We could define different  checksum name for same file number used in different application. For example, file 440 could have two checksum name, \"VND1\" and \"VND2\", to  store checksum for different applications. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,3",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the number of the file we will perform checksum with. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the description or purpose of this checksum. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "414.41",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 414.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "D", "field": },
+    {"name": "414.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

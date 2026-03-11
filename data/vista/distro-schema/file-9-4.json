@@ -1,0 +1,329 @@
+{
+  "fileNumber": 9.4,
+  "fileName": "PACKAGE",
+  "globalRoot": "9.4I",
+  "globalReference": "^DIC(9.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "The name of this Package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the unique namespace prefix assigned to the Package, e.g. XM for the MailMan routines and globals, DI for the FileMan routines, etc. This field is appended to letters (like \"INIT\") to be used as the names of INIT routines. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a brief description of this Package's functions. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9.41A",
+      "required": false,
+      "helpText": "This is a complete and detailed description of the Package's functions and capabilities. ",
+      "isMultiple": true,
+      "subFileNumber": 9.41,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "9.44PA",
+      "required": false,
+      "helpText": "Any FileMan files which are part of this Package are documented here.  This multiple controls what files (Data Dictionaries and Data) are sent in an INIT built from this Package entry. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PRINT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "9.46",
+      "required": false,
+      "helpText": "The names of Print Templates being sent with this Package. This multiple is used to send non-namespaced templates in an INIT. Namespaced templates are sent automatically and need not be listed separately. ",
+      "isMultiple": true,
+      "subFileNumber": 9.46,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INPUT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "9.47",
+      "required": false,
+      "helpText": "The names of the Input Templates being sent with this Package This multiple is used to send non-namespaced templates in an INIT. Namespaced templates are sent automatically and need not be listed separately. ",
+      "isMultiple": true,
+      "subFileNumber": 9.47,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SORT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "9.48",
+      "required": false,
+      "helpText": "The names of the Sort Templates being sent with this Package. This multiple is used to send non-namespaced templates in an INIT. Namespaced templates are sent automatically and need not be listed separately. ",
+      "isMultiple": true,
+      "subFileNumber": 9.48,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "SCREEN TEMPLATE (FORM)",
+      "dataType": "SUBFILE",
+      "rawType": "9.485",
+      "required": false,
+      "helpText": "The names of Screen Templates (from the FORM file) associated with this package. ",
+      "isMultiple": true,
+      "subFileNumber": 9.485,
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "*MENU",
+      "dataType": "SUBFILE",
+      "rawType": "9.495",
+      "required": false,
+      "helpText": "This is the name of a menu-type option in another namespace. ",
+      "isMultiple": true,
+      "subFileNumber": 9.495,
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEVELOPER (PERSON/SITE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the principal Developer and Site for this Package. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.6,
+      "fieldName": "*LOWEST FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Inclusive lower bound of the range of file numbers allocated to this package. ",
+      "fieldNumber_": 10.6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*HIGHEST FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Inclusive upper bound of the range of file numbers assigned to this package. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "DEVELOPMENT ISC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The ISC responsible for the development and management of this Package. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:National;II:Inactive;III:Local;",
+      "helpText": "The ranking Class of this software Package. ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CURRENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the version number of the package currently running at this site.  When a package initialization has been run, this field will be updated with the version number most recently installed. This can be either using the old format (1.0, 16.04, etc.) or the new format (18.0T4, 19.1V2, etc.) ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ADDITIONAL PREFIXES",
+      "dataType": "SUBFILE",
+      "rawType": "9.4014",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9.4014,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "AFFECTS RECORD MERGE",
+      "dataType": "POINTER",
+      "rawType": "9.402P",
+      "required": false,
+      "helpText": "This Multipule lists the files that will impact this package if a Record Merge is done on any of the files in the list. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "VERSION",
+      "dataType": "SUBFILE",
+      "rawType": "9.49I",
+      "required": false,
+      "helpText": "The version numbers of this Package. ",
+      "isMultiple": true,
+      "subFileNumber": 9.49,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 913,
+      "fieldName": "ENVIRONMENT CHECK ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the developer's routine which is run at the beginning of the NAMESPACE_INIT routine.  This should just check the environment and should not alter any data, since the user has no way to exit out of the INIT process until this program runs to completion. ",
+      "fieldNumber_": 913
+    },
+    {
+      "fieldNumber": 913.5,
+      "fieldName": "ENVIRONMENT CHECK DONE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the ENVIRONMENT CHECK routine last ran. When an INIT is run at a target site, and it contains an ENVIRONMENT CHECK routine, this field is updated automatically. ",
+      "fieldNumber_": 913.5
+    },
+    {
+      "fieldNumber": 914,
+      "fieldName": "POST-INITIALIZATION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the developer's routine which is run immediately after the installation of the package. ",
+      "fieldNumber_": 914
+    },
+    {
+      "fieldNumber": 914.5,
+      "fieldName": "POST-INIT COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the POST-INIT last ran.  When an INIT is run at a target site, and it contains a POST-INIT routine, this field is updated automatically. ",
+      "fieldNumber_": 914.5
+    },
+    {
+      "fieldNumber": 916,
+      "fieldName": "PRE-INIT AFTER USER COMMIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the developer's routine that runs after the user has answered all of the questions in NAMESPACE_INIT but before the INIT files any new data. Used for data conversions, etc. that the developer needs to do before bringing in new data. ",
+      "fieldNumber_": 916
+    },
+    {
+      "fieldNumber": 916.5,
+      "fieldName": "PRE-INIT COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the PRE-INIT AFTER USER COMMIT last ran. When an INIT is run at a target site, and it contains a PRE-INIT AFTER USER COMMIT routine, this field is updated automatically. ",
+      "fieldNumber_": 916.5
+    },
+    {
+      "fieldNumber": 919,
+      "fieldName": "EXCLUDED NAME SPACE",
+      "dataType": "SUBFILE",
+      "rawType": "9.432",
+      "required": false,
+      "helpText": "By specifying an \"excluded name space\", the developer will be telling the DIFROM routine not to take OPTIONS, BULLETINS, etc. which begin with these characters.  For example, if \"PSZ\" is an excluded name space in the \"PS\" package, DIFROM will not send along OPTIONS, SECURITY KEYS, BULLETINS, or FUNCTIONS that begin with \"PSZ\". ",
+      "isMultiple": true,
+      "subFileNumber": 9.432,
+      "fieldNumber_": 919
+    },
+    {
+      "fieldNumber": 1938,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field points to a mail group that will receive a mail message from KIDS when a package or patch is installed. ",
+      "fieldNumber_": 1938
+    },
+    {
+      "fieldNumber": 1944,
+      "fieldName": "*BULLETINS",
+      "dataType": "COMPUTED",
+      "rawType": "XCmJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This presents information about any BULLETINs which are distributed along with the Package. ",
+      "fieldNumber_": 1944
+    },
+    {
+      "fieldNumber": 1945,
+      "fieldName": "*SECURITY KEYS",
+      "dataType": "COMPUTED",
+      "rawType": "XCmJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This describes the SECURITY KEYs which are distributed along with the Package. ",
+      "fieldNumber_": 1945
+    },
+    {
+      "fieldNumber": 1946,
+      "fieldName": "*OPTIONS",
+      "dataType": "COMPUTED",
+      "rawType": "XCmJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This lists information concerning the OPTIONs which are distributed along with the Package. ",
+      "fieldNumber_": 1946
+    },
+    {
+      "fieldNumber": 15007,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "9.415007",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9.415007,
+      "fieldNumber_": 15007
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AMRG", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "C2", "field": },
+    {"name": "E", "field": },
+    {"name": "9.4", "field": .01, "type": "regular"},
+    {"name": "9.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

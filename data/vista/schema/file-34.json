@@ -1,0 +1,43 @@
+{
+  "fileNumber": 34,
+  "fileName": "CONTRACT/SHARING AGREEMENTS",
+  "globalRoot": "34",
+  "globalReference": "^DIC(34,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AGREEMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF AGREEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SHARING;C:CONTRACT;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "34", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

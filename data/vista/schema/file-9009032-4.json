@@ -1,0 +1,252 @@
+{
+  "fileNumber": 9009032.4,
+  "fileName": "APSP INTERVENTION",
+  "globalRoot": "9009032.4ID",
+  "globalReference": "^APSPQA(32.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INTERVENTION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date that you recorded the intervention. You can enter any standard FileMan date input. ex. 2/5/90, Feb 5, 1990, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "You should enter the patient that you are intervening for.  You may use any of the normal ways you use to enter a prompt that asks for a patient.  Ex. Lastname, Firstname MI. or ID# ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "You should enter the name of the provider that prescribed this  medication or treatment that you are intervening on. You may enter the provider's name or the provider's synonym. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "You should enter the name of the pharmacist making the intervention and who will be doing the follow up with the provider. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "If there is a drug involved in the intervention, enter the name of the drug here.  This is a pointer to your local Drug file and you will only be able to enter drugs that are in this file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INSTITUTED BY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PHARMACY;2:PROVIDER;3:NURSING;4:PATIENT OR FAMILY;5:OTHER;",
+      "helpText": "This field is asking who initially brought up the need for an intervention.  You should enter a '?' to see your choices. The choices currently offered include : Pharmacy, Nursing, Provider, Patient or Family, and Other (to catch everybody else). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INTERVENTION",
+      "dataType": "POINTER",
+      "rawType": "RP9009032.3'",
+      "required": true,
+      "pointerTo": 9009032.3,
+      "helpText": "You are given a selection of 19 different types of interventions.  You  should enter 1 of the choices.  Choices include: Inappropriate Drug,  Incorrect Dose, Allergy, etc. If you would like to see a list of all your  choices enter a '?' at the prompt.  If none of the selections really cover  the reason for the intervention you should enter 'Other'.           ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "RECOMMENDATION",
+      "dataType": "POINTER",
+      "rawType": "R*P9009032.5'",
+      "required": true,
+      "pointerTo": 9009032.5,
+      "helpText": "This is the type of recommendation the pharmacist is going to make to the provider. You can see the list of selections by entering a '?' at the prompt. Just as in previous fields if none of the selections cover the recommendation the pharmacist should enter an 'Other' at the prompt. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "WAS PROVIDER CONTACTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:YES;1:NO;",
+      "helpText": "This field is used to record whether or not a provider was contacted regarding the intervention.  In most cases a provider will be contacted but if a pharmacy and a provider have certain agreements about changing orders the provider may not be contacted. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PROVIDER CONTACTED",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to record the name of a provider that was contacted if  it is different from the provider who wrote the prescription or ordered  the treatment.  It is a pointer to the New Person file and you should  enter the provider here just as you would anyplace else.                ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RECOMMENDATION ACCEPTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to record whether your recommendation was  accepted or rejected by the provider. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "AGREE WITH PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:YES;1:NO;",
+      "helpText": "This field is used to record whether you agree with the provider if your recommendation was rejected.  This field will only be asked if the user answered 'No' to the Recommendation Accepted field.  The pharmacist should answer either 'Yes' or 'No'. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ORIGINATING PACKAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OUTPATIENT;1:INPATIENT;",
+      "helpText": "This field contains information about whether a intervention was originated by the Outpatient Pharmacy or Inpatient Medications software. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "RX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the prescription number involved in an intervention.  This field is filled by the routine called for drug-drug interactions. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This is the pharmacy division involved in the intervention ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "FINANCIAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field is used to estimate the savings due to this intervention. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 1100,
+      "fieldName": "OTHER FOR INTERVENTION",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.411",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9009032.411,
+      "fieldNumber_": 1100
+    },
+    {
+      "fieldNumber": 1200,
+      "fieldName": "OTHER FOR RECOMMENDATION",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.412",
+      "required": false,
+      "helpText": "The pharmacist is asked this field only if they have answered the Recommendation field with 'Other'.  This is a word-processing field that allows you to enter any recommendation you would like to make that was not covered by the selections in the Recommendation field. ",
+      "isMultiple": true,
+      "subFileNumber": 9009032.412,
+      "fieldNumber_": 1200
+    },
+    {
+      "fieldNumber": 1300,
+      "fieldName": "REASON FOR INTERVENTION",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.413",
+      "required": false,
+      "helpText": "This field is a word-processing field that is used by the pharmacist if they wish to record a more detailed explanation of the intervention. ",
+      "isMultiple": true,
+      "subFileNumber": 9009032.413,
+      "fieldNumber_": 1300
+    },
+    {
+      "fieldNumber": 1400,
+      "fieldName": "ACTION TAKEN",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.414",
+      "required": false,
+      "helpText": "This word-processing field may be used by the pharmacist to record more detailed information about the action taken with this intervention. ",
+      "isMultiple": true,
+      "subFileNumber": 9009032.414,
+      "fieldNumber_": 1400
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "CLINICAL IMPACT",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.415",
+      "required": false,
+      "helpText": "This word-processing field may be utilized by the pharmacist if they wish to document what they felt the clinical impact of the intervention is. ",
+      "isMultiple": true,
+      "subFileNumber": 9009032.415,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1600,
+      "fieldName": "FINANCIAL IMPACT",
+      "dataType": "SUBFILE",
+      "rawType": "9009032.416",
+      "required": false,
+      "helpText": "This word processing field may be utilized by the pharmacist if they wish to document some sort of financial impact of the intervention. ",
+      "isMultiple": true,
+      "subFileNumber": 9009032.416,
+      "fieldNumber_": 1600
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "9009032.4", "field": .01, "type": "regular"},
+    {"name": "9009032.4", "field": .02, "type": "regular"},
+    {"name": "9009032.4", "field": .03, "type": "regular"},
+    {"name": "9009032.4", "field": .04, "type": "regular"},
+    {"name": "9009032.4", "field": .04, "type": "regular"},
+    {"name": "9009032.4", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSDRUG(+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

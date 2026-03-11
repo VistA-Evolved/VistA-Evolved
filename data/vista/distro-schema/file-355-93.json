@@ -1,0 +1,274 @@
+{
+  "fileNumber": 355.93,
+  "fileName": "IB NON/OTHER VA BILLING PROVIDER",
+  "globalRoot": "355.93",
+  "globalReference": "^IBA(355.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "This is the name of either an individual NON-VA provider or a NON-VA or another VA facility that provides services to the V.A. for which the V.A. can in turn bill an insurance company for reimbursement.     For individual type entries: The name should be entered in LAST,FIRST MIDDLE format.  Enter only data that is actually part of the provider's name. Do not include extra titles, identification, flags, local information, etc.  All individual provider names will be converted to the 'standardized",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROVIDER TYPE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:FACILITY/GROUP;2:INDIVIDUAL;",
+      "helpText": "This field identifies the type of provider being defined.  Facility providers can be used to fill in the name and address of the non-VA facility where services were rendered (box 32 on the CMS-1500).  An individual provider can be selected as the rendering, attending, referring or operating provider on a bill. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREDENTIALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the 1 to 3 digits that represents the credentials for this provider.  This field is only valid for INDIVIDUAL providers. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the 2 digits that represent the specialty for this provider. This field is only valid for INDIVIDUAL providers. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ55",
+      "length": 55,
+      "required": true,
+      "helpText": "This is the street address of the non-VA facility that rendered the care that is being billed by the VA.  It is only valid for FACILITY providers. It cannot be a post office box. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the city of the non-VA facility that rendered the care that is being billed by the VA.  It is only valid for FACILITY providers. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the non-VA facility that rendered the care that is being billed by the VA.  It is only valid for FACILITY providers. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the zip code of the non-VA facility that rendered the care that is being billed by the VA.  It is only valid for FACILITY providers. The ZIP code must be a nine digit ZIP code number and not ending in \"0000\" (four consecutive zeros). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FACILITY DEFAULT ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the Federal Tax ID of the outside facility. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "STREET ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is line 2 of the street address of the non-VA facility that rendered the care that is being billed by the VA.  It is only valid for FACILITY providers. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "X12 TYPE OF FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "77:SERVICE LOCATION;FA:FACILITY;LI:INDEPENDENT LAB;TL:TESTING LAB;",
+      "helpText": "This is the code for the type of facility as identified in the X12 documents.  It is used  to describe the type of facility for professional claims. Facility (FA) will automatically be sent on institutional claims. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATE LICENSE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the State license # for the non-VA provider. Note, there can be only 1 state license # on file for non-VA/other VA providers. Enter multiple entries for the provider if multiple state license numbers are required (one for each state). ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRIMARY ID QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P355.97'",
+      "required": false,
+      "pointerTo": 355.97,
+      "helpText": "This is the Qualifier associated with the FACILITY DEFAULT ID NUMBER.  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "MAMMOGRAPHY CERTIFICATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the mammography certification number for the non-VA facility which is used as a default on the claim when mammography services are performed. It is required by some insurance companies. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "LICENSE STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state which issued the STATE LICENSE #(#.12) field  of the non-VA individual or facility that rendered the care that is being  billed by the VA. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "SOLE PROPRIETORSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "A sole proprietorship is a Non-VA facility that is owned by a single Non-VA provider. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "NON-VA PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P355.93'",
+      "required": false,
+      "pointerTo": 355.93,
+      "helpText": "Non-VA provider associated with this facility. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "P&C CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For use with property and casualty claims, this is the name of the contact person at this Lab/Facility (Last Name, First Name). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "P&C CONTACT PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For use with property and casualty claims, this is the area code and phone number of the contact person at this facility. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "P&C CONTACT PHONE EXTENSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "For use with property and casualty claims, this is the phone extension of the contact person at this facility, if known. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DATE/TIME OF LAST NPI CHANGE",
+      "dataType": "DATE",
+      "rawType": "355.9301DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 355.9301,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41.01,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Unique National Provider Identifier.  A unique integer assigned to a provider by CMS.  This field contains the current NPI for this provider. ",
+      "fieldNumber_": 41.01
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TAXONOMY CODE",
+      "dataType": "POINTER",
+      "rawType": "355.9342IP",
+      "required": false,
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DATE/TIME LAST FB UPDATE",
+      "dataType": "DATE",
+      "rawType": "355.935DA",
+      "required": false,
+      "helpText": "This multiple tracks updates to this file that are made by the FEE  BASIS PAID TO IB background job. ",
+      "isMultiple": true,
+      "subFileNumber": 355.935,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DATE/TIME ALLOW FB UPDATE",
+      "dataType": "DATE",
+      "rawType": "355.9351DA",
+      "required": false,
+      "helpText": "This multiple stores information that the Fee Basis interface uses to  control whether updates to this record should be allowed. Historical information is saved, and the most recent entry is used by the interface. ",
+      "isMultiple": true,
+      "subFileNumber": 355.9351,
+      "fieldNumber_": 51
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "NPI", "field": },
+    {"name": "NPIHISTORY", "field": },
+    {"name": "TAXSTATUS", "field": },
+    {"name": "355.93", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "", "field": 1.02, "type": "regular"},
+    {"name": "355.93", "field": 41.01, "type": "regular"},
+    {"name": "355.93", "field": 41.01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.93,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

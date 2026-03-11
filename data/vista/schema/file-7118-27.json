@@ -1,0 +1,83 @@
+{
+  "fileNumber": 7118.27,
+  "fileName": "HDIS TEXT FILE DEPLOYMENT TRACKING",
+  "globalRoot": "7118.27",
+  "globalReference": "^HDISF(7118.27,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of a file that contains HL7 message to be deployed by MFS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the domain to which this file belongs. Note: If automated checksum processing is implemented for Text File Deployment, this field should be re-typed as a pointer to the MD5 CODE SYSTEM (.01) field in the MD5 Signature File (4.005) File. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRE-LOAD CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The pre-load hexadecimal checksum for this file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "POST-LOAD CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The post-load hexadecimal checksum for this file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOAD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT LOADED;1:LOADED;-1:PRE-LOAD CHECKSUM ERROR;-2:POST-LOAD CHECKSUM ERROR;-3:ERROR DURING LOAD;",
+      "helpText": "This field indicates if this file has been deployed on this system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DOWNLOADED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the file has been downloaded from the ftp server. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOAD DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that this file was loaded on this system. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7118.27", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

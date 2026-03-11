@@ -1,0 +1,68 @@
+{
+  "fileNumber": 392.3,
+  "fileName": "BENEFICIARY TRAVEL ACCOUNT",
+  "globalRoot": "392.3I",
+  "globalReference": "^DGBT(392.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "This field contains the account number (three to four numerics) a space then the account name (26 characters limit, upper case) associated with the Beneficiary Travel Claims. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This field contains the Account Number (a three to four character number between 000 and 9999) and must match the number in the ACCOUNT (.01) field of this file associated with the Beneficiary Travel Claims. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains date this Beneficiary Travel Account became active. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date this Beneficiary Travel Account became inactive. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACCOUNT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:EMERGENCIES;2:INTERFACILITY;3:SPECIAL MODE;4:ALL OTHER;5:C&P EXAMS;",
+      "helpText": "Field is designed to group like ACCOUNTs by account type, since the account name/number is subject to change. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "392.3", "field": .01, "type": "regular"},
+    {"name": "392.3", "field": .01, "type": "regular"},
+    {"name": "392.3", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

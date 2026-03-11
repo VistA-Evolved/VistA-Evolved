@@ -1,0 +1,157 @@
+{
+  "fileNumber": 358.99,
+  "fileName": "IMP/EXP AICS DATA ELEMENTS",
+  "globalRoot": "358.99",
+  "globalReference": "^IBE(358.99,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DHCP DATA TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A type of data that is recognized as such within the framework of scanning DHCP forms and which requires its own Paper Keyboard description. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAXIMUM LENGTH FOR INPUT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The maximum number of characters that can be input for this data type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRINT FORMAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used to print the field. Fields for certain types of data, such as telephone numbers and Social Security numbers usually require certain formats, such as 092-52-0493 for an SSN. The PRINT FORMAT allows the required format to be specified. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SPACE ALLOCATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is used to determine how much space on the form to allocate for the  hand print. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REQUIRED CONFIDENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the confidence level (as defined by Paper Keyboard) that should be applied to this data type. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RECOMMENDED LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Will be used as a default label. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LABEL FOR UNIT OF MEASUREMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unit of measurement as defined by the PCE Generic Device Interface. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PCE GDI VITALS TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The type of vitals measurement - used only for the PCE GDI VITALS node. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PCE GDI VITALS UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unit of measurement - used only for the PCE GDI VITALS node. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PCE GDI INPUT TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The input transform should change X into a value that can be passed to the PCE Generic Device Interface. X should be killed if it not be transformed. Note that the return value of X need not meet all of PCE's validation requirments - for example, X may be an inactive code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HELP FOR INPUT TRANSFORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Help for the user. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "PAPER KEYBOARD DATA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:ALPHA (any ASCII);d:DATE (MM/DD/YY);f:FLOATING POINT NUMBER;i:INTEGER;t:TIME(HHMM, VA FileMan format);",
+      "helpText": "These are the data types provided for by Paper Keyboard.  The ALPHA data type can be further described by a Paper Keyboard picture clause. The Integer data type does not apply if the field can contain spaces or punctuation other than a '-'. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "PAPER KEYBOARD PICTURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a picture clause specific to Paper Keyboard.  A picture clause describes the intended format for the data type.  This is similar to an M pattern match.  For example, a CPT code is 5 characters, the first character may be an alpha or numeric followed by 4 numeric characaters.  To represent this picture in Paper Keyboard, one would enter the picture X####. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "DICTIONARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of a Paper Keyboard Dictionary.  A dictionary can be applied to ICR data types to improve the recognition of ICR fields.  This is the name of the file that Paper Keyboard uses. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "PK PICTURES FOR SUBFIELDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When using print formats for paper keyboard you should enter the  picture clause in this field.  For example, the print format for a SSN might look like ___-__-____.  This would cause the dashes to be printed and user input to be accepted in three subfields with lenghts of 3, 2, and 4 numerics.  You would then enter the picture in this field as ###-##-####.  (note the # sign is used as the picture for numerics) ",
+      "fieldNumber_": 10.04
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "358.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

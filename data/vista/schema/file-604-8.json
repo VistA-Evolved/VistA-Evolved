@@ -1,0 +1,107 @@
+{
+  "fileNumber": 604.8,
+  "fileName": "ASI PARAMETERS",
+  "globalRoot": "604.8",
+  "globalReference": "^YSTX(604.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the internal entry number of the file entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is a pointer to the KERNEL institution file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUGGESTED FORM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FULL;L:LITE;",
+      "helpText": "Used to set default prompt when entering Addiction Survey Index data. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTRY MODE PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ON-LINE;C:CLERK;",
+      "helpText": "Designates prompt for entry mode: On-line (full screen) vs. Clerk (line by line). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ALLOW DEFAULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Defaults are used to speed data entry. The most frequently given response for an item is presented for use. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASK TIU PROGRESS NOTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is set to \"yes\", the clinician will be asked if a TIU Progress Note should be created. Set to \"no\" and no note is generated. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ALLOW BRANCHING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Automatically answer following questions based on the current answer and logical rules ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ASI MANAGERS",
+      "dataType": "POINTER",
+      "rawType": "604.81PA",
+      "required": false,
+      "helpText": "Users who have special signing and management privileges. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NATIONAL DATABASE ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Mail address of the national ASI datadase. DO NOT Change unless instructed to do so by the national center. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "604.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

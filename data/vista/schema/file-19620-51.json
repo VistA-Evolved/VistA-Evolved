@@ -1,0 +1,37 @@
+{
+  "fileNumber": 19620.51,
+  "fileName": "DSIR AUTHORITY FOR REQUEST",
+  "globalRoot": "19620.51",
+  "globalReference": "^DSIR(19620.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Caption for each authorization for requests. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AVAILABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BOTH;F:FOIA ONLY;P:PRIVACY ACT ONLY;",
+      "helpText": "Set of values to determine when this authorization is available.  (FOIA request, Privacy Office request, or Both) ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

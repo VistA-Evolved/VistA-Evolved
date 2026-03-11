@@ -1,0 +1,68 @@
+{
+  "fileNumber": 995.1,
+  "fileName": "CIRN EVENT EXCEPTION",
+  "globalRoot": "995.1",
+  "globalReference": "^RGEQEXC(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "A sequential number assigned to event exceptions. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time event exception occurred. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP995'",
+      "required": true,
+      "pointerTo": 995,
+      "helpText": "References the type of CIRN event that errored. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When an event is placed on a queue for later process, parameter passing is supported.  Parameters are required so the processing routine knows what entries on the queue to process or other special parameters defined by the event processing routine.   When an error occurs, the parameters that were required are store in this field so when re-processing takes place the same parameters can be used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If a soft-error or hard-error occurs, the description of error is stored in this field for debugging purposes. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "995.1", "field": .01, "type": "regular"},
+    {"name": "995.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": WR2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RGEQASN(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(995,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

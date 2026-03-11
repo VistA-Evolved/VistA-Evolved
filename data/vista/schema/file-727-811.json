@@ -1,0 +1,1327 @@
+{
+  "fileNumber": 727.811,
+  "fileName": "SURGERY EXTRACT",
+  "globalRoot": "",
+  "globalReference": "^ECX(727.811,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the facility/division where the extract was performed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ASIH (OTHER FACILITY);",
+      "helpText": "Indicates the patient's status for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the procedure associated with this Surgery extract record was performed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This character string represents in IEN in the SURGERY file (#130). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SURGICAL SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The surgical specialty credited for doing this operative procedure. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OR ROOM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This character string represents an IEN to the HOSPITAL LOCATION file (#44) for the operating room where the principal operation was performed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SURGEON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person who performed the surgery. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ATTENDING SURGEON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person who oversaw and/or signed off on this surgery. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ANESTHESIA SUPERVISOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person who oversaw and/or signed off on the anesthesia for this case. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ANESTHESIA TECHNIQUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SPINAL;E:EPIDURAL;O:OTHER;G:GENERAL;M:MONITORED ANESTHESIA CARE;L:LOCAL;R:REGIONAL;N:NO ANESTHESIA;",
+      "helpText": "The code corresponding to the type of anesthesia technique used  during this case. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PRIMARY/SECONDARY/PROSTHETICS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The indicator if this is a primary, secondary or prostheses. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as CPT, is no longer needed.  The name has  been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PATIENT TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time, in 15 minute increments, the patient was in the OR. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "OPERATION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time, in 15 minute increments, of the principal operative procedure. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ANESTHESIA TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time, in 15 minute increments, of the anesthesia care administered. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PROSTHESIS",
+      "dataType": "POINTER",
+      "rawType": "P131.9'",
+      "required": false,
+      "pointerTo": 131.9,
+      "helpText": "Describes which locally defined implant, if any, was used. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is obsolete and has been replaced by the NEW QUANTITY field in this file. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PTF CODE of the treating specialty associated with this extract  record. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CANCELLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:C;",
+      "helpText": "If set, this field indicates that the surgical procedure was cancelled  after being started. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "The military time when the patient entered the OR. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "OR TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The OR TYPE of the operating room where this procedure was done. This field is a character string which represents an IEN in the OPERATING ROOM TYPE file (#134). ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ATTENDING'S SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The service to which the attending surgeon is assigned. The character string in this field represents an IEN in the NATIONAL SERVICE file (#730). ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "NON-OR DSS IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the non-OR location for this procedure if the non-OR portion  of the Surgery Package is used. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "RECOVERY ROOM (PACU) TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time, in 15 minute increments, that the patient spent in the post anesthesia care unit. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PLACEHOLDER3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently Null. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "PLACEHOLD PRIMARY CARE TEAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE TEAM, is no longer needed. The name has been changed to PLACEHOLD PRIMARY CARE TEAM and its value will be set to null.   ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PLACEHOLD PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE PROVIDER, is no longer needed. The name has been changed to PLACEHOLD PC PROVIDER and its value will be set to null.   ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the patient's admission occurred. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PLACEHOLD MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as MASTER PATIENT INDEX, is no longer needed. The name has been changed to PLACEHOLD MPI and its value will be set to null. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as DSS PRODUCT DEPARTMENT, is no longer needed.  The name has been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PLACEHOLD PC PROV PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PC PROVIDER PERSON CLASS, is no longer needed. The name has been changed to PLACEHOLD PC PROV PERSON CLASS and its value will be set to null.   ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PLACEHOLD ASSOC PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOCIATE PC PROVIDER, is no longer needed. The name has been changed to PLACEHOLD ASSOC PC PROVIDER and its value will be set to null.   ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "PLACEHOLD AS PC PROV PERSON CL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOC. PC PROV. PERSON CLASS, is no longer needed. The name has been changed to PLACEHOLD AS PC PROV PERSON CL and its value will be set to null.   ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "CPT CODE QUANTITY MODIFIERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The 5-character CPT Code of the procedure performed, the Quantity, or  how many times the unique code appears in the record, and up to 5  two-character CPT modifiers. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CET/TR;",
+      "helpText": "Indicates if the patient is admitted to either a RRTP, PRRTP or SARRTP at  the time care is provided. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "ENROLLMENT CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient's enrollment category. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ENROLLMENT STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient's enrollment status. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The period of service that best classifies the patient based on eligibility code.  ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PURPLE HEART INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether or not a patient is a Purple Heart recipient. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "Indicates if patient is considered to be an observation patient. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique number assigned for DSS. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "AGENT ORANGE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field indicates the location where the patient was exposed to Agent  Orange. Values are:     \"B\" = BLUE WATER NAVY     \"K\" = KOREAN DMZ     \"V\" = VIETNAM     \"T\" = THAILAND(U.S. OR ROYAL THAI MIL BASE)     \"L\" = LAOS     \"C\" = CAMBODIA(MIMOT OR KREK,KAMPONG CHAM)     \"G\" = GUAM, AMERICAN SAMOA, OR TERRITORIAL WATERS     \"J\" = JOHNSTON ATOLL     \"O\" = OTHER ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the division/facility where the work was performed. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "HEAD & NECK CANCER INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies whether patient has head and/or neck cancer. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "PLACEHOLD ETHNICITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ETHNICITY, is no longer needed.  The name  has been changed to PLACEHOLD ETHNICITY and its value will be set to null. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PLACEHOLD RACE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as RACE 1, is no longer needed.  The name has been changed to PLACEHOLD RACE 1 and its value will be set to null. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "NEW QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The quantity of the prosthetic device(s) used for this operative procedure. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DSS IP #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Product Number designated to the  patient care product. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the enrollment priority group and the enrollment  priority subgroup. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "USER ENROLLEE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "U:USER ENROLLED;",
+      "helpText": "Indicates whether a Veteran has User Enrollee status for the current or  future fiscal year. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AC:ACTIVE DUTY;AL:ALLIED VETERAN;CO:COLLATERAL;EM:EMPLOYEE;IN:INELIGIBLE;MI:MILITARY RETIREE;NO:NON-VETERAN (OTHER);NS:NSC VETERAN;SC:SC VETERAN;TR:TRICARE;",
+      "helpText": "Refers to the various types of patient which may be seen at a VA facility. Every patient in the system must have a TYPE specified. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "CV STATUS ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;E:ELIGIBILITY EXPIRED;",
+      "helpText": "Records if veteran served on active duty in a theater of combat operations during a period of war after the Persian Gulf War or in combat against a hostile force during a period of hostilities after November 11, 1998. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "CV ELIGIBILITY END DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Records the Combat Veteran eligibility expiration date of the veteran who  served on active duty in a theater of combat operations during a period of war after the Persian Gulf War or in combat against a hostile force during a period of hostilities after November 11, 1998. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "ENCOUNTER CV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Records if veteran served on active duty in a theater of combat  operations during a period of war after the Persian Gulf War or in combat  against a hostile force during a period of hostilities after November 11,  1998. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "ROOM CLEANING TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "ROOM CLEANING TIME is the number of 15 minute intervals required to clean  the room.  For example, an entry of 3 indicates that it took 45 minutes to  clean the room. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "HOLDING AREA TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "HOLDING AREA TIME field shall contain the time (in 15-minute increments)  that the the patient spent in the holding area. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "NATIONAL PATIENT RECORD FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field records that the patient's record contains 1 or more Category  1 (National) Patient Record Flags. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "PRINCIPAL ANESTHETIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The principal anesthesiologist or Certified Registered Nurse Anesthetist  (CRNA) (or surgeon, if local anesthesia). ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "SURGEON PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Surgeon associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "ATTENDING SURGEON PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Attending Surgeon associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "ANESTHESIA SUPERVISOR PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Anesthesia Supervisor associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "PRINCIPAL ANESTHETIST PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class  of the Principal Anesthetist. The VA Code is always of the form \"V\"_six  numeric digits; exactly 7. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "ERI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies patients from impacted zip code areas designated by the Federal Emergency Management Agency (FEMA). ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "AGENT ORANGE ENC INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether service provided during this patient encounter is  related to exposure to Agent Orange. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "ENC HEAD/NECK CA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether service provided during this patient encounter is  related to head and/or neck cancer. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "OEF/OIF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Military Operation in which the patient was in combat during the  specified time period. This field is a length of nine characters and  reflects the OEF or OIF where this patient was in combat. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "OEF/OIF RETURN DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date the patient left the OEF/OIF area, if known. Otherwise, it is  the end date of military pay for this OEF/OIF deployment. This date field  has a format equal to YYYYMMDD. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "CLINIC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Identifies the clinic associated with surgery specialty for this case. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "CREDIT STOP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the Credit Stop Code of the clinic associated with the surgery  specialty for this case. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "STOP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the Primary Stop Code of the clinic associated with the surgery  specialty for this case. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "PLACEHOLD PRINC POSTOP DX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRINC POSTOP DIAGNOSIS CODE, is no longer  needed. The name has been changed to PLACEHOLD PRINC POSTOP DX and its  value will be set to null. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "PLACEHOLD OTHER POSTOP DX #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as OTHER POSTOP DIAGNOSIS CODE #1, is no  longer needed. The name has been changed to PLACEHOLD OTHER POSTOP DX #1  and its value will be set to null. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "PLACEHOLD OTHER POSTOP DX #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as OTHER POSTOP DIAGNOSIS CODE #2, is no  longer needed. The name has been changed to PLACEHOLD OTHER POSTOP DX #2  and its value will be set to null. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "PLACEHOLD OTHER POSTOP DX #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as OTHER POSTOP DIAGNOSIS CODE #3, is no longer needed. The name has been changed to PLACEHOLD OTHER POSTOP DX #3  and its value will be set to null. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "PLACEHOLD OTHER POSTOP DX #4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as OTHER POSTOP DIAGNOSIS CODE #4, is no  longer needed. The name has been changed to PLACEHOLD OTHER POSTOP DX #4  and its value will be set to null. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PLACEHOLD OTHER POSTOP DX #5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as OTHER POSTOP DIAGNOSIS CODE #5, is no  longer needed. The name has been changed to PLACEHOLD OTHER POSTOP DX #5  and its value will be set to null. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "ANESTHESIA SUPERVISOR NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the person who oversaw and/or  signed off on the anesthesia for the surgical procedure. This field has a  length of fifteen characters. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "PLACEHOLD ASSOC PC PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOCIATE PC PROVIDER NPI, is no longer needed. The name has been changed to PLACEHOLD ASSOC PC PROV NPI and its value will be set to null.   ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "ATTENDING SURGEON NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the person who oversaw and/or  signed off on the surgical procedure.  This field has a length of fifteen  characters. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "PLACEHOLD PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE PROVIDER NPI, is no longer needed. The name has been changed to PLACEHOLD PC PROVIDER NPI and its value will be set to null.   ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "PRINCIPLE ANESTHETIST NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the principal anesthesiologist  or Certified Registered Nurse Anesthetist (CRNA) who provided anesthesia  for the surgical procedure. This field has a length of fifteen characters. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "SURGEON NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the person who performed the  surgical procedure.  This field has a length of fifteen characters.  ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "ENCOUNTER SWAC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if treatment provided during this patient encounter is related to exposure to Southwest Asia conditions while serving in the Southwest Asia Theater of Operations. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "RADIATION ENCOUNTER INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether service provided during this patient encounter is related to exposure to ionizing radiation. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "MST ENCOUNTER INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if treatment provided during this patient encounter is related  to Military Sexual Trauma. Values: Y=YES, N=NO ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ENCOUNTER SC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if treatment provided during this patient encounter is Service  Connected. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "AGENT ORANGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Indicates if patient was exposed to Agent Orange. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Indicate if patient claims exposure to Southwest Asia Conditions. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "RADIATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;1:NO RADIATION;2:HIROSHIMA/NAGASAKI;3:ATMOSPHERIC NUCLEAR TESTING;4:H/N AND ATMOSPHERIC TESTING;5:UNDERGROUND NUCLEAR TESTING;6:EXPOSURE AT NUCLEAR FACILITY;7:OTHER;",
+      "helpText": "Indicates if patient claims exposure to ionizing radiation. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "MST STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Screened, reports MST;N:Screened, does not report MST;D:Screened, declines to answer;U:Unknown;",
+      "helpText": "Indicates if patient claims Military Sexual Trauma Values: Y=SCREENED, REPORTS MST N=SCREENED, DOES NOT REPORT MST D=SCREENED, DECLINES TO ANSWER U=UNKNOWN ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "SHAD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Data is Y if this patient was exposed to Shipboard Hazard and Defense. N if not, or U if unknown. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "ENCOUNTER SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if treatment provided during this patient encounter is related to exposure PROJ 112/SHAD condition.  Values: Y=YES, N=NO ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "FIRST ASST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person assisting the surgeon during the operative procedure. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "FIRST ASST PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the First Asst associated with this  record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "FIRST ASST NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the First Assistant.  This  field has a length of 15 characters. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "SECOND ASST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the second person assisting the surgeon during the operative procedure. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "SECOND ASST PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Second Asst associated with this record.  The VA Code is always of the form \"V\"_six numeric digits; exactly 7.   ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "SECOND ASST NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the Second Assistant.  This field has a length of 15 characters. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "PERFUSIONIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person operating the cardio-pulmonary or organ perfusion apparatus. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "PERFUSIONIST PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Perfusionist associated with this record.  The VA Code is always of the form \"V\"_six numeric digits; exactly 7.   ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "PERFUSIONIST NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the Perfusionist.  This field has a length of 15 characters. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "ASST PERFUSIONIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person assisting the perfusionist.  If applicable, this information may be valuable in documentation of this case. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "ASST PERFUSIONIST PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Asst Perfusionist associated with this record.  The VA Code is always of the form \"V\"_six numeric digits; exactly 7.   ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "ASST PERFUSIONIST NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the Asst Perfusionist.  This field has a length of 15 characters. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "ANESTHESIA SEVERITY ASSESSMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NSQIP Definition (2004): Record the American Society of Anesthesiology (ASA) Physical Status Classification of the patient's present physical condition on a scale from 1-6 as it appears on the anesthesia record. Most likely there will be a 2nd assessment of the ASA class prior to anesthesia induction. If this is available, report this most recent assessment.       The definitions are:        ASA 1 - A normal healthy patient        ASA 2 - A patient with mild systemic               disease       ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Patient's date of birth. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "VIETNAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Indicates if patient is a Vietnam era veteran. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "CAMP LEJEUNE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if patient was exposed to contaminated water while stationed at Camp Lejeune, NC between January 1, 1957 and December 31, 1987. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "ENCOUNTER CAMP LEJEUNE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if episode of care is related to exposure to contaminated water while stationed at Camp Lejeune, NC between January 1, 1957 and December 31, 1987. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "CONCURRENT CASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CONCURRENT CASE;",
+      "helpText": "An additional operative procedure performed by a different surgical team  (i.e., a different specialty/service) under the same anesthetic which has  a CPT code different from that of the Principle Operative Procedure (e.g., fixation of a femur fracture in a patient undergoing a laparotomy for trauma). ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "PRINCIPLE POSTOP ICD-10 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The post-op diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "OTHER POSTOP ICD-10 CODE #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first associated diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "OTHER POSTOP ICD-10 CODE #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The second associated diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "OTHER POSTOP ICD-10 CODE #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The third associated diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "OTHER POSTOP ICD-10 CODE #4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The fourth associated diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "OTHER POSTOP ICD-10 CODE #5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The fifth associated diagnosis for the Principle Procedure. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "COMBAT VETERAN INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies if the patient served in a combat zone. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "COMBAT VETERAN LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the war in which the combat service was incurred. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "MEDICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P723'",
+      "required": false,
+      "pointerTo": 723,
+      "helpText": "This is the medical specialty of the provider credited with performing  this non-OR procedure. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "ORGAN1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HART:HEART;LUNG:LUNG;KDNY:KIDNEY;LIVR:LIVER;PCRS:PANCREAS;INTN:INTESTINE;OTHR:OTHER;",
+      "helpText": "This field identifies the first organ transplanted during a  transplant procedure. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "ORGAN2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HART:HEART;LUNG:LUNG;KDNY:KIDNEY;LIVR:LIVER;PCRS:PANCREAS;INTN:INTESTINE;OTHR:OTHER;",
+      "helpText": "This field identifies the second organ transplanted during a transplant procedure. ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "ORGAN3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HART:HEART;LUNG:LUNG;KDNY:KIDNEY;LIVR:LIVER;PCRS:PANCREAS;INTN:INTESTINE;OTHR:OTHER;",
+      "helpText": "This field identifies the third organ transplanted during a transplant procedure. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "PATIENT DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the Station Number of the ward or clinic where the surgery was  performed.  If the ward or clinic cannot be determined, the value  is based on the Station Number of the production division code. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "PLACEHOLD CERNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ642",
+      "length": 642,
+      "required": false,
+      "helpText": "Placeholder for Cerner fields. Reserved for EHRM conversion. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "NEW MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "A national VA system IDENTIFIER which uniquely identifies a patient.   Commonly called \"Patient ICN\" or \"Patient IEN\"; not to be confused with  the IEN from the VistA PATIENT file. ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "*SELF IDENTIFIED GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Male;F:Female;TM:Transgender Male;TF:Transgender Female;O:Other;N:Does not wish to disclose;B:Non-Binary;",
+      "helpText": "The SELF IDENTIFIED GENDER value indicates the patient's personal sense  of their gender identity (if they choose to provide it).    Self-identified gender may be the same or different as the sex assigned  at birth.   This field has been deprecated as of patch ECX*3*196 and should no longer  be used. ",
+      "fieldNumber_": 141
+    }
+  ],
+  "fieldCount": 140,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.811", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

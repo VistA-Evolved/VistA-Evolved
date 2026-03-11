@@ -1,0 +1,47 @@
+{
+  "fileNumber": 102.4,
+  "fileName": "ORDER ACKNOWLEDGEMENT",
+  "globalRoot": "102.4",
+  "globalReference": "^ORA(102.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER",
+      "dataType": "POINTER",
+      "rawType": "RP100'",
+      "required": true,
+      "pointerTo": 100,
+      "helpText": "This field contains the number of an order with results from the Orders file #100. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the provider from the New Person file #200 who placed this order; this order will be presented to this user in the Care  Management dashboard to view and acknowledge the results. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACKNOWLEDGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date/time that the results of this order were viewed and acknowledged in the Care Management dashboard. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "102.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

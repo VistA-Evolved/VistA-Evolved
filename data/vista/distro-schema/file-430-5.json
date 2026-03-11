@@ -1,0 +1,45 @@
+{
+  "fileNumber": 430.5,
+  "fileName": "AR RETURN REASON CODE",
+  "globalRoot": "430.5",
+  "globalReference": "^PRCA(430.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The returned reason code field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text description of the returned reason code on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The category of the returned reason code of the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "430.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

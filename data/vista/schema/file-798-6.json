@@ -1,0 +1,40 @@
+{
+  "fileNumber": 798.6,
+  "fileName": "ROR PHARMACY CODE",
+  "globalRoot": "798.6",
+  "globalReference": "^ROR(798.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DRUG CLASS",
+      "dataType": "POINTER",
+      "rawType": "RP50.605'",
+      "required": true,
+      "pointerTo": 50.605,
+      "helpText": "Select a drug class from the VA DRUG CLASS FILE  (#50.605). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "The REGISTRY field identifies the registry that  the record belongs to. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "798.6", "field": .01, "type": "regular"},
+    {"name": "798.6", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "fileNumber": 51.28,
+  "fileName": "PHARMACOGENOMIC PHENOTYPES",
+  "globalRoot": "51.28",
+  "globalReference": "^PS(51.28,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ75",
+      "length": 75,
+      "required": true,
+      "helpText": "This is the name of the Phenotype. This field, in addition to the synonyms also in this file, will enable the software to derive a vendor phenotype to be used in the pharmacogenomic order check for medication orders. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIRST DATABANK PHENOTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ75",
+      "length": 75,
+      "required": false,
+      "helpText": "This field provides the mapping from the lab test Phenotype to the First DataBank Phenotype. The First DataBank Phenotype will be used when  processing the pharmacogenomic order checks provided by First DataBank. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "51.282",
+      "required": false,
+      "helpText": "This multiple contains a list of synonyms for the NAME field, which is the name of the Phenotype. ",
+      "isMultiple": true,
+      "subFileNumber": 51.282,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P51.28'",
+      "required": false,
+      "pointerTo": 51.28,
+      "helpText": "This field is populated when one Term/Concept replaces another Term/Concept.  This field is controlled by standardization and should only be changed by standardization processes.  This field contains a pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20X",
+      "length": 20X,
+      "required": false,
+      "helpText": "This number represents the VHA Unique ID (VUID). It is a unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "51.2899DA",
+      "required": false,
+      "helpText": "This multiple field contains the history of changes to the status of this reference term, along with the date/time of each change. ",
+      "isMultiple": true,
+      "subFileNumber": 51.2899,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "51.28", "field": 99.97, "type": "regular"},
+    {"name": "51.28", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

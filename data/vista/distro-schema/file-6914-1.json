@@ -1,0 +1,149 @@
+{
+  "fileNumber": 6914.1,
+  "fileName": "CMR",
+  "globalRoot": "6914.1I",
+  "globalReference": "^ENG(6914.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Name of CMR. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "Service to which this CMR is assigned. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A means for sites to briefly describe the purpose of this CMR, if they find it useful to do so. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESPONSIBLE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Employee currently responsible for items on this CMR. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PHONE (RESP OFFICIAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST RECONCILED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which this CMR was last reconciled with centralized non-expendable equipment records (Log 1 or ISMS). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RESEARCH?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Intent of this field is to provide a means of flagging equipment purchased and maintainable with research funds. Please enter 'YES' if and only if this is a research CMR. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Station number of the facility that owns the assets in this CMR. For example, if this CMR is for a national cemetery which is seviced by a VAMC then the entry in this field should be the station number of the national cemetery.   Entries must match an entry in the ALTERNATE STATION NUMBER field (multiple) of the Eng Init Parameters File (#6910). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IT TRACKING",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a CMR has IT TRACKING set to YES, the equipment on that Equipment  Inventory List (EIL) can be edited using options on the IT Equipment Module menu. Additionally, all equipment on such EILs will be expected to be assigned to individual IT owners. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COST CENTER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ALTERNATE RESPONSIBLE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A person authorized to act for the RESPONSIBLE OFFICIAL. This is an optional data element to be used at the discretion of each facility. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DAYS BETWEEN RETURNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the maximum number of days before an equipment item must be returned to be serviced and physically inventoried. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LOAN FORM PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the telephone number to be called concerning loan forms for equipment on this CMR. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "B1", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "6914.1", "field": .01, "type": "regular"},
+    {"name": "6914.1", "field": .01, "type": "regular"},
+    {"name": "6914.1", "field": .5, "type": "regular"},
+    {"name": "6914.1", "field": 1, "type": "regular"},
+    {"name": "6914.1", "field": 20, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(49,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(49,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .6, "value": "W \"   \",$P(^(0),U,8)"}
+  ]
+}

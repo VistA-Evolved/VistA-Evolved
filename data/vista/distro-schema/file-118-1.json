@@ -1,0 +1,300 @@
+{
+  "fileNumber": 118.1,
+  "fileName": "SUPPLEMENTAL FEEDING MENU",
+  "globalRoot": "118.1sI",
+  "globalReference": "^FH(118.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the supplemental feeding menu, a pre-set collection of feeding items for the three feeding times. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a synonym for the feeding menu. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIETARY OR THERAPEUTIC",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DIETARY;T:THERAPEUTIC;",
+      "helpText": "This field indicates whether the menu is generally ordered for dietary or therapeutic reasons. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "10AM FEEDING #1",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the first supplemental feeding item for the 10am feeding. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "10AM #1 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the first 10am feeding item. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "10AM FEEDING #2",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the second supplemental feeding item for the 10am feeding. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "10AM #2 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the second 10am feeding item. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "10AM FEEDING #3",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the third supplemental feeding item for the 10am feeding. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "10AM #3 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the third 10am feeding item. ",
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "10AM FEEDING #4",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the fourth supplemental feeding item for the 10am feeding. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "10AM #4 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the fourth 10am feeding item. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "2PM FEEDING #1",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the first supplemental feeding item for the 2pm feeding. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "2PM #1 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the first 2pm feeding item. ",
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "2PM FEEDING #2",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the second supplemental feeding item for the 2pm feeding. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.5,
+      "fieldName": "2PM #2 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the second 2pm feeding item. ",
+      "fieldNumber_": 15.5
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "2PM FEEDING #3",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the third supplemental feeding item for the 2pm feeding. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "2PM #3 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the third 2pm feeding item. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "2PM FEEDING #4",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the fourth supplemental feeding item for the 2pm feeding. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "2PM #4 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the fourth 2pm feeding item. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "8PM FEEDING #1",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the first supplemental feeding item for the 8pm feeding. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "8PM #1 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the first 8pm feeding item. ",
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "8PM FEEDING #2",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the second supplemental feeding item for the 8pm feeding. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "8PM #2 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the second 8pm feeding item. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "8PM FEEDING #3",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the third supplemental feeding item for the 8pm feeding. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "8PM #3 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the third 8pm feeding item. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "8PM FEEDING #4",
+      "dataType": "POINTER",
+      "rawType": "*P118'",
+      "required": false,
+      "pointerTo": 118,
+      "helpText": "This is the fourth supplemental feeding item for the 8pm feeding. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.5,
+      "fieldName": "8PM #4 QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quantity of the fourth 8pm feeding item. ",
+      "fieldNumber_": 21.5
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this Supplemental Feeding Menu by dietetic personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "118.1", "field": .01, "type": "regular"},
+    {"name": "118.1", "field": 1, "type": "regular"},
+    {"name": "118.1", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

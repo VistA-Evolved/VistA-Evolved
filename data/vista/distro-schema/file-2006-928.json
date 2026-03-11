@@ -1,0 +1,85 @@
+{
+  "fileNumber": 2006.928,
+  "fileName": "QUEUE MESSAGE",
+  "globalRoot": "2006.928",
+  "globalReference": "^MAGV(2006.928,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.927'",
+      "required": true,
+      "pointerTo": 2006.927,
+      "helpText": "This is the queue in which the message is placed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "An ordinal number indicating the priority of this message. Higher  priority messages will be fetched from the queue and processed ahead of  lower priority messages. 1 indicates highest priority and 99 the lowest  priority. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENQUEUED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time at which the message was placed in the queue. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EARLIEST DELIVERY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that must be reached before the message is eligible  to be retrieved from the queue for processing. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EXPIRATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time after which the message is no longer valid or  eligible for processing. An empty value here implies that the message  never expires. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9286",
+      "required": false,
+      "helpText": "The content of the queue message. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9286,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value in the field MESSAGE GROUP ID indicates a subgroup within a queue. For example, the hostname of a DICOM Gateway. The field allows  messages to be filtered by QUEUE and MESSAGE GROUP ID. This is useful when messages from a queue with the same MESSAGE GROUP ID must be processed  together by the same processing agent. For example, messages in the email  queue originating from the same DICOM Gateway host. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.928", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

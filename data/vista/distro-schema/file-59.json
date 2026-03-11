@@ -1,0 +1,811 @@
+{
+  "fileNumber": 59,
+  "fileName": "OUTPATIENT SITE",
+  "globalRoot": "59I",
+  "globalReference": "^PS(59,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAILING FRANK STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the address of the Outpatient Site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AREA CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used for the area code of the outpatient site. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the telephone number of the outpatient site. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAILING FRANK ZIP+4 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is used for the zip code of the outpatient site. This field will allow zip+4 format (excluding the \"-\"). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SITE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used to show the site/station number. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MAILING FRANK CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the city in which the outpatient site is located. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAILING FRANK STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is used to show the state in which the outpatient site resides. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .081,
+      "fieldName": "MAILING COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be printed on the laser labels mailing address label. It  can contain anything the site deems appropriate (i.e. whether mailing is  \"Forwarding service requested\" or \"Address service requested\", etc.) ",
+      "fieldNumber_": .081
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HOLD FUNCTION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This site parameter is used to determine if the 'Hold' function will be used at the medical facility. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "SUSPENSE FUNCTION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This site parameter will be used to determine if the 'Suspense' feature will be used at the medical facility. ",
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CANCEL DRUG IN SAME CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Prescriptions with duplicate classes can only be discontinued if this site parameter is set to 'Yes' and if the Rx has not been put on hold through CPRS. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "REFILL INACTIVE DRUG RXS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This will be used to determine if inactive drugs will be used to refill active prescriptions. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "ASK METHOD OF PICKUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine if method of pickup will be asked for  window prescriptions. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "PASS MEDS ON PROFILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if pass medication within specified date range will be listed on profiles. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "PROFILE `SORT BY' DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DATE;1:CLASS;2:MEDICATION;",
+      "helpText": "This field will be used to determine the sort order of medications on profiles. ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "COPIES ON NEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine the number copies for labels to print. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "DRUG CHECK FOR CLERK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the duplicate drug warnings should be shown for non-pharmacist. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "FEE BASIS SUPPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if fee basis prescriptions are processed. ",
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .118,
+      "fieldName": "MULTI RX REQUEST FORM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the multiple prescription request forms are printed with medication labels. ",
+      "fieldNumber_": .118
+    },
+    {
+      "fieldNumber": .119,
+      "fieldName": "BARCODES ON REQUEST FORMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REFILL REQUEST ONLY;1:MULTI RX REQUEST ONLY;2:BOTH;",
+      "helpText": "This field is used to determine if barcodes are printed on profiles,  labels, and multi request forms. ",
+      "fieldNumber_": .119
+    },
+    {
+      "fieldNumber": .1191,
+      "fieldName": "BARCODES ON ACTION PROFILES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if barcodes are to print with the action profiles. Barcodes on action profiles are a new feature for version 6.0 of outpatient. The printer used must be setup or have barcode capabilities for the barcodes to print.  Contact IRM to help determine which printer have barcode capabilities. ",
+      "fieldNumber_": .1191
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "VERIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if prescriptions entered by a  non-pharmacist are placed in a non-verified status. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .121,
+      "fieldName": "DISPLAY GROUP",
+      "dataType": "POINTER",
+      "rawType": "P59.3'",
+      "required": false,
+      "pointerTo": 59.3,
+      "helpText": "This field is used to determine which bingo board display screen will be shown on the waiting room monitor. ",
+      "fieldNumber_": .121
+    },
+    {
+      "fieldNumber": .122,
+      "fieldName": "SCREEN PROFILES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if profiles are displayed when refilling and renewing medications. ",
+      "fieldNumber_": .122
+    },
+    {
+      "fieldNumber": .123,
+      "fieldName": "EDIT PATIENT DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if editing of patient data will be allowed. ",
+      "fieldNumber_": .123
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EDIT DRUG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine if drugs can be changed during the prescription edit option. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RENEWING RX'S ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine if renewing of medications will be allowed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PASS MEDS CANCEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if pass medications are to be cancelled. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "AUTO SUSPEND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if medication that is refilled or renewed before the next possible fill date is to be placed  in suspense automatically. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "SHALL COMPUTER ASSIGN RX #S",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the computer will auto generate prescription numbers. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "PROFILE WITH NEW PRESCRIPTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if medication profiles are printed when new medication is ordered. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "SLAVED LABEL PRINTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to allow printing of RX labels without being able to queue to a printer.  This parameter is primarily for slaved printing of RX labels.  If 'yes' is the answer the prompt for action to be taken on the label will include the '/PRINT' action. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "METHADONE PROGRAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be used to determine if the site has a methadone program  and if a particular drug should be prompted for. ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .52,
+      "fieldName": "METHADONE DRUG",
+      "dataType": "POINTER",
+      "rawType": "*P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This field will be used to show what drug is being used if the site has a  methadone program. ",
+      "fieldNumber_": .52
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*SITE DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "THIS FIELD IS NO LONGER USED!  CLOZAPINE DATA ROLLUP HAS BEEN TAKEN OVER BY THE MENTAL HEALTH PACKAGE.   This field will be used to indicate the Drug Enforcement Agency ID  number for this site. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "*SITE (NATIONAL NAME)",
+      "dataType": "POINTER",
+      "rawType": "P736'",
+      "required": false,
+      "pointerTo": 736,
+      "helpText": "THIS FIELD IS NO LONGER USED!  CLOZAPINE DATA ROLLUP HAS BEEN TAKEN OVER BY THE MENTAL HEALTH PACKAGE.   This identifies the site by linking it to an entry in file 736. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DAYS TO PULL FROM SUSPENSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field will be used to pull a patient's medication from suspense for a specified number of days.  The day range is from 0 to 10.   THIS NUMBER IS DIVISION SPECIFIC. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "DAYS TO PULL SUSPENDED CS CMOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field will be used to pull a patient's controlled substances from suspense for CMOP medications for a specified number of days.  The range is between 0 and 10. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "RECENTLY DC'D/EXPIRED DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the number of days a discontinued or expired med order appears in reverse video on a patient's med profile. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NEW LABEL STOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine which medication label stock will be used. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EXTERNAL INTERFACE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INTERFACE TURNED OFF;1:SEND ALL ORDERS AND PRINT LABEL;2:SEND ALL ORDERS AND DON'T PRINT LABEL;3:SEND MARKED ORDERS AND DON'T PRINT;4:SEND MARKED ORDERS AND PRINT LABEL;",
+      "helpText": "This field allows sites to alter the characteristics of the external interface. The Set of Codes field have the following values:   0 - the external interface is off 1 - send all drugs to the external interface; print labels locally 2 - send all drugs to the external interface; don't print labels locally 3 - send only marked drugs to the external interface; don't print labels     locally 4 - send only marked drugs to external interface and print labels through     VistA. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BLANK LABEL BETWEEN PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will determine if a blank label should print between patients on the label printers. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VERIFYING PHARMACIST ON LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This site parameter will determine if the name of the verifying pharmacist  or the name of the person who made the order request will print on the Rx label.  If the parameter is set to Yes the verifying pharmacist name will print. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CPRS ORDERING INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "59.08P",
+      "required": false,
+      "helpText": "These are the Institutions of CPRS Pending orders that can be completed when signed in under this Outpatient site. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEFAULT ERX CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the default eRx clinic, used to hold the eRx clinic that will be  associated with an eRx prescription. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "ERX DEFAULT LOOKBACK DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field holds the number of days in the past the eRx software will  search the eRx holding queue on initial load, and when performing  searches. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "RELATED INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Institution associated with the site. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "NPI INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The value in the field should point to the entry in the INSTITUTION file (#4) that contains the NPI number for the dispensing pharmacy for this Outpatient Pharmacy division. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "AUTOMATED DISPENSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Less than V2.4;2.4:HL7 V.2.4;",
+      "helpText": "This field will determine what version of the automated dispense machine  this site is running.  If the machine is older than HL7 V.2.4, enter  letter O, if HL7 V.2.4 has been installed, enter 2.4. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 105.1,
+      "fieldName": "FILE RELEASE DATE/TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if the release date/time is to be filed for the prescription dispensed by an external interface. ",
+      "fieldNumber_": 105.1
+    },
+    {
+      "fieldNumber": 105.2,
+      "fieldName": "ENABLE MASTER FILE UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field will determine if the automated dispense machines are ready to  receive HL7 V.2.4 messages. ",
+      "fieldNumber_": 105.2
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "SCRIPTALK DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field contains a pointer to the ScripTalk printer device in the  device file. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 107.1,
+      "fieldName": "SCRIPTALK AUTO-PRINT SETTINGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUTO PRINT;M:MANUAL PRINT;",
+      "helpText": "Set this to 'A' to have a ScripTalk label automatically print for  ScripTalk-enrolled patients whenever their regular medication label  prints. Set to 'M' if ScripTalk labels will be printed manually. ",
+      "fieldNumber_": 107.1
+    },
+    {
+      "fieldNumber": 107.2,
+      "fieldName": "SCRIPTALK PRINTER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:2K LABEL;10:10K LABEL;",
+      "helpText": "This field is used to determine the amount of readable prescription data that is printed on the ScripTalk labels that are read aloud by the ScripTalk Station Reader. Set this field according to the type of ScripTalk printer, either 2K or 10K. This setting is used to determine when to stop sending prescription data to the readable portion of the label and print a readable message to the patient to seek help for this particular prescription label, since there was not enough space for the prescript",
+      "fieldNumber_": 107.2
+    },
+    {
+      "fieldNumber": 107.3,
+      "fieldName": "VOID OTHER LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the site to define, by division, whether or not they  wish to void the print of the drug name for the non-ScripTalk labels when  the patient is enrolled in ScripTalk. ",
+      "fieldNumber_": 107.3
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "LABEL/PROFILE MONITOR MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Maximum number of label/profiles to be stored in the Label/Profile Monitor list for each printer device.  The default and minimum value for this number is 1000.  Each time the printer is used an entry is made in the Label/Profile monitor and if the monitor holds more entries than specified by this parameter, the oldest entry is deleted. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "FDA MED GUIDE PRINT SERVER URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Uniform Resource Locator(URL) and Port Number for the Print  Server running the Java Application responsible for automatically  printing of the Food and Drug Administration(FDA) Medication Guides for  the division (e.g., 'http://127.0.0.1:8092/').    If you do not want to use the FDA Medication Guide automatic printing  functionality do not populate this field. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "FDA MED GUIDE PRINTER",
+      "dataType": "POINTER",
+      "rawType": "59.0135IP",
+      "required": false,
+      "helpText": "This sub-file contains a list of printers used for printing FDA Medication Guides for this division. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "NARCOTICS NUMBERED DIFFERENTLY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if narcotics will be numbered differently from other medications/supplies. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "NARCOTIC LOWER BOUND",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to determine what prescription numbers narcotics are to start with if narcotics are numbered differently from other  prescriptions/supplies. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1002,
+      "fieldName": "NARCOTIC UPPER BOUND",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to determine the highest prescription number used for narcotics if this type of medication is numbered differently from other medications/supplies. ",
+      "fieldNumber_": 1002
+    },
+    {
+      "fieldNumber": 1002.1,
+      "fieldName": "LAST NARCOTIC NUMBER ISSUED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to indicate last number issued for narcotic medications. ",
+      "fieldNumber_": 1002.1
+    },
+    {
+      "fieldNumber": 1003,
+      "fieldName": "IB SERVICE/SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP49'X",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "Select the appropriate entry in the Service/Section file (#49) that is to be used for the Pharmacy Copayment/Integrated Billing procedures. ",
+      "fieldNumber_": 1003
+    },
+    {
+      "fieldNumber": 1004,
+      "fieldName": "NARRATIVE FOR COPAY DOCUMENT",
+      "dataType": "SUBFILE",
+      "rawType": "59.01004",
+      "required": false,
+      "helpText": "This field contains information from the site regarding the copayment procedures for the patient to follow upon receipt of the copay document. For example, information may include a telephone number to call regarding billing inquiries, a payment mailing address, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 59.01004,
+      "fieldNumber_": 1004
+    },
+    {
+      "fieldNumber": 1005,
+      "fieldName": "NARRATIVE REFILLABLE RX",
+      "dataType": "SUBFILE",
+      "rawType": "59.01005",
+      "required": false,
+      "helpText": "This field contains information from the site regarding procedures for the patient to obtain a refill of his refillable medication. May include the address, phone number, etc. that will assist the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 59.01005,
+      "fieldNumber_": 1005
+    },
+    {
+      "fieldNumber": 1006,
+      "fieldName": "NARRATIVE NON-REFILLABLE RX",
+      "dataType": "SUBFILE",
+      "rawType": "59.01006",
+      "required": false,
+      "helpText": "This field contains information from the site regarding procedures for the patient to obtain a new prescription for his non-refillable  medication. This field may contain address, phone number, etc that will assist the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 59.01006,
+      "fieldNumber_": 1006
+    },
+    {
+      "fieldNumber": 1007,
+      "fieldName": "CHARGE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field is a pointer to the Hospital Location File (#44). Multi-division sites should populate this field for each division. This data could be obtained from the Business Office of the Medical Center. ",
+      "fieldNumber_": 1007
+    },
+    {
+      "fieldNumber": 1008,
+      "fieldName": "NCPDP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the site-specific National Council for Prescription Drug  Programs number (NCPDP), formerly referred to as the National Association  of Boards of Pharmacy Number (NABP). ",
+      "fieldNumber_": 1008
+    },
+    {
+      "fieldNumber": 2001,
+      "fieldName": "PRESCRIPTION # LOWER BOUND",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to enter the lowest prescription number for this site. ",
+      "fieldNumber_": 2001
+    },
+    {
+      "fieldNumber": 2002,
+      "fieldName": "PRESCRIPTION # UPPER BOUND",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to enter the highest presciption number for this site. ",
+      "fieldNumber_": 2002
+    },
+    {
+      "fieldNumber": 2003,
+      "fieldName": "LAST PRESCRIPTION # ISSUED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is used to store the last RX number used. ",
+      "fieldNumber_": 2003
+    },
+    {
+      "fieldNumber": 2004,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date will indicate that the Outpatient Site is no longer active, and cannot be selected through the Outpatient Pharmacy options. ",
+      "fieldNumber_": 2004
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "LOGICAL LINK",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "This is a pointer to the Logical Link file (#870).  This link is used to transmit messages to an external (client) application.  This field is not filled in when messages are exchanged between DHCP applications on the same system. This field will be used as the Logical Link for the prescription if there is no Clinic associated with the prescription, or if there is a Clinic associated with the prescription, but the Institution derived from that Clinic does not have an entry in the CPRS ORDERING I",
+      "fieldNumber_": 2005
+    },
+    {
+      "fieldNumber": 2006,
+      "fieldName": "DISPENSE DNS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "THIS IS THE DNS COMPUTER NAME OF THE AUTOMATED DISPENSING MACHINE THAT IS  USED FOR THIS OUTPATIENT SITE DIVISION. ",
+      "fieldNumber_": 2006
+    },
+    {
+      "fieldNumber": 2007,
+      "fieldName": "DISPENSE DNS PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "ENTER THE DNS PORT NUMBER ASSOCIATED WITH THE AUTOMATED DISPENSE MACHINE  FOR THIS OUTPATIENT PHARMACY SITE DIVISION. ",
+      "fieldNumber_": 2007
+    },
+    {
+      "fieldNumber": 2008,
+      "fieldName": "DISPENSING SYSTEM PRINTER",
+      "dataType": "POINTER",
+      "rawType": "59.02008P",
+      "required": false,
+      "helpText": "This field identifies the name of the dispensing system printer device. When the user selects this printer device and the external interface is in use, an HL7 message will be generated. ",
+      "fieldNumber_": 2008
+    },
+    {
+      "fieldNumber": 2030,
+      "fieldName": "PROCESS AUTO REFILLS FOR INPAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag should be set to Yes, only if the site wants the scheduled  AUTO REFILL [PSO AUTO REFILL] option to process refills for patients who are currently an inpatient. The AUTO REFILL job defaults to NO unless the site has this flagged as YES. ",
+      "fieldNumber_": 2030
+    },
+    {
+      "fieldNumber": 2035,
+      "fieldName": "PROCESS AUTO REFILLS FOR CNH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag should be set to Yes, only if the site wants the scheduled AUTO REFILL [PSO AUTO REFILL] option to process refills for CNH patients. The AUTO REFILL job defaults to NO unless the site has this flagged as YES. ",
+      "fieldNumber_": 2035
+    },
+    {
+      "fieldNumber": 3001,
+      "fieldName": "ONEVA PHARMACY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "This flag controls the functionality of the OneVA Pharmacy remote  prescription logic. If the flag is turned on, this facility will be able  to query prescriptions from other facilities, and will accept incoming  refill and partial fills from other VA medical facilities. If the flag is  turned 'off', no queries will be made, and external refill/partial fill  requests will be declined. ",
+      "fieldNumber_": 3001
+    }
+  ],
+  "fieldCount": 80,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "59", "field": .01, "type": "regular"},
+    {"name": "59", "field": .06, "type": "regular"},
+    {"name": "59", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .06, "value": "D EN^DDIOL($P(^(0),U,6),\"\",\"?2\")"},
+    {"field": 2004, "value": "D:$G(^(\"I\")) EN^DDIOL(\"Inactive as of: \"_$$FMTE^DILIBF($P(^(\"I\"),U,1),5),\"\",\"?2\")"}
+  ]
+}

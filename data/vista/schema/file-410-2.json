@@ -1,0 +1,39 @@
+{
+  "fileNumber": 410.2,
+  "fileName": "CLASSIFICATION OF REQUEST",
+  "globalRoot": "410.2",
+  "globalReference": "^PRCS(410.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name used to identify the type of request.  File  #410.2  is pointed to by the Classification of Request field (#8) of the Control Point Activity file, #410. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTROL POINT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the Fund Control Point number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "410.2", "field": .01, "type": "regular"},
+    {"name": "410.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

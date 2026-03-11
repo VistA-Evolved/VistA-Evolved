@@ -1,0 +1,65 @@
+{
+  "fileNumber": 62.2,
+  "fileName": "LAB SECTION",
+  "globalRoot": "62.2I",
+  "globalReference": "^LAB(62.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Lab area.  It may be a functional area or an area defined by another set of rules.  Each area may have multiple accession areas. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CH:CHEM, HEM, TOX, SER, RIA, ETC.;MI:MICROBIOLOGY;EM:ELECTRON MICROSCOPY;SP:SURGICAL PATHOLOGY;CY:CYTOLOGY;AU:AUTOPSY;BB:BLOOD BANK;AD:ADMINISTRATIVE;",
+      "helpText": "This is a 2 to 3 character abbreviation designating the Lab area (section). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviation is used on some reports. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAB SUB-SECTION(S)",
+      "dataType": "POINTER",
+      "rawType": "62.201PA",
+      "required": false,
+      "helpText": "These are the names of the various lab sections which may be made up of one or more lab sections. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAJOR SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP62.2",
+      "required": true,
+      "pointerTo": 62.2,
+      "helpText": "This is a major section of the laboratory. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""}
+  ]
+}

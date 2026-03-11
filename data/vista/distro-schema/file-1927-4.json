@@ -1,0 +1,2961 @@
+{
+  "fileNumber": 1927.4,
+  "fileName": "NUPA CARE PLANS",
+  "globalRoot": "1927.4",
+  "globalReference": "^NUPA(1927.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the DATE/TIME ENTERED from the last assessment or reassessment ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the PATIENT from the last assessment or reassessment ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the ENTERED BY from the last assessment or reassessment ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GUARDIAN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's legal guardian. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIMARY LANGUAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's primary language. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "ACCOMPLISH BY THIS HOSP",
+      "dataType": "SUBFILE",
+      "rawType": "1927.53",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.53,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CULTURAL PRACTICES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "These are any cultural practices that the patient may have that the nurse  believes may affect care. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "CULTURAL PRACTICES DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.42",
+      "required": false,
+      "helpText": "This is the CULTURAL PRACTICES DESCRIPTION from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.42,
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BLOOD TRANSFUSION CONCERNS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Any blood tranfusion concerns that patient may have. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "BLOOD TRANSFUSION DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.43",
+      "required": false,
+      "helpText": "This is the BLOOD TRANSFUSION DESCRIPTION from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.43,
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADVANCE DIRECTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the patient have any advance directives? ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "ADVANCE DIRECTIVE LOCATION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.44",
+      "required": false,
+      "helpText": "This is the ADVANCE DIRECTIVE LOCATION from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.44,
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SPECIAL DIET NEEDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the patient have any special diet needs? ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "SPECIAL DIET NEEDS DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.45",
+      "required": false,
+      "helpText": "This is the SPECIAL DIET NEEDS DESCRIPTION from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.45,
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUSPECTED VICTIM OF ABUSE/NEGL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the nurse suspect that the patient is a victim of abuse or neglect?  ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ORGAN DONOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the patient an organ donor? ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ALLERGY POINTER",
+      "dataType": "POINTER",
+      "rawType": "1927.412P",
+      "required": false,
+      "helpText": "List of the patients allergies as of the moment of the care plan. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRECAUTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MRSA precautions to take around this patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LEVEL OF UNDERSTANDING",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The level of understanding that a patient has of the education they were  just given on MRSA. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PRECAUTIONS (FLAGS)",
+      "dataType": "SUBFILE",
+      "rawType": "1927.417",
+      "required": false,
+      "helpText": "Any precauions or flags (local or national) as of the moment of the care  plan. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.417,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LATEST DNR NOTE",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "Latest DNR note, if any, on file for this patient. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Ward that the patient was on as of the moment of the care plan. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ORIENTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Was the patient oriented to his/her room as of the moment of the care  plan. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ABLE TO ASSESS EDUCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was the nurse able to assess the patient's level of education? ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LEARNS BEST BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "How does the patient learn best?  Hearing, seeing, etc. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "EDUCATION PREFERRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "What kind of education does the patient prefer?  Computer based, group  classes, etc. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "READINESS TO LEARN",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "What is the patient's readiness to learn?  Ready to learn, not ready,  sedated, etc. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "BARRIERS TO LEARNING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Does the patient have any barriers to learning?  None, mental status,  hearing, etc. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.1,
+      "fieldName": "BARRIERS TO LEARNING DESCRIP",
+      "dataType": "SUBFILE",
+      "rawType": "1927.46",
+      "required": false,
+      "helpText": "This is the BARRIERS TO LEARNING DESCRIP from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.46,
+      "fieldNumber_": 25.1
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "KNOWLEDGE OF CURRENT ILLNESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:LIMITED;2:EXTENSIVE;",
+      "helpText": "What is the patient's level of knowledge of his/her illness?  None,  limited, or extensive. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EDUCATIONAL INFO PROVIDED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Was any educational information provided to the patient?  BCMA, Managing  Your Pain, etc. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INTERVENTIONS",
+      "dataType": "POINTER",
+      "rawType": "1927.47P",
+      "required": false,
+      "helpText": "Nursing Interventions provided to correct problems that a patient has. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "1927.431P",
+      "required": false,
+      "helpText": "List of problems that a patient has. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PROBLEM COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.432",
+      "required": false,
+      "helpText": "Medical comments on the patient's problems. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.432,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DISCH TO HOME WO ADD SERVICES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Should the patient be discharged to his/her home without additional  services? ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "DP GOALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Does the patient need assistance from a Discharge Planning nurse or a  Social Worker? ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 41.1,
+      "fieldName": "DP GOALS OTHER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The \"Other 1\" free text goal entered by the user. ",
+      "fieldNumber_": 41.1
+    },
+    {
+      "fieldNumber": 41.2,
+      "fieldName": "DP GOALS OTHER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The \"Other 2\" free text goal entered by the user. ",
+      "fieldNumber_": 41.2
+    },
+    {
+      "fieldNumber": 41.3,
+      "fieldName": "DP GOALS OTHER 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The \"Other 3\" free text goal entered by the user. ",
+      "fieldNumber_": 41.3
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "BRADEN SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The patient's Braden Score as of the moment of the care plan. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 42.5,
+      "fieldName": "BRADEN SCORE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the Braden test was done. ",
+      "fieldNumber_": 42.5
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "MORSE SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The patient's Morse Fall score as of the moment of the care plan. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.5,
+      "fieldName": "MORSE SCORE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the Morse Fall test was done. ",
+      "fieldNumber_": 43.5
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "FAMILY SUPPORT INVOLVED IN DP",
+      "dataType": "SUBFILE",
+      "rawType": "1927.444",
+      "required": false,
+      "helpText": "Does the patient need family support in the planning of his/her discharge? ",
+      "isMultiple": true,
+      "subFileNumber": 1927.444,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DP OBSERVATIONS/COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.445",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.445,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "GENERAL OBSERVATIONS/COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.48",
+      "required": false,
+      "helpText": "General comments on this care plan. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.48,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PROBLEM EVALUATIONS",
+      "dataType": "POINTER",
+      "rawType": "1927.49P",
+      "required": false,
+      "helpText": "Log of evaluations of the patient's problems. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "INTERVENTION EVALUATION",
+      "dataType": "POINTER",
+      "rawType": "1927.461P",
+      "required": false,
+      "helpText": "Log of interventions to help the patient's problems. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "BED TO CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the BED TO CHAIR from the last assessment or reassessment ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 70.5,
+      "fieldName": "BED TO CHAIR STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the BED TO CHAIR STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 70.5
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "BED TO STRETCHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the BED TO STRETCHER from the last assessment or reassessment ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 71.5,
+      "fieldName": "BED TO STRETCHER STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the BED TO STRETCHER STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 71.5
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "CHAIR TO STRETCHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CHAIR TO STRETCHER from the last assessment or reassessment ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 72.5,
+      "fieldName": "CHAIR TO STRETCHER STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the CHAIR TO STRETCHER STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 72.5
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "REPOS IN BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the REPOS IN BED from the last assessment or reassessment ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 73.5,
+      "fieldName": "REPOS IN BED STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the REPOS IN BED STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 73.5
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "REPOS IN CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the REPOS IN CHAIR from the last assessment or reassessment ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 74.5,
+      "fieldName": "REPOS IN CHAIR STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the REPOS IN CHAIR STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 74.5
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TRANSFER FROM FLOOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the TRANSFER FROM FLOOR from the last assessment or reassessment ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 75.5,
+      "fieldName": "TRANSFER FROM FLOOR STAFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the TRANSFER FROM FLOOR STAFF from the last assessment or reassessment ",
+      "fieldNumber_": 75.5
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "SLING TYPE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the SLING TYPE from the last assessment or reassessment ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "SLING SIZE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the SLING SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "GEN INFO DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the General Info tab has been completed. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "RESP DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Respiratory tab has been completed. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "CV DONE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the CV tab has been completed. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "NEURO DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Neuro tab has been completed. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "GI DONE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the GI tab has been completed. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "GU DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the GU tab has been completed. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "MS DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Musculoskeletal tab has been completed. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "SKIN DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Skin tab has been completed. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "PS DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Psychosocial tab has been completed. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "MH DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Mental Health tab has been completed. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "FUNC DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Functional tab has been completed. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "DP DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No flag noting if the Discharge Planning tab has been completed. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "REL PRACTICES FOR CHAPLAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the REL PRACTICES FOR CHAPLAIN from the last assessment or reassessment ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "IMMEDIATE CHAPLAIN VISIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the IMMEDIATE CHAPLAIN VISIT from the last assessment or reassessment ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 114.1,
+      "fieldName": "SHOULD CLERGY BE NOTIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the SHOULD CLERGY BE NOTIFIED from the last assessment or reassessment ",
+      "fieldNumber_": 114.1
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "RECV INFO ON AD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the RECV INFO ON AD from the last assessment or reassessment ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "INITIATE OR CHANGE AD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the INITIATE OR CHANGE AD from the last assessment or reassessment ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "TEST FOR MRSA BROCHURE GIVEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the TEST FOR MRSA BROCHURE GIVEN from the last assessment or reassessment ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 117.1,
+      "fieldName": "PATIENT AUTHORIZE NARES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the PATIENT AUTHORIZE NARES from the last assessment or reassessment ",
+      "fieldNumber_": 117.1
+    },
+    {
+      "fieldNumber": 117.2,
+      "fieldName": "NARES PREFORMED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the NARES PREFORMED from the last assessment or reassessment ",
+      "fieldNumber_": 117.2
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "INFECTION CONTROL ED PROVIDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the INFECTION CONTROL ED PROVIDED from the last assessment or reassessment ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "PAIN LOCATION 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN LOCATION 1 from the last assessment or reassessment ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "PAIN TYPE 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the PAIN TYPE 1 from the last assessment or reassessment ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "ONSET OF PAIN 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ONSET OF PAIN 1 from the last assessment or reassessment ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "PAIN WORSE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN WORSE 1 from the last assessment or reassessment ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "PAIN BETTER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN BETTER 1 from the last assessment or reassessment ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "AREAS OF LIFE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AREAS OF LIFE 1 from the last assessment or reassessment ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "PAIN GOAL 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PAIN GOAL 1 from the last assessment or reassessment ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "OTHER PAIN REGION 1",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4127",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4127,
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "PAIN LOCATION 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN LOCATION 2 from the last assessment or reassessment ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "PAIN TYPE 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the PAIN TYPE 2 from the last assessment or reassessment ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "ONSET OF PAIN 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ONSET OF PAIN 2 from the last assessment or reassessment ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "PAIN WORSE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN WORSE 2 from the last assessment or reassessment ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "PAIN BETTER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN BETTER 2 from the last assessment or reassessment ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "AREAS OF LIFE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AREAS OF LIFE 2 from the last assessment or reassessment ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "PAIN GOAL 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PAIN GOAL 2 from the last assessment or reassessment ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "OTHER PAIN REGION 2",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4137",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4137,
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "PAIN LOCATION 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN LOCATION 3 from the last assessment or reassessment ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "PAIN TYPE 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the PAIN TYPE 3 from the last assessment or reassessment ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "ONSET OF PAIN 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ONSET OF PAIN 3 from the last assessment or reassessment ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "PAIN WORSE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN WORSE 3 from the last assessment or reassessment ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "PAIN BETTER 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN BETTER 3 from the last assessment or reassessment ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "AREAS OF LIFE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AREAS OF LIFE 3 from the last assessment or reassessment ",
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "PAIN GOAL 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PAIN GOAL 3 from the last assessment or reassessment ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "OTHER PAIN REGION 3",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4147",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4147,
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "PAIN LOCATION 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN LOCATION 4 from the last assessment or reassessment ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "PAIN TYPE 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the PAIN TYPE 4 from the last assessment or reassessment ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "ONSET OF PAIN 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ONSET OF PAIN 4 from the last assessment or reassessment ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "PAIN WORSE 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN WORSE 4 from the last assessment or reassessment ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "PAIN BETTER 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN BETTER 4 from the last assessment or reassessment ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "AREAS OF LIFE 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AREAS OF LIFE 4 from the last assessment or reassessment ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "PAIN GOAL 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PAIN GOAL 4 from the last assessment or reassessment ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "OTHER PAIN REGION 4",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4157",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4157,
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "PAIN LOCATION 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN LOCATION 5 from the last assessment or reassessment ",
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "PAIN TYPE 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the PAIN TYPE 5 from the last assessment or reassessment ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "ONSET OF PAIN 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ONSET OF PAIN 5 from the last assessment or reassessment ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "PAIN WORSE 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN WORSE 5 from the last assessment or reassessment ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "PAIN BETTER 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PAIN BETTER 5 from the last assessment or reassessment ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "AREAS OF LIFE 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AREAS OF LIFE 5 from the last assessment or reassessment ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "PAIN GOAL 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PAIN GOAL 5 from the last assessment or reassessment ",
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 167,
+      "fieldName": "OTHER PAIN REGION 5",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4167",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4167,
+      "fieldNumber_": 167
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "ABILITY TO READ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the ABILITY TO READ from the last assessment or reassessment ",
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "ABILITY TO WRITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the ABILITY TO WRITE from the last assessment or reassessment ",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "EDUCATIONAL LEVEL",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The patient's educational level.  Grade school, high school, college,  etc. ",
+      "fieldNumber_": 172
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "PERIPHERAL LINE 1 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 1 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 181,
+      "fieldName": "PERIPHERAL LINE 1 SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "16:16 Gauge;18:18 Gauge;20:20 Gauge;22:22 Gauge;O:Other;",
+      "helpText": "This is the PERIPHERAL LINE 1 SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 181
+    },
+    {
+      "fieldNumber": 182,
+      "fieldName": "PERIPHERAL LINE 1 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 1 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 182
+    },
+    {
+      "fieldNumber": 183,
+      "fieldName": "PERIPHERAL LINE 2 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 2 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 183
+    },
+    {
+      "fieldNumber": 184,
+      "fieldName": "PERIPHERAL LINE 2 SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "16:16 Gauge;18:18 Gauge;20:20 Gauge;22:22 Gauge;O:Other;",
+      "helpText": "This is the PERIPHERAL LINE 2 SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 184
+    },
+    {
+      "fieldNumber": 185,
+      "fieldName": "PERIPHERAL LINE 2 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 2 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 185
+    },
+    {
+      "fieldNumber": 186,
+      "fieldName": "PERIPHERAL LINE 3 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 3 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 186
+    },
+    {
+      "fieldNumber": 187,
+      "fieldName": "PERIPHERAL LINE 3 SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "16:16 Gauge;18:18 Gauge;20:20 Gauge;22:22 Gauge;O:Other;",
+      "helpText": "This is the PERIPHERAL LINE 3 SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 187
+    },
+    {
+      "fieldNumber": 188,
+      "fieldName": "PERIPHERAL LINE 3 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the PERIPHERAL LINE 3 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 188
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "CENTRAL LINE 1 TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 1 TYPE from the last assessment or reassessment ",
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 190.5,
+      "fieldName": "CENTRAL LINE 1 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 1 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 190.5
+    },
+    {
+      "fieldNumber": 191,
+      "fieldName": "CENTRAL LINE 1 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 1 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 191
+    },
+    {
+      "fieldNumber": 192,
+      "fieldName": "CENTRAL LINE 1 IMPREG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 1 IMPREG from the last assessment or reassessment ",
+      "fieldNumber_": 192
+    },
+    {
+      "fieldNumber": 192.5,
+      "fieldName": "CENTRAL LINE 1 POWER INJ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 1 POWER INJ from the last assessment or reassessment ",
+      "fieldNumber_": 192.5
+    },
+    {
+      "fieldNumber": 193,
+      "fieldName": "CENTRAL LINE 2 TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 2 TYPE from the last assessment or reassessment ",
+      "fieldNumber_": 193
+    },
+    {
+      "fieldNumber": 193.5,
+      "fieldName": "CENTRAL LINE 2 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 2 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 193.5
+    },
+    {
+      "fieldNumber": 194,
+      "fieldName": "CENTRAL LINE 2 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 2 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 194
+    },
+    {
+      "fieldNumber": 195,
+      "fieldName": "CENTRAL LINE 2 IMPREG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 2 IMPREG from the last assessment or reassessment ",
+      "fieldNumber_": 195
+    },
+    {
+      "fieldNumber": 195.5,
+      "fieldName": "CENTRAL LINE 2 POWER INJ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 2 POWER INJ from the last assessment or reassessment ",
+      "fieldNumber_": 195.5
+    },
+    {
+      "fieldNumber": 196,
+      "fieldName": "CENTRAL LINE 3 TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 3 TYPE from the last assessment or reassessment ",
+      "fieldNumber_": 196
+    },
+    {
+      "fieldNumber": 196.5,
+      "fieldName": "CENTRAL LINE 3 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 3 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 196.5
+    },
+    {
+      "fieldNumber": 197,
+      "fieldName": "CENTRAL LINE 3 DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CENTRAL LINE 3 DATE INS from the last assessment or reassessment ",
+      "fieldNumber_": 197
+    },
+    {
+      "fieldNumber": 198,
+      "fieldName": "CENTRAL LINE 3 IMPREG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 3 IMPREG from the last assessment or reassessment ",
+      "fieldNumber_": 198
+    },
+    {
+      "fieldNumber": 198.5,
+      "fieldName": "CENTRAL LINE 3 POWER INJ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CENTRAL LINE 3 POWER INJ from the last assessment or reassessment ",
+      "fieldNumber_": 198.5
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "TRACH TYPE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the TRACH TYPE from the last assessment or reassessment ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "OTHER TRACH TYPE",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4201",
+      "required": false,
+      "helpText": "This is the OTHER TRACH TYPE from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.4201,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "TRACH SIZE",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4202",
+      "required": false,
+      "helpText": "This is the TRACH SIZE from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.4202,
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "TOBACCO SCREEN",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The results of the patient's last tobacco screening. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "RESP HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Respiratory problems that a patient has had. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "PRODUCTIVE COUGH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the PRODUCTIVE COUGH from the last assessment or reassessment ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "CHEST TUBE 1 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CHEST TUBE LOCATION 1 from the last assessment or reassessment ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 206.5,
+      "fieldName": "CHEST TUBE 1 DATE INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 1 DATE INSERTED from the last assessment or reassessment ",
+      "fieldNumber_": 206.5
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "CHEST TUBE 2 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 2 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 207.5,
+      "fieldName": "CHEST TUBE 2 DATE INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 2 DATE INSERTED from the last assessment or reassessment ",
+      "fieldNumber_": 207.5
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "CHEST TUBE 3 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 3 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 208.5,
+      "fieldName": "CHEST TUBE 3 DATE INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 3 DATE INSERTED from the last assessment or reassessment ",
+      "fieldNumber_": 208.5
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "CHEST TUBE 4 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 4 LOCATION from the last assessment or reassessment ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 209.5,
+      "fieldName": "CHEST TUBE 4 DATE INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CHEST TUBE 4 DATE INSERTED from the last assessment or reassessment ",
+      "fieldNumber_": 209.5
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "EDEMA-RIGHT ARM",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-RIGHT ARM from the last assessment or reassessment ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 210.5,
+      "fieldName": "EDEMA-LEFT ARM",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-LEFT ARM from the last assessment or reassessment ",
+      "fieldNumber_": 210.5
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "EDEMA-RIGHT HAND",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-RIGHT HAND from the last assessment or reassessment ",
+      "fieldNumber_": 211
+    },
+    {
+      "fieldNumber": 211.5,
+      "fieldName": "EDEMA-LEFT HAND",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-LEFT HAND from the last assessment or reassessment ",
+      "fieldNumber_": 211.5
+    },
+    {
+      "fieldNumber": 212,
+      "fieldName": "EDEMA-RIGHT LEG",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-RIGHT LEG from the last assessment or reassessment ",
+      "fieldNumber_": 212
+    },
+    {
+      "fieldNumber": 212.5,
+      "fieldName": "EDEMA-LEFT LEG",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-LEFT LEG from the last assessment or reassessment ",
+      "fieldNumber_": 212.5
+    },
+    {
+      "fieldNumber": 213,
+      "fieldName": "EDEMA-PEDAL RIGHT",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-PEDAL RIGHT from the last assessment or reassessment ",
+      "fieldNumber_": 213
+    },
+    {
+      "fieldNumber": 213.5,
+      "fieldName": "EDEMA-PEDAL LEFT",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-PEDAL LEFT from the last assessment or reassessment ",
+      "fieldNumber_": 213.5
+    },
+    {
+      "fieldNumber": 214,
+      "fieldName": "EDEMA-FACIAL",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-FACIAL from the last assessment or reassessment ",
+      "fieldNumber_": 214
+    },
+    {
+      "fieldNumber": 215,
+      "fieldName": "EDEMA-PERIORBITAL",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-PERIORBITAL from the last assessment or reassessment ",
+      "fieldNumber_": 215
+    },
+    {
+      "fieldNumber": 216,
+      "fieldName": "EDEMA-SACRAL",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-SACRAL from the last assessment or reassessment ",
+      "fieldNumber_": 216
+    },
+    {
+      "fieldNumber": 216.1,
+      "fieldName": "EDEMA-RIGHT HIP",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-RIGHT HIP from the last assessment or reassessment ",
+      "fieldNumber_": 216.1
+    },
+    {
+      "fieldNumber": 216.2,
+      "fieldName": "EDEMA-LEFT HIP",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the EDEMA-LEFT HIP from the last assessment or reassessment. ",
+      "fieldNumber_": 216.2
+    },
+    {
+      "fieldNumber": 217,
+      "fieldName": "EXTREMITIES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the EXTREMITIES from the last assessment or reassessment ",
+      "fieldNumber_": 217
+    },
+    {
+      "fieldNumber": 217.1,
+      "fieldName": "EXTREMITIES COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.59",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.59,
+      "fieldNumber_": 217.1
+    },
+    {
+      "fieldNumber": 218,
+      "fieldName": "JUGULAR VENEOUS DISTORTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the JUGULAR VENEOUS DISTORTION from the last assessment or reassessment ",
+      "fieldNumber_": 218
+    },
+    {
+      "fieldNumber": 218.1,
+      "fieldName": "HOMAN'S SIGN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HOMAN'S SIGN from the last assessment or reassessment ",
+      "fieldNumber_": 218.1
+    },
+    {
+      "fieldNumber": 218.2,
+      "fieldName": "CARDIAC MONITOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the CARDIAC MONITOR from the last assessment or reassessment ",
+      "fieldNumber_": 218.2
+    },
+    {
+      "fieldNumber": 219,
+      "fieldName": "CARDIAC RHYTHMS",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the CARDIAC RHYTHMS from the last assessment or reassessment ",
+      "fieldNumber_": 219
+    },
+    {
+      "fieldNumber": 219.5,
+      "fieldName": "CV HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Cardiac problems that this patient has had. ",
+      "fieldNumber_": 219.5
+    },
+    {
+      "fieldNumber": 219.6,
+      "fieldName": "OTHER CV HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "1927.58",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.58,
+      "fieldNumber_": 219.6
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "AUTONOMIC DYSREFLEXIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the AUTONOMIC DYSREFLEXIA from the last assessment or reassessment ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "ORIENTATION (MENTATION)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ORIENTATION (MENTATION) from the last assessment or reassessment ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "GLASGOW COMA SCALE SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the GLASGOW COMA SCALE SCORE from the last assessment or reassessment ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "MOTOR-RIGHT ARM",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the MOTOR-RIGHT ARM from the last assessment or reassessment ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 223.1,
+      "fieldName": "MOTOR-LEFT ARM",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the MOTOR-LEFT ARM from the last assessment or reassessment ",
+      "fieldNumber_": 223.1
+    },
+    {
+      "fieldNumber": 223.2,
+      "fieldName": "MOTOR-RIGHT LEG",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the MOTOR-RIGHT LEG from the last assessment or reassessment ",
+      "fieldNumber_": 223.2
+    },
+    {
+      "fieldNumber": 223.3,
+      "fieldName": "MOTOR-LEFT LEG",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the MOTOR-LEFT LEG from the last assessment or reassessment ",
+      "fieldNumber_": 223.3
+    },
+    {
+      "fieldNumber": 224,
+      "fieldName": "PUPIL SIZE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the PUPIL SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 224
+    },
+    {
+      "fieldNumber": 224.1,
+      "fieldName": "RIGHT EYE REACTIVITY",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the RIGHT EYE REACTIVITY from the last assessment or reassessment ",
+      "fieldNumber_": 224.1
+    },
+    {
+      "fieldNumber": 224.2,
+      "fieldName": "LEFT EYE REACTIVITY",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the LEFT EYE REACTIVITY from the last assessment or reassessment ",
+      "fieldNumber_": 224.2
+    },
+    {
+      "fieldNumber": 225,
+      "fieldName": "SPEECH/LANGUAGE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the SPEECH/LANGUAGE from the last assessment or reassessment ",
+      "fieldNumber_": 225
+    },
+    {
+      "fieldNumber": 226,
+      "fieldName": "SENSATIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the SENSATIONS from the last assessment or reassessment ",
+      "fieldNumber_": 226
+    },
+    {
+      "fieldNumber": 226.5,
+      "fieldName": "PRIOR SENSATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.51",
+      "required": false,
+      "helpText": "This is the PRIOR SENSATIONS from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.51,
+      "fieldNumber_": 226.5
+    },
+    {
+      "fieldNumber": 227,
+      "fieldName": "REQ ASSISTIVE COMM DEVICES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the REQ ASSISTIVE COMM DEVICES from the last assessment or reassessment ",
+      "fieldNumber_": 227
+    },
+    {
+      "fieldNumber": 227.5,
+      "fieldName": "PRIOR COMMUNICATION DEVICES",
+      "dataType": "SUBFILE",
+      "rawType": "1927.52",
+      "required": false,
+      "helpText": "This is the PRIOR COMMUNICATION DEVICES from the last assessment or reassessment ",
+      "isMultiple": true,
+      "subFileNumber": 1927.52,
+      "fieldNumber_": 227.5
+    },
+    {
+      "fieldNumber": 228,
+      "fieldName": "LENS IMPLANTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the LENS IMPLANTS from the last assessment or reassessment ",
+      "fieldNumber_": 228
+    },
+    {
+      "fieldNumber": 229,
+      "fieldName": "NEURO HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The neurological problems this patient has had. ",
+      "fieldNumber_": 229
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "INDWELLING CATHETER SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the FOLEY CATHETER SIZE from the last assessment or reassessment ",
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 230.5,
+      "fieldName": "INDWELLING CATHETER DATE INS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the FOLEY CATHETER DATE INSERTED from the last assessment or reassessment ",
+      "fieldNumber_": 230.5
+    },
+    {
+      "fieldNumber": 231,
+      "fieldName": "ABNORMAL DISCHARGE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the ABNORMAL DISCHARGE from the last assessment or reassessment ",
+      "fieldNumber_": 231
+    },
+    {
+      "fieldNumber": 232,
+      "fieldName": "PRIOR PREGNANCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PRIOR PREGNANCY from the last assessment or reassessment ",
+      "fieldNumber_": 232
+    },
+    {
+      "fieldNumber": 233,
+      "fieldName": "GU HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The GU problems this patient has had. ",
+      "fieldNumber_": 233
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "ATTITUDE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the ATTITUDE from the last assessment or reassessment ",
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 240.5,
+      "fieldName": "BEHAVIOR",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the BEHAVIOR from the last assessment or reassessment ",
+      "fieldNumber_": 240.5
+    },
+    {
+      "fieldNumber": 241,
+      "fieldName": "VERBAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:DECLINES TO ANSWER;",
+      "helpText": "This is the VERBAL ABUSE from the last assessment or reassessment ",
+      "fieldNumber_": 241
+    },
+    {
+      "fieldNumber": 241.1,
+      "fieldName": "PHYSICAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:DECLINES TO ANSWER;",
+      "helpText": "This is the PHYSICAL ABUSE from the last assessment or reassessment ",
+      "fieldNumber_": 241.1
+    },
+    {
+      "fieldNumber": 241.2,
+      "fieldName": "FINANCIAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:DECLINES TO ANSWER;",
+      "helpText": "This is the FINANCIAL ABUSE from the last assessment or reassessment ",
+      "fieldNumber_": 241.2
+    },
+    {
+      "fieldNumber": 241.3,
+      "fieldName": "RAPE OR SEXUAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:DECLINES TO ANSWER;",
+      "helpText": "This is the RAPE OR SEXUAL ABUSE from the last assessment or reassessment ",
+      "fieldNumber_": 241.3
+    },
+    {
+      "fieldNumber": 241.4,
+      "fieldName": "NEGLECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:DECLINES TO ANSWER;",
+      "helpText": "This is the NEGLECT from the last assessment or reassessment ",
+      "fieldNumber_": 241.4
+    },
+    {
+      "fieldNumber": 241.5,
+      "fieldName": "NA VERBAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the nurses judgement of VERBAL ABUSE from the last assessment or reassessment. ",
+      "fieldNumber_": 241.5
+    },
+    {
+      "fieldNumber": 241.6,
+      "fieldName": "NA PHYSICAL ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the nurses judgement of PHYSICAL ABUSE from the last assessment or reassessment. ",
+      "fieldNumber_": 241.6
+    },
+    {
+      "fieldNumber": 241.7,
+      "fieldName": "NA NEGLECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the nurses judgement of Neglect from the last assessment or reassessment. ",
+      "fieldNumber_": 241.7
+    },
+    {
+      "fieldNumber": 241.8,
+      "fieldName": "NA HOUSEHOLD VICTIMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:UNKNOWN;",
+      "helpText": "This is the nurse's judgement of whether others in the patient's household are victims of abuse or neglect by the patient. ",
+      "fieldNumber_": 241.8
+    },
+    {
+      "fieldNumber": 242,
+      "fieldName": "THOUGHTS OF HARMING YOURSELF",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the THOUGHTS OF HARMING YOURSELF from the last assessment or reassessment ",
+      "fieldNumber_": 242
+    },
+    {
+      "fieldNumber": 242.1,
+      "fieldName": "PLAN",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the PLAN from the last assessment or reassessment ",
+      "fieldNumber_": 242.1
+    },
+    {
+      "fieldNumber": 242.11,
+      "fieldName": "PLAN DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.63",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.63,
+      "fieldNumber_": 242.11
+    },
+    {
+      "fieldNumber": 242.2,
+      "fieldName": "MEANS AVAILABLE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the MEANS AVAILABLE from the last assessment or reassessment ",
+      "fieldNumber_": 242.2
+    },
+    {
+      "fieldNumber": 242.21,
+      "fieldName": "MEANS DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.64",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.64,
+      "fieldNumber_": 242.21
+    },
+    {
+      "fieldNumber": 242.3,
+      "fieldName": "REHEARSED OR PRACTICED",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the REHEARSED OR PRACTICED from the last assessment or reassessment ",
+      "fieldNumber_": 242.3
+    },
+    {
+      "fieldNumber": 242.4,
+      "fieldName": "HEARD VOICES",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the HEARD VOICES from the last assessment or reassessment ",
+      "fieldNumber_": 242.4
+    },
+    {
+      "fieldNumber": 242.5,
+      "fieldName": "TRIED TO HURT YOURSELF",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the TRIED TO HURT YOURSELF from the last assessment or reassessment ",
+      "fieldNumber_": 242.5
+    },
+    {
+      "fieldNumber": 242.6,
+      "fieldName": "FEELING HOPELESS",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the FEELING HOPELESS from the last assessment or reassessment ",
+      "fieldNumber_": 242.6
+    },
+    {
+      "fieldNumber": 243,
+      "fieldName": "HAS GUARDIAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the HAS GUARDIAN from the last assessment or reassessment ",
+      "fieldNumber_": 243
+    },
+    {
+      "fieldNumber": 243.01,
+      "fieldName": "GUARDIAN NAME",
+      "dataType": "SUBFILE",
+      "rawType": "1927.66",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.66,
+      "fieldNumber_": 243.01
+    },
+    {
+      "fieldNumber": 243.1,
+      "fieldName": "LEGALLY COMMITTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the LEGALLY COMMITTED from the last assessment or reassessment ",
+      "fieldNumber_": 243.1
+    },
+    {
+      "fieldNumber": 243.2,
+      "fieldName": "DANGER TO THEMSELF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the DANGER TO THEMSELF from the last assessment or reassessment ",
+      "fieldNumber_": 243.2
+    },
+    {
+      "fieldNumber": 243.3,
+      "fieldName": "ON LEGAL OBSERVATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the ON LEGAL OBSERVATION from the last assessment or reassessment ",
+      "fieldNumber_": 243.3
+    },
+    {
+      "fieldNumber": 243.4,
+      "fieldName": "LACKS COGNITIVE ABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the LACKS COGNITIVE ABILITY from the last assessment or reassessment ",
+      "fieldNumber_": 243.4
+    },
+    {
+      "fieldNumber": 243.5,
+      "fieldName": "HISTORY OF ESCAPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the HISTORY OF ESCAPE from the last assessment or reassessment ",
+      "fieldNumber_": 243.5
+    },
+    {
+      "fieldNumber": 243.51,
+      "fieldName": "HISTORY OF ESCAPE FROM WHERE",
+      "dataType": "SUBFILE",
+      "rawType": "1927.67",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.67,
+      "fieldNumber_": 243.51
+    },
+    {
+      "fieldNumber": 244,
+      "fieldName": "ALCOHOL USE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the ALCOHOL USE from the last assessment or reassessment ",
+      "fieldNumber_": 244
+    },
+    {
+      "fieldNumber": 245,
+      "fieldName": "USE RECREATIONAL DRUGS",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the USE RECREATIONAL DRUGS from the last assessment or reassessment ",
+      "fieldNumber_": 245
+    },
+    {
+      "fieldNumber": 246,
+      "fieldName": "MEDICAL MARIJUANA CARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This is the MEDICAL MARIJUANA CARD from the last assessment or reassessment ",
+      "fieldNumber_": 246
+    },
+    {
+      "fieldNumber": 247,
+      "fieldName": "CONTRABAND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Did the patient bring in contraband? ",
+      "fieldNumber_": 247
+    },
+    {
+      "fieldNumber": 248,
+      "fieldName": "PSYCHOSOCIAL HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Psychosocial prblems this patient has had. ",
+      "fieldNumber_": 248
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "WHAT MAKES PATIENT UPSET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the WHAT MAKES PATIENT UPSET from the last assessment or reassessment ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 250.01,
+      "fieldName": "OTHER MAKES PATIENT UPSET",
+      "dataType": "SUBFILE",
+      "rawType": "1927.702",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.702,
+      "fieldNumber_": 250.01
+    },
+    {
+      "fieldNumber": 250.1,
+      "fieldName": "HOW ACT WHEN LOSE CONTROL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HOW ACT WHEN LOSE CONTROL from the last assessment or reassessment ",
+      "fieldNumber_": 250.1
+    },
+    {
+      "fieldNumber": 250.11,
+      "fieldName": "OTHER LOSE CONTROL",
+      "dataType": "SUBFILE",
+      "rawType": "1927.703",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.703,
+      "fieldNumber_": 250.11
+    },
+    {
+      "fieldNumber": 250.2,
+      "fieldName": "PATIENT CALM THEMSELF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PATIENT CALM THEMSELF from the last assessment or reassessment ",
+      "fieldNumber_": 250.2
+    },
+    {
+      "fieldNumber": 250.21,
+      "fieldName": "OTHER CALM THEMSELVES",
+      "dataType": "SUBFILE",
+      "rawType": "1927.704",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.704,
+      "fieldNumber_": 250.21
+    },
+    {
+      "fieldNumber": 251,
+      "fieldName": "MOOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the MOOD from the last assessment or reassessment ",
+      "fieldNumber_": 251
+    },
+    {
+      "fieldNumber": 251.01,
+      "fieldName": "OTHER MOOD",
+      "dataType": "SUBFILE",
+      "rawType": "1927.68",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.68,
+      "fieldNumber_": 251.01
+    },
+    {
+      "fieldNumber": 251.1,
+      "fieldName": "AFFECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AFFECT from the last assessment or reassessment ",
+      "fieldNumber_": 251.1
+    },
+    {
+      "fieldNumber": 251.11,
+      "fieldName": "OTHER AFFECT",
+      "dataType": "SUBFILE",
+      "rawType": "1927.69",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.69,
+      "fieldNumber_": 251.11
+    },
+    {
+      "fieldNumber": 251.2,
+      "fieldName": "BEHAVIOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the BEHAVIOR from the last assessment or reassessment ",
+      "fieldNumber_": 251.2
+    },
+    {
+      "fieldNumber": 251.21,
+      "fieldName": "OTHER BEHAVIOR",
+      "dataType": "SUBFILE",
+      "rawType": "1927.7",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.7,
+      "fieldNumber_": 251.21
+    },
+    {
+      "fieldNumber": 252,
+      "fieldName": "BEHAVIORAL HEALTH ADVANCED DIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the BEHAVIORAL HEALTH ADVANCED DIR from the last assessment or reassessment ",
+      "fieldNumber_": 252
+    },
+    {
+      "fieldNumber": 253,
+      "fieldName": "NOTIFY IF PLACED IN RESTRAINTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:Patient declines to answer;3:Patient unable to answer;",
+      "helpText": "Should someone be notified if the patient is placed in restraints? ",
+      "fieldNumber_": 253
+    },
+    {
+      "fieldNumber": 253.1,
+      "fieldName": "WHO TO NOTIFY IF PLACED IN RES",
+      "dataType": "SUBFILE",
+      "rawType": "1927.701",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.701,
+      "fieldNumber_": 253.1
+    },
+    {
+      "fieldNumber": 254,
+      "fieldName": "MH HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Prior Mental Health problems this patient has had. ",
+      "fieldNumber_": 254
+    },
+    {
+      "fieldNumber": 254.1,
+      "fieldName": "OTHER MH HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "1927.65",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.65,
+      "fieldNumber_": 254.1
+    },
+    {
+      "fieldNumber": 255,
+      "fieldName": "SO ANGRY TO LOSE CONTROL",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "Has the patient ever been so angry as to explode or lose control? ",
+      "fieldNumber_": 255
+    },
+    {
+      "fieldNumber": 256,
+      "fieldName": "CALM THEMSELF",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "When the patient gets upset, are they able to calm themself? ",
+      "fieldNumber_": 256
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "LEVEL OF ASSISTANCE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the LEVEL OF ASSISTANCE from the last assessment or reassessment ",
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 261,
+      "fieldName": "LEVEL OF COOPERATION",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the LEVEL OF COOPERATION from the last assessment or reassessment ",
+      "fieldNumber_": 261
+    },
+    {
+      "fieldNumber": 262,
+      "fieldName": "WEIGHT BEARING CAPABILITY",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the WEIGHT BEARING CAPABILITY from the last assessment or reassessment ",
+      "fieldNumber_": 262
+    },
+    {
+      "fieldNumber": 263,
+      "fieldName": "BILATERAL UPPER EXT STRENGTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the BILATERAL UPPER EXT STRENGTH from the last assessment or reassessment ",
+      "fieldNumber_": 263
+    },
+    {
+      "fieldNumber": 264,
+      "fieldName": "APPLIC COND TO AFFECT TRANSFER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the APPLIC COND TO AFFECT TRANSFER from the last assessment or reassessment ",
+      "fieldNumber_": 264
+    },
+    {
+      "fieldNumber": 265,
+      "fieldName": "KATZ SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the KATZ SCORE from the last assessment or reassessment ",
+      "fieldNumber_": 265
+    },
+    {
+      "fieldNumber": 266,
+      "fieldName": "DECREASE IN INDEPENDENCE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "Was there a decrease in the patient's level of independence in the last  30 days? ",
+      "fieldNumber_": 266
+    },
+    {
+      "fieldNumber": 267,
+      "fieldName": "ASSIST PATIENT WITH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Functional items that the patient should be assisted with.  Ambulating,  bathing, etc. ",
+      "fieldNumber_": 267
+    },
+    {
+      "fieldNumber": 270,
+      "fieldName": "BOWEL PATTERN",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The patient's last bowel pattern. ",
+      "fieldNumber_": 270
+    },
+    {
+      "fieldNumber": 271,
+      "fieldName": "GI DEVICE TYPES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any devices in the patient's GI system. ",
+      "fieldNumber_": 271
+    },
+    {
+      "fieldNumber": 272,
+      "fieldName": "SPECIAL FOOD PREFERENCES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the patient have any special food preferences? ",
+      "fieldNumber_": 272
+    },
+    {
+      "fieldNumber": 273,
+      "fieldName": "NUTRITION DESCRIPTION",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "How the patient looks, from a nutition point of view. ",
+      "fieldNumber_": 273
+    },
+    {
+      "fieldNumber": 274,
+      "fieldName": "APPETITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's appetite. ",
+      "fieldNumber_": 274
+    },
+    {
+      "fieldNumber": 275,
+      "fieldName": "DYSPHAGIA SCREEN",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "Patient's last Dysphagia screen results (able or not to screen). ",
+      "fieldNumber_": 275
+    },
+    {
+      "fieldNumber": 275.1,
+      "fieldName": "TBI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Diagnosis of new Traumatic Brain Injury? ",
+      "fieldNumber_": 275.1
+    },
+    {
+      "fieldNumber": 275.2,
+      "fieldName": "MODIFIED TEXTURE DIET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the patient need a Modified Texture Diet? ",
+      "fieldNumber_": 275.2
+    },
+    {
+      "fieldNumber": 275.3,
+      "fieldName": "UNABLE TO FOLLOW COMMANDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the patient unable to follow commands? ",
+      "fieldNumber_": 275.3
+    },
+    {
+      "fieldNumber": 275.4,
+      "fieldName": "WET GURGLY VOICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does the patient have a wet gurgly voice? ",
+      "fieldNumber_": 275.4
+    },
+    {
+      "fieldNumber": 275.5,
+      "fieldName": "DROOLING WHILE AWAKE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the patient drooling while they're awake? ",
+      "fieldNumber_": 275.5
+    },
+    {
+      "fieldNumber": 275.6,
+      "fieldName": "TONGUE DEVIATION FROM MIDLINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the patient's tongue deviating from midline? ",
+      "fieldNumber_": 275.6
+    },
+    {
+      "fieldNumber": 276,
+      "fieldName": "UNINTENTIONAL WEIGHT LOSS/GAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:Unknown;",
+      "helpText": "Did the patient have an unintentional weight loss or gain in the last  month? ",
+      "fieldNumber_": 276
+    },
+    {
+      "fieldNumber": 277,
+      "fieldName": "GI HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The GI problems that this patient has had. ",
+      "fieldNumber_": 277
+    },
+    {
+      "fieldNumber": 277.1,
+      "fieldName": "GI OTHER HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "1927.56",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.56,
+      "fieldNumber_": 277.1
+    },
+    {
+      "fieldNumber": 278,
+      "fieldName": "ABDOMINAL ASSESSMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The abdominal assessment on the patient. ",
+      "fieldNumber_": 278
+    },
+    {
+      "fieldNumber": 278.1,
+      "fieldName": "OTHER ABDOMINAL ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "1927.57",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.57,
+      "fieldNumber_": 278.1
+    },
+    {
+      "fieldNumber": 280,
+      "fieldName": "MUSC HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Musculoskeletal history of the patient. ",
+      "fieldNumber_": 280
+    },
+    {
+      "fieldNumber": 280.1,
+      "fieldName": "OTHER MUSC HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "1927.62",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.62,
+      "fieldNumber_": 280.1
+    },
+    {
+      "fieldNumber": 281,
+      "fieldName": "RANGE OF MOTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's Range of Motion. ",
+      "fieldNumber_": 281
+    },
+    {
+      "fieldNumber": 290,
+      "fieldName": "SKIN HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's skin history ",
+      "fieldNumber_": 290
+    },
+    {
+      "fieldNumber": 291,
+      "fieldName": "SKIN RISK FACTORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's skin risk factors. ",
+      "fieldNumber_": 291
+    },
+    {
+      "fieldNumber": 292,
+      "fieldName": "SKIN PATIENT ED PROVIDED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Was education provided to the patient or caregiver about skin care? ",
+      "fieldNumber_": 292
+    },
+    {
+      "fieldNumber": 293,
+      "fieldName": "SKIN BREAKDOWN FACTORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Skin Beakdown Factors that this patient has. ",
+      "fieldNumber_": 293
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "RESPIRATORY PATTERN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior respiratory pattern. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "WORK OF BREATHING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior Work of Breathing. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "CRACKELS/RALES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior Crackles & Rales (breath sounds). ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 302.1,
+      "fieldName": "DIMINISHED/DECRASED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior Decreased/Diminshed Breath Sounds. ",
+      "fieldNumber_": 302.1
+    },
+    {
+      "fieldNumber": 302.2,
+      "fieldName": "RHONCHI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior Rhonchi breath sounds. ",
+      "fieldNumber_": 302.2
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "SPUTUM AMOUNT",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The patient's prior amount of sputum. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 303.1,
+      "fieldName": "SPUTUM COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior sputum color. ",
+      "fieldNumber_": 303.1
+    },
+    {
+      "fieldNumber": 303.2,
+      "fieldName": "SPUTUM CONSISTENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's prior sputum consistency. ",
+      "fieldNumber_": 303.2
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "CHAPLAIN CONSULT SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was a Chaplain consult sent as part of this care plan from either the  Admission Assessment or a prior reassessment? ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 304.1,
+      "fieldName": "DP CONSULT SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was a DP consult sent as part of this care plan from either the Admission Assessment or a prior reassessment? ",
+      "fieldNumber_": 304.1
+    },
+    {
+      "fieldNumber": 304.2,
+      "fieldName": "NUTRITION CONSULT SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was a Nutrition consult sent as part of this care plan from either the  Admission Assessment or a prior reassessment?  ",
+      "fieldNumber_": 304.2
+    },
+    {
+      "fieldNumber": 304.3,
+      "fieldName": "SPEECH CONSULT SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was a Speech consult sent as part of this care plan from either the  Admission Assessment or a prior reassessment?  ",
+      "fieldNumber_": 304.3
+    },
+    {
+      "fieldNumber": 304.4,
+      "fieldName": "SOCIAL WORK CONSULT SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was a Social Work consult sent as part of this care plan from either the Admission Assessment or a prior reassessment?  ",
+      "fieldNumber_": 304.4
+    }
+  ],
+  "fieldCount": 304,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "1927.4", "field": .01, "type": "regular"},
+    {"name": "1927.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

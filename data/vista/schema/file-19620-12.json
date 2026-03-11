@@ -1,0 +1,255 @@
+{
+  "fileNumber": 19620.12,
+  "fileName": "DSIR NEW REQUESTOR",
+  "globalRoot": "19620.12",
+  "globalReference": "^DSIR(19620.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOOKUP_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Primary name to use when looking up a requestor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUESTOR_TYPE",
+      "dataType": "POINTER",
+      "rawType": "P19620.8'",
+      "required": false,
+      "pointerTo": 19620.8,
+      "helpText": "Pointer to the Requestor Type file, ^DSIR(19620.8), identifying the type  of requestor. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is a variable pointer to the patient file (2) or the non  computerized patient file (19620.96) for requestors that are  patients.  Otherwise, this field is left blank. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "FIRST_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's first name. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "MIDDLE_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's middle name or middle initial. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "LAST_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's last name. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CORPORATE_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's corporate name. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "SALUTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's salutation. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "ADDRESS_1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary street address line 1. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "ADDRESS_2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary street address line 2. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "ADDRESS_3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary street address line 3. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary city. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Requestor's primary state. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary zip code. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's primary phone. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "SECONDARY_ADDRESS_1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary street address line 1. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "SECONDARY_ADDRESS_2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary street address line 2. ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "SECONDARY_ADDRESS_3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary street address line 3. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": .34,
+      "fieldName": "SECONDARY_CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary city. ",
+      "fieldNumber_": .34
+    },
+    {
+      "fieldNumber": .35,
+      "fieldName": "SECONDARY_STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Requestor's secondary state. ",
+      "fieldNumber_": .35
+    },
+    {
+      "fieldNumber": .36,
+      "fieldName": "SECONDARY_ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary zip code. ",
+      "fieldNumber_": .36
+    },
+    {
+      "fieldNumber": .37,
+      "fieldName": "SECONDARY_PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's secondary phone. ",
+      "fieldNumber_": .37
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's fax. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Requestor's e-mail address. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADDPTR",
+      "dataType": "POINTER",
+      "rawType": "P19620.92",
+      "required": false,
+      "pointerTo": 19620.92,
+      "helpText": "This points to the address of requestor stored in the REQUESTOR ADDRESS FILE, ^DSIR(19620.92. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DPATIENT", "field": },
+    {"name": "19620.12", "field": .01, "type": "regular"},
+    {"name": "19620.12", "field": .01, "type": "regular"},
+    {"name": "19620.12", "field": .03, "type": "regular"},
+    {"name": "19620.12", "field": .13, "type": "regular"},
+    {"name": "19620.12", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

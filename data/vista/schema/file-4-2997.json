@@ -1,0 +1,140 @@
+{
+  "fileNumber": 4.2997,
+  "fileName": "REMOTE USER DIRECTORY",
+  "globalRoot": "4.2997I",
+  "globalReference": "^XMD(4.2997,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the last name of the remote user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first name of the remote user. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REST OF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the rest of the remote user's name. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAIL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the mail code name of the remote user. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EXTENDED MAIL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the mail code name of the remote user with a greater amount of detail than the regular mail code. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is where the remote user is located. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is when the entry was last chosen and used for addressing a message. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the remote user. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PHONE EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the extension of the phone number of the remote user. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DATE ENTERED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0XO",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the date that a user was entered into the directory. It is is $H format (just the day portion, eg.  55445). It is data to be entered only when users are being entered into the database automatically. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "AUTOMATICALLY ENTERED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used by a routine (or server) that automatically enters names into this file to mark it with a prechosen name.  This name must be coordinated by the MailMan Development team.  Local sites may use names that begin with the three character sequence \"XMZ\" without coordinating.   ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "NETWORK ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to address mail automatically.  When a look-up is done on the local user file and fails, a secondary look-up tries to find the user in the Remote User file.  If it is found, the message is automatically addressed using this field. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "4.2997", "field": .01, "type": "regular"},
+    {"name": "4.2997", "field": 3, "type": "regular"},
+    {"name": "4.2997", "field": 5, "type": "regular"},
+    {"name": "4.2997", "field": 6, "type": "regular"},
+    {"name": "4.2997", "field": 98, "type": "regular"},
+    {"name": "4.2997", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 5, "value": "W \"   \",$P(^(0),U,6)"},
+    {"field": 99, "value": "W \"   \",$P(^(0),U,7)"}
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "fileNumber": 777,
+  "fileName": "HLO MESSAGE BODY",
+  "globalRoot": "777",
+  "globalReference": "^HLA(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BATCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HL7 VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "HL7 ENCODING CHARACTERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEGMENTS (NOT BATCHED)",
+      "dataType": "SUBFILE",
+      "rawType": "777.01A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 777.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BATCHED MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "777.02A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 777.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For incoming batch messages only, the BTS segment is stored in this field, which is a separate node. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "777", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

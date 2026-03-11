@@ -1,0 +1,58 @@
+{
+  "fileNumber": 860.2,
+  "fileName": "ORDER CHECK RULE",
+  "globalRoot": "860.2I",
+  "globalReference": "^OCXS(860.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRUTH ELEMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "860.21I",
+      "required": false,
+      "helpText": "    This is the list of elements used by this rule.   ",
+      "isMultiple": true,
+      "subFileNumber": 860.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RELATION ACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "860.22I",
+      "required": false,
+      "helpText": "    This is a list of boolean expressions that define  how the elements for this rule are related and what  to do when different combinations of elements occur.   ",
+      "isMultiple": true,
+      "subFileNumber": 860.22,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ATELM", "field": },
+    {"name": "B", "field": },
+    {"name": "860.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$G(^(\"INACT\")) \"   ***\",@(\"$P($P($C(59)_$S($D(^DD(860.2,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"INACT\"\"),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

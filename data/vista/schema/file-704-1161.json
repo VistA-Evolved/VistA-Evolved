@@ -1,0 +1,37 @@
+{
+  "fileNumber": 704.1161,
+  "fileName": "OBS_SET_OBS_PAIR",
+  "globalRoot": "704.1161",
+  "globalReference": "^MDC(704.1161,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SET_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.116'",
+      "required": true,
+      "pointerTo": 704.116,
+      "helpText": "This identifies the set file (#704.116) entry part of this  set-observation pair.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBS_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.117'",
+      "required": true,
+      "pointerTo": 704.117,
+      "helpText": "This identifies the observation file (#704.117) entry part of this  set-observation pair.   ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

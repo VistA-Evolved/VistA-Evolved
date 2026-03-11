@@ -1,0 +1,108 @@
+{
+  "fileNumber": 53.78,
+  "fileName": "BCMA MEDICATION VARIANCE LOG",
+  "globalRoot": "53.78",
+  "globalReference": "^PSB(53.78,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the patient file (#2) of the patient in the variance log. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ROOM AND BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Room and bed location of the patient at the time of the variance. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'O",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User passing meds during the variance. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME OF OCCURRENCE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time of the variance. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WRONG MED;2:EARLY/LATE DOSE;3:LATE PRN EFFECT;4:EARLY/LATE REMOVE;",
+      "helpText": "Set of codes describing the variance. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ADMINISTRATION TIME VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "If the variance was an early or late event this field store the number of minutes early (<1) or minutes late (>1) of the event. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DRUG SCANNED",
+      "dataType": "POINTER",
+      "rawType": "P50.7'",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "Pointer to the drug file of the medication that was scanned for this variance. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MED LOG PTR",
+      "dataType": "POINTER",
+      "rawType": "P53.79'",
+      "required": false,
+      "pointerTo": 53.79,
+      "helpText": "Pointer to the BCMA MEDICATION LOG (#53.79) for this event. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "WARD LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "The ward location where the patient is located when a Medication Variance is logged. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ADT", "field": },
+    {"name": "B", "field": },
+    {"name": "53.78", "field": .01, "type": "regular"},
+    {"name": "53.78", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

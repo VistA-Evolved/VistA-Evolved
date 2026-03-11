@@ -1,0 +1,146 @@
+{
+  "fileNumber": 14.5,
+  "fileName": "VOLUME SET",
+  "globalRoot": "14.5",
+  "globalReference": "^%ZIS(14.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VOLUME SET",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "Answer should be the name of a volume set. When each cpu can have only one volume set, this is also the cpu name. Answer will be used in extended global references to reach this volume. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "G:GENERAL PURPOSE VOLUME SET;P:PRINT SERVER;C:COMPUTE SERVER;O:OTHER NON-TASKMAN VOLUME SET;",
+      "helpText": "This field describes how TaskMan should treat the volume set.  It takes over many of the 486 configuration functions handled by the Out of Order and Replacement Volume Set fields in versions 6.5 and 7.0.   General Purpose Volume Set:  The Manager on a G type will usually send tasks back to the volume set where they were created, except that tasks that explicitly request a different volume set will be sent where they ask.  (Explicit volume set requests are made by using 1) the ZTCPU input variabl",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INHIBIT LOGONS?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;S:SYSTEM SHUTDOWN;",
+      "helpText": "Answering YES will cause TaskMan to notify Sign-on that logons are now prohibited, and to stop processing tasks until logons are allowed again.   If set to SYSTEM SHUTDOWN then taskman set this because of a pending shutdown. Taskman will clear this flag when restarted. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LINK ACCESS?",
+      "dataType": "SET",
+      "rawType": "*Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Answer NO to tell TaskMan that this volume set cannot be accessed by other volume sets using the local network links.   Tasks that request a volume set without link access are rejected by TaskMan.  Such volume sets are usually PC workstations linked into the larger network.  They can access the core computers, but cannot be accessed themselves. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OUT OF SERVICE?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Answer YES to temporarily prevent tasks from being sent to this volume set.   While a volume set is out of service, tasks that would normally be sent across the local links to that volume set are either saved until the volume set is back in service, or sent to a replacement volume set if one is specified. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUIRED VOLUME SET?",
+      "dataType": "SET",
+      "rawType": "*Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Answer YES if TaskMan cannot run without this volume set being accessible.   If a volume set serves the files that the rest of the system needs, it should be a required volume set.  So long as a volume set is required, the normal mechanisms of handling links that are out of service or dropped are bypassed for that volume set.  Instead, TaskMan waits until the link is restored before processing any more tasks. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TASKMAN FILES UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "Answer should be the uci that holds the ^%ZTSK and ^%ZTSCH globals. That uci will usually be the library uci, which is usually the manager uci. Answer should not contain a comma and volume set name--just the uci name. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TASKMAN FILES VOLUME SET",
+      "dataType": "POINTER",
+      "rawType": "P14.5a",
+      "required": false,
+      "pointerTo": 14.5,
+      "helpText": "Answer should be the name of the volume set that holds ^%ZTSK and ^%ZTSCH. If that is the current volume set, you may leave this field blank.   This field will usually be used for mounted volume sets that lack library ucis of their own, and for VAX sites set up according to the VA cookbook. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REPLACEMENT VOLUME SET",
+      "dataType": "POINTER",
+      "rawType": "P14.5a",
+      "required": false,
+      "pointerTo": 14.5,
+      "helpText": "Answer should be a volume set to which tasks can be sent if this volume set is unavailable. If tasks that need this volume set should wait, leave the field blank.   A replacement volume set should be essentially equivalent in features to the current one, since tasks that would normally run on this one will be running on that one instead.  For many volume sets, no other volume set is equivalent, and tasks should wait for the link to be restored rather than run elsewhere. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAYS TO KEEP OLD TASKS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0a",
+      "length": 2,
+      "required": false,
+      "helpText": "Answer will be used by ZTMQCLEAN option to decide which tasks to delete.   If no answer is given, ZTMQCLEAN will keep the last seven days' tasks. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SIGNON/PRODUCTION VOLUME SET",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter Yes if this Volume Set has the following properties:  1. Users can sign-on into the Kernel Menu system or the RPC Broker Server     routine is running there.  2. Has a productions UCI which contains application routines.  3. The ^XTMP global is translated.  If you enter Yes the Kernel Installation and Distribution System will be able to move routines to this Volume Set.  The Kernel Menu system will be able to run the Menu Microsurgery and keep menus updated.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RE-QUEUES BEFORE UN-SCHEDULE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds the number of times that a task to a HFS or SPOOL device  will be re-queued for a 5 minute delay before it is un-scheduled. The routine XUTMHR does this work once an hour.  It will send an alert to the user that queued the task. A value of 12 would be an hour and 288 would be a day. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AE2", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "14.5", "field": .01, "type": "regular"},
+    {"name": "14.5", "field": .01, "type": "regular"},
+    {"name": "14.5", "field": .01, "type": "regular"},
+    {"name": "14.5", "field": 1, "type": "regular"},
+    {"name": "14.5", "field": 1, "type": "regular"},
+    {"name": "14.5", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

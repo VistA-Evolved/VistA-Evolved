@@ -1,0 +1,361 @@
+{
+  "fileNumber": 351.61,
+  "fileName": "TRANSFER PRICING TRANSACTIONS",
+  "globalRoot": "351.61",
+  "globalReference": "^IBAT(351.61,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the Transfer Pricing transaction number.  This number is generated automatically in the format of station number with a sequential number after. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSFER PRICING PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP351.6'",
+      "required": true,
+      "pointerTo": 351.6,
+      "helpText": "This is a pointer to the transfer pricing patient file (351.6), which is the same ien as in the patient file (#2). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this transaction was added to the file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EVENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the event.            Outpatient Visits = Visit Date        Inpatient Stays   = Admission Date        Prescriptions     = Drug Dispense Date        Prosthetics       = Date Prosthetic Device issued to Patient ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSACTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "X:CANCELLED;E:ENTERED;C:COMPLETED;P:PRICED;",
+      "helpText": "The status of the transaction.   Entered = only used for inpatient upon admission.   Completed = used for when the transaction information has been fully entered, but not yet priced.  For inpatient this usually means the patient has been discharged, but the PTF has not yet been coded.  This can also mean that any other type of transaction could not be priced for various reasons.   Priced = transaction is complete.   Cancelled = treating facility has cancelled transaction. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "APPROVAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the transaction was set to a complete status.  Once a transaction is complete, it can no longer be edited.  It can only be cancelled and a new transaction created.  This date is used for report printing since another site cannot be billed until a transaction is complete.  An inpatient transaction can be completed as an interim transaction and a new one started. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INTERIM TRANSACTION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Only used on inpatient transactions, this flag indicates if this transaction is an interim transaction or not. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PARENT TRANSACTION POINTER",
+      "dataType": "POINTER",
+      "rawType": "RP351.61'",
+      "required": true,
+      "pointerTo": 351.61,
+      "helpText": "Used to lookup transactions and adjustment to transactions for future adjustments.  The parent should always have this filled in pointing to it self, children should always have this filled in pointing to their parent. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FROM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the period this service is covered from. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TO DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the period this service is covered to. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PREFERRED FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This indicates which facility is the patient's preferred facility at the time of the transaction.  This is used to identify what facility this transaction is for. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "EVENT SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the source of the event.   Inpatient    =  ien in file #405;DGPM( Outpatient   =  ien in file #409.68;SCE( Pharmacy     =  ien in file #52;PSRX(;fill/refill no Prosthetics  =  ien in file #660;RMPR(660, ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRICED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the transaction was priced. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DRG",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "This is the inpatient DRG that was calculated for the admission that the costing of this transaction is based upon. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DRG AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the dollar amount the DRG was priced at. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "INPATIENT LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the total length of stay for this inpatient stay. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "HIGH TRIM DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the arithmetic means LOS, or the outlier threshold.  This corresponds to the DRG file (#80.2), field HIGH TRIM(days) (#4).  Any stays over this number will be calculated at the outlier rate. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "OUTLIER DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of days to calculate charge at the outlier rates.  This number is calculated by:          INPATIENT LOS - HIGH TRIM DAYS = OUTLIER DAYS ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "OUTLIER RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the daily rate for the outlier days.  This is based upon 80% of the tort rate. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PTF POINTER",
+      "dataType": "POINTER",
+      "rawType": "P45'",
+      "required": false,
+      "pointerTo": 45,
+      "helpText": "This is the pointer to the PTF record for which the charge was calculated. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "DISCHARGE MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This is to store the discharge movement. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "351.612P",
+      "required": false,
+      "helpText": "This is the diagnosis codes for this event.  This will play into the DRG calculation. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCEDURES",
+      "dataType": "POINTER",
+      "rawType": "351.613P",
+      "required": false,
+      "helpText": "This is the multiple where the procedures performed either inpatient or outpatient are stored. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This pointer to the drug file indicates what prescription was issued. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the quantity of the drug issued. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "DRUG COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the cost per unit of the drug. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "*PROSTHETIC ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is a pointer to the prosthetic item file for the prosthetic device issued to the patient. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "PROSTHETIC ITEM COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the cost of the prosthetic device.  Determined by looking at file 660 at the TOTAL COST field. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "AUTHORIZING PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person authorizing this transaction from the patient's preferred facility. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "TOTAL OUTLIER DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the total of the outlier days for all the DRGs. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "GROSS BILL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the gross amount either from the drg's, cpt's, or rx's before any deductions of billed amounts. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "CATAGORY C BILL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the dollar amount billed for the cat c patient's co-payment(s). ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "INSURANCE BILL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of the insurance bill to be deducted from the total amount. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "NET AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total bill amount that is due from the preferred facility. This is calculated based upon the service provided less any other reimbursements. ",
+      "fieldNumber_": 6.05
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "351.61", "field": .01, "type": "regular"},
+    {"name": "351.61", "field": .02, "type": "regular"},
+    {"name": "351.61", "field": .04, "type": "regular"},
+    {"name": "351.61", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "351.61", "field": .08, "type": "regular"},
+    {"name": "351.61", "field": .12, "type": "regular"},
+    {"name": "351.61", "field": .13, "type": "regular"},
+    {"name": "", "field": 1.05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

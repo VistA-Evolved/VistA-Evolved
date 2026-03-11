@@ -1,0 +1,89 @@
+{
+  "fileNumber": 783.9,
+  "fileName": "FUNCTIONAL INDEPENDENCE MEASUREMENT PARAMETER",
+  "globalRoot": "783.9",
+  "globalReference": "^RMIM(783.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field points to the Institution File. Please enter your Station's Institution entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HIGHEST CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0IX",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used internally.  Users should not be editing this field nor is available to user via any options. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field points to the Mail Group file.  The entry should contain the mail group used for FIM coordinators:  RMIM FSOD. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FSOD NOTE TITLE",
+      "dataType": "POINTER",
+      "rawType": "P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This field points to the TIU DOCUMENT DEFINITION FILE (#8925.1).  For the software to work properly you must input a title.  This title needs to reflect that this documentation is going to Austin FSOD (database). Example would be FIM TO FSOD NOTE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NON FSOD NOTE TITLE",
+      "dataType": "POINTER",
+      "rawType": "P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This field hold the title of the Progress Note that is only used for Medical Center documentation.  This field points to the TIU DOCUMENT DEFINITION FILE (#8925.1).  You must put a title in for the software to work properly.  Example of a title:  FIM Note ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CONSULT TITLE",
+      "dataType": "POINTER",
+      "rawType": "P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This field points to TIU DOCUMENT DEFINITION FILE (#8925.1).  This title should reflect a consult title in the medical record. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FACILITY CODE",
+      "dataType": "SUBFILE",
+      "rawType": "783.9001",
+      "required": false,
+      "helpText": "UDSmr assigned \"facility codes\" to each VA.  The facility codes and the type of care that is associated with facility codes for the Site are inputted for each episode in file 783 (FUNCTIONAL INDEPENDENCE MEASUREMENT RECORD). ",
+      "isMultiple": true,
+      "subFileNumber": 783.9001,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "783.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

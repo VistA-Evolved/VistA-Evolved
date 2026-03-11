@@ -1,0 +1,37 @@
+{
+  "fileNumber": 58.5,
+  "fileName": "AR/WS STATS FILE",
+  "globalRoot": "58.5D",
+  "globalReference": "^PSI(58.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This contains the date for which AMIS data is collected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "58.501PA",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AEX", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "58.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

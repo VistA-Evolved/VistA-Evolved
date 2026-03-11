@@ -1,0 +1,156 @@
+{
+  "fileNumber": 6916.3,
+  "fileName": "IT ASSIGNMENT",
+  "globalRoot": "6916.3",
+  "globalReference": "^ENG(6916.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EQUIPMENT",
+      "dataType": "POINTER",
+      "rawType": "RP6914'I",
+      "required": true,
+      "pointerTo": 6914,
+      "helpText": "IT equipment item for which responsibility has been assigned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The person assigned responsibility for the IT equipment item. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSIGNED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "The date/time that the assignment of responsibility was created in the  file.  This value is automatically populated by the system. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSIGNED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The person that created the assignment of responsibility. This value is automatically populated by the system. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SIGNED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The date and time that the OWNER electronically signed the hand receipt or the date a hard copy hand receipt was signed.  This field is automatically populated by the system if the OWNER electronically signs the hand receipt.  This field is populated by the person in the CERTIFIED BY field in the event a hard copy hand receipt was instead signed by the OWNER. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HAND RECEIPT TEXT",
+      "dataType": "POINTER",
+      "rawType": "P6916.2'I",
+      "required": false,
+      "pointerTo": 6916.2,
+      "helpText": "The version of the hand receipt text that was signed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.9,
+      "fieldName": "CERTIFIED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The date and time when a user certified there is a signed paper hand receipt on file for the equipment item.  This field should only be populated when the owner can not electronically sign the hand receipt for some reason. ",
+      "fieldNumber_": 5.9
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CERTIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person that certified there is a signed paper hand receipt on file  for the equipment item.  This field should only be populated when the  owner can not electronically sign the hand receipt for some reason. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ENDED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The date/time that the assignment of responsibility ended.  This field is automatically populated when an assignment is terminated or transferred. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ENDED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person that ended the assignment of responsibility.  This field is  automatically populated when the assignment is terminated or transferred. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ENCRYPTED STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "If the assignment was electronically signed by the owner, the signature  block and key data values are encrypted and stored in this field. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "Computed field that contains the current status of the assignment.  The  status may be ENDED, CERTIFIED, SIGNED, or ASSIGNED. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "STATUS DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed field that contains the date (MM/DD/YY) when the assignment  reached the current status. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PREVIOUS SIGNATURES",
+      "dataType": "DATE",
+      "rawType": "6916.31D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6916.31,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6916.3", "field": .01, "type": "regular"},
+    {"name": "6916.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WRITE, "value": "N ENX S ENX=$$GET1^DIQ(6916.3,+Y,20) D EN^DDIOL(\"  \"_ENX,\"\",\"?0\") Q"}
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "fileNumber": 442.9,
+  "fileName": "ELEC RECEIVING REPORT BATCH",
+  "globalRoot": "442.9",
+  "globalReference": "^PRC(442.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full purchase order/partial number for the receiving record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PURCHASE ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP442'",
+      "required": true,
+      "pointerTo": 442,
+      "helpText": "This is the purchase order number for this receiving report. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PLACED ON LIST BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who placed the receiving report. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the transmission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IS THIS A RETRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This indicates if this is a retransmission. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LOCAL MAILMAN MESSAGE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the local MailMan message number indicating that transmission has been made. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MESSAGE CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This fields sets a temporary cross reference during the transmission of electronic receiving reports to indicate which records have transmitted. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used to encode and decode the Validation Code created at the time that the official approving the transaction entered their electronic signature. The version number of this file is used to check the validation conversion is necessary. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACCOUNTING PERIOD",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field returns the Accounting Period that the user chose for processing this receiver. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "442.9", "field": .01, "type": "regular"},
+    {"name": "442.9", "field": .01, "type": "regular"},
+    {"name": "442.9", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

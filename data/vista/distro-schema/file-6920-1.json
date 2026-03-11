@@ -1,0 +1,50 @@
+{
+  "fileNumber": 6920.1,
+  "fileName": "NEW WORK ACTION",
+  "globalRoot": "6920.1I",
+  "globalReference": "^ENG(6920.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptors of work performed or actions taken.  May also indicate that requested repair is not feasible. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "6920.11",
+      "required": false,
+      "helpText": "Common name for standard work action. ",
+      "isMultiple": true,
+      "subFileNumber": 6920.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HISTORY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This abbreviation is appended to the work order reference when completed work orders are posted to the Equipment Histories. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6920.1", "field": .01, "type": "regular"},
+    {"name": "6920.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

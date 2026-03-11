@@ -1,0 +1,82 @@
+{
+  "fileNumber": 452.9,
+  "fileName": "PRSE EDUCATION ACCREDITATION ORGANIZATIONS",
+  "globalRoot": "452.9",
+  "globalReference": "^PRSE(452.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCREDITATION BOARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the organization accrediting the program.  CEUs and contact hours) for a program. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the street address for this accreditation board. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the additional address information for the accrediting organization. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the city where the accrediting organization resides. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the state where the accrediting organization resides. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the zip code of the accrediting organization. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the phone number for this accrediting organization. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "452.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

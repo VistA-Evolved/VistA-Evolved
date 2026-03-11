@@ -1,0 +1,90 @@
+{
+  "fileNumber": 18.05,
+  "fileName": "VISTALINK MESSAGE TYPE",
+  "globalRoot": "18.05",
+  "globalReference": "^XOB(18.05,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a unique and keyed human readable name for the message type.   It is also recommended that the name be prefixed with namespace characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of a unique XML message type, e.g. gov.va.med.foundations.rpc.request.   This field is a keyed field and is used by the VistALink request manager during SAX parsing to look up the correct request handler for an incoming request. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REQUEST;2:RESPONSE;9:OTHER;",
+      "helpText": "This field allows for the categorization of the message type.   The field is not currently used in business logic and exists to allow for  filtering and sorting during reporting.   Currently, there are only two categories: request and response.   'Other' is also available but is not used at this time. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REQUIRE AUTHENTICATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a request of the message type  requires the user to be authenticated by VistALink security before the request handler for the type can be executed.   System and security message types do not need authentication since they  involve processing at a higher level like heartbeat messages and  messages establishing authentication.   On the other hand, RPC-type messages would require authentication before  the RPC request handler is executed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REQUEST HANDLER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the M routine that implements the request  handler interface methods (tags).   Currently, those methods are the following:     CALLBACK(CB)           :: Logic that sets the SAX callbacks for the                             message type in CB parameter. These callbacks                             are executed during the SAX XML parsing.                               This method is required.     READER(XOBUF,XOBDATA)  :: Stream reader logic called when the incoming ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CACHE REQUEST HANDLER INFO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether runtime information for the message type  should be cached as part of the initial connection logic of the request  manager.   Caching -- storing in a local array -- only the information needed for  request handling can benefit performance for those message types that are  executed often, like RPC requests. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROPRIETARY INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This unique valued field is used during the processing of the first read of a new request stream. If this proprietary indicator is present then the READER method of the request handler routine is called.   No SAX XML parsing is performed if this READER method is executed.   See also: REQUEST HANDLER field. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "18.05", "field": .01, "type": "regular"},
+    {"name": "18.05", "field": .02, "type": "regular"},
+    {"name": "18.05", "field": .06, "type": "regular"},
+    {"name": "18.05", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

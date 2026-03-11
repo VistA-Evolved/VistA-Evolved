@@ -1,0 +1,60 @@
+{
+  "fileNumber": 601.751,
+  "fileName": "MH CHOICETYPES",
+  "globalRoot": "601.751",
+  "globalReference": "^YTT(601.751,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHOICETYPE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the NON-unique identifier for the ChoiceType. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "Order in which the Choice alternative is displayed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CHOICE ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.75'",
+      "required": true,
+      "pointerTo": 601.75,
+      "helpText": "Pointer to the MH CHOICES file (#601.75) to associate a choice with this choice type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CHOICE TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "DISPLAYS choices text via this computed field ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ACT", "field": },
+    {"name": "B", "field": },
+    {"name": "601.751", "field": .01, "type": "regular"},
+    {"name": "601.751", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

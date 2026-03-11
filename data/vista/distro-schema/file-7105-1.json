@@ -1,0 +1,220 @@
+{
+  "fileNumber": 7105.1,
+  "fileName": "NOIS LOCATION",
+  "globalRoot": "7105.1",
+  "globalReference": "^FSC(\"SITE\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the location. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to flag this location as being inactive. An inactive location cannot be selected for entering NOIS calls. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available on calls for this location. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the abbreviation of the location.  The abbreviation is used in creating the call ID. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NOTIFY METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MAIL:MAIL;ALERT:ALERT;",
+      "helpText": "This field is used to specify the method of notification. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NOTIFY EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EDITED:EDITED;STATUS CHANGED:STATUS CHANGED;CLOSED:CLOSED;",
+      "helpText": "This field specifys the event that should trigger notification. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CONTACT PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the default for the contact person for a NOIS call at this location. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "FTS TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the FTS phone number for this location. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "COMMERICIAL TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the commercial phone number for this location. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the FAX number for this location. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the email address for being notified.  It should contain the person or mailgroup (and the domain for sites). ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "helpText": "This is the office for this site (assuming this location is a site.) ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VISN",
+      "dataType": "POINTER",
+      "rawType": "P7106.6'",
+      "required": false,
+      "pointerTo": 7106.6,
+      "helpText": "This is the VISN for this site (assuming this location is a site). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "P7105.7'",
+      "required": false,
+      "pointerTo": 7105.7,
+      "helpText": "This field is the type for this location (Alpha, 486, etc.) ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This is the domain for this location. This field is not used for local implementations of NOIS. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "NT DOMAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:VHA_EASTA;C:VHA_CENTRALA;W:VHA_WESTA;EB:VHA_EASTB;CB:VHA_CENTRALB;WB:VHA_WESTB;EES:VHA_EES;VCS:VHA_VCS;VBA:VBA;VCS:VCS;",
+      "helpText": "This field is the locations NT Domain name. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P7106.7'",
+      "required": false,
+      "pointerTo": 7106.7,
+      "helpText": "This is the system for this location. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7105.11",
+      "required": false,
+      "helpText": "This is a description of the location. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7105.111",
+      "required": false,
+      "helpText": "These are synonyms for this location. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7105.199",
+      "required": false,
+      "helpText": "These are names used by the client for this location. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.199,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "7105.1", "field": .01, "type": "regular"},
+    {"name": "7105.1", "field": 2, "type": "regular"},
+    {"name": "7105.1", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

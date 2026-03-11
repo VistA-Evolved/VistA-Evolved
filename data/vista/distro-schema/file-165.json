@@ -1,0 +1,257 @@
+{
+  "fileNumber": 165,
+  "fileName": "ONCOLOGY CONTACT",
+  "globalRoot": "165I",
+  "globalReference": "^ONCO(165,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFOX",
+      "required": true,
+      "helpText": "FREE TEXT FIELD FOR RECORDING THE CONTACT. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "FIRST-LAST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "COMPUTED FIELD RECORDING THE FIRST NAME AND THEN LAST NAME OF CONTACT. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Primary street address for contact - ususally only one needed ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "SECOND LINE OF CONTACT ADDRESS. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "THIRD LINE OF CONTACT STREET ADDRESS. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Identifies the contact's city of residence.  ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "  Identifies the contact's state of residence. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .119,
+      "fieldName": "ZIP CODE",
+      "dataType": "POINTER",
+      "rawType": "RP5.11'O",
+      "required": true,
+      "pointerTo": 5.11,
+      "helpText": "POINTS TO THE ZIP CODE FILE. ",
+      "fieldNumber_": .119
+    },
+    {
+      "fieldNumber": .1211,
+      "fieldName": "TEMPORARY ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING A CONTACTS TEMPORARY ADDRESS. ",
+      "fieldNumber_": .1211
+    },
+    {
+      "fieldNumber": .1212,
+      "fieldName": "TEMPORARY ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING A SECOND TEMPORARY ADDRESS. ",
+      "fieldNumber_": .1212
+    },
+    {
+      "fieldNumber": .1213,
+      "fieldName": "TEMPORARY ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING A THIRD TEMPORARY ADDRESS. ",
+      "fieldNumber_": .1213
+    },
+    {
+      "fieldNumber": .1217,
+      "fieldName": "START DATE OF TEMP ADDRESS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "RECORDS THE DATE A TEMPORARY ADDRESS IS IN USE. ",
+      "fieldNumber_": .1217
+    },
+    {
+      "fieldNumber": .1218,
+      "fieldName": "END DATE OF TEMP ADDRESS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "RECORDS THE ENDING DATE FOR THE TEMPORARY ADDRESS. ",
+      "fieldNumber_": .1218
+    },
+    {
+      "fieldNumber": .1219,
+      "fieldName": "TEMPORARY ZIP CODE",
+      "dataType": "POINTER",
+      "rawType": "P5.11'O",
+      "required": false,
+      "pointerTo": 5.11,
+      "helpText": "POINTS TO THE ZIP CODE FILE FOR THE TEMPORARY ADDRESS. ",
+      "fieldNumber_": .1219
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TELEPHONE NUMBER ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .132,
+      "fieldName": "OFFICE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORDS A CONTACT'S OFFICE/BUSINESS TELEPHONE NUMBER. ",
+      "fieldNumber_": .132
+    },
+    {
+      "fieldNumber": .133,
+      "fieldName": "PHONE #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORDS ADDITIONAL TELEPHONE NUMBER FOR CONTACT. ",
+      "fieldNumber_": .133
+    },
+    {
+      "fieldNumber": .134,
+      "fieldName": "PHONE #4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORDS ADDITIONAL TELEPHONE NUMBER FOR CONTACT. ",
+      "fieldNumber_": .134
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PATIENT;2:PHYSICIAN;3:CONTACT PERSON;4:INSTITUTION;5:OTHER;6:GOVERNMENT AGENCY;",
+      "helpText": "RECORDS THE TYPE OF CONTACT. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORDS THE TITLE OF THE CONTACT:  MR., MRS., MISS, ETC. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING ANY COMMENTS REGARDING THE CONTACT. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "VA HOSPITAL #",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Pointer to institution file to provide link with Va station number. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "VA PROVIDER #",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to New Person file to provide a link to single identity. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  The NPI (National Provider Identifier) for the physician. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "POSTAL CODE CONVERSION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Converted;2:Unconverted;",
+      "helpText": "Indicates that POSTAL CODE (.119) values have been converted from  pointers to ZIP CODE (5.11) to free-text postal code values. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BT", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "165", "field": .01, "type": "regular"},
+    {"name": "165", "field": 1, "type": "regular"},
+    {"name": "165", "field": 99, "type": "regular"},
+    {"name": "165", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?33,@(\"$P($P($C(59)_$S($D(^DD(165,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

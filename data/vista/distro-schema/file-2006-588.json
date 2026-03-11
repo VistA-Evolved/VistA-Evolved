@@ -1,0 +1,45 @@
+{
+  "fileNumber": 2006.588,
+  "fileName": "APPLICATION ENTITY TITLE",
+  "globalRoot": "2006.588",
+  "globalReference": "^MAGDICOM(2006.588,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION ENTITY TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field will be used during the DICOM negotiation request.   The AE_TITLE.DIC is used to map the Called Application Entity Title of a  DICOM negotiation request to the alias that identifies the VistA Application Entity Title name for the SCP.  This is used for looking up acceptable  presentation contexts in SCP_LIST.DIC.  The Called Application Entity Title for a DICOM request must either be the VistA Application Entity Title name in file SCP_LIST.DIC or else one defined in AE_Ti",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ALIAS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is optional and it stores the alias for the Application Entity Title. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the site that has the device with the Application Entity Title. For example: \"Walter Reed AMC\" could be the site name for the Application Entity \"OSXWRAMC\". ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.588", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

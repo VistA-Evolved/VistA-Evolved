@@ -1,0 +1,152 @@
+{
+  "fileNumber": 503344,
+  "fileName": "TEMPORARY RECEIPT",
+  "globalRoot": "503344",
+  "globalReference": "^ABS(503344,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECEIPT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DONOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DONOR ADDRESS LINE1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DONOR CITY/STATE/ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF FUNDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CASH/CHECK;M:MONEY ORDER;O:OTHER;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ISSUED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE ISSUED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DONATIONS FILE REF#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DONOR ADDRESS LINE2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "RP503334'",
+      "required": true,
+      "pointerTo": 503334,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "ORGANIZATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P503338'",
+      "required": false,
+      "pointerTo": 503338,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "POST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "POST FUND",
+      "dataType": "POINTER",
+      "rawType": "P503342'",
+      "required": false,
+      "pointerTo": 503342,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PURPOSE OF DONATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503344", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

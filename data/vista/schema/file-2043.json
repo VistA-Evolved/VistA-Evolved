@@ -1,0 +1,48 @@
+{
+  "fileNumber": 2043,
+  "fileName": "VIST LETTER",
+  "globalRoot": "2043",
+  "globalReference": "^ANRV(2043,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Allows the user to edit and print letters and labels for various functions related to VIST.  Letters available include BRC application letter, Claim letter, Invitation for VIST Review letter, and IRS Exemption letter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUIRES PATIENT NAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answering \"yes\" to this allows In-step to pull a specific veteran's name and related information into a letter.  Can do a specific name or a range of names.  Answering \"no\" will cause the user to not be prompted for a veteran's name during the printing of that letter. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "2043.01",
+      "required": false,
+      "helpText": "Allows specific information about veteran, VIST, dates, etc. to be added to the letter. ",
+      "isMultiple": true,
+      "subFileNumber": 2043.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2043", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

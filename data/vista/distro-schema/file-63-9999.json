@@ -1,0 +1,76 @@
+{
+  "fileNumber": 63.9999,
+  "fileName": "ARCHIVED LR DATA",
+  "globalRoot": "63.9999",
+  "globalReference": "^LAR(\"Z\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LRDFN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0X",
+      "length": 11,
+      "required": true,
+      "helpText": "The internal file number of the \"patient\" (or other entity) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "R*P1'X",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "The file where the name of this entry may be found. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0XO",
+      "length": 9,
+      "required": true,
+      "helpText": "The internal file number in the parent file for this entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHEM, HEM, TOX, RIA, SER, etc.",
+      "dataType": "DATE",
+      "rawType": "63.999904D",
+      "required": false,
+      "helpText": "This is data for Chemistry, Hematology, Toxicology, RIA, Serology, to be archived. ",
+      "isMultiple": true,
+      "subFileNumber": 63.999904,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MICROBIOLOGY",
+      "dataType": "DATE",
+      "rawType": "63.999905DA",
+      "required": false,
+      "helpText": " This field contains microbiology data which has been archived from the active on line data base. ",
+      "isMultiple": true,
+      "subFileNumber": 63.999905,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AZZ", "field": },
+    {"name": "B", "field": },
+    {"name": "CZX", "field": },
+    {"name": "CZZ", "field": },
+    {"name": "63.9999", "field": .01, "type": "regular"},
+    {"name": "63.9999", "field": .02, "type": "regular"},
+    {"name": "63.9999", "field": .03, "type": "regular"},
+    {"name": "63.9999", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 987.6,
+  "fileName": "WII PARAMETERS",
+  "globalRoot": "987.6",
+  "globalReference": "^WII(987.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY REVIEWER MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP3.8'",
+      "required": true,
+      "pointerTo": 3.8,
+      "helpText": "This field contains the mail group that the weekly background job [WII  Build ADT Events] sends notices to.  The members in this group  are  alerted that there are entries that need to be reviewed and transmitted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPOSITORY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the mail server address that approved data is sent to VIA a Vista Mail Server. This field is populated with the patch WII*1.0*1 and should not be edited. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "987.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

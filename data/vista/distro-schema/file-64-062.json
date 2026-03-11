@@ -1,0 +1,47 @@
+{
+  "fileNumber": 64.062,
+  "fileName": "LAB ELECTRONIC SUBTYPES",
+  "globalRoot": "64.062",
+  "globalReference": "^LAB(64.062,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field contains the name or characteristic of the screen. Generally these name are related to LOINC terms describing units of measurement. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field contains abbreviations of the subtype. Abbreviation of the subtypes is also stored in LAB ELECTRONIC CODE (#64.061) file SCREEN (#11) field triggered by the SUBTYPE (#10) field. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "64.062", "field": .01, "type": "regular"},
+    {"name": "64.062", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

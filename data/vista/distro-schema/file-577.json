@@ -1,0 +1,105 @@
+{
+  "fileNumber": 577,
+  "fileName": "VDEF EVENT DESCRIPTION",
+  "globalRoot": "577",
+  "globalReference": "^VDEFHL7(577,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of this VDEF Event. This MUST consist of the HL7 Message Type,  HL7 Event Type and a VDEF subtype.  Valid examples are: ORU-R01-VTLS, RDS-O13-PPAR, ADT-A01-DEMG. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP779.001'",
+      "required": true,
+      "pointerTo": 779.001,
+      "helpText": "HL7 Event Type for this VDEF Event. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EVENT SUBTYPE",
+      "dataType": "POINTER",
+      "rawType": "RP577.4",
+      "required": true,
+      "pointerTo": 577.4,
+      "helpText": "The event sup-type associated with this event. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.2'",
+      "required": false,
+      "pointerTo": 771.2,
+      "helpText": "Message type for this HL7 Event, such as ADT or ORU ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VISTA HL7 PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P101",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "Protocol for this HL7 event.  Protocols should be in VDEF <message type>  <event type> <custodial package> VISTA SENDER format, e.g. VDEF ADT A28  DEMOGRAPHICS VISTA SENDER. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CUSTODIAL PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P579.6'",
+      "required": false,
+      "pointerTo": 579.6,
+      "helpText": "Custodial package for this event, such as REGISTRATION or LAB SERVICE ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "API EVENT ACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "EXTRACTION PROGRAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field specifies the name of the program VDEF will use to extract the  data from VistA files and construct the HL7 message.  If not in use yet,  this field must be valued to \"INACTIVE\". ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EVENT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This should describe in non-HL7 terminology what the VDEF Event is used  for and what kind of message it will create. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "577", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .09, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VDEFHL7(579.6,+$P(^(0),U,9),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(579.6,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 1, "value": "W:$D(^(1)) \"   \",$P(^(1),U,1)"}
+  ]
+}

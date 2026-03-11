@@ -1,0 +1,793 @@
+{
+  "fileNumber": 785,
+  "fileName": "EEO COMPLAINTS",
+  "globalRoot": "785I",
+  "globalReference": "^EEO(785,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPLAINANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "Enter the name of the person making the complaint, (Complainant). Enter the name in 'Last,First Middle' format [3-30 Characters.  Do not use numerics or lowercase alphabetic characters.  With the exception of the comma, period, space, hyphen, dash and apostrophe punctuation characters should be avoided. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the street address of the complainant's residence. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The city in which the complainant resides. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state in which the complainant resides, points to the State file (#5). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The Zip Code portion of the Complainants address, must be either 5 numbers or 5 numbers followed by a \"-\" and 4 more numbers.  ",
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "CASE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Extracts case from full Case Number format.        ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "OEO NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The format for OEO# consists of two numbers followed by a dash and up to four more numbers, for example... 93-1109. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "CASE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "The number assigned to the EEO Complaint case by this software at initial, and subsequent entry/edit sessions. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The Complainants station name, (The station to which s/he is assigned).  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P730'X",
+      "required": false,
+      "pointerTo": 730,
+      "helpText": "The service department to which the complainant belongs.  This points  to file #730, the National Service file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "POSITION/GRADE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The pay grade of the complainants position, (pay plan-series-grade). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "JOB TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The job title of the complainant. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REP'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the person representing the complainant.    ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REP'S PHONE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the phone number of the complainant's representative.           ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REP'S STREET ADDR.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the street address of the complainant's representative. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REP'S CITY ADDR.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The city in which the complainant's representative resides. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REP'S STATE ADDR.",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state in which the complainant's representative resides. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REP'S ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the zip code of the complainant's representative in either 5 or 9 digit format (5 numbers or 5 numbers followed by a \"-\" and four more numbers). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COUNSELOR'S NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the counselor assigned to the complainant. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "TOTAL COUNSELOR DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "From the date an EEO counselor is contacted until the Notice of Final  Interview is issued to the Complainant (30 calander days allowed unless an extension is granted). ",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "DATE OF INCIDENT",
+      "dataType": "DATE",
+      "rawType": "DaX",
+      "required": false,
+      "helpText": "The date upon which the alleged EEO incident actually occurs.     ",
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 14.7,
+      "fieldName": "DATE INITIAL CONTACT/INTERVIEW",
+      "dataType": "DATE",
+      "rawType": "DaX",
+      "required": false,
+      "helpText": "The date the complainant initially contacted the EEO office, cannot be after the date of the Final Interview. ",
+      "fieldNumber_": 14.7
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE NOTICE OF FINAL INTERVIEW",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date notice of final interview is issued to the complainant, cannot be prior to the date of initial contact.                                                                                                        ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.3,
+      "fieldName": "DATE REQUEST FOR ADD'L INFO",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the Complainant is given a request for additional information that is necessary to continue processing the complaint. ",
+      "fieldNumber_": 15.3
+    },
+    {
+      "fieldNumber": 15.4,
+      "fieldName": "DATE ADDITIONAL INFO. RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that requested additional information is received from the complainant. ",
+      "fieldNumber_": 15.4
+    },
+    {
+      "fieldNumber": 15.5,
+      "fieldName": "DATE OF INFORMAL RESOLUTION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date that the complaint is resolved, if the complaint is resolved at the informal stage (informal stage is before 'Date Formal Complaint Filed'). ",
+      "fieldNumber_": 15.5
+    },
+    {
+      "fieldNumber": 15.7,
+      "fieldName": "DATE EXTENSION REQUESTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the Complainant and Agency requested an extension (must be within 30 days of Date of Initial Contact) ",
+      "fieldNumber_": 15.7
+    },
+    {
+      "fieldNumber": 15.9,
+      "fieldName": "LENGTH OF EXTENSION GRANTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The length of the period for which an extension is granted during the counseling phase of a complaint. ",
+      "fieldNumber_": 15.9
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE FORMAL COMPLAINT FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the complainant filed a formal complaint. If mailed use the postmark date, if hand delivered use the date delivered. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.05,
+      "fieldName": "DATE UNION GRIEVANCE FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If a union grievance was also filed enter that date. ",
+      "fieldNumber_": 16.05
+    },
+    {
+      "fieldNumber": 16.07,
+      "fieldName": "DATE MSPB APPEAL FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If a complaint was also filed with MSPB, enter that date here. ",
+      "fieldNumber_": 16.07
+    },
+    {
+      "fieldNumber": 16.3,
+      "fieldName": "OFFICE COMPLAINT FILED WITH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "OEO:Office of Equal Opportunity;CO:Central Office;STN:Station;SEC:Secretary of Veteran Affairs;",
+      "helpText": "An EEO complaint may be filed with a variety of offices, select the appropriate one for this complaint. ",
+      "fieldNumber_": 16.3
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "DATE COUNS. INFORMED OF F.C.",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the counselor is informed of the formal complaint, cannot be after the date the counselor files his report. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.7,
+      "fieldName": "DATE COUNSELOR FILED REPORT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the counselor files his report to the EEO Officer, cannot be prior to the date the counselor was informed of the formal complaint. ",
+      "fieldNumber_": 16.7
+    },
+    {
+      "fieldNumber": 16.75,
+      "fieldName": "DATE COMP REC'D BY EEO OFF.",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the EEO Officer actually receives the formal complaint from whatever source.                                 ",
+      "fieldNumber_": 16.75
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "ISSUE CODES",
+      "dataType": "POINTER",
+      "rawType": "785.02P",
+      "required": false,
+      "helpText": "Enter here as many issue codes as are necessary for this complaint, this field points to EEO Complaint Issue Codes file (786). ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "BASIS",
+      "dataType": "POINTER",
+      "rawType": "785.01P",
+      "required": false,
+      "helpText": "Enter all 'BASIS' that are involved in this complaint, this field points to the EEO Complaint Basis file (#785.1).          ",
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ISSUE CODE COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter a brief description of any topic related to this complaint.  This  must not exceed 120 characters. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE OF LETTER OF ACKNOW.",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date of letter from the station to the complainant acknowledging  receipt of the complaint. Use the date this letter is signed (Date shown on letter). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE TO OGC FOR ACC/REJ",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the formal complaint is sent by the station to the Office of General Counsel for acceptance or rejection.                                                              ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE ACCEPTED BY OGC",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date that the Office of General Counsel accepts the report, the date at the top of the OGC letter.                                                               ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.3,
+      "fieldName": "DATE DISMISSED BY OGC",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date that the Office of General Counsel dismisses the complaint. The date at the top of the OGC letter. ",
+      "fieldNumber_": 22.3
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TOTAL DAYS OGC ACC/REJ",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "From the date the OGC receives a request to dismiss a complaint to the date the complaint is dismissed or accepted in whole or in part (45 days). ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 23.5,
+      "fieldName": "DATE TO OGC FOR FINAL DECISION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date the complaint was sent to the Office of General Counsel for their final decision. ",
+      "fieldNumber_": 23.5
+    },
+    {
+      "fieldNumber": 23.6,
+      "fieldName": "TOTAL DAYS/OGC FINAL DECISION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Number of days between complaint being sent to OGC and their issuance of the final decision. ",
+      "fieldNumber_": 23.6
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DATE COMPLAINT ACCEPTED BY STN",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date that the complaint was accepted by the station. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TOTAL DAYS ACCEPTANCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "From the date the complaint is filed with or received by the EEO Officer, to the date the complaint is accepted by the EEO Officer and referred to the Office of Equal Opportunity for investigation or referred to the OGC for possible dismissal. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DATE INVESTIGATOR REQUESTED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date upon which an investigator is requested for the EEO incident. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27.5,
+      "fieldName": "INVESTIGATOR'S NAME",
+      "dataType": "POINTER",
+      "rawType": "785.03P",
+      "required": false,
+      "helpText": "This field holds the name of the investigator assigned to this complaint, the investigator must exist in the EEO INVESTIGATOR File. ",
+      "fieldNumber_": 27.5
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "INITIAL INV DATE ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date of the official assignment of the first investigator to the alledged EEO incident.  Date on the OEO assignment letter. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "INV REPORT RECEIVED DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the final investigative report is received by the EEO Officer (if by mail use the postmark date). ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TOTAL INVESTIGATION DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "From the date that the investigator is assigned to the date that the report of investigation is delivered to the EEO Officer (45 days). ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 40.5,
+      "fieldName": "DATE COMP RECEIVED ADV/RIGHTS",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "When the complainant actually receives his advisement of rights. If sent by mail the date on the return receipt. ",
+      "fieldNumber_": 40.5
+    },
+    {
+      "fieldNumber": 40.6,
+      "fieldName": "DATE COMP MAKES ELECTION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the complainant makes his choice on which course of action he will take after being advised of his rights and responsibilities. This date will be the date of the postmark if received by mail, otherwise the date it was delivered. ",
+      "fieldNumber_": 40.6
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "DATE COMP SENT ADV/RIGHTS",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date the complainant is sent the advisement of rights, this date should be prior to both the date the complainant receives his advisement of rights, and the date he makes his election. Enter the date the EEO Officer signs this letter. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TOTAL DAYS ASSIGN INV.",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "From the date the OEO receives a request for the assignment of an investigator to the date that an investigator is assigned (30 days). ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "DATE EEOC HEARING REQUESTED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that has been requested for the EEO hearing to take place. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DATE EEOC HEARING CONDUCTED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the Equal Employment Opportunity Commission hearing  actually took place. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "TOTAL DAYS FOR EEOC HEARING",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Elapsed time between when the EEOC hearing was requested and the hearing took place. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 46.2,
+      "fieldName": "EEOC APPEAL",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date of the Equal Employment Opportunities Commission appeal. This will be the date on the letter from OGC stating that this complaint is being appealed. ",
+      "fieldNumber_": 46.2
+    },
+    {
+      "fieldNumber": 46.4,
+      "fieldName": "EEOC APPEAL #2",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If the decision of the first EEOC appeal is appealed, enter the date of this second appeal here.  Use the date that appears on the letter received from OGC stating that the complaint is being appealed. ",
+      "fieldNumber_": 46.4
+    },
+    {
+      "fieldNumber": 46.5,
+      "fieldName": "DATE FINAL AGENCY DEC. ISSUED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the Final Agency Decision was issued. ",
+      "fieldNumber_": 46.5
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DATE CIVIL ACTION FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the complainant files civil action. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "DATE CLOSED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the complaint has been closed using any of the 7 valid reasons found in field (#49). ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 48.5,
+      "fieldName": "DELETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DELETED;",
+      "helpText": "This is a field that flags, but does not delete EEO Complaints that are no longer needed by the users.  The user can no longer access files flagged as deleted. ",
+      "fieldNumber_": 48.5
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "REASON CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SETTLEMENT;2:AGENCY DECISION;3:REJECTION BY OGC;4:CIVIL ACTION FILED;5:WITHDRAWAL;6:CANCELLATION;7:FAILURE TO PROSECUTE;8:OTHER;",
+      "helpText": "The reason that the case was closed, any one of the seven reasons listed when the user enters a \"?\" may be selected. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "TOTAL PROCESSING DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "The total number of days it takes to process the EEO complaint, this  is the difference between the date the complaint is closed and the date   that the complaint became formal. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "TOTAL COUNSELOR REPORT DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "The difference between when the counselor filed his report and the date  he was informed of the formal complaint. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "TOTAL DAYS FOR ADVISE/RIGHTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "The difference between when the complainant was advised of his rights and the date the approved investigators report was received. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "TOTAL DAYS TO REQ EEOC HEARING",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "The difference between when the EEOC hearing was requested and the date the complainant makes his election.               ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "TOTAL DAYS TO MAKE ELECTION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "The time between the date the complainant makes his response to the advisement of rights and when the complaint file is transmitted to the EEOC for the hearing, or to OGC for a FAD. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "TOTAL DAYS FOR FAD DECISION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the time between when the complaint was sent to the OGC for the final decision and when the Agency's final decision was issued. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "180 DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This shows the number of days the complaint is being processed within the Director's scope of authority/responsibility. Not to exceed 180 days. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "NARRATIVE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "785.04",
+      "required": false,
+      "helpText": "You may enter any information pertaining to this complaint, this field will  be displayed on Form 0210 (Initial Complaint Intake Form) ",
+      "isMultiple": true,
+      "subFileNumber": 785.04,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "POINTER",
+      "rawType": "785.061P",
+      "required": false,
+      "helpText": "The resolution the complainant is seeking, what actions the complainant feels would rectify the situation.  This field points to the Corrective  Actions file (#785.2). ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "TRANSMIT FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An \"X\" in this field marks records that have been changed and are to be later evaluated for transmission by the EEO Tasked Bulletin option. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "COMPLAINT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Auotmatically generated by EEO Complaint Tracking to identify the current processing phase for the complaint. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "180 DAYS OFF SITE PROCESSING",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "The total of all days that may be counted in the 180 days field, but were out of the control of the station EEO program. This includes the total days to assign and investigate the complaint and time spent at OGC waiting for an acceptance or rejection. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "EEOC APPEAL RESOLUTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any information pertaining to the EEOC Appeal filed involving this complaint ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 71.5,
+      "fieldName": "EEOC APPEAL RESOLUTIONS (#2)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any information pertaining to a second EEOC Appeal filed involving this complaint. ",
+      "fieldNumber_": 71.5
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "CIVIL ACTION RESOLUTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any information pertaining to the Civil Action filed involving  this complaint. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "COUNSELOR SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the user number for the EEO counselor, specialist, data input personnel, etc., who is responsible for inputting pre-formal complaint data into this complaint. ",
+      "fieldNumber_": 98
+    }
+  ],
+  "fieldCount": 82,
+  "crossReferences": [
+    {"name": "ANODE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "785", "field": .01, "type": "regular"},
+    {"name": "785", "field": .01, "type": "regular"},
+    {"name": "785", "field": 1.2, "type": "regular"},
+    {"name": "785", "field": 1.3, "type": "regular"},
+    {"name": "785", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Q, "value": "W:$D(^(5)) \"   \",$P(^(5),U,6)"},
+    {"field": QUIT, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,3),4,5)_\"-\"_$E($P(^(1),U,3),6,7)_\"-\"_$E($P(^(1),U,3),2,3)"}
+  ]
+}

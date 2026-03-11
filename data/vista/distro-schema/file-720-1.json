@@ -1,0 +1,37 @@
+{
+  "fileNumber": 720.1,
+  "fileName": "EVENT CAPTURE LOG",
+  "globalRoot": "720.1",
+  "globalReference": "^EC(720.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field is the record number for this entry in the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONVERSION (V.2.0) DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the Event Capture V.2.0 post installation conversion ran to completion. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "720.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

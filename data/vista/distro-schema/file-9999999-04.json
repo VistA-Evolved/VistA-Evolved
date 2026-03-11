@@ -1,0 +1,143 @@
+{
+  "fileNumber": 9999999.04,
+  "fileName": "IMM MANUFACTURER",
+  "globalRoot": "9999999.04",
+  "globalReference": "^AUTTIMAN(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the complete name of a manufacturer of vaccines/immunizations. The name must be at least 3 characters and no more than 75 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MVX CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the MVX code for this manufacturer.  The code is either 2 or 3 characters in length. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "Use to show if this manufacturer is currently active.  If the field is blank or contains a '0' the software sees the manufacturer as active. Enter a '1' if the manufacturer is no longer active. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the complete name of the manufacturer.  It must be at least 3  characters and no more than 100 characters in length.  This is used  when the full name of the manufacturer cannot be entered into the NAME field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SYNONYM #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is an alternate (or shortened) name for this manufacturer. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P9999999.04'Ia",
+      "required": false,
+      "pointerTo": 9999999.04,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "9999999.0499DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.0499,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "CDC NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "These are any added information the CDC has for this manufacturer. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 1101,
+      "fieldName": "VACCINE",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.0411A",
+      "required": false,
+      "helpText": "This is a list of vaccines produced by this manufacturer. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.0411,
+      "fieldNumber_": 1101
+    },
+    {
+      "fieldNumber": 8801,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "Enter a one or two character \"identifier\" for this manufacturer that can be used as a 'short-cut' in selecting the company. ",
+      "fieldNumber_": 8801
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "M", "field": },
+    {"name": "9999999.04", "field": .01, "type": "regular"},
+    {"name": "9999999.04", "field": .02, "type": "regular"},
+    {"name": "9999999.04", "field": .05, "type": "regular"},
+    {"name": "9999999.04", "field": 99.97, "type": "regular"},
+    {"name": "9999999.04", "field": 99.99, "type": "regular"},
+    {"name": "9999999.04", "field": 8801, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(9999999.04,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

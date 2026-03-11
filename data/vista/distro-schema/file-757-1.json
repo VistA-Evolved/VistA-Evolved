@@ -1,0 +1,55 @@
+{
+  "fileNumber": 757.1,
+  "fileName": "SEMANTIC MAP",
+  "globalRoot": "757.1IP",
+  "globalReference": "^LEX(757.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAJOR CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "RP757'",
+      "required": true,
+      "pointerTo": 757,
+      "helpText": "This is a pointer to the Major Concept, linking the semantic classification with a concept.  Only Major Concepts are semantically classified.   Synonyms and Lexical Variants adopt the semantic classification of the parent Major Concept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEMANTIC CLASS",
+      "dataType": "POINTER",
+      "rawType": "RP757.11'",
+      "required": true,
+      "pointerTo": 757.11,
+      "helpText": "This is a pointer to the general semantic class defined in the Semantic Class file #757.11 to which the Major Concept belongs.  An example of a semantic class is ORG for concepts in the general class of Organisms. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEMANTIC TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP757.12'",
+      "required": true,
+      "pointerTo": 757.12,
+      "helpText": "This is a pointer to the specific semantic type defined in the Semantic Types file #757.12 to which the Major Concept belongs.  Using the general semantic  class ORG (Organism), examples of specific semantic types would be plants,  alga, fungus, virus, rickettsia, bacterium, animal, intertebrate, vertebrate, amphibian, bird, fish, reptile, mammal, human, and organism. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AMCC", "field": },
+    {"name": "AMCT", "field": },
+    {"name": "ASTT", "field": },
+    {"name": "B", "field": },
+    {"name": "757.1", "field": .01, "type": "regular"},
+    {"name": "757.1", "field": 1, "type": "regular"},
+    {"name": "757.1", "field": 2, "type": "regular"},
+    {"name": "757.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^LEX(757.11,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(757.11,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^LEX(757.12,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(757.12,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "fileNumber": 102.21,
+  "fileName": "CPRS QUERY DEFINITION",
+  "globalRoot": "102.21",
+  "globalReference": "^ORD(102.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the report or criterion.  Personally created reports  are stored as RPTUduz user-created-name.  This assures uniqueness of  personal custom reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text that is displayed in the list box when selecting a criterion or a report. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text that is desplayed when the definition is disabled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:constraint;R:report;S:search item;B:baseline;",
+      "helpText": "This specifies whether the record is a report or a criterion. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the owner of a custom report. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P102.21'",
+      "required": false,
+      "pointerTo": 102.21,
+      "helpText": "This identifies the entry that is the parent criterion.  Criteria may appear in a hierarchy. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TAG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This contains an integer that matches the Tag property of the Windows control that references this criterion. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUERY TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "102.211A",
+      "required": false,
+      "helpText": "This multiple allows a sequence of captions to be defined that comprise the default text of a query description. ",
+      "isMultiple": true,
+      "subFileNumber": 102.211,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FORMAT",
+      "dataType": "SUBFILE",
+      "rawType": "102.212",
+      "required": false,
+      "helpText": "This multiple contains formatting information for the columns of the report. ",
+      "isMultiple": true,
+      "subFileNumber": 102.212,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "T", "field": },
+    {"name": "102.21", "field": .01, "type": "regular"},
+    {"name": "102.21", "field": .01, "type": "regular"},
+    {"name": "102.21", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

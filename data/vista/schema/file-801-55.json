@@ -1,0 +1,74 @@
+{
+  "fileNumber": 801.55,
+  "fileName": "REMINDER GEC DIALOG ASSOCIATION HISTORY",
+  "globalRoot": "801.55",
+  "globalReference": "^PXRMD(801.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field serves as a permanent identifier of the patient who has been selected while using the Geriatric Extended Care Dialogs (GEC).   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the GEC dialogs were first  initiated for a particular patient and a particular referral. It is the  current date and item that the first entry for this patient was enter into  file 801.5. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IDENTIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "There are 4 reminder dialogs use in the GEC program.  This field hold on of  the 4 possible entries representing the dialog that is being used. the  possibilities are GEC1,GEC2,GEC3, and GECF. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NOTIEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field permanently saved the internal entry number of the Text  Integration Utilities (TIU) note that is being written on when selections  are being made in the GEC dialogs. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file #200. It represents the  user who entered the data into the GEC dialogs. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the data was placed into the GEC dialog represented by  the IDENTIFY filed. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "801.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

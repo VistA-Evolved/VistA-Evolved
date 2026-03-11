@@ -1,0 +1,101 @@
+{
+  "fileNumber": 651,
+  "fileName": "COST DISTRIBUTION CENTER",
+  "globalRoot": "651OI",
+  "globalReference": "^SOWK(651,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COST DISTRIBUTION CENTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains name of the CDC account. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PRIMARY;0:SECONDARY;",
+      "helpText": "This field is used to indicate if the CDC is primary or secondary. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY",
+      "dataType": "POINTER",
+      "rawType": "R*P651'",
+      "required": true,
+      "pointerTo": 651,
+      "helpText": "This field is used to show the primary cost distribution center. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST DISTRIBUTION ACCOUNT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used for the cost distribution account number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACCOUNT ACTIVE ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to activate or inactivate the cost distribution center at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SERVICE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field will be used to identify the service type of the CDC account. Service type will identify whether the CDC account is inpatient, outpatient, residential care home, domiciliary, nursing home care unit, etc. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SOCIAL WORK ACCOUNT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to 'NO' or '0' to indicate non-Social Work accounts.  A screen on field 3.1 of file 650 was added to eliminate openings to non-Social Work accounts. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DELETED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates deleted Cost Distribution Center accounts.  This field is set to 'YES' or '1' for deleted CDC accounts.  The field was added to deactivate deleted accounts from the users set of valid accounts available on the option Activate/Deactivate Cost Distribution Centers. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AN", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "651", "field": .01, "type": "regular"},
+    {"name": "651", "field": 2, "type": "regular"},
+    {"name": "651", "field": 3, "type": "regular"},
+    {"name": "651", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"  \",$P(^(0),U,4)"}
+  ]
+}

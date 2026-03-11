@@ -1,0 +1,120 @@
+{
+  "fileNumber": 8969.02,
+  "fileName": "VSM MONITOR DEFAULTS",
+  "globalRoot": "8969.02",
+  "globalReference": "^KMPV(8969.02,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONITOR KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Two to four Letter acronym used to identify specific monitor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DAYS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Number of days that unsent data will be allowed to remain in  ^KMPTMP(\"KMPV\" before the purge routine kills it. Limited to 3-7 days.  Data older than this value will be deleted regardless of reason it has  not been sent to the national database in order to assure global does not  grow unchecked. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COLLECTION INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number in minutes used to gather or aggregate metrics. Monitors that  collect metrics on a periodic basis will use this value to wait between  collects. Monitors that collect data continuously will use this value for  aggregation of metrics.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CACHE DAILY TASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the routine, if applicable, to start each days collection.  The Cache' Task Manager will call the RUN linetag of this routine at the  start of every day. This allows collection tasks to run on each node of a  VistA system - front end and back end. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ALLOW TEST SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If set to 'Yes' this will allow the monitor to run on test systems.  Otherwise monitor will exit if the current UCI is not set as 'PROD' per  ^%ZOSF(\"UCI\"). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TASKMAN SCHEDULE FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value used to automatically reschedule the TaskMan tasks. (ex. 1D or 1W) ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TASKMAN SCHEDULE START",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time each monitor's TaskMan task should be scheduled. (ex. T+1@0001) ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TASKMAN OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The OPTION file entry used by TaskMan to schedule the daily background jobs. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "NATIONAL DATA EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Email address (VistA MailMan) to which daily data collections are sent. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "NATIONAL SUPPORT EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Email address (VistA MailMan) where emails are sent informing support  staff of potential problems or changes. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "VSM CFG EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Email address (VistA MailMan) where local configuration changes are sent  to update the national database. ",
+      "fieldNumber_": 1.03
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8969.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

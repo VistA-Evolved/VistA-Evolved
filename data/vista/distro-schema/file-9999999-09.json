@@ -1,0 +1,182 @@
+{
+  "fileNumber": 9999999.09,
+  "fileName": "EDUCATION TOPICS",
+  "globalRoot": "9999999.09",
+  "globalReference": "^AUTTEDT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ70",
+      "length": 70,
+      "required": true,
+      "helpText": "This is the name of the Patient Education Topic. Patient Education Topics are the subject on which a patient needs some more information in order to continue on his road to better health. For example, a patient may have  had some podiatry work done and received foot care education. 'foot care' would be the name of the education topic.   Enter a Topic that is 3-30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate an education topic.  If this field contains a \"1\" then the education topic is inactive.  Inactive education topics cannot be selected in the manual data entry process.  Education topic entries should be made inactive when they are no longer used.  Do not delete the entry or change the meaning of the education topic entry.   To make an inactive education topic active, enter the symbol \"@\" to delete the \"1\" from the field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ64",
+      "length": 64,
+      "required": false,
+      "helpText": "This is the name of the education that will be displayed in menu selection, and on Health Summaries. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUBTOPIC",
+      "dataType": "POINTER",
+      "rawType": "9999999.091001P",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EDUCATIONAL OUTCOME",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.0911",
+      "required": false,
+      "helpText": "This is a statement about what outcome is expected when providing this patient education.  It may reflect education plan and goals. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.0911,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EDUCATIONAL STANDARDS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.0912",
+      "required": false,
+      "helpText": "This is the standards that and educator should use to teach the patient or family or significant other. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.0912,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the education topic. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National education topics cannot be edited by sites.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'X",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this education topic.  ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CHANGE LOG",
+      "dataType": "DATE",
+      "rawType": "9999999.1DA",
+      "required": false,
+      "helpText": "This multiple is used to record a log of changes made to the education topic.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.1,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.9201",
+      "required": false,
+      "helpText": "This field contains a description of the education topic. It is used to document its purpose and intended usage.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.9201,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.11A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard codes the education topic is mapped to. Each mapping entry is defined by a coding system code pair.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.11,
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MINIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with an Education Topic, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.   ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "MAXIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with an Education Topic, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "MAXIMUM DECIMALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the maximum number of decimal digits that can be entered for the measurement.  ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement is to be associated with an Education Topic, the Minimum Value and Maximum Value sets the allowable range for the  magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.   ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "DELETED CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.19A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard code mappings that have been deleted. When a code mapping is deleted it is automatically moved to this multiple.   ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.19,
+      "fieldNumber_": 230
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "D", "field": },
+    {"name": "9999999.09", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(9999999.09,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

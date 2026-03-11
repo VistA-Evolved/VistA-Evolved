@@ -1,0 +1,75 @@
+{
+  "fileNumber": 661.9,
+  "fileName": "PROSTHETICS HCPCS RUNNING BALANCE",
+  "globalRoot": "661.9",
+  "globalReference": "^RMPR(661.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the HCPCS name as it shows in file #661.1. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This is a pointer to ITEM sub-record (#661.12) in file (#661.1). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is a pointer to Institution file (#4). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOTAL QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total quantity of an item for only one location and station. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TOTAL VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the total value or cost of an item for only one location and station. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "661.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

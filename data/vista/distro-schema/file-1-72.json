@@ -1,0 +1,59 @@
+{
+  "fileNumber": 1.72,
+  "fileName": "WORLD DAYLIGHT SAVINGS",
+  "globalRoot": "1.72",
+  "globalReference": "^DIT(1.72,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COUNTRY",
+      "dataType": "POINTER",
+      "rawType": "RP779.004'",
+      "required": true,
+      "pointerTo": 779.004,
+      "helpText": "The country that may follow DAYLIGHT SAVINGS, STANDARD, or SUMMER time. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COUNTRY NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the name of the country as shown in the COUNTRY CODE file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TIME SAME AS",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "Some countries follow the same date and time that a timezone's timeframe changes. Having this flag saves duplication of data entry for those countries.   Example: USA, Canada and Mexico have overlapping timezones. If the date and time that those timezones change from STANDARD to DAYLIGHT SAVINGS (and vice versa) is the same, then it is only necessary to have that information entered once. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "1.721",
+      "required": false,
+      "helpText": "Some countries change their timeframe every year and sometimes there are gaps or they stop altogether.  The year indicates whether this specific country changed their timeframe on the specific date and time listed. ",
+      "isMultiple": true,
+      "subFileNumber": 1.721,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

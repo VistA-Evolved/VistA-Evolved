@@ -1,0 +1,38 @@
+{
+  "fileNumber": 444.4,
+  "fileName": "RFQ EDITING PREFERENCE",
+  "globalRoot": "444.4",
+  "globalReference": "^PRC(444.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the IFCAP user who will be doing the editing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EDITOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "a:ASK ALWAYS;i:INPUT TEMPLATE ALWAYS;s:SCREENMAN ALWAYS;",
+      "helpText": "This field will determine if the user when in edit options is asked if they wish to edit via ScreenMan Form or FileMan Input Template.  If the user picks INPUT TEMPLATE ALWAYS or SCREENMAN ALWAYS, the appropriate editing mode will be invoked without the user having to answer the additional question within each editing option. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "444.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "fileNumber": 354.71,
+  "fileName": "IB COPAY TRANSACTIONS",
+  "globalRoot": "354.71",
+  "globalReference": "^IBAM(354.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction number.  The format is:           Station number (3 digits) - Sequential Number ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP354.7'",
+      "required": true,
+      "pointerTo": 354.7,
+      "helpText": "This is the pointer to the patient copay account.  The ien stored here is the same as the patient's dfn. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANS EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective date of the transaction that is used to determine the month/year in which to count the transaction amount towards the patient's cap. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "IB ACTION POINTER",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This is a pointer to the INTEGRATED BILLING ACTION (#350) file.  This will only be filled in for entries that have been billed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PENDING TRANSMISSION;C:COMPLETE;Y:CANCELLED PENDING TRANSMISSION;X:CANCELLED COMPLETE;",
+      "helpText": "This is the status of this transaction. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RESULTING FROM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a soft link pointer to indicate where this transaction came from. The information should be in the following format:   Station Number:File Number:IEN;refill number (if any) ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of units for this transaction. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TOTAL CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the total charge for this transaction. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is descriptive information regarding this transaction. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PARENT TRANSACTION ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P354.71'",
+      "required": false,
+      "pointerTo": 354.71,
+      "helpText": "This is a pointer to the parent transaction entry.  If this is the same as this entry, then this is the parent. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BILLED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount that was billed for this transaction. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "NON-BILLABLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the non-billable amount for this transaction. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This pointer indicates where this account transaction came from. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who added this entry. This may be a remote person since they are also stored in the New Person file. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This indicates when this entry was added. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "USER LAST UPDATING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who last updated this transaction. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time this transaction was updated. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This pointer to the action type identifies what action type this transaction was created with. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "CANCELLATION REASON",
+      "dataType": "POINTER",
+      "rawType": "P350.3'",
+      "required": false,
+      "pointerTo": 350.3,
+      "helpText": "This is the reason this transaction is cancelled. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "COPAYMENT TIER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the tier used to determine this charge rate for this copayment.   It should be a numeric value between 1 and 999, 0 decimal digits. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMISSION RECORD",
+      "dataType": "POINTER",
+      "rawType": "354.711P",
+      "required": false,
+      "helpText": "This is a record of transmission(s) to each facility that is a treating facility for the patient. This record will indicate if a transmission has been accepted or not at the individual facilities. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "354.71", "field": .01, "type": "regular"},
+    {"name": "354.71", "field": .03, "type": "regular"},
+    {"name": "354.71", "field": .05, "type": "regular"},
+    {"name": "354.71", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

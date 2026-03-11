@@ -1,0 +1,74 @@
+{
+  "fileNumber": 355.96,
+  "fileName": "IB INS CO PROVIDER ID CARE UNIT",
+  "globalRoot": "355.96",
+  "globalReference": "^IBA(355.96,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE UNIT",
+      "dataType": "POINTER",
+      "rawType": "R*P355.95",
+      "required": true,
+      "pointerTo": 355.95,
+      "helpText": "This is the care unit for which the insurance company requires a specific provider id number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "R*P36'",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company that is associated with the selected care type. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TYPE APPLIED TO",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:BOTH UB-04 AND CMS-1500 FORMS;1:UB-04 FORM ONLY;2:CMS-1500 FORM ONLY;",
+      "helpText": "This designates whether the id number is to be used for just UB-04 form types, just CMS-1500 form types or both form types. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILL CARE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:BOTH INPATIENT AND OUTPATIENT;1:INPATIENT ONLY;2:OUTPATIENT ONLY;3:PRESCRIPTION ONLY;",
+      "helpText": "This designates whether the id number is to be used for just inpatient bills, just outpatient bills, both inpatient and outpatient bills or just prescriptions. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P355.97'",
+      "required": true,
+      "pointerTo": 355.97,
+      "helpText": "This is the type of provider ID that the set of care unit is being defined for. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.96", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "355.96", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.96,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.96,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(355.97,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(355.97,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "fileNumber": 363,
+  "fileName": "RATE SCHEDULE",
+  "globalRoot": "363",
+  "globalReference": "^IBE(363,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A Rate Schedule which defines a set of charges billable to a payer for a specific type of service.  This is a free text short description that should identify who and what is being billed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RATE TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P399.3'",
+      "required": true,
+      "pointerTo": 399.3,
+      "helpText": "The Rate Type of the bills the charges of this schedule should be applied to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BILL TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INPATIENT;3:OUTPATIENT;",
+      "helpText": "The type of care being billed or type of bill the charges of this schedule are for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BILLABLE SERVICE",
+      "dataType": "POINTER",
+      "rawType": "*P399.1'",
+      "required": false,
+      "pointerTo": 399.1,
+      "helpText": "The type of service covered by the charges of this Rate Schedule. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The first date the charges associated with this Rate Schedule may be billed to a payer. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date this Rate Schedule may be used to bill a payer. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DISPENSING FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This dollar amount is the dispensing fee component of the rate schedule adjustment that was entered. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ADMINISTRATIVE FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This dollar amount is the administrative fee component of the rate schedule adjustment that was entered. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADJUSTMENT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This allows the base charges of a rate to be adjusted for specific types of payers.   Modifies the Unit Charge of all items assigned to this Rate Schedule. For Example, this would be used to bill a certain type of payer only 80% of the CMAC.  Or to add a $2.50 fee to each prescription.   This is a line of M code and should only be modified by an M programmer.   Once the Unit Charge is determined for a billable item, this code is  executed to modify that charge.  This modified charge is what will",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CHARGE SET",
+      "dataType": "POINTER",
+      "rawType": "363.0011P",
+      "required": false,
+      "helpText": "All Charge Sets for this Rate Schedule.  These define all the charges that may be billable to the payors for a specific type of bill. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "ARB", "field": },
+    {"name": "ARB1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "363", "field": .01, "type": "regular"},
+    {"name": "363", "field": .02, "type": "regular"},
+    {"name": "363", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

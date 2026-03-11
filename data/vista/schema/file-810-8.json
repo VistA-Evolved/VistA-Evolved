@@ -1,0 +1,67 @@
+{
+  "fileNumber": 810.8,
+  "fileName": "REMINDER COUNTING GROUP",
+  "globalRoot": "810.8",
+  "globalReference": "^PXRM(810.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This file contains groups of findings that will be used to accumulate finding totals during the reminder extract process.    ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COUNT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MRF:MOST RECENT FINDING COUNT;MRFP:MOST RECENT FINDING PATIENT COUNT;UR:UTILIZATION IN REPORTING PERIOD FINDING COUNT;",
+      "helpText": "Count is used to specify the different ways the extract can count findings:  MRF (Most Recent Finding count) counts the most recent occurrence of each  term in the group. This is also the default if no extract finding is  selected and all reminder terms are counted.  MRFP (Most Recent Finding for Patient) counts only the most recent finding across the group. One count is accumulated for the one finding in the group of findings that is the most recent finding for each patient.   UR (Utilization i",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "GROUP FINDINGS",
+      "dataType": "SUBFILE",
+      "rawType": "810.801I",
+      "required": false,
+      "helpText": "This multiple is used to group Reminder Terms together.  ",
+      "isMultiple": true,
+      "subFileNumber": 810.801,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the finding groups. National finding group cannot be  edited. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "810.82D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 810.82,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

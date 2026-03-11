@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2042,
+  "fileName": "VIST REFERRAL FACILITY",
+  "globalRoot": "2042",
+  "globalReference": "^ANRV(2042,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This gives a choice of which facility a referral for training was made. Currently there is a list that includes all VA BRC's, VICTORS, and gives the option of a State or Community Agency. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2042", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

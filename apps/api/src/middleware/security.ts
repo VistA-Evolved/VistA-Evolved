@@ -180,7 +180,8 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/hardening\//, auth: 'admin' }, // Phase 118: go-live hardening (admin only)
   { pattern: /^\/admin\/my-tenant$/, auth: 'session' }, // Phase 17: client tenant config (any user)
   { pattern: /^\/(admin|audit|reports)\//, auth: 'admin' },
-  { pattern: /^\/ws\//, auth: 'session' }, // WebSocket console (has own role check too)
+  { pattern: /^\/ws\//, auth: 'session' }, // WebSocket console + SSH terminal
+  { pattern: /^\/terminal\//, auth: 'admin' }, // Terminal session management (admin only)
   { pattern: /^\/vista\/interop\//, auth: 'admin' }, // Phase 21: interop telemetry requires admin/provider
   { pattern: /^\/vista\/provision/, auth: 'admin' }, // Phase 155: provisioning status (admin only)
   { pattern: /^\/vista\//, auth: 'session' },

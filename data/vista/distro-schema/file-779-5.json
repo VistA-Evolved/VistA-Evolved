@@ -1,0 +1,53 @@
+{
+  "fileNumber": 779.5,
+  "fileName": "HLO SEGMENT DEFINITIONS",
+  "globalRoot": "779.5",
+  "globalReference": "^HLD(779.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEGMENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "779.51",
+      "required": false,
+      "helpText": " ",
+      "isMultiple": true,
+      "subFileNumber": 779.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "fileNumber": 69.87,
+  "fileName": "HOWDY SPECIMEN TIMES BY UID",
+  "globalRoot": "69.87",
+  "globalReference": "^LRHY(69.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SPECIMEN UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the universal identification number (UID). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INITIAL SCAN TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time a patient scans their VIC at the Howdy station. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TIME LABELS PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the Phlebotomist prints the specimen labels. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "COLLECTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person who collects the specimen.   Usually, this is the person who scanned their ID badge. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COLLECTION TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the time the specimen was collected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LAB ARRIVAL TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the time the specimen arrived in the lab. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RECEIVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the person who received the specimen in  the lab. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ARIV", "field": },
+    {"name": "B", "field": },
+    {"name": "COLT", "field": },
+    {"name": "LT", "field": },
+    {"name": "SCAN", "field": },
+    {"name": "TECH", "field": },
+    {"name": "69.87", "field": .01, "type": "regular"},
+    {"name": "69.87", "field": 2, "type": "regular"},
+    {"name": "69.87", "field": 4, "type": "regular"},
+    {"name": "69.87", "field": 6, "type": "regular"},
+    {"name": "69.87", "field": 8, "type": "regular"},
+    {"name": "69.87", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

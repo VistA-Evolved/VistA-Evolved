@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.36,
+  "fileName": "BPS NCPDP LTPAC DISPENSE FREQUENCY",
+  "globalRoot": "9002313.36",
+  "globalReference": "^BPS(9002313.36,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "LTPAC Dispense Frequency code being sent on the claim. This is based on  the NCPDP Standards for field C91-KK. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ110",
+      "length": 110,
+      "required": false,
+      "helpText": "The description of the LTPAC Dispense Frequency code. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.36", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

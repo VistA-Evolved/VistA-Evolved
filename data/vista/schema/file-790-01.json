@@ -1,0 +1,39 @@
+{
+  "fileNumber": 790.01,
+  "fileName": "WV CASE MANAGER",
+  "globalRoot": "790.01",
+  "globalReference": "^WV(790.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CASE MANAGER",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name(s) of WH case manager(s) assigned to manage women's health needs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date field is used to indicate when a person is no longer recognized as a case manager.    ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "U", "field": },
+    {"name": "790.01", "field": .01, "type": "regular"},
+    {"name": "790.01", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

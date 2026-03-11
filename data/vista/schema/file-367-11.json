@@ -1,0 +1,36 @@
+{
+  "fileNumber": 367.11,
+  "fileName": "INSURANCE COMPANY ID TYPE",
+  "globalRoot": "367.11",
+  "globalReference": "^IBE(367.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the ID type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of what the ID is. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "367.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

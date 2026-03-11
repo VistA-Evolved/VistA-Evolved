@@ -1,0 +1,50 @@
+{
+  "fileNumber": 2261.1,
+  "fileName": "ASISTS DOL ANATOMICAL LOCATION CODES",
+  "globalRoot": "2261.1",
+  "globalReference": "^OOPS(2261.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a body part. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a code that will identify a body part. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BODY PART GROUP",
+      "dataType": "POINTER",
+      "rawType": "P2263.8'",
+      "required": false,
+      "pointerTo": 2263.8,
+      "helpText": "This field contains body part group that the body part is associated with.  Use of the Body Part Group will enable the users to more quickly and accurately select the correct body part affected by the incident. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.1", "field": .01, "type": "regular"},
+    {"name": "2261.1", "field": .01, "type": "regular"},
+    {"name": "2261.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

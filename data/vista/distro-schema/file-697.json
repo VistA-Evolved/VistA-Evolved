@@ -1,0 +1,59 @@
+{
+  "fileNumber": 697,
+  "fileName": "ANATOMY",
+  "globalRoot": "697s",
+  "globalReference": "^MCAR(697,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of body locations for use by the various medical procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "697.01P",
+      "required": false,
+      "helpText": "This field is used as a screen to separate the anatomy list by medical procedure. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PROCEDURE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "697.02",
+      "required": false,
+      "helpText": "Enter name of procedure to match that in the Procedure/Subspecialty File. ",
+      "isMultiple": true,
+      "subFileNumber": 697.02,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOPOGRAPHY",
+      "dataType": "POINTER",
+      "rawType": "P61'",
+      "required": false,
+      "pointerTo": 61,
+      "helpText": "This field identifies a link to the Laboratory Topography Field file. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "697", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "fileNumber": 503330.1,
+  "fileName": "VOLUNTARY TEMPORARY LOG",
+  "globalRoot": "503330.1P",
+  "globalReference": "^ABS(503330.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "POINTER",
+      "rawType": "RP503330'",
+      "required": true,
+      "pointerTo": 503330,
+      "helpText": "This field contains the name of the volunteer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the date the volunteer worked at the medical center. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMBINATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the combination reflecting the organization, work  schedule and hospital service of the work period. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MEAL TICKET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to 'yes' if the volunteer is staying for lunch. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TOTAL HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This field contains the number of hours that the volunteer is working. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station number for the period worked. This is the station number recorded in the Austin Database. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REASON FOR ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:DATE WORKED MISSING;3:COMBINATION MISSING/INVALID;4:SERVICE MISSING/INVALID;5:ORGANIZATION MISSING/INVALID;7:TOTAL HOURS MISSING;1:INVALID VOLUNTEER NAME;",
+      "helpText": "  This field contains the error code indicating the reason for the failure of a record to transfer to the Daily Record file. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSFER SUCCESSFUL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to 'yes' if the transfer of data to the Daily Record file is successful. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BREAKOUT COMBINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the combination selected by the volunteer during the auto log-in session. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "503330.1", "field": .01, "type": "regular"},
+    {"name": "503330.1", "field": 1, "type": "regular"},
+    {"name": "503330.1", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

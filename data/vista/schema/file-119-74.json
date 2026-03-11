@@ -1,0 +1,80 @@
+{
+  "fileNumber": 119.74,
+  "fileName": "SUPPLEMENTAL FEEDING SITE",
+  "globalRoot": "119.74",
+  "globalReference": "^FH(119.74,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the Supplemental Feeding Site. It is responsible for the assembly and delivery of supplemental feedings to a group of Dietetic Wards. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short 6-character name to be used on various reports. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRODUCTION FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP119.71'",
+      "required": true,
+      "pointerTo": 119.71,
+      "helpText": "This field indicates the production facility that is responsible for preparing the food used in the supplemental feedings distributed by this site. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SEPARATE SUPP FDG LABELS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, indicates that each supplemental feeding item should be on an individual label rather than having all items on the item. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INGREDIENTS ON WARD LISTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will result in the Ward Supplemental Feeding lists printing the consolidated ingredient requirements following each ward. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "119.74", "field": .01, "type": "regular"},
+    {"name": "119.74", "field": 1, "type": "regular"},
+    {"name": "119.74", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

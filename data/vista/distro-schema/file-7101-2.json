@@ -1,0 +1,63 @@
+{
+  "fileNumber": 7101.2,
+  "fileName": "NOIS MRA",
+  "globalRoot": "7101.2",
+  "globalReference": "^FSCD(\"MRA\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user processing the alert. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time of when the user processed the alert for this call. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "RP7100'",
+      "required": true,
+      "pointerTo": 7100,
+      "helpText": "This is the call that was alerted to the user. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AUC1", "field": },
+    {"name": "AUC3", "field": },
+    {"name": "AUT1", "field": },
+    {"name": "AUT2", "field": },
+    {"name": "AUTC1", "field": },
+    {"name": "AUTC2", "field": },
+    {"name": "AUTC3", "field": },
+    {"name": "B", "field": },
+    {"name": "7101.2", "field": .01, "type": "regular"},
+    {"name": "7101.2", "field": .01, "type": "regular"},
+    {"name": "7101.2", "field": .01, "type": "regular"},
+    {"name": "7101.2", "field": .01, "type": "regular"},
+    {"name": "7101.2", "field": 1, "type": "regular"},
+    {"name": "7101.2", "field": 1, "type": "regular"},
+    {"name": "7101.2", "field": 2, "type": "regular"},
+    {"name": "7101.2", "field": 2, "type": "regular"},
+    {"name": "7101.2", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

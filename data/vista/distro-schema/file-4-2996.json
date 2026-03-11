@@ -1,0 +1,47 @@
+{
+  "fileNumber": 4.2996,
+  "fileName": "INTERNET SUFFIX",
+  "globalRoot": "4.2996I",
+  "globalReference": "^DIC(4.2996,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an approved (by ICANN or IANA) top-level domain (the last dot piece of a domain name), which is used to control the routing of messages on the Internet. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the top-level domain. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "4.29961",
+      "required": false,
+      "helpText": "This field may be used for notes or more information about the top-level domain, if needed. ",
+      "isMultiple": true,
+      "subFileNumber": 4.29961,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.2996", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

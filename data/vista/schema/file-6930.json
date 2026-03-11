@@ -1,0 +1,55 @@
+{
+  "fileNumber": 6930,
+  "fileName": "PENDING RTLS EVENTS",
+  "globalRoot": "6930",
+  "globalReference": "^VIAA(6930,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the main station number for the file entry being reported. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE ID",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This is the file containing the record that was changed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Internal entry number for the record that was changed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CREATE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the entry was created for a specific record  change in a file. This field is not sent to RTLS but is available for troubleshooting in VistA. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6930", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

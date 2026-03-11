@@ -1,0 +1,40 @@
+{
+  "fileNumber": 164.81,
+  "fileName": "ONCO RADIATION EXTERNAL BEAM",
+  "globalRoot": "164.81",
+  "globalReference": "^ONCO(164.81,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the code of the External Beam Radiation planning technique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80",
+      "length": 80,
+      "required": true,
+      "helpText": "This is the description of the code for the External Beam Raiation planning technique. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.81", "field": .01, "type": "regular"},
+    {"name": "164.81", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

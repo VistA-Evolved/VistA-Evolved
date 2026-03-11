@@ -1,0 +1,143 @@
+{
+  "fileNumber": 2005.65,
+  "fileName": "IMAGE INSTANCE FILE",
+  "globalRoot": "2005.65",
+  "globalReference": "^MAGV(2005.65,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARTIFACT TOKEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Holds the token that is used to reference a stored artifact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ARTIFACT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2006.916'",
+      "required": false,
+      "pointerTo": 2006.916,
+      "helpText": "This identifies the storage artifact associated with this image instance. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORIGINAL SOP INSTANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field denotes if this image file is the original representation of the  SOP Instance. For original SOP Instance select \"YES\". ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DERIVATION DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an implementation specific text description of the way the image was derived from an original image. DICOM Tag: DERIVATION DESCRIPTION (0008,2111). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DELETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time when the image instance was deleted. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DELETION BY",
+      "dataType": "POINTER",
+      "rawType": "P200",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user that deleted the image instance. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SOP INSTANCE REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.64'",
+      "required": false,
+      "pointerTo": 2005.64,
+      "helpText": "This is the image SOP Instance associated with  this file instance. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DELETION REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reason why this image file instance was deleted. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COMPRESSION RATIO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the compression ratio of this image file instance. Optionally a \"\\\" separated string of multiple values of 17 characters. DICOM Tag: COMPRESSION RATIO (0028,2112). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COMPRESSION METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the compression method of this image file instance. According to DICOM standard, optionally a '\\' separated string of  multiple values of 17 characters. DICOM Tag: COMPRESSION METHOD (0028,2114). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This is a code indicating whether the image file instance is ACCESSIBLE or  INACCESSIBLE.   ACCESSIBLE means that the image file instance can be retrieved by Imaging  database methods. INACCESSIBLE means that the image file instance will not be retrieved by Imaging database methods. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "IMAGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the image type of this image file instance. Identifies image identification characteristics as multiple enumerated  values (like Value1 \\ Value2 \\ Value3) for:        Value1 - Pixel data: ORIGINAL or DERIVED        Value2 - Patient Examination: PRIMARY or SECONDARY        Value3 - shall identify any IOD specific realization        Other values are implementation specific  DICOM Tag: IMAGE TYPE (0008,0008). ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CONFIDENTIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if restrictions must apply during image display. ",
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.65", "field": .01, "type": "regular"},
+    {"name": "2005.65", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

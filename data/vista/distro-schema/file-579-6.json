@@ -1,0 +1,38 @@
+{
+  "fileNumber": 579.6,
+  "fileName": "VDEF CUSTODIAL PACKAGE",
+  "globalRoot": "579.6",
+  "globalReference": "^VDEFHL7(579.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CUSTODIAL PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "RP9.4'",
+      "required": true,
+      "pointerTo": 9.4,
+      "helpText": "Package (entry in file PACKAGE #9.4) associated with this custodial  package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVATION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "Whether VDEF messaging is currently Active or Inactive for this custodial  package. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "579.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

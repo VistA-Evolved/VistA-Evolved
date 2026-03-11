@@ -1,0 +1,132 @@
+{
+  "fileNumber": 123.033,
+  "fileName": "GMRC CONSULT MAPPING",
+  "globalRoot": "123.033",
+  "globalReference": "^GMR(123.033,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "Any descriptive free-text name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Inactive configurations are not selectable in the report option, but will  remain selectable in the edit option. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CPRS TEAM",
+      "dataType": "POINTER",
+      "rawType": "*P100.21'",
+      "required": false,
+      "pointerTo": 100.21,
+      "helpText": "If a CPRS team is associated with the configuration, the team will be  populated with the patients identified by the report.  Any pre-existing  patients in the team will be replaced.  Only manual patient teams are selectable. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DAYS CONS->APPT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The maximum number of days between the consult and the appointment. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DAYS APPT->NOTE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The maximum number of days between the appointment and the note. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'O",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This is a stop code associated with the consult(s). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "CONSULTS SERVICE",
+      "dataType": "POINTER",
+      "rawType": "123.0331P",
+      "required": false,
+      "helpText": "Consult services for the request. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 2000,
+      "fieldName": "CONSULTS PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "123.0332P",
+      "required": false,
+      "helpText": "Consult procedures that the configuration will look for. ",
+      "fieldNumber_": 2000
+    },
+    {
+      "fieldNumber": 3000,
+      "fieldName": "CONSULTS ORDER ITEM",
+      "dataType": "POINTER",
+      "rawType": "123.0333P",
+      "required": false,
+      "helpText": "Consult order items for this request. ",
+      "fieldNumber_": 3000
+    },
+    {
+      "fieldNumber": 4000,
+      "fieldName": "CONSULTS CLIN PROC",
+      "dataType": "POINTER",
+      "rawType": "123.0334P",
+      "required": false,
+      "helpText": "Consult clinical procedures for this request. ",
+      "fieldNumber_": 4000
+    },
+    {
+      "fieldNumber": 5000,
+      "fieldName": "CLINICS",
+      "dataType": "POINTER",
+      "rawType": "123.0335P",
+      "required": false,
+      "helpText": "Clinics associated with the consult(s). ",
+      "fieldNumber_": 5000
+    },
+    {
+      "fieldNumber": 6000,
+      "fieldName": "NOTE TITLES",
+      "dataType": "POINTER",
+      "rawType": "123.0336P",
+      "required": false,
+      "helpText": "Note title associated with the consult(s) / clinic(s). ",
+      "fieldNumber_": 6000
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "123.033", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

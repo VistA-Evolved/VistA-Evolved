@@ -1,0 +1,129 @@
+{
+  "fileNumber": 728.904,
+  "fileName": "UNIT DOSE EXTRACT DATA",
+  "globalRoot": "728.904",
+  "globalReference": "^ECX(728.904,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0XI",
+      "length": 6,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient receiving medication for this extract  record. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time when the medication was dispensed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Unit Dose Order number associated with patient record. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'I",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the item dispensed as identified in the local DRUG file (#50). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of items dispensed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'I",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This is the location of the patient when he received the medication. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the provider responsible for this medication order. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the total cost of the items dispensed in this order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "Pointer to the corresponding entry in the DSS EXTRACT LOG file (#727). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the medication was ordered. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AC", "field": },
+    {"name": "AINV", "field": },
+    {"name": "728.904", "field": .01, "type": "regular"},
+    {"name": "728.904", "field": 2, "type": "regular"},
+    {"name": "728.904", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

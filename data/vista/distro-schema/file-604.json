@@ -1,0 +1,3073 @@
+{
+  "fileNumber": 604,
+  "fileName": "ADDICTION SEVERITY INDEX",
+  "globalRoot": "604",
+  "globalReference": "^YSTX(604,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G1. I.D. Number  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patients name.  Pointer to Patient File. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .0203,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "fieldNumber_": .0203
+    },
+    {
+      "fieldNumber": .0209,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "fieldNumber_": .0209
+    },
+    {
+      "fieldNumber": .02111,
+      "fieldName": "STREET LINE 1",
+      "dataType": "COMPUTED",
+      "rawType": "CJ35",
+      "length": 35,
+      "required": false,
+      "fieldNumber_": .02111
+    },
+    {
+      "fieldNumber": .021112,
+      "fieldName": "ZIP+4",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "fieldNumber_": .021112
+    },
+    {
+      "fieldNumber": .02112,
+      "fieldName": "STREET LINE 2",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": .02112
+    },
+    {
+      "fieldNumber": .02113,
+      "fieldName": "STREET LINE 3",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": .02113
+    },
+    {
+      "fieldNumber": .02114,
+      "fieldName": "CITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .02114
+    },
+    {
+      "fieldNumber": .02115,
+      "fieldName": "STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": .02115
+    },
+    {
+      "fieldNumber": .02116,
+      "fieldName": "ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .02116
+    },
+    {
+      "fieldNumber": .02131,
+      "fieldName": "PHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "fieldNumber_": .02131
+    },
+    {
+      "fieldNumber": .033,
+      "fieldName": "RESOLVED ADM DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .033
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL;2:LITE;3:FOLLOWUP;4:ASI-MV;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G8. Class: '1' FOR FULL '2' FOR LITE '3' FOR FOLLOWUP '4' FOR ASI-MV ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .044,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .044
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE OF INTERVIEW",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G5. Date of Interview ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .051,
+      "fieldName": "TIME INTERVIEW BEGAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G5. TIME BEGUN ",
+      "fieldNumber_": .051
+    },
+    {
+      "fieldNumber": .052,
+      "fieldName": "TIME INTERVIEW ENDED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G7. TIME ENDED? ",
+      "fieldNumber_": .052
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CONTACT CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:IN PERSON;2:PHONE;3:ASI-MV;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G9. CONTACT CODE: '1' FOR In Person '2' FOR Phone '3' FOR ASIMV ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MALE;2:FEMALE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G10. GENDER: 1 - Male              2 - Female ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "INTERVIEWER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G11. INTERVIEWER CODE NUMBER ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SPECIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PATIENT TERMINATED;2:PATIENT REFUSED;3:PATIENT UNABLE TO RESPOND;N:INTERVIEW COMPLETED;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G12. SPECIAL: 1 - Patient terminated               2 - Patient refused               3 - Patient unable to respond ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RECORD INITIALIZED DATE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the ASI was started. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .125,
+      "fieldName": "RECORD COMPLETED DATE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .125
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RECORD INITIALIZED BY (TRANS)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the pointer value of the transcriber(user who enters the data) of the ASI. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "RACE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WHITE (not Hisp);2:BLACK (not Hisp);3:AMERICAN INDIAN;4:ALASKAN NATIVE;5:ASIAN/PACIFIC;6:HISPANIC-MEXICAN;7:HISPANIC-PUERTO RICAN;8:HISPANIC-CUBAN;9:HISPANIC-OTHER;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G17. RACE  1        WHITE (not Hisp)            2        BLACK (not Hisp)            3        AMERICAN INDIAN            4        ALASKAN NATIVE            5        ASIAN/PACIFIC            6        HISPANIC-MEXICAN            7        HISPANIC-PUERTO RICAN            8        HISPANIC-CUBAN            9        HISPANIC-OTHER ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "RELIGIOUS PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROTESTANT;2:CATHOLIC;3:JEWISH;4:ISLAMIC;5:OTHER;6:NONE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G18. RELIGIOUS PREFERENCE  1        PROTESTANT                            2        CATHOLIC                            3        JEWISH                            4        ISLAMIC                            5        OTHER                            6        NONE ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "ELECTRONICALLY SIGNED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a set of codes used to store the value of whether the ASI was electronically signed or not. '0' FOR no  '1' FOR yes ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .52,
+      "fieldName": "E SIGNATURE INTERVIEWER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the value of the interviewer/manager from file #200, field .01 who electronically signs the ASI. ",
+      "fieldNumber_": .52
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "GENERAL COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.01",
+      "required": false,
+      "helpText": "This field contains general comments the user can enter by \"^C\" at any prompt of the On-Line ASI. ",
+      "isMultiple": true,
+      "subFileNumber": 604.01,
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .61,
+      "fieldName": "CS MEDICAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .61
+    },
+    {
+      "fieldNumber": .62,
+      "fieldName": "CS EMPLOYMENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .62
+    },
+    {
+      "fieldNumber": .63,
+      "fieldName": "CS ALCOHOL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .63
+    },
+    {
+      "fieldNumber": .635,
+      "fieldName": "CS DRUG",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .635
+    },
+    {
+      "fieldNumber": .64,
+      "fieldName": "CS LEGAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .64
+    },
+    {
+      "fieldNumber": .65,
+      "fieldName": "CS FAMILY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .65
+    },
+    {
+      "fieldNumber": .66,
+      "fieldName": "CS PSYCHIATRIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .66
+    },
+    {
+      "fieldNumber": .71,
+      "fieldName": "E SIGNATURE TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the pointer value to the New Person file #200 of the user transcribing the ASI and electronically signing when the ASI is completed. ",
+      "fieldNumber_": .71
+    },
+    {
+      "fieldNumber": .81,
+      "fieldName": "PERSON ALLOWED TO EDIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the value of the person allowed to edit the ASI. A pointer to the New Person file (#200). ",
+      "fieldNumber_": .81
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G4. DATE OF ADMISSION This is not to be confused with the Inpatient Date of Admission in the Patient  Movement file #405.  This will be clinically defined. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.201,
+      "fieldName": "ADDR LIVED YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G14. How long have you lived at this address? In years. ",
+      "fieldNumber_": 1.201
+    },
+    {
+      "fieldNumber": 1.202,
+      "fieldName": "ADDR LIVED MOS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Part of G14.  How long have you lived at this address? In Months. ",
+      "fieldNumber_": 1.202
+    },
+    {
+      "fieldNumber": 1.203,
+      "fieldName": "ADDR OWN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G15. Is this residence owned by you or your family?  0 - No  1 - Yes ",
+      "fieldNumber_": 1.203
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROGRAM",
+      "dataType": "POINTER",
+      "rawType": "*P604.26'",
+      "required": false,
+      "pointerTo": 604.26,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G3. PROGRAM NUMBER ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "CONTROLLED ENVIRONMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;2:JAIL;3:ALCOHOL OR DRUG TREATMENT;4:MEDICAL TREATMENT;5:PSYCHIATRIC TREATMENT;6:OTHER;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G19. Have you been in a controlled environment in the past 30 days? 1        NO 2        JAIL 3        ALCOHOL OR DRUG TREATMENT 4        MEDICAL TREATMENT 5        PSYCHIATRIC TREATMENT 6        OTHER ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "OTHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G19.  If \"other\" is selected the user can enter a comment to explain. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "HOW MANY DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G20. How many days? ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "SHIPLEY C.Q.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G21. Shipley C.Q. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "SHIPLEY I.Q.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G22. Shipley I.Q. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "BECK TOTAL SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: G23. Beck Total Score ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "AWAITING TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AWAITING TRANSMISSION;",
+      "helpText": "SET AUTOMATICALLY ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "HOSPITALIZATIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M1. How many times in your life have you been hospitalized for medical     problems? (Include o.d.'s, d.t.'s, exclude detox.) ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "LAST HOSPITALIZATION YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M2. How long ago was your last hospitalization for a physical problem? In Yrs. ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.025,
+      "fieldName": "LAST HOSPITALIZATION MOS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M2. How lon was your last hospitalization for a physical problem? In Mos. ",
+      "fieldNumber_": 8.025
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "CHRONIC PROBLEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M3. Do you have any chronic medical problems which continue to interfere with     your life?  0 - No                 1 - Yes ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "CHRONIC MEDICAL SPECIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M3.  If the answer to this question is 1 - Yes, please specify. ",
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 8.05,
+      "fieldName": "MEDICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M4. Are you taking any prescribed medications on a regular basis for a physical     problem? 0 - No              1 - Yes ",
+      "fieldNumber_": 8.05
+    },
+    {
+      "fieldNumber": 8.06,
+      "fieldName": "DISABILITY PENSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M5. Do you receive a pension for a physical disability? (Exclude psychiatric     disability.) 0 - N0                  1 - Yes ",
+      "fieldNumber_": 8.06
+    },
+    {
+      "fieldNumber": 8.07,
+      "fieldName": "SPECIFY PENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M5. If the answer was 1 - Yes, specify the amount of the pension. ",
+      "fieldNumber_": 8.07
+    },
+    {
+      "fieldNumber": 8.08,
+      "fieldName": "PROBLEM PAST 30 DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M6. How many days have you experienced medical problems in the past 30? ",
+      "fieldNumber_": 8.08
+    },
+    {
+      "fieldNumber": 8.09,
+      "fieldName": "SCALE MED PROBLEM PAST 30D",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M7. How troubled or bothered have you been by these medical problems in the     past 30 days? For question M7 please ask patient to use the Patient's Rating Scale ",
+      "fieldNumber_": 8.09
+    },
+    {
+      "fieldNumber": 8.11,
+      "fieldName": "IMPORTANCE MEDICAL TREATMENT",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M8. How important to you is treatment for these medical problems? For question M8 please ask patient to use thhe Patient's Rating Scale ",
+      "fieldNumber_": 8.11
+    },
+    {
+      "fieldNumber": 8.12,
+      "fieldName": "INTERVIEWER'S RATING MEDICAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: INTEREVIEWER SEVERITY RATING M9. How would you rate the patient's need for medical treatment? ",
+      "fieldNumber_": 8.12
+    },
+    {
+      "fieldNumber": 8.14,
+      "fieldName": "PATIENT MISREP MEDICAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M10. Patients misrepresentation? 0 - No                                  1 - Yes ",
+      "fieldNumber_": 8.14
+    },
+    {
+      "fieldNumber": 8.15,
+      "fieldName": "PATIENT INAB UNDSTND MEDICAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: M11. Patient's inability to understand? 0 - No                                         1 - Yes ",
+      "fieldNumber_": 8.15
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "MEDICAL COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.03",
+      "required": false,
+      "helpText": "This field contains any comments on the patient's medical status. ",
+      "isMultiple": true,
+      "subFileNumber": 604.03,
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "YEARS EDUCATION COMPLETED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E1. Education completed     YRS     (GED = 12 years) ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 9.02,
+      "fieldName": "MONTHS EDUCATION COMPLETED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E1. Education completed     MOS. ",
+      "fieldNumber_": 9.02
+    },
+    {
+      "fieldNumber": 9.03,
+      "fieldName": "MONTHS TRAINING OR TECH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E2. Training or technical education completed    MOS. ",
+      "fieldNumber_": 9.03
+    },
+    {
+      "fieldNumber": 9.04,
+      "fieldName": "PROFESSION TRADE OR SKILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E3. Do you have a profession, trade or skill?  0 - No                                                1 - Yes ",
+      "fieldNumber_": 9.04
+    },
+    {
+      "fieldNumber": 9.05,
+      "fieldName": "SPECIFY PTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If question E3 is answered 1 - Yes, specify the profession, trade or skill. ",
+      "fieldNumber_": 9.05
+    },
+    {
+      "fieldNumber": 9.06,
+      "fieldName": "VALID DRIVERS LICENSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E4. Do you have a valid driver's license? 0 - No                                           1 - Yes ",
+      "fieldNumber_": 9.06
+    },
+    {
+      "fieldNumber": 9.09,
+      "fieldName": "AUTOMOBILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:QUESTION NOT APPLICABLE;X:QUESTION NOT ANSWERED;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E5. Do you have an automobile available for use? (Answer No if no valid     driver's license) 0 - No  1 - Yes ",
+      "fieldNumber_": 9.09
+    },
+    {
+      "fieldNumber": 9.11,
+      "fieldName": "LONGEST FULL-TIME JOB YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E6. How long was your longest full-time job?    YRS. ",
+      "fieldNumber_": 9.11
+    },
+    {
+      "fieldNumber": 9.12,
+      "fieldName": "LONGEST FULL-TIME JOB MOS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E6. In MOS. ",
+      "fieldNumber_": 9.12
+    },
+    {
+      "fieldNumber": 9.14,
+      "fieldName": "USUAL OR LAST OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E7. Usual (or last) occupation.  This is selected from the Hollingshead     categories. ",
+      "fieldNumber_": 9.14
+    },
+    {
+      "fieldNumber": 9.145,
+      "fieldName": "USUAL OR LAST OCC TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the description of the patients Usual (or last) occupation. ",
+      "fieldNumber_": 9.145
+    },
+    {
+      "fieldNumber": 9.15,
+      "fieldName": "SUPPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E8. Does someone contribute to your support in any way? 0 - No                                                         1 - Yes ",
+      "fieldNumber_": 9.15
+    },
+    {
+      "fieldNumber": 9.16,
+      "fieldName": "MAJORITY OF SUPPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:QUESTION NOT APPLICABLE;X:QUESTION NOT ANSWERED;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E9. (ONLY IF ITEM 8 IS YES)     Does this constitute the majority of your support? 0 - No                                                        1 - Yes ",
+      "fieldNumber_": 9.16
+    },
+    {
+      "fieldNumber": 9.17,
+      "fieldName": "EMPLOYMENT PATTERN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL TIME (40 HRS./WK);2:PART TIME (REG. HRS.);3:PART TIME (IRREG., DAYWORK);4:STUDENT;5:SERVICE;6:RETIRED/DISABILITY;7:UNEMPLOYED;8:IN CONTROLLED ENVIRONMENT;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E10. Usual employment pattern, past 3 years. Choose from: 1        FULL TIME (40 HRS./WK) 2        PART TIME (REG. HRS.) 3        PART TIME (IRREG., DAYWORK) 4        STUDENT 5        SERVICE 6        RETIRED/DISABILITY 7        UNEMPLOYED 8        IN CONTROLLED ENVIRONMENT ",
+      "fieldNumber_": 9.17
+    },
+    {
+      "fieldNumber": 9.18,
+      "fieldName": "DAYS PAID LAST 30 DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E11. How many days were you paid for working in the past 30?      (Include \"under the table\" work.) ",
+      "fieldNumber_": 9.18
+    },
+    {
+      "fieldNumber": 9.19,
+      "fieldName": "EMPLOYMENT INCOME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How much money did you receive in the last 30 days? E12. Employment      (net income) ",
+      "fieldNumber_": 9.19
+    },
+    {
+      "fieldNumber": 9.21,
+      "fieldName": "UNEMPLOYMENT COMPENSATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How much money did you receive in the last 30 days? E13 Unemployment compensation ",
+      "fieldNumber_": 9.21
+    },
+    {
+      "fieldNumber": 9.22,
+      "fieldName": "WELFARE INCOME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9.22
+    },
+    {
+      "fieldNumber": 9.23,
+      "fieldName": "PENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9.23
+    },
+    {
+      "fieldNumber": 9.24,
+      "fieldName": "MATE FAMILY FRIENDS INCOME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How much money did you receive in the last 30 days? E16. Mate, family, or friends (Money for personal expenses). ",
+      "fieldNumber_": 9.24
+    },
+    {
+      "fieldNumber": 9.245,
+      "fieldName": "MATE FAMILY FRIENDS SPECIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9.245
+    },
+    {
+      "fieldNumber": 9.25,
+      "fieldName": "ILLEGAL INCOME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How much money did you receive in the last 30 days? E17. Illegal ",
+      "fieldNumber_": 9.25
+    },
+    {
+      "fieldNumber": 9.29,
+      "fieldName": "NUMBER OF DEPENDENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E18. How many people depend on you for the majority of their food, shelter,      etc.? ",
+      "fieldNumber_": 9.29
+    },
+    {
+      "fieldNumber": 9.31,
+      "fieldName": "DAYS EMP PROB LAST 30",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E19. How many days have you experienced employment problems in the past 30? ",
+      "fieldNumber_": 9.31
+    },
+    {
+      "fieldNumber": 9.32,
+      "fieldName": "EMPLOYMENT PROB 30 DAYS",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: For question E20 please ask patient to use the Patient's rating scale E20. How troubled or bothered have you been by these employment problems in      the past 30 days? ",
+      "fieldNumber_": 9.32
+    },
+    {
+      "fieldNumber": 9.33,
+      "fieldName": "EMP COUNSELING IMPORTANT",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: For question E21 please ask patient to use the Patient's rating scale E21. How important to you now is counseling for these employment problems? ",
+      "fieldNumber_": 9.33
+    },
+    {
+      "fieldNumber": 9.34,
+      "fieldName": "INTERVIEWER'S RATING EMPL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E22. How would you rate the patient's need for employment counseling? ",
+      "fieldNumber_": 9.34
+    },
+    {
+      "fieldNumber": 9.35,
+      "fieldName": "PATIENT MISREP EMP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E23. Patients misrepresentation? 0 - No                                  1 - Yes ",
+      "fieldNumber_": 9.35
+    },
+    {
+      "fieldNumber": 9.36,
+      "fieldName": "PATIENT INAB UNDSTND EMP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: E24. Patient's inability to understand? 0 - No                                         1 - Yes ",
+      "fieldNumber_": 9.36
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "EMPLOYMENT COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 604.05,
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "ALCOHOL ANY USE L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D1. Alcohol - any use at all  PAST 30 days ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "ALCOHOL ANY USE LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D1. Alcohol - any use at all LIFETIME Yrs. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "ALCOHOL ANY USE ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D1. Alcohol - any use at all  USE Rt of adm.  ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "ALCOHOL INTOX USE L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D2. Alcohol - To intoxication  PAST 30 Days ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "ALCOHOL INTOX LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D2. Alcohol - To intoxication  LIFETIME Yrs. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "ALCOHOL INTOX ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D2. Alcohol - To intoxication  USE Rt of adm. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "HEROIN L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D3. Heroin  PAST 30 Days ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "HEROIN LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D3. Heroin  LIFETIME Yrs. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "HEROIN ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D3. Heroin  USE Rt of adm. ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "METHADONE L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D4. Methadone  PAST 30 Days ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "METHADONE LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D4. Methadone  LIFETIME Yrs. ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 10.14,
+      "fieldName": "METHADONE ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D4. Methadone  USE Rt of adm. ",
+      "fieldNumber_": 10.14
+    },
+    {
+      "fieldNumber": 10.15,
+      "fieldName": "OTHER OPIATES/ANA L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D5. Other opiates/analgesics  PAST 30 Days ",
+      "fieldNumber_": 10.15
+    },
+    {
+      "fieldNumber": 10.16,
+      "fieldName": "OTHER OPIATES/ANA LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D5. Other opiates/analgesics  LIFETIME Yrs. ",
+      "fieldNumber_": 10.16
+    },
+    {
+      "fieldNumber": 10.17,
+      "fieldName": "OTHER OPIATES/ANA ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D5. Other opiates/analgesics  USE Rt of adm. ",
+      "fieldNumber_": 10.17
+    },
+    {
+      "fieldNumber": 10.18,
+      "fieldName": "BARBITUATES L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D6. Barbiturates  PAST 30 Days ",
+      "fieldNumber_": 10.18
+    },
+    {
+      "fieldNumber": 10.19,
+      "fieldName": "BARBITUATES LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D6. Barbiturates  LIFETIME Yrs. ",
+      "fieldNumber_": 10.19
+    },
+    {
+      "fieldNumber": 10.21,
+      "fieldName": "BARBITUATES ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D6. Barbiturates  USE Rt of adm. ",
+      "fieldNumber_": 10.21
+    },
+    {
+      "fieldNumber": 10.22,
+      "fieldName": "OTHER S H T L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D7. Other sed/hyp/tranq.  PAST 30 Days ",
+      "fieldNumber_": 10.22
+    },
+    {
+      "fieldNumber": 10.23,
+      "fieldName": "OTHER S H T LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D7. Other sed/hyp/tranq.  LIFETIME Yrs. ",
+      "fieldNumber_": 10.23
+    },
+    {
+      "fieldNumber": 10.24,
+      "fieldName": "OTHER S H T ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D7. Other sed/hyp/tranq.  USE Rt of adm. ",
+      "fieldNumber_": 10.24
+    },
+    {
+      "fieldNumber": 10.25,
+      "fieldName": "COCAINE L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D8. Cocaine  PAST 30 Days ",
+      "fieldNumber_": 10.25
+    },
+    {
+      "fieldNumber": 10.26,
+      "fieldName": "COCAINE LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D8. Cocaine  LIFETIME Yrs. ",
+      "fieldNumber_": 10.26
+    },
+    {
+      "fieldNumber": 10.27,
+      "fieldName": "COCAINE ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D8. Cocaine  USE Rt of adm. ",
+      "fieldNumber_": 10.27
+    },
+    {
+      "fieldNumber": 10.28,
+      "fieldName": "AMPHETAMINES L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D9. Amphetamines  PAST 30 Days ",
+      "fieldNumber_": 10.28
+    },
+    {
+      "fieldNumber": 10.29,
+      "fieldName": "AMPHETAMINES LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D9. Amphetamines  LIFETIME Yrs. ",
+      "fieldNumber_": 10.29
+    },
+    {
+      "fieldNumber": 10.31,
+      "fieldName": "AMPHETAMINES ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D9. Amphetamines  Rt of adm. ",
+      "fieldNumber_": 10.31
+    },
+    {
+      "fieldNumber": 10.32,
+      "fieldName": "CANNABIS L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D10. Cannabis  PAST 30 Days ",
+      "fieldNumber_": 10.32
+    },
+    {
+      "fieldNumber": 10.33,
+      "fieldName": "CANNABIS LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D10. Cannabis  LIFETIME Yrs ",
+      "fieldNumber_": 10.33
+    },
+    {
+      "fieldNumber": 10.34,
+      "fieldName": "CANNABIS ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D10. Cannabis  USE Rt of adm. ",
+      "fieldNumber_": 10.34
+    },
+    {
+      "fieldNumber": 10.35,
+      "fieldName": "HALLUCINOGENS L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D11. Hallucinogens  PAST 30 Days ",
+      "fieldNumber_": 10.35
+    },
+    {
+      "fieldNumber": 10.36,
+      "fieldName": "HALLUCINOGENS LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D10. Hallucinogens  LIFETIME Yrs.   ",
+      "fieldNumber_": 10.36
+    },
+    {
+      "fieldNumber": 10.37,
+      "fieldName": "HALLUCINOGENS ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D11. Hallucinogens  USE Rt of adm. ",
+      "fieldNumber_": 10.37
+    },
+    {
+      "fieldNumber": 10.38,
+      "fieldName": "INHALANTS L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D12. Inhalants  PAST 30 Days ",
+      "fieldNumber_": 10.38
+    },
+    {
+      "fieldNumber": 10.39,
+      "fieldName": "INHALANTS LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D12. Inhalants  LIFETIME Yrs. ",
+      "fieldNumber_": 10.39
+    },
+    {
+      "fieldNumber": 10.41,
+      "fieldName": "INHALANTS ROA",
+      "dataType": "POINTER",
+      "rawType": "P604.48'",
+      "required": false,
+      "pointerTo": 604.48,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D12. Inhalants  USE Rt of adm. ",
+      "fieldNumber_": 10.41
+    },
+    {
+      "fieldNumber": 10.42,
+      "fieldName": "MT1PD L30DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D13. More than one substance per day (Incl. alcohol)  PAST 30 Days ",
+      "fieldNumber_": 10.42
+    },
+    {
+      "fieldNumber": 10.43,
+      "fieldName": "MT1PD LIFETIME YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D13. More than one substance per day (Incl. alcohol).   LIFETIME Yrs. ",
+      "fieldNumber_": 10.43
+    },
+    {
+      "fieldNumber": 10.45,
+      "fieldName": "MAJOR PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "P604.77'",
+      "required": false,
+      "pointerTo": 604.77,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D14. Which substance is the major problem?  Please code as above or 00-No      problem;15-Alcohol & Drug (Dual addiction); 16-Polydrug; when not clear      ask patient. ",
+      "fieldNumber_": 10.45
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "DRUG/ALCOHOL COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.06",
+      "required": false,
+      "helpText": "This field contains the comments made by the interviewer from the patients drug/alcohol use section of the ASI. ",
+      "isMultiple": true,
+      "subFileNumber": 604.06,
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "ABSTINENT MONTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D15. How long was your last period of voluntary abstinence from this major      substance?  (00 - never abstinent)  MOS. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "ABSTINENT ENDED MONTHS AGO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D16 How many months ago did this abstinence end? (00 - still abstinent) ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "TIMES HAD ALCOHOL D.T.'S",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D17. How many times have you: Had alcohol d.t's. ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "TIMES OVERDOSED ON DRUGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D18. How many times have you: Overdosed on drugs ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 11.05,
+      "fieldName": "ALCOHOL ABUSE LIFETIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D19. How many times in your life have you been treated for: Alcohol Abuse: ",
+      "fieldNumber_": 11.05
+    },
+    {
+      "fieldNumber": 11.06,
+      "fieldName": "DRUG ABUSE LIFETIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D20. How many times in your life have you been treated for: Drug Abuse: ",
+      "fieldNumber_": 11.06
+    },
+    {
+      "fieldNumber": 11.07,
+      "fieldName": "TIMES DETOX ONLY ALCOHOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D21. How many of these were detox only?  Alcohol ",
+      "fieldNumber_": 11.07
+    },
+    {
+      "fieldNumber": 11.08,
+      "fieldName": "TIMES DETOX ONLY DRUG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D22. How many of these were detox only?  Drug? ",
+      "fieldNumber_": 11.08
+    },
+    {
+      "fieldNumber": 11.09,
+      "fieldName": "SPENT L30D ALCOHOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D23. How much would you say you spent during the past 30 days on: Alcohol ",
+      "fieldNumber_": 11.09
+    },
+    {
+      "fieldNumber": 11.11,
+      "fieldName": "SPENT L30D DRUGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D24. How much would you say you spent during the past 30 days on:  Drugs ",
+      "fieldNumber_": 11.11
+    },
+    {
+      "fieldNumber": 11.12,
+      "fieldName": "DAYS TMT D/A L30D OUTP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D25. How many days have you been treated in an outpatient setting for       alcohol or drugs in the past 30 days (Include NA, AA). ",
+      "fieldNumber_": 11.12
+    },
+    {
+      "fieldNumber": 11.14,
+      "fieldName": "DAYS L30D ALCOHOL PROB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D26. How many days in the past 30 have you experienced: Alcohol Problems ",
+      "fieldNumber_": 11.14
+    },
+    {
+      "fieldNumber": 11.15,
+      "fieldName": "DAYS L30D DRUG PROB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: D27. How many days in the past 30 have you experienced:  Drug Problems ",
+      "fieldNumber_": 11.15
+    },
+    {
+      "fieldNumber": 11.16,
+      "fieldName": "TROUBLED ALCOHOL L30D",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION D28 PLEASE ASK PATIENT TO USE THE PATIENTS RATING SCALE D28. How troubled or bothered have you been in the past 30 days by these:      Alcohol Problems ",
+      "fieldNumber_": 11.16
+    },
+    {
+      "fieldNumber": 11.165,
+      "fieldName": "TMT IMPORTANT ALCOHOL",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION D30 PLEASE ASK PATIENT TO USE THE PATIENTS RATING SCALE D30. How important to you now is treatment for these:  Alcohol Problems ",
+      "fieldNumber_": 11.165
+    },
+    {
+      "fieldNumber": 11.17,
+      "fieldName": "TROUBLED DRUG L30D",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION D29 PLEASE ASK PATIENT TO USE THE PATIENTS RATING SCALE D29. How troubled or bothered have you been in the past 30 days by these:      Drug Problems ",
+      "fieldNumber_": 11.17
+    },
+    {
+      "fieldNumber": 11.175,
+      "fieldName": "TMT IMPORTANT DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION D31 PLEASE ASK PATIENT TO USE THE PATIENTS RATING SCALE D31. How important to you now is treatment for these:  Drug Problems ",
+      "fieldNumber_": 11.175
+    },
+    {
+      "fieldNumber": 11.18,
+      "fieldName": "INTERVIEWER'S RATING ALCOHOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: INERVIEWER SEVERITY RATING D31. How would you rate the patient's need for treatment for:  Alcohol Abuse ",
+      "fieldNumber_": 11.18
+    },
+    {
+      "fieldNumber": 11.185,
+      "fieldName": "INTERVIEWER'S RATING DRUG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: INERVIEWER SEVERITY RATING D33. How would you rate the patient's need for treatment for:  Drug Abuse ",
+      "fieldNumber_": 11.185
+    },
+    {
+      "fieldNumber": 11.19,
+      "fieldName": "PATIENT MISREP D/A",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: CONFIDENCE RATINGS Is the above information significantly distorted by: D34. Patient's misrepresentation?  0 - No                                    1 - Yes ",
+      "fieldNumber_": 11.19
+    },
+    {
+      "fieldNumber": 11.21,
+      "fieldName": "PATIENT INAB UNDSTND D/A",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: CONFIDENCE RATINGS Is the above information significantly distorted by: D35. Patient's inability to understand?  0 - No                                          1 - Yes ",
+      "fieldNumber_": 11.21
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "ADM PROMPTED BY CJS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L1. Was this admission prompted or suggested by the criminal justice system     (judge, probation/parole officer, etc.)  0 - No                                              1 - Yes ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.02,
+      "fieldName": "ON PROBATION OR PAROLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L2. Are you on probation or parole?  0 - No                                      1 - Yes ",
+      "fieldNumber_": 14.02
+    },
+    {
+      "fieldNumber": 14.03,
+      "fieldName": "SHOPLIFTING/VANDALISM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L3 - shoplifting,vandalism ",
+      "fieldNumber_": 14.03
+    },
+    {
+      "fieldNumber": 14.04,
+      "fieldName": "PAROLE/PROBATION VIOLATIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L4 - parole/probation violations ",
+      "fieldNumber_": 14.04
+    },
+    {
+      "fieldNumber": 14.05,
+      "fieldName": "DRUG CHARGES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L5 - drug charges ",
+      "fieldNumber_": 14.05
+    },
+    {
+      "fieldNumber": 14.06,
+      "fieldName": "FORGERY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L6 - forgery ",
+      "fieldNumber_": 14.06
+    },
+    {
+      "fieldNumber": 14.07,
+      "fieldName": "WEAPONS OFFENSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L7 - weapons offense ",
+      "fieldNumber_": 14.07
+    },
+    {
+      "fieldNumber": 14.08,
+      "fieldName": "BURGLARY LARCENY B & E",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L8 - burglary, larceny, B & E ",
+      "fieldNumber_": 14.08
+    },
+    {
+      "fieldNumber": 14.09,
+      "fieldName": "ROBBERY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L9 - robbery ",
+      "fieldNumber_": 14.09
+    },
+    {
+      "fieldNumber": 14.11,
+      "fieldName": "ASSAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L10 - assault ",
+      "fieldNumber_": 14.11
+    },
+    {
+      "fieldNumber": 14.12,
+      "fieldName": "ARSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L11 - arson ",
+      "fieldNumber_": 14.12
+    },
+    {
+      "fieldNumber": 14.14,
+      "fieldName": "RAPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L12 - rape ",
+      "fieldNumber_": 14.14
+    },
+    {
+      "fieldNumber": 14.15,
+      "fieldName": "HOMICIDE MANSLAUGHTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L13 - homicide, manslaugter ",
+      "fieldNumber_": 14.15
+    },
+    {
+      "fieldNumber": 14.16,
+      "fieldName": "PROSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L14 - prostitution ",
+      "fieldNumber_": 14.16
+    },
+    {
+      "fieldNumber": 14.17,
+      "fieldName": "CONTEMPT OF COURT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L15 - contempt of court ",
+      "fieldNumber_": 14.17
+    },
+    {
+      "fieldNumber": 14.18,
+      "fieldName": "OTHER CHARGES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been arrested and charged with the following: L16 - other ",
+      "fieldNumber_": 14.18
+    },
+    {
+      "fieldNumber": 14.19,
+      "fieldName": "CONVICTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L17. How many of these charges resulted in convictions? ",
+      "fieldNumber_": 14.19
+    },
+    {
+      "fieldNumber": 14.21,
+      "fieldName": "DCVPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been charged with the following: L18. Disorderly conduct, vagrancy, public intoxication ",
+      "fieldNumber_": 14.21
+    },
+    {
+      "fieldNumber": 14.22,
+      "fieldName": "DRIVING WHILE INTOXICATED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been charged with the following: L19. Driving while intoxicated ",
+      "fieldNumber_": 14.22
+    },
+    {
+      "fieldNumber": 14.23,
+      "fieldName": "MAJOR DRIVING VIOLATIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many times in your life have you been charged with the following: L20. Major driving violations (reckless driving, speeding, no license, etc.) ",
+      "fieldNumber_": 14.23
+    },
+    {
+      "fieldNumber": 14.24,
+      "fieldName": "MONTH INCARCERATED LIFETIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L21. How many months were you incarcerated in your life?  MOS. ",
+      "fieldNumber_": 14.24
+    },
+    {
+      "fieldNumber": 14.25,
+      "fieldName": "MONTHS LAST INCARCERATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L22. How long was your last incarceration?  MOS. ",
+      "fieldNumber_": 14.25
+    },
+    {
+      "fieldNumber": 14.26,
+      "fieldName": "LAST INCARCERATED FOR",
+      "dataType": "POINTER",
+      "rawType": "P604.3'",
+      "required": false,
+      "pointerTo": 604.3,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L23. What was it for? (Use ocde 3-16, 18-20.  If multiple charges, code most       severe) ",
+      "fieldNumber_": 14.26
+    },
+    {
+      "fieldNumber": 14.265,
+      "fieldName": "INCARCERATION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 14.265
+    },
+    {
+      "fieldNumber": 14.27,
+      "fieldName": "AWAITING CTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L24. Are you presently awaiting charges, trial or sentence?  0 - No                                                              1 - Yes ",
+      "fieldNumber_": 14.27
+    },
+    {
+      "fieldNumber": 14.28,
+      "fieldName": "FOR WHAT",
+      "dataType": "POINTER",
+      "rawType": "P604.3'",
+      "required": false,
+      "pointerTo": 604.3,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L25. What for (If multiple charges, use most severe). ",
+      "fieldNumber_": 14.28
+    },
+    {
+      "fieldNumber": 14.29,
+      "fieldName": "DETAINED/INCARCERATED L30D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L26. How many days in the past 30 were you detained or incarcerated? ",
+      "fieldNumber_": 14.29
+    },
+    {
+      "fieldNumber": 14.31,
+      "fieldName": "ILLEGAL ACTIVITIES/PROFIT L30D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L27. How many days in the past 30 have you engaged in illegal activities for      profit? ",
+      "fieldNumber_": 14.31
+    },
+    {
+      "fieldNumber": 14.32,
+      "fieldName": "LEGAL PROB SCALE",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION L28 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE L28. How serious do you feel your present legal problems are?      (Exclude civil problems) ",
+      "fieldNumber_": 14.32
+    },
+    {
+      "fieldNumber": 14.33,
+      "fieldName": "LEGAL IMPORTANCE SCALE",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION L29 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE L29. How important to you now is counseling or referral for these legal      problems? ",
+      "fieldNumber_": 14.33
+    },
+    {
+      "fieldNumber": 14.34,
+      "fieldName": "INTERVIEWER'S RATING LEGAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L30. How would you rate the patient's need for legal services or counseling? ",
+      "fieldNumber_": 14.34
+    },
+    {
+      "fieldNumber": 14.35,
+      "fieldName": "PATIENT MISREP LEGAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L30. Patient's misrepresentation?  0 - No                                    1 - Yes ",
+      "fieldNumber_": 14.35
+    },
+    {
+      "fieldNumber": 14.36,
+      "fieldName": "PATIENT INAB UNDSTND LEGAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: L32. Patient's inability to understand?  0 - No                                          1 - Yes ",
+      "fieldNumber_": 14.36
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "LEGAL COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.09",
+      "required": false,
+      "helpText": "This field contains comments on the patient's Legal Status. ",
+      "isMultiple": true,
+      "subFileNumber": 604.09,
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "MS GRANDMOTHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H1. Grandmother  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 15.02,
+      "fieldName": "MS GRANDMOTHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H1. Grandmother  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where th",
+      "fieldNumber_": 15.02
+    },
+    {
+      "fieldNumber": 15.03,
+      "fieldName": "MS GRANDMOTHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H. Grandmother  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where th",
+      "fieldNumber_": 15.03
+    },
+    {
+      "fieldNumber": 15.04,
+      "fieldName": "MS GRANDFATHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H2. Grandfather  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where",
+      "fieldNumber_": 15.04
+    },
+    {
+      "fieldNumber": 15.05,
+      "fieldName": "MS GRANDFATHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H2. Grandfather  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where th",
+      "fieldNumber_": 15.05
+    },
+    {
+      "fieldNumber": 15.06,
+      "fieldName": "MS GRANDFATHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H2. Grandfather  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where t",
+      "fieldNumber_": 15.06
+    },
+    {
+      "fieldNumber": 15.07,
+      "fieldName": "MS MOTHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H3. Mother  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where ther",
+      "fieldNumber_": 15.07
+    },
+    {
+      "fieldNumber": 15.08,
+      "fieldName": "MS MOTHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H3. Mother  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 15.08
+    },
+    {
+      "fieldNumber": 15.09,
+      "fieldName": "MS MOTHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H3. Mother  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ",
+      "fieldNumber_": 15.09
+    },
+    {
+      "fieldNumber": 15.11,
+      "fieldName": "MS AUNT ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H4. Aunt  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ",
+      "fieldNumber_": 15.11
+    },
+    {
+      "fieldNumber": 15.12,
+      "fieldName": "MS AUNT DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H4. Aunt  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there neve",
+      "fieldNumber_": 15.12
+    },
+    {
+      "fieldNumber": 15.14,
+      "fieldName": "MS AUNT PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H4. Aunt Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there nev",
+      "fieldNumber_": 15.14
+    },
+    {
+      "fieldNumber": 15.15,
+      "fieldName": "MS UNCLE ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H5. Uncle  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there",
+      "fieldNumber_": 15.15
+    },
+    {
+      "fieldNumber": 15.16,
+      "fieldName": "MS UNCLE DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H5. Uncle  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ne",
+      "fieldNumber_": 15.16
+    },
+    {
+      "fieldNumber": 15.17,
+      "fieldName": "MS UNCLE PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Mother's Side H5. Uncle  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 15.17
+    },
+    {
+      "fieldNumber": 15.18,
+      "fieldName": "FS GRANDMOTHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H6. Grandmother  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where",
+      "fieldNumber_": 15.18
+    },
+    {
+      "fieldNumber": 15.19,
+      "fieldName": "FS GRANDMOTHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H6. Grandmother  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where th",
+      "fieldNumber_": 15.19
+    },
+    {
+      "fieldNumber": 15.21,
+      "fieldName": "FS GRANDMOTHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H6. Grandmother  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where t",
+      "fieldNumber_": 15.21
+    },
+    {
+      "fieldNumber": 15.22,
+      "fieldName": "FS GRANDFATHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H7. Grand  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ",
+      "fieldNumber_": 15.22
+    },
+    {
+      "fieldNumber": 15.23,
+      "fieldName": "FS GRANDFATHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H7. Grandfather  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where th",
+      "fieldNumber_": 15.23
+    },
+    {
+      "fieldNumber": 15.24,
+      "fieldName": "FS GRANDFATHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H7. Grandfather  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where t",
+      "fieldNumber_": 15.24
+    },
+    {
+      "fieldNumber": 15.25,
+      "fieldName": "FS FATHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H6. Father  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where ther",
+      "fieldNumber_": 15.25
+    },
+    {
+      "fieldNumber": 15.26,
+      "fieldName": "FS FATHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H8. Father  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 15.26
+    },
+    {
+      "fieldNumber": 15.27,
+      "fieldName": "FS FATHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H8. Father  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 15.27
+    },
+    {
+      "fieldNumber": 16.01,
+      "fieldName": "FS AUNT ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H9. Aunt  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ",
+      "fieldNumber_": 16.01
+    },
+    {
+      "fieldNumber": 16.02,
+      "fieldName": "FS AUNT DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H9. Aunt  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there neve",
+      "fieldNumber_": 16.02
+    },
+    {
+      "fieldNumber": 16.03,
+      "fieldName": "FS AUNT PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H9. Aunt  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there nev",
+      "fieldNumber_": 16.03
+    },
+    {
+      "fieldNumber": 16.04,
+      "fieldName": "FS UNCLE ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H10. Uncle  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where ther",
+      "fieldNumber_": 16.04
+    },
+    {
+      "fieldNumber": 16.05,
+      "fieldName": "FS UNCLE DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H10. Uncle  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ne",
+      "fieldNumber_": 16.05
+    },
+    {
+      "fieldNumber": 16.06,
+      "fieldName": "FS UNCLE PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Father's Side H10. Uncle  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category;\"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 16.06
+    },
+    {
+      "fieldNumber": 16.07,
+      "fieldName": "BROTHER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H11. Brother  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there n",
+      "fieldNumber_": 16.07
+    },
+    {
+      "fieldNumber": 16.08,
+      "fieldName": "BROTHER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H11. Brother  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there neve",
+      "fieldNumber_": 16.08
+    },
+    {
+      "fieldNumber": 16.09,
+      "fieldName": "BROTHER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H11. Brother  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there nev",
+      "fieldNumber_": 16.09
+    },
+    {
+      "fieldNumber": 16.11,
+      "fieldName": "SISTER ALC",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H12. Sister  Alcohol Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there ne",
+      "fieldNumber_": 16.11
+    },
+    {
+      "fieldNumber": 16.12,
+      "fieldName": "SISTER DRUG",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H12. Sister  Drug Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never",
+      "fieldNumber_": 16.12
+    },
+    {
+      "fieldNumber": 16.14,
+      "fieldName": "SISTER PSYCH",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have any of your relatives had what you call a significant drinking, drug use or psych problem - one that did or should have led to treatment? Siblings H12. Sister  Psych Direction: Place \"0\" in relative category where the answer is clearly no for all relatives in the category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there neve",
+      "fieldNumber_": 16.14
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "FAMILY HISTORY COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.11",
+      "required": false,
+      "helpText": "This field contains comments on the patient's Family History. ",
+      "isMultiple": true,
+      "subFileNumber": 604.11,
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "MARITIAL STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARRIED;2:REMARRIED;3:WIDOWED;4:SEPARATED;5:DIVORCED;6:NEVER MARRIED;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F1. Marital Status  1 - Married     4 - Separated                     2 - Remarried   5 - Divorced                     3 - Widowed     6 - Never Married ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 17.02,
+      "fieldName": "MARITIAL STATUS YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F2. How long have you been in this marital status?  YRS.     (If never married, since age 18). ",
+      "fieldNumber_": 17.02
+    },
+    {
+      "fieldNumber": 17.03,
+      "fieldName": "MARITIAL STATUS MOS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F2. How long have you been in this marital status?  MOS.     (If never married, since age 18). ",
+      "fieldNumber_": 17.03
+    },
+    {
+      "fieldNumber": 17.04,
+      "fieldName": "SATISFIED WITH SITUATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:INDIFFERENT;2:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F3. Are you satisfied with this situation?  0 - No                                             1 - Indifferent                                             2 - Yes ",
+      "fieldNumber_": 17.04
+    },
+    {
+      "fieldNumber": 17.05,
+      "fieldName": "USUAL LIVING ARGMENTS P3Y",
+      "dataType": "POINTER",
+      "rawType": "P604.4'",
+      "required": false,
+      "pointerTo": 604.4,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F4. Usual living arrangements (past 3 yr.)     1      WITH SEXUAL PARTNER & CHILDREN     2      WITH SEXUAL PARTNER ALONE     3      WITH CHILDREN ALONE     4      WITH PARENTS     5      WITH FAMILY     6      WITH FRIENDS     7      ALONE     8      CONTROLLED ENVIRONMENT     9      NO STABLE ARRANGEMENT ",
+      "fieldNumber_": 17.05
+    },
+    {
+      "fieldNumber": 17.06,
+      "fieldName": "ARRANGEMENTS LOT YRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F5. How long have you lived in these arrangements?  YRS.     (If with parents or family, since age 18). ",
+      "fieldNumber_": 17.06
+    },
+    {
+      "fieldNumber": 17.07,
+      "fieldName": "ARRANGEMENTS LOT MOS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F5. How long have you lived in these arrangements?  MOS.                          (If with parents or family, since age 18). ",
+      "fieldNumber_": 17.07
+    },
+    {
+      "fieldNumber": 17.08,
+      "fieldName": "ARRANGEMENTS SATISFACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:INDIFFERENT;2:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F3. Are you satisfied with these living arrangements?  0 - No                                                        1 - Indifferent                                                        2 - Yes ",
+      "fieldNumber_": 17.08
+    },
+    {
+      "fieldNumber": 17.09,
+      "fieldName": "LIVE W/ ANYONE W/ ALC PROB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Do you live wwith anyone who:  0 - No  1 - Yes F7. Has a current alcohol problem? ",
+      "fieldNumber_": 17.09
+    },
+    {
+      "fieldNumber": 17.11,
+      "fieldName": "LIVE W/ ANYONE W/ DRUG PROB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Do you live wwith anyone who:  0 - No  1 - Yes F8 Uses non-prescribed drugs? ",
+      "fieldNumber_": 17.11
+    },
+    {
+      "fieldNumber": 17.12,
+      "fieldName": "SPEND FREE TIME WITH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FAMILY;2:FRIENDS;3:ALONE;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F9. With whom do you spend most of your free time:  1 - Family                                                     2 - Friends  3 - Alone ",
+      "fieldNumber_": 17.12
+    },
+    {
+      "fieldNumber": 17.14,
+      "fieldName": "SATISFIED SPENDING FREE TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:INDIFFERENT;2:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F10. Are you satisfied with spending your free time this way?      0 - No  1 - Indifferent  2 - Yes ",
+      "fieldNumber_": 17.14
+    },
+    {
+      "fieldNumber": 17.15,
+      "fieldName": "HOW MANY CLOSE FRIENDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F11. How many close friends do you have? ",
+      "fieldNumber_": 17.15
+    },
+    {
+      "fieldNumber": 17.16,
+      "fieldName": "CLOSE WITH MOTHER",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F12: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F12. M",
+      "fieldNumber_": 17.16
+    },
+    {
+      "fieldNumber": 17.17,
+      "fieldName": "CLOSE WITH FATHER",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F13: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F13. F",
+      "fieldNumber_": 17.17
+    },
+    {
+      "fieldNumber": 17.18,
+      "fieldName": "CLOSE WITH BROTHERS/SISTERS",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F14: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F14. B",
+      "fieldNumber_": 17.18
+    },
+    {
+      "fieldNumber": 17.19,
+      "fieldName": "CLOSE WITH SEX PARTNER/SPOUSE",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F15: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F15. S",
+      "fieldNumber_": 17.19
+    },
+    {
+      "fieldNumber": 17.21,
+      "fieldName": "CLOSE WITH CHILDREN",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F16: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F16. C",
+      "fieldNumber_": 17.21
+    },
+    {
+      "fieldNumber": 17.22,
+      "fieldName": "CLOSE WITH FRIENDS",
+      "dataType": "POINTER",
+      "rawType": "P604.5'",
+      "required": false,
+      "pointerTo": 604.5,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F17: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Would you say you have haf close, long, lasting, personal relationships with any of the following people in your life: F17. F",
+      "fieldNumber_": 17.22
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "PROBLEM W/ MOTHER P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F18: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 18.02,
+      "fieldName": "PROBLEM W/ MOTHER LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F19: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.02
+    },
+    {
+      "fieldNumber": 18.03,
+      "fieldName": "PROBLEM W/ FATHER P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F19: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.03
+    },
+    {
+      "fieldNumber": 18.04,
+      "fieldName": "PROBLEM W/ FATHER LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F19: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.04
+    },
+    {
+      "fieldNumber": 18.05,
+      "fieldName": "PROBLEM W/ BRO/SIS P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F20: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.05
+    },
+    {
+      "fieldNumber": 18.06,
+      "fieldName": "PROBLEM W/ BRO/SIS LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F20: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.06
+    },
+    {
+      "fieldNumber": 18.07,
+      "fieldName": "PROBLEM W/ SEX PARTNER/SP P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F21: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.07
+    },
+    {
+      "fieldNumber": 18.08,
+      "fieldName": "PROBLEM W/ SEX PARTNER/SP LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F21: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.08
+    },
+    {
+      "fieldNumber": 18.09,
+      "fieldName": "PROBLEM W/ CHILDREN P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F22: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.09
+    },
+    {
+      "fieldNumber": 18.11,
+      "fieldName": "PROBLEM W/ CHILDREN LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F22: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.11
+    },
+    {
+      "fieldNumber": 18.12,
+      "fieldName": "PROBLEM W/ OSF P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F23: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.12
+    },
+    {
+      "fieldNumber": 18.125,
+      "fieldName": "PROBLEM W/ OSF SPECIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F23: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.125
+    },
+    {
+      "fieldNumber": 18.14,
+      "fieldName": "PROBLEM W/ OSF LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F23: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOR ",
+      "fieldNumber_": 18.14
+    },
+    {
+      "fieldNumber": 18.15,
+      "fieldName": "PROBLEM W/ CF P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F24: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.15
+    },
+    {
+      "fieldNumber": 18.16,
+      "fieldName": "PROBLEM W/ CF LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F24: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   INYOUR ",
+      "fieldNumber_": 18.16
+    },
+    {
+      "fieldNumber": 18.17,
+      "fieldName": "PROBLEM W/ NEIGHBORS L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F25: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.17
+    },
+    {
+      "fieldNumber": 18.18,
+      "fieldName": "PROBLEM W/ NEIGHBORS LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F25: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOUR",
+      "fieldNumber_": 18.18
+    },
+    {
+      "fieldNumber": 18.185,
+      "fieldName": "PROBLEM W/CO WKRS P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F26: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   PAST 30",
+      "fieldNumber_": 18.185
+    },
+    {
+      "fieldNumber": 18.186,
+      "fieldName": "PROBLEM W/CO WKRS LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;N:N/A;X:uncertain/don't know;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Direction for F26: Place \"0\" in relative category where the answer is clearly no for all relatives in that category; \"1\" where the answer is clearly yes for any relative within the category; \"X\" where the answer is uncertain or \"I don't know\" and \"N\" where there never was a relative from that category. Have you had significant periods in which you have experienced serious problems getting along with: 0 - No  1 - Yes   IN YOU ",
+      "fieldNumber_": 18.186
+    },
+    {
+      "fieldNumber": 18.19,
+      "fieldName": "ABUSE EMOTIONALLY L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) 0 - No  1 - Yes  PAST 30 DAYS F27. Emotionally (make you fell bad through harsh words)? ",
+      "fieldNumber_": 18.19
+    },
+    {
+      "fieldNumber": 18.195,
+      "fieldName": "ABUSE EMOTIONALLY LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) abuse you: 0 - No  1 - Yes  IN YOUR LIFE F27. Emotionally (make you feel bad through harsh words)? ",
+      "fieldNumber_": 18.195
+    },
+    {
+      "fieldNumber": 18.21,
+      "fieldName": "ABUSE PHYSICALLY L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) abuse you: 0 - No  1 - Yes  PAST 30 DAYS F28. Physically (cause you physical harm)?  ",
+      "fieldNumber_": 18.21
+    },
+    {
+      "fieldNumber": 18.215,
+      "fieldName": "ABUSE PHYSICALLY LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) abuse you: 0 - No  1 - Yes  IN YOUR LIFE F28. Physically (cause you physical harm)? ",
+      "fieldNumber_": 18.215
+    },
+    {
+      "fieldNumber": 18.22,
+      "fieldName": "ABUSE SEXUALLY L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) abuse you: 0 - No  1 - Yes  PAST 30 DAYS F29. Sexually (force sexual advances or sexual acts)?  ",
+      "fieldNumber_": 18.22
+    },
+    {
+      "fieldNumber": 18.225,
+      "fieldName": "ABUSE SEXUALLY LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Did any of these people (F18-F26) abuse you: 0 - No  1 - Yes  IN YOUR LIFE F29. Sexually (force sexual advances or sexual acts)? ",
+      "fieldNumber_": 18.225
+    },
+    {
+      "fieldNumber": 18.23,
+      "fieldName": "CONFLICT FAMILY P30D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many days in the past 30 have you had serious conflicts: F30. with your family? ",
+      "fieldNumber_": 18.23
+    },
+    {
+      "fieldNumber": 18.24,
+      "fieldName": "CONFILCT OTHER P30D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: How many days in the past 30 have you had serious conflicts: F31. with other people? (excluding family) ",
+      "fieldNumber_": 18.24
+    },
+    {
+      "fieldNumber": 18.25,
+      "fieldName": "TROUBLED FAMILY PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION F32 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE How troubled or bothered have you been in the past 30 days by these: F32. Family problems ",
+      "fieldNumber_": 18.25
+    },
+    {
+      "fieldNumber": 18.26,
+      "fieldName": "TROUBLED SOCIAL PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION F33 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE How troubled or bothered have you been in the past 30 days by these: F33. Social problems ",
+      "fieldNumber_": 18.26
+    },
+    {
+      "fieldNumber": 18.27,
+      "fieldName": "TREATMENT FAMILY PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION F34 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE How important to you now is treatment or counseling for these: F34. Family problems ",
+      "fieldNumber_": 18.27
+    },
+    {
+      "fieldNumber": 18.28,
+      "fieldName": "TREATMENT SOCIAL PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION F34 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE How troubled or bothered have you been in the past 30 days by these: F34. Social problems ",
+      "fieldNumber_": 18.28
+    },
+    {
+      "fieldNumber": 18.29,
+      "fieldName": "INTERVIEWER'S RATING FAMILY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F36. How would you rate the patient's need for family and/or social      counseling? ",
+      "fieldNumber_": 18.29
+    },
+    {
+      "fieldNumber": 18.31,
+      "fieldName": "FAMILY/SOC CONFIDENCE MISREP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F37. Patient Misrepresentation?  0 - No  1 - Yes ",
+      "fieldNumber_": 18.31
+    },
+    {
+      "fieldNumber": 18.32,
+      "fieldName": "FAMILY/SOC CONFIDENCE ITU",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: F38. Patient's inability to understand?  0 - No  1 - Yes ",
+      "fieldNumber_": 18.32
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "FAMILY/SOCIAL COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.02",
+      "required": false,
+      "helpText": "This field contains comments about the patient's Family/Social relationships. ",
+      "isMultiple": true,
+      "subFileNumber": 604.02,
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "TREATED IN HOSPITAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P1. How many times have you been treated for any psychological or emotional     problems?  In a hospital ",
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 19.02,
+      "fieldName": "TREATED AS OPT OR PRIV PT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P1. How many times have you been treated for any psychological or emotional     problems?  As an Opt. or Priv. patient ",
+      "fieldNumber_": 19.02
+    },
+    {
+      "fieldNumber": 19.03,
+      "fieldName": "PENSION FOR PSY DIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P2. Do you receive a pension for a pschiatric disability?  0 - No  1 - Yes ",
+      "fieldNumber_": 19.03
+    },
+    {
+      "fieldNumber": 19.04,
+      "fieldName": "EXP DEPRESSION P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P33. Experienced serious depression ",
+      "fieldNumber_": 19.04
+    },
+    {
+      "fieldNumber": 19.05,
+      "fieldName": "EXP DEPRESSION LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P33. Experienced serious depression ",
+      "fieldNumber_": 19.05
+    },
+    {
+      "fieldNumber": 19.06,
+      "fieldName": "EXP ANXIETY P30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P4. Experienced serious anxiety or tension ",
+      "fieldNumber_": 19.06
+    },
+    {
+      "fieldNumber": 19.07,
+      "fieldName": "EXP ANXIETY LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P4. Experienced serious anxiety or tension ",
+      "fieldNumber_": 19.07
+    },
+    {
+      "fieldNumber": 19.08,
+      "fieldName": "EXP HALLUCINATIONS L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P5. Experienced Hallucinations ",
+      "fieldNumber_": 19.08
+    },
+    {
+      "fieldNumber": 19.09,
+      "fieldName": "EXP HALLUCINATIONS LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P5. Experienced Hallucinations ",
+      "fieldNumber_": 19.09
+    },
+    {
+      "fieldNumber": 19.11,
+      "fieldName": "EXP UCR L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P6. Experienced trouble understanding, concetrating or remembering ",
+      "fieldNumber_": 19.11
+    },
+    {
+      "fieldNumber": 19.12,
+      "fieldName": "EXP UCR LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P6. Experienced trouble understanding, concetrating or remembering ",
+      "fieldNumber_": 19.12
+    },
+    {
+      "fieldNumber": 19.14,
+      "fieldName": "EXP CONT VIO BEHAVIOR L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P7. Experienced trouble controlling violent behavior ",
+      "fieldNumber_": 19.14
+    },
+    {
+      "fieldNumber": 19.15,
+      "fieldName": "EXP CONT VIO BEHAVIOR LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P7. Experienced trouble controlling violent behavior ",
+      "fieldNumber_": 19.15
+    },
+    {
+      "fieldNumber": 19.16,
+      "fieldName": "EXP THOUGHTS SUICIDE L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P8. Experienced serious thoughts of suicide ",
+      "fieldNumber_": 19.16
+    },
+    {
+      "fieldNumber": 19.17,
+      "fieldName": "EXP THOUGHTS SUCIDE LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P8. Experienced serious thoughts of suicide ",
+      "fieldNumber_": 19.17
+    },
+    {
+      "fieldNumber": 19.18,
+      "fieldName": "EXP ATTEMPTED SUICIDE L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P9. Attempted suicide ",
+      "fieldNumber_": 19.18
+    },
+    {
+      "fieldNumber": 19.19,
+      "fieldName": "EXP ATTEMPTED SUICIDE LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P9. Attempted suicide ",
+      "fieldNumber_": 19.19
+    },
+    {
+      "fieldNumber": 19.21,
+      "fieldName": "MEDS FOR PSY PROB L30D",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    PAST 30 DAYS P10. Been prescribed medication for any psychological emotional problem ",
+      "fieldNumber_": 19.21
+    },
+    {
+      "fieldNumber": 19.22,
+      "fieldName": "MEDS FOR PSY PROB LIFE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: Have you had a significant period, (that was not a direct result of drug/alcohol use), in which you have:   0 - No  1 - Yes    IN YOUR LIFE P10. Been prescribed medication for any psychological emotional problem ",
+      "fieldNumber_": 19.22
+    },
+    {
+      "fieldNumber": 19.23,
+      "fieldName": "DAYS EXP PROB L30D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P11. How many days in the past 30 have you experienced these psychological or      emotional problems? ",
+      "fieldNumber_": 19.23
+    },
+    {
+      "fieldNumber": 19.24,
+      "fieldName": "PSY PROB L30D RATING",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION P12 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE P12. How much have you been troubled or bothered by these psychological or      emotional problems in the past 30 days? ",
+      "fieldNumber_": 19.24
+    },
+    {
+      "fieldNumber": 19.25,
+      "fieldName": "PSY TMT RATING",
+      "dataType": "POINTER",
+      "rawType": "P604.45'",
+      "required": false,
+      "pointerTo": 604.45,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: FOR QUESTION P13 PLEASE ASK PATIENT TO USE THE PATIENT'S RATING SCALE P13. How important to you now is treatment for these psychological problems? ",
+      "fieldNumber_": 19.25
+    },
+    {
+      "fieldNumber": 19.26,
+      "fieldName": "INTV DEPRESSED/WITHDRAWN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P14. Obviously depressed/withdrawn ",
+      "fieldNumber_": 19.26
+    },
+    {
+      "fieldNumber": 19.27,
+      "fieldName": "INTV HOSTILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P15. Obviously hostile ",
+      "fieldNumber_": 19.27
+    },
+    {
+      "fieldNumber": 19.28,
+      "fieldName": "INTV ANXIOUS/NERVOUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P16. Obviously anxious/nervous ",
+      "fieldNumber_": 19.28
+    },
+    {
+      "fieldNumber": 19.29,
+      "fieldName": "INTV TROUBLE WITH RTTDPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P17. Having trouble with reality testing thought disorders, paranoid thinking ",
+      "fieldNumber_": 19.29
+    },
+    {
+      "fieldNumber": 19.31,
+      "fieldName": "INTV TROUBLE CCR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P18. Having trouble comprehending, concentrating, remembering. ",
+      "fieldNumber_": 19.31
+    },
+    {
+      "fieldNumber": 19.32,
+      "fieldName": "INTV SUICIDAL THOUGHTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: At the time of the interview, is patient:  0 - No  1 - Yes P19. Having suicidal thoughts ",
+      "fieldNumber_": 19.32
+    },
+    {
+      "fieldNumber": 19.33,
+      "fieldName": "INTERVIEWER'S RATING PSY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P20. How would you rate the patient's need for psychiatric/psychological      treatment? ",
+      "fieldNumber_": 19.33
+    },
+    {
+      "fieldNumber": 19.34,
+      "fieldName": "PSY PATIENT'S MISREPRESENTATIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P21. Patient's misrepresentation?  0 - N0   1 - Yes ",
+      "fieldNumber_": 19.34
+    },
+    {
+      "fieldNumber": 19.35,
+      "fieldName": "PSY PATIENT'S INABILITY TO UND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;X:QUESTION NOT ANSWERED;N:QUESTION NOT APPLICABLE;",
+      "helpText": "This is the Addiction Severity Index Fifth Edition interview question: P22. Patient's inability to understand?  0 - No  1 - Yes ",
+      "fieldNumber_": 19.35
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "PSYCHIATRIC COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "604.12",
+      "required": false,
+      "helpText": "This field contains comments about the patient's Psychiatric Status. ",
+      "isMultiple": true,
+      "subFileNumber": 604.12,
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 187,
+      "fieldName": "LEISURE TIME ISSUES",
+      "dataType": "SUBFILE",
+      "rawType": "604.0187",
+      "required": false,
+      "helpText": "This field contains comments about the patient's Leisure Time Issues. ",
+      "isMultiple": true,
+      "subFileNumber": 604.0187,
+      "fieldNumber_": 187
+    },
+    {
+      "fieldNumber": 188,
+      "fieldName": "SPIRITUAL ISSUES",
+      "dataType": "SUBFILE",
+      "rawType": "604.0188",
+      "required": false,
+      "helpText": "This field contains comments about the patient's Spiritual Issues. ",
+      "isMultiple": true,
+      "subFileNumber": 604.0188,
+      "fieldNumber_": 188
+    }
+  ],
+  "fieldCount": 317,
+  "crossReferences": [
+    {"name": "A02", "field": },
+    {"name": "A81", "field": },
+    {"name": "AA81", "field": },
+    {"name": "AD", "field": },
+    {"name": "ATR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "604", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "604", "field": .02, "type": "regular"},
+    {"name": "604", "field": .02, "type": "regular"},
+    {"name": "604", "field": .04, "type": "regular"},
+    {"name": "604", "field": .05, "type": "regular"},
+    {"name": "604", "field": .81, "type": "regular"},
+    {"name": "604", "field": .81, "type": "regular"},
+    {"name": "604", "field": 5.5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W $$ID^YSASLIB(Y)"}
+  ]
+}

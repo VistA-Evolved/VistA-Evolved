@@ -1,0 +1,149 @@
+{
+  "fileNumber": 391.71,
+  "fileName": "ADT/HL7 PIVOT",
+  "globalRoot": "391.71I",
+  "globalReference": "^VAT(391.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This will contain the date time of the event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PIVOT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This will contain a unique pivot number that is created by the system. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the pointer to the patient file (#2) to the patient this event belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INPATIENT EVENTS;2:OUTPATIENT EVENTS;3:REGISTRATION EVENTS;4:UPDATES TO DATA;5:TREATING FACILITY UPDATES;6:COTS UPDATE EVENTS;",
+      "helpText": "This indicates the type of event that has occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EVENT POINTER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is a variable pointer to the Patient Movement, Outpatient Encounter or Patient file.  When the type of event is inpatient, it points to the event in the Patient Movement file.  Outpatient, it points to either the Patient file or the Outpatient Encounter file.  Registration and Updates point to the Patient file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TRANSMITTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEED TO TRANSMIT;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DELETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DELETED;",
+      "helpText": "This field is used to mark the given entry for the event as being deleted. It indicates that the ADT event was deleted, but an ancillary system may still hold the PIVOT number. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REQUIRES TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field denotes whether or not the entry requires transmission. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "EVENT REASON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain an HL7 event reason code for certain entries in the pivot file. For example, if a user causes an ADT-A08 message to be generated, by adding a patient to the security log file the event reason code is 97, indicating a 'Sensitivity Update' triggered the A08. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "RESULTING MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will store the result from attempting to build and send an HL7 message.  The result will either be a message ID when the attempt is successful or an error message. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "FIELD(S) EDITED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to store the fields edited, delimited by ; for the event. ",
+      "fieldNumber_": 2.1
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD2", "field": },
+    {"name": "AD3", "field": },
+    {"name": "AXMIT1", "field": },
+    {"name": "AXMIT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "391.71", "field": .01, "type": "regular"},
+    {"name": "391.71", "field": .01, "type": "regular"},
+    {"name": "391.71", "field": .02, "type": "regular"},
+    {"name": "391.71", "field": .03, "type": "regular"},
+    {"name": "391.71", "field": .04, "type": "regular"},
+    {"name": "391.71", "field": .04, "type": "regular"},
+    {"name": "391.71", "field": .05, "type": "regular"},
+    {"name": "391.71", "field": .06, "type": "regular"},
+    {"name": "391.71", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(391.71,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

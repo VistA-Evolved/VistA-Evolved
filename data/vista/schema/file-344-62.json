@@ -1,0 +1,326 @@
+{
+  "fileNumber": 344.62,
+  "fileName": "RCDPE CARC-RARC AUTO DEC",
+  "globalRoot": "344.62",
+  "globalReference": "^RCY(344.62,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARC/RARC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A Claims Adjustment Reason Code (CARC) or a Remittance Advice Reason Code  (RARC) that is allowed to auto-decrease the amount owed on a patients  bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CARC AUTO DECREASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:Y;",
+      "helpText": "A Yes/No prompt defining whether a CARC code can be auto-decreased or  not. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the CARC or RARC code was originally added for auto-decreasing of medical claims with payments. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who added or updated the CARC or RARC code for medical claims with payments. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the entry was last updated for medical claims with payments. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CARC DECREASE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the maximum number of dollars that the CARC or RARC code can decrease the balance on a patient's bill for a medical claim with payments. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "User comment explaining why auto-decrease was turned on or off, or otherwise changed, for this CARC or RARC code for medical claims with payments. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CARC AUTO DECREASE NO-PAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No value indicating whether a CARC code can be auto-decreased for  medical claims with no payments. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE ADDED NO-PAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the CARC or RARC code was originally added for auto-decreasing of medical claims with no payments.   ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "UPDATED BY (NO-PAY)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who added or updated the CARC or RARC code for medical claims with no payments. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DATE LAST UPDATED NO-PAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the entry was last updated for medical claims with no payments. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "CARC DECREASE AMOUNT NO-PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The maximum amount this CARC or RARC code can decrease the balance on a patient's bill for a medical claim with no payments. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "COMMENT NO-PAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "User comment explaining why auto-decrease was turned on or off, or otherwise changed, for this CARC or RARC code for medical claims with no payments. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "CARC PHARM AUTO DECREASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No value indicating whether a CARC or RARC code can be used for auto-decrease of pharmacy claims with payments. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "PHARM WITH PAYMENTS DATE ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the CARC or RARC code was added or updated for auto-decrease of pharmacy claims with payments. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "PHARM WITH PAYMENTS UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who last updated the entry for this CARC or RARC code for pharmacy claims with payments. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "PHARM W. PAYMNTS DT LAST UPDTD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The complete label: PHARM WITH PAYMENTS DATE LAST UPDATED    The date the entry was last updated for pharmacy claims with payments. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "PHARM W. PAYMNTS CARC DEC AMNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The complete label: PHARM WITH PAYMENTS CARC DECREASE AMOUNT    The maximum amount the CARC or RARC code can decrease the balance on  a patient's bill for pharmacy claims with no payments. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "PHARM WITH PAYMENTS COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "User comment explaining why auto-decrease was turned on or off, or otherwise  changed, for this CARC or RARC code for pharmacy claims with payments. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "CARC TRICARE W PYMNTS AUTO-DEC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The complete label: CARC TRICARE WITH PAYMENTS AUTO-DECREASE   A Yes/No value indicating whether or not a CARC code can be auto-decreased for TRICARE claims with payments. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "TRICARE W. PAYMENTS DATE ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the CARC or RARC code was added for Tricare claims with payments automatic decreasing. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "TRICARE W. PAYMENTS UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who last updated the entry for the specific CARC or RARC code for TRICARE claims with payments. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "TRICARE W. PAYMENTS LAST UPDTD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The complete label: TRICARE WITH PAYMENTS DATE LAST UPDATED    The date the entry was last updated for Tricare claims with payments.  ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "TRICARE W PYMNTS CARC DEC AMNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The complete label: TRICARE WITH PAYMENTS CARC DECREASE AMOUNT    The maximum amount the CARC or RARC code can decrease the amount for Tricare claims with payments of the patient's bill.   ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "TRICARE WITH PAYMENTS COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "A comment explaining why the CARC or RARC was allowed to be auto-decreased or why auto-decrease was disabled for Tricare claims. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "CARC TRICARE AUTO-DECRS NO-PAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The complete label: CARC TRICARE AUTO-DECREASE NO-PAY   A Yes/No value indicating whether a CARC code can be auto-decreased for Tricare claims with no payments. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "DATE ADDED TRICARE NO-PAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the CARC or RARC code was added for auto-decreasing Tricare claims with no payments. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "TRICARE NO-PAY UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who updated the CARC or RARC code for Tricare claims with no payments. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "TRICARE DATE LAST UPDTD NO-PAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The complete label: TRICARE DATE LAST UPDATED NO-PAY   The date the entry was last updated for Tricare claims with no payments.   ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.11,
+      "fieldName": "CARC DECR AMNT TRICARE NO-PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The complete label: CARC DECREASE AMOUNT TRICARE NO-PAY    The maximum amount the CARC or RARC code can decrease the amount of the patient's bill. ",
+      "fieldNumber_": 3.11
+    },
+    {
+      "fieldNumber": 3.12,
+      "fieldName": "COMMENT TRICARE NO-PAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "For Tricare claims with no payments, a comment explaining why the CARC or RARC code was enabled or disabled. ",
+      "fieldNumber_": 3.12
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "ACTV", "field": },
+    {"name": "ACTVN", "field": },
+    {"name": "ACTVNT", "field": },
+    {"name": "ACTVR", "field": },
+    {"name": "ACTVT", "field": },
+    {"name": "B", "field": },
+    {"name": "344.62", "field": .01, "type": "regular"},
+    {"name": "344.62", "field": .02, "type": "regular"},
+    {"name": "344.62", "field": .08, "type": "regular"},
+    {"name": "344.62", "field": 2.01, "type": "regular"},
+    {"name": "344.62", "field": 3.01, "type": "regular"},
+    {"name": "344.62", "field": 3.07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

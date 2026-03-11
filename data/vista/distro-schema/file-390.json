@@ -1,0 +1,85 @@
+{
+  "fileNumber": 390,
+  "fileName": "ENROLLMENT RATED DISABILITY UPLOAD AUDIT",
+  "globalRoot": "390",
+  "globalReference": "^DGRDUA(390,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF CHANGE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the DATE/TIME the Rated Disability changed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the PATIENT the Rated Disability belongs to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RATED DISABILITIES (VA)",
+      "dataType": "POINTER",
+      "rawType": "RP31'",
+      "required": true,
+      "pointerTo": 31,
+      "helpText": "This is the Rated Disability that changed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISABILITY %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the Disability % for the Rated Disability that changed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EXTREMITY AFFECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BL:BOTH LOWER;BU:BOTH UPPER;RL:RIGHT LOWER;RU:RIGHT UPPER;LL:LEFT LOWER;LU:LEFT UPPER;",
+      "helpText": "This is the Extremity Affected for the Rated Disability. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORIGINAL EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the first date that this Rated Disability was evaluated. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CURRENT EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the most recent date that this Rated Disability was  evaluated. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "390", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

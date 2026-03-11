@@ -1,0 +1,188 @@
+{
+  "fileNumber": 64.5,
+  "fileName": "LAB REPORTS",
+  "globalRoot": "64.5",
+  "globalReference": "^LAB(64.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "There can be only ONE cumulative reports entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IN/OUT PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INPATIENT ONLY;2:OUTPATIENT ONLY;",
+      "helpText": "This field allows for the turning on or off the ability to print outpatient or inpatient lab results on the cumulative report. No entry will print all patients. Entry of 1 will print only inpatients. Entry of 2 will print only outpatients. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPORT NAME",
+      "dataType": "SUBFILE",
+      "rawType": "64.56",
+      "required": false,
+      "helpText": "This is an arbitrary report name. ",
+      "isMultiple": true,
+      "subFileNumber": 64.56,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MICRO REPORTS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "F:Print only FINAL micro reports;P:Print PRELIMINARY & FINAL micro reports;",
+      "helpText": "By choosing an entry for this field, microbiology reports will be  included with the cumulative.  There are three options available.   1. A null entry means that no micro reports will be included.   2. An entry of \"F\" means that only 'FINAL' micro reports will print.   3. An entry of \"P\" means that 'PRELIMINARY' and 'FINAL' reports      will print.   A PRELIMINARY report is one that has a report date approved entered. A FINAL report is one that has been verified using the Verify by Supervisor op",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "BLOOD BANK REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'YES' if blood bank results are to be printed along  with the cumulative report. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILE ROOM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this field has an entry, then all patients that are considered outpatients (no definition in ^DPT(DFN,.1)), will have their cumulative printed for location: FILE ROOM.  No cumulative will be printed for the requesting location or clinic. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TOP/BOT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "T:TOP;B:BOTTOM;",
+      "helpText": "This field determines whether the 'VAMC' field is printed at the top of the form or at the bottom of the form. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SEPARATE REPORT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "64.57P",
+      "required": false,
+      "helpText": "An entry to a separate report location ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "REPORT DATE field is used by cumulative routines to keep record of the most recent cumulative report date.  DO NOT edit this field as part of the initial file set-up. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COMPLETED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": " This field contains the date the test was completed and verified. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MED CENTER NAME (MISC HEADER)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Text entered in this field is printed as the Medical Center name on the MISCELLANEOUS HEADERS of the Cumulative report. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MAJOR HEADER",
+      "dataType": "SUBFILE",
+      "rawType": "64.51",
+      "required": false,
+      "helpText": "The major or general heading of the report. The first four letters of the major header name is used as an index flag at the bottom of each page. ",
+      "isMultiple": true,
+      "subFileNumber": 64.51,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MICRO APPROVAL METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RE:Results Entry;VT:Verification by Tech;VS:Verification by Supervisor;",
+      "helpText": " This field contains the what approval method required before this test result can be printed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SORT BY PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "An entry of 'YES' will cause the supervisor summary to sort by patient name instead of patient location. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DAILY SUMMARY REPORTS",
+      "dataType": "SUBFILE",
+      "rawType": "64.54",
+      "required": false,
+      "helpText": "This report is built from the cumulative.  It is queued automatically through the OPTION file and TASK MANAGER. ",
+      "isMultiple": true,
+      "subFileNumber": 64.54,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FILE ROOM REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used if the site wishes to print the FILEROOM location on a different schedule than the regular Cumulative print. If this feature is utilized, the last date the FILEROOM location(s) were printed is stored in this field. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SEPARATE FILE ROOM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to designate the FILE ROOM Cumulative being printed on a schedule different from the regular cumulative. To utilize this feature the following needs to be setup.     1. Set field #4, FILE ROOM, to \"YES\" - this sorts all non-inpatients to      two locations, FILE ROOM1 and FILE ROOM2, based on terminal digit of      SSN.     2. Set field #17, SEPARATE FILE ROOM, to \"YES\" - this tells the      cumulative that you are printing the FILE ROOM on a schedule      different from the r",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "MUMPS5", "field": },
+    {"name": "64.5", "field": .01, "type": "regular"},
+    {"name": "64.5", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

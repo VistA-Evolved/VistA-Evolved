@@ -1,0 +1,121 @@
+{
+  "fileNumber": 801.46,
+  "fileName": "REMINDER GENERAL FINDINGS",
+  "globalRoot": "801.46",
+  "globalReference": "^PXRMD(801.46,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FINDING TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the general finding. This field should have meaning  to the user in CPRS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the package that the general finding will try to update. This field is used by the receiving APIs to determine if the API should use the data to update their files. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the file number the general finding should update. This field  with the FIELD NUMBER, VALUE or PROMPT TYPE fields should be used by  the receiving API to determine what to update. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value to update for the FIELD and FILE NUMBER fields by the receiving API. The format should be determined by the receiving package developer. (Internal or External). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VALUE SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the subscript value the general finding will use to build the update array. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VALUE FIEVAL SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the subscript in the FIEVAL array where data for this finding is returned. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PROMPT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P801.42'",
+      "required": false,
+      "pointerTo": 801.42,
+      "helpText": "This field is used to associated data entered by the user based off the  prompt in the Reminder Dialog. This field is used with FILE NUMBER and PROMPT TYPE SUBSCRIPT fields to update a value in the receiving API(s). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROMPT TYPE SUBSCIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the subscript the general finding will use to build the update array. The value the subscript is set to is based off the user  interaction in the Reminder Dialog. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROMPT TYPE FIEVAL SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the subscript in the FIEVAL array where data for this prompt is returned. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FIEVAL SUBSCRIPT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SINGLE VALUE;M:MULTIPLE VALUES;",
+      "helpText": "This is the value type of the FIEVAL SUBSCRIPT NAME field. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CONTAINS RECORD ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field stores whether this general finding, when returned from the reminder dialog, contains the record id of the edited record. ",
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "P", "field": },
+    {"name": "801.46", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

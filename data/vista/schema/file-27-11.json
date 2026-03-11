@@ -1,0 +1,541 @@
+{
+  "fileNumber": 27.11,
+  "fileName": "PATIENT ENROLLMENT",
+  "globalRoot": "27.11",
+  "globalReference": "^DGEN(27.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION DATE",
+      "dataType": "DATE",
+      "rawType": "RDIX",
+      "required": true,
+      "helpText": "The date of the application for enrollment or date of registration. The  Application Date is user entered or set by the upload from ES. The date  of the registration cannot be entered in VistA, it is set by the system  during new patient registration to today's date or by the upload from ES. Application Date:   Must be a date prior or equal to the Veteran's 'Date of Death', if the  Application Date is user entered or provided in the upload from ES   Must be a precise date, i.e. a day, month and ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient associated with the enrollment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE OF ENROLLMENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:VAMC;2:HEC;3:OTHER VAMC;4:HAC;",
+      "helpText": "How the enrollment was determined. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ENROLLMENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP27.15'IX",
+      "required": true,
+      "pointerTo": 27.15,
+      "helpText": "The status of an application for enrollment. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REASON CANCELED/DECLINED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DISSATISFIED WITH CARE;2:GEOGRAPHIC ACCESS;3:OTHER INSURANCE;4:OTHER;5:ACA PREFERENCE;6:ENROLLMENT CLERICAL ERROR;",
+      "helpText": "When a patient self dis-enrolls or requests that his enrollment be ceased, s/he is asked to give a reason. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FACILITY RECEIVED",
+      "dataType": "POINTER",
+      "rawType": "*P4'XI",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field should be used to document the VAMC that receives the application for enrollment. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "SET",
+      "rawType": "SXI",
+      "required": false,
+      "setOfCodes": "1:GROUP 1;2:GROUP 2;3:GROUP 3;4:GROUP 4;5:GROUP 5;6:GROUP 6;7:GROUP 7;8:GROUP 8;",
+      "helpText": "This field will contain the enrollment priority group determined for this enrollment. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "For any change that may affect a patient's enrollment, this field documents the effective date of the change. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRIOR ENROLLMENT RECORD",
+      "dataType": "POINTER",
+      "rawType": "P27.11'I",
+      "required": false,
+      "pointerTo": 27.11,
+      "helpText": "This field is used to maintain the enrollment history for the patient.  The enrollment history will be kept in the form of a linked list of enrollment records, with each record pointing to the enrollment record that came before it. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ENROLLMENT DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Beginning of the enrollment cycle. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ENROLLMENT END DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "The date specifying the end of the veteran's enrollment period. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ENROLLMENT SUBGROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:a;2:b;3:c;4:d;5:e;7:g;",
+      "helpText": "This field will contain the enrollment priority subgroup determined for this enrollment. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "REASON FOR CLOSED APPLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ABANDONED APPLICATION;",
+      "helpText": "When an application is closed due to no response received from veteran  for 365 days after initial pending notifications were sent. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PT APPLIED FOR ENROLLMENT?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be set to 0 (zero) if the patient did not apply for  enrollment (registration only), or 1 if the patient did apply for  enrollment. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "REGISTRATION ONLY REASON",
+      "dataType": "POINTER",
+      "rawType": "*P408.43'a",
+      "required": false,
+      "pointerTo": 408.43,
+      "helpText": "Select from the available list, the Self-Reported Registration Only Reason which best defines this patient's primary reason for registering without  applying for enrollment. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REGISTRATION ONLY DATE",
+      "dataType": "DATE",
+      "rawType": "DaX",
+      "required": false,
+      "helpText": "This field contains the date and time when the patient was first  registered. It can also be blank (null) for any patients that existed  prior to the creation of this field. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "SOURCE OF REGISTRATION",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:VAMC;2:HEC;3:HCA;4:CARMA;5:OTHER;6:HAC;7:SELFSRV;8:USVBA;",
+      "helpText": "This field determines the source of registration for the patient. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CANCELED/DECLINED REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter an explanation for why the veteran is canceling or declining enrollment if the only code that fits is OTHER. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 50.01,
+      "fieldName": "ELIGIBILITY CODE",
+      "dataType": "POINTER",
+      "rawType": "P8.1'I",
+      "required": false,
+      "pointerTo": 8.1,
+      "helpText": "The eligibility code associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.01
+    },
+    {
+      "fieldNumber": 50.02,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "SXI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The service connection indicator associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.02
+    },
+    {
+      "fieldNumber": 50.03,
+      "fieldName": "SERVICE CONNECTED PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "The service connected percentage associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.03
+    },
+    {
+      "fieldNumber": 50.04,
+      "fieldName": "POW STATUS INDICATED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The POW status associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.04
+    },
+    {
+      "fieldNumber": 50.05,
+      "fieldName": "RECEIVING A&A BENEFITS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The RECEIVING A&A BENEFITS status associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.05
+    },
+    {
+      "fieldNumber": 50.06,
+      "fieldName": "RECEIVING HOUSEBOUND BENEFITS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The RECEIVING HOUSEBOUND BENEFITS status that the enrollment priority determination is based on. ",
+      "fieldNumber_": 50.06
+    },
+    {
+      "fieldNumber": 50.07,
+      "fieldName": "RECEIVING A VA PENSION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The RECEIVING A VA PENSION status that the enrollment priority determination is based on.  ",
+      "fieldNumber_": 50.07
+    },
+    {
+      "fieldNumber": 50.08,
+      "fieldName": "TOTAL ANNUAL VA CHECK AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2I",
+      "length": 9,
+      "required": false,
+      "helpText": "The TOTAL ANNUAL VA CHECK AMOUNT associated with the enrollment determination. ",
+      "fieldNumber_": 50.08
+    },
+    {
+      "fieldNumber": 50.09,
+      "fieldName": "DISABILITY RET. FROM MILITARY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES, RECEIVING MILITARY RETIREMENT;2:YES, RECEIVING MILITARY RETIREMENT IN LIEU OF VA COMPENSATION;3:UNKNOWN;",
+      "helpText": "The status of DISABILITY RET. FROM MILITARY that is associated with  the enrollment priority determination. ",
+      "fieldNumber_": 50.09
+    },
+    {
+      "fieldNumber": 50.1,
+      "fieldName": "MEDICAID",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The Medicaid eligibility associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.1
+    },
+    {
+      "fieldNumber": 50.11,
+      "fieldName": "EXPOSED TO AGENT ORANGE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The EXPOSED TO AGENT ORANGE status associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.11
+    },
+    {
+      "fieldNumber": 50.12,
+      "fieldName": "RADIATION EXPOSURE INDICATED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Enter 'Y' if the veteran was exposed to ionizing radiation 1) at a nuclear device testing site (e.g. the Pacific Islands, NM or NV) or 2) as a POW or while serving in Hiroshima and/or Nagasaki, Japan from August 6, 1945 through July 1, 1946, or 3) served at Department of Energy plants at Paducah, KY, Portsmouth, OH or the K25 area at Oak Ridge, TN for at least 250 days before February 1, 1992 or 4) served at Longshot, Milrow, or Cannikin underground nuclear tests at Amchitka Island, AK prior to ",
+      "fieldNumber_": 50.12
+    },
+    {
+      "fieldNumber": 50.13,
+      "fieldName": "SOUTHWEST ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "The SOUTHWEST ASIA CONDITIONS status associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.13
+    },
+    {
+      "fieldNumber": 50.14,
+      "fieldName": "MEANS TEST STATUS",
+      "dataType": "POINTER",
+      "rawType": "P408.32'I",
+      "required": false,
+      "pointerTo": 408.32,
+      "helpText": "The MEANS TEST STATUS associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.14
+    },
+    {
+      "fieldNumber": 50.15,
+      "fieldName": "VETERAN CATASTROPHICALLY DISABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field was created to capture the Veteran's CATASTROPHIC DISABILITY status associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.15
+    },
+    {
+      "fieldNumber": 50.16,
+      "fieldName": "PURPLE HEART INDICATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field corresponds to the CURRENT PH INDICATOR field .531 in the PATIENT file 2.  It can be set by setting Purple Heart Indicated in the Registration screens, or by the Z11 Upload from HEC.  Acceptable values are Y and N. ",
+      "fieldNumber_": 50.16
+    },
+    {
+      "fieldNumber": 50.17,
+      "fieldName": "UNEMPLOYABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Is this patient unemployable due to an SC condition as rated by VARO? ",
+      "fieldNumber_": 50.17
+    },
+    {
+      "fieldNumber": 50.18,
+      "fieldName": "COMBAT VETERAN END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "For veterans who have combat vet eligibility, this field represents the date when that eligibility ends. ",
+      "fieldNumber_": 50.18
+    },
+    {
+      "fieldNumber": 50.19,
+      "fieldName": "PROJ 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 50.19
+    },
+    {
+      "fieldNumber": 50.2,
+      "fieldName": "DISCHARGED DUE TO DISABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether or not discharge was due to a disability incurred in  the Line of Duty. ",
+      "fieldNumber_": 50.2
+    },
+    {
+      "fieldNumber": 50.22,
+      "fieldName": "AGENT ORANGE EXPOSURE LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLUE WATER NAVY;K:KOREAN DMZ;V:VIETNAM;T:THAILAND(U.S. OR ROYAL THAI MIL BASE);L:LAOS;C:CAMBODIA(MIMOT OR KREK,KAMPONG CHAM);G:GUAM, AMERICAN SAMOA, OR TERRITORIAL WATERS;J:JOHNSTON ATOLL;O:OTHER;",
+      "helpText": "For this veteran applicant who was exposed to agent orange (EXPOSED TO  AGENT ORANGE prompt must be answered YES) enter the location where the  exposure occurred. ",
+      "fieldNumber_": 50.22
+    },
+    {
+      "fieldNumber": 50.23,
+      "fieldName": "MEDAL OF HONOR INDICATED?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field cannot be edited in VistA. It is set by the Z11 Upload from HEC.  A response of 'YES' or 'NO' is indicated only if the patient is a Veteran.  ",
+      "fieldNumber_": 50.23
+    },
+    {
+      "fieldNumber": 50.24,
+      "fieldName": "CAMP LEJEUNE INDICATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field corresponds to the CAMP LEJEUNE (#.321701) field in the PATIENT File #2.  It can be set by setting the Camp Lejeune Eligibility Indicator on the Registration Screens, or by the Z11 Upload from the HEC. ",
+      "fieldNumber_": 50.24
+    },
+    {
+      "fieldNumber": 50.25,
+      "fieldName": "CAMP LEJEUNE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the system generated date noting when the CAMP LEJEUNE ELIGIBILITY INDICATOR field was last changed. ",
+      "fieldNumber_": 50.25
+    },
+    {
+      "fieldNumber": 50.26,
+      "fieldName": "CAMP LEJEUNE CHANGE SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "The System Generated point-of-entry site that last changed the CAMP LEJEUNE ELIGIBILITY INDICATOR field. ",
+      "fieldNumber_": 50.26
+    },
+    {
+      "fieldNumber": 50.27,
+      "fieldName": "CAMP LEJEUNE SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "The System Generated source that last affected a change to the CAMP  LEJEUNE ELIGIBILITY INDICATOR field. ",
+      "fieldNumber_": 50.27
+    },
+    {
+      "fieldNumber": 50.28,
+      "fieldName": "MOH AWARD DATE",
+      "dataType": "DATE",
+      "rawType": "DaIX",
+      "required": false,
+      "helpText": "This field cannot be edited in VistA.  It is set by the Z11 upload from  HEC.  A date is indicated only if the patient is a Veteran. ",
+      "fieldNumber_": 50.28
+    },
+    {
+      "fieldNumber": 50.29,
+      "fieldName": "MOH STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "DaIX",
+      "required": false,
+      "helpText": "This field cannot be edited in VistA.  It is set by the Z11 upload from  HEC.  A date is indicated only if the patient is a Veteran. ",
+      "fieldNumber_": 50.29
+    },
+    {
+      "fieldNumber": 50.3,
+      "fieldName": "MOH COPAYMENT EXEMPTION DATE",
+      "dataType": "DATE",
+      "rawType": "DaIX",
+      "required": false,
+      "helpText": "This field cannot be edited in VistA.  This date is determined by the VistA system based off Medal of Honor Award date and Legislation date. A date is indicated only if the patient is a veteran. ",
+      "fieldNumber_": 50.3
+    },
+    {
+      "fieldNumber": 50.31,
+      "fieldName": "EXPANDED MH CARE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "OTH-90:EMERGENT MH OTH;OTH-EXT:EXTENDED MH CARE;",
+      "helpText": "The EXPANDED MH CARE TYPE associated with the enrollment priority determination. ",
+      "fieldNumber_": 50.31
+    },
+    {
+      "fieldNumber": 75.01,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field is used as part of the audit trail for the enrollment process. ",
+      "fieldNumber_": 75.01
+    },
+    {
+      "fieldNumber": 75.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "For local enrollments, this field will point to the user who is enrolling the veteran. ",
+      "fieldNumber_": 75.02
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "RADIATION EXPOSURE METHOD",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "2:HIROSHIMA/NAGASAKI;3:ATMOS NUCLR TESTING;4:H/N AND ATMOS TESTING;5:UNDERGRD NUCLR TESTING;6:EXPOS AT NUCLR FACILITY;7:OTHER;8:ENEWETAK;9:EXPOS IN PALOMARES B52;10:THULE AFB B52;",
+      "helpText": "The RADIATION EXPOSURE METHOD associated with the enrollment priority determination. ",
+      "fieldNumber_": 76
+    }
+  ],
+  "fieldCount": 51,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADGRU07", "field": },
+    {"name": "AENR01", "field": },
+    {"name": "AENR03", "field": },
+    {"name": "AENR04", "field": },
+    {"name": "AENR06", "field": },
+    {"name": "AENR07", "field": },
+    {"name": "AENR08", "field": },
+    {"name": "AENR1", "field": },
+    {"name": "AENR11", "field": },
+    {"name": "AENR12", "field": },
+    {"name": "AENRC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "27.11", "field": .01, "type": "regular"},
+    {"name": "27.11", "field": .01, "type": "regular"},
+    {"name": "27.11", "field": .02, "type": "regular"},
+    {"name": "27.11", "field": .03, "type": "regular"},
+    {"name": "27.11", "field": .04, "type": "regular"},
+    {"name": "27.11", "field": .04, "type": "regular"},
+    {"name": "27.11", "field": .04, "type": "regular"},
+    {"name": "27.11", "field": .06, "type": "regular"},
+    {"name": "27.11", "field": .07, "type": "regular"},
+    {"name": "27.11", "field": .07, "type": "regular"},
+    {"name": "27.11", "field": .08, "type": "regular"},
+    {"name": "27.11", "field": .1, "type": "regular"},
+    {"name": "27.11", "field": .11, "type": "regular"},
+    {"name": "27.11", "field": .12, "type": "regular"},
+    {"name": "27.11", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

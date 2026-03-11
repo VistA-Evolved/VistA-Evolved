@@ -1,0 +1,109 @@
+{
+  "fileNumber": 601.92,
+  "fileName": "MH RESULTS",
+  "globalRoot": "601.92",
+  "globalReference": "^YTT(601.92,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RESULT ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "Unique internal identifier of Results. This is the IEN. This should not be edited at the local level. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMINISTRATION",
+      "dataType": "POINTER",
+      "rawType": "RP601.84'",
+      "required": true,
+      "pointerTo": 601.84,
+      "helpText": "Pointer to the ADMINISTRATION ID field (#.01) off the MH ADMINISTRATIONS file (#601.84). Specifies patient, instrument and date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCALE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the scale. A pointer to the SCALE ID field (#.01) of  the MH SCALES file (#601.87). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RAW SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,5",
+      "length": 17,
+      "required": false,
+      "helpText": "Using the scoring specified by MH SCALEGROUPS file (#601.86) and the MH SCALES file (#601.87) with the MH SCORING KEYS file (#601.91) as the scoring template, this is the RAW SCORE. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSFORMED SCORE 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,5",
+      "length": 17,
+      "required": false,
+      "helpText": "A transformed score is one that uses a normative group to compute the  score from a Raw Score. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSFORMED SCORE 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,5",
+      "length": 17,
+      "required": false,
+      "helpText": "A transformed score is one that uses a normative group to compute the  score from a Raw Score. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSFORMED SCORE 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,5",
+      "length": 17,
+      "required": false,
+      "helpText": "A transformed score is one that uses a normative group to compute the  score from a Raw Score. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INSTRUMENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REVISION HISTORY",
+      "dataType": "DATE",
+      "rawType": "601.921DA",
+      "required": false,
+      "helpText": "This multiple contains the previous score values if it was necessary to change a score after the initial computation due to an update/bug fix. ",
+      "isMultiple": true,
+      "subFileNumber": 601.921,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "601.92", "field": .01, "type": "regular"},
+    {"name": "601.92", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

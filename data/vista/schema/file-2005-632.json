@@ -1,0 +1,88 @@
+{
+  "fileNumber": 2005.632,
+  "fileName": "CT DOSE",
+  "globalRoot": "2005.632",
+  "globalReference": "^MAGV(2005.632,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique ID assigned to each CT DOSE instance. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IRRADIATION INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IRRADIATION INSTANCE UID associated with a CT DOSE instance. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TARGET REGION",
+      "dataType": "POINTER",
+      "rawType": "P2005.6361'",
+      "required": false,
+      "pointerTo": 2005.6361,
+      "helpText": "This is the anatomical region targeted by the procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CTDIVOL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is Computed Tomography Dose Index volume. It is approximately the  average dose that would have been delivered to a standard cylindrical plastic  phantom for a specific examination. One phantom is used for head scans and  another larger diameter phantom is used for body scans. The CTDIvol must be  adjusted for body size and other factors to estimate the dose to the scanned  volume of each actual patient. However, the CTDIvol is very useful for  comparing and adjusting CT imaging proto",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DLP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is the Dose Length Product. The Dose Length Product is the CTDIvol  multiplied by the scan length (slice thickness × number of slices) in  centimeters. Unit: mGy-cm (milligray-centimeters) ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SERIES INSTANCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.63'",
+      "required": false,
+      "pointerTo": 2005.63,
+      "helpText": "This is the image series associated with this CT DOSE instance. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PHANTOM TYPE",
+      "dataType": "POINTER",
+      "rawType": "P2005.6362'",
+      "required": false,
+      "pointerTo": 2005.6362,
+      "helpText": "  This field indicates which phantom type was used to determine the   irradiation dosage of this irradiation dosage instance.  A phantom    is a specially designed object that is scanned or imaged in the field    of medical imaging to evaluate, analyze, and tune the performance of    various imaging devices. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.632", "field": .01, "type": "regular"},
+    {"name": "2005.632", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

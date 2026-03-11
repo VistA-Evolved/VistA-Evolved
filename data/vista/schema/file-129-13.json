@@ -1,0 +1,30 @@
+{
+  "fileNumber": 129.13,
+  "fileName": "LOINC METHOD CODES",
+  "globalRoot": "129.13",
+  "globalReference": "^ETSLNC(129.13,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50I",
+      "length": 50I,
+      "required": true,
+      "helpText": "This is the name of the method, which is one of the Axis fields of a  LOINC code and is defined by Regenstrief. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "VR", "field": },
+    {"name": "129.13", "field": .01, "type": "regular"},
+    {"name": "129.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 9002313.25,
+  "fileName": "BPS NCPDP CLARIFICATION CODES",
+  "globalRoot": "9002313.25",
+  "globalReference": "^BPS(9002313.25,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Clarification code to be sent to the payer as defined by the NCPDP  standard. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Description of the clarification code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field indicates whether a code is inactive and should no longer be  used. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

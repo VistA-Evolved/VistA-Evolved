@@ -1,0 +1,37 @@
+{
+  "fileNumber": 6928.1,
+  "fileName": "ENG SPACE FUNCTIONS",
+  "globalRoot": "6928.1",
+  "globalReference": "^ENG(6928.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Common types of functional areas found in most VA facilities. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CRITERIA SPACE (NSF)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Amount of space (net square feet) authorized by H-08 Program Guides for this particular function. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6928.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

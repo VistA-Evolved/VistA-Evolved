@@ -1,0 +1,116 @@
+{
+  "fileNumber": 799.34,
+  "fileName": "ROR REPORT PARAMETERS",
+  "globalRoot": "799.34",
+  "globalReference": "^ROR(799.34,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   The name of the report stored in the NAME field is displayed in the Reports sub-menu of the GUI. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BACKGROUND PROCESSING?",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   If the BACKGROUND PROCESSING? field is set to 'YES' then the report will be scheduled to run as a background task. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SHARED TEMPLATES",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   If this field is set to 'YES', then report  parameter templates are shared between all  registries. Otherwise, the templates are  registry-specific. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   The CODE field stores the unique code of the report. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE OF INACTIVATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this field has a value, the report will be considered inactive after this date. Use this field to disable unnecessary reports (and hide them from the Report sub-menu of the GUI) instead of deleting them. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   Reports distributed with the national registries must have this field set to \"YES\". This prevents local editing of other fields of report definitions. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER PANELS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   The PARAMETER PANELS field stores the list of  panel codes separated by commas. The panels are  combined by the GUI into the dialog form that is used to request values of the report parameters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "REPORT BUILDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   The REPORT BUILDER field stores a reference to the function that is used to build the report (the report builder). ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFAULT PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "799.3411",
+      "required": false,
+      "helpText": "This field stores the default values for the  report parameters (in the NAME=VALUE format). ",
+      "isMultiple": true,
+      "subFileNumber": 799.3411,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DEFAULT SORTING",
+      "dataType": "SUBFILE",
+      "rawType": "799.3412",
+      "required": false,
+      "helpText": "This field stores the default sorting modes for the report (in the TABLE=FIELD format). ",
+      "isMultiple": true,
+      "subFileNumber": 799.3412,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "799.34", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

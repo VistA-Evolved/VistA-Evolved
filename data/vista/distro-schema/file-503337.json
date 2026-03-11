@@ -1,0 +1,58 @@
+{
+  "fileNumber": 503337,
+  "fileName": "VOLUNTARY AWARD CODES",
+  "globalRoot": "503337I",
+  "globalReference": "^ABS(503337,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This field contains the full name of the awards recognized by the Austin DPC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the number code representing the award. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUIRED HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the number of hours required to be eligible for the award. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AWARD TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YOUTH;2:ADULT;X:OTHER;",
+      "helpText": "This field contains the type of award. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "503337", "field": .01, "type": "regular"},
+    {"name": "503337", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "fileNumber": 742,
+  "fileName": "QA PATIENT INCIDENT REVIEW",
+  "globalRoot": "742IOP",
+  "globalReference": "^QA(742,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient involved in the incident. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field indentifies the patient without exposing his/her identity. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CASE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P742.4'",
+      "required": false,
+      "pointerTo": 742.4,
+      "helpText": "Indicates the incident case number. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE OF ADMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the date of admission to the hospital. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OUTPATIENT;1:INPATIENT;",
+      "helpText": "Indicates whether the patient is an inpatient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Indicates the ward/clinic the patient belongs to. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "*P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "Contains the Treating Specialty for the patient. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P730'",
+      "required": false,
+      "pointerTo": 730,
+      "helpText": "Contains the Service for the patient. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FALL ASSESSMENT SCORE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the Assessment Score for a fall. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SEVERITY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO INJURY OR DISABILITY;1:MINOR;2:MAJOR;3:DEATH;",
+      "helpText": "Contains the Severity Level of the incident. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "MEDICATION ERRORS",
+      "dataType": "POINTER",
+      "rawType": "*P742.13'",
+      "required": false,
+      "pointerTo": 742.13,
+      "helpText": "Contains the Medication Errors for the patient. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RESPONSIBLE SERVICE",
+      "dataType": "POINTER",
+      "rawType": "742.01PA",
+      "required": false,
+      "helpText": "Enter the Responsible Service(s) for the incident. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PATIENT RECORD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPEN;0:CLOSED;-1:DELETED;",
+      "helpText": "Contains the status of the patient record.  '1' for open, '0' for closed,  and '-1' for deleted. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "MEDICATION ERRORS (OTHER)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the type of medication error not found in the QA Medication Error file. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "INCIDENT RELATED DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "742.02A",
+      "required": false,
+      "helpText": "Contains the appropriate patient diagnosis to date for the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 742.02,
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PATIENT AUDIT TRAIL",
+      "dataType": "POINTER",
+      "rawType": "P740.5'",
+      "required": false,
+      "pointerTo": 740.5,
+      "helpText": "Files changes in the QA patient Event file in the QA Audit file. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACN", "field": },
+    {"name": "B", "field": },
+    {"name": "BCS", "field": },
+    {"name": "BPID", "field": },
+    {"name": "BPRS", "field": },
+    {"name": "BPT", "field": },
+    {"name": "BS5", "field": },
+    {"name": "BSER", "field": },
+    {"name": "BTS", "field": },
+    {"name": "BWD", "field": },
+    {"name": "742", "field": .01, "type": "regular"},
+    {"name": "742", "field": .01, "type": "regular"},
+    {"name": "742", "field": .01, "type": "regular"},
+    {"name": "742", "field": .02, "type": "regular"},
+    {"name": "742", "field": .02, "type": "regular"},
+    {"name": "742", "field": .03, "type": "regular"},
+    {"name": "742", "field": .03, "type": "regular"},
+    {"name": "742", "field": .03, "type": "regular"},
+    {"name": "742", "field": .05, "type": "regular"},
+    {"name": "742", "field": .06, "type": "regular"},
+    {"name": "742", "field": .07, "type": "regular"},
+    {"name": "742", "field": .08, "type": "regular"},
+    {"name": "742", "field": .13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(742.4,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(742.4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

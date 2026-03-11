@@ -1,0 +1,37 @@
+{
+  "fileNumber": 445.1,
+  "fileName": "INVENTORY BALANCES",
+  "globalRoot": "445.1Ps",
+  "globalReference": "^PRCP(445.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "RP445'X",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This field stores the name of the inventory point from file 445. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INVENTORY ITEM",
+      "dataType": "POINTER",
+      "rawType": "445.11P",
+      "required": false,
+      "helpText": "This field is the item stored within the inventory point. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "445.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

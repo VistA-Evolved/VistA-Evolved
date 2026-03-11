@@ -1,0 +1,106 @@
+{
+  "fileNumber": 745.2,
+  "fileName": "CONTACT ISSUE CODE",
+  "globalRoot": "745.2I",
+  "globalReference": "^QA(745.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the code that is associated with an issue type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HEADING (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes, means this is a heading. No means it is not a heading.  Headings are the Quality Aspects of the Quality Matrix. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the description of the issue type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*QUALITY ASPECT",
+      "dataType": "POINTER",
+      "rawType": "*P745.3'",
+      "required": false,
+      "pointerTo": 745.3,
+      "helpText": "These are the only Quality Aspects that are selectable. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;L:LOCAL;1:INACTIVE;",
+      "helpText": "Issue codes cannot be edited or deleted.  Only National Issue Codes can be selected.  The list of valid National Issue Codes will be reviewed periodically for possible additions/changes. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "745.25",
+      "required": false,
+      "helpText": "This is the definition of the code name. ",
+      "isMultiple": true,
+      "subFileNumber": 745.25,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this issue was made inactive. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CUSTOMER SERVICE STANDARD",
+      "dataType": "POINTER",
+      "rawType": "P745.6I",
+      "required": false,
+      "pointerTo": 745.6,
+      "helpText": "Pointer to Customer Service Standard File (745.6) ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "745.2", "field": .01, "type": "regular"},
+    {"name": "745.2", "field": .01, "type": "regular"},
+    {"name": "745.2", "field": .01, "type": "regular"},
+    {"name": "745.2", "field": 2, "type": "regular"},
+    {"name": "745.2", "field": 2, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": WRITE, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(745.3,+$P(^(0),U,4),0))#2:$P(^(0),U,4),1:\"\"),C=$P(^DD(745.3,.04,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y S Y=%I"}
+  ]
+}

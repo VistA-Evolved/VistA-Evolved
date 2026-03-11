@@ -1,0 +1,58 @@
+{
+  "fileNumber": 359.2,
+  "fileName": "FORM SPECS",
+  "globalRoot": "359.2",
+  "globalReference": "^IBD(359.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this entry was created.  This is triggered by the creation of a new entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FORM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the form that this form specification is for.  This is triggered on creation of the entry ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FORM SPEC DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "359.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 359.21,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "359.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   Created: \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

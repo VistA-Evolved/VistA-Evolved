@@ -1,0 +1,171 @@
+{
+  "fileNumber": 451.7,
+  "fileName": "POC DAILY ACTIVITY EXTRACTION",
+  "globalRoot": "451.7",
+  "globalReference": "^PRSN(451.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0X",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the sequence number of the entry and it equals to its IEN of the entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NURSE INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is a pointer to the institution file (#4). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the station number, field 99 of file 4. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIME CARD RELEASE VERSION #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Time Card released version number assigned during releasing. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NURSE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the identification of the nurse. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PAID EMPLOYEE IEN",
+      "dataType": "POINTER",
+      "rawType": "P450'",
+      "required": false,
+      "pointerTo": 450,
+      "helpText": "This is the IEN of the Paid Employee File of the nurse. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "POC TIME RECORD DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This the POC Time Record YYYYMMDD. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the start time of a time segment. The start time is in 4-digit military time format. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STOP TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the end time of a time segment. The end time is in 4-digit military time format. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "POC TYPE OF TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a POC type of time code from the File #451.4. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "POC NURSE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP211.4'",
+      "required": true,
+      "pointerTo": 211.4,
+      "helpText": "This is the nurse location where the nurse works. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OVERTIME MANDATORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The value is 'Y' if overtime is mandatory. The value is 'N' or null if overtime is not mandatory. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OVERTIME REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a 2-character code for the overtime reason in File #451.6 Reason for Overtime. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "POC TYPE OF WORK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a 2-character code of the File #451.5 Type of Work. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RELEASE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the release date of the POC DAILY TIME RECORD for data extraction. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "NURSE T&L UNIT",
+      "dataType": "POINTER",
+      "rawType": "P455.5'",
+      "required": false,
+      "pointerTo": 455.5,
+      "helpText": "This is the nurse T&L UNIT at the time of Approval of POC Daily Time  Records. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "451.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

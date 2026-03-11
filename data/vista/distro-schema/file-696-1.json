@@ -1,0 +1,36 @@
+{
+  "fileNumber": 696.1,
+  "fileName": "PERCENTAGE LESION",
+  "globalRoot": "696.1",
+  "globalReference": "^MCAR(696.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of various percentage ranges to measure narrowing, lesion, and obstruction percentages by the Catheterization file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRESSURE GRADIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "696.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

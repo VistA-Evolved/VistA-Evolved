@@ -1,0 +1,67 @@
+{
+  "fileNumber": 2005.88,
+  "fileName": "MAG REASON",
+  "globalRoot": "2005.88",
+  "globalReference": "^MAG(2005.88,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores a valid reason/justification for action(s). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field indicates actions that this reason is applicable to. Actions are represented by the  concatenation of the following characters:     C - Copy image   D - Delete image   P - Print image   S - Change image status   For example, if a reason is applicable for copying and printing, then the value of this field should be \"CP\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF INACTIVATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this field is not empty and the stored date is no later than today's date, then this record is excluded from the list of reasons presented to the user (e.g. by the GUI application).   Use this field to exclude records from selection  without deleting them. This is especially  important if inactive records are pointed to by records of other files. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the code that uniquely  identifies the reason. You must not modify value  of this field unless you are instructed to do so by the VistA support personnel or Imaging software developers.   \"Standard\" reasons (i.e. those distributed with the Imaging software) have numeric codes.    Codes of \"local\" reasons created by the users at the sites consist from record IENs preceded by letter L (e.g. \"L12\").   When a new record is created, this field is  automatically pre-populated with a ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "2005.881",
+      "required": false,
+      "helpText": "This field stores an optional explanation for the  reason. The text can be presented to the user by the GUI application as a context sensitive help. ",
+      "isMultiple": true,
+      "subFileNumber": 2005.881,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.88", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "N MAGT S MAGT=$P($G(^(0)),\"^\",2) D EN^DDIOL($S(MAGT[\"C\":\"-Copy\",1:\"\")_$S(MAGT[\"D\":\"-Delete\",1:\"\")_$S(MAGT[\"P\":\"-Print\",1:\"\")_$S(MAGT[\"S\":\"-Status\",1:\"\")_\"-\",,\"?0\")"},
+    {"field": W2, "value": "N MAGINDT S MAGINDT=$P($G(^(0)),\"^\",3) D:(MAGINDT>0)&(MAGINDT'>DT) EN^DDIOL(\"*INACTIVE*\",,\"?0\")"}
+  ]
+}

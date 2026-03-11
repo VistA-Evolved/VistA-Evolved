@@ -1,0 +1,113 @@
+{
+  "fileNumber": 102.91,
+  "fileName": "ORR PARAMETER CATEGORY",
+  "globalRoot": "102.91",
+  "globalReference": "^ORR(102.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Parameter Category. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PLUGIN ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the identifier of the plugin to which this category applies  (e.g., gov.va.med.hds.prism). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the category by which it will be known to the outside  world. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PARENT ID",
+      "dataType": "POINTER",
+      "rawType": "P102.91'",
+      "required": false,
+      "pointerTo": 102.91,
+      "helpText": "This is the parent category. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PACKAGE ROOT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:false;1:true;",
+      "helpText": "Boolean field to identify the root category for a given module. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OK TO TRANSPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:false;1:true;",
+      "helpText": "This Boolean field indicates whether or not a given Category is okay to  transport with a KIDS distribution. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREFERENCE PAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the freetext ID of the extension-point in the plugin's  Manifest.xml file that maps to the Java Class for the Preference Page associated with this category (e.g., gov.va.med.hds.query.PreferencePage). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "102.912",
+      "required": false,
+      "helpText": "This is the multiple of parameters for the category. ",
+      "isMultiple": true,
+      "subFileNumber": 102.912,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBCATEGORIES",
+      "dataType": "SUBFILE",
+      "rawType": "102.913",
+      "required": false,
+      "helpText": "This multiple of subcategories allows an indefinitely nested hierarchy of  categories. ",
+      "isMultiple": true,
+      "subFileNumber": 102.913,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "DAD", "field": },
+    {"name": "SCAT", "field": },
+    {"name": "102.91", "field": .01, "type": "regular"},
+    {"name": "102.91", "field": .01, "type": "regular"},
+    {"name": "102.91", "field": .02, "type": "regular"},
+    {"name": "102.91", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

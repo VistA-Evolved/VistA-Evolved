@@ -1,0 +1,37 @@
+{
+  "fileNumber": 1927.41,
+  "fileName": "NUPA COMPONENT ITEMS",
+  "globalRoot": "1927.41",
+  "globalReference": "^NUPA(1927.41,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Item description.  Do not edit this field via Fileman. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMPONENT",
+      "dataType": "SUBFILE",
+      "rawType": "1927.411A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.411,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

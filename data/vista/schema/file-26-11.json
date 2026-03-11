@@ -1,0 +1,108 @@
+{
+  "fileNumber": 26.11,
+  "fileName": "PRF LOCAL FLAG",
+  "globalRoot": "26.11",
+  "globalReference": "^DGPF(26.11,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "This field contains the locally assigned name of the Patient Record Flag. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This field contains the ACTIVE or INACTIVE status of the Patient Record Flag.  Changing this field from ACTIVE to INACTIVE will inactivate all patient record flag assignments associated with this flag. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP26.16'I",
+      "required": true,
+      "pointerTo": 26.16,
+      "helpText": "This field identifies the usage classification of the Patient Record Flag. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REVIEW FREQUENCY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "This field represents the number of days that may elapse between reviews  of a Patient Record Flag Assignment.  A value of zero (\"0\") indicates  that no automatic review will occur. (example: 730 = 2 years) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NOTIFICATION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "This field contains the number of days prior to a patient record flag assignment's Review date that a review notification is sent to the flag's Review Mail Group.  A value of zero (\"0\") indicates that NO prior notification is required. This field should always be less than the Review Frequency field value. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REVIEW MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "*P3.8'I",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field contains the name of the mail group whose members will receive MailMan notification of Patient Record Flag Assignments that are due for review.   The mail group name must begin with 'DGPF' and it is further recommended that locally-defined flag mail group names begin with 'DGPFZ' to prevent conflicts with nationally-released patient record flags. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TIU PN TITLE",
+      "dataType": "POINTER",
+      "rawType": "R*P8925.1'XI",
+      "required": true,
+      "pointerTo": 8925.1,
+      "helpText": "This field contains the Category II Progress Note Title that is associated with this Patient Record Flag. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "26.111",
+      "required": false,
+      "helpText": "This field contains the text that describes the purpose and instructions for application of this local Patient Record Flag to a patient. ",
+      "isMultiple": true,
+      "subFileNumber": 26.111,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINCIPAL INVESTIGATOR(S)",
+      "dataType": "POINTER",
+      "rawType": "26.112PA",
+      "required": false,
+      "helpText": "This multiple field contains the principal investigator(s) names when the Flag TYPE is RESEARCH. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(26.11,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGPF(26.16,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(26.16,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

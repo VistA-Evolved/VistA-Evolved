@@ -1,0 +1,51 @@
+{
+  "fileNumber": 800000.11,
+  "fileName": "HMP OBJECT",
+  "globalRoot": "800000.11",
+  "globalReference": "^HMP(800000.11,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The fully specified Universal ID string for this object. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COLLECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the type or kind of data this object belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA",
+      "dataType": "SUBFILE",
+      "rawType": "800000.111",
+      "required": false,
+      "helpText": "Actual VistA domain data to be transmitted. ",
+      "isMultiple": true,
+      "subFileNumber": 800000.111,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ACNT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "800000.11", "field": .01, "type": "regular"},
+    {"name": "800000.11", "field": .03, "type": "regular"},
+    {"name": "800000.11", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

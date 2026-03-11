@@ -1,0 +1,37 @@
+{
+  "fileNumber": 696.2,
+  "fileName": "LESION MORPHOLOGY",
+  "globalRoot": "696.2",
+  "globalReference": "^MCAR(696.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file holds the various morphologies for the segment fields and percent narrowing field in Catheterization. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MORPHOLOGY FIELD",
+      "dataType": "POINTER",
+      "rawType": "P61.1'",
+      "required": false,
+      "pointerTo": 61.1,
+      "helpText": "This field is a link to the Laboratory Morphology Field file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "696.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

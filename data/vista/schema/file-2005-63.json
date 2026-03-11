@@ -1,0 +1,267 @@
+{
+  "fileNumber": 2005.63,
+  "fileName": "IMAGE SERIES",
+  "globalRoot": "2005.63",
+  "globalReference": "^MAGV(2005.63,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERIES INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the series record ID.  DICOM Tag: Series Instance UID (0020,000E). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORIGINAL SERIES UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the old series record ID. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERIES NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the series number.  DICOM Tag: Series Number  (0020,0011). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the acquisition device's DICOM modality code. DICOM Tag: Modality   (0008,0060). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CALLING AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the sender's C-store SCU DICOM AE title. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST UPDATE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of the last update of this record. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RETRIEVE AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This indicates the AE this series can be retrieved from. DICOM Tag: Retrieve AE Title   (0008,0054). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NUMBER OF SOP INSTANCES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field indicates the number of SOP Instances attached to this Series. DICOM Tag: Number of Series Related Instances   (0020,1209). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STUDY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.62'",
+      "required": false,
+      "pointerTo": 2005.62,
+      "helpText": "This field holds the image study associated with this series. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ARTIFACT ON FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ON FILE;1:AOF;",
+      "helpText": "This field is a flag that records whether  an artifact is on file or not. Artifact On File (AOF) means that at least one Object is already stored on disk. An Object can be an image, an abstract or a text file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FRAME OF REFERENCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Frame of Reference UID.  Each series may have a single Frame of Reference UID. DICOM Tag: Frame of Reference UID   (0020,0052). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Series Instance description. DICOM Tag: Series Description   (0008,103E). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "BODY PART",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the body part examined. DICOM Tag: Body Part Examined   (0018,0015). ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SERIES DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the series acquisition was  started by the modality.  DICOM Tag: Series Date + Series Time (0008,0021) + (0008,0031). ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P2006.04",
+      "required": false,
+      "pointerTo": 2006.04,
+      "helpText": "This field contains the device manufacturer and model used to acquire the series. DICOM Tag: Manufacturer   (0008,0070),                Manufacturer's Model Name   (0008,1090). ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LATERALITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RIGHT;L:LEFT;",
+      "helpText": "This field denotes 'L'eft or 'R'ight. This is the laterality of the images taken, e.g. Image of the Right Knee. DICOM Tag: Laterality   (0020,0060). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SPATIAL POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the spatial positioning of the series. It is letter combinations derived from the DICOM standard. DICOM Tag: Patient Position   (0018,5100). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "VI ACQ ENTRY POINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DICOM STORAGE;2:CLINICAL CAPTURE;3:IMPORT API;4:IMPORT RECONCILIATION;",
+      "helpText": "This field identifies the VistA Imaging application that acquired the SOP instance. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This field indicates whether the series is ACCESSIBLE or INACCESSIBLE.   ACCESSIBLE means that the series in this file  can be retrieved by Imaging database methods. INACCESSIBLE means that the series will not be retrieved by Imaging database  methods and that no Accessible children exist in the IMAGE SOP INSTANCE file (#2005.64). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "IOD VIOLATION DETECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:IOD VALID;1:IOD NOT VALID;2:IOD NOT CHECKED;3:IOD UNKNOWN;",
+      "helpText": "This is the IOD validation status.    IOD VALID - The entry passed IOD validation.  IOD NOT VALID - The entry failed IOD validation.  IOD NOT CHECKED - Relaxed validation was selected.   Only select fields were validated.  IOD UNKNOWN - The IOD type for this SOP class was not found.    The IOD type is not in the DICOM UID SPECIFIC ACTION table.    The entry was processed without validation. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "TIU NOTE REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This is the TIU note associated with this image series. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CLASS INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.82'",
+      "required": false,
+      "pointerTo": 2005.82,
+      "helpText": "The Classification of the Image.   CLASS is an index field used for sorting and searching. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PROC/EVENT INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.85'",
+      "required": false,
+      "pointerTo": 2005.85,
+      "helpText": "This field indicates the kind of clinical procedure or patient-care event that was associated with this series. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SPEC/SUBSPEC INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.84'",
+      "required": false,
+      "pointerTo": 2005.84,
+      "helpText": "This field indicates the clinical specialty or subspecialty with which this series is associated. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ACQUISITION LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2005.8",
+      "required": false,
+      "pointerTo": 2005.8,
+      "helpText": "This field indicates where the series was created. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "ATIU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "2005.63", "field": .01, "type": "regular"},
+    {"name": "2005.63", "field": 1, "type": "regular"},
+    {"name": "2005.63", "field": 11, "type": "regular"},
+    {"name": "2005.63", "field": 13, "type": "regular"},
+    {"name": "2005.63", "field": 15, "type": "regular"},
+    {"name": "2005.63", "field": 27, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

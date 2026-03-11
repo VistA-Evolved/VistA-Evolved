@@ -1,0 +1,102 @@
+{
+  "fileNumber": 118,
+  "fileName": "SUPPLEMENTAL FEEDINGS",
+  "globalRoot": "118sI",
+  "globalReference": "^FH(118,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the Supplemental Feeding. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "118.01",
+      "required": false,
+      "helpText": "This field allows for a number of synonyms for the supplemental feeding to be entered. ",
+      "isMultiple": true,
+      "subFileNumber": 118.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LABEL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered NO, means that a label will not be produced for this item when separate supplemental feeding labels for each item have been specified in the site parameters. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VEHICLE FOR MEDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, means that the supplemental feeding is typically used as a vehicle for meds. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "BULK ONLY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, means that this supplemental feeding item can ONLY be selected as a bulk feeding for ward delivery and may not be selected as an individual feeding item. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CORRESPONDING RECIPE",
+      "dataType": "POINTER",
+      "rawType": "P114'",
+      "required": false,
+      "pointerTo": 114,
+      "helpText": "This field is a pointer to the recipe in file 114 (the Recipe file) which contains the ingredients for this feeding. Cost and other data for this feeding will be retrieved from the recipe file. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the portion cost of the supplemental feeding and is a computed field which obtains the value from the recipe file based upon the 'Corresponding Recipe' pointer. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, means that further selection of this item by dietetic personnel is prohibited. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "118", "field": .01, "type": "regular"},
+    {"name": "118", "field": 20, "type": "regular"},
+    {"name": "118", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

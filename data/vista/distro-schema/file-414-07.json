@@ -1,0 +1,46 @@
+{
+  "fileNumber": 414.07,
+  "fileName": "IFCAP/ECMS EVENT TYPE",
+  "globalRoot": "414.07",
+  "globalReference": "^PRCV(414.07,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The internal code for the event.  The code is identical to the IEN. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the event as it relates to the IFCAP perspective of message transactions with eCMS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A description of this 2237 event from the IFCAP perspective. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "414.07", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "fileNumber": 2006.564,
+  "fileName": "DICOM QUEUE",
+  "globalRoot": "2006.564",
+  "globalReference": "^MAGDICOM(2006.564,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LETTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a single letter that identifies the queue that is defined in this entry.   See the description at the 'file' level for more details. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CHANNEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is either an integer number that identifies the channel number that is dedicated to the queue that is defined in this entry, or an asterisk to indicate that any channel could be used.   See the description at the 'file' level for more details. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an integer number that indicates the number of messages that is currently waiting in the queue that is defined in this entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIRECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that identifies the direction in which information will flow for the queue that is defined in this entry.   Possible values are INCOMING and OUTGOING.   See the description at the 'file' level for more details. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the type of message that is transmitted through the queue that is defined in this entry.   Possible values are REQUEST and RESPONSE.   See the description at the 'file' level for more details. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the relative priority of the queue that is defined in this entry.   Possible values are LOW, MEDIUM, HIGH and IMMEDIATE.   See the description at the 'file' level for more details. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

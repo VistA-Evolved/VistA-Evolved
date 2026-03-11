@@ -1,0 +1,71 @@
+{
+  "fileNumber": 45.00046,
+  "fileName": "PTF SITE PARAMETERS",
+  "globalRoot": "45.00046",
+  "globalReference": "^DIZ(45.00046,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICINE SALARY ADJUSTMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,4",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SURGERY SALARY ADJUSTMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,4",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NEUROLOGY SALARY ADJUSTMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,4",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INTERMEDIATE SALARY ADJUSTMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,4",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FUNDING PER WWU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "45.00046", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

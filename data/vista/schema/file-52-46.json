@@ -1,0 +1,655 @@
+{
+  "fileNumber": 52.46,
+  "fileName": "ERX EXTERNAL PATIENT",
+  "globalRoot": "52.46",
+  "globalReference": "^PS(52.46,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the eRx external pharmacy patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the last name of the eRx external patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the first name of the external pharmacy patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the middle name of the eRx external patient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the suffix associated with the eRx external patient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the prefix for the eRx external patient. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;O:OTHER;N:NOT IDENTIFIED;U:UNKNOWN;",
+      "helpText": "This is the patient gender. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The eRx patient date of birth. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ERX EXTERNAL PHARMACY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the eRx external pharmacy that is associated with this patient. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "FILE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the file id for the external patient. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "MEDICAL RECORD ID #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the medical identification number for this eRx patient. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient account number. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The SSN sent in for the eRx external patient. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "LINKED VISTA PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the vista patient that matches the incoming eRx external patient. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the country code as passed in by the external source. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "PATIENT RELATIONSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MEMBER;2:SPOUSE;3:CHILD/DEPENDENT;4:OTHER;",
+      "helpText": "This is the relationship of the patient to the cardholder. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.462A",
+      "required": false,
+      "helpText": "This multiple holds the communication values for an eRx external person. ",
+      "isMultiple": true,
+      "subFileNumber": 52.462,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Address line 1 for the eRx patient. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Address line 2 for the eRx patient. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city identified for the eRx patient. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "STATE/PROVINCE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state/province associated with the eRx external patient. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "POSTAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the postal code for the eRx external patient. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "IDENTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.465A",
+      "required": false,
+      "helpText": "This multiple contains the identification values for an eRx external  person. ",
+      "isMultiple": true,
+      "subFileNumber": 52.465,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST LOCKED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field keeps track of the last user who succesfully locked the eRx  patient. This field is used primarily in the patient centric view. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "FORMER LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former last name of the patient associated with the incoming  eRx. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "FORMER FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former first name of the patient associated with the incoming  eRx. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "FORMER MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former middle name of the patient associated with the  incoming eRx. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 7.4,
+      "fieldName": "FORMER SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the former suffix of the patient associated with the incoming eRx. ",
+      "fieldNumber_": 7.4
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "FORMER PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the former prefix of the patient associated with the incoming eRx. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "PATIENT LOCATION FACILITY/UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the patient location facility/unit associated with the incoming  eRx. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "PATIENT LOCATION/ROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the patient location/room associated with the incoming eRx. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "PATIENT LOCATION/BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the patient location/bed associated with the incoming eRx. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 8.4,
+      "fieldName": "LANGUAGE NAME CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the language name code associated with the incoming eRx. ",
+      "fieldNumber_": 8.4
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "GESTATIONAL AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the gestational age associated with the incoming eRx. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.6,
+      "fieldName": "HOSPICE INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "This is the hospice indicator associated with the incoming eRx. ",
+      "fieldNumber_": 8.6
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "ALTERNATE CONTACT LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact last name associated with the incoming eRx. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "ALTERNATE CONTACT FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact first name associated with the incoming eRx. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "ALTERNATE CONTACT MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact middle name associated with the incoming  eRx. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 9.4,
+      "fieldName": "ALTERNATE CONTACT SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the alternate contact suffix associated with the incoming eRx. ",
+      "fieldNumber_": 9.4
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "ALTERNATE CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the alternate contact prefix associated with the incoming eRx. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 9.6,
+      "fieldName": "ALT CONTACT RELATIONSHIP",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the alternate contact relationship associated with the eRx  patient. ",
+      "fieldNumber_": 9.6
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "ALT CONTACT FORMER LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact former last name associated with the  incoming eRx. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "ALT CONTACT FORMER FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact former first name associated with the  incoming eRx. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "ALT CONTACT FORMER MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact former middle name associated with the  incoming eRx. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "ALT CONTACT FORMER SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the alternate contact former suffix associated with the incoming  eRx. ",
+      "fieldNumber_": 10.4
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "ALT CONTACT FORMER PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the alternate contact former prefix associated with the incoming  eRx. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "ALT CONTACT ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the alternate contact address line 1 associated with the incoming  eRx. ",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "ALT CONTACT ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the alternate contact address line 2 associated with the incoming  eRx. ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "ALT CONTACT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the alternate contact city identified with the eRx patient. ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 11.4,
+      "fieldName": "ALT CONTACT STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state/province associated with the alternate contact. ",
+      "fieldNumber_": 11.4
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "ALT CONTACT POSTAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the alternate contact postal code associated with the incoming  eRx. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 11.6,
+      "fieldName": "ALT CONTACT COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the country code of the alternate contact as passed in by the  external source. ",
+      "fieldNumber_": 11.6
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "2017 COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4613",
+      "required": false,
+      "helpText": "This subfile contains the communication information associated  with the eRx patient. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4613,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "2017 DIRECT ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ254",
+      "length": 254,
+      "required": false,
+      "helpText": "This is the direct address associated with the eRx patient communication. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "2017 ALT COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4615",
+      "required": false,
+      "helpText": "This subfile contains the alternate contact communication information  associated with the eRx patient. This subfile was created to support the  2017 script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4615,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "2017 ALT DIRECT ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ254",
+      "length": 254,
+      "required": false,
+      "helpText": "This is the alternate contact direct address associated with the  alternate contact communication. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "2017 MEDICARE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the medicare number associated with the eRx patient. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 17.2,
+      "fieldName": "2017 MEDICAID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the medicaid number associated with the eRx patient. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 17.2
+    },
+    {
+      "fieldNumber": 17.3,
+      "fieldName": "2017 MEDICAL RECORD ID #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the medical record identification number associated with the eRx  patient. This field was created to support the 2017 script standard. ",
+      "fieldNumber_": 17.3
+    },
+    {
+      "fieldNumber": 18.1,
+      "fieldName": "2017 ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the patient account number associated with the eRx patient. This  field was created to support the 2017 script standard. ",
+      "fieldNumber_": 18.1
+    },
+    {
+      "fieldNumber": 18.2,
+      "fieldName": "2017 SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Social Security number associated with the eRx patient. This  field was created to support the 2017 script standard. ",
+      "fieldNumber_": 18.2
+    },
+    {
+      "fieldNumber": 18.3,
+      "fieldName": "2017 MUTUALLY DEFINED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the mutually defined identification associated with the eRx  patient. This field was created to support the 2017 script standard. ",
+      "fieldNumber_": 18.3
+    },
+    {
+      "fieldNumber": 18.4,
+      "fieldName": "2017 REMS PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the REMS patient identification associated with the eRx patient.  This field was created to support the 2017 script standard. ",
+      "fieldNumber_": 18.4
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "2017 SUBSTANCES",
+      "dataType": "SUBFILE",
+      "rawType": "52.4619",
+      "required": false,
+      "helpText": "This subfile contains the substance use information associated with the eRx patient. This subfile was created to support the 2017 script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4619,
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 64,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "DOB", "field": },
+    {"name": "SSN", "field": },
+    {"name": "52.46", "field": .01, "type": "regular"},
+    {"name": "52.46", "field": .08, "type": "regular"},
+    {"name": "52.46", "field": 1.4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .08, "value": "W:$D(^(1)) \"   \",$$FMTE^DILIBF($P(^(1),U,4),6)"},
+    {"field": 1.4, "value": "W:$D(^(2)) \"   \",$P(^(2),U,4)"}
+  ]
+}

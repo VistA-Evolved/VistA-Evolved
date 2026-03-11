@@ -1,0 +1,27 @@
+{
+  "fileNumber": 741.93,
+  "fileName": "QA OCCURRENCE MEDICAL TEAM",
+  "globalRoot": "741.93",
+  "globalReference": "^QA(741.93,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESIGNATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a medical team to be used in the occurrence screen package. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "741.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

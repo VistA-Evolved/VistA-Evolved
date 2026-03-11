@@ -1,0 +1,107 @@
+{
+  "fileNumber": 19.1,
+  "fileName": "SECURITY KEY",
+  "globalRoot": "19.1",
+  "globalReference": "^DIC(19.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "Each entry in this File is the name of a key that defines some characteristic or capability for individual specified users.  The capability might be access to some OPTION (file 19) which is permited with the authorization. Other functionalities (such as allowing scheduling overbook) might also be allowed only if the key is held.   Keys are named with the standard package prefix formats; a 2-4 character package prefix for standard names or Z. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a more descriptive name for the KEY than allowed in the namespaced name field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PERSON LOOKUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "l:LOOKUP;",
+      "helpText": "This field when set to 'lookup' will build a X-ref on the NEW PERSON file of all holders of the key.  This will be under a X-ref of 'AK.'_<keyname> so that a package can lookup members of a group.   There is a standard SECURITY KEY that will be sent out of 'PROVIDER' with the lookup flag set. Then a package can do a lookup of PROVIDER's with the following code: S DIC=\"^VA(200,\",D=\"AK.PROVIDER\",DIC(0)=\"AEQ\" D IX^DIC ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "KEEP AT TERMINATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If this field is set to YES (1) then this key will not be removed from a user in the New Person file when they are terminated.   One example is the 'PROVIDER' key. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SEND TO J2EE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field controls if this is a Security Key that should be sent to the  J2EE application server for temporary role assignment.   If this field is set to 'Yes' then this Security Key can be sent to the  application server. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "19.11",
+      "required": false,
+      "helpText": "This is a short description of the security key, indicating what the key locks out, and what class of users should be assigned the key. ",
+      "isMultiple": true,
+      "subFileNumber": 19.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBORDINATE KEY",
+      "dataType": "POINTER",
+      "rawType": "19.13P",
+      "required": false,
+      "helpText": "Subordinate authorization are \"given\" when the \"master\" authorization is given.  This allows easier and more efficient delegation of authorizations. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GRANTING CONDITION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that set $T true if its OK for the person to be granted this key. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MUTUALLY EXCLUSIVE KEYS",
+      "dataType": "POINTER",
+      "rawType": "19.15P",
+      "required": false,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "19.1", "field": .01, "type": "regular"},
+    {"name": "19.1", "field": .01, "type": "regular"},
+    {"name": "19.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "fileNumber": 664.4,
+  "fileName": "PROS LABORATORY/RESTORATIONS WORKSHEET",
+  "globalRoot": "664.4D",
+  "globalReference": "^RMPRA(664.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field holds the Date Received information that  is pulled onto the AMIS code sheet. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WORK ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the Work Order Number that will be pulled onto the AMIS Codesheet. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDERING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field holds the Ordering Station information that will be pulled onto the AMIS codesheet. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER ITEMS COMPLETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field holds the Number of Items Completed that will be pulled onto the AMIS codesheet. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SC PATIENTS SERVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the SC Patients Served that will be pulled onto the AMIS Codesheet. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NSC PATIENTS SERVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field holds the NSC Patients Served data that will be pulled onto the AMIS Codesheet. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MATERIAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the Material Cost that will be pulled onto the AMIS Codesheet. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LABOR HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Labor Hours that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LABOR MINUTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Labor Minutes that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TOTAL LABOR COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the Total Labor Cost that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "BACKLOG NUMBER ITEMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Backlog Number Items that will be pulleded into the AMIS Codesheet. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BACKLOG LABOR HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Backlog Labor Hours that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "BACKLOG LABOR MINUTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Backlog Labor Minutes that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COST CHARGED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the Cost Charged that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AMIS STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains the AMIS Station that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SEGMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Segment Number that will be pulled into the AMIS Codesheet. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "AMIS CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field contains the actual AMIS Code that will be pulled onto the AMIS Codesheet. ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "664.4", "field": .01, "type": "regular"},
+    {"name": "664.4", "field": 14, "type": "regular"},
+    {"name": "664.4", "field": 16, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

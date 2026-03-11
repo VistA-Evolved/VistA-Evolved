@@ -1,0 +1,38 @@
+{
+  "fileNumber": 163.99,
+  "fileName": "FEE BASIS FEE SCHEDULE",
+  "globalRoot": "163.99P",
+  "globalReference": "^FBAA(163.99,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE-MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This file contains historical cost statistics which will be used to calculate the Fee Schedule. This data is compiled by running the FBAA FEE SCHEDULE option. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FISCAL YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "163.991",
+      "required": false,
+      "helpText": "This is a multiple field that will allow for the storage of historical costing data by fiscal year. ",
+      "isMultiple": true,
+      "subFileNumber": 163.991,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "163.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D WRITE^FBAAPAA"}
+  ]
+}

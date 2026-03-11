@@ -1,0 +1,211 @@
+{
+  "fileNumber": 656,
+  "fileName": "SWS RESOURCES",
+  "globalRoot": "656",
+  "globalReference": "^SOWK(656,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AGENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the community resource module agency. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the primary address of agency. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the secondary address of agency. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city where the agency is located. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state in which this agency is located.   ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX'",
+      "required": true,
+      "helpText": "This field is used to show what county within the state the agency is located. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the zip code of the agency. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PHONE NUMBER #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the primary phone number of the agency.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the FAX number of the agency. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "PHONE NUMBER #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the secondary phone number of the agency. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the operational hours of this agency.   ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the Mission Statement of Services provided by the agency.   ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the criteria required for service delivery.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FEES",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains fees charged by the agency. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REFERRAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the usual procedure required to access services.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are brief comments about this agency.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE OF INFO",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which the information about this agency was entered or updated.   ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "VA LIAISON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will be the VA Liaison for the community resource. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SPECIAL POPULATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the special population that this agency may serve.   ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "656.01S",
+      "required": false,
+      "helpText": "This field is used for the type of services provided by an agency.   An agency can provide multiple types of services. ",
+      "isMultiple": true,
+      "subFileNumber": 656.01,
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "M", "field": },
+    {"name": "656", "field": .01, "type": "regular"},
+    {"name": "656", "field": 2, "type": "regular"},
+    {"name": "", "field": 2.5, "type": "regular"},
+    {"name": "656", "field": 3, "type": "regular"},
+    {"name": "656", "field": 4, "type": "regular"},
+    {"name": "656", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

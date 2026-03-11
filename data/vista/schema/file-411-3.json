@@ -1,0 +1,151 @@
+{
+  "fileNumber": 411.3,
+  "fileName": "IFCAP CONVERSION DISCREPANCY",
+  "globalRoot": "411.3",
+  "globalReference": "^PRC(411.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISCREPANCY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This Discrepancy ID is just a number to identify this error record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE & TIME OF ERROR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time, in FileMan format, when the VENDOR conversion error occurred. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user, DUZ, who is running this VENDOR conversion. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RECORD NUMBER (423.6)",
+      "dataType": "POINTER",
+      "rawType": "P423.6'",
+      "required": false,
+      "pointerTo": 423.6,
+      "helpText": "The entry in file 423.6 that has the FMS segment that errored out. File 423.6 is where the FMS server placed the VENDOR Conversion transaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LINE NUMBER (423.6)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the line number within the record in file 423.6.  This record is entered in response to an incoming MailMan message addressed to the FMS server. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FMS FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the field within the CVU segment of the IFCAP vendor conversion that made this error appear.  There may be nothing wrong with this field. Look at the ERROR field to see what is wrong. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ERROR",
+      "dataType": "POINTER",
+      "rawType": "P411.4'",
+      "required": false,
+      "pointerTo": 411.4,
+      "helpText": "This is an error message pointer.  The error codes are found in file 411.4. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ENTRY POINT OF PROGRAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the line label within a routine.  For the VENDOR conversion it is not used. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CONVERSION PROGRAM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of a routine.  For VENDOR conversion this field is not used. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FMS CONVERSION TRANSACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the FMS segment with the error.  See the error field to find out what is actually wrong. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "442 RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the INTERNAL ENTRY NUMBER of the last record in file 442 that was converted. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RECORD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the number of records entered into this file during the conversion process. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RECORD NUMBER (442)",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "The internal entry number in File 442 that caused the error. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AAA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "411.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "411.3", "field": 1, "type": "regular"},
+    {"name": "411.3", "field": 9, "type": "regular"},
+    {"name": "411.3", "field": 10, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

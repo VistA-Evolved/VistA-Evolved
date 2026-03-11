@@ -1,0 +1,118 @@
+{
+  "fileNumber": 27.17,
+  "fileName": "CATASTROPHIC DISABILITY REASONS",
+  "globalRoot": "27.17",
+  "globalReference": "^DGEN(27.17,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "P:PROCEDURE;D:DIAGNOSIS;C:CONDITION;DE:DESCRIPTOR;",
+      "helpText": "This field contains the type of CATASTROPHIC DISABILITY REASON.  The PATIENT file uses this set of codes to screen out Diagnoses, Procedures, Conditions and Descriptors in its fields .396, .397, .398 and .401. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ICD OR CPT CODE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "VX",
+      "required": false,
+      "helpText": "If the type is \"PROCEDURE\" then this must be a CPT Code or an ICD Operation/Procedure.  If the type is \"DIAGNOSIS\" then this must be an ICD Diagnosis.  If the type is \"CONDITION\" then this  field must be blank.   If this field contains an ICD Diagnosis or Procedure code then the ICD VERSION field (#9) must point to the correct ICD VERSION. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AFFECTED LIMB",
+      "dataType": "SET",
+      "rawType": "27.174SA",
+      "required": false,
+      "helpText": "This set of codes determines to which limbs the procedure could apply. A procedure cannot be entered for a limb that's not mentioned here. ",
+      "isMultiple": true,
+      "subFileNumber": 27.174,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TEST SCORE RANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a MUMPS condition on the variables SCORE (patient's score on the test) and PERM (permanent status indicator).  If this condition is true, then the patient meets the Catastrophic Disability requirements for this test. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HELP TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "27.176",
+      "required": false,
+      "helpText": "This field contains help text that will be displayed to the user when entering data in the PATIENT file (field #.398) for this condition. ",
+      "isMultiple": true,
+      "subFileNumber": 27.176,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VALIDATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a MUMPS condition on the variable X to determine if a test score entered by the user is valid or not.  For example if you specify X>10 here, then the user won't be able to enter a TEST SCORE in the CD CONDITIONS field of the PATIENT file whose value is not greater than 10. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HL7 TRANSMISSION VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the value that should be sent in HL7 messages (ZCD segment) for this catastrophic disability reason. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ICD VERSION",
+      "dataType": "POINTER",
+      "rawType": "P80.4'I",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "Indicate the correct version of the ICD code for this entry.   If the type \"PROCEDURE\" then indicate the correct version of ICD Operation/Procedure   If the type is \"DIAGNOSIS\" then indicate the correct version of ICD Diagnosis.   If the type is \"CONDITION\" then this field must be blank ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the long description to be used for Diagnosis or Procedure codes. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "27.17", "field": .01, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "27.17", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,3),1:\"\") D NAME^DICM2 W ?35,\" \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 8, "value": "W ?45,\" \",$P(^(0),U,4)"}
+  ]
+}

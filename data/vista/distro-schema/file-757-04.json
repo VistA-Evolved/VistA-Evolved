@@ -1,0 +1,41 @@
+{
+  "fileNumber": 757.04,
+  "fileName": "EXCLUDED WORDS",
+  "globalRoot": "757.04",
+  "globalReference": "^LEX(757.04,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "The words contained in this field will be excluded from indexing or from the user's input prior to invoking the look-up utility, depending on the action indicated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXCLUDE FROM",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "I:EXCLUDE FROM INDEXING ONLY;L:EXCLUDE FROM LOOKUP ONLY;B:EXCLUDE FROM BOTH INDEXING AND LOOKUP;",
+      "helpText": "This field indicates the action to take with the excluded word, exclude from (I)ndexing, (L)ook-up or (B)oth indexing and look-up. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "ACTION", "field": },
+    {"name": "B", "field": },
+    {"name": "757.04", "field": .01, "type": "regular"},
+    {"name": "757.04", "field": .01, "type": "regular"},
+    {"name": "757.04", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

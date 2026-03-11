@@ -1,0 +1,111 @@
+{
+  "fileNumber": 420.92,
+  "fileName": "PRCU IFCAP/FMS CONVERSION",
+  "globalRoot": "420.92",
+  "globalReference": "^PRCU(420.92,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIX VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is used to store fixed doc-type data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is used to store DESCRIPTION data. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COPY MESSAGE START TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is used to store COPY MESSAGE START TIME data. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "COPY MESSAGE END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is used to store COPY MESSAGE END TIME data. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "CONVERSION START TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is used to store CONVERSION START TIME data. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "CONVERSION END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is used to store CONVERSION END TIME data. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONTENTS",
+      "dataType": "SUBFILE",
+      "rawType": "420.923A",
+      "required": false,
+      "helpText": "This is to store documents CONTENTS. ",
+      "isMultiple": true,
+      "subFileNumber": 420.923,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEXTS",
+      "dataType": "SUBFILE",
+      "rawType": "420.924",
+      "required": false,
+      "helpText": "This is used to store comments. ",
+      "isMultiple": true,
+      "subFileNumber": 420.924,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SEQUENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store SEQUENCE data. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "420.92", "field": .01, "type": "regular"},
+    {"name": "420.92", "field": 2, "type": "regular"},
+    {"name": "420.92", "field": 2.5, "type": "regular"},
+    {"name": "420.92", "field": 2.6, "type": "regular"},
+    {"name": "420.92", "field": 2.7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "fileNumber": 9999999.15,
+  "fileName": "EXAM",
+  "globalRoot": "9999999.15I",
+  "globalReference": "^AUTTEXAM(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ64",
+      "length": 64,
+      "required": true,
+      "helpText": "This is the name of the examination.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEX SPECIFIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "(Optional) This is the indicator for specifying the sex for which the exam is given.   Enter an \"M\" for male or an \"F\" for Female. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate an exam type.  If this field contains a \"1\" then the exam type is inactive.  Inactive exam types cannot be selected in the manual data entry process. Exam entries should be made inactive when they are no longer used.  Do not delete the entry or change the meaning of the exam entry.     To make an inactive exam type active, enter the \"@\" symbol to remove the \"1\" from the field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the exam. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National exams cannot be edited by sites.   ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'X",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this exam.  ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CHANGE LOG",
+      "dataType": "DATE",
+      "rawType": "9999999.16DA",
+      "required": false,
+      "helpText": "This multiple is used to record a log of changes made to the exam.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.16,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the exam that will be used for display purposes.  ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.15201",
+      "required": false,
+      "helpText": "This field contains a description of the exam. It is used to document its purpose and intended usage.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.15201,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.18A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard codes the exam is mapped to. Each mapping entry is defined by a coding system code pair.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.18,
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MINIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with an Exam, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "MAXIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with an Exam, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "MAXIMUM DECIMALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the maximum number of decimal digits that can be entered for the measurement.  ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement is to be associated with an Exam, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "DELETED CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.2A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard code mappings that have been deleted. When a code mapping is deleted it is automatically moved to this multiple.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.2,
+      "fieldNumber_": 230
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(9999999.15,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

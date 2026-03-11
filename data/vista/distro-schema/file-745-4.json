@@ -1,0 +1,39 @@
+{
+  "fileNumber": 745.4,
+  "fileName": "CONGRESSIONAL OFFICE",
+  "globalRoot": "745.4O",
+  "globalReference": "^QA(745.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OFFICE/NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the congressional office or person that made the contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field contains a \"1\" if this congressional office or name is no longer active. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "745.4", "field": .01, "type": "regular"},
+    {"name": "745.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

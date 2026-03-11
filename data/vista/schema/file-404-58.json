@@ -1,0 +1,64 @@
+{
+  "fileNumber": 404.58,
+  "fileName": "TEAM HISTORY",
+  "globalRoot": "404.58",
+  "globalReference": "^SCTM(404.58,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEAM",
+      "dataType": "POINTER",
+      "rawType": "RP404.51'",
+      "required": true,
+      "pointerTo": 404.51,
+      "helpText": "This is a pointer to the TEAM file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the team's status changed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This is indicates if the team is active or inactive as of the effective date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS REASON",
+      "dataType": "POINTER",
+      "rawType": "R*P403.44'",
+      "required": true,
+      "pointerTo": 403.44,
+      "helpText": "This is the reason that the team's status changed. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AIDT", "field": },
+    {"name": "AIDT1", "field": },
+    {"name": "AIDT2", "field": },
+    {"name": "B", "field": },
+    {"name": "404.58", "field": .01, "type": "regular"},
+    {"name": "404.58", "field": .01, "type": "regular"},
+    {"name": "404.58", "field": .02, "type": "regular"},
+    {"name": "404.58", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(404.58,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

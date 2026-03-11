@@ -1,0 +1,45 @@
+{
+  "fileNumber": 552.3,
+  "fileName": "CMOP RELEASE",
+  "globalRoot": "552.3",
+  "globalReference": "^PSX(552.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RELEASE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "  This file contains prescription release information returned from the vendor system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:READY TO PURGE;2:READY TO FILE;3:DUPLICATE RX;4:REJECTED RX;",
+      "helpText": "This field is used to control filing of the data in the CMOP Master Database file and purging the entries from the CMOP Release file. If purge=1, the record is ready to purge from the file. If purge=2, the record is ready to file in the CMOP Master Database file. If purge=3, the record is a duplicate Rx returned by the vendor software. If purge=4, the record was rejected by DHCP during the query. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AP", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AR", "field": },
+    {"name": "552.3", "field": .01, "type": "regular"},
+    {"name": "552.3", "field": 1, "type": "regular"},
+    {"name": "552.3", "field": 1, "type": "regular"},
+    {"name": "552.3", "field": 1, "type": "regular"},
+    {"name": "552.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

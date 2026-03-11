@@ -1,0 +1,128 @@
+{
+  "fileNumber": 601.86,
+  "fileName": "MH SCALEGROUPS",
+  "globalRoot": "601.86",
+  "globalReference": "^YTT(601.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCALEGROUP ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the unique identifier for this record. It is the IEN. Numbers  below 100,000 are part of the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENT ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "Specifies instrument that applies, a pointer to the NAME field (#.01)  of the MH TESTS AND SURVEYS file (#601.71). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCALEGROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Print Name of the ScaleGroup. All scales must refer to at least one  ScaleGroup. Examples of ScaleGroups include; Total, Validity Scales and  MacAndrews Scales. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GROUP SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Order in which the ScaleGroup is displayed within the Administration  report and in graphing. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORDINATE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ordinate title of the graph. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDINATEMIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate minimum. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORDINATEINCREMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate increment. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ORDINATEMAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate maximum. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "GRID1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate value of the first grid line on the graph(set to 0 if there is none). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "GRID2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate value of the second grid line on the graph(set to 0 if there is none). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "GRID3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the ordinate value of the third grid line on the graph(set to 0 if there is none). ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "601.86", "field": .01, "type": "regular"},
+    {"name": "601.86", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

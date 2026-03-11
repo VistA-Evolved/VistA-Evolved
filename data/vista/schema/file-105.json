@@ -1,0 +1,60 @@
+{
+  "fileNumber": 105,
+  "fileName": "MICOM LOADER",
+  "globalRoot": "105",
+  "globalReference": "^%ZIS(\"Z\",105,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Configuration",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Each configuration consists of a sequence of commands and messages to be loaded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Command",
+      "dataType": "SUBFILE",
+      "rawType": "105.01",
+      "required": false,
+      "helpText": "This field stores the list of commands, in order, used to configure the Micom.   If using an Instanet 6600, you can run the routine ^ZISLCOM0 to automatically create the configuration by polling the administration port. ",
+      "isMultiple": true,
+      "subFileNumber": 105.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Welcome Message text",
+      "dataType": "SUBFILE",
+      "rawType": "105.02",
+      "required": false,
+      "helpText": "The system welcome message will be automatically enabled for all selectable class terminals.  This message may be several lines long and up to 80 characters per line.   This field should be left empty if using a Instanet 6600.  All messages should be entered in the 'Fixed class or Message number' field. ",
+      "isMultiple": true,
+      "subFileNumber": 105.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Fixed class or Message number",
+      "dataType": "SUBFILE",
+      "rawType": "105.03A",
+      "required": false,
+      "helpText": "Class number and class message text for each class message to be entered. ",
+      "isMultiple": true,
+      "subFileNumber": 105.03,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "105", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

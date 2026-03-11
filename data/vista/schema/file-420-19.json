@@ -1,0 +1,80 @@
+{
+  "fileNumber": 420.19,
+  "fileName": "PRCD STANDARD DICTIONARY",
+  "globalRoot": "420.19I",
+  "globalReference": "^PRCD(420.19,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a standard dictionary code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is used to store the entry's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP420.1999'",
+      "required": true,
+      "pointerTo": 420.1999,
+      "helpText": "This is the status of the entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FILE NAME/NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This is the fileman file number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SITE EDIT ALLOWED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is used to store SITE EDIT ALLOWED data. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FIX VALUE USED IN PROGRAMING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is used to store FIX VALUE USED IN PROGRAMING data. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "420.19", "field": .01, "type": "regular"},
+    {"name": "420.19", "field": 1, "type": "regular"},
+    {"name": "420.19", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": D1, "value": "W ?16,$P(^(0),U,2)"}
+  ]
+}

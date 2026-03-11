@@ -1,0 +1,110 @@
+{
+  "fileNumber": 10,
+  "fileName": "RACE",
+  "globalRoot": "10I",
+  "globalReference": "^DIC(10,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a race as selectable during enter/edit of patient data information.   These entries are distributed by the MAS module and entry or edit of any data elements contained in this file could have negative impacts on the performance of the MAS or other DHCP modules. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the abbreviation for this race entry.  This may appear on various outputs where there is insufficient room to print the entire name of the race. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HL7 VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The HL7 representation of this race ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CDC VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The CDC representation of this race ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PTF VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The PTF represenation of this race ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "RACE MASTER",
+      "dataType": "POINTER",
+      "rawType": "*P10.99'a",
+      "required": false,
+      "pointerTo": 10.99,
+      "helpText": "This is the external Standards Development Organization (SDO) Race associated with this VHA Race. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "10.01",
+      "required": false,
+      "helpText": "This multiple contains all alternate names by which this race can be called up by a user. ",
+      "isMultiple": true,
+      "subFileNumber": 10.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to denote that this race value is no longer active. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that this race became inactive ",
+      "fieldNumber_": 202
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ACMF", "field": },
+    {"name": "AHL7", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "10", "field": .01, "type": "regular"},
+    {"name": "10", "field": 2, "type": "regular"},
+    {"name": "10", "field": 3, "type": "regular"},
+    {"name": "10", "field": 90, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "N TMP S TMP=$P($G(^(0)),\"^\",2) I TMP'=\"\" D EN^DDIOL(TMP,,\"?$X+2\")"},
+    {"field": 200, "value": "I +$G(^(.02)) D EN^DDIOL(\"** INACTIVE **\",,\"?$X+2\")"}
+  ]
+}

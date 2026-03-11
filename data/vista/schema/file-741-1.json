@@ -1,0 +1,71 @@
+{
+  "fileNumber": 741.1,
+  "fileName": "QA OCCURRENCE SCREEN CRITERIA",
+  "globalRoot": "741.1I",
+  "globalReference": "^QA(741.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "VAMCs may enter their own screens (201 through 999.99), but may not change existing national screens (101.1,102,107,109). Screens may not have any trailing zeros or decimal points. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the short description of the screen. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXPANDED SCREEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the long description of the screen. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SCREEN STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;N:NATIONAL;L:LOCAL;",
+      "helpText": "This field controls the auto enroll of the various screens.  National and local screens will be auto enrolled if possible.  This field is also used by the semi-annual report, any combinations of screen statuses may be included on the report. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "ASSOCIATED MONITOR",
+      "dataType": "POINTER",
+      "rawType": "P743'",
+      "required": false,
+      "pointerTo": 743,
+      "helpText": "This field is used to link the monitor and the screen for the purposes of the auto enroll functions. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "C", "field": },
+    {"name": "741.1", "field": .01, "type": "regular"},
+    {"name": "741.1", "field": .01, "type": "regular"},
+    {"name": "741.1", "field": 2, "type": "regular"},
+    {"name": "741.1", "field": 200, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "fileNumber": 704.104,
+  "fileName": "TERM_UNIT_CONVERSION",
+  "globalRoot": "704.104",
+  "globalReference": "^MDC(704.104,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UNIT_ID_PRE",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field is the identifier of the unit that a value will be converted  from. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "UNIT_ID_POST",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field is the identifier of the unit that a value will be converted  to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CONVERSION_OFFSET_PRE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,6",
+      "length": 16,
+      "required": false,
+      "helpText": "This field will be used to offset a value prior to executing the  conversion logic. A sample CONVERSION OFFSET PRE could be \"0\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CONVERSION_OFFSET_POST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,6",
+      "length": 16,
+      "required": false,
+      "helpText": "This is used to offset a value post execution of the conversion logic. A sample CONVERSION OFFSET POST could be \"32\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CONVERSION_FACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This value is used by the conversion logic as a multiplier of the original  value. A sample CONVERSION FACTOR could be \"1.8\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DECIMAL_PRECISION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is the decimal precision for rounding the resulting conversion  value. A sample DECIMAL PRECISION could be \"2\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a DESCRIPTION of the conversion logic. A sample DESCRIPTION could be \"DEGREES C -> DEGREES F\". ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

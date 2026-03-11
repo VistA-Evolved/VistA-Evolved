@@ -1,0 +1,98 @@
+{
+  "fileNumber": 2006.13,
+  "fileName": "MAG PATH CONFIG",
+  "globalRoot": "2006.13",
+  "globalReference": "^MAG(2006.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the local Site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.131",
+      "required": false,
+      "helpText": "This is the XML template detailing the list of Lab Data fields to display in the GUI for Cytopathology (CY). ",
+      "isMultiple": true,
+      "subFileNumber": 2006.131,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EM TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.132",
+      "required": false,
+      "helpText": "This is the XML template detailing the list of Lab Data fields to display in the GUI for Electron Microscopy(EM). ",
+      "isMultiple": true,
+      "subFileNumber": 2006.132,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SP TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.133",
+      "required": false,
+      "helpText": "This is the XML template detailing the list of Lab Data fields to display in the GUI for Surgical Pathology (SP). ",
+      "isMultiple": true,
+      "subFileNumber": 2006.133,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NUMBER OF MINUTES (LOCKING)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of minutes before an access lock expires. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "READING SITE LIST",
+      "dataType": "POINTER",
+      "rawType": "2006.135P",
+      "required": false,
+      "helpText": "These are the sites which are allowed to read a case in this site. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACQUISITION SITE LIST",
+      "dataType": "POINTER",
+      "rawType": "2006.136P",
+      "required": false,
+      "helpText": "These are the sites holding cases this site is allowed to read.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER PREFERENCES",
+      "dataType": "POINTER",
+      "rawType": "2006.137P",
+      "required": false,
+      "helpText": "This field records users and their Worklist preferences. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

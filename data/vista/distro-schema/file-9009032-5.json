@@ -1,0 +1,37 @@
+{
+  "fileNumber": 9009032.5,
+  "fileName": "APSP INTERVENTION RECOMMENDATION",
+  "globalRoot": "9009032.5",
+  "globalReference": "^APSPQA(32.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used to select entries by the enternal number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECOMMENDATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field holds a free text narrative describing a recommended action to be taken to resolve a Intervention. Examples would be things like Change Drug, Change Dosage, Order Lab Tests, etc. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9009032.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

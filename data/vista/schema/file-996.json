@@ -1,0 +1,192 @@
+{
+  "fileNumber": 996,
+  "fileName": "EXTENSIBLE EDITOR",
+  "globalRoot": "996",
+  "globalReference": "^RGED1(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONFIGURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the configuration name and can be up to 8 characters in length.  The  file is delivered populated with four configurations:  DEFAULT, HELP, BROWSE,  and PROG.  None of these should be deleted, but with the exception of the .01 field, they may be modified to meet institutional needs.  The DEFAULT  configuration is, as the name implies, the default configuration used by the  editor when none is specified.   The HELP configuration is used to invoke  the hypertext browser.  The BROWSE config",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a version identifier for the configuration.  This is not necessarily  the same as the version number of the software.  When a configuration is  modified significantly, the version identifier can be updated to reflect the  change.  The version identifier is loaded into the local variable RGVER and  can be displayed in message text by including it as a replaceable parameter. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date on which the configuration was created.  It is a non- editable field that is triggered by modification to the .01 field. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "KEY MAP TABLE",
+      "dataType": "SUBFILE",
+      "rawType": "996.01",
+      "required": false,
+      "helpText": "The key mappings section of the file contains one or more tables that map  keystroke sequences to editing functions.  These tables reside within the  KEY MAP TABLE (1) subfile.  A key map table consists of a table identifier,  a multiple containing keystroke sequence / function call pairs, and a  default function call for undefined keystroke sequences. ",
+      "isMultiple": true,
+      "subFileNumber": 996.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATE TABLE",
+      "dataType": "SUBFILE",
+      "rawType": "996.02A",
+      "required": false,
+      "helpText": "The state variable definition section defines variables that control certain  editor behaviors like word wrap and screen width.   ",
+      "isMultiple": true,
+      "subFileNumber": 996.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KEY MACRO",
+      "dataType": "SUBFILE",
+      "rawType": "996.03A",
+      "required": false,
+      "helpText": "The key macro definition section associates keystroke sequences with  descriptive names.  This makes the key map tables a little more readable and  easier to maintain.  There is a utility provided to facilitate creation of  key macros that is described in the technical manual.  The KEY MACRO subfile  contains two fields that associate a keystroke sequence with a symbolic name.   ",
+      "isMultiple": true,
+      "subFileNumber": 996.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HELP FRAME (GENERAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field names the entry level help frame for this configuration.   This provides access to general help for the configuration.  If null, no  general help will be provided.  The text must match the name (or internal  entry number) of an existing help frame within the HELP FRAME file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "HELP FRAME (CONTEXT-SENSITIVE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field names a help frame that contains all keywords that may  be used for context-sensitive help.  The help frame need not contain any  text as it is never displayed. The keyword entries are used as an index to  other help frames.  When the user invokes context-sensitive help, the editor  uses the context-sensitive help frame to locate the help frame for the  keyword currently under the edit cursor.  The content of the field must  match the name (or internal entry number) of an ex",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INFORMATION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field up to 50 characters in length that becomes the  default message displayed on the editor message line.  It may contain \"|\"- delimited replaceable parameters.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RULER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field may be up to 250 characters in length and contains the  default tab settings for the editor.  Use \"=\" characters to establish  between tab spacing and \"T\" characters to denote tab stops.  For example, to  establish default tab stops at columns 3 and 6, specify \"==T==T\".  If this  field is null, the editor sets up default tab stops every 8 columns starting  in column #8.  If a user has customized and saved tab settings, these  override the settings in this field for that user",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "POST-INITIALIZATION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may contain executable M code that is executed on invocation of  the editor following initialization but before screen display.  This allows  for any additional initialization that the configuration may require (e.g.,  loading a report template into the main buffer). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MAXIMUM LINE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the maximum allowable length for a line.  It must not exceed the  maximum length allowed by the operating system (typically 255), but may be  less.  The default is 255 bytes. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "DISABLE TIMED READS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES",
+      "helpText": "If YES, the value of DTIME is ignored when performing reads on the keyboard  buffer.  If NO, the editor waits up to DTIME seconds for the user to provide  requested input. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "AUTOSAVE ON TIMEOUT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES",
+      "helpText": "If YES, the editor will save the contents of the main buffer if a read  timeout occurs while awaiting a command.  Otherwise, changes to the main  buffer are lost when this occurs. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "IMPORT FILTERS",
+      "dataType": "SUBFILE",
+      "rawType": "996.09A",
+      "required": false,
+      "helpText": "The import filters section defines the rules for importing other entries in  the file being edited.  The import function is a very useful tool, but can  present a data security risk if not properly restricted.  The editor assumes  that other entries in an edited file are inaccessible to the user unless an  import filter has been defined for that file.  The import filter controls  which entries a user sees and, therefore, can import.  This subfile contains  two fields that associate a global root",
+      "isMultiple": true,
+      "subFileNumber": 996.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ALIASES",
+      "dataType": "POINTER",
+      "rawType": "996.04P",
+      "required": false,
+      "helpText": "The configuration aliases subfile permits specification of other  configurations that may serve as aliases for the current (primary) one.   Once a user selects an alias, that configuration is invoked whenever the  primary configuration is requested.  In this manner, users may be provided a  choice of alternate configurations that, for example, provide different  keystroke mappings that correspond to those of commercial software with  which they are more familiar. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PARENT CONFIGURATION",
+      "dataType": "POINTER",
+      "rawType": "P996'",
+      "required": false,
+      "pointerTo": 996,
+      "helpText": "Refers to another configuration entry from which this configuration will  inherit its behavior.  Key mappings, key macro definitions, and state  variables are all inherited.  Entries made in the current configuration for  any of these inherited attributes overrides the corresponding entries in the  parent configuration.  ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "996", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

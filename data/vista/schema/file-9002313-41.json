@@ -1,0 +1,40 @@
+{
+  "fileNumber": 9002313.41,
+  "fileName": "BPS NCPDP OTHER PRESCRIBER ID QUALIFIER",
+  "globalRoot": "9002313.41",
+  "globalReference": "^BPS(9002313.41,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "The code for NCPDP field F01-Z4 Other Prescriber ID Qualifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "The name of the code for NCPDP field F01-Z4 Other Prescriber ID Qualifier. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.41", "field": .01, "type": "regular"},
+    {"name": "9002313.41", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

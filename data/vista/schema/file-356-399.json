@@ -1,0 +1,45 @@
+{
+  "fileNumber": 356.399,
+  "fileName": "CLAIMS TRACKING/BILL",
+  "globalRoot": "356.399PI",
+  "globalReference": "^IBT(356.399,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLAIM TRACKING ID",
+      "dataType": "POINTER",
+      "rawType": "RP356'",
+      "required": true,
+      "pointerTo": 356,
+      "helpText": "This is the Claims Tracking entry that is associated with this bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP399'",
+      "required": true,
+      "pointerTo": 399,
+      "helpText": "This is the Bill associated with this Claims Tracking Entry. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ACB", "field": },
+    {"name": "ACB1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "356.399", "field": .01, "type": "regular"},
+    {"name": "356.399", "field": .01, "type": "regular"},
+    {"name": "356.399", "field": .02, "type": "regular"},
+    {"name": "356.399", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGCR(399,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(399,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

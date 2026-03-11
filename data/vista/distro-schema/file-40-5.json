@@ -1,0 +1,36 @@
+{
+  "fileNumber": 40.5,
+  "fileName": "HOLIDAY",
+  "globalRoot": "40.5",
+  "globalReference": "^HOLIDAY(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date for the observance of the holiday. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the holiday. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "40.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

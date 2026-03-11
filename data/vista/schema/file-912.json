@@ -1,0 +1,442 @@
+{
+  "fileNumber": 912,
+  "fileName": "ESP OFFENSE REPORT",
+  "globalRoot": "912I",
+  "globalReference": "^ESP(912,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the offense ID #.  It is the site # concatenated with the year and the internal entry number of this Uniform Offense Report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date/time an incident is reported to the VA Police which requires the initiation of a Uniform Offense Report.  The correct formats for entering the date/time entry are:  10/20/92@0930; Oct 20@093; 10 20 93@0930; or 10 20@0930. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME OF OFFENSE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date and time the incident being reported actually occurred. In situations involving thefts, etc., there may be an interim time period existing between when the item(s) actually were missing and when they were known to be missing.  In these cases, use this field to enter the last date the item was known to be present.  Utilize the field 'ENDING DATE/TIME OF OFFENSE' to record the date the item was found to be missing.  Example:  On 6/12/93@1000 an employee discovers a chain saw missing",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the location the offense occurred.  Answer must be 3-30 characters in length.  Use a two point reference, if at all possible, (i.e., Building 18, Room 116; South Street and Brookline Street). South Street and Brookline Street, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "WEAPON USED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any type of weapon used in carrying out the offense. Use of this field will allow you to sort offense by weapons, other than guns, knives, and others covered by the classification codes. It will be useful in situations where fists, feet, tables, chairs, etc. are used as weapons. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INVESTIGATING OFFICER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Enter the police officer who investigated this offense.  The officer's   name must already be entered into the NEW PERSON file (200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'I",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Use this field to identify the Facility that this offense is associated with. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CASE STATUS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "O:OPEN;C:CLOSED;",
+      "helpText": "Enter 'O' for Open or 'C' for Closed case. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ENDING DATE/TIME OF OFFENSE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Entering a date/time in this field allows you when the investigation involves a theft, murder or missing patient, to show a window of time for the occurrence.  Only in cases involving a range of time will this field be used.  In these instances, DATE/TIME OF OFFENSE will be used to record the earliest time the occurence could have taken place, and ENDING DATE/TIME OF OFFENSE will be used to record when you were notified of the occurence. Example:  6/12/93@1000 an employee discovers a chain saw m",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "UOR NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field is automatically triggered by the Date/Time Received field. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BADGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Investigator badge number   UNEDITABLE ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RANK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the VA investigator's assigned rank designation.   Uneditable ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "CIP WEAPON USED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "Enter 'YES' if a Chemical Irritant Projector (CIP) weapon was used. Enter 'NO' if a Chemical Irritant Projector (CIP) weapon was not used. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "POLICE BATON USED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "Enter 'NO' if a police baton was not used. Enter 'YES' if a police baton was used. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is locked and data cannot be manually entered at the local site.  It is triggered by the Institution file and will automatically enter the station number into the reports.  This will also be involved in the generation of the Monthly Crime Report and will assist Law Enforcement and Security, VACO in identifying the originating site for each report. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "COMPLETED FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:INCOMPLETE;1:COMPLETE;",
+      "helpText": "This field is set by the program so can tell if the report is completed or not. A completed report is visible only to the person who entered the report. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is automatically triggered by the User Number of the person who physically enters the Uniform Offense Report into the file.  At some sites, the supervisor rather than the patrol officer may be in charge of entering the report.  Due to a heavy case work load, one officer may assist another officer by entering an Offense Report.  This will help establish who actually entered the report into the file. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "SENSITIVE FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Entering a '1' for 'YES' in this field locks the Offense Report so that only VA Police staff assigned the ESP Chief key may access the report. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "DELETED/REOPENED FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "D:DELETED;R:REOPENED;1:NONE OF THE ABOVE;",
+      "helpText": "This field is triggered by the program to record that a Uniform Offense Report that has been closed, has been reopened. It is also used to record that a previously entered Uniform Offense Report has been deleted from the program. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "DATE/TIME DELETED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "When an Offense Report is deleted, the date/time is stuffed by the program into this field. ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "DELETING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "When the offense report is deleted the user # is stuffed here. It is a pointer to the New Person file, #200.  This field is for auditing purposes and is not to be entered by the user. ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "PREVIOUS ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This data is stuffed when a report is reopened. This field contains the previous ID #. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "DATE/TIME REOPENED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This data is stuffed at the time a report is reopened. This field contains the date/time a report was reopened. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "REOPENED USER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This data is stuffed when the report is reopened. This contains the user # of the person who reopened the report. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLASSIFICATION CODE",
+      "dataType": "POINTER",
+      "rawType": "912.01P",
+      "required": false,
+      "helpText": "This field is used to establish the primary crime category of the Offense Report and subsequent descriptive Type and Subtypes. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "COMPLAINANT",
+      "dataType": "SUBFILE",
+      "rawType": "912.03",
+      "required": false,
+      "helpText": "This subfile contains the complainant information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.03,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "VICTIM",
+      "dataType": "SUBFILE",
+      "rawType": "912.04",
+      "required": false,
+      "helpText": "This subfile contains victim information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.04,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "OFFENDER",
+      "dataType": "SUBFILE",
+      "rawType": "912.05",
+      "required": false,
+      "helpText": "This subfile contains offender information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.05,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "WITNESS",
+      "dataType": "SUBFILE",
+      "rawType": "912.06",
+      "required": false,
+      "helpText": "This subfile contains witness information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.06,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "METHOD OF OPERATION",
+      "dataType": "SUBFILE",
+      "rawType": "912.07",
+      "required": false,
+      "helpText": "This field is used to record narrative information that may be used to describe a modus operandi used during the commission of the crime. ",
+      "isMultiple": true,
+      "subFileNumber": 912.07,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "ORIGIN",
+      "dataType": "SUBFILE",
+      "rawType": "912.08",
+      "required": false,
+      "helpText": "This field is used to record how the VA Police were notified of the necessity to initiate a police investigation. ",
+      "isMultiple": true,
+      "subFileNumber": 912.08,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "INITIAL OBSERVATION",
+      "dataType": "SUBFILE",
+      "rawType": "912.072",
+      "required": false,
+      "helpText": "This field is used to describe what the VA Police Officer first observed when he arrived at the scene of the investigation. ",
+      "isMultiple": true,
+      "subFileNumber": 912.072,
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "INVESTIGATION",
+      "dataType": "SUBFILE",
+      "rawType": "912.073",
+      "required": false,
+      "helpText": "This field is used to describe all investigative efforts that were taken during the investigation of the reported offense. ",
+      "isMultiple": true,
+      "subFileNumber": 912.073,
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "DISPOSITION",
+      "dataType": "SUBFILE",
+      "rawType": "912.074",
+      "required": false,
+      "helpText": "This field is used to describe what disposition was made or actions taken or recommended at the conclusion of the investigation. ",
+      "isMultiple": true,
+      "subFileNumber": 912.074,
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "VEHICLE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "912.09",
+      "required": false,
+      "helpText": "This subfile contains vehicle information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.09,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PROPERTY (LOST)",
+      "dataType": "SUBFILE",
+      "rawType": "912.1",
+      "required": false,
+      "helpText": "This subfile contains lost property information. ",
+      "isMultiple": true,
+      "subFileNumber": 912.1,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PROPERTY HELD",
+      "dataType": "SUBFILE",
+      "rawType": "912.02",
+      "required": false,
+      "helpText": "This subfile contains information on items taken into custody and placed into the Evidence/Property Held system. ",
+      "isMultiple": true,
+      "subFileNumber": 912.02,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "OTHER AGENCY NOTIFIED",
+      "dataType": "DATE",
+      "rawType": "912.14D",
+      "required": false,
+      "helpText": "If a Federal or Local Law Enforcement Agency was notified, enter the date/time of notification and contact person. This information may be entered any time another law enforcement agency is notified.  Do not enter VA Police in this space. ",
+      "isMultiple": true,
+      "subFileNumber": 912.14,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "U.S. ATTORNEY NOTIFIED",
+      "dataType": "DATE",
+      "rawType": "912.15D",
+      "required": false,
+      "helpText": "If U.S. Attorney is notified, then enter the date and time of notification and instructions received. ",
+      "isMultiple": true,
+      "subFileNumber": 912.15,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "FOLLOW-UP",
+      "dataType": "POINTER",
+      "rawType": "912.17P",
+      "required": false,
+      "helpText": "This field is used to record the follow-up notes and the follow-up investigators. ",
+      "fieldNumber_": 130
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "J", "field": },
+    {"name": "UOR", "field": },
+    {"name": "912", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "912", "field": .01, "type": "regular"},
+    {"name": "912", "field": .02, "type": "regular"},
+    {"name": "912", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "912", "field": .08, "type": "regular"},
+    {"name": "912", "field": 5.02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .07, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .1, "value": "W \"   \",$P(^(0),U,10)"}
+  ]
+}

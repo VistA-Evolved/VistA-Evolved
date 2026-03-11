@@ -1,0 +1,56 @@
+{
+  "fileNumber": 8925.3,
+  "fileName": "TIU UPLOAD ERROR DEFINITION",
+  "globalRoot": "8925.3",
+  "globalReference": "^TIU(8925.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ERROR CODE #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the error code number which occurs when a report that is uploaded is unable to be filed into the appropriate DHCP file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the error as identified by the upload/router/filer utility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text to be used to notify the appropriate persons that a report was unable to be filed into DHCP. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ALERT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:information only;F:follow-up action;",
+      "helpText": "This is the type of alert that will be sent, either information only or for follow-up action. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

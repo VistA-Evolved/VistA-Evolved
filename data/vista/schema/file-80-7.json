@@ -1,0 +1,240 @@
+{
+  "fileNumber": 80.7,
+  "fileName": "TEMPORARY DIAGNOSES",
+  "globalRoot": "80.7",
+  "globalReference": "^ICDYZ(80.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  ICD 9 code number ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains Identifier codes providing more detail on the DRG. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Diagnosis that code represents. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAJOR DIAGNOSTIC CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P80.3'",
+      "required": false,
+      "pointerTo": 80.3,
+      "helpText": "  MDC within which this code falls. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "MDC13",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  Entered if MDC=13. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "MDC24",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PRINCIPAL DX;1:HEAD;2:CHEST;3:ABDOMEN;4:KIDNEY;5:URINARY;6:PELVIS;7:UPPER LIMB;8:LOWER LIMB;",
+      "helpText": "  Code entry of body site of Multiple Significant Trauma. ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.9,
+      "fieldName": "MDC25",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIV INFECTION;2:MAJOR HIV CONDITION;3:NON-MAJOR HIV CONDITION;",
+      "helpText": "  Set of codes refers to type of HIV code or related condition. ",
+      "fieldNumber_": 5.9
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ICD EXPANDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field contains thr ICD code as expanded by the VA ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "USE ONLY WITH SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "  For codes that are gender-specific, enter sex. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Complete description of ICD9 diagnosis represented by code. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ICD9 CODES NOT TO USE WITH",
+      "dataType": "POINTER",
+      "rawType": "80.71P",
+      "required": false,
+      "helpText": "ICD9 codes that cannot be used in conjunction with this code. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ICD9 CODES REQUIRED WITH",
+      "dataType": "POINTER",
+      "rawType": "80.72P",
+      "required": false,
+      "helpText": "Codes required when this code is used. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CODE NOT CC WITH",
+      "dataType": "POINTER",
+      "rawType": "80.73P",
+      "required": false,
+      "helpText": "Code not considered as Complication/comorbidity with this code. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DRGa",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DRGb",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DRGc",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "DRGd",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "DRGe",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "DRGf",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "DRG (Diagnostic Related Group) that this code may be part of. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "COMPLICATION/COMORBIDITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COMPLICATION/COMORBIDITY;",
+      "helpText": "Set =1 if this ICD9 refers to code with c/c. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "Set =1 when this code is  no longer active. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "UNACCEPTABLE AS PRINCIPAL DX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field contains a flag indicating that this code is unacceptable as the principal diagnosis. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date as of which this code is inactive. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 70, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(80,70,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

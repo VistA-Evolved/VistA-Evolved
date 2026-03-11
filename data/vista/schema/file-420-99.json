@@ -1,0 +1,129 @@
+{
+  "fileNumber": 420.99,
+  "fileName": "IFCAP TEMP FCP SNAPSHOT",
+  "globalRoot": "420.99",
+  "globalReference": "^PRCU(420.99,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the ID number for the snapshot. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SNAPSHOT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on which the snapshot was taken. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNAPSHOT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the snapshot amount. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "SNAPSHOT QTR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the snapshot quarter. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "1QTR AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the dollar amount for the first quarter. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "2QTR AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the dollar amount for the second quarter. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "3QTR AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the dollar amount for the third quarter. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FMS BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the control point balance in FMS. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FMS VARIANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the variance between FMS and IFCAP control point balance. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FMS ADJUSTMENT APPLIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates whether the FMS adjustment has been applied to the  control point balance. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CP TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:STANDARD;1:GENERAL POST FUND;2:SUPPLY FUND;3:CASCA;4:CANTEEN;",
+      "helpText": "This field contains a code indicating the type of control point. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "420.99", "field": .01, "type": "regular"},
+    {"name": "420.99", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "fileNumber": 920.5,
+  "fileName": "IMM REFUSAL REASONS",
+  "globalRoot": "920.5",
+  "globalReference": "^PXV(920.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the reason the immunization (or skin test) has been refused.   PLEASE NOTE: that if 'Other' is used as a reason, further explanation may be required. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HL7 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the HL7 code for this refusal reason, used when transmitting this data. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P920.5'aI",
+      "required": false,
+      "pointerTo": 920.5,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference  terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "920.599DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 920.599,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "920.5", "field": .01, "type": "regular"},
+    {"name": "920.5", "field": 99.97, "type": "regular"},
+    {"name": "920.5", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

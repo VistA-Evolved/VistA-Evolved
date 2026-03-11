@@ -1,0 +1,90 @@
+{
+  "fileNumber": 352.4,
+  "fileName": "NON-BILLABLE CLINICS",
+  "globalRoot": "",
+  "globalReference": "^IBE(352.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field is a pointer to the HOSPITAL LOCATION (#44) file and identifies the clinic which is being flagged as billable or non-billable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which billing for this clinic should be ignored or activated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IGNORE MEANS TEST BILLING?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine whether Means Test billing should be ignored or activated, as of the EFFECTIVE DATE (field #.02).   Please note that you only need an entry in this file for a clinic for which you would like Means Test billing to be IGNORED. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:MEANS TEST;2:THIRD PARTY;",
+      "helpText": "This specifies the type of billing this bill/not bill Clinic flag applies to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "THIRD PARTY NON-BILLABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the clinic should be billed to a  Third Party payer. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "THIRD PARTY AUTO BILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;0:YES;",
+      "helpText": "Enter 'No' if the Third Party auto biller should NOT create bills for visits with this clinic.  This should only be set for clinics that are billable. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT2", "field": },
+    {"name": "AIVDTT", "field": },
+    {"name": "AIVDTT1", "field": },
+    {"name": "AIVDTT2", "field": },
+    {"name": "B", "field": },
+    {"name": "352.4", "field": .01, "type": "regular"},
+    {"name": "352.4", "field": .01, "type": "regular"},
+    {"name": "352.4", "field": .01, "type": "regular"},
+    {"name": "352.4", "field": .02, "type": "regular"},
+    {"name": "352.4", "field": .02, "type": "regular"},
+    {"name": "352.4", "field": .04, "type": "regular"},
+    {"name": "352.4", "field": .04, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

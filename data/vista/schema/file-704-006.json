@@ -1,0 +1,86 @@
+{
+  "fileNumber": 704.006,
+  "fileName": "CP_PROTOCOL_LOCATION",
+  "globalRoot": "704.006",
+  "globalReference": "^MDC(704.006,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUBSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "RP101'",
+      "required": true,
+      "pointerTo": 101,
+      "helpText": "This field identifies the subscriber protocol to be used to send the  message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field identifies the target MEDICAL CENTER DIVISION for the message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This field identifies the target WARD location for the message. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MESSAGE_TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the type of message to be sent. A sample MESSAGE TYPE could be \"ADT\" . ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EVENT_TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message's EVENT TYPE. A sample EVENT TYPE could be \"A01\" ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be the alpha-numeric portion of the message's Global Unique Identifier (GUID), if the message is generated. A sample ID could be \"C42AC54282B642F4950E179A3D43AA85\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the assigned name for the message. A sample NAME could be  \"ADMIT2DEVICEX\" . ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "INSTA08", "field": },
+    {"name": "704.006", "field": .01, "type": "regular"},
+    {"name": "704.006", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

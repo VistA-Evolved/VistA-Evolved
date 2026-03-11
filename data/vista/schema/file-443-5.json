@@ -1,0 +1,69 @@
+{
+  "fileNumber": 443.5,
+  "fileName": "P.O./REQUEST/R.R. PRINT LOG",
+  "globalRoot": "443.5I",
+  "globalReference": "^PRC(443.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the number of the print log. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF PRINTOUT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R1:REQUESTS TO A&MM;R2:REQUESTS TO FISCAL (1358);P1:P.O.'S TO FISCAL;P2:P.O.'S TO A&MM;",
+      "helpText": "This is the type of printout logged within the date/time specified. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINT START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the starting date/time for which the print log is to be kept. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRINT END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the ending date/time for which the print log is to be kept. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "P.O. OR REQUEST NO.",
+      "dataType": "SUBFILE",
+      "rawType": "443.51A",
+      "required": false,
+      "helpText": "This is the purchase request number. ",
+      "isMultiple": true,
+      "subFileNumber": 443.51,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "443.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(443.5,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": Z0, "value": "S:$D(Y) Z=Y S Y=$P(^(0),U,3) X ^DD(\"DD\") W \"FROM \",Y S:$D(Z) Y=Z"},
+    {"field": Z1, "value": "S:$D(Y) Z=Y S Y=$P(^(0),U,4) X ^DD(\"DD\") W \"TO \",Y S:$D(Z) Y=Z"}
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "fileNumber": 9.95,
+  "fileName": "PATCH MONITOR PARAMETER",
+  "globalRoot": "9.95",
+  "globalReference": "^XPD(9.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The free text name of the facility that is tracking the patches. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIL GROUPS",
+      "dataType": "POINTER",
+      "rawType": "9.951P",
+      "required": false,
+      "helpText": "This is a multiple field that has all the mail groups you wish to send an  uninstalled patch bulletin to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF DAYS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "If the site wishes to keep the data recording patch isntallations on  file, this field keeps the number of days the site wishes to keep on  file.  This field is not used if field 3, DELETE INSTALLED PATCHES? is  answered 1 or YES. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DELETE INSTALLED PATCHES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "If the site wishes, patches that are installed may be deleted by the  night time job.  This is only if they wish NOT to track timely  installation.   If this field is answered 1 or YES, field 2, NUMBER OF DAYS TO KEEP DATA  is ignored. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REPORTING GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "9.954",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9.954,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

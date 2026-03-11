@@ -1,0 +1,39 @@
+{
+  "fileNumber": 102.22,
+  "fileName": "CPRS QUERY CONSTRAINT",
+  "globalRoot": "102.22",
+  "globalReference": "^ORD(102.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the constraint.  The graphical interface references values for the constraint using this name.  The constraint is passed into the query processer as a name=value pair, also using this name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EDITOR",
+      "dataType": "POINTER",
+      "rawType": "RP102.23'",
+      "required": true,
+      "pointerTo": 102.23,
+      "helpText": "Identifies the editor that would be used in the graphical interface that should be used whenever the constraint needs to be modified. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "102.22", "field": .01, "type": "regular"},
+    {"name": "102.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

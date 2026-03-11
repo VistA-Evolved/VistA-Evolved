@@ -1,0 +1,90 @@
+{
+  "fileNumber": 62.5,
+  "fileName": "LAB DESCRIPTIONS",
+  "globalRoot": "62.5I",
+  "globalReference": "^LAB(62.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the shorthand notation of a lab description. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains a synonym of the name, maximum of 9 characters. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the full description of the name (lab description).  It is NOT used for the anatomic pathology descriptions. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LAB;E:AP EM;S:AP SURG;C:AP CYTO;M:MICRO;G:GRAM STAIN;F:FUNGUS;T:TB;P:PARASITE;V:VIRUS;Y:SPUTUM SCREEN;W:SMEAR;A:ORDER;D:BB DISP;R:BB TRANS;X:BB TESTING;Z:BB COLLECT;I:AP GENERAL;J:BB AUDIT;K:GENERAL;B:BB RELEASE;",
+      "helpText": "This describes the type of screen this lab description is associated with, i.e., gram stain, hematology, microbiology, accession comments, or smear/prep. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SORTING GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is available for the user to sort the Lab Descriptions into categories of the users own choosing.  For example, one screened set of descriptions could be divided into a number of different areas for printing on different pages. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PLURAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the correct plural form of the name. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SPECIMEN DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "62.51",
+      "required": false,
+      "helpText": "This is a description of the specimen that may be as long as you like.  The FileMan word-processing editor may be used to modify the text.  This is the description that is used for the anatomic pathology options  and NOT the EXPANSION field. ",
+      "isMultiple": true,
+      "subFileNumber": 62.51,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "62.5", "field": .01, "type": "regular"},
+    {"name": "62.5", "field": .01, "type": "regular"},
+    {"name": "62.5", "field": .5, "type": "regular"},
+    {"name": "62.5", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": 5, "value": "W \"\""}
+  ]
+}

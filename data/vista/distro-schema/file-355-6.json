@@ -1,0 +1,38 @@
+{
+  "fileNumber": 355.6,
+  "fileName": "INSURANCE RIDERS",
+  "globalRoot": "355.6",
+  "globalReference": "^IBE(355.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Rider.  The entries in this file are generic riders that are commonly purchased as add-on insurance to a group plan. Many plans allow the purchase of add-on riders while many do not. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "355.611",
+      "required": false,
+      "helpText": "This is a description of the riders. ",
+      "isMultiple": true,
+      "subFileNumber": 355.611,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

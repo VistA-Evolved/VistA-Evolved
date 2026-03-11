@@ -1,0 +1,184 @@
+{
+  "fileNumber": 724,
+  "fileName": "DSS UNIT",
+  "globalRoot": "724I",
+  "globalReference": "^ECD(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of this DSS unit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "This is the name of the service associated with this DSS unit. You can select service from entries in the SERVICE/SECTION file (#49). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEDICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "RP723'",
+      "required": true,
+      "pointerTo": 723,
+      "helpText": "This is the name of the medical specialty associated with this DSS unit. You can select a medical specialty from entries in the MEDICAL SPECIALTY file (#723). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST CENTER",
+      "dataType": "POINTER",
+      "rawType": "RP420.1'",
+      "required": true,
+      "pointerTo": 420.1,
+      "helpText": "This is the cost center associated with this DSS unit. You can select cost center from entries in the COST CENTER file (#420.1). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UNIT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains a number that is used locally to identify and classify DSS units. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INACTIVE (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field tracks the active or inactive status of this DSS unit. An inactive DSS unit is set to \"YES\" or \"1\". An active DSS unit is set to \"NO\", \"0\", or a null.   DSS units that are inactive cannot be selected for use during data entry. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "*OLD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This field was utilized when converting DSS units from being stored in the SERVICE/SECTION file (#49) to the DSS UNIT file (# 724). This field will be deleted in a future release of Event Capture. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USE FOR EVENT CAPTURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field contains a flag set for use in the Event Capture software.   If this flag is set to \"YES\" or \"1\", this DSS unit will be displayed to users of the Event Capture software. If this flag is set to \"NO\", \"0\", or a null, this DSS unit will not be displayed to users of the Event Capture software. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "*USE FOR IFCAP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field was created for identifying DSS units to be utilized within the IFCAP software. This was part of the pilot project. This data is not used by the Event Capture V.2.0 software.   This field will be removed in a future release of the Event Capture software. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ASSOCIATED STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This field indicates a DSS ID associated with the DSS unit. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CATEGORY (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field tracks the use of categories during an Event Capture data entry session.   If you would like to utilize categories to group procedures during data entry, this field should be set to \"YES\" or \"1\". When set to \"NO\", \"0\", or a null, categories will not be used during data entry.   Until event code screens have been defined for the DSS unit, the user may change the category setting.  Once event code screens have been defined the user may only change the category setting from yes to no to ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATA ENTRY DATE/TIME DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NOW;X:NONE;",
+      "helpText": "This field contains the default date and time for all data entry within this DSS unit. The default may be set for  for NOW or \"X\" for NONE.   When set for \"N\", time is included in the default. When set to \"X\" or null a default date and time is not set. During all data entry within this DSS unit, the selected default will be used as the VA FileMan date default within the routine.  It may be changed as necessary for individual data entry operations. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SEND TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Send All Records;N:Send No Records;OOS:Send OOS Records;",
+      "helpText": "This field controls the method of sending data, by DSS Unit, to the PCE software. If the field contains an A (all records) or OOS (Occasion Of Service) for this DSS Unit, data will be filed with PCE.  If the field contains an N or is null, no filing will occur. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CREDIT STOP",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "Credit stop code associated with this DSS Unit. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CHAR4",
+      "dataType": "POINTER",
+      "rawType": "*P728.441'",
+      "required": false,
+      "pointerTo": 728.441,
+      "helpText": "The CHAR4 code associated with this DSS Unit. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ALLOW DUPLICATES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will control whether workload associated with this DSS Unit, when entered through the spreadsheet upload process, can be duplicated.   A value of yes will allow the user to override the duplicate entry warning and create duplicate workload. ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AOLD", "field": },
+    {"name": "ASER", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "724", "field": .01, "type": "regular"},
+    {"name": "724", "field": 1, "type": "regular"},
+    {"name": "724", "field": 3, "type": "regular"},
+    {"name": "724", "field": 4, "type": "regular"},
+    {"name": "724", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"   \",$P(^(0),U,5)"}
+  ]
+}

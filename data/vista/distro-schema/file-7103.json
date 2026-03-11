@@ -1,0 +1,131 @@
+{
+  "fileNumber": 7103,
+  "fileName": "NOIS EVENTS",
+  "globalRoot": "7103",
+  "globalReference": "^FSCD(\"EVENTS\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TIME ZONE",
+      "dataType": "POINTER",
+      "rawType": "P7106.5'",
+      "required": false,
+      "pointerTo": 7106.5,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P7105.8'",
+      "required": false,
+      "pointerTo": 7105.8,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P7105.5'",
+      "required": false,
+      "pointerTo": 7105.5,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7103.08",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 7103.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FUNCTIONAL AREA",
+      "dataType": "POINTER",
+      "rawType": "P7106.4'",
+      "required": false,
+      "pointerTo": 7106.4,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OTHER GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7103", "field": .01, "type": "regular"},
+    {"name": "7103", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

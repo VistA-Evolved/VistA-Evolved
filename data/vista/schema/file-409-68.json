@@ -1,0 +1,289 @@
+{
+  "fileNumber": 409.68,
+  "fileName": "OUTPATIENT ENCOUNTER",
+  "globalRoot": "409.68DI",
+  "globalReference": "^SCE(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the date and time when outpatient encounter occurred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient associated with the encounter. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLINIC STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "RP40.7'I",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "This field contains the CLINIC STOP CODE associated with the outpatient encounter. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'I",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field contains the location, usually a clinic, where the encounter took place.  This field is optional. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VISIT FILE ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P9000010",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field indicates the VISIT file entry associated with this encounter.  This field is  optional and will only be filled in if the site is running the Visit Tracking module. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PARENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.68'I",
+      "required": false,
+      "pointerTo": 409.68,
+      "helpText": "This field associates the current encounter with a parent encounter. For example, if there are add/edit stop codes associated with an appointment, then all the add/edit encounter entries will have this parent field filled in with the appointment encounter.  This relationship allows the check out software to use the check out information of the appointment for the add/edits, as well. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CHECK OUT PROCESS COMPLETION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the check out process has been successfully completed for this outpatient encounter. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ORIGINATING PROCESS TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:APPOINTMENT;2:STOP CODE ADDITION;3:DISPOSITION;4:CREDIT STOP CODE;",
+      "helpText": "This field indicates the type of process that created this encounter. The types are the following:        1 - appointment        2 - add/edit stop code        3 - disposition ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXTENDED REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field indicates the internal multiple entry of the originating process that created the encounter.   The reference mapping is the following:           Originating Process    Global Reference         -------------------    ----------------         1 - appointments       ^SC(<LOCATION>,\"S\",<DATE/TIME>,1,<EXTERNAL REF>)             Note: If this field is equal to 999999, it means that the                   appointment encounter was created by the ACRP Database                   Conversion func",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP409.1'",
+      "required": true,
+      "pointerTo": 409.1,
+      "helpText": "This field contains the appointment type associated with the outpatient encounter. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'I",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This field indicates the medical center division where the encounter took place. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P409.63'",
+      "required": false,
+      "pointerTo": 409.63,
+      "helpText": "This field indicates the status of the encounter. Currently, the only possible statuses are the following:        CHECKED OUT        PENDING ACTION        INPATIENT APPOINTMENT        NON-COUNT  Future, no-showed and cancelled appointments are not included in this file at the present time. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ELIGIBILITY OF ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "RP8'I",
+      "required": true,
+      "pointerTo": 8,
+      "helpText": "This field contains the eligibility associated with the encounter. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "UNIQUE VISIT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique visit ID created by PCE.  It is stored for every encounter.  This number will be obtained from a supported call provided by PCE.   ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "EDITED LAST BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records the user who last edited the entry. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DATE/TIME LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the entry was last edited.   ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records the user who created the entry. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the entry was made. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "COMPUTER GENERATED?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": " This field is used for data validation. It helps determine which entries  were automatically generated by outside packages. This field should not be  edited. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "UNRESOLVED APPT TYPE REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DUAL ELIGIBILITY;2:POSSIBLE COMP & PEN;",
+      "helpText": " If visit has an appointment type of computer generated, the  UNRESOLVED APPT TYPE REASON field will also be stuffed with the best  possible reason why an appropriate appointment type could not be  determined.   Currently, if a patient has a comp and pen exam within the last  three days of the visit date which is computer generated the  unresolved reason will be POSSIBLE COMP & PEN.   If a patient has a dual eligibility and one of those eligibilities  is Sharing Agreement, Employee, or Collatera",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 901,
+      "fieldName": "CREATED BY CONVERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to 'Yes' if the encounter is created by the ACRP Database Conversion patch (SD*5.3*211). ",
+      "fieldNumber_": 901
+    },
+    {
+      "fieldNumber": 902,
+      "fieldName": "ORIGINAL CREATE DT FROM 'SDV'",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this encounter was created by the ACRP Database Conversion patch (SD*5.3*211) from an entry in the SCHEDULING VISITS (#409.5) file then this field contains the date that the original entry in the SCHEDULING VISITS file was created. ",
+      "fieldNumber_": 902
+    },
+    {
+      "fieldNumber": 903,
+      "fieldName": "NON-HISTORICAL STOP CODE USED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to \"YES\" if this encounter was created by ACRP Database Conversion patch (SD*5.3*211) and the stop code associated with the encounter was obtained from the HOSPITAL LOCATION (#44) file entry for the clinic at the time of the conversion.   In other words, there was no mechanism available to absolutely determine the historical value of either a clinic stop code or a credit stop code for a clinic at the time the encounter actually occurred. ",
+      "fieldNumber_": 903
+    },
+    {
+      "fieldNumber": 904,
+      "fieldName": "CONVERSION COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not the conversion process has been completed for this encounter. ",
+      "fieldNumber_": 904
+    },
+    {
+      "fieldNumber": 905,
+      "fieldName": "DATE OF LAST CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the conversion process was last completed for this encounter. ",
+      "fieldNumber_": 905
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "ACG", "field": },
+    {"name": "ACG1", "field": },
+    {"name": "ACHILD", "field": },
+    {"name": "ADFN", "field": },
+    {"name": "ADFN1", "field": },
+    {"name": "AG", "field": },
+    {"name": "AG1", "field": },
+    {"name": "ANT", "field": },
+    {"name": "APAR", "field": },
+    {"name": "AVCNT", "field": },
+    {"name": "AVSIT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.68", "field": .01, "type": "regular"},
+    {"name": "409.68", "field": .01, "type": "regular"},
+    {"name": "409.68", "field": .01, "type": "regular"},
+    {"name": "409.68", "field": .01, "type": "regular"},
+    {"name": "409.68", "field": .02, "type": "regular"},
+    {"name": "409.68", "field": .02, "type": "regular"},
+    {"name": "409.68", "field": .05, "type": "regular"},
+    {"name": "409.68", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "409.68", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "409.68", "field": .07, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "409.68", "field": .07, "type": "regular"},
+    {"name": "409.68", "field": .1, "type": "regular"},
+    {"name": "409.68", "field": 201, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(40.7,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.7,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

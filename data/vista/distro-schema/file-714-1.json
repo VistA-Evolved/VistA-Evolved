@@ -1,0 +1,45 @@
+{
+  "fileNumber": 714.1,
+  "fileName": "LTC CO-PAY EXEMPTION",
+  "globalRoot": "714.1",
+  "globalReference": "^EAS(714.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the LTC co-pay exemption is active and can be selected as a reason for exemption from LTC co-payments. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "714.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

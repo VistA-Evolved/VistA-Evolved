@@ -1,0 +1,82 @@
+{
+  "fileNumber": 161.82,
+  "fileName": "FEE BASIS PURPOSE OF VISIT",
+  "globalRoot": "161.82I",
+  "globalReference": "^FBAA(161.82,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the Purpose of Visit to which a payment will be related. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "161.821",
+      "required": false,
+      "helpText": "This allows the input of a more detailed description of the 'Purpose of Visit' code. ",
+      "isMultiple": true,
+      "subFileNumber": 161.821,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FEE PROGRAM ASSOCIATED WITH",
+      "dataType": "POINTER",
+      "rawType": "P161.8'",
+      "required": false,
+      "pointerTo": 161.8,
+      "helpText": "The Fee program to which this Purpose of Visit is related. A Purpose of Visit can relate to only one Fee program. For example, purpose of visit 'Community Nursing Home for SC Disabilities' is ONLY related to the 'Community Nursing Home' fee program. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUSTIN CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Austin system code required for this Purpose of Visit. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field allowed the Fee Basis software clean-up any duplicates that may have resided in this file without re-indexing all payment records. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LTC COPAY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LTC SERVICE IS A SUBJECT FOR LTC-COPAY;2:LTC SERVICE IS EXEMPT FROM LTC-COPAY;3:ALL OTHER LTC SERVICES;",
+      "helpText": "This field is used to determine LTC services in order to treat them differently in Potential Cost Recovery Report. Null - non-LTC (Means Test) care; 1 - LTC care that can be a subject of LTC copay; 2 - LTC care that is exempt from LTC copay and it cannot be a subject for Means Test copay either; 3 - all other LTC services; ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.82", "field": .01, "type": "regular"},
+    {"name": "161.82", "field": 3, "type": "regular"},
+    {"name": "161.82", "field": 3, "type": "regular"},
+    {"name": "161.82", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

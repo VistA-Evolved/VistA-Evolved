@@ -1,0 +1,47 @@
+{
+  "fileNumber": 789.5,
+  "fileName": "EEO SERVER PARAMETERS",
+  "globalRoot": "789.5",
+  "globalReference": "^EEO(789.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVER STATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is a required field that identifies the server station. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is a required field that points to the server station in the Domain file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EEO OFFICER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "789.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

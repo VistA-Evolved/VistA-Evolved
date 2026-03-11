@@ -1,0 +1,126 @@
+{
+  "fileNumber": 404.44,
+  "fileName": "PCMM PARAMETER",
+  "globalRoot": "404.44",
+  "globalReference": "^SCTM(404.44,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is a bogus field.  There should only be one entry for this file.  The IEN of this entry must be 1 at this time.  If other entries are added and the code not adjusted PCMM will not function properly. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DISABLE ALL CLIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to yes if one wants to disable all PCMM GUI client workstations. A null value will work the same as a zero. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DISABLE CLIENT AUTO-UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if client auto updating, registering the client in 404.46, can happen. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RPC TIME LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This value represents the maximum number of seconds the client should wait for a response from the server.  This value should be set as low as possible consistent with allowing the client to avoid timeout errors. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "HL7 TRANSMIT LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This value represents the maximum number of records which will be transmitted during any given PCMM HL7 transmission session.  The default value is 999999.  It is recommended this value be left AS IS, unless the background HL7 messaging volume is adversely affecting system performance. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "HL7 AUTO RETRANSMIT PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the number of days that an auto retransmit of HL7 messages should occur if no ACK message is received. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "BASELINE RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the date the PCMM Baseline was run.   The Baseline can only run once at a site. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SHORT INTERVAL EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used for debugging only.  Normally it will hold no value.   This field should not be populated unless requested by EVS or Field  Office personnel trouble shooting a PCMM issue.   When a date greater than the current date is entered in this field the  PCMM automated inactivation process will operate in short interval mode  until the current date is greater than the date entered in this field.   The following PCMM processes are affected while a future date populates  this field:   In",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PC STAFF AUTO INACTIVATE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date Primary Care providers (PCPs and APs) and  staff with inconsistent Person Class  and Standard Role  entries will be inactivated due to Primary Care business rules.  Only  physicians, NPs and PAs can be Primary Care Providers (PCP.)  Only Resident or Intern (Physicians,) NPs, and  PAs can be Associate Providers (AP.) This date is 6 Months after installation of patch SD*5.3*297. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TEAM AUTO INACTIVATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to YES, then when a patient is inactivated from  their primary care provider assignment by the nightly job they will also be inactivated from the same TEAM and all other positions on that TEAM.   If this field is set to NO, then when a patient is inactivated from their  primary care panel by the nightly job only thier primary care provider  assignment will be inactivated.   The default value is YES. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PC STAFF INACTIVATION RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records the date Primary Care providers are inactivated by the  PCMM nightly job process.   Six months after the installation of patch SD*5.3*297 all primary care  providers identified as having an incorrect person class assignment will  be inactivated.  This is a one time, clean-up event for PCMM Primary Care  Providers.   This field is populated by a background process and should be manipulated  through FileMan. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "404.44", "field": .01, "type": "regular"},
+    {"name": "404.44", "field": 19, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

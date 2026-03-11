@@ -1,0 +1,35 @@
+{
+  "fileNumber": 2006.036,
+  "fileName": "ROUTING STATISTICS",
+  "globalRoot": "2006.036",
+  "globalReference": "^MAGQUEUE(2006.036,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DETAILS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.03601A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.03601,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

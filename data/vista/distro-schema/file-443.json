@@ -1,0 +1,190 @@
+{
+  "fileNumber": 443,
+  "fileName": "REQUEST WORKSHEET",
+  "globalRoot": "443IP",
+  "globalReference": "^PRC(443,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "2237 TRANSACTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP410'X",
+      "required": true,
+      "pointerTo": 410,
+      "helpText": "This is the purchase request transaction number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P442.3'",
+      "required": true,
+      "pointerTo": 442.3,
+      "helpText": "This is the current status of the 2237 request. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCOUNTABLE OFFICER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the accountable officer. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIO",
+      "required": false,
+      "helpText": "This is the electronic signature of the accountable officer. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  The version of the validation code. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The signature block name. ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ESIG DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the officer signed the request. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE SIGNED BY SERVICE",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This is the date the request was signed by the Service. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "DATE REQUIRED BY SVC",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This is the date this request is required by the service. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PURCHASING AGENT",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the purchasing agent responsible for this request. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE ASSIGNED TO PA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this request was assigned to the purchasing agent. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CP FUND STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INSUFFICIENT FUNDS;",
+      "helpText": "This is the Control Point Fund status. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TYPE OF REQUEST",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:UNPOSTED;2:POSTED;3:SERVICE;4:BULK SALE;5:NX POSTED;",
+      "helpText": "This is the type of request. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SOURCE OF REQUEST",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:VA STOCK;2:GSA/DLA STOCK;3:EXCESS;4:NOT AVAILABLE FROM ANY OF THESE SOURCES;",
+      "helpText": "This is the source of the request. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INVENTORY/DISTRIBUTION POINT",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This is the inventory/distribution point of the request. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REMARK",
+      "dataType": "SUBFILE",
+      "rawType": "443.012",
+      "required": false,
+      "helpText": "This is the remarks field. ",
+      "isMultiple": true,
+      "subFileNumber": 443.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "EXPENDABLE/NONEXPENDABLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:EXPENDABLE;N:NON-EXPENDABLE;",
+      "helpText": "This field indicates if the procurement is for  expendable or non-expendable goods, as required by Public Law 100-322. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "443", "field": .01, "type": "regular"},
+    {"name": "443", "field": .01, "type": "regular"},
+    {"name": "443", "field": 1.5, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.5, "value": "W \"   \",$S($D(^PRCD(442.3,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 8, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(443,8,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,8)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": Z1, "value": "W:Y]\"\"&($P($G(^PRCS(410,+Y,0)),U,10)]\"\") \"    \",$P($G(^PRC(411,$P($G(^PRCS(410,+Y,0)),U,10),0)),U)"}
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "fileNumber": 727.805,
+  "fileName": "NURSING EXTRACT",
+  "globalRoot": "727.805",
+  "globalReference": "^ECX(727.805,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the facility for this extract record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number.   Any patient with an SSN beginning with \"00000\" is considered a \"test patient\" and will not be included in the extract.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates whether the patient was an inpatient or an outpatient for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the Nursing classification was done. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACUITY LEVEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's current Nursing AMIS classification or acuity rating. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ENTERED BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COMPUTER;U:USER;",
+      "helpText": "Enter C if the classification was computer generated, or U if it was  user (RN) generated. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CLASSIFIER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Identifies the person making the classification.  Pointer to the  NEW PERSON FILE (#200) ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NURSE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P211.4'",
+      "required": false,
+      "pointerTo": 211.4,
+      "helpText": "Ward on which the patient is classified. Points to the NURS LOCATION  file (#211.4). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NURSING BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "P213.3'",
+      "required": false,
+      "pointerTo": 213.3,
+      "helpText": "Nursing bedsection for which the patient is classified. Points to the  NURS AMIS WARD file (#213.3). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PTF CODE of the treating specialty associated with this extract record. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the admission for this patient occurred. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ADMISSION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A 6-character numeric string which represents the time of day at which the patient admission occurred. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MASTER PATIENT INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A national VA system identifier which uniquely identifies a patient. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DSS PRODUCT DEPARTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Department Number designated to  the Nursing care product. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  DOM, PRRTP and SAARTP Indicator indicates if the patient is admitted to either a DOM, PRRTP or SAARTP at the time hospital service is provided. Domiciliary (DOM) Psychiatric Residential Rehabilitation Treatment Program (PRRTP) Substance Abuse Residential Rehabiltation Treatment Program (SARRTP) ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is derived from the inpatient/outpatient status, treating specialty, and DSS Identifier or feeder key values in the record. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is derived from the inpatient/outpatient status, SSN, admit/visit date, treating specialty, observation patient indicator, and DSS Identifier or feeder key values in the record. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Data represents the medical center division the work was performed in. This field corresponds to an entry in the INSTITUTION file (#4). ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DSS IP #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Product Number designated to the  patient care product. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.805", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "fileNumber": 8973.2,
+  "fileName": "CP TIMING",
+  "globalRoot": "8973.2",
+  "globalReference": "^KMPD(8973.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SENT TO NATIONAL DATABASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SERVER START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SERVER DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NEW PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "KMPTMP SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DAILY - SENT TO NATIONAL DB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "ACLNM", "field": },
+    {"name": "ADT", "field": },
+    {"name": "ANEWPER", "field": },
+    {"name": "ASSCLDTTM", "field": },
+    {"name": "ASSDTPT", "field": },
+    {"name": "ASSDTTM", "field": },
+    {"name": "ASSIPDTTM", "field": },
+    {"name": "ASSNPDTTM", "field": },
+    {"name": "ASTDTTM", "field": },
+    {"name": "ASVDTSS", "field": },
+    {"name": "ATITLE", "field": },
+    {"name": "ATMPSS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8973.2", "field": .01, "type": "regular"},
+    {"name": "8973.2", "field": .03, "type": "regular"},
+    {"name": "8973.2", "field": .03, "type": "regular"},
+    {"name": "8973.2", "field": .03, "type": "regular"},
+    {"name": "8973.2", "field": .05, "type": "regular"},
+    {"name": "8973.2", "field": .06, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .07, "type": "regular"},
+    {"name": "8973.2", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W, "value": "D:$G(Y) ID1^KMPDUT2(Y)"}
+  ]
+}

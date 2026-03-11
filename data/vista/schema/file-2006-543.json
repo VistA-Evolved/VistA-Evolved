@@ -1,0 +1,233 @@
+{
+  "fileNumber": 2006.543,
+  "fileName": "AUTOMATIC DICOM Q/R RUN STATS",
+  "globalRoot": "2006.543",
+  "globalReference": "^MAGDSTT(2006.543,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "START TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the batch DICOM Q/R run was started. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGING SERVICE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CONSULTS;R:RADIOLOGY;",
+      "helpText": "Imaging Service, R=Radiology, C=Consults. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RUN TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the batch Q/R run processed a study. It is automatically updated during a run each time a study is processed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RUN OPTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:COMPARE IMAGE COUNTS;R:RETRIEVE MISSING IMAGES;",
+      "helpText": "There are two run options, compare counts of images between VistA and PACS, and retrieve missing images from PACS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "The status indicates the state of the run. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SCAN MODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DATE;N:NUMBER;P:PATIENT;",
+      "helpText": "There are three modes for traversing the radiology report file (^RARPT) or the consult request file (^GMR(123)) to look for images. First is by date of the completion of the study, second is by the internal entry number (IEN) of the file, and third is by patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACS Q/R SCP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is the name of the Q/R SCP in the DICOM Gateway SCU_LIST.DIC. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "C-MOVE DESTINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the DICOM Application Entity Title of the C-MOVE destination. It is set to the MOVE DESTINATION AE TITLE configuration parameter of the DICOM Image Gateway that handled the retrieve request. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the starting date for a DATE or PATIENT scan. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the ending date/time for a DATE or PATIENT scan. It has a value typically of CYYMMDD.235959 so that it is completely inclusive of the end date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STARTING IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the starting radiology report IEN in the RAD/NUC MED REPORTS file (#74) or the consult request IEN in the REQUEST/CONSULTATION file (#123).  It is only defined for the NUMBER scan mode. The date of the report or study may follow the IEN value. That is the reason the FREE TEXT datatype is used instead of NUMBER. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "BATCH SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of radiology reports or consult/procedure requests that will be processed in this NUMBER scan mode. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SORT ORDER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ASCENDING;D:DESCENDING;",
+      "helpText": "This is the sort order for the traversing of the database. It can either be in ascending (chronological) order or  in descending (reverse chronological) order. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "HOURS OF OPERATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ24",
+      "length": 24,
+      "required": true,
+      "helpText": "This is a string like YYYYYNNNNNYYYYYYYYYYYYYY that indicates when this process should run. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the patient's DFN value.  It is not meant to be a pointer. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STUDY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the study is displayed in MM/DD/YY format. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "REPORT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the internal entry number of the radiology report file (#74), or the request/consultation file (#123).  It is not meant to be pointer. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "The radiology accession number is in either MMDDYY-nnnnn or SSS-MMDDYY-nnnn format.  The consult accession number is in SSS-GMR-nnnnnnnnn format. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the DUZ of the user who initiated the Q/R run. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MENU OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the name of the option on the MAGD STUDY TRACKER menu. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CONSULT SERVICE",
+      "dataType": "POINTER",
+      "rawType": "2006.5431P",
+      "required": false,
+      "helpText": "This is a list of the CPRS Request Services that are selected for this run. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "STATISTICS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5432",
+      "required": false,
+      "helpText": "This is a list of the various statistical parameters that are acquired for this run. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5432,
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.543", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

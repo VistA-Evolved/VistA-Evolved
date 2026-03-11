@@ -1,0 +1,151 @@
+{
+  "fileNumber": 404.41,
+  "fileName": "OUTPATIENT PROFILE",
+  "globalRoot": "404.41P",
+  "globalReference": "^SCPT(404.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a surrogate for the patient file.  It contains only outpatient information. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEND APPOINTMENT LETTERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CONTRACT NURSING HOME PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates if the patient is a contract nursing home patient. This can then be used in helping to schedule the patient to assure proper personnel are available before and after the appointment. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRIMARY CARE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates if patient has been or will be assigned to a Primary Care Team. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CPRS HEADER TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains PACT assignment data to be used in the PCMM/R Header in CPRS for this patient. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CPRS PC WINDOW CACHE",
+      "dataType": "SUBFILE",
+      "rawType": "404.411",
+      "required": false,
+      "helpText": "This field will contain a cached version of a patient's PACT and other team assignment details that is displayed in the CPRS PCMMR Details Window. ",
+      "isMultiple": true,
+      "subFileNumber": 404.411,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "404.4125",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 404.4125,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "CURRENT PC PRACTITIONER ",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current Primary Care Practitioner, from the Primary Care Profile History File. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "CURRENT PC ATTENDING",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current primary care attending practitioner from the Patient Team/Position Assignment file. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "CURRENT PC TEAM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current primary care team. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "CURRENT PC PRACTITIONER POS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current primary care practitioner position. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "*CURRENT PC ATTENDING POSITION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current primary care attending practitioner position for the patient. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "CURRENT ASSOCIATE PC PROVIDER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current Associate Primary Care provider. ",
+      "fieldNumber_": 206
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "APC1", "field": },
+    {"name": "APC2", "field": },
+    {"name": "B", "field": },
+    {"name": "404.41", "field": .01, "type": "regular"},
+    {"name": "404.41", "field": .01, "type": "regular"},
+    {"name": "404.41", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

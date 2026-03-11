@@ -1,0 +1,88 @@
+{
+  "fileNumber": 125.12,
+  "fileName": "PROBLEM SELECTION CATEGORY CONTENTS",
+  "globalRoot": "125.12P",
+  "globalReference": "^GMPL(125.12,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP125.11'",
+      "required": true,
+      "pointerTo": 125.11,
+      "helpText": "This is the problem category that this problem entry belongs to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is a number which determines the order this problem will appear within this group; up to two decimal places may be used.  Problems in a selection list will be automatically numbered for display and selection in whole numbers, beginning with 1. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This is a problem from the Clinical Lexicon Utility, which is to be included in this group. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the problem as it is to appear on the selection list display; if a suitable match was not found during a search of the Clinical Lexicon Utility and an 'Unresolved' entry was returned, this will be the text as specified by the user. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a code which is to be displayed with the text of this problem; it may be from any coding system, but will generally be assumed to be an ICD Diagnosis in the Problem List context. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SNOMED CT CONCEPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A clinical idea to which a unique ConceptID has been assigned in SNOMED CT. Each Concept is represented by a row in the Concepts Table. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SNOMED CT DESIGNATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A single SNOMED CT Concept may have multiple Designations, where a Designation may be considered an alternate way of expressing the concept. Synonyms, lexical variants, abbreviations are all different types of designations. In many cases, a problem (as reported by the patient) and a finding indicating a problem will share the same concept and concept code (e.g., abdominal pain), but will have different designation codes (i.e., the generic \"abdominal pain\" and \"abdominal pain (finding)\" share the",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "C1", "field": },
+    {"name": "125.12", "field": .01, "type": "regular"},
+    {"name": "125.12", "field": .01, "type": "regular"},
+    {"name": "125.12", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

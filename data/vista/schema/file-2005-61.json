@@ -1,0 +1,108 @@
+{
+  "fileNumber": 2005.61,
+  "fileName": "IMAGING PROCEDURE REFERENCE",
+  "globalRoot": "2005.61",
+  "globalReference": "^MAGV(2005.61,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The ACCESSION NUMBER is the identifier assigned to the procedure instance.  The identifier is usually the procedure accession number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROCEDURE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:Radiology;CON:Consult;LAB:Laboratory;",
+      "helpText": "This field indicates what department the procedure is associated with. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ASSIGNING AUTHORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:US DEPT OF VETERAN AFFAIRS;I:US INDIAN HEALTH SERVICE;D:US DEPT OF DEFENSE;",
+      "helpText": "This field indicates who issued the identifier in field #.01 (ACCESSION NUMBER). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SERVICE INSTITUTION REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.8",
+      "required": false,
+      "pointerTo": 2005.8,
+      "helpText": "This is the institution within VA, MHS or elsewhere at which the imaging  procedure record was created. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .99,
+      "fieldName": "PATIENT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.6",
+      "required": false,
+      "pointerTo": 2005.6,
+      "helpText": "This is the patient to whose record the procedure is to be attached. Parent IEN is used on all levels of the hierarchy  (Patient/Procedure/Study/Series/SOP Instance) to indicate the  immediate higher level in the hierarchy. ",
+      "fieldNumber_": .99
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the Imaging Service Request Issue Date/Time if present. Otherwise, this field stores the Study Date/Time if present.   DICOM elements:  Imaging Service Request Issue Date/Time (0040,2004/0040,2005)  Study Date/Time (0008,0020/0008,0030) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARTIFACT ON FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ON FILE;1:AOF;",
+      "helpText": "This field is a flag that records if an artifact is on file or not. Artifact On File means that at least one Object is already stored on disk. An Object can be an image, an abstract or a text file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This field indicates whether the procedure reference is ACCESSIBLE or  INACCESSIBLE.   ACCESSIBLE means that the procedure reference can be retrieved by imaging  database methods and may have \"child\" study references that are cross  referenced to this procedure reference.   INACCESSIBLE means that the procedure reference will not be retrieved by  imaging database methods and will not have ACCESSIBLE \"child\" procedure references. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PACKAGE INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:RADIOLOGY;LAB:LABORATORY;MED:MEDICINE;NOTE:TIU NOTE;CP:CLINICAL PROCEDURES;SUR:SURGERY;PHOTOID:PHOTO ID;NONE:NONE;CONS:CONSULTS;",
+      "helpText": "This is the VistA package with which the procedure is associated. ",
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.61", "field": .01, "type": "regular"},
+    {"name": "2005.61", "field": .99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

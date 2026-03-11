@@ -1,0 +1,101 @@
+{
+  "fileNumber": 363.2,
+  "fileName": "CHARGE ITEM",
+  "globalRoot": "363.2",
+  "globalReference": "^IBA(363.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "The billable Item that may be charged on a bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CHARGE SET",
+      "dataType": "POINTER",
+      "rawType": "RP363.1'",
+      "required": true,
+      "pointerTo": 363.1,
+      "helpText": "This is the Charge Set that defines this item and the rate the charge is apart of. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The first date this charge amount should be applied to this item for this Charge Set.   This item charge will override any other Charge Item with a previous effective date.   The Charge Item with the most recent effective date will be used as the charge for the item and will be used as the implied inactive date for any previous charges for the item. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date this item is billable for this Charge Set. If the item is still billable but for a different amount add a new Charge Item entry for the item with the correct amount and effective date, it is not necessary to inactivate the old amount.   The Charge Item with the most recent effective date will be used as the charge for the item and will be used as the implied inactive date for any previous charges for the item. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "UNIT CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The dollar amount to be added to a bill for each of this item on the bill. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REVENUE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P399.2'",
+      "required": false,
+      "pointerTo": 399.2,
+      "helpText": "This is the revenue code that will be added to a bill for the charge of this item.  If no revenue code is entered the Charge Set's Default Revenue Code will be used. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P81.3'",
+      "required": false,
+      "pointerTo": 81.3,
+      "helpText": "A CPT charge may be broken into multiple charges by using the modifier.   If a modifier is added this charge will only be added to bills that have both the CPT and modifier combination on the bill.   If no modifier is added then the charge will only be added to bills that have the CPT but no modifier. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BASE CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the Base Charge associated with the item.  This amount will be  added once for the item on the bill, instead of once for each unit of  the item.  Base Charge is appropriate for only specific types of  charges where the total charge for the item is an incremental Unit  charge plus a single Base charge, such as Minutes and Hours. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AIVDTS", "field": },
+    {"name": "AIVDTS1", "field": },
+    {"name": "AIVDTS2", "field": },
+    {"name": "B", "field": },
+    {"name": "363.2", "field": .01, "type": "regular"},
+    {"name": "363.2", "field": .01, "type": "regular"},
+    {"name": "363.2", "field": .02, "type": "regular"},
+    {"name": "363.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

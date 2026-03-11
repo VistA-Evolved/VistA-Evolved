@@ -1,0 +1,121 @@
+{
+  "fileNumber": 15.2,
+  "fileName": "XDR MERGE PROCESS",
+  "globalRoot": "15.2O",
+  "globalReference": "^VA(15.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MERGE FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates the primary file for which this merge process is being run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the original date and time when the merge process began, or if in the future, is scheduled to start. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SCHEDULED;A:ACTIVE NOW;C:COMPLETED;U:UNKNOWN-LOST;R:RESCHEDULED;",
+      "helpText": "This field is used to track the current status of the merge process.  The choices are:   SCHEDULED -  this process is scheduled to run as a task - the start                date/time should be indicated in field .03    ACTIVE    -  the process is currently running and is actively updating                the current time value for the process.    COMPLETED -  the process ran through the all entries to normal                completion.    UNKNOWN-LOST - this is an abnormal status and is set when a ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RESTART DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This value indicates the date and time when the merge process was last restarted or, if in the future, is scheduled to restart.  A restart date/time would only be entered if the merge process was not successful in completing in its first run.  If multiple restarts are required to reach completion, only the last restart would be indicated. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPLETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This value indicates the date and time when the merge process was successfully completed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMBER OF RESTARTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is a simple count of the number of restarts which were required prior to completion of the merge process. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TASK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field shows the task number currently associated with this merge process (scheduled, active, or completed). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HALT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HALT;",
+      "helpText": "This field is a flag which is set if the merge process is supposed to halt.  While the flag might be set manually, it normally would be set by the process when taskmanager indicates the process is to halt, or if a halt merge process option sets the flag.  The flag is necessary to permit communication to multiple threads during processing of phase 3. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MERGE ENTRY",
+      "dataType": "SUBFILE",
+      "rawType": "15.22A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 15.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PACKAGE BEING MERGED",
+      "dataType": "SUBFILE",
+      "rawType": "15.23A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 15.23,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "15.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

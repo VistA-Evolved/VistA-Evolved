@@ -1,0 +1,271 @@
+{
+  "fileNumber": 8925.5,
+  "fileName": "TIU AUDIT TRAIL",
+  "globalRoot": "8925.5P",
+  "globalReference": "^TIU(8925.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIU DOCUMENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP8925'",
+      "required": true,
+      "pointerTo": 8925,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INITIAL CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FINAL CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRE-EDIT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8925.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8925.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REASSIGNMENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time at which the document was reassigned from one visit to another. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "REASSIGNED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who reassigned the document from one visit to another. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "INITIAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient from whom the document was reassigned. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "FINAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient to whom the document was reassigned. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "INITIAL VISIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of the visit from which the document was reassigned. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "FINAL VISIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time of the VISIT to which the document was reassigned. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "INITIAL VISIT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the Hospital Location of the visit from which the document was reassigned. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "FINAL VISIT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the hospital location of the visit to which the document was reassigned. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "INITIAL VISIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ambulatory;H:hospitalization;I:in hospital;T:telecommunications;E:event (historical);",
+      "helpText": "This is the Type, or Service Category, of the visit from which the document was reassigned. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "FINAL VISIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ambulatory;H:hospitalization;I:in hospital;T:telecommunications;E:event (historical);",
+      "helpText": "This is the Visit Type or Service Category of the Visit to which the document was reassigned. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "INITIAL VISIT RECORD",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is the pointer to the Visit File (#9000010) entry from which the document was reassigned. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "FINAL VISIT RECORD",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is the pointer to the Visit File (#9000010) entry to which the document was reassigned. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DELETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time at which the document was deleted. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person by whom the document was deleted. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "REASON FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:privacy act;A:administrative;",
+      "helpText": "In the event that the document is deleted following signature, indicate wheter it was deleted per the privacy act, or whether the deletion was administrative. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "INTERDISCIPLINARY NOTE ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:Attachment;d:Detachment;",
+      "helpText": "This set of codes describes the action (i.e., Attachment or Detachment) that was carried out for a given ID Entry. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "DATE/TIME OF ACTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and Time at which the entry was attached to (or detached from) its ID Parent. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who attached the ID Entry to (or detached it from) its ID Parent. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "ID ENTRY STATUS",
+      "dataType": "POINTER",
+      "rawType": "P8925.6'",
+      "required": false,
+      "pointerTo": 8925.6,
+      "helpText": "This is the STATUS of the Entry at the time of the action. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "ID PARENT",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This is the ID Parent when the action occurred. ",
+      "fieldNumber_": 3.05
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AID", "field": },
+    {"name": "AR", "field": },
+    {"name": "AR1", "field": },
+    {"name": "B", "field": },
+    {"name": "8925.5", "field": .01, "type": "regular"},
+    {"name": "8925.5", "field": .01, "type": "regular"},
+    {"name": "8925.5", "field": 1.01, "type": "regular"},
+    {"name": "8925.5", "field": 3.05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

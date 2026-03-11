@@ -1,0 +1,76 @@
+{
+  "fileNumber": 703.9,
+  "fileName": "CP CONVERSION",
+  "globalRoot": "703.9",
+  "globalReference": "^MDD(703.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the CP conversion. It is only accessible by the CP conversion routine. It is exported with one \"DEFAULT\" entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TEST;1:REAL;",
+      "helpText": "This field indicates if the CP conversion is in test or real mode. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ADMINISTRATIVE CLOSURE USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field points to the New Person file (#200).  It is used to indicate the Administrative Closure person used to close the TIU documents for the CP conversion. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SCRATCH HFS DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the scratch HFS directory used for the CP conversion.  The CP conversion program will use this directory to convert the Medicine reports. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICINE FILE PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "703.91P",
+      "required": false,
+      "helpText": "This multiple contains the parameter data used for the CP conversion of the Medicine reports. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONVERSION LOG",
+      "dataType": "SUBFILE",
+      "rawType": "703.92",
+      "required": false,
+      "helpText": "This multiple is used to store the data for the conversion log. ",
+      "isMultiple": true,
+      "subFileNumber": 703.92,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "703.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

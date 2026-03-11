@@ -1,0 +1,202 @@
+{
+  "fileNumber": 1.6,
+  "fileName": "POLICY",
+  "globalRoot": "1.6",
+  "globalReference": "^DIAC(1.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30X",
+      "length": 30X,
+      "required": true,
+      "helpText": "The formal unique name of the policy, prefaced with the package namespace specified in the PACKAGE file, or the letter Z or A. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:rule;P:policy;S:set;",
+      "helpText": "This field determines the type of policy to be evaluated. This file is a self-referring hierarchy, grouped via Members by type:  R = Rule, a single logical statement that evaluates to true or false, permitting or denying access to the record  P = Policy, a collection of rules that define access to the record  S = Set, a collection of policies or other sets as needed ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A true (1) value indicates that this policy or rule is not to be used.    If it is encountered while processing an ancestor policy or set, this policy and its descendants will be ignored and the result unchanged.    If this policy is the primary or default for an action, no processing will occur and the result will be indeterminate. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ATTRIBUTE FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "*P1.62'",
+      "required": false,
+      "pointerTo": 1.62,
+      "helpText": "This is an application-defined function that will populate the DIVAL array with target values from the record that are needed to evaluate the policy, in the form DIVAL(\"attribute\")=\"value\". Because the Target attributes must have a value defined, use a string such as 'null' to represent the empty string. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TARGET CONJUNCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "&:AND;!:OR;",
+      "helpText": "The conjunction indicates how multiple target attributes will be handled, when determining if a policy applies to a record. AND will require all targets to match the record, otherwise the policy will not apply; OR will be satisfied if any one of the values matches. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CONDITION CONJUNCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "&:AND;!:OR;",
+      "helpText": "The conjunction indicates how multiple condition results will be handled, when determining the result of a rule. AND will require all results to be true, otherwise the rule will fail; OR will be satisfied if any one of the conditions is true. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESULT FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "*P1.62'",
+      "required": false,
+      "pointerTo": 1.62,
+      "helpText": "This is a function that determines when processing of the current policy or set should cease. It is executed after each member rule or policy is processed, using the value of the DIRESULT variable; some functions may also assign a default value to DIRESULT, if it is undetermined or null. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PERMIT;D:DENY;",
+      "helpText": "This is the effect of the rule, i.e. the result to be returned, if the rule is determined to be true. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1.6011",
+      "required": false,
+      "helpText": "This field contains a brief description of the rule or policy. ",
+      "isMultiple": true,
+      "subFileNumber": 1.6011,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TARGETS",
+      "dataType": "SUBFILE",
+      "rawType": "1.602I",
+      "required": false,
+      "helpText": "This sub-file is a list of attributes, or targets, that must match the record for this policy to apply. A member policy or rule with no targets will be evaluated as a match and applied to the record. ",
+      "isMultiple": true,
+      "subFileNumber": 1.602,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONDITIONS",
+      "dataType": "SUBFILE",
+      "rawType": "1.603I",
+      "required": false,
+      "helpText": "This sub-file is a list of conditions to be evaluated, for rules that apply to the record. ",
+      "isMultiple": true,
+      "subFileNumber": 1.603,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AVAILABLE FIELDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This is a string of field numbers, delimited by semi-colons, that can be  used as the DR variable for FileMan api's; see the VA FileMan Programmer Manual for further details.   This string will be returned to the client if a permit result is found, to identify the fields that are allowed to be viewed or acted on. It does  not need to be set at every level of a policy; the lowest level of the  hierarchy will take precedence, for example the DR string saved with the  rule that granted permission w",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ADDITIONAL FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "1.605A",
+      "required": false,
+      "helpText": "This multiple holds additional DR strings as needed, such as the fields that may be accessed in a sub-file. To save a continuation string for the top-level file, enter the primary file number for this policy. ",
+      "isMultiple": true,
+      "subFileNumber": 1.605,
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DENY FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "*P1.62'",
+      "required": false,
+      "pointerTo": 1.62,
+      "helpText": "This is an application-defined function that performs needed tasks on a given result, such as logging access to a file. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "DENY MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ200",
+      "length": 200,
+      "required": false,
+      "helpText": "This is text that will be returned in ^TMP(\"DIMSG\",$J) if the result is Deny. All applicable messages will be included, beginning with the determining rule and continuing back up the hierarchy in order through its ancestor policies and sets. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PERMIT FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "*P1.62'",
+      "required": false,
+      "pointerTo": 1.62,
+      "helpText": "This is an application-defined function that performs needed tasks on a given result, such as logging access to a file. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "PERMIT MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ200",
+      "length": 200,
+      "required": false,
+      "helpText": "This is text that will be returned in ^TMP(\"DIMSG\",$J) if the result is Permit. All applicable messages will be included, beginning with the determining rule and continuing back up the hierarchy in order through its ancestor policies and sets. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MEMBERS",
+      "dataType": "POINTER",
+      "rawType": "1.601P",
+      "required": false,
+      "helpText": "This sub-file is a list of self-referring pointers, the collection of rules for a policy or policies/sets that make up a policy set. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "1.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(1.6,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

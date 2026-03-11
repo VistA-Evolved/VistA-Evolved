@@ -1,0 +1,111 @@
+{
+  "fileNumber": 354.5,
+  "fileName": "BILLING ALERT DEFINITION",
+  "globalRoot": "354.5",
+  "globalReference": "^IBE(354.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the internal entry number assigned to this billing alert type.  Entries 1 through 999 are reserved for IB.   The internal number is used by the ib routines to find entries in this file.  Do not delete, edit, or add entries to this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of this alert.  It should be close in name or meaning to the message text which the users are familiar with seeing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PACKAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the package prefix for the package using this notification. It will be concatenated with the internal number in the BILLING ALERTS file to form the variable XQAID for look up and deleting alerts. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message text that will be appended to the patient's name and ssn and will be displayed to users when first notified about the alert. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INFORMATION ONLY;R:RUN ROUTINE;",
+      "helpText": "Enter 'I' if the user is to take no follow-up action for this notification. Enter 'R' if the user is to take a follow-up action after viewing this notification.    This is a mandatory flag used to regulate processing in the alert software.  No additional action will be allowed after viewing information only alerts. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the entry point in a routine that will be run when the alert is processed.  It is used to build the variable XQAROU.  This field represents the TAG in tag^routine. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ROUTINE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the routine name that will be called by the alert software when processing the alert.  The variable XQAROU will be defined as tag^routine where this is the routine.  (ie xqarou=$p(^ibe(354.4,n,0),\"^\",6,7) ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECIPIENT GROUPS",
+      "dataType": "POINTER",
+      "rawType": "354.52PA",
+      "required": false,
+      "helpText": "These are mail groups that this alert should be sent to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCESSING FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DISABLED;E:ENABLED;M:MANDATORY;",
+      "helpText": "This field is used to regulate the alert processing.  Notifications flagged as \"D\" will indicate the alert is disabled and will not be processed.  A flag of \"M\" indicates the alert is enabled and mandatory. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "RECIPIENT USERS",
+      "dataType": "POINTER",
+      "rawType": "354.5002PA",
+      "required": false,
+      "helpText": "These are users who have been determined to need to see this alert. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "354.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

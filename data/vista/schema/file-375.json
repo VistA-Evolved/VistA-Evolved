@@ -1,0 +1,399 @@
+{
+  "fileNumber": 375,
+  "fileName": "PFSS ACCOUNT",
+  "globalRoot": "375",
+  "globalReference": "^IBBAA(375,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCOUNT REFERENCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The number by which all VistA applications will reference an external medical billing system account number for purposes of attaching charges for 1st or 3rd party billing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXTERNAL ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The number provided by the external medical billing system for purposes of attaching charges for 1st or 3rd party billing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The Patient identifier associated with the billing account. An internal entry number to the PATIENT file (#2). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "APPLICATION REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field value indicates where in application processing the GETACCT^IBBAPI function is called. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXTERNAL ACCT REC'D",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time at which the External Account Number was received and processed into file #375, field #.02. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "TEST PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the DFN for this patient indicates a test patient as a result of a call to $$TESTPAT^VADPT, then this field is set to \"YES\". ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PATIENT CLASS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "The Patient associated with this account is classified as either \"I\" (Inpatient) or \"O\" (Outpatient). ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PATIENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "The sending application provides a pointer to the HOSPITAL LOCATION file (#44), which provides the a medical center location where the patient visit took place or where service was provided. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P409.1'",
+      "required": false,
+      "pointerTo": 409.1,
+      "helpText": "If the account is setup for an actual outpatient visit (i.e., a Scheduled appointment), this field will contain a pointer to the APPOINTMENT TYPE file (#409.1). ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The sending application may provide data on the Attending Physician or Ordering Provided as a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "CONSULTING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The sending application may provide data on the Consulting Physician related to a patient visit as a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PURPOSE OF VISIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:C&P;2:10-10;3:SV;4:UV;",
+      "helpText": "This field may contain a code to indicate the general type of the outpatient visit associated with this account:    C&P = Compensation & Pension    10-10 = Registration 10-10    SV = Scheduled Visit    UV = Unscheduled Visit. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "ADMITTING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The sending application may provide data on the Admitting Physician, Surgeon, or Primary Provider associated with the visit/encounter.  The data is provided as a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 1.18,
+      "fieldName": "PRIMARY STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "The sending application may provide a pointer to the CLINIC STOP file (#40.7) in order to identify the Primary Stop Code associated with the visit, encounter, or occasion of service. ",
+      "fieldNumber_": 1.18
+    },
+    {
+      "fieldNumber": 1.25,
+      "fieldName": "CHECK-IN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Normally only used when SCHEDULING is the sending application, this indicates the date/time of the clinic visit check-in. ",
+      "fieldNumber_": 1.25
+    },
+    {
+      "fieldNumber": 1.41,
+      "fieldName": "CREDIT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "The sending application may provide a pointer to the CLINIC STOP file (#40.7) in order to identify the Credit Stop Code associated with the visit, encounter, or occasion of service. ",
+      "fieldNumber_": 1.41
+    },
+    {
+      "fieldNumber": 1.44,
+      "fieldName": "ADMIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The definition of this data element is dependent upon the application that is the originating source of the data in the account record.    SCHEDULING -- Appointment Date/Time    PCE -- Visit Date/Time    PTF/FEE BASIS -- Admit Date    RADIOLOGY -- Date Exam Desired    PROSTHETICS -- Entry Date    OP PHARMACY -- Fill/Refill Date    SURGERY -- Date of Operation ",
+      "fieldNumber_": 1.44
+    },
+    {
+      "fieldNumber": 1.45,
+      "fieldName": "DISCHARGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used only by Scheduling to indicate the Check-Out Date/Time for the outpatient appointment. ",
+      "fieldNumber_": 1.45
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "ALTERNATE VISIT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Radiology   Secondary Visit Number; used for Radiology charges; the  external billing system's Visit Number associated with the CPRS ORDER (#100) for the outpatient or inpatient Radiology order.   Concatenate \";;;;RAD  to numeric string.   Surgery   Surgical Case Number; used for Surgery account creation.   Concatenate \";;;;SUR  to numeric string.   OP Pharmacy   IEN to PRESCRIPTION file (#52); used for Pharmacy account  creation.   Concatenate \";;;;OPP  to numeric string. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.51,
+      "fieldName": "WORKLOAD NON-COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:WNC;N:WC;",
+      "helpText": "Normally only used when SCHEDULING is the sending application, this defines the clinic location found in field #1.03 as \"count\" or \"non-count\" for workload purposes. ",
+      "fieldNumber_": 1.51
+    },
+    {
+      "fieldNumber": 1.52,
+      "fieldName": "OTHER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Data for an additional Provider to be supplied by the calling application as a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 1.52
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "ELIGIBILITY OF VISIT",
+      "dataType": "POINTER",
+      "rawType": "P8.1'",
+      "required": false,
+      "pointerTo": 8.1,
+      "helpText": "Only used by SCHEDULING or PCE to indicate the patient's Eligibility related to the outpatient visit with which this account record is  associated.  Data is provided as a pointer to the MAS ELIGIBILITY CODE file (#8.1). ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "EXPECTED ADMIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The definition of this data element is dependent upon the application that is the originating source of the data.    SCHEDULING -- Appointment Date/Time    PROSTHETICS -- Entry Date/Time    SURGERY -- Planned Date of Operation    RADIOLOGY -- Date Desired for Exam ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.24,
+      "fieldName": "APPOINTMENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:SCHEDULED/KEPT;I:INPATIENT;NS:NO-SHOW;NSR:NO-SHOW/RESCHEDULED;CP:CANCELLED BY PATIENT;CPR:CANCELLED BY PATIENT/RESCHEDULED;CC:CANCELLED BY CLINIC;CCR:CANCELLED BY CLINIC/RESCHEDULED;NT:NO ACTION TAKEN;",
+      "fieldNumber_": 2.24
+    },
+    {
+      "fieldNumber": 2.46,
+      "fieldName": "PT STATUS EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The definition of this data element is dependent upon the application that is the originating source of the data.    SCHEDULING - Date Appointment Made.    PROSTHETICS - Date Ordered/Suspense Date. ",
+      "fieldNumber_": 2.46
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PROCEDURE CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "The applications sending account data to IBB may provide a purpose for the visit, encounter, or occasion of service, in the form of a pointer value to the CPT file (#81).  The pointer is used to derive a specific CPT or HCPCS code. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "FUNCTIONAL TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Radiology - Imaging Type Abbreviation.    ANI  = ANGIO/NEURO/INTERVENTIONAL    CARD = CARDIOLOGY STUDIES (NUC MED)    CT   = CT SCAN    RAD  = GENERAL RADIOLOGY    MRI  = MAGNETIC RESONANCE IMAGING    MAM  = MAMMOGRAPHY    NM   = NUCLEAR MEDICINE    US   = ULTRASOUND    VAS  = VASCULAR LAB    Prosthetics - Prosthetics Flag.    O = Home Oxygen    P = Purchasing    I = Stock Issue ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.11,
+      "fieldName": "SURGEON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If SURGERY passes to IBB data for setup of an account, then this field provides the identity of the Principal Surgeon as a pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 3.11
+    },
+    {
+      "fieldNumber": 3.16,
+      "fieldName": "PROCEDURE CODE MODIFIER(S)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Data may only be contained here if field #3.03 holds a pointer to the CPT file (#81), which may be resolved to a CPT or HCPCS code. A string of numbers delimited by semi-colons; each number is a pointer to the CPT MODIFIER file (#81.3). Example: 68;245;74;318; ",
+      "fieldNumber_": 3.16
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "375.04A",
+      "required": false,
+      "helpText": "Multiple DG1 Segments are allowed within an ADT message.  Each subrecord in subfile #375.04 contains data for an individual DG1 Segment. ",
+      "isMultiple": true,
+      "subFileNumber": 375.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SC/EI CLASSIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "375.05A",
+      "required": false,
+      "helpText": "Multiple ZCL Segments are allowed within an ADT message.  Each subrecord in subfile #375.05 contains data for an individual ZCL Segment. ",
+      "isMultiple": true,
+      "subFileNumber": 375.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROCEDURE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the application calling GETACCT^IBBAPI does not yet have Procedure data as a pointer to the CPT file (#81), then Procedure may be supplied as free text.    The calling application may also provide data for this field that is used to enhance or add detail to the CPT or HCPCS code provided in field #3.03. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DIAGNOSIS TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the application calling GETACCT^IBBAPI does not yet have Diagnosis data as a pointer to the ICD DIAGNOSIS file (#80), then Diagnosis may be supplied as free text. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FACILITY ID",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Identifies the facility (i.e., medical center division) associated with the patient service. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "SURGICAL CASE #",
+      "dataType": "POINTER",
+      "rawType": "P130'",
+      "required": false,
+      "pointerTo": 130,
+      "helpText": "Surgical Case # for any account setup by Surgery package. ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.02,
+      "fieldName": "SURGICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.3'",
+      "required": false,
+      "pointerTo": 45.3,
+      "helpText": "Surgical Specialty for any account setup by Surgery package. ",
+      "fieldNumber_": 14.02
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "RADIOLOGY CLINICAL HX",
+      "dataType": "POINTER",
+      "rawType": "P75.1'",
+      "required": false,
+      "pointerTo": 75.1,
+      "helpText": "The Clinical History for the Radiology exam can be obtained by using this pointer value to the RAD/NUC MED ORDERS file (#75.1). ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 16.01,
+      "fieldName": "OUTSIDE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the Patient Location for the visit/encounter/service is outside the VAMC, then the name of that location is stored here as free text.    For A01 event messages related to inpatient admissions to outside hospitals, the PTF application will use \"FEE BASIS\" as a generic location descriptor. ",
+      "fieldNumber_": 16.01
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "EVENT HISTORY",
+      "dataType": "DATE",
+      "rawType": "375.099DA",
+      "required": false,
+      "helpText": "This subfile stores a history of the HL7 ADT events that are sent/received for this PFSS ACCOUNT record. ",
+      "isMultiple": true,
+      "subFileNumber": 375.099,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "C", "field": },
+    {"name": "G", "field": },
+    {"name": "375", "field": .02, "type": "regular"},
+    {"name": "375", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "fileNumber": 7103.1,
+  "fileName": "NOIS SCHEDULE",
+  "globalRoot": "7103.1",
+  "globalReference": "^FSCD(\"SCHEDULE\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP7105.2'",
+      "required": true,
+      "pointerTo": 7105.2,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:OFF;1:IN;2:BUSY;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TEXT COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "BACKGROUND COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AUDS", "field": },
+    {"name": "AUDS1", "field": },
+    {"name": "AUDS2", "field": },
+    {"name": "B", "field": },
+    {"name": "7103.1", "field": .01, "type": "regular"},
+    {"name": "7103.1", "field": .01, "type": "regular"},
+    {"name": "7103.1", "field": 1, "type": "regular"},
+    {"name": "7103.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

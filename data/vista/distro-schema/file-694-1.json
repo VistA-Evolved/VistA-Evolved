@@ -1,0 +1,39 @@
+{
+  "fileNumber": 694.1,
+  "fileName": "INDICATION",
+  "globalRoot": "694.1",
+  "globalReference": "^MCAR(694.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of indications for procedures used by various modules and sub-modules of the medicine package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL TYPE",
+      "dataType": "SET",
+      "rawType": "694.11SA",
+      "required": false,
+      "helpText": "This field identifies field is used to screen indications by medical specialty or sub-specialty ",
+      "isMultiple": true,
+      "subFileNumber": 694.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "694.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

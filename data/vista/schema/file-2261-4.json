@@ -1,0 +1,61 @@
+{
+  "fileNumber": 2261.4,
+  "fileName": "ASISTS SETTING OF INJURY",
+  "globalRoot": "2261.4",
+  "globalReference": "^OOPS(2261.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a general setting of injury. This entry must describe a setting for an injury for patient or non-patient areas. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a code that will identify a general setting of injury. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF AREA",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PATIENT CARE;N:NON-PATIENT;",
+      "helpText": "This field contains the patient/non-patient categorization of the setting. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "2261.43PA",
+      "required": false,
+      "helpText": "This is the station where the location details are applicable. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "2261.4", "field": .01, "type": "regular"},
+    {"name": "2261.4", "field": .01, "type": "regular"},
+    {"name": "2261.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

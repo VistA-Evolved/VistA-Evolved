@@ -1,0 +1,59 @@
+{
+  "fileNumber": 403.55,
+  "fileName": "RECALL REMINDERS TEAM",
+  "globalRoot": "403.55",
+  "globalReference": "^SD(403.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name of a team that will be using Recall program. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE/INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "When a team is entered it will be marked as Active. The Recall Reminder  Coordinator can \"Mark\" a Team as inactive, so that it will not be used  when linking to a Recall Reminder Provider. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINTER ASSIGN",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the printer assigned to this Recall Team. This printer will be used during the nightly print job of either cards or letters in a Team area. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CLINIC RECALL PARAM",
+      "dataType": "POINTER",
+      "rawType": "P403.53'",
+      "required": false,
+      "pointerTo": 403.53,
+      "helpText": "Used When printing reports, cards or Letters by Recall Team. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "403.55", "field": .01, "type": "regular"},
+    {"name": "403.55", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

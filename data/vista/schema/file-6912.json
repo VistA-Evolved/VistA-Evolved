@@ -1,0 +1,112 @@
+{
+  "fileNumber": 6912,
+  "fileName": "MANUFACTURER LIST FILE",
+  "globalRoot": "6912OI",
+  "globalReference": "^ENG(\"MFG\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "MFGID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Internal entry number (IEN) of the manufacturer.  Additions made by sites must be in the range of 50000 to 99999.  National entries start at 1 and presently go up to about 5000. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "MFG/DIV",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The original manufacturer of equipment to be accounted for by the facility.  Not to be confused with the vendor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MFG'S FULL LENGTH NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Expanded form of manufacturer's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Separate operating unit of the manufacturing company.  For use when appropriate. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STREET",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Street address to which correspondence could be directed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "City to which correspondence could be directed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "State to which correspondence could be directed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Postal zip code. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Commercial telephone number (including area code). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PSEUDONYM",
+      "dataType": "SUBFILE",
+      "rawType": "6912.01",
+      "required": false,
+      "helpText": "Other names by which this manufacturer is commonly known. ",
+      "isMultiple": true,
+      "subFileNumber": 6912.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6912", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W:$D(^(1)) \"   \",$P(^(1),U,2)"}
+  ]
+}

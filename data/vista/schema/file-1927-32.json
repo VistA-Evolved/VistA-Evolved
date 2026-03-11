@@ -1,0 +1,184 @@
+{
+  "fileNumber": 1927.32,
+  "fileName": "NUPA PCE INFO",
+  "globalRoot": "1927.32",
+  "globalReference": "^NUPA(1927.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of a PCE item that a nurse could resolve. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:HEALTH FACTOR;R:REMINDER;",
+      "helpText": "Is this item a reminder of health factor? ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASK HAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Say yes if you want to ask if the patient has had this PCE item done. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HAD HEALTH FACTOR",
+      "dataType": "POINTER",
+      "rawType": "P9999999.64'",
+      "required": false,
+      "pointerTo": 9999999.64,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HAD EDUCATION TOPIC",
+      "dataType": "POINTER",
+      "rawType": "P9999999.09'",
+      "required": false,
+      "pointerTo": 9999999.09,
+      "helpText": "Say yes if you want to ask if the patient has had this education topic  done. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASK RECEIVED PREVIOUSLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Say yes if you want to ask if the patient has received this item  previously. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECEIVED PREV HEALTH FACTOR",
+      "dataType": "POINTER",
+      "rawType": "P9999999.64'",
+      "required": false,
+      "pointerTo": 9999999.64,
+      "helpText": "This is the health factor received, if the patient has received this item  previously. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RECEIVED PREV EDUCATION TOPIC",
+      "dataType": "POINTER",
+      "rawType": "P9999999.09'",
+      "required": false,
+      "pointerTo": 9999999.09,
+      "helpText": "This is the education topic received, if the patient has received this item previously. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RECEIVED PREV ASK DATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Say yes to ask the date this topic was received previously. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RECEIVED PREV ASK LOC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Say yes to ask the location this item was received previously. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ASK DECLINED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Say yes to ask if this topic was declined previously. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DECLINED HEALTH FACTOR",
+      "dataType": "POINTER",
+      "rawType": "P9999999.64'",
+      "required": false,
+      "pointerTo": 9999999.64,
+      "helpText": "Health factor to note if this topic was declined previously. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DECLINED EDUCATION TOPIC",
+      "dataType": "POINTER",
+      "rawType": "P9999999.09'",
+      "required": false,
+      "pointerTo": 9999999.09,
+      "helpText": "Education topic to note if this topic was declined previously. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ASK N/A",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter yes to ask if this topic is not applicable. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "N/A HEALTH FACTOR",
+      "dataType": "POINTER",
+      "rawType": "P9999999.64'",
+      "required": false,
+      "pointerTo": 9999999.64,
+      "helpText": "Health factor if this topic is not applicable. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "N/A EDUCATION TOPIC",
+      "dataType": "POINTER",
+      "rawType": "P9999999.09'",
+      "required": false,
+      "pointerTo": 9999999.09,
+      "helpText": "Education topic if this topic is not applicable. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "QUESTION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.32", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

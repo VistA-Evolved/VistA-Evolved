@@ -1,0 +1,67 @@
+{
+  "fileNumber": 344.74,
+  "fileName": "RCDPE FIRST PARTY CHARGE QUEUE",
+  "globalRoot": "344.74",
+  "globalReference": "^RCY(344.74,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHARGE",
+      "dataType": "POINTER",
+      "rawType": "RP350'",
+      "required": true,
+      "pointerTo": 350,
+      "helpText": "This is a charge from the INTEGRATED BILLING ACTION file that can not be  automatically released from hold by the ePayments nightly process at the current time, due to the debtor having an open pre-payment.  The charge will be removed from the 'QUEUE' by the nightly process when there is no longer an open pre-payment, or the charge is no longer on hold. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "THIRD PARTY BILL",
+      "dataType": "POINTER",
+      "rawType": "RP399'",
+      "required": true,
+      "pointerTo": 399,
+      "helpText": "This field contain the third party bill related to the first party charge. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time the record was added to the system. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ERA DETAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The ERA DETAIL field will contain a reference to the ERA detail in  sub-file 344.41 which conatined a payment for the third party bill  related to the first party charge. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RECEIPT TRANSACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The RECEIPT TRANSACTION field will contain a reference to the Receipt Transaction in sub-file 344.01 which contained a payment for the third-party bill related to the first- party charge. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.74", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

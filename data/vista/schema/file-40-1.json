@@ -1,0 +1,43 @@
+{
+  "fileNumber": 40.1,
+  "fileName": "OPC",
+  "globalRoot": "40.1P",
+  "globalReference": "^SDASF(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the applicant's name in 'Last,First Middle' format between 3-30 characters.  Do not use numerics or lowercase alphabetic characters. With the exception of the comma, period, space, hyphen, dash and apostrophe punctuation characters should be avoided. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "40.11DA",
+      "required": false,
+      "helpText": "This field is a multiple containing information about the Visit Date of a particular patient. ",
+      "isMultiple": true,
+      "subFileNumber": 40.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AREL", "field": },
+    {"name": "ASUS", "field": },
+    {"name": "ASUS1", "field": },
+    {"name": "AVD", "field": },
+    {"name": "B", "field": },
+    {"name": "40.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

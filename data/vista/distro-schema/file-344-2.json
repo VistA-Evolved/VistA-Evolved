@@ -1,0 +1,87 @@
+{
+  "fileNumber": 344.2,
+  "fileName": "AR PAYMENT TRANSACTIONS",
+  "globalRoot": "344.2",
+  "globalReference": "^RCY(344.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field is used to store the transmission date for payments.  Each day payments are sent to AR for processing.  Once all payments have been received for a day, the payments are automatically processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TOTAL SEQUENCES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to store the total number of sequences for a transmission date. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TOTAL DOLLARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field stores the expected total dollars for all sequences received for a transmission date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "r:RECEIVING;p:PROCESSING;e:ERROR;",
+      "helpText": "This field is used to store the status of the transmission.     Receiving: the transmission is being received.   Processing: the transmission has been received and is being processed.   Error: there was an error in receiving or processing the transmission. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to stamp the date the status was updated.  This field is used by the software to prevent prior transmission data from being deleted before being completely received or processed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEQUENCE",
+      "dataType": "SUBFILE",
+      "rawType": "344.21",
+      "required": false,
+      "helpText": "This multiple stores all the sequences for a transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 344.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "344.22",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 344.22,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

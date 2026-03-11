@@ -1,0 +1,63 @@
+{
+  "fileNumber": 8969.03,
+  "fileName": "VSM CACHE TASK LOG",
+  "globalRoot": "8969.03",
+  "globalReference": "^KMPV(8969.03,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Run date for specific monitor as started from the Cache` Task Manager. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specific node on which collection routine was run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VTCM RUNTIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Time the VTCM monitor was started in FileMan datetime format. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VSTM RUNTIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Time the VBEM monitor was started in FileMan datetime format. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VMCM RUNTIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Time the VTCM monitor was started in FileMan datetime format. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8969.03", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

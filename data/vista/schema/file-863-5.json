@@ -1,0 +1,92 @@
+{
+  "fileNumber": 863.5,
+  "fileName": "OCX MDD VALUES",
+  "globalRoot": "863.5",
+  "globalReference": "^OCXS(863.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who created the list ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VALUES",
+      "dataType": "SUBFILE",
+      "rawType": "863.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTEXT",
+      "dataType": "SUBFILE",
+      "rawType": "863.52",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "863.54",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.54,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.55P",
+      "required": false,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "863.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "fileNumber": 112.6,
+  "fileName": "USER MENU",
+  "globalRoot": "112.6I",
+  "globalReference": "^FHUM(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a user menu. This is a list of food items, and amounts, that a user wishes to have analyzed for nutrient content. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "UNITS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:COMMON;G:GRAMS;",
+      "helpText": "This field indicates whether common units are used in specifying quantities or whether grams are used throughout. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date on which this user menu was first created. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the person who first created the user menu. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DAY NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "112.61",
+      "required": false,
+      "helpText": "This field contains the sequence number, or day number, of the days represented by this menu. It is normally 1 to the maximum number of used entered. ",
+      "isMultiple": true,
+      "subFileNumber": 112.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECIPE MENU?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field, if answered yes, means this user menu is a recipe menu else, if answered no, means it is not. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "112.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRIT, "value": "D:$D(^(\"0\")) EN^DDIOL($E($P(^(\"0\"),U,3),4,5)_\"-\"_$E($P(^(\"0\"),U,3),6,7)_\"-\"_$E($P(^(\"0\"),U,3),2,3),\"\",\"?3\")"}
+  ]
+}

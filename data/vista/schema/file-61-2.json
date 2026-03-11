@@ -1,0 +1,202 @@
+{
+  "fileNumber": 61.2,
+  "fileName": "ETIOLOGY FIELD",
+  "globalRoot": "61.2I",
+  "globalReference": "^LAB(61.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the etiologic (causative) agent. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "CLASS/GROUP-TRIBE/FAMILY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The class/group or tribe/family that this etiologic agent belongs to. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The characters following \"E-\" in the SNOMED reference book. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GRAM STAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GRAM POSITIVE;N:GRAM NEGATIVE;I:INDETERMINATE;",
+      "helpText": "If applicable enter if this is a gram positive, gram negative, or indeterminate organism. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "*BIOCHEMICAL WORKUP",
+      "dataType": "SUBFILE",
+      "rawType": "61.23A",
+      "required": false,
+      "helpText": "No longer used.  To be deleted after this version. ",
+      "isMultiple": true,
+      "subFileNumber": 61.23,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IDENTIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BACTERIUM;F:FUNGUS;P:PARASITE;M:MYCOBACTERIUM;V:VIRUS;C:CHEMICAL;D:DRUG;R:RICKETTSIAE;A:PHYSICAL AGENT;",
+      "helpText": "This field identifies the category into which this etiologic agent falls. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOURNAL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "61.21A",
+      "required": false,
+      "helpText": "This is a multiple field.  You may enter Journal references that apply to this etiologic agent. ",
+      "isMultiple": true,
+      "subFileNumber": 61.21,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This must be a 1 to 5 character abbreviation for this etiologic agent and will be used as a unique code for it. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "61.22A",
+      "required": false,
+      "helpText": "This is a multiple field.  Enter synonyms or common misspellings of this etiologic agent. ",
+      "isMultiple": true,
+      "subFileNumber": 61.22,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SUSCEPTIBILITY EDIT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Contains the edit template name that this etiologic agent is associated with. Determines the set of antibiotics that will be shown for editing when this organism is chosen. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*SENSITIVITY DISPLAY TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "No longer used.  Will be deleted after this version.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HEALTH DEPT REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this etiologic agent is to be included on the Health Department Report, this field must contain a YES entry. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ETIOLOGY WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "61.211P",
+      "required": false,
+      "helpText": "This field contains a list of possible WKLD codes from which a technologist may choose additional work load. If this particular isolate requires extra work in order to isolate or identify it, then list those possible WKLD codes here. The technologist will only be able to select from this list. Therefore the list should be complete. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SNOMED CT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the SNOMED CT concept id number for this entry. If this entry is  null then the entry is either unmapped or no valid SNOMED concept term exists to map this entry.   This field is not editable except by Lab software. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SCT CODE STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "P:PREFERRED TERM;S:SYNONYM;L:LOCAL;R:REFERRED;X:NO APPLICABLE MAPPING;LN:NEW TERM PENDING LEXICON UPDATE;RN:STS REQUEST NEW CODE;E:ERROR;",
+      "helpText": "This field indicate the status or disposition of this entry.  P  = SNOMED Preferred term  S  = SNOMED Synonym term  L  = Local spelling of a SNOMED term (miss-spelled)  R  = Referred to national coders to determine if acceptable  X  = No applicable mapping  LN = New term pending LEXICON release/update.  RN = STS Request New Code  E  = Error encountered when applying STS disposition to file entry.  ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SCT TOP CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field Identifies the SNOMED CT top level concept for this SNOMED  code. This is useful to determine the proper code when the spelling of  the terms are identical but have different concept (meaning). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SCT STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "61.223DA",
+      "required": false,
+      "helpText": "This multiple tracks the status change of SNOMED SCT codes that have been  referred to the STS team to determine if this SCT code is not a valid SCT code or it is a valid SCT code pending release/update of the LEXICON file. ",
+      "isMultiple": true,
+      "subFileNumber": 61.223,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 64.9102,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on or after which the entry will no longer be active. ",
+      "fieldNumber_": 64.9102
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "61.2", "field": .01, "type": "regular"},
+    {"name": "61.2", "field": 2, "type": "regular"},
+    {"name": "61.2", "field": 6, "type": "regular"},
+    {"name": "61.2", "field": 20, "type": "regular"},
+    {"name": "61.2", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

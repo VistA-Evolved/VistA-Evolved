@@ -1,0 +1,1216 @@
+{
+  "id": "vitals",
+  "name": "Vitals/Measurements",
+  "description": "Temperature, BP, pulse, respiration, height, weight, pain",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.880Z",
+  "files": {
+    "count": 2,
+    "items": [
+      {
+        "fileNumber": 120.5,
+        "fileName": "File #120.5",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 120.51,
+        "fileName": "File #120.51",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 44,
+    "items": [
+      {
+        "name": "GMV CONVERT DATE",
+        "tag": "GETDT",
+        "routine": "GMVGETQ",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call converts a user-supplied date/time into VA FileMan's internal and external date format.   This remote procedure call is documented in Integration Agreement 4353. "
+      },
+      {
+        "name": "GMV ADD VM",
+        "tag": "EN1",
+        "routine": "GMVDCSAV",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call is used to enter a new Vital/Measurement record in the GMRV Vital Measurement file (#120.5).   This remote procedure call is documented in Integration Agreement 3996. "
+      },
+      {
+        "name": "GMV EXTRACT REC",
+        "tag": "GETVM",
+        "routine": "GMVGETD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call retrieves vital records from the GMRV Vital Measurement (#120.5) file for a selected patient within a given date span.   This remote procedure call is documented in Integration Agreement 4416. "
+      },
+      {
+        "name": "GMV WARD LOCATION",
+        "tag": "WARDLOC",
+        "routine": "GMVGETD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DUMMY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This procedure extracts MAS ward locations from the Ward Location file (#42).   Note: No other Input Parameters besides RESULT needed. "
+      },
+      {
+        "name": "GMV WARD PT",
+        "tag": "WARDPT",
+        "routine": "GMVGETD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRWARD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This procedure lists patients registered on a particular MAS ward. "
+      },
+      {
+        "name": "GMV MARK ERROR",
+        "tag": "ERROR",
+        "routine": "GMVUTL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call marks a selected vitals record in the GMRV Vital Measurement (#120.5) file as entered-in-error.   This remote procedure call is documented in Integration Agreement 4414. "
+      },
+      {
+        "name": "GMV PT GRAPH",
+        "tag": "EN1",
+        "routine": "GMVSR0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints Vitals/Measurements Graphic Reports. "
+      },
+      {
+        "name": "GMV V/M ALLDATA",
+        "tag": "VMDATA",
+        "routine": "GMVGGR1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call lists all vitals/measurements data for a given date/time span.   This remote procedure call is documented in Integration Agreement 4654. "
+      },
+      {
+        "name": "GMV TEAM PATIENTS",
+        "tag": "TEAMPT",
+        "routine": "GMVUTL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVTEAM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This procedure retrieves patients assigned to a given team. "
+      },
+      {
+        "name": "GMV ALLERGY",
+        "tag": "ALLERGY",
+        "routine": "GMVUTL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call retrieves the patient's allergy information.   This remote procedure call is documented in Integration Agreement 4350. "
+      },
+      {
+        "name": "GMV CLINIC PT",
+        "tag": "CLINPTS",
+        "routine": "GMVCLIN",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLIN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This procedure lists patients who have an appointment for a selected clinic and a given period of time. "
+      },
+      {
+        "name": "GMV VITALS/CAT/QUAL",
+        "tag": "GETVITAL",
+        "routine": "GMVUTL7",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVLIST",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns all qualifier information for the vital types selected.   This remote procedure call is documented in Integration Agreement 4359. "
+      },
+      {
+        "name": "GMV PTSELECT",
+        "tag": "RPC",
+        "routine": "GMVRPCP",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Used as a method of processing a patient DFN and returning all warnings  and notices (i.e. sensitivity or same last 4 of SSN) to the client  application for processing.  Also includes a call to log access of  sensitive patients to the DG SECURITY LOG file. "
+      },
+      {
+        "name": "GMV LATEST VM",
+        "tag": "GETLAT",
+        "routine": "GMVGETD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRDFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call retrieves the latest vital records for a given patient.   This remote procedure call is documented in Integration Agreement 4358. "
+      },
+      {
+        "name": "GMV ROOM/BED",
+        "tag": "ROOMBED",
+        "routine": "GMVGETD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMRWARD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This procedure extracts room/bed information from Room-Bed file (#405.4) for a given MAS ward. "
+      },
+      {
+        "name": "GMV CUMULATIVE REPORT",
+        "tag": "EN1",
+        "routine": "GMVSC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints the Cumulative Vitals Report. "
+      },
+      {
+        "name": "GMV LATEST VITALS BY LOCATION",
+        "tag": "EN1",
+        "routine": "GMVDS1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints the latest vitals/measurements for all patients on a given ward location. "
+      },
+      {
+        "name": "GMV LATEST VITALS FOR PATIENT",
+        "tag": "EN1",
+        "routine": "GMVDS1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints the latest vitals/measurements for the selected patient. "
+      },
+      {
+        "name": "GMV ENTERED IN ERROR-PATIENT",
+        "tag": "EN1",
+        "routine": "GMVER0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints a report of all vitals/measurements entered in error for the selected patient for a given date/time range. "
+      },
+      {
+        "name": "GMV QUALIFIER TABLE",
+        "tag": "EN1",
+        "routine": "GMVCAQU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Prints a list of categories and qualifiers associated with individual vital types (e.g., blood pressure). Data comes from the GMRV Vital Qualifier (#120.52) file and the GMRV Vital Category (#120.53) file. "
+      },
+      {
+        "name": "GMV MANAGER",
+        "tag": "RPC",
+        "routine": "GMVRPCM",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Performs many functions for the Manager module.   This remote procedure call is documented in Integration Agreement 4360. "
+      },
+      {
+        "name": "GMV WARD/ROOM PATIENTS",
+        "tag": "ROOMPT",
+        "routine": "GMVUTL7",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "GMVWRD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVRLST",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patients in the ward and rooms specified. "
+      },
+      {
+        "name": "GMV GET CURRENT TIME",
+        "tag": "TIME",
+        "routine": "GMVUTL7",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Gets the current date and time from the server.   This remote procedure call is documented in Integration Agreement 4355. "
+      },
+      {
+        "name": "GMV USER",
+        "tag": "RPC",
+        "routine": "GMVRPCU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Retrieves data about the user (e.g., parameter settings).   This remote procedure call is documented in Integration Agreement 4366. "
+      },
+      {
+        "name": "GMV NUR UNIT PT",
+        "tag": "APTLIST",
+        "routine": "GMVUTL8",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "LOC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of active patients for a nursing location. "
+      },
+      {
+        "name": "GMV CHECK DEVICE",
+        "tag": "CHKDEV",
+        "routine": "GMVUTL2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "GMVIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVDIR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVRMAR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC calls a KERNEL utility to return a list of printers the user may  select to print output. Returns a maximum of twenty entries. "
+      },
+      {
+        "name": "GMV PARAMETER",
+        "tag": "RPC",
+        "routine": "GMVPAR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PAR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "INST",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VAL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Sets and retrieves parameter values used by the graphical user interface.   This remote procedure call is documented in Integration Agreement 4367. "
+      },
+      {
+        "name": "GMV GET VITAL TYPE IEN",
+        "tag": "TYPE",
+        "routine": "GMVUTL8",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVTYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the IEN if the value is found in the GMRV VITAL TYPE (#120.51) file.   This remote procedure call is documented in Integration Agreement 4357. "
+      },
+      {
+        "name": "GMV GET CATEGORY IEN",
+        "tag": "CATEGORY",
+        "routine": "GMVUTL8",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVCAT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the IEN if the value is found in the GMRV VITAL CATEGORY (#120.53) file.   This remote procedure call is documented in Integration Agreement 4354. "
+      },
+      {
+        "name": "GMV DLL VERSION",
+        "tag": "DLL",
+        "routine": "GMVUTL8",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMVX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a YES or NO response to indicate if the Dynamic Link Library (DLL) file should be used.   This remote procedure call is documented in Integration Agreement 4420. "
+      },
+      {
+        "name": "GMV LOCATION SELECT",
+        "tag": "RPC",
+        "routine": "GMVRPCHL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Select a hospital location by name, from a patient appointment or from a patient admission. Can also generate a list of active clinics.   This remote procedure is documented in Integration Agreement 4461. "
+      },
+      {
+        "name": "GMV CLOSEST READING",
+        "tag": "CLOSEST",
+        "routine": "GMVGETD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "GMVDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMVFLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns the observation date/time and reading  of the record closest to the date/time specified for the patient and vital type. "
+      },
+      {
+        "name": "ORQQVI VITALS",
+        "tag": "FASTVIT",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Array of patient most recent vitals within start and stop date/times.  If no start and stop dates are indicated, the most recent are returned.   If no start date is passed then the start date is 1 (i.e. before any dates).   If no stop date is passed then the start date is also the stop date and if t"
+      },
+      {
+        "name": "ORQQVI1 GRID",
+        "tag": "GRID",
+        "routine": "ORQQVI1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI VITALS FOR DATE RANGE",
+        "tag": "VITALS",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a patient's vital measurements between start date and  stop date. "
+      },
+      {
+        "name": "ORQQVI2 VITALS HELP",
+        "tag": "HELP",
+        "routine": "ORQQVI2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI2 VITALS RATE CHECK",
+        "tag": "RATECHK",
+        "routine": "ORQQVI2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI2 VITALS VALIDATE",
+        "tag": "VALIDATE",
+        "routine": "ORQQVI2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI2 VITALS VALIDATE TYPE",
+        "tag": "VMTYPES",
+        "routine": "ORQQVI2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI2 VITALS VAL & STORE",
+        "tag": "VALSTORE",
+        "routine": "ORQQVI2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI2 VITALS STORE",
+        "tag": "",
+        "routine": "",
+        "returnType": "UNKNOWN()",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI NOTEVIT",
+        "tag": "NOTEVIT",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI1 DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQVI1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORQQVI SWPVIT",
+        "tag": "SWPVIT",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SWAP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Array of patient most recent vitals within start and stop date/times.  If no start and stop dates are indicated, the most recent are returned.    If no start date is passed then the start date is 1 (i.e. before any dates).    If no stop date is passed then the start date is also the stop date and if"
+      }
+    ]
+  },
+  "menus": {
+    "count": 1,
+    "items": [
+      {
+        "name": "GMV V/M GUI",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 57,
+    "items": [
+      {
+        "prompt": "GMRDATE:",
+        "rpcName": "GMV CONVERT DATE",
+        "paramName": "GMRDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMRVDATA:",
+        "rpcName": "GMV ADD VM",
+        "paramName": "GMRVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMRVDATA:",
+        "rpcName": "GMV EXTRACT REC",
+        "paramName": "GMRVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUMMY:",
+        "rpcName": "GMV WARD LOCATION",
+        "paramName": "DUMMY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMRWARD:",
+        "rpcName": "GMV WARD PT",
+        "paramName": "GMRWARD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV MARK ERROR",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV PT GRAPH",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV V/M ALLDATA",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVTEAM:",
+        "rpcName": "GMV TEAM PATIENTS",
+        "paramName": "GMVTEAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "GMV ALLERGY",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIN:",
+        "rpcName": "GMV CLINIC PT",
+        "paramName": "CLIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BDATE:",
+        "rpcName": "GMV CLINIC PT",
+        "paramName": "BDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVLIST:",
+        "rpcName": "GMV VITALS/CAT/QUAL",
+        "paramName": "GMVLIST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "GMV PTSELECT",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "GMV PTSELECT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "GMV PTSELECT",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMRDFN:",
+        "rpcName": "GMV LATEST VM",
+        "paramName": "GMRDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMRWARD:",
+        "rpcName": "GMV ROOM/BED",
+        "paramName": "GMRWARD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV CUMULATIVE REPORT",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV LATEST VITALS BY LOCATION",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV LATEST VITALS FOR PATIENT",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV ENTERED IN ERROR-PATIENT",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDATA:",
+        "rpcName": "GMV QUALIFIER TABLE",
+        "paramName": "GMVDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "GMV MANAGER",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "GMV MANAGER",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVWRD:",
+        "rpcName": "GMV WARD/ROOM PATIENTS",
+        "paramName": "GMVWRD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVRLST:",
+        "rpcName": "GMV WARD/ROOM PATIENTS",
+        "paramName": "GMVRLST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "GMV USER",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "GMV USER",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LOC:",
+        "rpcName": "GMV NUR UNIT PT",
+        "paramName": "LOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVIEN:",
+        "rpcName": "GMV CHECK DEVICE",
+        "paramName": "GMVIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDIR:",
+        "rpcName": "GMV CHECK DEVICE",
+        "paramName": "GMVDIR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVRMAR:",
+        "rpcName": "GMV CHECK DEVICE",
+        "paramName": "GMVRMAR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "GMV PARAMETER",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENT:",
+        "rpcName": "GMV PARAMETER",
+        "paramName": "ENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PAR:",
+        "rpcName": "GMV PARAMETER",
+        "paramName": "PAR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INST:",
+        "rpcName": "GMV PARAMETER",
+        "paramName": "INST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VAL:",
+        "rpcName": "GMV PARAMETER",
+        "paramName": "VAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVTYPE:",
+        "rpcName": "GMV GET VITAL TYPE IEN",
+        "paramName": "GMVTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVCAT:",
+        "rpcName": "GMV GET CATEGORY IEN",
+        "paramName": "GMVCAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVX:",
+        "rpcName": "GMV DLL VERSION",
+        "paramName": "GMVX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "GMV LOCATION SELECT",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "GMV LOCATION SELECT",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDFN:",
+        "rpcName": "GMV CLOSEST READING",
+        "paramName": "GMVDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVDT:",
+        "rpcName": "GMV CLOSEST READING",
+        "paramName": "GMVDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVT:",
+        "rpcName": "GMV CLOSEST READING",
+        "paramName": "GMVT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMVFLAG:",
+        "rpcName": "GMV CLOSEST READING",
+        "paramName": "GMVFLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVI VITALS FOR DATE RANGE",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVI VITALS FOR DATE RANGE",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVI VITALS FOR DATE RANGE",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVI SWPVIT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVI SWPVIT",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVI SWPVIT",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SWAP:",
+        "rpcName": "ORQQVI SWPVIT",
+        "paramName": "SWAP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

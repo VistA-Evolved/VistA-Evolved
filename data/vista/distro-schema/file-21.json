@@ -1,0 +1,135 @@
+{
+  "fileNumber": 21,
+  "fileName": "PERIOD OF SERVICE",
+  "globalRoot": "21I",
+  "globalReference": "^DIC(21,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a period of service as determined by MAS VACO for use in DHCP.  This name should not be altered in any way nor should entries be added to or removed from this file.  This data is maintained by the MAS package and all updates to it will be made by that package during a release. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this period of service.  Outputs and displays may alternately display the abbreviation if insufficient room exists for the full name of the period of service. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the single character code by which this period of service is known.  This character is supplied by MAS VACO and MUST NOT BE ALTERED.  This code is transmitted to Austin with PTF, OPC, and many other DHCP packages and modules.  Editing of this code will have severe negative implications on the integrity of the data you are transmitting and it could cause rejected records and loss of reimbursement for your site. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the beginning date of this period of service whether it be a war, conflict, police action, or period of peace.  This data is determined by MAS VACO and must not be altered in any way. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the ending date of this period of service whether it be a war, conflict, police action, or period of peace.  This data is determined by MAS VACO and must not be altered in any way. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WAR/PEACE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WAR;P:PEACE;",
+      "helpText": "This field contains a set of codes to determine whether this period of service was a wartime period or a period of peace.  This information is determined by VACO and must not be altered in any way. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LATEST DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the latest date of birth which a patient may have had in order to participate in this period of service.  For example, If this field contained 1975, only persons born in 1975 or earlier would have been old enough to serve during this period of service. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this period of service has been inactivated and should no longer be selectable, this field should contain YES.  Periods of service are maintained by VACO and the MAS software module.  Therefore, this information should not be altered by the site.  Should it be necessary to inactivate a period of service, this will occur through the release of the MAS module via a regular software release. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PTF CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the code for this period of service which is transmitted as part of the PTF portion of the MAS module.  This field is determined by MAS VACO and is maintained by the MAS software module.  Editing of this information can have severe negative impacts on the operation of the MAS software and may cause records to be rejected in Austin. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "21.01P",
+      "required": false,
+      "helpText": "This multiple contains all eligibilities a person with this period of service may have. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "21.02",
+      "required": false,
+      "helpText": "This multiple contains all alternate names by which this period of service can be selected.  Entry of either the period of service name or one of the synonyms contained in this multiple will cause this period of service to be selected. ",
+      "isMultiple": true,
+      "subFileNumber": 21.02,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a brief description of this period of service.  It may contain the date range for the conflict or a brief explanation of the period of service.  If the user enters two question marks at a PERIOD OF SERVICE prompt, this description will appear in addition to the period of service name and code. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "SYN", "field": },
+    {"name": "21", "field": .01, "type": "regular"},
+    {"name": "21", "field": .02, "type": "regular"},
+    {"name": "21", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W:$X>40 ! W ?40,\"(\",$P(^(0),\"^\",3),\")\" W:$X>53 ! W ?53,$P(^(0),\"^\",20)"}
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "fileNumber": 392.1,
+  "fileName": "BENEFICIARY TRAVEL DISTANCE",
+  "globalRoot": "392.1",
+  "globalReference": "^DGBT(392.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CITY OR TOWN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the free text departure name, 1 to 30 characters in length, of the City or Town that is used as the alternate lookup in determining the one way mileage distance that is pre-stuffed when entering the Bene Travel Claim. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This field points to the State File (#5) and contains the IFN for that  field and is used in the Beneficiary Travel Claim Options as the primary look-up to determine the one way mileage that can be pre-stuffed in the Bene Travel Claim.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT MILEAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the one way mileage (in whole numbers between 0 and  10000) distance (e.g. between place of departure and place of destination). The default mileage is between the departure city and the primary division of the instituion.  This value is not accessed directly by the user but is stuffed from the mileage/one way field in the primary division of the division mileage multiple.  It is changed whenever the one-way mileage in the primary division is changed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the 5-digit zip code for the Beneficiary Travel Distance File. This field is not required, but if no zip code is present, the claim enter/edit routine will not be able to make the initial look-up using the 'C' cross reference, and a correct look-up for the mileage will rely solely  on the correct spelling of the city/town. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "* ADDITIONAL INFORMATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a set of codes 0 for no and 1 for yes and is used to  indicate that additional information should be checked or not  (e.g. if there is a closer VA facility, etc.) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "* MOST ECON/PUBLIC TRANS. COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is a dollar amount between 0 and 10000.00 and is used to  indicate if there is a most econ./public trans. amount that should  be used for this location. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DIVISION MILEAGE",
+      "dataType": "POINTER",
+      "rawType": "392.1001PA",
+      "required": false,
+      "helpText": "Multiple for divisions with each division having it's own mileage value between the division and the departure city.  Edited by the user and, for the primary division, the mileage will be stuffed into the  default mileage field, #3. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "392.1", "field": .01, "type": "regular"},
+    {"name": "392.1", "field": .01, "type": "regular"},
+    {"name": "392.1", "field": 2, "type": "regular"},
+    {"name": "392.1", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(5,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

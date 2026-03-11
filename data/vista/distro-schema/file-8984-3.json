@@ -1,0 +1,53 @@
+{
+  "fileNumber": 8984.3,
+  "fileName": "LOCAL SYNONYM",
+  "globalRoot": "8984.3",
+  "globalReference": "^XT(8984.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  The term or phrase associated with the target file that the synonym will be equivalent to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ASSOCIATED FILE",
+      "dataType": "POINTER",
+      "rawType": "R*P1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "  The file containing the TERM that MTLU will use for lookups. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "8984.31A",
+      "required": false,
+      "helpText": "  One or more terms that are related to the term in the associated file. ",
+      "isMultiple": true,
+      "subFileNumber": 8984.31,
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "8984.3", "field": .01, "type": "regular"},
+    {"name": "8984.3", "field": .01, "type": "regular"},
+    {"name": "8984.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

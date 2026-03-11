@@ -1,0 +1,110 @@
+{
+  "fileNumber": 45.85,
+  "fileName": "CENSUS WORKFILE",
+  "globalRoot": "45.85P",
+  "globalReference": "^DG(45.85,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the inpatient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the admission date and time associated with this workfile entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ADMISSION ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field contains the internal entry number to the patient's admission multiple.  This number represent the admission entry that caused this workfile entry to be created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CENSUS DATE",
+      "dataType": "POINTER",
+      "rawType": "P45.86'",
+      "required": false,
+      "pointerTo": 45.86,
+      "helpText": "This field contains the CENSUS DATE that the workfile entry is associated.   Note that an admission can be associated with more than one census record but each workfile entry is associated with only one census record.   As an example, a patient who was a continuous inpatient from 8/1/91 to 11/1/92 would have census records for the 9/30/91 and 9/30/92 censuses. This admission would have two workfile entries. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the discharge date and time associated with this workfile entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WARD ON CENSUS DATE",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This field contains the ward that the patient was on as of 11:59 of the CENSUS DATE. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PTF NUMBER",
+      "dataType": "POINTER",
+      "rawType": "*P45'",
+      "required": false,
+      "pointerTo": 45,
+      "helpText": "This field contains the PTF record that is assoicated with this workfile entry. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CENSUS STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This computed field will display/print the census status associated with the admission and CENSUS DATE for this workfile entry.   Possible statuses are:   Open                          Closed                          Released                          Transmitted ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "CENSUS RECORD NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field displays/prints the census record number  associated with the admission and CENSUS DATE for this workfile entry. ",
+      "fieldNumber_": 103
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ACENSUS", "field": },
+    {"name": "B", "field": },
+    {"name": "PTF", "field": },
+    {"name": "45.85", "field": .01, "type": "regular"},
+    {"name": "45.85", "field": .04, "type": "regular"},
+    {"name": "45.85", "field": .12, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(45.86,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(45.86,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

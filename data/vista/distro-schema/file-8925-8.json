@@ -1,0 +1,88 @@
+{
+  "fileNumber": 8925.8,
+  "fileName": "TIU SEARCH CATEGORIES",
+  "globalRoot": "8925.8",
+  "globalReference": "^TIU(8925.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEARCH CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "These are the allowable categories by which you may query for documents  (e.g., PATIENT, AUTHOR, EXPECTED COSIGNER, TREATING SPECIALTY, HOSPITAL  LOCATION, SUBJECT, SERVICE, PROBLEM, PATIENT STATUS (i.e.,  Inpatient/Outpatient), etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CROSS-REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the cross-reference which will be searched to identify the  corrresponding documents.  It must have the structure:  ^TIU(8925,\"<X-REF NAME>\",ENTITY,DOCTYP,STATUS,INVDATE,IEN)=\"\" where ENTITY is the object of the search, DOCTYPE is the .01 field value of the record in 8925, STATUS is the value of the .05 field in 8925, and inverse date is the inverted reference date (field 1301 in file 8925), computed as 9999999-REFDATE. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the Search Category as it will be displayed to the user on selection. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ASSOCIATED FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the file on which a look-up will occur in the event that a category is selected (e.g., for category PATIENT, the file should be 2, and for category AUTHOR, the file should be 200). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code, which sets the special variable DIC(\"S\"), prior to invoking the look-up on the FILE identified with the category. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOOK-UP CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This code is invoked, if defined, and should behave like a call to ^DIC, setting the variable Y as IFN^VALUE. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the $HOROLOG-formatted date/time for a change to a Search Categories entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8925.8", "field": .01, "type": "regular"},
+    {"name": "8925.8", "field": .02, "type": "regular"},
+    {"name": "8925.8", "field": .03, "type": "regular"},
+    {"name": "8925.8", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

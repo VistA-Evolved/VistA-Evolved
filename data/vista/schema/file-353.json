@@ -1,0 +1,207 @@
+{
+  "fileNumber": 353,
+  "fileName": "BILL FORM TYPE",
+  "globalRoot": "353",
+  "globalReference": "^IBE(353,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter a number that is within the number range for your facility, that is xxx000 to xxx999 where xxx is your station number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field names a type of form that is available for billing purposes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEFAULT PRINTER (BILLING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the default printer that will appear at selected prompts for this form type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FOLLOW-UP PRINTER (A/R)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For forms other than the UB-04, this is the default printer that has this form mounted for follow-up letter/forms for Accounts Receivable. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the routine that will get executed for follow-up letters and bills  printed in a batch if this is not a UB-82 entry. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "BASE FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the number of the Fileman file to be used as a 'base' to extract Fileman fields for this form. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "FORMAT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINTED FORM;T:TRANSMITTED FORM;S:BILLING SCREEN;",
+      "helpText": "This is the type of form that is being defined. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "FORM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If a printed form, this is the number of lines that the form has to be used to know when a form feed needs to be sent to the printer. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "NATIONAL FORM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to YES (1) for nationally distributed forms, is null or 0 for locally defined billing forms. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "PARENT FORM",
+      "dataType": "POINTER",
+      "rawType": "*P353'X",
+      "required": false,
+      "pointerTo": 353,
+      "helpText": "This is the name of the national parent form that the local form is associated with.  Association in this way allows a site to override specific fields in the national form with local modifications without changing the national form definition.  The output generator uses all national form fields associated with the local form except for those fields overridden. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a brief explanantion of the purpose of the form. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "FIELD DELIMITER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the delimiter that will be placed between fields of a transmitted type form by the output generator.  If this field is left blank, an '^' is assumed to be the delimiter.  Fileman will not allow an '^' to be entered in this field. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PRINT FORM NAME",
+      "dataType": "POINTER",
+      "rawType": "*P353'",
+      "required": false,
+      "pointerTo": 353,
+      "helpText": "This is the pointer to the entry in this file (itself or another entry with this entry as its parent) that will be used to print bills of this form type. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "LOCAL BILLING SCREEN",
+      "dataType": "POINTER",
+      "rawType": "*P353'",
+      "required": false,
+      "pointerTo": 353,
+      "helpText": "This is the form that will be used to build the local billing screen for enter/edit a bill. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ENTRY PRE-PROCESSOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code that is executed before extracting data for an individual form entry using the forms output generator.  Can be used to set up any variables necessary before processing a single entry. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ENTRY POST-PROCESSOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code that is executed after extracting data for an individual form entry using the forms output generator.  Can be used to clean up variables or do some ancillary processing such as update print date or printed by fields. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "OUTPUT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code to xecute to actually print or transmit the form entry after all fields have been extracted to the sort global. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "EXTRACT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code to xecute to actually extract data into the sort global for the form entry. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "FORM PRE-PROCESSOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code that is executed before starting to extract any entries (using the forms output generator) for this form. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "FORM POST-PROCESSOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code that is executed after all entries have been passed through the forms output generator extract for this form.  Can be used to clean up any variables used in processing. ",
+      "fieldNumber_": 55
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "353", "field": .01, "type": "regular"},
+    {"name": "", "field": 2.02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

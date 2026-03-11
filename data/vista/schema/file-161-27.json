@@ -1,0 +1,49 @@
+{
+  "fileNumber": 161.27,
+  "fileName": "FEE BASIS SUSPENSION",
+  "globalRoot": "161.27I",
+  "globalReference": "^FBAA(161.27,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "These codes represent reasons for payment suspense. They are identified by the 'Short Description' field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "161.28",
+      "required": false,
+      "helpText": "This field represents the expanded explanation of the suspense codes.They are used during the printing of the suspense letters. ",
+      "isMultiple": true,
+      "subFileNumber": 161.28,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviated text of the suspense codes. They are used in the help text when entering suspense codes. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.27", "field": .01, "type": "regular"},
+    {"name": "161.27", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(2)) \"   \",$P(^(2),U,1)"}
+  ]
+}

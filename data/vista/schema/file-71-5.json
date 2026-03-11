@@ -1,0 +1,28 @@
+{
+  "fileNumber": 71.5,
+  "fileName": "IMAGING STOP CODES",
+  "globalRoot": "",
+  "globalReference": "^RAMIS(71.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VALID CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P40.7'X",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "Only stop codes valid for imaging should be entered in this file. When a stop code becomes invalid, it should be deleted from this file. When a new stop code becomes valid for imaging procedures, it should be added to this file.  Entries are used as a selection list when editing the DSS ID of an imaging location. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N RA S RA(0)=$G(^DIC(40.7,+$G(Y),0)),RA(3)=$S($P(RA(0),\"^\",3)]\"\":\"(Inactive)\",1:\"\") W:RA(3)]\"\" \"   \"_RA(3)"}
+  ]
+}

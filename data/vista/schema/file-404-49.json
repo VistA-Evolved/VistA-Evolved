@@ -1,0 +1,38 @@
+{
+  "fileNumber": 404.49,
+  "fileName": "PCMM HL7 ID",
+  "globalRoot": "404.49",
+  "globalReference": "^SCPT(404.49,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file stores PCMM HL7 message ID numbers for ZPC segments. The ZPC segment then uses the IEN of this file which shortens the ID sent to the NPCD.   The ID can have two formats depending on whether it is a preceptee or preceptor.   Format 1:    2290-427-34-AP/PCP Where:    2290= 404.43 IEN    427 = 404.52 IEN of preceptor    34  = 404.53 IEN    AP  = AP (Associate Provider) or PCP (Primary Care Provider)   Format 2:    2290-453-0-AP/PCP Where:    2290= 404.43 IEN    427 = 404.52 IEN of precep",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INTEGRATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When one site is integrated into another site, all entries in 404.43, 404.52, and 404.53 that have been unassigned and that are moved to the primary site, need to be able to convert to the original ID if they are edited and an HL7 message is generated. This field preserves that old ID. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.49", "field": .01, "type": "regular"},
+    {"name": "404.49", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

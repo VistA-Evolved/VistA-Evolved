@@ -1,0 +1,79 @@
+{
+  "fileNumber": 6914.6,
+  "fileName": "NX FUND",
+  "globalRoot": "6914.6I",
+  "globalReference": "^ENG(6914.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NX FUND CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Fund code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Text description of fund code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REVOVLING FUND?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If REVOLVING FUND? is YES, then BEG_BUDGET_FY must be 94 when transmitting documents to FAP. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation for the fund that could be used to further identify the .01 field when there is not room for the fullfund description. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DEACTIVATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "As of the date entered in this field, new FA or FR Documents can't be sent to Fixed Assets (Austin) with this FUND. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASSOCIATED FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field can be used to link an inventory fund in this file with an associated acquisition fund when the first four characters of the associated funds are dissimilar. For example, this field provides a means to associate acquisition funds that start with 0160 (i.e. 0160A1, etc.) with the corresponding inventory fund AMAFMC by entering \"0161\" in this field for fund AMAFMC. This field is used when the system automatically populates the FUND field in the equipment file based on information from a",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "6914.6", "field": .01, "type": "regular"},
+    {"name": "6914.6", "field": .01, "type": "regular"},
+    {"name": "6914.6", "field": 1, "type": "regular"},
+    {"name": "6914.6", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

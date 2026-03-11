@@ -1,0 +1,1083 @@
+{
+  "fileNumber": 53.1,
+  "fileName": "NON-VERIFIED ORDERS",
+  "globalRoot": "53.1I",
+  "globalReference": "^PS(53.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "  This is a reference number for this order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT;A:ASAP;R:ROUTINE;P:PREOP;T:TIMING CRITICAL;D:DONE;",
+      "helpText": "This field contains the priority of the order that was received from OERR. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "  (Not currently used.) ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "  This is the patient for which the medication has been ordered. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "  This field should contain the prescribing physician's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPENSE DRUG",
+      "dataType": "POINTER",
+      "rawType": "53.11P",
+      "required": false,
+      "helpText": "  This is the medication ordered for the patient. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MED ROUTE",
+      "dataType": "POINTER",
+      "rawType": "R*P51.2'",
+      "required": true,
+      "pointerTo": 51.2,
+      "helpText": "  This is the route of administration for this medication.  (If a corresponding abbreviation is found for this route in the MEDICATION ROUTES file, this package will print that abbreviation on it's reports.) ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "U:UNIT DOSE;I:INPATIENT;F:FLUID;H:HYPERAL;",
+      "helpText": "  This identifies the type of medication ordered. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SELF MED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This should contain a `1' (or `YES') if this medication is to be administered by the patient to himself. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HOSPITAL SUPPLIED SELF MED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This should contain a `1' (or `YES') if this medication is to be a `SELF MED' and this site's pharmacy is to supply the medication.  This is only asked if the user enters `YES' (or `1') to the SELF MED prompt. If the SELF MED field is ever edited to show `NO' (or `0'), this is automatically deleted. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SCHEDULE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "O:ONE-TIME;P:PRN;C:CONTINUOUS;R:FILL on REQUEST;OC:ON CALL;",
+      "helpText": "  This describes the type of schedule for the dispensing of the medication(s) that make up the order.   PRE-OP orders are usually considered to be ON-CALL orders, and orders dispensed as MUTLI-DOSE CONTAINERS are usually considered to be FILL ON REQUEST orders. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SPECIAL INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is any special instructions (using abbreviations whenever possible) needed for this order.  This would include the physician's reason for ordering a PRN.  The abbreviations and expansions from the MEDICATION INSTRUCTIONS file are utilized. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RENEWAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  (Not currently used.) ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "  This is the date and time the order is to begin.  This package initially  assigns the START DATE/TIME to the closest administration time or next  admin. time or NOW depends on the value of the DEFAULT START DATE  CALCULATION field in the INPATIENT WARD PARAMETERS file.  START DATE/TIME may not be entered prior to 7 days from the order's  LOGIN DATE. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DAY LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This is the number of days that this order will last. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DOSE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This is the number of times the medication is to be administered. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "*UNITS PER DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2OX",
+      "length": 5,
+      "required": false,
+      "helpText": "  This is now for use only by the package.  Units per Dose is now associated with each dispense drug. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "*PRE-EXCHANGE UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "  This is the number of actual units needed for this order until the next cart exchange. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "RENEWAL USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who renewed this order, or marked this order to be renewed. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VERIFYING NURSE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the nurse who verifies the order. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DATE VERIFIED BY NURSE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the order was verified by the nurse. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "VERIFYING PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the pharmacist who verified the order. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE VERIFIED BY PHARMACIST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the order was verified by the pharmacist. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the physician who signed off on the order. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE VERIFIED BY PHYSICIAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the physician signed off on the order. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who entered the order. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DATE ENTERED BY CLERK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date (to the second) that the order was entered. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SOLUTION",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "  (Not currently used.) ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "STOP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "  This is the date and time the order will automatically expire.  This package initially assigns a default STOP DATE/TIME, depending on the SITE PARAMETERS. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is the frequency (ONLY) with which the doses are to be administered.  Several forms of entry are acceptable, such as Q6H, 09-12-15, STAT, QOD, and MO-WE-FR@AD (where MO-WE-FR are days of the week, and AD is the admin times).  The schedule will show on the MAR, labels, etc.  No more than TWO spaces (Q3H 4, TID PC PRN, or Q4H PRN) in the schedule are acceptable. If the letters PRN are found as part of the schedule, no admin times will print on the MAR or labels, and the PICK LIST will alway",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "  This is the date the medication was ordered. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 27.1,
+      "fieldName": "LOG-IN DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "  This is the date (to the second) the ordered was entered. ",
+      "fieldNumber_": 27.1
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;D:DISCONTINUED;I:INCOMPLETE;N:NON-VERIFIED;U:UNRELEASED;P:PENDING;DE:DISCONTINUED (EDIT);",
+      "helpText": "  This is the status of the order. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DATE RENEWAL MARKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the order was marked to be renewed. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "MARKED CANCELLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is an internal flag showing that the order has been marked to be cancelled. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "MARKED CANCELLED USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who marked the order to be cancelled. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "INACTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the original stop date of the order, and is updated when the order is cancelled. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DOSES CALLED FOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is the total amount of the medication to be dispensed as calculated by the package. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DOSES ACTUALLY DISPENSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is the amount of the medication actually dispensed as entered by the pharmacist. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "RETURNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This is the number of doses returned of this medication from the patient's cassette upon the termination of this order. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "TOTAL RETURNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is the total amount of returns for this order. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "TOTAL UNITS DISPENSED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "  This is the total amount dispensed for this order, including PRE-EXCHANGE NEEDS and EXTRA UNITS DISPENSED. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "DATE MARKED CANCELLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date that the order was marked for cancellation. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ADMIN TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is the set of administration times for this order. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "53.12",
+      "required": false,
+      "helpText": "  This is any remarks needed for this order. ",
+      "isMultiple": true,
+      "subFileNumber": 53.12,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "FREQUENCY (in minutes)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is either a code or the number of minutes between the administration times for the order. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is an internal flag set if the order was cancelled due to the patient being transferred. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PV FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is an internal flag set if the order was ever verified by a pharmacist. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "LABEL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the last label record was created for this order. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "LABEL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DISCONTINUED;E:EDITED;N:NEW;DE:DISCONTINUED (EDIT);",
+      "helpText": "  This is the last activity to take place on the order that created a label record. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "NEW ORDER NO.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  When an order is first made active, the new order number (from ^PS(55)) is stored in this field.   (Not currently used.) ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "SIG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the provider's exact instructions for this order's medication and its administration. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PURGE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ORDER TO BE PURGED;",
+      "helpText": "  This is an internal flag set when the order is due to be purged (deleted). ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "ORDERS FILE ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the pointer value of the corresponding entry in the Orders file (100) when the order is entered through the OE/RR process. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LAST WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "  This is the last ward the patient was located when the order expired or was discontinued.  This is automatically updated by the Unit Dose package when the package finds that the patient is first admitted or when the patient is found to have been transferred.  This allows any returns that are entered to be credited to the correct ward. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LABEL CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who took the action that created the label for this order. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "WARD FOR AUTO-CANCEL LABEL",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "  This is the ward the patient was on before the transfer or discharge that created the label occurred. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "IV TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADMIXTURE;C:CHEMOTHERAPY;H:HYPERAL;P:PIGGYBACK;S:SYRINGE;",
+      "helpText": "  Type of IV - \"A\" for Admixture, \"C\" for Chemotherapy, \"H\" for Hyperal, \"P\" for Piggyback, and \"S\" for Syringe. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "CHEMOTHERAPY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADMIXTURE;P:PIGGYBACK;S:SYRINGE;",
+      "helpText": "  A chemotherapy IV order may be one of three type: admixture, piggyback, or syringe.  The type of chemotherapy IV must be identified as one of these types, so the system will know what kinds of questions to ask in order to properly complete this order. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "SYRINGE SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Enter the size of the syringe which is to be used to administer this IV. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "INTERMITTENT SYRINGE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  A syringe IV order may be continuous or intermittent.  If a syringe type is continuous (not intermittent), the same order entry procedure will be followed as if a hyperal or admixture is being entered.  If a syringe order is to be intermittent, the same order entry method as the piggyback type will be followed. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ADDITIVE",
+      "dataType": "POINTER",
+      "rawType": "53.157PA",
+      "required": false,
+      "helpText": "  The additive in the IV.  This looks at the IV ADDITIVES file (52.6). ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "SOLUTION",
+      "dataType": "POINTER",
+      "rawType": "53.158PA",
+      "required": false,
+      "helpText": "  Solution in the IV.  Points to the IV SOLUTIONS file (52.7). ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "INFUSION RATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  The rate at which the IV is to be administered.  This value, together with the total volume of the hyperal or the admixture type, is used to determine the time covered by one bag; hence the system can predict the bags needed during a specified time of coverage.  This field is free text for IVPB's.  For LVP's you must enter a number representing the infusion rate.  You may also specify the # of bags per day needed, which will become the default number of LABELS PER DAY.     Example.  125 = 125 ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "SCHEDULE INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  Interval (in minutes) between administrations of the IV order. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ATZERO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRINT PB'S ON DEMAND;",
+      "helpText": "  If an IV order is intermittent and a schedule was entered in the form SCHEDULE@0.  Notice there are no spaces in the input.  When a schedule is entered in this form, this field is set to 1.  This causes the order to be printed on the Ward and Manufacturing lists with 0 doses due.  Scheduled labels for the order will not be printed unless the Ward list is updated before printing scheduled labels.  This is a \"print on demand\" function similar to entering INFUSION RATE@0 for continuous orders. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "IV ROOM",
+      "dataType": "POINTER",
+      "rawType": "RP59.5'",
+      "required": true,
+      "pointerTo": 59.5,
+      "helpText": "IV room where IV bag was prepared for administration. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This is not displayed on IV labels, but is printed on some IV reports. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "OTHER PRINT INFO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  For use by Pharmacy to print additional information on IV labels and reports. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "PROVIDER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "53.1012",
+      "required": false,
+      "helpText": " This is used to store any additional information the provider needs to pass along to pharmacy or ward personnel when an order is entered  through OE/RR. ",
+      "isMultiple": true,
+      "subFileNumber": 53.1012,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "PREVIOUS ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  When an order is created from an active order, the old number (from ^PS(55)) is stored in this field. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "*PRIMARY DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50.3'",
+      "required": false,
+      "pointerTo": 50.3,
+      "helpText": "  This is the primary drug associated with the order. If the order is a unit dose order all dispensed drugs entered must be matched to the order's primary drug. If the order is an IV order at least one of the additives or solutions entered must match the primary drug. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "*DOSAGE ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is the amount of the medication the patient is to receive as one dose for this order.  This should be an amount with a unit of measure, such '500MG' or '50CC'.  THIS SHOULD NOT BE THE NUMBER OF TABLETS, ETC. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "REASON ORDER CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;R:RENEWAL;E:EDIT;",
+      "helpText": "  This is used to show the method used to create this order. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "PREVIOUS ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  If an action is taken on an order that causes a new order to be created, this will contain a code identifying the previous order. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "FOLLOWING ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  If an action is taken on an order that causes a new order to be created, this will contain a code identifying the order created. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "*NATURE OF ORDER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "W:WRITTEN;P:TELEPHONED;V:VERBAL;E:PROVIDER ENTERED;",
+      "helpText": "  This is the method the provider used to communicate to the user to enter (or take any other action) the order. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "REASON FOR FOLLOWING ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EDIT;R:RENEWAL;",
+      "helpText": "  If the order has been edited or renewed, this will contain the code  corresponding to the action taken. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P50.7'",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This identifies the Orderable Item associated with the order. If the order contains multiple dispense drugs, or a single dispense drug requiring multiple units/dose, the Orderable Item and Dosage Ordered fields will be  displayed. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "DOSAGE ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the amount of the medication the patient is to receive as one dose  for this order. This should be an amount with a unit of measure, such as '500mg' or '50CC'. THIS SHOULD NOT BE THE NUMBER OF TABLETS, ETC. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "NATURE OF ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WRITTEN;P:TELEPHONED;V:VERBAL;E:ELECTRONICALLY ENTERED;I:POLICY;S:SERVICE CORRECTION;D:DUPLICATE;",
+      "helpText": "This is the method the provider used to communicate the order to the user  to enter (or take any other action on) the order. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "ORDER CHECKS",
+      "dataType": "SUBFILE",
+      "rawType": "53.1112A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 53.1112,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Entry must be a clinic.  Depending on the condition, INACTIVATE and REACTIVATE dates may exist. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "LAST RENEW",
+      "dataType": "DATE",
+      "rawType": "53.1114D",
+      "required": false,
+      "helpText": "This multiple contains the data that relates to the renewal of an order. ",
+      "isMultiple": true,
+      "subFileNumber": 53.1114,
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "REQUESTED START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time the provider is requesting that this order start. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "DURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the length of time in days the provider requests that this order last. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "REQUESTED STOP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time the provider is requesting that this order stop. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "UD/IV PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be used during the finishing process to determine if the user should be prompted whether they wish to finish the order as an IV or Unit Dose order. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "53.1119DA",
+      "required": false,
+      "helpText": "This is a record of the actions that have taken place on the order.Actions include EDIT, RENEWAL, CANCELLATION, and FINISH. Stored with the action is the date and time the action took place and the user who took the action. If the action is an edit, the data in the field edited prior to the edit is also stored. ",
+      "isMultiple": true,
+      "subFileNumber": 53.1119,
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,4",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the numeric dosage for the order. It will be combined with the UNIT field to show the dosage ordered.  For a dosage of 325MG, 325 would be stored here. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the field which contains the unit for the numeric dosage.  The combination of these two fields gives you the dosage ordered for this order.  For a dosage of 325MG, MG would be stored here. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "SI FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag controls whether the user administering this order in BCMA will have the Special Instructions displayed in a pop-up box. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "OPI FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag controls whether the user administering this order in BCMA will have the Other Print Info displayed in a pop-up box. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "FLAGGED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates that this order has been flagged for clarification. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "ORDERS FILE PARENT ORDER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the parent of a CPRS order that may have a parent/child relationship in CPRS ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "APPOINTMENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time of the appointment this order is being placed for.   ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "REQUESTED IV LIMITATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the length of time to administer, or the total volume to  administer, for IV fluid orders. The value may be in ML or CC for milliliters, L for liters, D for days, or H for hours. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "IV TYPE CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERMITTENT;C:CONTINUOUS;",
+      "helpText": "This field contains the category of the order's IV TYPE.    The IV TYPE CATEGORY will be \"C\" (Continuous) for orders with an IV TYPE of Admixture, Hyperal, Non-Intermittent Syringe, or Chemotherapy with a  CHEMOTHERAPY TYPE of Admixture, Hyperal, or Non-Intermittent Syringe.   The IV TYPE CATEGORY will be \"I\" (Intermittent) for orders with an IV  TYPE of Piggyback, Intermittent Syringe, or Chemotherapy with a  CHEMOTHERAPY TYPE of Piggyback or Intermittent Syringe. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "MOST RECENT FLAG COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "INTERVENTION",
+      "dataType": "POINTER",
+      "rawType": "53.13PA",
+      "required": false,
+      "helpText": "Interventions logged during Inpatient Order Entry in response to drug-drug or drug-allergy order checks. Only interventions associated with a  specific Inpatient Order will be stored with that order. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "LABELS PER DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of IV labels needed each day. If populated, this value will  override the system-calculated number of labels.  ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "SPECIAL INSTRUCTIONS (LONG)",
+      "dataType": "SUBFILE",
+      "rawType": "53.1135",
+      "required": false,
+      "helpText": "This is any special instructions needed for this order.  This would include the physician's reason for ordering a PRN.   ",
+      "isMultiple": true,
+      "subFileNumber": 53.1135,
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "OTHER PRINT INFO (LONG)",
+      "dataType": "SUBFILE",
+      "rawType": "53.1136",
+      "required": false,
+      "helpText": "For use by Pharmacy to print additional information on IV labels and  reports. This is very similar to the REMARKS (#.1) field in the IV (#100) multiple of the PHARMACY PATIENT (#55) file, except OTHER PRINT INFO is shown on the label and the IV REPORTS. ",
+      "isMultiple": true,
+      "subFileNumber": 53.1136,
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "DURATION OF ADMINISTRATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the period of time that a Medication Requiring Removal must remain on the patient prior to removal. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "REMOVE TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the set of removal times for this order. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "REMOVE PERIOD (in minutes)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Period of time in minutes calculated using the Duration of  Administration and the Administration times.   Only entered via PSJ OE. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "BCMA PROMPT FOR REMOVAL FLAG",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:No Removal Required;1:Removal at Next Administration;2:Removal Period Optional Prior to Next Administration;3:Removal Period Required Prior to Next Administration;",
+      "helpText": "Orderable Item Prompt for Removal flag captured at order time. DO NOT EDIT! ",
+      "fieldNumber_": 140
+    }
+  ],
+  "fieldCount": 108,
+  "crossReferences": [
+    {"name": "AAT", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACX", "field": },
+    {"name": "ADM", "field": },
+    {"name": "AP", "field": },
+    {"name": "APD", "field": },
+    {"name": "APR", "field": },
+    {"name": "AS", "field": },
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "53.1", "field": .01, "type": "regular"},
+    {"name": "53.1", "field": .5, "type": "regular"},
+    {"name": "53.1", "field": 1, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "", "field": 7, "type": "regular"},
+    {"name": "53.1", "field": 16, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"},
+    {"name": "53.1", "field": 28, "type": "regular"},
+    {"name": "53.1", "field": 39, "type": "regular"},
+    {"name": "53.1", "field": 39, "type": "regular"},
+    {"name": "53.1", "field": 101, "type": "regular"},
+    {"name": "53.1", "field": 125, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(0)) \"   \",$S($D(^PS(51.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 7, "value": "W:$D(^(0)) \"   \",\"\" S %=$C(59)_$S($D(^DD(53.1,7,0)):$P(^(0),U,3),1:\"\") W @(\"$E(\"_DIC_\"Y,0),0)\"),$P($P(%,$C(59)_$P(^(0),U,7)_\":\",2),$C(59),1)"}
+  ]
+}

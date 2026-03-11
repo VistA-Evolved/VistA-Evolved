@@ -1,0 +1,98 @@
+{
+  "fileNumber": 129.22,
+  "fileName": "RXNORM RELATED CONCEPTS",
+  "globalRoot": "129.22",
+  "globalReference": "^ETSRXN(129.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RXCUI1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ8",
+      "length": 8,
+      "required": true,
+      "helpText": "Unique identifier of the first concept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATIONSHIP (REL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "Relationship of the second concept or atom to the first concept or atom. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RXCUI2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Unique identifier of the second concept ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SECONDARY RELATIONSHIP (RELA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "Additional (i.e more specific) relationship label. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SOURCE (SAB)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Abbreviation of the source of relationship. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUPPRESSION_FLAG (SUPPRESS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Suppressible flag. Values = N, Y, or E.    Reflects the suppressible status of the attribute.      N - Attribute is not suppressed.    Y - Attribute is suppressed by RxNorm        editors.    E - Attribute is an unquantified, non-         prescribable drug with related        quantified prescribable drugs. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CONTENT_VIEW_FLAG (CVF)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This fields denotes whether or not a concept is currently prescribable. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "UNIQUE RECORD ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This field is a unique ID for every row and will be used to keep the  records in the central repository in sync with the records in this  file.  During initial population, it will be derived from the line number  in the RXNREL.RRF file.  ",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "129.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

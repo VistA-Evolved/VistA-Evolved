@@ -1,0 +1,74 @@
+{
+  "fileNumber": 863.1,
+  "fileName": "OCX MDD APPLICATION",
+  "globalRoot": "863.1",
+  "globalReference": "^OCXS(863.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MENU TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.11P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "863.12",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRIMARY SUBJECT",
+      "dataType": "POINTER",
+      "rawType": "863.13P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the unique object ID for this entry ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "SYN", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.1", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

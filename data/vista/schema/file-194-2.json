@@ -1,0 +1,200 @@
+{
+  "fileNumber": 194.2,
+  "fileName": "PULL LIST",
+  "globalRoot": "194.2IO",
+  "globalReference": "^RTV(194.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This allows pull lists to be selected by internal file number ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PULL LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This allows a group of requests for records to be logically grouped in a  list for group action, charged out by the system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE RECORDS NEEDED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This identifies the date for a group of requests for records. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER ENTERING REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This defines the user who made the requests on the pull list ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECORD TYPE RESTRICTION",
+      "dataType": "POINTER",
+      "rawType": "*P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "This defines particular types of records which may be requested on a pull list. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BORROWER",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9X",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This defines the borrower in the system for the list of records. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PULL LIST STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "c:CHARGED;x:CANCELLED;r:REQUESTED;",
+      "helpText": "This delineates the state of the pull list in the system. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE/TIME CURRENT STATUS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines the date, time the status of the pull list was set. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "USER RESPONSIBLE FOR STATUS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This defines the user in the system who changed the status of the pull list. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CANCEL REASON",
+      "dataType": "POINTER",
+      "rawType": "*P195.6'X",
+      "required": false,
+      "pointerTo": 195.6,
+      "helpText": "This defines different reasons for cancelling the pull list. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TYPE OF LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SCHEDULING;2:ADHOC;3:RECORD RETIREMENT;",
+      "helpText": "This allows the system to differentiate between pull list generated from Scheduling clinics and other pull lists. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "VOLUMES REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALL VOLUMES;L:LATEST VOLUME;",
+      "helpText": "This allows the system to handle multi-volume records by defining the needs of the borrower. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "INSTITUTION OF BORROWER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This further describes the borrower of the record for different divisions within the system. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE/TIME PULL LIST PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines the date, time the pull list was printed to identify the validity of the list at the present time. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE/TIME LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines the date, time of the last update to the list. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP195.1'",
+      "required": true,
+      "pointerTo": 195.1,
+      "helpText": "This defines the application identified with the list to allow the system to share the same file with different applications. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "HOLDING AREA",
+      "dataType": "POINTER",
+      "rawType": "*P195.9'",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This allows groups of records to be moved to a temporary area before   further distribution. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "194.21",
+      "required": false,
+      "helpText": "This allows free text description to be added to the pull list to  aid in justification and identification of the list. ",
+      "isMultiple": true,
+      "subFileNumber": 194.21,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "194.2", "field": .01, "type": "regular"},
+    {"name": "194.2", "field": 2, "type": "regular"},
+    {"name": "194.2", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 4, "value": "W \"   \",$S($D(^DIC(195.2,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 6, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(194.2,6,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,6)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "fileNumber": 413.1,
+  "fileName": "TURN-IN REQUEST",
+  "globalRoot": "413.1I",
+  "globalReference": "^PRCN(413.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the sequential internal number of each turn-in request. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the temporary transaction number that is calculated based on the facility number, the CMR Official, the fiscal year and a  sequential number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who initiates the request.  It defaults from the DUZ number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "REQUESTOR PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the requestor and should default from new person file. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUESTING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is the requestor's service that is calculated from their entry in the New Person file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the actual date and time that the request was initialized. This automatically defaults from the current date and time when the request is being entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P411'",
+      "required": false,
+      "pointerTo": 411,
+      "helpText": "This is the station number that will automatically default if there is only one station numer otherwise, the requestor will be prompted for it. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CMR RESPONSIBLE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who is associated with a particular CMR.  This is defaulted when a CMR is selected and all messages will be directed to this person. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "POINTER",
+      "rawType": "P413.5'",
+      "required": false,
+      "pointerTo": 413.5,
+      "helpText": "This is the status of the request.  It is set at the completion of each step of the process. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date is automatically set whenever the status on a request changes.  It is the date that status was applied to the request. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EQUIP REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P413'",
+      "required": false,
+      "pointerTo": 413,
+      "helpText": "This is a corresponding equipment request transaction if the equipment request is replacement and a turn-in request is generated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CMR OFFICIAL APPROVAL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If the primary CMR Responsible Official does not approve a request, the request will be returned to the requestor. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CMR OFFICIAL EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.111",
+      "required": false,
+      "helpText": "This CMR Official must explain why a request was not approved. ",
+      "isMultiple": true,
+      "subFileNumber": 413.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "UTILITY DISCONNECT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is to designate the condition of the equipment that was turned in.  Equipment that is in fair to good condition could be sent to another medical center needing it. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ENGINEER. WORK ORDER",
+      "dataType": "POINTER",
+      "rawType": "P6920'",
+      "required": false,
+      "pointerTo": 6920,
+      "helpText": "If a turn-in request must be disconnect or have any other engineering work performed, a work order must be created.  This is a pointer to that work order. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CMR",
+      "dataType": "POINTER",
+      "rawType": "RP6914.1'",
+      "required": true,
+      "pointerTo": 6914.1,
+      "helpText": "This is the CMR number who will ultimately be responsible for the equipment when ordered and received. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WAREHOUSE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is for the person who has been assigned to pick up the equipment that is being turned in. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TURN-IN LINE ITEM",
+      "dataType": "POINTER",
+      "rawType": "413.11IPA",
+      "required": false,
+      "helpText": "This is for each item that the request for turn-in is being produced. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "413.1", "field": .01, "type": "regular"},
+    {"name": "413.1", "field": 5, "type": "regular"},
+    {"name": "413.1", "field": 6, "type": "regular"},
+    {"name": "", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCN(413.5,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(413.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

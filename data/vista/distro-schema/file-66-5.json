@@ -1,0 +1,47 @@
+{
+  "fileNumber": 66.5,
+  "fileName": "OPERATION (MSBOS)",
+  "globalRoot": "66.5PI",
+  "globalReference": "^LAB(66.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P81'X",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "Name of the Operation (MSBOS) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SHORT NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ29",
+      "length": 29,
+      "required": false,
+      "helpText": " This field contains a shorten name. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BLOOD COMPONENT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "66.51PA",
+      "required": false,
+      "helpText": "Blood component selected for an operation ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "66.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,246 @@
+ZVEUSER ;VE;User Management Admin RPCs;2026-03-09
+ ;
+ ; Custom RPCs for File #200 (NEW PERSON) admin operations.
+ ; Exposes user management through RPC Broker for web admin UI.
+ ; Read RPCs: LIST, DETAIL, KEYS, MENUS
+ ; Write RPCs: EDITUSER, ADDKEY, REMOVEKEY, DEACTUSER, REACTUSER
+ ;
+LIST(RESULT,SEARCH,FROM,COUNT) ;List users from File #200
+ ; SEARCH = name fragment (partial match) or "" for all
+ ; FROM = starting IEN (0 for beginning), COUNT = max results
+ N IEN,NM,I,U,MAXCT
+ S U="^"
+ S FROM=+$G(FROM),MAXCT=+$G(COUNT)
+ I MAXCT<1 S MAXCT=100
+ I MAXCT>500 S MAXCT=500
+ S SEARCH=$G(SEARCH)
+ S I=0,IEN=FROM
+ I SEARCH'="" D  Q
+ . S NM=$G(SEARCH)
+ . F  S NM=$O(^VA(200,"B",NM)) Q:NM=""  Q:I>=MAXCT  Q:$E(NM,1,$L(SEARCH))'=SEARCH  D
+ . . S IEN=0
+ . . F  S IEN=$O(^VA(200,"B",NM,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . . . S I=I+1
+ . . . S RESULT(I)=IEN_U_NM_U_$$ACTIVE(IEN)_U_$$TITLE(IEN)_U_$$SVCDT(IEN)
+ F  S IEN=$O(^VA(200,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . S NM=$P($G(^VA(200,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$$ACTIVE(IEN)_U_$$TITLE(IEN)_U_$$SVCDT(IEN)
+ S RESULT(0)=I
+ Q
+ ;
+DETAIL(RESULT,USERIEN) ;Get detailed user info from File #200
+ N U,ZN,Z0,ZPROV,ZKEY,I
+ S U="^",USERIEN=+$G(USERIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ S Z0=^VA(200,USERIEN,0)
+ S ZN=$G(^VA(200,USERIEN,.1))
+ S ZPROV=$G(^VA(200,USERIEN,"PS"))
+ S RESULT(0)="1^OK"
+ S RESULT(1)="IEN^"_USERIEN
+ S RESULT(2)="NAME^"_$P(Z0,U,1)
+ S RESULT(3)="INITIALS^"_$P(Z0,U,2)
+ S RESULT(4)="ACCESS_CODE_EXISTS^"_$S($P(Z0,U,3)'="":1,1:0)
+ S RESULT(5)="VERIFY_CODE_EXISTS^"_$S($P($G(^VA(200,USERIEN,.1)),U,2)'="":1,1:0)
+ S RESULT(6)="SEX^"_$P($G(^VA(200,USERIEN,1)),U,2)
+ S RESULT(7)="DOB^"_$P($G(^VA(200,USERIEN,1)),U,3)
+ S RESULT(8)="SSN^"_$P($G(^VA(200,USERIEN,1)),U,9)
+ S RESULT(9)="TITLE^"_$$TITLE(USERIEN)
+ S RESULT(10)="SERVICE^"_$P($G(^VA(200,USERIEN,5)),U,1)
+ S RESULT(11)="DIVISION^"_$P($G(^VA(200,USERIEN,2,1,0)),U,1)
+ S RESULT(12)="DISUSER^"_$$GET1^DIQ(200,USERIEN,7,"I")
+ S RESULT(13)="TERMINATED^"_$$ACTIVE(USERIEN)
+ S RESULT(14)="EMAIL^"_$G(^VA(200,USERIEN,.15))
+ S RESULT(15)="ESIG_EXISTS^"_$S($D(^VA(200,USERIEN,20,1)):1,1:0)
+ S RESULT(16)="PRIMARY_MENU^"_$P($G(^VA(200,USERIEN,200)),U,1)
+ ; Keys
+ S I=16
+ S ZKEY=0
+ F  S ZKEY=$O(^VA(200,USERIEN,51,ZKEY)) Q:'ZKEY  D
+ . S I=I+1
+ . S RESULT(I)="KEY^"_$P($G(^VA(200,USERIEN,51,ZKEY,0)),U,1)
+ S RESULT(0)=I
+ Q
+ ;
+KEYS(RESULT,SEARCH) ;List all security keys from File #19.1
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=500,SEARCH=$G(SEARCH)
+ I SEARCH="" D  Q
+ . S IEN=0
+ . F  S IEN=$O(^DIC(19.1,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . . S NM=$P($G(^DIC(19.1,IEN,0)),U,1)
+ . . Q:NM=""
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(19.1,IEN,1)),U,1)
+ S NM=SEARCH
+ F  S NM=$O(^DIC(19.1,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . S IEN=$O(^DIC(19.1,"B",NM,""))
+ . Q:'IEN
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(19.1,IEN,1)),U,1)
+ S RESULT(0)=I
+ Q
+ ;
+MENUS(RESULT,SEARCH) ;List menu options from File #19
+ N IEN,NM,I,U,MAXCT,TYP
+ S U="^",I=0,MAXCT=200,SEARCH=$G(SEARCH)
+ I SEARCH="" S RESULT(0)="0" Q
+ S NM=SEARCH
+ F  S NM=$O(^DIC(19,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . S IEN=$O(^DIC(19,"B",NM,""))
+ . Q:'IEN
+ . S TYP=$P($G(^DIC(19,IEN,0)),U,4)
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_TYP
+ S RESULT(0)=I
+ Q
+ ;
+ACTIVE(IEN) ;Is user active? Return "ACTIVE" or "INACTIVE"
+ ; Use FileMan API to read fields from their DD-defined storage locations
+ N TERM,DIS
+ S DIS=$$GET1^DIQ(200,IEN,7,"I")
+ S TERM=$$GET1^DIQ(200,IEN,9.2,"I")
+ I TERM'="" Q "INACTIVE"
+ I DIS Q "INACTIVE"
+ Q "ACTIVE"
+ ;
+TITLE(IEN) ;Get user title
+ N TIEN
+ S TIEN=$P($G(^VA(200,IEN,0)),U,9)
+ I 'TIEN Q ""
+ Q $P($G(^DIC(3.1,TIEN,0)),"^",1)
+ ;
+SVCDT(IEN) ;Get service/section name
+ N SVC
+ S SVC=$P($G(^VA(200,IEN,5)),U,1)
+ I 'SVC Q ""
+ Q $P($G(^DIC(49,SVC,0)),"^",1)
+ ;
+EDITUSER(RESULT,USERIEN,FIELD,VALUE) ;Edit user fields in File #200
+ ; FIELD: NAME, TITLE, SERVICE, DISUSER, PRIMARY_MENU
+ ; VALUE: new value (external format for pointers)
+ N U,FDA,IENS,ERR,FLDNUM
+ S U="^",USERIEN=+$G(USERIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ S FIELD=$G(FIELD),VALUE=$G(VALUE)
+ I FIELD="" S RESULT(0)="-1^Field name required" Q
+ S FLDNUM=""
+ I FIELD="NAME" S FLDNUM=.01
+ I FIELD="TITLE" S FLDNUM=8
+ I FIELD="SERVICE" S FLDNUM=29
+ I FIELD="DISUSER" S FLDNUM=7
+ I FIELD="PRIMARY_MENU" S FLDNUM=201
+ I FLDNUM="" S RESULT(0)="-1^Unknown field: "_FIELD Q
+ S IENS=USERIEN_","
+ S FDA(200,IENS,FLDNUM)=VALUE
+ D FILE^DIE("E","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+ADDKEY(RESULT,USERIEN,KEYIEN) ;Add security key to user
+ ; Appends to File #200 multiple 51 (KEYS) -- never KILLs
+ N U,FDA,IENS,ERR,SUBIEN,FOUND,MAXSUB
+ S U="^",USERIEN=+$G(USERIEN),KEYIEN=+$G(KEYIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ I 'KEYIEN S RESULT(0)="-1^Key IEN required" Q
+ I '$D(^DIC(19.1,KEYIEN,0)) S RESULT(0)="-1^Key not found" Q
+ ; Check if user already has this key
+ S FOUND=0,SUBIEN=0
+ F  S SUBIEN=$O(^VA(200,USERIEN,51,SUBIEN)) Q:'SUBIEN  D
+ . I +$G(^VA(200,USERIEN,51,SUBIEN,0))=KEYIEN S FOUND=1
+ I FOUND S RESULT(0)="-1^User already has this key" Q
+ ; Find max sub-IEN and append
+ S MAXSUB=0,SUBIEN=0
+ F  S SUBIEN=$O(^VA(200,USERIEN,51,SUBIEN)) Q:SUBIEN=""  D
+ . Q:SUBIEN'=+SUBIEN
+ . I SUBIEN>MAXSUB S MAXSUB=SUBIEN
+ S IENS="+"_(MAXSUB+1)_","_USERIEN_","
+ S FDA(200.051,IENS,.01)=KEYIEN
+ D UPDATE^DIE("","FDA","","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+REMOVEKEY(RESULT,USERIEN,KEYIEN) ;Remove security key from user
+ N U,SUBIEN,FOUND,DA,DIK
+ S U="^",USERIEN=+$G(USERIEN),KEYIEN=+$G(KEYIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ I 'KEYIEN S RESULT(0)="-1^Key IEN required" Q
+ S FOUND=0,SUBIEN=0
+ F  S SUBIEN=$O(^VA(200,USERIEN,51,SUBIEN)) Q:'SUBIEN  D
+ . I +$G(^VA(200,USERIEN,51,SUBIEN,0))=KEYIEN S FOUND=SUBIEN
+ I 'FOUND S RESULT(0)="-1^User does not have this key" Q
+ ; Use FileMan to delete the subentry
+ S DA=FOUND,DA(1)=USERIEN
+ S DIK="^VA(200,"_USERIEN_",51,"
+ D ^DIK
+ S RESULT(0)="1^OK"
+ Q
+ ;
+DEACTUSER(RESULT,USERIEN) ;Deactivate user - set DISUSER flag + termination date
+ N U,FDA,IENS,ERR,NOW
+ S U="^",USERIEN=+$G(USERIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ I $$ACTIVE(USERIEN)="INACTIVE" S RESULT(0)="-1^User already inactive" Q
+ S IENS=USERIEN_","
+ S NOW=$$NOW^XLFDT
+ S FDA(200,IENS,7)=1
+ S FDA(200,IENS,9.2)=NOW
+ D FILE^DIE("K","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+REACTUSER(RESULT,USERIEN) ;Reactivate user - clear DISUSER flag + termination date
+ N U,FDA,IENS,ERR
+ S U="^",USERIEN=+$G(USERIEN)
+ I 'USERIEN S RESULT(0)="-1^User IEN required" Q
+ I '$D(^VA(200,USERIEN,0)) S RESULT(0)="-1^User not found" Q
+ I $$ACTIVE(USERIEN)="ACTIVE" S RESULT(0)="-1^User already active" Q
+ S IENS=USERIEN_","
+ S FDA(200,IENS,7)="@"
+ S FDA(200,IENS,9.2)="@"
+ D FILE^DIE("K","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+INSTALL ;Register RPCs in File #8994
+ N NAME,RTAG,RROU,IEN
+ ; Read RPCs
+ D REG("VE USER LIST","LIST","ZVEUSER")
+ D REG("VE USER DETAIL","DETAIL","ZVEUSER")
+ D REG("VE KEY LIST","KEYS","ZVEUSER")
+ D REG("VE MENU LIST","MENUS","ZVEUSER")
+ ; Write RPCs
+ D REG("VE USER EDIT","EDITUSER","ZVEUSER")
+ D REG("VE USER ADD KEY","ADDKEY","ZVEUSER")
+ D REG("VE USER REMOVE KEY","REMOVEKEY","ZVEUSER")
+ D REG("VE USER DEACTIVATE","DEACTUSER","ZVEUSER")
+ D REG("VE USER REACTIVATE","REACTUSER","ZVEUSER")
+ W "ZVEUSER RPCs registered",!
+ Q
+ ;
+REG(NAME,RTAG,RROU) ;Register single RPC
+ N IEN,FDA,IENS,ERR
+ S IEN=$O(^XWB(8994,"B",NAME,""))
+ I IEN D  Q
+ . S FDA(8994,IEN_",",.04)=2
+ . D FILE^DIE("E","FDA","ERR")
+ . W "  Updated RETURN TYPE: ",NAME," (IEN ",IEN,")",!
+ S IENS="+1,"
+ S FDA(8994,IENS,.01)=NAME
+ S FDA(8994,IENS,.02)=RTAG
+ S FDA(8994,IENS,.03)=RROU
+ S FDA(8994,IENS,.04)=2
+ D UPDATE^DIE("E","FDA","","ERR")
+ I $D(ERR) W "  ERROR registering ",NAME,": ",$G(ERR("DIERR",1,"TEXT",1)),! Q
+ W "  Registered: ",NAME,!
+ Q

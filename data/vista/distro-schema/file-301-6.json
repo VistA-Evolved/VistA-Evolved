@@ -1,0 +1,158 @@
+{
+  "fileNumber": 301.6,
+  "fileName": "IVM TRANSMISSION LOG",
+  "globalRoot": "301.6IP",
+  "globalReference": "^IVM(301.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IVM PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP301.5'",
+      "required": true,
+      "pointerTo": 301.5,
+      "helpText": "  Enter the name of the IVM patient for which this transmission occurred. This is a pointer to the IVM PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the date/time that data for the IVM PATIENT was transmitted to the IVM Center. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RECEIVED;0:TRANSMITTED;2:RE-TRANSMITTED;3:ERROR IN TRANSMITTED RECORD;",
+      "helpText": "  This field will contain a 0 if the record has transmitted to the IVM Center.  It will contain a 1 if acknowledgement of the transmission has has been received from the IVM Center. It will contain a 2 if record re-transmitted to the IVM Center.  It will contain a 3 if error in record received by the IVM Center. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  When STATUS field is 3 (error in transmitted record) this field will contain the error message received from the IVM Center. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Message Control ID of the HL7 message used to transmit the Means Test data to the IVM Center.  Most transmissions are submitted in batch, and the batch record counter is concatenated to the Message Control ID in those cases.  This extended string would then be filed in this field.  An example of a Message Control ID with a concatenated batch record counter is '2940501.010213-25'. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME ACK RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used to record the date and time that an acknowledgment was received. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ERROR PROCESSING STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEW;2:CHECKED;",
+      "helpText": "Used to track the processing of the error by the local site.  Only applies if the acknowledgment was returned with an error message. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "MEANS TEST STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP408.32'",
+      "required": true,
+      "pointerTo": 408.32,
+      "helpText": "  This field will contain the means test status of the patient's means test for the given year at the time of the transmission.  This data is entered automatically by the IVM transmission software and should not be edited. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "INSURANCE STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:HAS ACTIVE INSURANCE;0:DOES NOT HAVE ACTIVE INSURANCE;",
+      "helpText": "  This field will contain a 1 if the patient had active insurance at the time this data was transmitted to the IVM Center.  If the patient did not have active insurance at the time, a 0 will be transmitted.   This data is updated automatically by the IVM transmission software and should not be edited. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "IVM EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not the transmission was made due to an IVM event. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "DCD EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not transmissin was made due to a DCD event. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "ENROLLMENT EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Used to indicate whether or not transmission was made due to an enrollment event. ",
+      "fieldNumber_": 30.03
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AB1", "field": },
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "ADS", "field": },
+    {"name": "ADS1", "field": },
+    {"name": "ADT", "field": },
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "AEPS", "field": },
+    {"name": "AEPS1", "field": },
+    {"name": "AEPS2", "field": },
+    {"name": "B", "field": },
+    {"name": "301.6", "field": .01, "type": "regular"},
+    {"name": "301.6", "field": .01, "type": "regular"},
+    {"name": "301.6", "field": .02, "type": "regular"},
+    {"name": "301.6", "field": .02, "type": "regular"},
+    {"name": "301.6", "field": .02, "type": "regular"},
+    {"name": "301.6", "field": .03, "type": "regular"},
+    {"name": "301.6", "field": .03, "type": "regular"},
+    {"name": "301.6", "field": .03, "type": "regular"},
+    {"name": "301.6", "field": .03, "type": "regular"},
+    {"name": "301.6", "field": .05, "type": "regular"},
+    {"name": "301.6", "field": .05, "type": "regular"},
+    {"name": "301.6", "field": .06, "type": "regular"},
+    {"name": "301.6", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

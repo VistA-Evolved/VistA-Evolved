@@ -1,0 +1,86 @@
+{
+  "fileNumber": 2006.914,
+  "fileName": "RETENTION POLICY",
+  "globalRoot": "2006.914",
+  "globalReference": "^MAGV(2006.914,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A text description of the policy for display by configuration user interface. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARCHIVE DURATION YEARS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The number of years from the duration trigger date that an artifact must be available. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ARCHIVE DURATION TRIGGER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CD:Create Date;LAD:Last Accessed Date;DD:Deceased Date;",
+      "helpText": "The trigger event for initiating the countdown for archive  duration. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MINIMUM ARCHIVE COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Number of archive copies required by this retention policy.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MINIMUM OFFSITE COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Number of offsite copies required by this retention policy. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BUSINESS KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Holds a key that can be used by clients to look up retention  policies for specific business scenarios, e.g. Agent Orange cases,  employees, etc.  Business Key is not unique across all records, but must be unique  among active records. In other words, you could have deactivated  versions of old business keys (if already-captured artifacts are  grandfathered in on the old policy), and a new, active record with the  same key, so that newly acquired records follow the new policy.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Inactive;1:Active;",
+      "helpText": "Since many artifacts may be linked to a retention policy, it is not safe  to delete records. However, the policy can be deactivated by setting  this flag to false (\"0\"), so that it won't be assigned to newly acquired  artifacts. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.914", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

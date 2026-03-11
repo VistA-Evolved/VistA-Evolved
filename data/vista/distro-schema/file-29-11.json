@@ -1,0 +1,87 @@
+{
+  "fileNumber": 29.11,
+  "fileName": "MST HISTORY",
+  "globalRoot": "29.11",
+  "globalReference": "^DGMS(29.11,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MST CHANGE STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date of the MST status change.  Time is required, and future dates are not allowed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer back to the PATIENT File (#2) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MST STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes, Screened reports MST;N:No, Screened does not report MST;D:Screened Declines to answer;U:Unknown, not screened;",
+      "helpText": "Indicates whether the patient has been screened, and whether the patient claims Military Sexual Trauma. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER DETERMINING STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the provider who determined the MST status of the patient ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER CHANGING STATUS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of the user who entered this change in status for the patient ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SITE DETERMINING STATUS",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains a pointer to the INSTITUTION file (#4) indicating the site associated with the MST Status determination.  If the MST Status is entered by a local VistA site, then the API DGMSTAPI will load this field with the current Primary station number.  If the MST Status is entered by Enrollment/Eligibility Data upload from the HEC, then the site stored with the record at the HEC will be loaded.  ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AENR01", "field": },
+    {"name": "AENR3", "field": },
+    {"name": "AENR6", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "29.11", "field": .01, "type": "regular"},
+    {"name": "29.11", "field": .01, "type": "regular"},
+    {"name": "29.11", "field": 2, "type": "regular"},
+    {"name": "29.11", "field": 3, "type": "regular"},
+    {"name": "29.11", "field": 4, "type": "regular"},
+    {"name": "29.11", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(29.11,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

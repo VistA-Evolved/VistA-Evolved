@@ -1,0 +1,114 @@
+{
+  "fileNumber": 3.05,
+  "fileName": "FAILED ACCESS ATTEMPTS LOG",
+  "globalRoot": "3.05",
+  "globalReference": "^%ZUA(3.05,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "DATE/TIME OF ATTEMPT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Entries in this file are uniquely identified by the precise time of the failed access attempt. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "RP3.5'",
+      "required": true,
+      "pointerTo": 3.5,
+      "helpText": "This field holds a pointer to the Device File to identify the device in use at the time of the failed access attempt. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CPU",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the CPU/Volume Set where the failed access attempt occurred. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF FAILED ATTEMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DEVICE;V:VERIFY;A:ACCESS;",
+      "helpText": "This field identifies the type of access failure.  For example, if the access code passes the type of access is VERIFY and only the text entered in guessing the verify code is stored. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER OF ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field records the number of unsuccessful attempts that were made before the device locked.  The ^DISV global maintains a count of the current unsuccessful attempts.  A lock results when the number of default attempts (set in the Kernel Site Parameters File) is reached. If the default is reached an entry is made in this file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the UCI account location of the failed access attempt. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used when an access code is entered which matches one on file.  The associated user's name may then be recorded. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "USER NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field retrieves the user number from the User File to facilitate report display. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZIO (optional)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field (if filled in) is the $ZIO value from VAX-DSM to show the DECserver port that was trying to sign-on. On MSM systems with LAT servers it will have the $ZDEV value. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TEXT ENTERED",
+      "dataType": "SUBFILE",
+      "rawType": "3.051A",
+      "required": false,
+      "helpText": "This subfile holds the text of the unsuccessful attempts. ",
+      "isMultiple": true,
+      "subFileNumber": 3.051,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "fileNumber": 19200.113,
+  "fileName": "VPE PROGRAMMER CALL",
+  "globalRoot": "19200.113I",
+  "globalReference": "^XVV(19200.113,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "p:PARAMETER;v:VARIABLE;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PARAM 1",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PARAM 2",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PARAM 3",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PARAM 4",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PARAM 5",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PARAM 6",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PARAM 7",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PARAM 8",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PARAM 9",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PARAM 10",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PARAM 11",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PARAM 12",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PARAM 13",
+      "dataType": "POINTER",
+      "rawType": "*P19200.114'",
+      "required": false,
+      "pointerTo": 19200.114,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "VALUE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "VALUE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "VALUE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "VALUE 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "VALUE 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "VALUE 6",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "VALUE 7",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "VALUE 8",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "VALUE 9",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "VALUE 10",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "VALUE 11",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "VALUE 12",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "VALUE 13",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 73
+    }
+  ],
+  "fieldCount": 32,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "19200.113", "field": .01, "type": "regular"},
+    {"name": "19200.113", "field": 3, "type": "regular"},
+    {"name": "19200.113", "field": 20, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": A1, "value": "W ?32,$P(^(0),U,5)"},
+    {"field": A2, "value": "W:$D(^(\"RTN\")) ?60,$E(^(\"RTN\"),1,245)"}
+  ]
+}

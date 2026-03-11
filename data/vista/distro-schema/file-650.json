@@ -1,0 +1,326 @@
+{
+  "fileNumber": 650,
+  "fileName": "SOCIAL WORK CASE",
+  "globalRoot": "650OI",
+  "globalReference": "^SOWK(650,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the case number to identify each case that is opened.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OPEN DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date the case was opened to the Social Work service.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOCIAL WORKER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the social worker who opened this case.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST DISTRIBUTION CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FIELD NOT IN USE.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "CDC SECTION",
+      "dataType": "POINTER",
+      "rawType": "R*P651'X",
+      "required": true,
+      "pointerTo": 651,
+      "helpText": "This field is used for the Cost Distribution Center section of the patient. If choices are not listed there may not be any activated CDCs. Please see maintenance section of user's guide (Activate/Deactive Cost Distribution Centers). ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AMIS DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP650.1'",
+      "required": true,
+      "pointerTo": 650.1,
+      "helpText": "This is the number used for AMIS reporting purposes.  In  most cases, this number will be different from the regular site number.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "SPECIAL PATIENT POPULATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0XO",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is used to show what special population the patient may be a member of, for example, HIV, Homeless, RCH, etc. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "DIRECT SERVICE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "650.04PA",
+      "required": false,
+      "helpText": "This field is used for direct services provided. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "CONSULTATION ONLY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if the case is for consultation  purposes only. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMITTED TO AUSTIN ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRANSMITTED;0:NOT TRANSMITTED;",
+      "helpText": "This field will flag cases transmitted to Austin, DPC.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DIAGNOSTIC CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:MEDICAL/SURGICAL;2:PSYCHOSIS;3:ORGANIC and SENILE BRAIN DISEASE;4:SUBSTANCE ABUSE;5:ALL OTHER;",
+      "helpText": "Diagnostic category which best fits the patient.                [RCH ONLY] ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'XI",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient.   ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SC STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NSC;2:LESS THAN 50% SC;3:SC 50% or MORE;",
+      "helpText": "This is the Service Connected Status. (RCH only)   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "COMPETENCY STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INCOMPETENT;C:COMPETENT;",
+      "helpText": "This is the competency status of the residential care home patient.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PRIOR LIVING ARRANGEMENTS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:OWN HOME;2:VA NHCU;3:VA HOSPITAL- EXCESS OF 60 DAYS;4:NON-VA HOSPITAL;5:VA DOMICILIARY;6:VA CONTRACT NH;7:NON-VA NH;8:NON-VA RESIDENTIAL RESOURCE;9:VA CONTRACT CARE (NON NH);10:OTHER;",
+      "helpText": "This is the location of the patient prior to being placed in a residential care home.  (RCH only)   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "LEVEL OF CARE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:LIGHT;2:MODERATE;3:HEAVY;",
+      "helpText": "This field is used to show the level of care that a patient receives while in the residential care home program. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CORRT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is to be used to flag a case in which corrections were made for SWARS. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DBA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to keep track of the Data Base Assessment pointer number associated with Case Registry.  This data is not entered directly with VA FileMan. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "CLOSE DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date closed to a particular social worker.  The close date cannot be a future date.   ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PLACEMENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INPATIENT;O:OTHER;N:NO PLACEMENT MADE;",
+      "helpText": "This is the placement made based on Problem Discharge/Planning.   ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DISPOSITION of PLACEMENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CNHC;2:CNH-Non VA;3:Domiciliary;4:NHCU;5:Own Home;6:RCH;7:Other;",
+      "helpText": "This field shows the disposition of the patient if placement was made. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DISPOSITION FROM RCH",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INDIVIDUAL;2:HOSPITAL;3:OTHER INSTITUTIONAL;4:DEATH;5:TRANSFER;",
+      "helpText": "This field is the patient's disposition from the residential care home.   ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RESOURCES/REFERRALS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if any resources/referrals are being assigned.   ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MISC.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field will allow workers to enter identifying information  on certain cases.   For instance, if a patient is placed in a contract nursing home, the worker can use this field to abbreviate the name of the nursing home - Civic Center would be Civic.  This field can be used as a ready reference to where their cases are.  It can be used to identify special categories on wards such as POW, Agent Orange, etc.  This is not a mandatory field and can be bypassed.   ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "RESOURCE/REFERRALS",
+      "dataType": "POINTER",
+      "rawType": "650.01PA",
+      "required": false,
+      "helpText": "This shows where referrals and number were made.   ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "650.02PA",
+      "required": false,
+      "helpText": "This field is used to show problems encountered.   ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "REASON CASE IS OPENED",
+      "dataType": "SUBFILE",
+      "rawType": "650.03",
+      "required": false,
+      "helpText": "This is a short description of why the case was opened. ",
+      "isMultiple": true,
+      "subFileNumber": 650.03,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "SPECIAL DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Not used at this time. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is to contain the original Social Security Number of the patient at the time the case was opened.  This SSN is used when reporting to Austin.  This data is not entered directly with VA FileMan. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ORIGINAL WORKER'S NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is to contain the original worker's number of the social worker at the time the case was opened.  The worker's number is used when reporting to Austin.  Data is not entered directly with VA FileMan. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACD", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "BS5", "field": },
+    {"name": "CP", "field": },
+    {"name": "O", "field": },
+    {"name": "P", "field": },
+    {"name": "W", "field": },
+    {"name": "650", "field": .01, "type": "regular"},
+    {"name": "650", "field": 1, "type": "regular"},
+    {"name": "650", "field": 2, "type": "regular"},
+    {"name": "650", "field": 2, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "650", "field": 4, "type": "regular"},
+    {"name": "650", "field": 7, "type": "regular"},
+    {"name": "650", "field": 7, "type": "regular"},
+    {"name": "650", "field": 7, "type": "regular"},
+    {"name": "650", "field": 17, "type": "regular"},
+    {"name": "650", "field": 17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W:$D(^(0)) \"  \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3),\"  \",$S($D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\"),\"  \",?40,$S($D(^DPT(+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\")"}
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "fileNumber": 690.1,
+  "fileName": "MEDICINE PACKAGE PARAMETERS",
+  "globalRoot": "690.1",
+  "globalReference": "^MCAR(690.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0I",
+      "length": 1,
+      "required": true,
+      "helpText": "This field identifies a dummy field which will contain the number one. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICINE-PCC LINK TURNED ON?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used by the Medicine package software to indicate whether a background task should be queued to update PCC software for use in QUERYMAN data searches. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OE/RR HOOKS TURNED ON?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used by the Medicine Package Software to determine whether to call OE/RR. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IMAGING TURNED ON?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used by the Medicine Package software to determine whether the DHCP Imaging module is turned on. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RELEASE NOT VERIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used to control the ability for key providers to release medicine procedure records without applying an electronic signature. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ20,5",
+      "length": 20,
+      "required": false,
+      "helpText": "This field stores the task number set to transmit the medicine procedure file sizes to the development mail group. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WORKLOAD REPORTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to toggle on and off the workload reporting functionality. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WORKLOAD MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "690.17P",
+      "required": false,
+      "helpText": "This multiple is used to stor the name of mail groups which will receive workload mail messages. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "WORKLOAD DEVICE",
+      "dataType": "POINTER",
+      "rawType": "690.18P",
+      "required": false,
+      "helpText": "This multiple is used to specify print devices to receive workload reporting mail messages. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NEW PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a user of the package. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "690.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

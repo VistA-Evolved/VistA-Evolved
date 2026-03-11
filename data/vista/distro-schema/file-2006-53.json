@@ -1,0 +1,66 @@
+{
+  "fileNumber": 2006.53,
+  "fileName": "DICOM UID DICTIONARY",
+  "globalRoot": "2006.53",
+  "globalReference": "^MAGDICOM(2006.53,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of the UID. (A UID is an Unique IDentifier.) Names of UIDs are defined in the DICOM standard. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UID CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a numeric code that uniquely identifies an object. The code consists of an indeterminate number of integer numbers, separated by dots. The DICOM standard defines a number of such unique identifiers; vendors and other organizations may create their own unique identifiers by requesting an 'UID-root' from their national standards organization. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FUNCTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "METAFLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Normal UID;1:Meta UID;",
+      "helpText": "The value of this field is a code that specifies whether this UID is a 'normal' UID, or a Meta UID. A Meta-UID has Sub-UIDs. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUB UID",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5305A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5305,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.53", "field": .01, "type": "regular"},
+    {"name": "2006.53", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

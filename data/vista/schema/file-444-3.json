@@ -1,0 +1,37 @@
+{
+  "fileNumber": 444.3,
+  "fileName": "RFQ COUNTER",
+  "globalRoot": "444.3",
+  "globalReference": "^PRC(444.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION PLUS FISCAL YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies the counter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field stores the last assigned value of the counter. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "444.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

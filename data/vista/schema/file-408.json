@@ -1,0 +1,162 @@
+{
+  "fileNumber": 408,
+  "fileName": "DISCRETIONARY WORKLOAD",
+  "globalRoot": "408DI",
+  "globalReference": "^VAT(408,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RUN DATE",
+      "dataType": "DATE",
+      "rawType": "MRDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT MONTH/YR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "REPORT RANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not used by Medical Centers, it only applies to the Q-DWL collection queue. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REPORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPC VISITS;2:DISCHARGES;3:OPC RESEARCH;4:OPC 10/10 VISITS;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ELAPSED TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "MESSAGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is not used by Medical Centers, it only applies to the Q-DWL collection queue. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 7.7,
+      "fieldName": "REMOTE MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not used by Medical Centers, it only applies to the Q-DWL collection queue. ",
+      "fieldNumber_": 7.7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "408.08SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 408.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PTS REMAINING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is not used by Medical Centers, it only applies to the Q-DWL collection queue. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMPLETED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PENDING;1:COMPLETE;2:NEW;",
+      "helpText": "This field is not used by Medical Centers, it only applies to the Q-DWL collection queue. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "408", "field": .01, "type": "regular"},
+    {"name": "408", "field": 1, "type": "regular"},
+    {"name": "408", "field": 2, "type": "regular"},
+    {"name": "408", "field": 4, "type": "regular"},
+    {"name": "408", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 4, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(408,4,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

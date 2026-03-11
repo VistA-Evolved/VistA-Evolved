@@ -1,0 +1,47 @@
+{
+  "fileNumber": 67.9,
+  "fileName": "LAB MONTHLY WORKLOADS",
+  "globalRoot": "67.9P",
+  "globalReference": "^LRO(67.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRIMARY INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": " The reporting institution for this report ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PRINT NAME PRIMARY INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The print name of the primary institution ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "67.901PA",
+      "required": false,
+      "helpText": "  This field contains what division this site is identified by. In most cases the primary and the division are one in the same. This field is used by sites which have multi-divisional operations. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "67.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

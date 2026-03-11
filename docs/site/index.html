@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VistA-Evolved Module Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --va-blue: #003f72;
+  --va-blue-light: #0071bc;
+  --va-white: #ffffff;
+  --va-gray-light: #f1f1f1;
+  --va-gray: #5b616b;
+  --va-gold: #fdb81e;
+  --va-green: #2e8540;
+  --va-red: #e31c3d;
+  --sidebar-w: 340px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--va-gray-light); color: #212121; }
+header { background: var(--va-blue); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px; }
+header h1 { font-size: 1.3rem; font-weight: 700; white-space: nowrap; }
+header .subtitle { font-size: 0.8rem; opacity: 0.8; }
+.stats-bar { display: flex; gap: 1rem; margin-left: auto; }
+.stat { text-align: center; padding: 0 0.5rem; }
+.stat-num { font-size: 1.4rem; font-weight: 700; display: block; }
+.stat-label { font-size: 0.65rem; opacity: 0.7; text-transform: uppercase; }
+.layout { display: flex; margin-top: 64px; min-height: calc(100vh - 64px); }
+.sidebar { width: var(--sidebar-w); background: white; border-right: 1px solid #ddd; overflow-y: auto; position: fixed; top: 64px; bottom: 0; left: 0; }
+.search-box { padding: 0.75rem; border-bottom: 1px solid #ddd; position: sticky; top: 0; background: white; z-index: 10; }
+.search-box input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
+.search-box input:focus { outline: 2px solid var(--va-blue-light); border-color: var(--va-blue-light); }
+.tier-group { border-bottom: 1px solid #eee; }
+.tier-header { padding: 0.6rem 0.75rem; background: var(--va-gray-light); font-size: 0.75rem; font-weight: 700; color: var(--va-gray); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.tier-count { background: var(--va-blue); color: white; border-radius: 10px; padding: 0.1rem 0.5rem; font-size: 0.7rem; }
+.pkg-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; text-decoration: none; color: inherit; border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
+.pkg-link:hover { background: #e8f0fe; }
+.pkg-link.active { background: #d0e3f7; border-left: 3px solid var(--va-blue); }
+.pkg-prefix { font-weight: 700; font-size: 0.8rem; color: var(--va-blue); min-width: 50px; }
+.pkg-name { flex: 1; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 3px; white-space: nowrap; }
+.badge.live { background: #d4edda; color: var(--va-green); }
+.badge.terminal { background: #fff3cd; color: #856404; }
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 2rem; max-width: 900px; }
+.main h1 { color: var(--va-blue); border-bottom: 2px solid var(--va-blue); padding-bottom: 0.5rem; margin-bottom: 1rem; }
+.main h2 { color: var(--va-blue); margin-top: 1.5rem; margin-bottom: 0.75rem; }
+.main h3 { color: #333; margin-top: 1rem; margin-bottom: 0.5rem; }
+.main table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; }
+.main th, .main td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; font-size: 0.85rem; }
+.main th { background: var(--va-gray-light); font-weight: 600; }
+.main tr:nth-child(even) { background: #fafafa; }
+.main code { background: #e8e8e8; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.85rem; }
+.main pre { background: #263238; color: #eee; padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 0.75rem 0; }
+.main pre code { background: none; color: inherit; }
+.main hr { border: none; border-top: 1px solid #ddd; margin: 1rem 0; }
+.main p { line-height: 1.6; margin-bottom: 0.75rem; }
+.main ul, .main ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+.welcome { text-align: center; padding: 3rem 1rem; }
+.welcome h2 { font-size: 2rem; color: var(--va-blue); margin-bottom: 1rem; }
+.welcome p { color: var(--va-gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 1.5rem; }
+.welcome .big-stat { display: flex; justify-content: center; gap: 2rem; margin: 2rem 0; }
+.welcome .big-stat div { text-align: center; }
+.welcome .big-stat .num { font-size: 2.5rem; font-weight: 700; color: var(--va-blue); display: block; }
+.welcome .big-stat .lbl { font-size: 0.85rem; color: var(--va-gray); }
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>VistA-Evolved</h1>
+    <div class="subtitle">Complete VistA Module Documentation</div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">157</span><span class="stat-label">Packages</span></div>
+    <div class="stat"><span class="stat-num">3590</span><span class="stat-label">RPC Routes</span></div>
+    <div class="stat"><span class="stat-num">15</span><span class="stat-label">Tier 1</span></div><div class="stat"><span class="stat-num">32</span><span class="stat-label">Tier 2</span></div><div class="stat"><span class="stat-num">18</span><span class="stat-label">Tier 3</span></div><div class="stat"><span class="stat-num">20</span><span class="stat-label">Tier 4</span></div><div class="stat"><span class="stat-num">72</span><span class="stat-label">Tier 5</span></div>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="search-box"><input type="text" id="search" placeholder="Search packages..." autocomplete="off" /></div>
+    <div id="pkg-list"><div class="tier-group">
+    <h3 class="tier-header" data-tier="1">Tier 1: Core Clinical <span class="tier-count">15</span></h3>
+    <div class="tier-packages"><a href="#" class="pkg-link" data-ns="dg" data-name="Registration" data-tier="1">
+      <span class="pkg-prefix">DG</span>
+      <span class="pkg-name">Registration</span>
+      <span class="badge live">32 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="di" data-name="VA FileMan" data-tier="1">
+      <span class="pkg-prefix">DI</span>
+      <span class="pkg-name">VA FileMan</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmpl" data-name="Problem List" data-tier="1">
+      <span class="pkg-prefix">GMPL</span>
+      <span class="pkg-name">Problem List</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmra" data-name="Adverse Reaction Tracking" data-tier="1">
+      <span class="pkg-prefix">GMRA</span>
+      <span class="pkg-name">Adverse Reaction Tracking</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmv" data-name="GMV" data-tier="1">
+      <span class="pkg-prefix">GMV</span>
+      <span class="pkg-name">GMV</span>
+      <span class="badge live">33 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ib" data-name="Integrated Billing" data-tier="1">
+      <span class="pkg-prefix">IB</span>
+      <span class="pkg-name">Integrated Billing</span>
+      <span class="badge live">39 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="lr" data-name="Lab Service" data-tier="1">
+      <span class="pkg-prefix">LR</span>
+      <span class="pkg-name">Lab Service</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="or" data-name="Order Entry Results Reporting" data-tier="1">
+      <span class="pkg-prefix">OR</span>
+      <span class="pkg-name">Order Entry Results Reporting</span>
+      <span class="badge live">1128 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prca" data-name="Accounts Receivable" data-tier="1">
+      <span class="pkg-prefix">PRCA</span>
+      <span class="pkg-name">Accounts Receivable</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psj" data-name="Inpatient Medications" data-tier="1">
+      <span class="pkg-prefix">PSJ</span>
+      <span class="pkg-name">Inpatient Medications</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="pso" data-name="Outpatient Pharmacy" data-tier="1">
+      <span class="pkg-prefix">PSO</span>
+      <span class="pkg-name">Outpatient Pharmacy</span>
+      <span class="badge live">36 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ra" data-name="Radiology Nuclear Medicine" data-tier="1">
+      <span class="pkg-prefix">RA</span>
+      <span class="pkg-name">Radiology Nuclear Medicine</span>
+      <span class="badge live">8 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="sd" data-name="Scheduling" data-tier="1">
+      <span class="pkg-prefix">SD</span>
+      <span class="pkg-name">Scheduling</span>
+      <span class="badge live">226 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="tiu" data-name="Text Integration Utility" data-tier="1">
+      <span class="pkg-prefix">TIU</span>
+      <span class="pkg-name">Text Integration Utility</span>
+      <span class="badge live">129 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xu" data-name="Kernel" data-tier="1">
+      <span class="pkg-prefix">XU</span>
+      <span class="pkg-name">Kernel</span>
+      <span class="badge live">6 RPCs</span>
+    </a></div>
+  </div>
+<div class="tier-group">
+    <h3 class="tier-header" data-tier="2">Tier 2: Hospital Operations <span class="tier-count">32</span></h3>
+    <div class="tier-packages"><a href="#" class="pkg-link" data-ns="an" data-name="AN" data-tier="2">
+      <span class="pkg-prefix">AN</span>
+      <span class="pkg-name">AN</span>
+      <span class="badge live">16 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="bch" data-name="BCH" data-tier="2">
+      <span class="pkg-prefix">BCH</span>
+      <span class="pkg-name">BCH</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="den" data-name="DEN" data-tier="2">
+      <span class="pkg-prefix">DEN</span>
+      <span class="pkg-name">DEN</span>
+      <span class="badge live">82 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dent" data-name="Dental" data-tier="2">
+      <span class="pkg-prefix">DENT</span>
+      <span class="pkg-name">Dental</span>
+      <span class="badge live">82 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="edp" data-name="Emergency Department Integration Software" data-tier="2">
+      <span class="pkg-prefix">EDP</span>
+      <span class="pkg-name">Emergency Department Integration Software</span>
+      <span class="badge live">4 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="fh" data-name="Dietetics" data-tier="2">
+      <span class="pkg-prefix">FH</span>
+      <span class="pkg-name">Dietetics</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmrc" data-name="Consult Request Tracking" data-tier="2">
+      <span class="pkg-prefix">GMRC</span>
+      <span class="pkg-name">Consult Request Tracking</span>
+      <span class="badge live">4 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmts" data-name="Health Summary" data-tier="2">
+      <span class="pkg-prefix">GMTS</span>
+      <span class="pkg-name">Health Summary</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="hd" data-name="HD" data-tier="2">
+      <span class="pkg-prefix">HD</span>
+      <span class="pkg-name">HD</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="imm" data-name="IMM" data-tier="2">
+      <span class="pkg-prefix">IMM</span>
+      <span class="pkg-name">IMM</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="iv" data-name="IV" data-tier="2">
+      <span class="pkg-prefix">IV</span>
+      <span class="pkg-name">IV</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mc" data-name="Medicine" data-tier="2">
+      <span class="pkg-prefix">MC</span>
+      <span class="pkg-name">Medicine</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="md" data-name="Clinical Procedures" data-tier="2">
+      <span class="pkg-prefix">MD</span>
+      <span class="pkg-name">Clinical Procedures</span>
+      <span class="badge live">25 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="nur" data-name="Nursing Service" data-tier="2">
+      <span class="pkg-prefix">NUR</span>
+      <span class="pkg-name">Nursing Service</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="onc" data-name="Oncology" data-tier="2">
+      <span class="pkg-prefix">ONC</span>
+      <span class="pkg-name">Oncology</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ppp" data-name="PPP" data-tier="2">
+      <span class="pkg-prefix">PPP</span>
+      <span class="pkg-name">PPP</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psa" data-name="Drug Accountability" data-tier="2">
+      <span class="pkg-prefix">PSA</span>
+      <span class="pkg-name">Drug Accountability</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psb" data-name="Barcode Medication Administration" data-tier="2">
+      <span class="pkg-prefix">PSB</span>
+      <span class="pkg-name">Barcode Medication Administration</span>
+      <span class="badge live">45 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psd" data-name="Controlled Substances" data-tier="2">
+      <span class="pkg-prefix">PSD</span>
+      <span class="pkg-name">Controlled Substances</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psn" data-name="National Drug File" data-tier="2">
+      <span class="pkg-prefix">PSN</span>
+      <span class="pkg-name">National Drug File</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="pss" data-name="Pharmacy Data Management" data-tier="2">
+      <span class="pkg-prefix">PSS</span>
+      <span class="pkg-name">Pharmacy Data Management</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psx" data-name="CMOP" data-tier="2">
+      <span class="pkg-prefix">PSX</span>
+      <span class="pkg-name">CMOP</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="px" data-name="PCE Patient Care Encounter" data-tier="2">
+      <span class="pkg-prefix">PX</span>
+      <span class="pkg-name">PCE Patient Care Encounter</span>
+      <span class="badge live">47 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="pxrm" data-name="Clinical Reminders" data-tier="2">
+      <span class="pkg-prefix">PXRM</span>
+      <span class="pkg-name">Clinical Reminders</span>
+      <span class="badge live">25 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rm" data-name="RM" data-tier="2">
+      <span class="pkg-prefix">RM</span>
+      <span class="pkg-name">RM</span>
+      <span class="badge live">78 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rmpr" data-name="Prosthetics" data-tier="2">
+      <span class="pkg-prefix">RMPR</span>
+      <span class="pkg-name">Prosthetics</span>
+      <span class="badge live">59 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rt" data-name="Record Tracking" data-tier="2">
+      <span class="pkg-prefix">RT</span>
+      <span class="pkg-name">Record Tracking</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="sow" data-name="Social Work" data-tier="2">
+      <span class="pkg-prefix">SOW</span>
+      <span class="pkg-name">Social Work</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="spn" data-name="Spinal Cord Dysfunction" data-tier="2">
+      <span class="pkg-prefix">SPN</span>
+      <span class="pkg-name">Spinal Cord Dysfunction</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="sr" data-name="Surgery" data-tier="2">
+      <span class="pkg-prefix">SR</span>
+      <span class="pkg-name">Surgery</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="wv" data-name="Womens Health" data-tier="2">
+      <span class="pkg-prefix">WV</span>
+      <span class="pkg-name">Womens Health</span>
+      <span class="badge live">11 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ys" data-name="Mental Health" data-tier="2">
+      <span class="pkg-prefix">YS</span>
+      <span class="pkg-name">Mental Health</span>
+      <span class="badge live">6 RPCs</span>
+    </a></div>
+  </div>
+<div class="tier-group">
+    <h3 class="tier-header" data-tier="3">Tier 3: Administrative <span class="tier-count">18</span></h3>
+    <div class="tier-packages"><a href="#" class="pkg-link" data-ns="arc" data-name="ARC" data-tier="3">
+      <span class="pkg-prefix">ARC</span>
+      <span class="pkg-name">ARC</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="arj" data-name="ARJ" data-tier="3">
+      <span class="pkg-prefix">ARJ</span>
+      <span class="pkg-name">ARJ</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dpt" data-name="DPT" data-tier="3">
+      <span class="pkg-prefix">DPT</span>
+      <span class="pkg-name">DPT</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dss" data-name="DSS" data-tier="3">
+      <span class="pkg-prefix">DSS</span>
+      <span class="pkg-name">DSS</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dvb" data-name="HINQ" data-tier="3">
+      <span class="pkg-prefix">DVB</span>
+      <span class="pkg-name">HINQ</span>
+      <span class="badge live">192 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ec" data-name="Event Capture" data-tier="3">
+      <span class="pkg-prefix">EC</span>
+      <span class="pkg-name">Event Capture</span>
+      <span class="badge live">47 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="en" data-name="Engineering" data-tier="3">
+      <span class="pkg-prefix">EN</span>
+      <span class="pkg-name">Engineering</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="fb" data-name="Fee Basis" data-tier="3">
+      <span class="pkg-prefix">FB</span>
+      <span class="pkg-name">Fee Basis</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ibcn" data-name="IBCN" data-tier="3">
+      <span class="pkg-prefix">IBCN</span>
+      <span class="pkg-name">IBCN</span>
+      <span class="badge live">3 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ibd" data-name="Automated Information Collection System" data-tier="3">
+      <span class="pkg-prefix">IBD</span>
+      <span class="pkg-name">Automated Information Collection System</span>
+      <span class="badge live">17 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ic" data-name="IC" data-tier="3">
+      <span class="pkg-prefix">IC</span>
+      <span class="pkg-name">IC</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="icd" data-name="DRG Grouper" data-tier="3">
+      <span class="pkg-prefix">ICD</span>
+      <span class="pkg-name">DRG Grouper</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mcar" data-name="MCAR" data-tier="3">
+      <span class="pkg-prefix">MCAR</span>
+      <span class="pkg-name">MCAR</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mp" data-name="MP" data-tier="3">
+      <span class="pkg-prefix">MP</span>
+      <span class="pkg-name">MP</span>
+      <span class="badge live">27 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prc" data-name="IFCAP" data-tier="3">
+      <span class="pkg-prefix">PRC</span>
+      <span class="pkg-name">IFCAP</span>
+      <span class="badge live">4 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prs" data-name="PAID" data-tier="3">
+      <span class="pkg-prefix">PRS</span>
+      <span class="pkg-name">PAID</span>
+      <span class="badge live">3 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qa" data-name="QA" data-tier="3">
+      <span class="pkg-prefix">QA</span>
+      <span class="pkg-name">QA</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vic" data-name="VIC" data-tier="3">
+      <span class="pkg-prefix">VIC</span>
+      <span class="pkg-name">VIC</span>
+      <span class="badge live">1 RPCs</span>
+    </a></div>
+  </div>
+<div class="tier-group">
+    <h3 class="tier-header" data-tier="4">Tier 4: Infrastructure & Interop <span class="tier-count">20</span></h3>
+    <div class="tier-packages"><a href="#" class="pkg-link" data-ns="dinz" data-name="DINZ" data-tier="4">
+      <span class="pkg-prefix">DINZ</span>
+      <span class="pkg-name">DINZ</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="fm" data-name="FM" data-tier="4">
+      <span class="pkg-prefix">FM</span>
+      <span class="pkg-name">FM</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="hl" data-name="Health Level Seven" data-tier="4">
+      <span class="pkg-prefix">HL</span>
+      <span class="pkg-name">Health Level Seven</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="hmp" data-name="HMP" data-tier="4">
+      <span class="pkg-prefix">HMP</span>
+      <span class="pkg-name">HMP</span>
+      <span class="badge live">44 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="kmp" data-name="KMP" data-tier="4">
+      <span class="pkg-prefix">KMP</span>
+      <span class="pkg-name">KMP</span>
+      <span class="badge live">29 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="kmps" data-name="SAGG Project" data-tier="4">
+      <span class="pkg-prefix">KMPS</span>
+      <span class="pkg-name">SAGG Project</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="tmp" data-name="TMP" data-tier="4">
+      <span class="pkg-prefix">TMP</span>
+      <span class="pkg-name">TMP</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vdef" data-name="VDEF" data-tier="4">
+      <span class="pkg-prefix">VDEF</span>
+      <span class="pkg-name">VDEF</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vfd" data-name="VFD" data-tier="4">
+      <span class="pkg-prefix">VFD</span>
+      <span class="pkg-name">VFD</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xhd" data-name="XHD" data-tier="4">
+      <span class="pkg-prefix">XHD</span>
+      <span class="pkg-name">XHD</span>
+      <span class="badge live">17 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xm" data-name="MailMan" data-tier="4">
+      <span class="pkg-prefix">XM</span>
+      <span class="pkg-name">MailMan</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xob" data-name="XOB" data-tier="4">
+      <span class="pkg-prefix">XOB</span>
+      <span class="pkg-name">XOB</span>
+      <span class="badge live">20 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xobw" data-name="Web Services Client" data-tier="4">
+      <span class="pkg-prefix">XOBW</span>
+      <span class="pkg-name">Web Services Client</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xpar" data-name="XPAR" data-tier="4">
+      <span class="pkg-prefix">XPAR</span>
+      <span class="pkg-name">XPAR</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xpd" data-name="XPD" data-tier="4">
+      <span class="pkg-prefix">XPD</span>
+      <span class="pkg-name">XPD</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xq" data-name="XQ" data-tier="4">
+      <span class="pkg-prefix">XQ</span>
+      <span class="pkg-name">XQ</span>
+      <span class="badge live">3 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xt" data-name="Toolkit" data-tier="4">
+      <span class="pkg-prefix">XT</span>
+      <span class="pkg-name">Toolkit</span>
+      <span class="badge live">14 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xus" data-name="XUS" data-tier="4">
+      <span class="pkg-prefix">XUS</span>
+      <span class="pkg-name">XUS</span>
+      <span class="badge live">39 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xwb" data-name="RPC Broker" data-tier="4">
+      <span class="pkg-prefix">XWB</span>
+      <span class="pkg-name">RPC Broker</span>
+      <span class="badge live">34 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="zis" data-name="ZIS" data-tier="4">
+      <span class="pkg-prefix">ZIS</span>
+      <span class="pkg-name">ZIS</span>
+      <span class="badge live">1 RPCs</span>
+    </a></div>
+  </div>
+<div class="tier-group">
+    <h3 class="tier-header" data-tier="5">Tier 5: Specialized & Extended <span class="tier-count">72</span></h3>
+    <div class="tier-packages"><a href="#" class="pkg-link" data-ns="a1ae" data-name="Patch Module" data-tier="5">
+      <span class="pkg-prefix">A1AE</span>
+      <span class="pkg-name">Patch Module</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="absv" data-name="Voluntary Timekeeping" data-tier="5">
+      <span class="pkg-prefix">ABSV</span>
+      <span class="pkg-name">Voluntary Timekeeping</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ackq" data-name="Quasar" data-tier="5">
+      <span class="pkg-prefix">ACKQ</span>
+      <span class="pkg-name">Quasar</span>
+      <span class="badge live">6 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="afjx" data-name="Network Health Exchange" data-tier="5">
+      <span class="pkg-prefix">AFJX</span>
+      <span class="pkg-name">Network Health Exchange</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="anrv" data-name="Visual Impairment Service Team" data-tier="5">
+      <span class="pkg-prefix">ANRV</span>
+      <span class="pkg-name">Visual Impairment Service Team</span>
+      <span class="badge live">18 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="bps" data-name="E Claims Management Engine" data-tier="5">
+      <span class="pkg-prefix">BPS</span>
+      <span class="pkg-name">E Claims Management Engine</span>
+      <span class="badge live">5 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="crhd" data-name="Shift Handoff Tool" data-tier="5">
+      <span class="pkg-prefix">CRHD</span>
+      <span class="pkg-name">Shift Handoff Tool</span>
+      <span class="badge live">59 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dgbt" data-name="Beneficiary Travel" data-tier="5">
+      <span class="pkg-prefix">DGBT</span>
+      <span class="pkg-name">Beneficiary Travel</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dgj" data-name="Incomplete Records Tracking" data-tier="5">
+      <span class="pkg-prefix">DGJ</span>
+      <span class="pkg-name">Incomplete Records Tracking</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dsir" data-name="Release Of Information - DSSI" data-tier="5">
+      <span class="pkg-prefix">DSIR</span>
+      <span class="pkg-name">Release Of Information - DSSI</span>
+      <span class="badge live">135 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="dvba" data-name="Automated Medical Information Exchange" data-tier="5">
+      <span class="pkg-prefix">DVBA</span>
+      <span class="pkg-name">Automated Medical Information Exchange</span>
+      <span class="badge live">192 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="eas" data-name="Enrollment Application System" data-tier="5">
+      <span class="pkg-prefix">EAS</span>
+      <span class="pkg-name">Enrollment Application System</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ect" data-name="Interim Management Support" data-tier="5">
+      <span class="pkg-prefix">ECT</span>
+      <span class="pkg-name">Interim Management Support</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ecx" data-name="DSS Extracts" data-tier="5">
+      <span class="pkg-prefix">ECX</span>
+      <span class="pkg-name">DSS Extracts</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="edr" data-name="Event Driven Reporting" data-tier="5">
+      <span class="pkg-prefix">EDR</span>
+      <span class="pkg-name">Event Driven Reporting</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="es" data-name="Police and Security" data-tier="5">
+      <span class="pkg-prefix">ES</span>
+      <span class="pkg-name">Police and Security</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="fmdc" data-name="FileMan Delphi Components" data-tier="5">
+      <span class="pkg-prefix">FMDC</span>
+      <span class="pkg-name">FileMan Delphi Components</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="fsc" data-name="National Online Information Sharing" data-tier="5">
+      <span class="pkg-prefix">FSC</span>
+      <span class="pkg-name">National Online Information Sharing</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gec" data-name="Generic Code Sheet" data-tier="5">
+      <span class="pkg-prefix">GEC</span>
+      <span class="pkg-name">Generic Code Sheet</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmrg" data-name="General Medical Record - Generator" data-tier="5">
+      <span class="pkg-prefix">GMRG</span>
+      <span class="pkg-name">General Medical Record - Generator</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmrv" data-name="General Medical Record - Vitals" data-tier="5">
+      <span class="pkg-prefix">GMRV</span>
+      <span class="pkg-name">General Medical Record - Vitals</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="gmry" data-name="General Medical Record - IO" data-tier="5">
+      <span class="pkg-prefix">GMRY</span>
+      <span class="pkg-name">General Medical Record - IO</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="hbh" data-name="Hospital Based Home Care" data-tier="5">
+      <span class="pkg-prefix">HBH</span>
+      <span class="pkg-name">Hospital Based Home Care</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="hdi" data-name="Health Data and Informatics" data-tier="5">
+      <span class="pkg-prefix">HDI</span>
+      <span class="pkg-name">Health Data and Informatics</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ibq" data-name="Utilization Management Rollup" data-tier="5">
+      <span class="pkg-prefix">IBQ</span>
+      <span class="pkg-name">Utilization Management Rollup</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="icpt" data-name="CPT HCPCS Codes" data-tier="5">
+      <span class="pkg-prefix">ICPT</span>
+      <span class="pkg-name">CPT HCPCS Codes</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ivm" data-name="Income Verification Match" data-tier="5">
+      <span class="pkg-prefix">IVM</span>
+      <span class="pkg-name">Income Verification Match</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="kmpd" data-name="Capacity Management Tools" data-tier="5">
+      <span class="pkg-prefix">KMPD</span>
+      <span class="pkg-name">Capacity Management Tools</span>
+      <span class="badge live">29 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="kmpr" data-name="Capacity Management - RUM" data-tier="5">
+      <span class="pkg-prefix">KMPR</span>
+      <span class="pkg-name">Capacity Management - RUM</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="la" data-name="Automated Lab Instruments" data-tier="5">
+      <span class="pkg-prefix">LA</span>
+      <span class="pkg-name">Automated Lab Instruments</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="lbr" data-name="Library" data-tier="5">
+      <span class="pkg-prefix">LBR</span>
+      <span class="pkg-name">Library</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="lex" data-name="Lexicon Utility" data-tier="5">
+      <span class="pkg-prefix">LEX</span>
+      <span class="pkg-name">Lexicon Utility</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mag" data-name="Imaging" data-tier="5">
+      <span class="pkg-prefix">MAG</span>
+      <span class="pkg-name">Imaging</span>
+      <span class="badge live">167 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mmrs" data-name="Methicillin Resistant Staph Aurerus Initiative Reports" data-tier="5">
+      <span class="pkg-prefix">MMRS</span>
+      <span class="pkg-name">Methicillin Resistant Staph Aurerus Initiative Reports</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mpif" data-name="Master Patient Index VistA" data-tier="5">
+      <span class="pkg-prefix">MPIF</span>
+      <span class="pkg-name">Master Patient Index VistA</span>
+      <span class="badge live">21 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="mxml" data-name="M XML Parser" data-tier="5">
+      <span class="pkg-prefix">MXML</span>
+      <span class="pkg-name">M XML Parser</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="nhin" data-name="National Health Information Network" data-tier="5">
+      <span class="pkg-prefix">NHIN</span>
+      <span class="pkg-name">National Health Information Network</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="nlt" data-name="National Laboratory Test" data-tier="5">
+      <span class="pkg-prefix">NLT</span>
+      <span class="pkg-name">National Laboratory Test</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="nupa" data-name="Patient Assessment Documentation" data-tier="5">
+      <span class="pkg-prefix">NUPA</span>
+      <span class="pkg-name">Patient Assessment Documentation</span>
+      <span class="badge live">37 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="nvs" data-name="National VistA Support" data-tier="5">
+      <span class="pkg-prefix">NVS</span>
+      <span class="pkg-name">National VistA Support</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="oops" data-name="Asists" data-tier="5">
+      <span class="pkg-prefix">OOPS</span>
+      <span class="pkg-name">Asists</span>
+      <span class="badge live">66 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="orrc" data-name="Care Management" data-tier="5">
+      <span class="pkg-prefix">ORRC</span>
+      <span class="pkg-name">Care Management</span>
+      <span class="badge live">5 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prcn" data-name="Equipment Turn-In Request" data-tier="5">
+      <span class="pkg-prefix">PRCN</span>
+      <span class="pkg-name">Equipment Turn-In Request</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prec" data-name="Pharmacy Enterprise Customization System" data-tier="5">
+      <span class="pkg-prefix">PREC</span>
+      <span class="pkg-name">Pharmacy Enterprise Customization System</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="pren" data-name="Pharmacy Product System - National" data-tier="5">
+      <span class="pkg-prefix">PREN</span>
+      <span class="pkg-name">Pharmacy Product System - National</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="prpf" data-name="Integrated Patient Fund" data-tier="5">
+      <span class="pkg-prefix">PRPF</span>
+      <span class="pkg-name">Integrated Patient Fund</span>
+      <span class="badge live">3 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psgw" data-name="Auto Replenishment Ward Stock" data-tier="5">
+      <span class="pkg-prefix">PSGW</span>
+      <span class="pkg-name">Auto Replenishment Ward Stock</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="psu" data-name="Pharmacy Benefits Management" data-tier="5">
+      <span class="pkg-prefix">PSU</span>
+      <span class="pkg-name">Pharmacy Benefits Management</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qac" data-name="Patient Representative" data-tier="5">
+      <span class="pkg-prefix">QAC</span>
+      <span class="pkg-name">Patient Representative</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qam" data-name="Clinical Monitoring System" data-tier="5">
+      <span class="pkg-prefix">QAM</span>
+      <span class="pkg-name">Clinical Monitoring System</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qan" data-name="Incident Reporting" data-tier="5">
+      <span class="pkg-prefix">QAN</span>
+      <span class="pkg-name">Incident Reporting</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qao" data-name="Occurrence Screen" data-tier="5">
+      <span class="pkg-prefix">QAO</span>
+      <span class="pkg-name">Occurrence Screen</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qap" data-name="Survey Generator" data-tier="5">
+      <span class="pkg-prefix">QAP</span>
+      <span class="pkg-name">Survey Generator</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="qaq" data-name="Quality Assurance Integration" data-tier="5">
+      <span class="pkg-prefix">QAQ</span>
+      <span class="pkg-name">Quality Assurance Integration</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rg" data-name="Clinical Information Resource Network" data-tier="5">
+      <span class="pkg-prefix">RG</span>
+      <span class="pkg-name">Clinical Information Resource Network</span>
+      <span class="badge live">4 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rmim" data-name="Functional Independence" data-tier="5">
+      <span class="pkg-prefix">RMIM</span>
+      <span class="pkg-name">Functional Independence</span>
+      <span class="badge live">20 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="rmpf" data-name="Remote Order Entry System" data-tier="5">
+      <span class="pkg-prefix">RMPF</span>
+      <span class="pkg-name">Remote Order Entry System</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="ror" data-name="Clinical Case Registries" data-tier="5">
+      <span class="pkg-prefix">ROR</span>
+      <span class="pkg-name">Clinical Case Registries</span>
+      <span class="badge live">59 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="sis" data-name="Sea Island Systems Registration" data-tier="5">
+      <span class="pkg-prefix">SIS</span>
+      <span class="pkg-name">Sea Island Systems Registration</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="usr" data-name="Authorization Subscription" data-tier="5">
+      <span class="pkg-prefix">USR</span>
+      <span class="pkg-name">Authorization Subscription</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="valm" data-name="List Manager" data-tier="5">
+      <span class="pkg-prefix">VALM</span>
+      <span class="pkg-name">List Manager</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vaq" data-name="Patient Data Exchange" data-tier="5">
+      <span class="pkg-prefix">VAQ</span>
+      <span class="pkg-name">Patient Data Exchange</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vbec" data-name="VBECS" data-tier="5">
+      <span class="pkg-prefix">VBEC</span>
+      <span class="pkg-name">VBECS</span>
+      <span class="badge live">15 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="veem" data-name="VPE Shell" data-tier="5">
+      <span class="pkg-prefix">VEEM</span>
+      <span class="pkg-name">VPE Shell</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="vpr" data-name="Virtual Patient Record" data-tier="5">
+      <span class="pkg-prefix">VPR</span>
+      <span class="pkg-name">Virtual Patient Record</span>
+      <span class="badge live">5 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="webi" data-name="Integrated Home Telehealth" data-tier="5">
+      <span class="pkg-prefix">WEBI</span>
+      <span class="pkg-name">Integrated Home Telehealth</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="webv" data-name="VistA Web" data-tier="5">
+      <span class="pkg-prefix">WEBV</span>
+      <span class="pkg-name">VistA Web</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="wii" data-name="Wounded Injured and Ill Warriors" data-tier="5">
+      <span class="pkg-prefix">WII</span>
+      <span class="pkg-name">Wounded Injured and Ill Warriors</span>
+      <span class="badge live">2 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xobe" data-name="Electronic Signature" data-tier="5">
+      <span class="pkg-prefix">XOBE</span>
+      <span class="pkg-name">Electronic Signature</span>
+      <span class="badge live">6 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xobs" data-name="VistALink Security" data-tier="5">
+      <span class="pkg-prefix">XOBS</span>
+      <span class="pkg-name">VistALink Security</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xobu" data-name="Foundations" data-tier="5">
+      <span class="pkg-prefix">XOBU</span>
+      <span class="pkg-name">Foundations</span>
+      <span class="badge live">1 RPCs</span>
+    </a>
+<a href="#" class="pkg-link" data-ns="xobv" data-name="VistALink" data-tier="5">
+      <span class="pkg-prefix">XOBV</span>
+      <span class="pkg-name">VistALink</span>
+      <span class="badge live">15 RPCs</span>
+    </a></div>
+  </div></div>
+  </aside>
+  <main class="main" id="content">
+    <div class="welcome">
+      <h2>VistA Module Documentation</h2>
+      <p>Complete reference for all 157 VistA packages. Generated from VA Roll &amp; Scroll documentation, FileMan data dictionary, and RPC catalog (File #8994).</p>
+      <div class="big-stat">
+        <div><span class="num">157</span><span class="lbl">Total Packages</span></div>
+        <div><span class="num">3590</span><span class="lbl">RPC-Wired Routes</span></div>
+        <div><span class="num">2,915</span><span class="lbl">FileMan Schemas</span></div>
+        <div><span class="num">4,517</span><span class="lbl">RPCs in Catalog</span></div>
+      </div>
+      <p>Select a package from the sidebar to view its documentation including FileMan files, RPCs, menu options, and API endpoints.</p>
+    </div>
+  </main>
+</div>
+<script>
+const search = document.getElementById('search');
+const content = document.getElementById('content');
+const links = document.querySelectorAll('.pkg-link');
+
+search.addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase();
+  links.forEach(link => {
+    const name = link.dataset.name.toLowerCase();
+    const ns = link.dataset.ns.toLowerCase();
+    link.style.display = (name.includes(q) || ns.includes(q)) ? '' : 'none';
+  });
+});
+
+links.forEach(link => {
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    links.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    const ns = link.dataset.ns;
+    try {
+      const basePath = window.location.pathname.replace(/\/docs\/site\/.*$/, '');
+      const paths = [
+        basePath + '/docs/modules/' + ns + '/README.md',
+        '../modules/' + ns + '/README.md',
+        '../../docs/modules/' + ns + '/README.md',
+      ];
+      let md = null;
+      for (const p of paths) {
+        try {
+          const res = await fetch(p);
+          if (res.ok) { md = await res.text(); break; }
+        } catch {}
+      }
+      if (md) {
+        content.innerHTML = marked.parse(md);
+      } else {
+        content.innerHTML = '<h1>' + link.dataset.name + ' (' + ns.toUpperCase() + ')</h1><p>Documentation file not found. Run <code>node tools/vista-module-gen/cli.mjs --package ' + ns.toUpperCase() + '</code> to generate.</p>';
+      }
+    } catch (err) {
+      content.innerHTML = '<h1>Error</h1><p>' + err.message + '</p>';
+    }
+  });
+});
+</script>
+</body>
+</html>

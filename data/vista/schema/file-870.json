@@ -1,0 +1,563 @@
+{
+  "fileNumber": 870,
+  "fileName": "HL LOGICAL LINK",
+  "globalRoot": "870",
+  "globalReference": "^HLCS(870,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the logical link that data will be communicated on. It is this name that will be displayed in the \"NODE\" column of the SYSTEMS LINK MONITOR display option. It is suggested that this name be the same name as the commercial application e.g. KURZWEIL1,KURZWEIL2,COPATH, or SUNQUEST1. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'X",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "It may be necessary for an application to determine the appropriate link to use when the only information it has is the institution. This field is used to associate a link with that institution. There is a 1:1 correspondence between institution and logical link. An institution cannot be associated with more than one logical link. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAILMAN DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'X",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "Either this field or the OTHER DOMAIN field should have a value.  The domain is used to formulate the RECEIVING FACILITY field of the message header. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DNS DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The domain name as registered with DNS. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "870.02",
+      "required": false,
+      "helpText": "This field contains a brief explanation of this link. ",
+      "isMultiple": true,
+      "subFileNumber": 870.02,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LLP TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP869.1'",
+      "required": true,
+      "pointerTo": 869.1,
+      "helpText": "Enter the type of Lower Level Protocol for this logical link. Selection of TCP implies that the MLLP protocol will be used. Each of the supported LLP's are described in detail in Appendix C of the HL7 Implementation Guide. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEVICE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "PC:Persistent Client;NC:Non-Persistent Client;SS:Single-threaded Server;MS:Multi-threaded Server;SH:Serial HLLP;SX:Serial X3.28;MM:MailMan;",
+      "helpText": "This field is not editable from any user option. It is used purely for display purposes in the DEVICE TYPE column of the SYSTEMS LINK MONITOR display option. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not editable from any user option. It is used purely for display purposes in the STATE column of the SYSTEMS LINK MONITOR display option. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "AUTOSTART",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Disabled;1:Enabled;",
+      "helpText": "This field permits the link to be restarted by Taskman after a system reboot. If disabled, the link will not be restarted. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "STOP PROCESSING IN-QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this field to 'Y' prevents the incoming filer from processing the  incoming messages queued in this link. ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "IN QUEUE FRONT POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "The queue structure relies on two queues, INcoming and OUTgoing. This pointer is used to point to the first message in the FIFO queue. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IN QUEUE BACK POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "The queue structure relies on two queues-INcoming and OUTgoing. This pointer points to the last message in the FIFO queue. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OUT QUEUE FRONT POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "The queue structure relies on two queues-INcoming and OUTgoing. This pointer points to the first message in the FIFO queue. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OUT QUEUE BACK POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "The queue structure relies on two queues, INcoming and OUTgoing. This pointer points to the last message in the FIFO queue. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TIME STARTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the Date/Time the Lower Layer Protocol was last launched for the Logical Link. Only applicable to Lower Layer Protocols, not Mailman. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TIME STOPPED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the Date/Time the Lower Layer Protocol was last shutdown for the Logical Link. Only applicable to Lower Layer Protocols, not Mailman. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the task number assigned by TaskMan when the Lower Layer Protocol is launched in the background. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SHUTDOWN LLP ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is editable through the STOP HYBRID LLP option. When the Lower Layer Protocol is running, and this field is set to 'Y' the Lower Layer Protocol will shutdown and close the device. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SHUTDOWN OUTGOING HLO MESSAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field affects only HLO messages.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GROSS COMMUNICATIONS ERROR",
+      "dataType": "POINTER",
+      "rawType": "P771.7'",
+      "required": false,
+      "pointerTo": 771.7,
+      "helpText": "This field contains the most recent gross communications error. It serves a two purposes. It is a flag for the SYSTEMS LINK MONITOR. In other words, if this field is defined it means a communications error has occured on the link. This is indicated by the NODE field flashing on the SYSTEMS LINK MONITOR.  The error can be viewed by using the SHOW COMMUNICATION ERROR option. The error can be cleared by using the CLEAR COMMUNICATION ERROR option. If set, an error occurred while transmitting (timeou",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "IN QUEUE",
+      "dataType": "SUBFILE",
+      "rawType": "870.019",
+      "required": false,
+      "helpText": "This multiple contains the queue for incoming messages. ",
+      "isMultiple": true,
+      "subFileNumber": 870.019,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "OUT QUEUE",
+      "dataType": "SUBFILE",
+      "rawType": "870.01A",
+      "required": false,
+      "helpText": "This multiple contains the queue for outgoing messages. ",
+      "isMultiple": true,
+      "subFileNumber": 870.01,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "QUEUE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the steady-state size of the queue. The queue may dynamically grow beyond this size, under certain conditions. See Users Manual, for more information. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RETENTION TIME QUEUED STUB RCD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The field represents the time in minutes for how long a stub record must  remain as such before that record is changed to a unused status.  The  default time is 10 minutes.   This field is compared to DATE/TIME STUB RCD FOUND.  If the time  elapsed since the DATE/TIME STUB RCD FOUND is greater than the number  of minutes found in this field, then the STATUS (870.019,1) is changed to unused if it is an incoming message.  If it is an outgoing message then the STATUS (870.01,1) is changed to unused",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SINGLE THREADED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "HLO provides the ability to setup multiple queues of outgoing messages to be transmitted over the same HL LOGICAL LINK.   However, if the remote server is single threaded, trying to open multiple connections over TCP/IP may cause problems.  Therefore, if the HL LOGICAL LINK is setup to communicate with a single threaded server, this field should be set to YES.   Currently, only HLO messaging honors this field.  The older HL7 1.6 VistA messaging software does not support multiple outgoing queues ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DO NOT PING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field, if set to YES, will prevent the link from being PINGED.  ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "If you are building a logical link that will use Mailman as a transport, you must define a mail group that contains the remote member,    S.HL V16 SERVER@your target domain   The HL7 package will place outbound messages in file 870's outque. The link must be running for messages to be handed off to Mailman.   Inbound messages that are received by the server option are placed directly in file 772. ",
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 200.01,
+      "fieldName": "HLLP DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is an entry in the Device file (#3.5). It is opened when this logical link is started up and remains open until the link is shut down. Normally, Vista will initiate and the connection with this serial device. ",
+      "fieldNumber_": 200.01
+    },
+    {
+      "fieldNumber": 200.02,
+      "fieldName": "RE-TRANSMISSION ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the number of times to re-try sending a message.  The default is 5 tries if this field is left blank. If a single message exceeds this value an Alert is sent to the HL7 mail group and the link is shutdown. ",
+      "fieldNumber_": 200.02
+    },
+    {
+      "fieldNumber": 200.021,
+      "fieldName": "EXCEED RE-TRANSMIT ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:ignore;R:restart;S:shutdown;",
+      "helpText": "This field determines what to do when a message exceeds the number of  retry attempts for this Logical Link.  Actions are:   Ignore   = send alert once and keep trying to resend   Restart  = send alert once and shutdown link then start link   Shutdown = send alert once and shutdown link ",
+      "fieldNumber_": 200.021
+    },
+    {
+      "fieldNumber": 200.022,
+      "fieldName": "CLOSE BEFORE RE-TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Re-transmitting a message over the same open connection may cause a synchronization problem for some applications.  Setting this field to YES will cause the TCP connection to always be closed after a READ timeout or other communication failure.  Instead, a new connection will be opened before attempting to re-transmit the message.  ",
+      "fieldNumber_": 200.022
+    },
+    {
+      "fieldNumber": 200.03,
+      "fieldName": "BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 200.03
+    },
+    {
+      "fieldNumber": 200.04,
+      "fieldName": "READ TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the number of seconds the Lower Layer Protocol remains in a read state for data to come in on the link. The default is 10 seconds if this field is left blank. ",
+      "fieldNumber_": 200.04
+    },
+    {
+      "fieldNumber": 200.05,
+      "fieldName": "ACK TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of seconds the Lower Layer Protocol waits for an acknowledgement from the receiving application. The default is 60.  If this field is less than the READ TIMEOUT field,  the READ TIMEOUT value will be used. ",
+      "fieldNumber_": 200.05
+    },
+    {
+      "fieldNumber": 200.06,
+      "fieldName": "LLP START BLOCK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the numeric value of the control character used by the HLLP communications protocol as a START BLOCK CHARACTER. While this character is negotiable, the HL7 implementation guide recommends the use of the 'VT' character. If this field is left blank, the default value of 11 will be used. ",
+      "fieldNumber_": 200.06
+    },
+    {
+      "fieldNumber": 200.07,
+      "fieldName": "LLP END BLOCK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the numeric value of the control character defined in the HLLP specification as the END BLOCK CHARACTER. The recommended value is 28. If this field is left blank, the default value will be 28 for the 'FS' character. ",
+      "fieldNumber_": 200.07
+    },
+    {
+      "fieldNumber": 200.08,
+      "fieldName": "PROTOCOL ID VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "21:2.1;22:2.2;23:2.3;",
+      "helpText": "The latest specification for the HLLP communications protocol is identified by a version number, which may be different from the HL7 standard itself. ",
+      "fieldNumber_": 200.08
+    },
+    {
+      "fieldNumber": 200.09,
+      "fieldName": "UNI-DIRECTIONAL WAIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of seconds the Lower Layer Protocol waits after sending a messages.  This is only used if the message doesn't want an acknowledgment.   ",
+      "fieldNumber_": 200.09
+    },
+    {
+      "fieldNumber": 300.01,
+      "fieldName": "X3.28 DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "X3.28 is a serial protocol like HLLP. It requires the remote system be configured as a device (bi-directional) in the Device and terminal type files. The Vista system will normally open and maintain the connection. See the HL7 Implementation Guide for details of this protocol. ",
+      "fieldNumber_": 300.01
+    },
+    {
+      "fieldNumber": 300.02,
+      "fieldName": "MAXIMUM MESSAGE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "See the HL7 Implementation Guide for details of the x3.28 protcol. ",
+      "fieldNumber_": 300.02
+    },
+    {
+      "fieldNumber": 300.03,
+      "fieldName": "MAXIMUM BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "See the HL7 Implementation Guide for details of the x3.28 protcol. ",
+      "fieldNumber_": 300.03
+    },
+    {
+      "fieldNumber": 300.04,
+      "fieldName": "TIMER A",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the time in seconds for the Response Timer. The default is 6 seconds if no time is entered. ",
+      "fieldNumber_": 300.04
+    },
+    {
+      "fieldNumber": 300.05,
+      "fieldName": "TIMER B",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the time in seconds for the Receive Timer. The default is 3 seconds if no time is entered. ",
+      "fieldNumber_": 300.05
+    },
+    {
+      "fieldNumber": 300.06,
+      "fieldName": "TIMER D",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the time for the Inter-Block timer. The default is 30 seconds if no time is specified. ",
+      "fieldNumber_": 300.06
+    },
+    {
+      "fieldNumber": 300.07,
+      "fieldName": "TIMER E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the time for the Line Check Timer. The default is 180 seconds is no time is specified. ",
+      "fieldNumber_": 300.07
+    },
+    {
+      "fieldNumber": 400.01,
+      "fieldName": "TCP/IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the IP address of the remote site using the syntax,  nn.nn.nn.nn (IPV4) or hhhh:hhhh:hhhh:hhhh:hhhh:hhhh:hhhh:hhhh (IPV6) ",
+      "fieldNumber_": 400.01
+    },
+    {
+      "fieldNumber": 400.02,
+      "fieldName": "TCP/IP PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the port over which the HL7 service will create a socket for message exchange. In VA, this port will be 5000 between production systems. ",
+      "fieldNumber_": 400.02
+    },
+    {
+      "fieldNumber": 400.03,
+      "fieldName": "TCP/IP SERVICE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLIENT (SENDER);S:SINGLE LISTENER;M:MULTI LISTENER;",
+      "helpText": "This field determines if the Logical Link is the client (sender) or a listener (server) of a message.  Choose from:                                     CLIENT (SENDER): Indicates that this Logical Link connects to a target system, with the current system acting as the sender.    SINGLE LISTENER: Designates that the current system is a server (listener), using a single M process to do the listening.                                    MULTI LISTENER: Designates that the current system is a server ",
+      "fieldNumber_": 400.03
+    },
+    {
+      "fieldNumber": 400.04,
+      "fieldName": "PERSISTENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter 'YES' if this connection needs to remain open even if there are no messages to send. The connection will remain open until it is disconnected by either side via shutting-down the logical link.  A setting of 'YES' is appropriate for connecting to a COTS device with a high volume of messages.   ",
+      "fieldNumber_": 400.04
+    },
+    {
+      "fieldNumber": 400.05,
+      "fieldName": "RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Retention is the maximum time in seconds in which a non-persistent LLP will wait after the associated queue has been emptied.  If further messages arrive in the queue before the retention time has expired, the LLP will continue to dequeue and send messages. Otherwise, the LLP will become inactive and will remain inactive until further messages are queued.   ",
+      "fieldNumber_": 400.05
+    },
+    {
+      "fieldNumber": 400.06,
+      "fieldName": "STARTUP NODE",
+      "dataType": "POINTER",
+      "rawType": "P14.7'",
+      "required": false,
+      "pointerTo": 14.7,
+      "helpText": "This field is ONLY for VMS sites running Dual Taskman in DCL. This field is used to specify what Taskman node you want to job the Lower Level Protocol. It should only be used if you have two Taskmans running and only want the LLP to run on a particular node.  It will only work if you are running the dual Taskmans in DCL context on a VMS system. ",
+      "fieldNumber_": 400.06
+    },
+    {
+      "fieldNumber": 400.07,
+      "fieldName": "SAY HELO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is applicable only to Cache/NT sites with TCP links. If you are not a Cache/NT site, or this is not a TCP link, this field does not apply, AND will be ignored.  If this TCP link is for a VA site, answer YES. If this TCP link is for a COTS system, answer NO.  This is the default. ",
+      "fieldNumber_": 400.07
+    },
+    {
+      "fieldNumber": 400.08,
+      "fieldName": "TCP/IP PORT (OPTIMIZED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The new HL7 'optimized' server will operate concurrently with the  old HL7 1.6 server.  To  enable that, the two servers are assigned different ports to listen on.  The default port for the old HL7 server is 5000, whereas  the new optimized HL7 server uses port 5001. ",
+      "fieldNumber_": 400.08
+    },
+    {
+      "fieldNumber": 400.09,
+      "fieldName": "TCP/IP OPENFAIL TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of seconds for the TCP/IP Openfail Timeout. The default is 30 seconds if this field is left blank. ",
+      "fieldNumber_": 400.09
+    }
+  ],
+  "fieldCount": 54,
+  "crossReferences": [
+    {"name": "AISTAT", "field": },
+    {"name": "ALLP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "870", "field": .01, "type": "regular"},
+    {"name": "870", "field": .02, "type": "regular"},
+    {"name": "870", "field": .03, "type": "regular"},
+    {"name": "870", "field": 2, "type": "regular"},
+    {"name": "870", "field": 400.03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

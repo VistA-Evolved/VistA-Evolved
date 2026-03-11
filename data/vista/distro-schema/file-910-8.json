@@ -1,0 +1,100 @@
+{
+  "fileNumber": 910.8,
+  "fileName": "ESP EVIDENCE",
+  "globalRoot": "910.8",
+  "globalReference": "^ESP(910.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Record Number should be input in the following format:  92-001, 92-011, 92-111, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "UOR NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P912'O",
+      "required": false,
+      "pointerTo": 912,
+      "helpText": "The Uniform Offense Report (UOR) Number must be entered in straight  numeric format, (i.e., 301100630).  The Uniform Offense Report (UOR) Number must exist in the ESP Offense Report file.  If there is no Uniform Offense Report associated with the Evidence/Property Record, leave this field blank. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME OBTAINED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date and time that the Evidence/Property was taken into custody by the VA Police. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SENSITIVE FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NONSENSITIVE;1:SENSITIVE;",
+      "helpText": "This field is set by the program so can tell if this evidence is sensitive.  A person must have the ESP CHIEF key to view a sensitive evidence record. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'I",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Enter the Facility that this evidence is associated with. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "910.81",
+      "required": false,
+      "helpText": "This field contains the Item # as listed on the Evidence/Property Custody Record. ",
+      "isMultiple": true,
+      "subFileNumber": 910.81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHANGE OF CUSTODY DATE",
+      "dataType": "DATE",
+      "rawType": "910.85D",
+      "required": false,
+      "helpText": "This field contains the date/time that the Evidence/Property items physically changed custody. ",
+      "isMultiple": true,
+      "subFileNumber": 910.85,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RECORD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLOSED;O:OPEN;",
+      "helpText": "Enter the current status for this record.  It must be either 'O' for Open or 'C' for Closed. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "910.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

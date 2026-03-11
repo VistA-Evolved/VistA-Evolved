@@ -1,0 +1,45 @@
+{
+  "fileNumber": 503341,
+  "fileName": "DONATIONS LETTER FORMAT",
+  "globalRoot": "503341",
+  "globalReference": "^ABS(503341,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the specific letter type to be sent to a donor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "503341.02",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503341.02,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503341", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

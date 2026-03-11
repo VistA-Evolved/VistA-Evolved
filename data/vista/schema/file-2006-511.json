@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2006.511,
+  "fileName": "DIAGNOSTIC INFO FIELD",
+  "globalRoot": "2006.511",
+  "globalReference": "^MAGDICOM(2006.511,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILENAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of the \"master file\" that contains the list of fields. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TAG",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5112A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5112,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.511", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

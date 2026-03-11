@@ -1,0 +1,59 @@
+{
+  "fileNumber": 132.9,
+  "fileName": "ATTENDING CODES",
+  "globalRoot": "132.9",
+  "globalReference": "^SRO(132.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ATTENDING CODE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the attending code name briefly describing the highest level  of resident supervision provided by the attending staff surgeon. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code representing the highest level of resident supervision provided by the attending staff surgeon. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "132.92",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 132.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field flags this attending code as inactive. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B1", "field": },
+    {"name": "C", "field": },
+    {"name": "132.9", "field": .01, "type": "regular"},
+    {"name": "132.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W $P(^(0),U,2)"},
+    {"field": 2, "value": "D DESC^SROUTL"}
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "fileNumber": 9002313.91,
+  "fileName": "BPS NCPDP FIELD DEFS",
+  "globalRoot": "9002313.91",
+  "globalReference": "^BPSF(9002313.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NCPDP FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the NCPDP field number as specified in the NCPDP data dictionary. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Descriptive name the tells what the field is within the pharmacy environment. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NUMERIC;A/N:ALPHA/NUMERIC;D:SIGNED NUMERIC;",
+      "helpText": "This is the format of the field used within the NCPDP standard. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The same as the .02 field, but for specific use when creating 5.1 claims.  The 5.1 fields were separated because 3.x and 5.1 claims were being submitted concurrently.   ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Length of the field from the 5.1 NCPDP standard. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "D0 LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the NCPDP length as specified in the NCPDP Telecommunication Standard version D.0 data dictionary. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "D0 FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NUMERIC;A/N:ALPHANUMERIC;D:SIGNED NUMERIC;",
+      "helpText": "This is the NCPDP data type as specified in the NCPDP Telecommunication Standard version D.0 data dictionary. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VISTA FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the VistA field number used in BPS CLAIMS file #9002313.02 and BPS RESPONSES file #9002313.03. Only used for NCPDP numbers where the first  piece of the NCPDP number is non-numeric.   For example, NCPDP field B04-BT - Next Available Fill Date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STANDARD NCPDP FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for those NCPDP field names that were too long to fit  in the NAME (#.03) field.  For those fields, this field will have the full NCPDP field name. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUEST SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "P9002313.9'",
+      "required": false,
+      "pointerTo": 9002313.9,
+      "helpText": "This data field indicates the segment of a claim request on which this  NCPDP field would appear.  If this NCPDP field appears only on the  incoming response, then this field would remain blank. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RESPONSE SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "P9002313.9'",
+      "required": false,
+      "pointerTo": 9002313.9,
+      "helpText": "This data field indicates the segment of a claim response on which this  NCPDP field would appear.  If this NCPDP field appears only on the  outgoing claim request, then this field would remain blank. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "GET CODE",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9101",
+      "required": false,
+      "helpText": "M code that tells the BPS system where to find the  particular piece of data for this field. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9101,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "D0 FORMAT CODE",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9102",
+      "required": false,
+      "helpText": "This field holds the M code used to format the data according to the specifications of the NCPDP Telecommunication Standard version D.0 data dictionary.  For instance, alphanumeric fields are right-padded with spaces up to the length of the specified by the NCPDP standard. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9102,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SET CODE",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9103",
+      "required": false,
+      "helpText": "M code to store the data in the appropriate segment within the claim. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9103,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "FORMAT CODE",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9104",
+      "required": false,
+      "helpText": "M code to format the data before storing it in the claim.  5.1 was separate because 3.2 and 5.1 claims were being submitted at the same time. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9104,
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "9002313.91", "field": .01, "type": "regular"},
+    {"name": "9002313.91", "field": .03, "type": "regular"},
+    {"name": "9002313.91", "field": .06, "type": "regular"},
+    {"name": "9002313.91", "field": 2, "type": "regular"},
+    {"name": "9002313.91", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

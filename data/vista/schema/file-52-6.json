@@ -1,0 +1,234 @@
+{
+  "fileNumber": 52.6,
+  "fileName": "IV ADDITIVES",
+  "globalRoot": "52.6I",
+  "globalReference": "^PS(52.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "RX",
+      "required": true,
+      "helpText": "This field should contain the print name of the 'GENERIC DRUG' (file #50). The print name entered here will be printed on the IV label, Ward list, Manufacturing list etc.  It should not contain strength, since strength is entered with each individual IV order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GENERIC DRUG",
+      "dataType": "POINTER",
+      "rawType": "R*P50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "  This field is the pointer from the IV ADDITIVES (52.6) to the DRUG file (#50).  This can be considered a link between both files. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DRUG UNIT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ML;2:LITER;3:MCG;4:MG;5:GM;6:UNITS;7:IU;8:MEQ;9:MM;10:MU;11:THOUU;12:MG-PE;13:NANOGRAM;14:MMOL;",
+      "helpText": "This is the unit that this drug will be dispensed in most frequently.  When entering or editing an additive, the user will be forced to enter the strength using this unit. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER OF DAYS FOR IV ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  The number entered here will be used to calculate the stop DATE for the IV order that uses this drug.  For example: If you entered this drug in the IV order, the stop DATE default will be [Start date of order + 'NUMBER OF DAYS FOR IV ORDER'].   NOTE: The IV PACKAGE will take the lesser of the 'LVP'S GOOD FOR HOW MANY DAYS' site parameter and all additives 'NUMBER OF DAYS FOR IV ORDER' field to calculate the stop date.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USUAL IV SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Enter the schedule that is used most frequently for this drug.  If this drug is used when entering IVPBs, this field will be shown as the default answer to the 'SCHEDULE:' prompt during order entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADMINISTRATION TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Enter the admin. times that this drug is given most frequently.  This field will be shown as default for the 'ADMIN. TIMES: ' prompt during order entry of IVPB's. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QUICK CODE",
+      "dataType": "SUBFILE",
+      "rawType": "52.61I",
+      "required": false,
+      "helpText": "  Use of a quick code in the order entry process will automatically enter that predefined information for that order.  As always, order review and edit will be allowed for that order prior to the action prompt.   ",
+      "isMultiple": true,
+      "subFileNumber": 52.61,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AVERAGE DRUG COST PER UNIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,9",
+      "length": 17,
+      "required": false,
+      "helpText": "  Enter the average cost per UNIT for this drug.  When an IV LABEL is printed, the IV PACKAGE will count the number of UNITS that was dispensed and multiply it by this field to get 'TOTAL COST DISPENSED' for this drug. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ELECTROLYTES",
+      "dataType": "POINTER",
+      "rawType": "52.62P",
+      "required": false,
+      "helpText": "  This contains information on the electrolytes that make up this additive. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "52.63",
+      "required": false,
+      "helpText": "These are other names by which this additive may be identified. ",
+      "isMultiple": true,
+      "subFileNumber": 52.63,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DRUG INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.64",
+      "required": false,
+      "helpText": "  You may enter an information for this drug.  This field is displayed under the 'DRUG INQUIRY' option of the IV PACKAGE. ",
+      "isMultiple": true,
+      "subFileNumber": 52.64,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:NOT ACTIVE;",
+      "helpText": "  This field is no longer used and was replaced by the 'INACTIVATION DATE' field.  The date of inactivation is stored on the 'I' node of the drug file.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field is used to inactivate a drug.  An IV drug should NEVER be deleted from a file since some IV ORDERS may still be using it.  Enter the date the drug should be inactivated.  Once the date of inactivation arrives, the drug will no longer be a valid choice for IV ADDITIVES. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CONCENTRATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This field will represent the 'DRUG UNIT' field ratio to MLs. This field, along with electrolytes, will be used during hyperal label generation ONLY. This field makes it possible to figure out the exact volume of the hyperal order and also the 'true' strength of each electrolyte. For example: If your ADDITIVE DRUG is SODIUM CHLORIDE and SODIUM CHLORIDE              is dispensed in MEQs.  You might enter '2' for this field.              This will represent 2 MEQ/ML.  During order entry, if     ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Enter message pertaining to selected additive, i.e. additive may cause harmful reactions, additive is about to expire, etc. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PHARMACY ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P50.7'XI",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This field is a pointer to the PHARMACY ORDERABLE ITEM (#50.7) File. This field is not editable. It is controlled by the software. Every IV Additive has a Generic Drug pointer to the DRUG (#50) File, and every Drug entry has a pointer to the PHARMACY ORDERABLE ITEM (#50.7) File. The software will automatically keep this field updated with the Pharmacy Orderable Item that the Generic Drug points to. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*PRIMARY DRUG",
+      "dataType": "POINTER",
+      "rawType": "RP50.3'",
+      "required": true,
+      "pointerTo": 50.3,
+      "helpText": "  Links the additive in the IV ADDITIVES file (52.6) to a primary drug in the PRIMARY DRUG file (50.3). ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "USED IN IV FLUID ORDER ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Allows pharmacy to limit the additives available in IV Fluid order entry.  Only additives marked as \"yes\" to USED IN IV FLUID ORDER ENTRY may be  selected in IV Fluid order entry through OE/RR. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ADDITIVE FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1 BAG/DAY;A:ALL BAGS;",
+      "helpText": "This field will be used to provide a default value for the Additive Frequency field in Computerized Patient Record System (CPRS) when continuous IV orders with additives are entered. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "STRENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,8",
+      "length": 17,
+      "required": false,
+      "helpText": "This field identifies the numeric amount of medication that is provided by one unit-of-use for the identified product.   For example, if one vial contains 50 MG of medication, the STRENGTH will be entered as '50'.  The DRUG UNIT of 'MG' is populated by the DRUG UNIT (#2) field. ",
+      "fieldNumber_": 19
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AAP", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AOI", "field": },
+    {"name": "APD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "52.6", "field": .01, "type": "regular"},
+    {"name": "52.6", "field": 1, "type": "regular"},
+    {"name": "52.6", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "52.6", "field": 1, "type": "regular"},
+    {"name": "52.6", "field": 12, "type": "regular"},
+    {"name": "52.6", "field": 15, "type": "regular"},
+    {"name": "52.6", "field": 16, "type": "regular"},
+    {"name": "52.6", "field": 17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""},
+    {"field": 12, "value": "W:$G(^(\"I\")) \"   \",$E($P(^(\"I\"),U,1),4,5)_\"-\"_$E($P(^(\"I\"),U,1),6,7)_\"-\"_$E($P(^(\"I\"),U,1),2,3)"},
+    {"field": W19, "value": "S PSSY15=$P(^(0),U,15) W \"   Additive Strength: \",$S($G(PSSY15)=\"\":\"N/A\",$E($G(PSSY15),1)=\".\":\"0\"_PSSY15,1:$G(PSSY15))_\" \"_$S($G(PSSY15)=\"\":\"\",1:$$GET1^DIQ(52.6,+Y_\",\",2))"},
+    {"field": WRITE, "value": "W:$D(^PSDRUG(+$P(^PS(52.6,+Y,0),\"^\",2),0)) !?15,$P(^(0),\"^\",10) I $D(DD),DD F PSIV=0:0 S PSIV=$O(^PS(52.6,+Y,1,PSIV)) Q:'PSIV  W !?7,\"- \",$P(^(PSIV,0),\"^\"),\" -        Quick Code Strength: \",$S($P($G(^PS(52.6,+Y,1,PSIV,0)),\"^\",2)'=\"\":$P($G(^PS(52.6,+Y,1,PSIV,0)),\"^\",2),1:\"N/A\")_\"     Schedule: \",$S($P($G(^PS(52.6,+Y,1,PSIV,0)),\"^\",5)'=\"\":$P($G(^PS(52.6,+Y,1,PSIV,0)),\"^\",5),1:\"N/A\")"}
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "fileNumber": 4.009,
+  "fileName": "STANDARD TERMINOLOGY VERSION FILE",
+  "globalRoot": "4.009",
+  "globalReference": "^DIC(4.009,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VERSION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "NAME THAT DESCRIBES THE VERSION ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Version of the terminology ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Unique identification from ERT. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "4.00999DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.00999,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "4.009", "field": .01, "type": "regular"},
+    {"name": "4.009", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

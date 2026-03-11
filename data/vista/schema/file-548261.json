@@ -1,0 +1,230 @@
+{
+  "fileNumber": 548261,
+  "fileName": "PATCH",
+  "globalRoot": "548261",
+  "globalReference": "^AXA(548261,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESIGNATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "KIDS BUILD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TEST VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COMPLIANCE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PATCH SUBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "MESSAGE# IN TEST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "MESSAGE# IN LIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MANDATORY;I:INFORMATIONAL;E:EMERGENCY;P:PATCH FOR A PATCH;",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "MESSAGE SUBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DATE IN TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "IN TEST BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "DATE IN LIVE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "IN LIVE BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "DATE OK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "OK BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P548260.1'",
+      "required": false,
+      "pointerTo": 548260.1,
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "STATUS BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "548261.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 548261.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "VERSION",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 1000
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADR", "field": },
+    {"name": "ADSEQ", "field": },
+    {"name": "AMAIL", "field": },
+    {"name": "ANSP", "field": },
+    {"name": "ASERVR", "field": },
+    {"name": "ASTAT", "field": },
+    {"name": "ASUB", "field": },
+    {"name": "ATV", "field": },
+    {"name": "B", "field": },
+    {"name": "R", "field": },
+    {"name": "548261", "field": .01, "type": "regular"},
+    {"name": "548261", "field": .02, "type": "regular"},
+    {"name": "548261", "field": .04, "type": "regular"},
+    {"name": "548261", "field": .07, "type": "regular"},
+    {"name": "548261", "field": .08, "type": "regular"},
+    {"name": "548261", "field": .18, "type": "regular"},
+    {"name": "", "field": .19, "type": "regular"},
+    {"name": "", "field": .2, "type": "regular"},
+    {"name": "548261", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 2.01, "type": "regular"},
+    {"name": "", "field": 2.01, "type": "regular"},
+    {"name": "", "field": 2.03, "type": "regular"},
+    {"name": "", "field": 2.03, "type": "regular"},
+    {"name": "", "field": 2.05, "type": "regular"},
+    {"name": "", "field": 2.05, "type": "regular"},
+    {"name": "548261", "field": 2.07, "type": "regular"},
+    {"name": "548261", "field": 2.07, "type": "regular"},
+    {"name": "548261", "field": 2.07, "type": "regular"},
+    {"name": "", "field": 2.07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "W:$P(^(0),U,4)]\"\" \"  Test Version \"_$P(^(0),U,4)"},
+    {"field": W2, "value": "W:$P(^(0),U,18)]\"\" \"  SEQ# \"_$P(^(0),U,18)"}
+  ]
+}

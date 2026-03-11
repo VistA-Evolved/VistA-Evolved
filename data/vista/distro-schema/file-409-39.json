@@ -1,0 +1,124 @@
+{
+  "fileNumber": 409.39,
+  "fileName": "EWL CLEAN-UP",
+  "globalRoot": "409.39",
+  "globalReference": "^SDWL(409.39,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the PATIENT file (#2).  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TREATING FACILITY CAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:ESTABLISHED;P:PRIOR;U:UNKNOWN;",
+      "helpText": "This field stores the calculation computed for the ORGINATION DATE in the  EWL PATIENT file (#409.3) and a valid date, (if found) in the TREATING  FACILITY FILE (#391.91). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENROLL API CAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:EST;P:PRIOR;U:UNKNOWN;",
+      "helpText": "This field contains the result of the ENROLLMENT API ($$ENROLL^EASWTAPI)  computation. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VSSC DATA CAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:EST;P:PRIOR;U:UNKNOWN;",
+      "helpText": "This field contain the computation computed from the VSSC data import  file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CURRENT CAL EWL FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:EST;P:PRIOR;U:UNKNOWN;",
+      "helpText": "This field contains the extracted EWL ENROLLEE STATUS from the EWL  PATIENT file (409.3). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TF DATE USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date used from the TREATING FACILITY file (#391.91) to determine the  TREATING FACILITY calculation. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ENROLLEE API DATE USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date used from the ENROLLMENT API to determine the EWL ENROLLEE STATUS. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VSSC DATE USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date used from the VSSC to determine the EWL ENROLLEE STATUS. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EWL ORIG DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date extracted from the EWL PATIENT FILE (409.3) ORIGINATION DATE. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "NEW CAL STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;U:UNDETERMINED;P:PRIOR;E:ESTABLISHED;",
+      "helpText": "This field contains the new calculated EWL ENROLLEE STATUS. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "EWL IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the internal IEN of the EWL PATIENT file (409.3). ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.39", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

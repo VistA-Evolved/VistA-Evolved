@@ -1,0 +1,72 @@
+{
+  "fileNumber": 663,
+  "fileName": "PROS AMIS CODES",
+  "globalRoot": "663I",
+  "globalReference": "^RMPR(663,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The CODE is in the format \"01 A\" where the first two characters are numeric (the AMIS line number) followed by one space and then alphabetic characters. CODE is needed for sorting in the proper sequence on reports, since the computer sorts 1A, 1B, 2, 3 as 2, 3, 1A, 1B.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RATIO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the national ratio set by VACO for AMIS calculations. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LINE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the AMIS Line Item Description. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ISSUE/REPAIR CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADMINISTRATIVE ISSUE;AR:ADMINISTRATIVE REPAIR;O:ORTHOTIC LAB;R:RESTORATION LAB;OR:ORTHOTIC LAB REPAIR;RR:RESTORATION LAB REPAIR;",
+      "helpText": "This is a code defining what group within prosthetics the AMIS code will be counted. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "AMIS SEGMENT NO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This fields contains the segment number for the related disability codes. Used for the Generation of Generic Code Sheets. ",
+      "fieldNumber_": 3.5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "663", "field": .01, "type": "regular"},
+    {"name": "663", "field": 2, "type": "regular"},
+    {"name": "663", "field": 3, "type": "regular"},
+    {"name": "663", "field": 3.5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(663,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

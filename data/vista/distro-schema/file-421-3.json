@@ -1,0 +1,48 @@
+{
+  "fileNumber": 421.3,
+  "fileName": "CALM ERROR MESSAGES",
+  "globalRoot": "421.3",
+  "globalReference": "^PRCF(421.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the name of the error message. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the code number of the error message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "421.31",
+      "required": false,
+      "helpText": "This is the error message. ",
+      "isMultiple": true,
+      "subFileNumber": 421.31,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "421.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

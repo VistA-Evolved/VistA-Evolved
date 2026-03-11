@@ -1,0 +1,109 @@
+{
+  "fileNumber": 714.5,
+  "fileName": "EAS LTC MONTHLY MAX CALCULATIONS",
+  "globalRoot": "714.5",
+  "globalReference": "^EASPFS(714.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This patient field is used to identify who the calculated LTC amounts  stored in this file relate to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST DATE",
+      "dataType": "DATE",
+      "rawType": "DIX",
+      "required": false,
+      "helpText": "This is the date these calculated values relate to.  The date value must  be the last day of the month for the calculation. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LTC LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the Long Term Care Length of Stay to be used for this  calculation.  The LOS should exclude pass days, ASIH days and discharge  date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LTC EXEMPT",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicator specifies if the patient is designated as exempt for the  specified date. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXEMPT REASON",
+      "dataType": "POINTER",
+      "rawType": "P714.1'I",
+      "required": false,
+      "pointerTo": 714.1,
+      "helpText": "This is the reason for the exemption that was specified in the LTC EXEMPT (#.04) field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "180 DAY MAX CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2I",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the calculated value that a patient can be charged for the  specified month if his stay is 180 days or less. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "GREATER THAN 180 DAY AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2I",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the calculated value that a patient can be charged for the  specified month if his stay is greater than 180 days. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAX OUTPATIENT CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2I",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the calculated maximum charge the specified patient can be  charged for LTC outpatient services for the month. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE ADDED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field is automatically populated based on the date this entry is  added. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "714.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "714.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

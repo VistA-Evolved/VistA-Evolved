@@ -1,0 +1,47 @@
+{
+  "fileNumber": 2006.922,
+  "fileName": "RETENTION POLICY FULFILLMENT",
+  "globalRoot": "2006.922",
+  "globalReference": "^MAGV(2006.922,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARTIFACT RETENTION POLICY",
+      "dataType": "POINTER",
+      "rawType": "RP2006.921'",
+      "required": true,
+      "pointerTo": 2006.921,
+      "helpText": "This is the associated artifact retention policy record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARTIFACT INSTANCE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.918'",
+      "required": true,
+      "pointerTo": 2006.918,
+      "helpText": "This is the associated artifact instance record. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time that this record was created. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.922", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

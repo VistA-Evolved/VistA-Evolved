@@ -1,0 +1,67 @@
+{
+  "fileNumber": 54,
+  "fileName": "RX CONSULT",
+  "globalRoot": "54N",
+  "globalReference": "^PS(54,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the internal number within the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a brief description of any medical warnings associated with a particular drug. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "54.1A",
+      "required": false,
+      "helpText": "Respond to this field by entering an expanded description of any medical warnings listed in the preceeding field. ",
+      "isMultiple": true,
+      "subFileNumber": 54.1,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WARNING MAPPING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the warning number from the new data source which  corresponds with this warning information. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPANISH TRANSLATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Spanish translation for the old RX CONSULT file warning label. When possible, warnings from the new WARNING LABEL-SPANISH file should be used instead of adding new entries to this file. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "54", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

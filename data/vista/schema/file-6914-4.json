@@ -1,0 +1,57 @@
+{
+  "fileNumber": 6914.4,
+  "fileName": "NX BOC",
+  "globalRoot": "6914.4I",
+  "globalReference": "^ENG(6914.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CAPITALIZED BUDGET OBJECT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "In FMS all personal property assets, whether capitalized or expensed, are to be coded to Budget Object Class 31. Only capitalized assets are to be recorded in the Fixed Assets Package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BOC TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Brief description of the code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CORRESPONDING SGL",
+      "dataType": "POINTER",
+      "rawType": "RP6914.3'",
+      "required": true,
+      "pointerTo": 6914.3,
+      "helpText": "Standard General Ledger Account corresponding to this Budget Object Code. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DEACTIVATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "As of the date entered in this field, new FA or FR Documents can't be sent to Fixed Assets (Austin) with this BOC. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6914.4", "field": .01, "type": "regular"},
+    {"name": "6914.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

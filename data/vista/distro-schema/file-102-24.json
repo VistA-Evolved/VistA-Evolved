@@ -1,0 +1,68 @@
+{
+  "fileNumber": 102.24,
+  "fileName": "CPRS QUERY DISPLAY FIELDS",
+  "globalRoot": "102.24",
+  "globalReference": "^ORD(102.24,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Reference field name (used by software). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text that is displayed in the listbox when selecting fields for the report. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HEADER TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default text to be used in the header of the report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:date/time;F:free text;N:numeric;",
+      "helpText": "Specifies the type of sort when the column is sorted.  Date/Time sorts use the internal date/time to sort.  Free text sorts use the visible text for the sort. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SAMPLE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "102.241",
+      "required": false,
+      "helpText": "This multiple contains sample data for this type of field that may be in a preview report. ",
+      "isMultiple": true,
+      "subFileNumber": 102.241,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "102.24", "field": .01, "type": "regular"},
+    {"name": "102.24", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 8992.3,
+  "fileName": "ALERT CRITICAL TEXT",
+  "globalRoot": "8992.3",
+  "globalReference": "^XTV(8992.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CRITICAL TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a string of text which if present in the message text for an alert should be identified as text identifying a critical alert and the alert emphasized in whatever manner available.   A second field PACKAGE-ID (#.02) may contain the identifier used by a package in the ALERTID when creating an alert.  If that field is non-null, an alert will only be marked critical if the PACKAGE-ID value is present in the ALERTID for the current alert.  This may be used to make critical text package-specif",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PACKAGE-ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to specify, if desired, a specific package ID to be  associated with the CRITICAL TEXT entered in field #.01.  The value  entered should be the textual part of the value used for XQAID when  creating the alert(s) (e.g., OR for Order Entry or TIU for Text Integration Utility).  If a non-null value is in this field, alerts containing the CRITICAL TEXT string will only be indicated as critical alerts if they also have text matching the PACKAGE-ID as a part of the ALERTID field.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREATING PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the package which is responsible for creating this CRITICAL TEXT entry. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8992.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

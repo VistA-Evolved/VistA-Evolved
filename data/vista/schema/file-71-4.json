@@ -1,0 +1,27 @@
+{
+  "fileNumber": 71.4,
+  "fileName": "RAD/NUC MED PROCEDURE MESSAGE",
+  "globalRoot": "71.4",
+  "globalReference": "^RAMIS(71.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains messages concerning special requirements when ordering a procedure.  One or more of these messages can be tied to a procedure in the RAD/NUC MED PROCEDURES file (#71).  Messages cannot begin with punctuation marks. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N RA714 S RA714=$P(^(0),\"^\"),RA714(1)=$E(RA714,31,999),RA714(1,\"F\")=\"?0\",RA714(2)=\" \" D:$G(DZ)[\"?\" EN^DDIOL(.RA714)"}
+  ]
+}

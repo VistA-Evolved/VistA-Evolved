@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2005.002,
+  "fileName": "IMAGING ANNOTATION",
+  "globalRoot": "2005.002",
+  "globalReference": "^MAG(2005.002,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2005'",
+      "required": true,
+      "pointerTo": 2005,
+      "helpText": "This is the image being annotated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ANNOTATION GROUP",
+      "dataType": "POINTER",
+      "rawType": "2005.0021PA",
+      "required": false,
+      "helpText": "These fields store user annotations to the image. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.002", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

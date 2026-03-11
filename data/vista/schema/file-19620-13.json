@@ -1,0 +1,116 @@
+{
+  "fileNumber": 19620.13,
+  "fileName": "DSIR SF 544",
+  "globalRoot": "19620.13",
+  "globalReference": "^DSIR(19620.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date the SF 544 was created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HOSPITALIZATION_FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date Hospitalization started. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HOSPITALIZATION_TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date hospitalization ended. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REGISTER_UNIT_OR_CLAIM_NO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Not currently used. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OUTPATIENT_FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date outpatient treatment started. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OUTPATIENT_TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date outpatient treatment ended. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CHIEF_COMPLAINT",
+      "dataType": "SUBFILE",
+      "rawType": "19620.136",
+      "required": false,
+      "helpText": "Chief complaint and date of onset. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.136,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.137",
+      "required": false,
+      "helpText": "Medical diagnosis ",
+      "isMultiple": true,
+      "subFileNumber": 19620.137,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OPERATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.138",
+      "required": false,
+      "helpText": "Operations or other procedures ",
+      "isMultiple": true,
+      "subFileNumber": 19620.138,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.139",
+      "required": false,
+      "helpText": "General remarks ",
+      "isMultiple": true,
+      "subFileNumber": 19620.139,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

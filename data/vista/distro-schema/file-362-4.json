@@ -1,0 +1,133 @@
+{
+  "fileNumber": 362.4,
+  "fileName": "IB BILL/CLAIMS PRESCRIPTION REFILL",
+  "globalRoot": "362.4I",
+  "globalReference": "^IBA(362.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The prescription number for the refill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P399'X",
+      "required": true,
+      "pointerTo": 399,
+      "helpText": "The bill this rx refill is associated with. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date of the refill that is being billed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "The drug prescribed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RECORD",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "Enter the Prescription record for this refill. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This should be the number of days supplied of the drug dispensed in this refill. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This should be the quantity (# of tablets, pills, items, etc.) of the drug  dispensed in this refill. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NDC #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the NDC number for this drug, if it should be printed on the bill. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FORMAT OF NDC#",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:4-4-2 FORMAT;2:5-3-2 FORMAT;3:5-4-1 FORMAT;4:5-4-2 FORMAT;",
+      "helpText": "This is the NATIONAL DRUG CODE format in which the NDC# for the drug has been entered. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "FILL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the Fill Number for the prescription. Where 0 = original fill and 1 = 1st refill, etc. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be stuffed with the ISSUE DATE (#1) field of the Rx from  the PRESCRIPTION (#52) file, if a corresponding entry exists in that file. Otherwise, it will be blank. ",
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AIFN", "field": },
+    {"name": "AIFN1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "362.4", "field": .01, "type": "regular"},
+    {"name": "362.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "362.4", "field": .02, "type": "regular"},
+    {"name": "362.4", "field": .02, "type": "regular"},
+    {"name": "", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGCR(399,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(399,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

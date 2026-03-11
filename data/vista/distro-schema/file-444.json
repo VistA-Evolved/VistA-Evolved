@@ -1,0 +1,427 @@
+{
+  "fileNumber": 444,
+  "fileName": "REQUEST FOR QUOTATION",
+  "globalRoot": "444",
+  "globalReference": "^PRC(444,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RFQ NBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the unique reference number for the Request for Quotation entry. It is derived from the following:     3 digits station number, i.e. 688     hyphen     2 digits Fiscal Year, i.e. 96     hyphen     string constant 'RFQ'     hyphen     5 digits sequence counter padded on the left with zeros. For example 688-96-RFQ-00001. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REFERENCE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective date for the RFQ. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUOTE DUE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date by which the vendor must submit his quote in order for it to be considered.  The time should be entered if other than 4:30 PM local time of that date. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONTRACTING OFFICER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who should be contacted by the vendor if there are questions concerning the requirements on this RFQ. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "INITIALS OF ADMIN CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "These are the initials of the Administrative Contact/Contracting Officer/ Purchasing Agent assigned to this RFQ. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADMINISTRATIVE CONTACT FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the FAX number to which non-EDI vendors may submit quotes or requests for additional information. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIORITY OF REQUEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:EMERGENCY;SP:SPECIAL;ST:STANDARD;",
+      "helpText": "Enter URGENCY best describing this RFQ; it is probably derived from the 2237's PRIORITY. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:CANCELLED;1:INCOMPLETE;2:PENDING QUOTES;3:CLOSED;4:EVALUATION COMPLETE;5:AWARDED;",
+      "helpText": "This field indicates where the RFQ is in the process from submission through award. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "CLOSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the RFQ was closed to further quotes. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 7.6,
+      "fieldName": "EVALUATION COMPLETE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records when evaluation of the RFQ was completed. ",
+      "fieldNumber_": 7.6
+    },
+    {
+      "fieldNumber": 7.7,
+      "fieldName": "AWARDED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This records when the wining quotes were awarded. ",
+      "fieldNumber_": 7.7
+    },
+    {
+      "fieldNumber": 7.8,
+      "fieldName": "PENDING QUOTES DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the RFQ was submitted to vendor(s) for quote(s). ",
+      "fieldNumber_": 7.8
+    },
+    {
+      "fieldNumber": 7.9,
+      "fieldName": "CANCEL DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records when an RFQ has been cancelled. ",
+      "fieldNumber_": 7.9
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRIMARY 2237",
+      "dataType": "POINTER",
+      "rawType": "RP410'",
+      "required": true,
+      "pointerTo": 410,
+      "helpText": "This is the initially added 2237, the one which is the basis for the RFQ number.  This 2237 will provide the defaults for the RFQ's header information. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "SUBSTATION",
+      "dataType": "POINTER",
+      "rawType": "P411'",
+      "required": false,
+      "pointerTo": 411,
+      "helpText": "When the Primary 2237 field #8 is populated, the substation field is triggered into this field if the 2237 has a substation entered in field #448. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "FCP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Fund Control Point for this RFQ.  It is imported into this RFQ entry at the time the Primary 2237 is selected. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REQUESTING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "This is the Service/Section of the Requester. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the Requester of the goods or services. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "POINT OF CONTACT PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Requester's phone number plus any applicable extension. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FOB",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DESTINATION;O:ORIGIN;",
+      "helpText": "This field indicates whether prices include shipping. If FOB (Freight on Board) is Destination, there will be no additional shipping fees.  If, in contrast, FOB is Origin, the price assumes the buyer will pick up the item(s) at the vendor's location, and shipping incurs additional charges. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REQD DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date by which the vendor must supply the goods or services. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SHIP TO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0XO",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the address for the delivery. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DELIVER TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the individual or location to which delivery should be made. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SPECIAL REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "444.016",
+      "required": false,
+      "helpText": "These are Special Remarks for the Request, originally brought over from the Primary 2237, but subject to subsequent editing. ",
+      "isMultiple": true,
+      "subFileNumber": 444.016,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ADMINISTRATIVE CERTIFICATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "444.017",
+      "required": false,
+      "helpText": "These are the Administrative Certifications pertaining to the RFQ.  This field is originally populated with canned phrases selected from the Adminstrative Certifications file (#442.7), and then subject to further local editing. ",
+      "isMultiple": true,
+      "subFileNumber": 444.017,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "SET ASIDE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags those RFQ's whose award should consider set aside programs for targeted groups. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "444.018",
+      "required": false,
+      "helpText": "This field is populated upon the completion of the evaluation of Vendors' quotes and explains the basis of the decisions for award. ",
+      "isMultiple": true,
+      "subFileNumber": 444.018,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "444.019",
+      "required": false,
+      "helpText": "This is the list of items submitted for the vendor's quote. ",
+      "isMultiple": true,
+      "subFileNumber": 444.019,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SOLICITED VENDOR",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "444.01V",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 444.01,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "TRANSMIT TO 'PUBLIC'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "A 'YES' in this field indicates that the Request for Quotation is to get the widest possible exposure rather than being limited to only those vendors entered into the Solicited Vendors list. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 20.7,
+      "fieldName": "REQUEST'S LAST EDITOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Purchasing Agent who last edited the information on the Request that will go to the vendors, soliciting their quotes. ",
+      "fieldNumber_": 20.7
+    },
+    {
+      "fieldNumber": 20.8,
+      "fieldName": "LAST EDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time of the last edit of Request information. ",
+      "fieldNumber_": 20.8
+    },
+    {
+      "fieldNumber": 20.9,
+      "fieldName": "RFQ'S MAILMAN MSG #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the ID number of the MailMan message which is generated in transmitting an RFQ to Austin for distribution to vendors. ",
+      "fieldNumber_": 20.9
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "864 MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "444.021",
+      "required": false,
+      "helpText": "This multiple contains the history of 864 transactions concerning this RFQ. ",
+      "isMultiple": true,
+      "subFileNumber": 444.021,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MSG COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is updated each time a message is added to the 864 MESSAGES multiple.  The updated counter value is placed in the .01 field. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "OUTBOUND MSG COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the counter for messages generated on this computer and going to the vendor. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "QUOTES",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "444.024V",
+      "required": false,
+      "helpText": "This multiple contains the quotes submitted by the responding vendors. ",
+      "isMultiple": true,
+      "subFileNumber": 444.024,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "EVALUATOR OF QUOTES",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field references the Supply person who assigned vendors to the RFQ items in preparation for making the award. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TRANSMIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records the last time that 840 Transaction data was loaded into a MailMan message for transmission to Austin. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "MANUAL RFQ PRINT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records when the Manual Request for Quotation form was printed for distribution to potential vendors. ",
+      "fieldNumber_": 27
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "QD", "field": },
+    {"name": "444", "field": .01, "type": "regular"},
+    {"name": "444", "field": .01, "type": "regular"},
+    {"name": "444", "field": .01, "type": "regular"},
+    {"name": "444", "field": 2, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "444", "field": 7, "type": "regular"},
+    {"name": "444", "field": 7, "type": "regular"},
+    {"name": "444", "field": 7, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 8.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3.1, "value": "W \"   \",$P(^(0),U,7)"},
+    {"field": 7, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(444,7,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,8)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 8, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCS(410,+$P(^(0),U,9),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(410,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

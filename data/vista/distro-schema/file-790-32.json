@@ -1,0 +1,40 @@
+{
+  "fileNumber": 790.32,
+  "fileName": "WV DIAGNOSTIC CODE TRANSLATION",
+  "globalRoot": "790.32",
+  "globalReference": "^WV(790.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WOMEN'S HEALTH DX",
+      "dataType": "POINTER",
+      "rawType": "R*P790.31'X",
+      "required": true,
+      "pointerTo": 790.31,
+      "helpText": "This field contains women's health results/diagnosis terms relating to radiology procedures.  Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RADIOLOGY DIAGNOSTIC CODE",
+      "dataType": "POINTER",
+      "rawType": "P78.3'",
+      "required": false,
+      "pointerTo": 78.3,
+      "helpText": "This field contains the radiology diagnostic code associated with a women's health results/diagnosis. Pointer to Diagnostic Codes (#78.3) file. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "790.32", "field": .01, "type": "regular"},
+    {"name": "790.32", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

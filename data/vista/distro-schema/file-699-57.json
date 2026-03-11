@@ -1,0 +1,37 @@
+{
+  "fileNumber": 699.57,
+  "fileName": "MODIFIER",
+  "globalRoot": "699.57",
+  "globalReference": "^MCAR(699.57,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies an adjective list which modifies or enhances the gross for GI and Pulmonary Endoscopic procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "699.571P",
+      "required": false,
+      "helpText": "This field is used as a screen to allow separate modifier lists for each GI and Pulmonary Endoscopic procedure. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.57", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "fileNumber": 391.31,
+  "fileName": "HOME TELEHEALTH PATIENT",
+  "globalRoot": "391.31",
+  "globalReference": "^DGHT(391.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains the record number for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of patient assigned for Home Telehealth service. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the name of the vendor assigned to this Home Telehealth patient. The vendor data comes from the Institution file #4 and are the 200T* entries.   These entries are specifically added to file #4 for Home Telehealth vendors. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONSULT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP123'",
+      "required": true,
+      "pointerTo": 123,
+      "helpText": "This is the internal entry number of the consultation. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CARE COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the Care Coordinator responsible for assigning  this patient for Home Telehealth service.  Care Coordinator is  selected from entries in the NEW PERSON file (#200). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time the patient was assigned/registered/sign-up for Home  Telehealth services. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time this patient was inactivated  from Home Telehealth service. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSACTION",
+      "dataType": "DATE",
+      "rawType": "391.317DA",
+      "required": false,
+      "helpText": "Transaction relating to home telehealth patient sign-up/activation (admission) and inactivation (discharge). ",
+      "isMultiple": true,
+      "subFileNumber": 391.317,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "HTHNOACK", "field": },
+    {"name": "391.31", "field": .01, "type": "regular"},
+    {"name": "391.31", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

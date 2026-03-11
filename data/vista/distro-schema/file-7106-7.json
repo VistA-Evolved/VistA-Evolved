@@ -1,0 +1,60 @@
+{
+  "fileNumber": 7106.7,
+  "fileName": "NOIS SYSTEM",
+  "globalRoot": "7106.7",
+  "globalReference": "^FSC(\"SYSTEM\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the system for a location. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7106.71",
+      "required": false,
+      "helpText": "These are the synonyms for the system. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL) that will be available on any call with a location that has this system. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7106.799",
+      "required": false,
+      "helpText": "These are the names for the system used by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.799,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "7106.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

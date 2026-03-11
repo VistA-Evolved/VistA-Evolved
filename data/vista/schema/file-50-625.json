@@ -1,0 +1,48 @@
+{
+  "fileNumber": 50.625,
+  "fileName": "WARNING LABEL-ENGLISH",
+  "globalRoot": "50.625",
+  "globalReference": "^PS(50.625,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the Record number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARNING LABEL TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "50.6251",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6251,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIFIC TO GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "If this warning is applicable to only one sex, its value will be \"F\" for  female or \"M\" for male. This field will be populated during data updates  from First Data Bank for each warning that is gender-specific. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.625", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

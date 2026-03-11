@@ -1,0 +1,225 @@
+{
+  "fileNumber": 811.2,
+  "fileName": "REMINDER TAXONOMY",
+  "globalRoot": "811.2I",
+  "globalReference": "^PXD(811.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the taxonomy. It must be unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ64",
+      "length": 64,
+      "required": false,
+      "helpText": "The Print Name is used to provide a \"user friendly\" display of a taxonomy.  ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "Enter \"1\" to inactivate the taxonomy.  This flag is set to ACTIVE in the distribution. As part of the installation, each site should review the taxonomy definitions and inactivate those that do not meet the site's needs. If desired, a site can copy a distributed taxonomy, using the taxonomy copy option, to a local version and edit it to meet the site's needs. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.22",
+      "required": false,
+      "helpText": "The DESCRIPTION is used to describe the purpose and usage of the taxonomy.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT DATA SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "PATIENT DATA SOURCE refines the taxonomy search by specifying which patient data sources are searched for matching codes.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "USE INACTIVE PROBLEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "USE INACTIVE PROBLEMS applies only to searches in Problem List. Normally, inactive problems are not used. However, when this field is set to YES, then both active and inactive problems are used. This field works just like the field with the same name that can be specified for a reminder definition finding or a reminder term finding. The order of precedence is taxonomy > term > definition. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRIORITY LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field applies only to Problem List searches. It can be used to limit the problems that are included to those with the listed priorities. The possible values are:  A - acute  C - chronic  U - undefined  Any combination of these letters can be used. For example, 'A' would limit the search to acute problems. 'CU' would include chronic problems and those whose priority is undefined. If this field is left blank then all priorities will be included.  ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SELECTED CODES",
+      "dataType": "SUBFILE",
+      "rawType": "811.23A",
+      "required": false,
+      "helpText": "The SELECTED CODES multiple stores the codes selected by the user to be in the taxonomy. The storage hierarchy is:  Term/Code   Coding system    Code  Term/Code and coding system are passed to Lexicon, which returns a list of matching codes. The user selects the codes to be included in the taxonomy from the list.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.23,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "USE IN DIALOG CODES",
+      "dataType": "SUBFILE",
+      "rawType": "811.24A",
+      "required": false,
+      "helpText": "This multiple stores all the codes in the SELECTED CODES multiple that have been marked as Use In Dialog. Its purpose is to provide a multiple for the ScreenMan form PXRM DIALOG TAXONOMY EDIT.  It is automatically synchronized with the SELECTED CODES MULTIPLE  ",
+      "isMultiple": true,
+      "subFileNumber": 811.24,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "VALUE SET OID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is populated only if the taxonomy has been generated automatically from a value set. It is the OID of the value set used to generate the taxonomy.  ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "VALUE SET VERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is populated only if the taxonomy has been generated automatically from a value set. It is the Version Date of the value set used to generate the taxonomy.  ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of the taxonomy. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National taxonomies cannot be edited by sites. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this taxonomy. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "REVIEW DATE is used to determine when the taxonomy should be reviewed to verify that it is current with the latest standards and guidelines. You can find all taxonomies whose review date has passed using the Clinical Reminders Review Date Report. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CHANGE LOG",
+      "dataType": "DATE",
+      "rawType": "811.21D",
+      "required": false,
+      "helpText": "This multiple is used to record a log of changes made to the taxonomy.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.21,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MINIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with a Taxonomy, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file. ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "MAXIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with a Taxonomy, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file. ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "MAXIMUM DECIMALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the maximum number of decimal digits that can be entered for the measurement.  ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement is to be associated with an Exam, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 224,
+      "fieldName": "PROMPT CAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field stores the prompt label that shows in CPRS Reminder Dialogs  when it contains this item as a finding item. ",
+      "fieldNumber_": 224
+    },
+    {
+      "fieldNumber": 225,
+      "fieldName": "UCUM DISPLAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CODE;D:DESCRIPTION;N:NO DESCRIPTION;",
+      "helpText": "This field specifies how the units are presented when a measurement is  displayed in CPRS, Clinical Reminders, and Health Summary. When the value is C, the UCUM Code is displayed when the value is D, the Description is displayed. When the value is N, no units are displayed. ",
+      "fieldNumber_": 225
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(811.2,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "fileNumber": 394.61,
+  "fileName": "VAQ - TRANSACTION",
+  "globalRoot": "394.61I",
+  "globalReference": "^VAT(394.61,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Transaction Number",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "  Unique number identifying the transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Current Status",
+      "dataType": "POINTER",
+      "rawType": "P394.85'",
+      "required": false,
+      "pointerTo": 394.85,
+      "helpText": "Current status of the transaction. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Patient Ptr",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Link to where the patient is stored locally. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "Sensitive Patient",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to YES if the patient was flagged as sensitive at the remote facility. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "Release Status",
+      "dataType": "POINTER",
+      "rawType": "P394.85'",
+      "required": false,
+      "pointerTo": 394.85,
+      "helpText": "This is used when a PDX Request has been processed and requires transmission.  The status placed here will be used when building the resulting message (i.e. background job building message will use this status). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "Remote Transaction Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is used to store the transaction number of this transaction on the remote system.  This field will primarily be used for PDX Requests and Unsolicited PDXs that have been received from a remote facility. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "Remote Version Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This is used to store the version of PDX that the remote site is using. This field will primarily be used when requests are processed and returned and when a message must be retransmitted. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Patient's Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the patient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "Patient's SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Social Security Number of the patient. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "Patient's DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the patient was born. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "Patient ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique identifier of the patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Date/Time of Request",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the request was made. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "Requestor",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person who initiated the request. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "Requesting Site",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "From where the request was initiated. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "Requesting Address",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Network address of the requesting site. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "Encrypted",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Set to YES if data was encrypted for transmission. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "Encryption Method",
+      "dataType": "POINTER",
+      "rawType": "P394.72'",
+      "required": false,
+      "pointerTo": 394.72,
+      "helpText": "Type of encryption used. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "Date/Time of Reply",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the reply was received. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "Authorizer",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Person who released the patient information. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "Authorizing Site",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "From where the patient information came. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "Authorizing Address",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Network address of the authorizing site. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "Data in Notification",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to YES if requested data is included in the return of data  notification(s). ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "Notify",
+      "dataType": "POINTER",
+      "rawType": "394.6171P",
+      "required": false,
+      "helpText": "Multiple containing all people to notify upon return of data. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "Data Segment",
+      "dataType": "POINTER",
+      "rawType": "394.618P",
+      "required": false,
+      "helpText": "Multiple containing the data segments contained in the transaction. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "Purge",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Flag indicating if the transaction should be deleted. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "Comment",
+      "dataType": "SUBFILE",
+      "rawType": "394.611",
+      "required": false,
+      "helpText": "Comment that was associated with the transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 394.611,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "BS51", "field": },
+    {"name": "BS52", "field": },
+    {"name": "NAME", "field": },
+    {"name": "PATPTR", "field": },
+    {"name": "PPP", "field": },
+    {"name": "PURGE", "field": },
+    {"name": "SSN", "field": },
+    {"name": "STATUS", "field": },
+    {"name": "394.61", "field": .01, "type": "regular"},
+    {"name": "394.61", "field": .02, "type": "regular"},
+    {"name": "394.61", "field": .02, "type": "regular"},
+    {"name": "394.61", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "394.61", "field": 10, "type": "regular"},
+    {"name": "394.61", "field": 10, "type": "regular"},
+    {"name": "394.61", "field": 11, "type": "regular"},
+    {"name": "394.61", "field": 11, "type": "regular"},
+    {"name": "394.61", "field": 21, "type": "regular"},
+    {"name": "394.61", "field": 90, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE1, "value": "S VAQXRF=$P($G(^(\"QRY\")),U,4) S:(VAQXRF=\"\") VAQXRF=\"NOT ON FILE\" W \"  (PID: \",VAQXRF,\")\" K VAQXRF"}
+  ]
+}

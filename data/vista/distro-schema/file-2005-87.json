@@ -1,0 +1,211 @@
+{
+  "fileNumber": 2005.87,
+  "fileName": "IMAGE LIST FILTERS",
+  "globalRoot": "2005.87",
+  "globalReference": "^MAG(2005.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name of filter.  Names aren't unique in the File, but are  forced to be unique by user.  i.e. A user can not have two filters  called \"All Clinical\", but two different users can have filters with the same name ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponds to IMAGE File, Field #40 PACKAGE INDEX ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ADMIN:ADMIN;CLIN:CLIN;",
+      "helpText": "Corresponds to IMAGE File, Field #41 CLASS INDEX. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponds to IMAGE File, Field #42 TYPE INDEX. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponds to IMAGE File, Field #43 PROC/EVENT INDEX. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SPEC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Corresponds to IMAGE File, Field ##44 SPEC/SUBSPEC INDEX. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a specific date range is desired, these fields will be populated: FROM and UNTIL.  This isn't a relative date range.   If you want images for the last 3 months, use the RELATIVE RANGE FIELD. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a specific date range is desired, these fields will be populated: FROM and UNTIL.  This isn't a relative date range. If you want images for the last 3 months, use the RELATIVE RANGE FIELD. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RELATIVE RANGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is a relative number of months to search backwards for Images.   -1 means search back 1 month  -12 means search back 1 year  etc.   0  means get all (unless a specific date range exists      in the From and Until Date Fields. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORIGIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field determines which scope of images to include in the filter possible values of scope are VA and NON-VA. Corresponds to IMAGE File, Field #45 ORIGIN INDEX. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IMAGE STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the list of image statuses (internal or external values) separated by commas  that limit the search results.   If the field is empty, then image status is not  considered during the search defined by this  filter.   See the IMAGE STATUS field (113) of the IMAGE  file (#2005) for more details. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DESCRIPTION CONTAINS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this field is not empty, then the filter  considers an image as a possible search result only if its short description contains the value of this field. The comparison is case insensitive.   See the SHORT DESCRIPTION field (10) of the IMAGE  file (#2005) for more details. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CAPTURED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If this field has a value, then the filter  considers only images captured by this user.   See the IMAGE SAVE BY field (8) of the IMAGE file  (#2005) for more details. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "USE CAPTURE DATES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If value of this field is YES, then filter's date  range parameters are considered as image capture  dates (see the DATE/TIME IMAGE SAVED field (7) of the IMAGE file (#2005) for more details).   Otherwise, they are interpreted as procedure/exam dates (see the PROCEDURE/EXAM DATE/TIME field (15) of the IMAGE file (#2005) for more details). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DAY RANGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Today;1:Yesterday;2:2 Days Ago;3:3 Days Ago;4:Last 2 Days (thru today);5:Last 3 Days (thru today);6:Last Full Week (starts on Sunday);7:Current Week (starts on Sunday);",
+      "helpText": "This field allows selection of predefined short  date ranges. This is especially useful during the image verification process.   This filter parameter is mutually exclusive with  the range defined by the RELATIVE RANGE field (8). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "COLUMN WIDTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores comma separated list of column  widths (in pixels) that is applied to the image list view when this filter is used. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PERCENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this field is populated, it stores the percentage of images selected by the filter that is returned as the result of the image search.     Firstly, images captured by the user (see the    the CAPTURED BY field (12) for more details) are   preselected according to the date range and   other criteria. Those of them that were captured   immediately before and after patient changes are   stored to the \"priority\" temporary buffer. The   others are stored to the regular temporary   buffer.     Then",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Users can have their own filters.  This field determines the user. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PUBLIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PUBLIC;",
+      "helpText": "If a filter is public, it will be displayed on the Filter (File) menu for all users. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A function (future) of the Imaging Filter window will be that a user will be able to create a Filter for another user. ",
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2005.87", "field": .01, "type": "regular"},
+    {"name": "2005.87", "field": 20, "type": "regular"},
+    {"name": "2005.87", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 20, "value": "S %I=Y,Y=$S('$D(^(1)):\"\",$D(^VA(200,+$P(^(1),U,1),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

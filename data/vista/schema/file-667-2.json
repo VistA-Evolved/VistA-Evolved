@@ -1,0 +1,27 @@
+{
+  "fileNumber": 667.2,
+  "fileName": "AUTO-ADAPTIVE MANUFACTURER",
+  "globalRoot": "667.2",
+  "globalReference": "^RMPR(667.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The manufacturer of the Vehicle. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "667.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

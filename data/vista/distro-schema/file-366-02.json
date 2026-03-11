@@ -1,0 +1,111 @@
+{
+  "fileNumber": 366.02,
+  "fileName": "PHARMACY BENEFITS MANAGER (PBM)",
+  "globalRoot": "366.02",
+  "globalReference": "^IBCNR(366.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) long name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time associated with the creation of Pharmacy Benefits  Manager (PBM) file (#366.02) entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PRIMARY CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) primary contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PRIMARY CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) primary contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PRIMARY CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Pharmacy Benefits Manager's (PBM's) primary contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ALTERNATE CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) alternate contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ALTERNATE CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) alternate contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ALTERNATE CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) alternate contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTACT MEANS",
+      "dataType": "SUBFILE",
+      "rawType": "366.022",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) Contact Means sub-file. Applies to both the PBM's primary and alternate contacts. ",
+      "isMultiple": true,
+      "subFileNumber": 366.022,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "366.023P",
+      "required": false,
+      "helpText": "The Pharmacy Benefits Manager's (PBM's) Application (electronic interface  application) sub-file. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "366.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

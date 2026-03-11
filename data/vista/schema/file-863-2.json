@@ -1,0 +1,58 @@
+{
+  "fileNumber": 863.2,
+  "fileName": "OCX MDD SUBJECT",
+  "globalRoot": "863.2",
+  "globalReference": "^OCXS(863.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.21P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "863.22",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique identifier for this object. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "SYN", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

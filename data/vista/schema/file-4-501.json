@@ -1,0 +1,36 @@
+{
+  "fileNumber": 4.501,
+  "fileName": "NETWORK SENDERS REJECTED",
+  "globalRoot": "4.501",
+  "globalReference": "^XMBX(4.501,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of senders from whom messages will be rejected. The test is that the sender's name contains the string in one of these fields.  A site could therefore choose to reject all messages that come from a particular domain, from a person at a domain or from any domain that is a subdomain of a domain.  This is not a complete list, but is a set of examples of what could be done.  Rejection is done during the processing of the MAIL FROM: message protocol data unit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DO NOT USE;0:USE;",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.501", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

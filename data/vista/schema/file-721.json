@@ -1,0 +1,524 @@
+{
+  "fileNumber": 721,
+  "fileName": "EVENT CAPTURE PATIENT",
+  "globalRoot": "721",
+  "globalReference": "^ECH(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains the record number for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient for which this procedure occurred. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME OF PROCEDURE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date and time of this procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the name of the facility where this procedure was performed. This facility name is recognized as the location within the Event Capture software. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "This field contains the name of the corresponding service associated with this procedure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP723'",
+      "required": true,
+      "pointerTo": 723,
+      "helpText": "This field contains the name of the corresponding medical specialty for this procedure. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DSS UNIT",
+      "dataType": "POINTER",
+      "rawType": "RP724'",
+      "required": true,
+      "pointerTo": 724,
+      "helpText": "This is the name of the DSS unit associated with this procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P726'",
+      "required": false,
+      "pointerTo": 726,
+      "helpText": "This is the name of the category used to group this procedure. If category is not used, it can be entered as a zero (0). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PROCEDURE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This field contains the name of the procedure. Procedures can be selected from either the CPT file (#81) or EC NATIONAL PROCEDURE file (#725). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "The ECS volume field DOES NOT capture the number of  patients seen by ECS providers. Volume is usually associated with the number of procedures performed.   The volume field can be used to record and track 3  different values:   1. Number of Procedures: When a selected procedure code CONTAINS inherent time elements (such as \"30M Massage Therapy\") then a volume of one is usually entered, meaning 1 of this specific procedure/service was provided.            OR     2. Time: Amount of time shown in ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the provider performing this procedure. Provider can be selected from entries in the NEW PERSON file (#200).   Starred for inactivation with EC*2.0*72. Data converted and stored  in Field #42 'PROVIDER MULTIPLE'. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ORDERING SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP723'",
+      "required": true,
+      "pointerTo": 723,
+      "helpText": "This is the of name of the section ordering this procedure. Ordering section can be selected from entries in the MEDICAL SPECIALTY file (#723). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ENTERED/EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person entering patient data. This name can be selected from entries in the NEW PERSON file (#200). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "*PROVIDER TYPE",
+      "dataType": "POINTER",
+      "rawType": "P7'",
+      "required": false,
+      "pointerTo": 7,
+      "helpText": "This field contains the name of the classification of the provider who performed this procedure. Starred for deletion with EC*2*5. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "*PROVIDER #2",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who assisted in performing this procedure. This name can be selected from entries in the NEW PERSON file (#200).   Starred for inactivation with EC*2.0*72. Data converted and stored in Field #42 'PROVIDER MULTIPLE'. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*PROVIDER #2 TYPE",
+      "dataType": "POINTER",
+      "rawType": "P7'",
+      "required": false,
+      "pointerTo": 7,
+      "helpText": "The name of the classification of the provider who assisted in performing this procedure.   Starred for deletion with EC*2*5. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "*PROVIDER #3",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who assisted in performing this procedure. This name can be selected from entries in the NEW PERSON file (#200).   Starred for inactivation with EC*2.0*72. Data converted and stored in Field #42 'PROVIDER MULTIPLE'. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*PROVIDER #3 TYPE",
+      "dataType": "POINTER",
+      "rawType": "P7'",
+      "required": false,
+      "pointerTo": 7,
+      "helpText": "The name of the classification of the provider who assisted in performing this procedure.   Starred for deletion with EC*2*5. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PCE CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "The Current Procedural Terminology (CPT) code for the procedure performed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PRIMARY ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P80'X",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "The Primary ICD diagnosis code for this encounter. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "AGENT ORANGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field will be used to indicate if this procedure is treating a VA patient for a problem that is related to Agent Orange Exposure.   Data is Y if this patient was exposed to agent orange, N if not, or U if unknown. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field will be used to indicate if this procedure is treating a VA patient for a problem that is related to Ionizing Radiation Exposure.   Data is Y if this patient claims exposure to ionizing radiation, N if not, or U if unknown. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field is used to indicate if this visit represents treatment of a VA  patient claiming exposure to Southwest Asia Conditions. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will be used to indicate if this procedure is treating a VA patient for a service connected problem.  Data is Y if this patient is service connected or N if not service connected. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SENT TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags data that has been sent from Event Capture to PCE.  If sent, this field will contain a 1 (YES = 1).  If not, this field will contain null or zero (NO = null or zero). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ASSOCIATED CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'X",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic associated with this record. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DSS ID",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "The DSS ID, formerly stop code, associated with this patient record. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is the visit associated with this patient procedure. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "IN/OUTPATIENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "The status of the patient when this event occurred. The code \"I\" represents an inpatient event or an \"O\" represents an outpatient event occurred. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PCE DATA FEED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field contains the ECS data formatted to feed the Patient Care Encounter (PCE) software. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SEND TO PCE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This flag controls the ECS data that is ready to send to PCE.  If this record should be sent to PCE, this flag will be set with a date. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CHECKOUT D/T",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the checkout date and time of this procedure. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reasons why this patient record was not sent to the Patient Care Encounter (PCE) software. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "PROCEDURE REASON",
+      "dataType": "POINTER",
+      "rawType": "*P720.5'",
+      "required": false,
+      "pointerTo": 720.5,
+      "helpText": "A procedure reason for the patient's procedure may be selected during data entry.  The user may only select procedure reason(s) which were previously entered during the creation or edit of the associated event code screen. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field will be used to indicate if this procedure is treating a VA patient for a problem that is related to Military Sexual Trauma.   Data is Y if this patient treatment is related to military sexual trauma, N if not, or U if unknown. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "POINTER",
+      "rawType": "721.036PA",
+      "required": false,
+      "helpText": "This is a multiple field.  It points to the CPT MODIFIER file #81.3. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PCE CPT MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The modifiers associated with the CPT procedure code that will be passed to PCE. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "SECONDARY ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "721.038PA",
+      "required": false,
+      "helpText": "The secondary ICD diagnosis code for the procedure performed. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "HEAD/NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field indicates that the EC procedure represents treatment of a VA patient for a problem that is related to Head and/or Neck Cancer. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field indicates that the EC procedure represents treatment of a VA patient for a problem that is related to Combat Veteran. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PROJECT 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field indicates that the EC procedure represents treatment of a VA patient for a problem that is related to Project 112/SHAD. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PROVIDER MULTIPLE",
+      "dataType": "POINTER",
+      "rawType": "721.042PA",
+      "required": false,
+      "helpText": "This is the provider(s) giving patient care for this encounter.   Prior to the installation of EC*2.0*72 provider data was stored in fields  #10, #15 and #17.  EC*2.0*72 converted and stored these fields' data in  this field #42,\"PROVIDER MULTIPLE\". ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PROCEDURE REASON #2",
+      "dataType": "POINTER",
+      "rawType": "*P720.5'",
+      "required": false,
+      "pointerTo": 720.5,
+      "helpText": "A second procedure reason for the patient's procedure may be selected during data entry.  The user may only select procedure reasons which were previously entered during the creation or editing of the associated event code screen. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PROCEDURE REASON #3",
+      "dataType": "POINTER",
+      "rawType": "*P720.5'",
+      "required": false,
+      "pointerTo": 720.5,
+      "helpText": "A third procedure reason for the patient's procedure may be selected during data entry. The user may only select procedure reasons which were previously entered during the creation or editing of the associated event code screen.   ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field will identify the source by which this record was added to the file if it's not entered through Event Capture data entry options. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ENTRY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LATE;C:LATE CORRECTED;",
+      "helpText": "This field will be used to indicate the entry status of the record when entered through spread sheet upload. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DATE/TIME IMPORTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "For records entered via spread sheet upload, this will indicate the date and time that the records were imported. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "SSID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field will store the Spread Sheet Identification (SSID) for records entered via the spread sheet upload option. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "STATE HOME NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the name of the facility that provided the service to the veteran. ",
+      "fieldNumber_": 49
+    }
+  ],
+  "fieldCount": 49,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADT", "field": },
+    {"name": "ADT1", "field": },
+    {"name": "ADTL", "field": },
+    {"name": "ADTP", "field": },
+    {"name": "ADTU", "field": },
+    {"name": "AE", "field": },
+    {"name": "APAT", "field": },
+    {"name": "APAT1", "field": },
+    {"name": "APRV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "721", "field": .01, "type": "regular"},
+    {"name": "721", "field": .01, "type": "regular"},
+    {"name": "721", "field": 1, "type": "regular"},
+    {"name": "721", "field": 1, "type": "regular"},
+    {"name": "721", "field": 2, "type": "regular"},
+    {"name": "721", "field": 2, "type": "regular"},
+    {"name": "721", "field": 2, "type": "regular"},
+    {"name": "721", "field": 2, "type": "regular"},
+    {"name": "721", "field": 3, "type": "regular"},
+    {"name": "721", "field": 3, "type": "regular"},
+    {"name": "721", "field": 6, "type": "regular"},
+    {"name": "721", "field": 28, "type": "regular"},
+    {"name": "721", "field": 28, "type": "regular"},
+    {"name": "721", "field": 31, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

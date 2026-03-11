@@ -1,0 +1,40 @@
+{
+  "fileNumber": 47.77,
+  "fileName": "SEXUAL ORIENTATION TYPES",
+  "globalRoot": "47.77",
+  "globalReference": "^DG(47.77,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEXUAL ORIENTATION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "The SEXUAL ORIENTATION TYPE field identifies the identity of the patient  in relation to the gender to which they identify with. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ5",
+      "length": 5,
+      "required": true,
+      "helpText": "This code uniquely identifies the SEXUAL ORIENTATION TYPE record. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "47.77", "field": .01, "type": "regular"},
+    {"name": "47.77", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

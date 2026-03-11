@@ -1,0 +1,49 @@
+{
+  "fileNumber": 7100.4,
+  "fileName": "NOIS SEND",
+  "globalRoot": "7100.4P",
+  "globalReference": "^FSCD(\"SEND\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ALERT",
+      "dataType": "POINTER",
+      "rawType": "RP7100.3'",
+      "required": true,
+      "pointerTo": 7100.3,
+      "helpText": "This is a scheduled alert. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "P7100'",
+      "required": false,
+      "pointerTo": 7100,
+      "helpText": "This is the call associated with the sceduled alert. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the alert was processed. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "7100.4", "field": .01, "type": "regular"},
+    {"name": "7100.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

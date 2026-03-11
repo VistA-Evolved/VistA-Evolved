@@ -1,0 +1,65 @@
+{
+  "fileNumber": 2101.2,
+  "fileName": "GENERIC CODE SHEET TRANSACTION TYPE/SEGMENT",
+  "globalRoot": "2101.2I",
+  "globalReference": "^GECS(2101.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used to indicate the type of code sheet referenced by the batch.  For example: the batch type DENTAL may have several types of code sheets. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "EDIT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to store the input template which should be used to enter the code sheet data and compile the data into the actual code sheet.  The name of the input should be in the form: [template name].  The brackets [] should be included. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "BATCH TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP2101.1'",
+      "required": true,
+      "pointerTo": 2101.1,
+      "helpText": "This field is used to store the batch type (file 2101.1) for the code sheet segment.  The batch type is used to determine the destination queue for the transmission of the code sheet. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE CODE SHEET",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to activate or inactivate a code sheet.  When a code sheet is no longer required, it can be inactivated to prevent users from creating it. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GENERAL PURPOSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the description of the code sheet type. This field is used for informational purposes only. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2101.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

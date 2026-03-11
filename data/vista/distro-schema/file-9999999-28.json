@@ -1,0 +1,142 @@
+{
+  "fileNumber": 9999999.28,
+  "fileName": "SKIN TEST",
+  "globalRoot": "9999999.28I",
+  "globalReference": "^AUTTSK(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "This is the name of the skin test (e.g Cocci,PPD).  The NAME must be at least 3 characters and no more than 30 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXIa",
+      "required": false,
+      "helpText": "This field is a two digit code representing this skin test. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate a skin test type.  If this field contains a \"1\" then the skin test is inactive.  Inactive skin tests cannot be  selected in the manual data entry process.  Skin test entries should be made inactive when they are no longer used.  Do not delete the entry or change the meaning of the skin test entry.    To make an inactive skin test active, enter the \"@\" symbol to delete the \"1\" from the field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'Ia",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This is a CPT code associated with this skin test. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.283",
+      "required": false,
+      "helpText": "This multiple stores the coding system(s) associated with the codes identifying this skin test. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.283,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P9999999.28'aI",
+      "required": false,
+      "pointerTo": 9999999.28,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSaI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference  terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "9999999.2899DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.2899,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of this Skin Test. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the name of this skin test that can be used in various reports and displays where space is not available to use the full name of the skin test. This print/display name is limited to 15 characters. ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 8801,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "(Optional) This is a 1-2 character mnemonic for the skin test.   Enter a 1-2 character mnemonic. ",
+      "fieldNumber_": 8801
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9999999.28", "field": .01, "type": "regular"},
+    {"name": "9999999.28", "field": .02, "type": "regular"},
+    {"name": "9999999.28", "field": 99.97, "type": "regular"},
+    {"name": "9999999.28", "field": 99.99, "type": "regular"},
+    {"name": "9999999.28", "field": 8801, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

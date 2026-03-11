@@ -1,0 +1,111 @@
+{
+  "fileNumber": 111,
+  "fileName": "DIETS",
+  "globalRoot": "111s",
+  "globalReference": "^FH(111,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This field contains the name of a diet or diet modification as it would normally be known to ward/medical personnel. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a synonym for the diet name; the synonym is generally terminology known and used by ward/medical personnel. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASK EXPIRATION DATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will result in the user being prompted for a diet expiration date (as well as the start date) whenever this diet is contained in a total diet order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIET PRECEDENCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is a numerical value which performs two functions: no two diet modifications with the same precedence may be selected. The same number can therefore be assigned to mutually-exclusive diet modifications. Secondly, the diet modifications will be listed in precedence order, from low to high. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRODUCTION DIET",
+      "dataType": "POINTER",
+      "rawType": "R*P116.2'",
+      "required": true,
+      "pointerTo": 116.2,
+      "helpText": "This field contains the Production Diet entry (file 116.2) which would be prepared for this diet modification were it to stand alone from other diet modifications. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BULLETIN CLINICIAN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will result in a bulletin being sent to the clinician(s) responsible for the ward on which the patient resides any time this diet modification is ordered. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATED LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an abbreviated label title used on diet cards; the terminology and abbreviations will normally be those used by dietetic personnel. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ALTERNATE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "111.01",
+      "required": false,
+      "helpText": "This field may be used for any number of alternate names for the diet modification. These alternative names will normally be those used by ward/medical personnel. ",
+      "isMultiple": true,
+      "subFileNumber": 111.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this diet modification by ward personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "111", "field": .01, "type": "regular"},
+    {"name": "111", "field": 1, "type": "regular"},
+    {"name": "111", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

@@ -1,0 +1,585 @@
+{
+  "id": "laboratory",
+  "name": "Laboratory",
+  "description": "Lab orders, results, specimen collection, accession",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.870Z",
+  "files": {
+    "count": 6,
+    "items": [
+      {
+        "fileNumber": 60,
+        "fileName": "File #60",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 63,
+        "fileName": "File #63",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 65,
+        "fileName": "File #65",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 65.1,
+        "fileName": "File #65.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 68,
+        "fileName": "File #68",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 69,
+        "fileName": "File #69",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 26,
+    "items": [
+      {
+        "name": "ORWLR CUMULATIVE REPORT",
+        "tag": "CUM",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call returns an up to date laboratory cumulative report for a given  patient. "
+      },
+      {
+        "name": "ORWLR REPORT LISTS",
+        "tag": "LIST",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This remote procedure call returns a list of lab cumulative sections, and date ranges that can be displayed at the workstation. There are no input parameters fo this rpc. "
+      },
+      {
+        "name": "ORWLR CUMULATIVE SECTION",
+        "tag": "RPT",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PART OF CUMULATIVE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE RANGE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REPORT SECTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc retrieves the part of the lab cumulative report  selected by the user on the Labs tab. "
+      },
+      {
+        "name": "ORWLRR ATOMICS",
+        "tag": "ATOMICS",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR SPEC",
+        "tag": "SPEC",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR ALLTESTS",
+        "tag": "ALLTESTS",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR USERS",
+        "tag": "USERS",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR TG",
+        "tag": "TG",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR ATESTS",
+        "tag": "ATESTS",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR ATG",
+        "tag": "ATG",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR UTGA",
+        "tag": "UTGA",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR UTGR",
+        "tag": "UTGR",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR UTGD",
+        "tag": "UTGD",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR INTERIM",
+        "tag": "INTERIM",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR INTERIMS",
+        "tag": "INTERIMS",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR GRID",
+        "tag": "GRID",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR INTERIMG",
+        "tag": "INTERIMG",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR NEWOLD",
+        "tag": "NEWOLD",
+        "routine": "ORWLRR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR MICRO",
+        "tag": "MICRO",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR CHART",
+        "tag": "CHART",
+        "routine": "ORWLRR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR CHEMTEST",
+        "tag": "CHEMTEST",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR PARAM",
+        "tag": "PARAM",
+        "routine": "ORWLRR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORWLRR INFO",
+        "tag": "INFO",
+        "routine": "ORWLRR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return lab test description information. "
+      },
+      {
+        "name": "ORWLRAP1 CONFIG",
+        "tag": "CONFIG",
+        "routine": "ORWLRAP1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TYP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "ORWLRAP1 SPEC",
+        "tag": "SPEC",
+        "routine": "ORWLRAP1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "ORWLRAP1 APORDITM",
+        "tag": "APORDITM",
+        "routine": "ORWLRAP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns an array of orderable items for the CPRS Anatomic Pathology  order dialog in the format:     Y(n)=IEN^.01 Name^.01 Name  -or-  IEN^Synonym <.01 Name>^.01 Name "
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "LR SUP SUMMARY",
+        "type": "run-routine",
+        "securityKey": "LRSUPER",
+        "displayText": ""
+      },
+      {
+        "name": "LR IN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR OUT",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GET",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR DO!",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR COUNT ACC TESTS",
+        "type": "run-routine",
+        "securityKey": "LRSUPER",
+        "displayText": ""
+      },
+      {
+        "name": "LR INF WARN",
+        "type": "action",
+        "securityKey": "LRSUPER",
+        "displayText": ""
+      },
+      {
+        "name": "LR LOOKUP ACCESSION",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR HEALTH DEPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR CHEM 7",
+        "type": "protocol",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR ACC CONTROLS",
+        "type": "edit",
+        "securityKey": "LRSUPER",
+        "displayText": ""
+      },
+      {
+        "name": "LR ACC THEN DATA",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR CAPTT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR INTEGRITY LOAD",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR INTEGRITY SINGLE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR INTEGRITY LOOP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR INTEGRITY",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS BATCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS BATCH EDIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS BATCHES STATUS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS BATCHES WAITING TRANS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS CODE EDIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS CREATE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS DELETE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS KEYPUNCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS PURGE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS READY FOR BATCHING LIS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS REBATCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS RETRANSMIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "LR GECS REVIEW CODE SHEET",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 8,
+    "items": [
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWLR CUMULATIVE REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PART OF CUMULATIVE:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "PART OF CUMULATIVE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE RANGE:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "DATE RANGE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REPORT SECTION:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "REPORT SECTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYP:",
+        "rpcName": "ORWLRAP1 CONFIG",
+        "paramName": "TYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "ORWLRAP1 CONFIG",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "ORWLRAP1 SPEC",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

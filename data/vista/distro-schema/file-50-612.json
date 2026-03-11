@@ -1,0 +1,141 @@
+{
+  "fileNumber": 50.612,
+  "fileName": "NATIONAL DRUG TRANSLATION",
+  "globalRoot": "50.612",
+  "globalReference": "^PSNTRAN(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "PSDRUG DA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Pointer to ^PSDRUG file (#50). ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PSNDF DA",
+      "dataType": "POINTER",
+      "rawType": "RP50.6",
+      "required": true,
+      "pointerTo": 50.6,
+      "helpText": "Pointer to ^PSNDF file (#50.6). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VA PRODUCT NAME DA",
+      "dataType": "POINTER",
+      "rawType": "P50.68",
+      "required": false,
+      "pointerTo": 50.68,
+      "helpText": "Pointer to VA PRODUCT file (#50.68). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VA CLASS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Pointer to VA Drug Class file (#50.605). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PACKAGE SIZE PTR",
+      "dataType": "POINTER",
+      "rawType": "P50.609",
+      "required": false,
+      "pointerTo": 50.609,
+      "helpText": "Pointer to Package Size file (#50.609). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PACKAGE TYPE PTR",
+      "dataType": "POINTER",
+      "rawType": "P50.608",
+      "required": false,
+      "pointerTo": 50.608,
+      "helpText": "Pointer to Package Type file (#50.608). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DUZ #",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User number of person entering (matching) data. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VERIFY FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Flag to indicate that the data has been verified. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DUZ OF VERIFIER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User number of person doing the verifying. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "END",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Stores internal number of file #50 in which the matching process concluded previously. This allows the user to start up where they left off in the matching process using option - (Match Local Drug File With National File).   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LAST UNMATCHED DRUG CLASSED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the name of the last unmatched drug classed by option - (Allow Unmatched Drugs To Be Classed). This allows the user to start up where they left off. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LAST SUPPLY ITEM RE-CLASSED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the name of the last supply item re-classed by option - (Re-Class Supply Items). This allows the user to start up where they left off. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "50.612", "field": .01, "type": "regular"},
+    {"name": "50.612", "field": 10, "type": "regular"},
+    {"name": "50.612", "field": 11, "type": "regular"},
+    {"name": "50.612", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

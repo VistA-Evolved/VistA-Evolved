@@ -1,0 +1,62 @@
+{
+  "fileNumber": 129.12,
+  "fileName": "LOINC AXIS CODES",
+  "globalRoot": "129.12",
+  "globalReference": "^ETSLNC(129.12,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ240",
+      "length": 240,
+      "required": true,
+      "helpText": "This is the name of the fields defined in the LOINC Axis field, which is  defined by Regenstrief. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOINC ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the abbreviation for the LOINC code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the type of LOINC code. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUBTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is used to further define properties. Can be used as screen element. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "G", "field": },
+    {"name": "VR", "field": },
+    {"name": "129.12", "field": .01, "type": "regular"},
+    {"name": "129.12", "field": .01, "type": "regular"},
+    {"name": "129.12", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 7, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(129.12,7,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

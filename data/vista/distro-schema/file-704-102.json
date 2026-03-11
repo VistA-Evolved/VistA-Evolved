@@ -1,0 +1,55 @@
+{
+  "fileNumber": 704.102,
+  "fileName": "TERM_TYPE",
+  "globalRoot": "704.102",
+  "globalReference": "^MDC(704.102,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the ordinal position of this term-type entry.  ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name for this term TYPE. A sample TYPE could be \"OBSERVATION\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "XML_TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the XML TAG this data element is to be stored on when an  appropriate XML document is built. A sample XML TAG could be \"TERM_ID\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the VHA Unique IDentifier (VUID) for this term type.   A sample VUID could be \"4688703\". ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "704.102", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

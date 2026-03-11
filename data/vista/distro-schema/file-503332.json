@@ -1,0 +1,49 @@
+{
+  "fileNumber": 503332,
+  "fileName": "VOLUNTARY SERVICE ASSIGNMENT CODES",
+  "globalRoot": "503332I",
+  "globalReference": "^ABS(503332,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the code from the Voluntary Service Manual representing the specific medical center service This field contains the codes recognized by the Austin DPC as representing the specific medical center service. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USING SERVICES/SUBDIVISIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the full name of the service. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbrevation for the service. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "503332", "field": .01, "type": "regular"},
+    {"name": "503332", "field": 1, "type": "regular"},
+    {"name": "503332", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

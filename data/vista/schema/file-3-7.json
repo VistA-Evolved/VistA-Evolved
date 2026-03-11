@@ -1,0 +1,408 @@
+{
+  "fileNumber": 3.7,
+  "fileName": "MAILBOX",
+  "globalRoot": "3.7P",
+  "globalReference": "^XMB(3.7,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "This number is used internally to match mailboxes to users in the NEW PERSON file.  It is not seen by users.  Postmaster has been given the special number of .5. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'XI",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the user who has this mail box. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "MAIL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a name that the user assigns to his mail-box on this system. It is guaranteed to be unique for each user. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BASKET",
+      "dataType": "SUBFILE",
+      "rawType": "3.701",
+      "required": false,
+      "helpText": "This is where users store their messages.  Each user is automatically given an IN basket (#1), and a WASTE basket (#.5) when they first use MailMan.  These are permanent, and may not be deleted by the user.  Other baskets may be created by the user, and also deleted.    Deleted messages are placed in the WASTE basket temporarily.  Every evening the WASTE basket is emptied.   USERS SHOULD MANIPULATE BASKETS ONLY WITH MAILMAN; NOT TRY TO DO IT MANUALLY WITH FILEMAN.  ",
+      "isMultiple": true,
+      "subFileNumber": 3.701,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "# NEW MESSAGES FOR USER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "A counter for the number of new messages in this MailBox ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "LAST MSG RECEIVED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is displayed when the user has new messages, and the user is told how many, and when the last one was received. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "LAST NEW MSG NOTIFY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used during logon to determine whether or not to display to the user the time that the last new message arrived.   When the user logs on and has new messages, he is told how many, and when the last one arrived.  If he logs off without reading those messages and logs on again, and hasn't received any further new messages, he is told how many new messages he has, but is not told when the last one arrived.  ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "DATE @ REINSTATEMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "When a user is reinstated, the current date may be stored here if IRM wants to make sure that the reinstated user may not read any messages whose local create date is before the reinstatement date. The user may not access such messages unless the messages are in one of his mail baskets or the message is forwarded to him.  ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FORWARDING ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field names an additional address to which any messages addressed to you are routed.  This address must be a remote address or a local device.  If you want a local user to see your messages, make that user a surrogate.   See the LOCAL DELIVERY FLAG.  If you do not edit this field to 'ON', then mail will only be delivered to your FORWARDING ADDRESS and not to your Mailbox. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "LOCAL DELIVERY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO LOCAL DELIVERY;1:LOCAL DELIVERY ON;",
+      "helpText": "This field only applies if you have a FORWARDING ADDRESS.  If you have a FORWARDING ADDRESS and you want your messages delivered locally, too, select 1 or LOCAL DELIVERY ON. Your messages will be delivered to both your local and remote addresses.  If you have a FORWARDING ADDRESS and you do not want your messages delivered locally, too, select 0 or NO LOCAL DELIVERY. Your messages will be delivered only to your remote addresses. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.21,
+      "fieldName": "NETWORK SIGNATURE LINE 1 OF 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used when a user chooses to 'Answer' a message rather than 'Reply' to a message.  While a 'reply' chains the new message to the original one, an 'answer' creates a new message to send to the sender of the original message, a new message which will not be chained to the original message.  The new message is created with a copy of the message being answered, along with the text of the answer, followed by this field and the next two NETWORK SIGNATURE LINE fields.  Your network signatu",
+      "fieldNumber_": 2.21
+    },
+    {
+      "fieldNumber": 2.22,
+      "fieldName": "NETWORK SIGNATURE LINE 2 OF 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "See field 2.21 'NETWORK SIGNATURE LINE 1 OF 3'. ",
+      "fieldNumber_": 2.22
+    },
+    {
+      "fieldNumber": 2.23,
+      "fieldName": "NETWORK SIGNATURE LINE 3 OF 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "See field 2.21 'NETWORK SIGNATURE LINE 1 OF 3'. ",
+      "fieldNumber_": 2.23
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LATEST MAILMAN ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the time of last use of MailMan by this user. It is in an external date/time format and may include a parenthesized surrogate's name (if it was the surrogate that last accessed MailMan).  It is displayed when you address a message to a local user so that you know when the user \"last used MailMan\". ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "LATEST MAILMAN ACCESS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Latest Date Accessed (7N) is in FileMan format and is the same as the portion of the LATEST ACCESS field that excludes time and text.   CAUTION:   This field does not exist for a NEW USER until he signs into MailMan. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "LAST MAILMAN ACCESS USER ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to record the DUZ of the last user to sign onto the  system and use a particular Mail Box. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BANNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The banner is displayed to others whenever they address mail to you. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "INTRODUCTION",
+      "dataType": "SUBFILE",
+      "rawType": "3.704",
+      "required": false,
+      "helpText": "This field will be displayed upon fetching the data of a user during the help functions. ",
+      "isMultiple": true,
+      "subFileNumber": 3.704,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MESSAGE BEING EDITED",
+      "dataType": "POINTER",
+      "rawType": "P3.9I",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "When the user is interupted while entering a message, this field holds the message number of the message being edited. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SHOW MESSAGE PREVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, SHOW MESSAGE PREVIEW;N:NO, DO NOT SHOW IT;",
+      "helpText": "This applies to the Classic reader only.  When you are scrolling through the messages in a basket, you can choose whether or not MailMan should display (preview) the message subject and sender before you read the message.  Enter Y to see the preview; N not to.  If you don't enter anything, you will not see a preview.  Seeing the message subject and sender may help you decide whether or not you wish to read the message.  If you decide not to read the message, you can \"Ignore\" it and move on to th",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE BEING RESPONDED TO",
+      "dataType": "POINTER",
+      "rawType": "P3.9I",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "When the user is interrupted while responding to a message, this field  holds the message number of the original message being responded to. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "BLOB MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When the user is interrupted while creating a message, this field serves to remind us whether or not the message was being created with attachments (through the Imaging Package). ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SURROGATE",
+      "dataType": "POINTER",
+      "rawType": "3.703P",
+      "required": false,
+      "helpText": "This field lists all of the users who have the ability to act as a surrogate for this user.  A surrogate may read or send mail for someone else, and is listed as the \"sender\" of the message, while the message is \"from\" the original user. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MAILMAN INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The MailMan Institution is shown in MailMan when the 'Show Institution in MailMan?' field in the MailMan Site Parameters file indicates so.  It is shown in parentheses following your name and title in the heading of every local message or response which you send.  It helps to further identify you.  It is usually the office or site where you are located, and is most useful in systems such as FORUM, where people from many different sites interact. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MESSAGE ACTION DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:IGNORE;D:DELETE;",
+      "helpText": "This field overrides the field of the same name in the MailMan Site Parameters file.  Whatever you fill into this field will control the default for the \"Message Action\" prompt that you answer after reading each message in your IN basket.  For all other baskets, your message action default will be \"Ignore\". ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ASK BASKET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "When you send a message to yourself, MailMan will ask you to which basket to deliver the message.  Answer YES (this is the default) if this is what you want.  Answer NO if you do not want MailMan to ask you.  In this case, your message will be filtered to the correct basket, with the IN basket being the default delivery basket. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SHOW TITLES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field controls whether or not senders of messages and responses, and members of groups will be seen with their 'title' as recorded in the NEW PERSON file (200). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PRIORITY RESPONSES FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Responses are PRIORITY;1:Responses are ORDINARY;",
+      "helpText": "This field allows users to decide whether or not they want to receive responses to their priority mail as priority.  It may be overridden by setting a flag in a message that they are the sender or recipient of. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "PRIORITY RESPONSES PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ASK EACH TIME MESSAGE IS READ;1:DO NOT ASK EACH TIME MESSAGE IS READ;",
+      "helpText": "Answer 'Ask', and MailMan will prompt you each time you read a PRIORITY mail message, to find out if you want the future responses to that message to be delivered as PRIORITY mail.  The default answer will be whatever you answered before for that message, or if it's a new message, whatever you have entered in PRIORITY RESPONSES FLAG.  Answer 'Do not ask', and MailMan will not bother you with such requests for information, but will use whatever you have entered in PRIORITY RESPONSES FLAG.  In eit",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "FILTER",
+      "dataType": "SUBFILE",
+      "rawType": "3.715",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 3.715,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FILTER MESSAGES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "If you don't answer, or if you delete the answer, the default is 'no'.  Answer 'yes' if you want MailMan to deliver your messages to your baskets based on the filtering criteria (if any) you've set up.  Answer 'no' if you have no filtering criteria set up, or if you want MailMan to ignore your filtering criteria and deposit all your messages in your IN basket. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.2,
+      "fieldName": "ACCEPT DELIVERY BASKET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES, ACCEPT IT;N:NO, DON'T ACCEPT IT;E:EXISTING BASKETS ONLY;S:SELECTED BASKETS ONLY;",
+      "helpText": "The sender of a message may specify the *basket* into which the message should be delivered for all recipients. You may decide whether to accept delivery to the target basket.  Answer 'NO' if you don't accept it.  This is the default.  - The message will be delivered as usual. Answer 'YES' if you accept it.  - If the basket does not exist, it will be created.  - The message will be delivered to the specified basket. Answer 'EXIST' if you accept it only if that basket already exists.  - If the ba",
+      "fieldNumber_": 16.2
+    },
+    {
+      "fieldNumber": 16.3,
+      "fieldName": "P-MESSAGE FROM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:ME;P:POSTMASTER;",
+      "helpText": "This pertains to anything you may print to the P-MESSAGE device. The result is a message sent to you.  The question is, \"From whom should the message be?\"  Answer ME if the message should be from you. It will not be delivered new to you, but you will be able to edit it. (If this field has nothing in it, the default is ME.)  Answer POSTMASTER if the message should be from the Postmaster. It will be delivered new to you, but you will not be able to edit it.  If you queue the print, this is from wh",
+      "fieldNumber_": 16.3
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MESSAGE ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:Newest First;O:Oldest First;",
+      "helpText": "'Newest First' means messages are displayed in reverse message number order. 'Oldest First' means messages are displayed in message number order. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MESSAGE READER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:Classic;D:Detailed Full Screen;S:Summary Full Screen;",
+      "helpText": "There are several ways to read and manage your messages:   Classic              - the one that has been around for years.  Detailed Full Screen - full screen, with a detailed message list.  Summary Full Screen  - full screen, with a summary message list.  'Classic' is the default, if you don't choose any.  In the next prompt, 'message reader prompt', you will be able to specify whether the reader you choose should be used all the time or whether you want to be asked each time. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "MESSAGE READER PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes, ask me;N:No, don't ask me, just use the default;",
+      "helpText": "You have chosen a default 'message reader' in the previous selection. You chose either the 'classic' reader or one of the 'full-screen' readers. (If you didn't choose, then your default is the 'classic' reader.)  In this selection, you must decide whether you want MailMan to ask you every time you use the message reader which reader to use, or not to ask you and just go ahead and use your default message reader.  Answer 'Yes' if you want to be prompted for your reader choice every time you go to",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NEW MESSAGES DEFAULT OPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "LB:LIST BASKETS WITH NEW MAIL;LN:LIST ALL NEW MESSAGES;P:PRINT ALL NEW MESSAGES;R:READ NEW MAIL BY BASKET;",
+      "helpText": "This is the default choice which will appear when you select the 'New Messages and Responses' option.  If you don't choose a default, the default will be 'Read new mail by basket'. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "NEW MESSAGES READ ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:Newest First;O:Oldest First;",
+      "helpText": "'Newest First' means new messages are read in reverse order. 'Oldest First' means new messages are read in the order in which they were sent.  If you don't choose, your new messages will be read 'Oldest First'.  Note: When you display a list of new messages, they will be displayed in the order you selected in the previous field 'MESSAGE ORDER'. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is not in service currently, but has been reserved here to facilitate differing retention dates by user.  Currently the retention date (number of days to retain messages in the IN basket) is in the Kernel Site Parameters file.  This would continue to be the default for all users that do not have this field filled in. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "M", "field": },
+    {"name": "3.7", "field": .01, "type": "regular"},
+    {"name": "3.7", "field": .3, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "3.7", "field": 2, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "3.7", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

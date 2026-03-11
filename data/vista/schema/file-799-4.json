@@ -1,0 +1,989 @@
+{
+  "fileNumber": 799.4,
+  "fileName": "ROR HIV RECORD",
+  "globalRoot": "799.4",
+  "globalReference": "^RORDATA(799.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REGISTRY RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP798'XI",
+      "required": true,
+      "pointerTo": 798,
+      "helpText": "The REGISTRY RECORD field links a record of the  ROR HIV RECORD file to the main registry record in the ROR REGISTRY RECORD file.   You can access records of this file only if you  have appropriate security key(s) for the Human Immunodeficiency Virus Registry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLINICAL AIDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "The CLINICAL AIDS field indicates if the  clinical AIDS (category 4) was diagnosed for  the patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLINICAL AIDS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The CLINICAL AIDS DATE field stores the date of  the clinical AIDS diagnosis indicated by the  CLINICAL AIDS field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the Institution file  (#4) and identifies the name of the station completing the Center for Disease Control (CDC)  HIV/AIDS form. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "DATE CDC FORM COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to track the date on which the  CDC form was completed. ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 9.02,
+      "fieldName": "STATUS AT REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIV (NOT AIDS);2:AIDS;",
+      "helpText": "This field is used to indicate the status of the  patient at the time a CDC HIV/AIDS form is generated. ",
+      "fieldNumber_": 9.02
+    },
+    {
+      "fieldNumber": 9.03,
+      "fieldName": "AGE AT HIV DIAGNOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the age at which HIV was  diagnosed in this patient. The value is used for a field on the CDC HIV/AIDS form. ",
+      "fieldNumber_": 9.03
+    },
+    {
+      "fieldNumber": 9.04,
+      "fieldName": "AGE AT AIDS DIAGNOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used to indicate the patient's age  at the time that the diagnosis of AIDS was made. The field is used to print part III of the CDC form. ",
+      "fieldNumber_": 9.04
+    },
+    {
+      "fieldNumber": 9.05,
+      "fieldName": "CDC FORM COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 9.05
+    },
+    {
+      "fieldNumber": 9.06,
+      "fieldName": "STATE/TERRITORY OF DEATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to hold the name of the state  or territory in which the patient died. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 9.06
+    },
+    {
+      "fieldNumber": 9.07,
+      "fieldName": "COUNTRY OF BIRTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:U.S.;7:U.S. DEPENDENCIES AND POSSESSIONS (INCLUDING PUERTO RICO);8:OTHER;9:UNKNOWN;",
+      "helpText": "This is the country of birth information for this  patient for use on the revised CDC form. The options for this information on the current form  differ from those available on the earlier CDC form.   The name for either 7 or 8 should be entered in  the appropriate place. ",
+      "fieldNumber_": 9.07
+    },
+    {
+      "fieldNumber": 9.08,
+      "fieldName": "DEPENDENCY OR POSSESSION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the  country of birth when the country of birth is indicated as a U.S. dependency or possession on  the revised CDC form. ",
+      "fieldNumber_": 9.08
+    },
+    {
+      "fieldNumber": 9.09,
+      "fieldName": "OTHER COUNTRY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the  country of birth if OTHER was selected as a value  of the COUNTRY OF BIRTH field. If the field is not blank, then it is printed in part III of the CDC form. ",
+      "fieldNumber_": 9.09
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "ONSET OF ILLNESS/AIDS- CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city in which the patient was residing at the onset of an illness suggestive of AIDS. This field is used in printing part III of the CDC form. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.11,
+      "fieldName": "ONSET OF ILLNESS/AIDS- COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the COUNTY in which the patient was residing at the onset of an illness suggestive of AIDS. This field is used in printing part III of the CDC form. ",
+      "fieldNumber_": 9.11
+    },
+    {
+      "fieldNumber": 9.12,
+      "fieldName": "ONSET OF ILLNESS/AIDS- STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is used to indicate the STATE in which  the patient was residing at the time of onset of an illness suggestive of AIDS. This field is used in printing part III of the CDC form. ",
+      "fieldNumber_": 9.12
+    },
+    {
+      "fieldNumber": 9.13,
+      "fieldName": "ONSET OF ILLNESS/AIDS- COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the COUNTRY in  which the patient was residing at the time of onset of an illness suggestive of AIDS. This field is used in printing part III of the CDC form. ",
+      "fieldNumber_": 9.13
+    },
+    {
+      "fieldNumber": 9.14,
+      "fieldName": "ONSET OF ILLNESS/AIDS- ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the zip code associated with the residence of the patient at the onset of an illness suggestive of AIDS. This field is used in printing part III of the CDC form. ",
+      "fieldNumber_": 9.14
+    },
+    {
+      "fieldNumber": 9.9,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The PATIENT STATUS field indicates whether the patient is alive (1) or dead (2), or if the status is unknown (9). It is also used in printing the CDC form. ",
+      "fieldNumber_": 9.9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "AIDS INDICATOR DISEASE",
+      "dataType": "POINTER",
+      "rawType": "799.41P",
+      "required": false,
+      "helpText": "The AIDS INDICATOR DISEASE multiple contains a  list of disease diagnoses that indicate AIDS. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "RECORD REVIEWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate whether the  patient's medical record was reviewed prior to submitting the CDC HIV/AIDS form. The entry is used in the CDC HIV/AIDS form. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "DATE ASYMPTOMATIC",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field is used for a date requested in the  CLINICAL STATUS portion of the CDC form. The form requests the date the patient was diagnosed as ASYMPTOMATIC (including acute retroviral syndrome and persistent generalized lymphadenopathy). ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "DATE SYMPTOMATIC",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field is used for the date requested as  SYMPTOMATIC in the CLINICAL STATUS portion of the CDC HIV/AIDS reporting form. ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "IMMUNODEF THAT DISQUALIFIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field indicates whether the patient has an  immunodeficiency which would disqualify the patient from an AIDS diagnosis. This field is used in the CDC HIV/AIDS form. ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 11.05,
+      "fieldName": "RVCT CASE NO.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used to enter the RVCT Case number  if a diagnosis of tuberculosis had been indicated in part VIII of the CDC form. ",
+      "fieldNumber_": 11.05
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "AIDS DX - HOSPITAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the hospital where the diagnosis of AIDS was first made.  This field is used in printing part IV of the CDC form. ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "AIDS DX - CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city in which the  hospital where the diagnosis of AIDS was first made is located.  This field is used in printing part IV of the CDC form. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 12.03,
+      "fieldName": "AIDS DX - STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the name of the STATE in which the hospital where the diagnosis of AIDS was first made is located. This field is used in printing part IV of the CDC form. ",
+      "fieldNumber_": 12.03
+    },
+    {
+      "fieldNumber": 12.04,
+      "fieldName": "AIDS DX - COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to record the country in  which the hospital at which the patient was diagnosed as having AIDS is located. This field is used in printing part IV of the CDC form. ",
+      "fieldNumber_": 12.04
+    },
+    {
+      "fieldNumber": 12.05,
+      "fieldName": "AIDS DX - FACILITY SETTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PUBLIC;2:PRIVATE;3:FEDERAL;9:UNKNOWN;",
+      "helpText": "This field is used to contain data related to the  facility setting where the diagnosis was first made.  The facility setting is public, federal, etc. This field is used on the CDC HIV/AIDS form. ",
+      "fieldNumber_": 12.05
+    },
+    {
+      "fieldNumber": 12.06,
+      "fieldName": "AIDS DX - FACILITY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:PHYSICIAN,HMO;31:HOSPITAL,INPATIENT;88:OTHER;",
+      "helpText": "This field holds information on the type of  facility in which the diagnosis was originally made for this patient.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 12.06
+    },
+    {
+      "fieldNumber": 12.07,
+      "fieldName": "AIDS DX - OTHER FACILITY TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the facility type selected for the 'AIDS DX -  FACILITY TYPE' field (12.06) is 'OTHER', then this field is used to provide a text description of the 'OTHER' type. ",
+      "fieldNumber_": 12.07
+    },
+    {
+      "fieldNumber": 12.08,
+      "fieldName": "HIV DX - FIRST DIAGNOSED HERE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field indicates if this facility was the first health care setting  (VA or non-VA) to diagnose HIV in this patient. ",
+      "fieldNumber_": 12.08
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "SEX RELATIONS W/MALE PARTNER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field contains the answer to the question  'Did this patient after 1977 and preceding the diagnosis of AIDS, have sexual relations with a male partner?'  The field is used in printing  part V of the CDC form. ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.02,
+      "fieldName": "SEX RELATIONS W/FEMALE PARTNER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field contains the answer to the question  'Did this patient, after 1977 and preceding the diagnosis of AIDS, have sexual relations with a female partner?'  The field is used in printing  part V of the CDC form. ",
+      "fieldNumber_": 14.02
+    },
+    {
+      "fieldNumber": 14.03,
+      "fieldName": "IV DRUGS AFTER 77 AND PRE HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to indicate whether the  patient used needles for self-injection of drugs not prescribed by a physician during the period after 1977 and before the diagnosis of AIDS.   This field is used in printing part V of the CDC  form. ",
+      "fieldNumber_": 14.03
+    },
+    {
+      "fieldNumber": 14.04,
+      "fieldName": "REC'D CLOTTING FACTORS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used in part V of the CDC form to  indicate whether the patient had received clotting factors in the period between 1977 and the diagnosis of AIDS. ",
+      "fieldNumber_": 14.04
+    },
+    {
+      "fieldNumber": 14.05,
+      "fieldName": "TYPE OF HEMOPHILIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HEMOPHILIA A (FACTOR VIII);2:HEMOPHILIA B (FACTOR IX);8:OTHER;",
+      "helpText": "This field is used to indicate, for those  patients who had received clotting factors as indicated in field 15.9, the type of hemophilia  for which clotting factors were given. This field  is used in printing part 2 of the CDC form. ",
+      "fieldNumber_": 14.05
+    },
+    {
+      "fieldNumber": 14.06,
+      "fieldName": "OTHER HEMOPHILIA DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the type of  hemophilia, if OTHER is selected in field 14.05. This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.06
+    },
+    {
+      "fieldNumber": 14.07,
+      "fieldName": "SR WITH IV DRUG USER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to store the answer to the  question 'Did this patient have heterosexual relations with any of the following: IV drug user'  The response is used in printing part V of  the CDC form. ",
+      "fieldNumber_": 14.07
+    },
+    {
+      "fieldNumber": 14.08,
+      "fieldName": "SR WITH BISEXUAL MAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to store the answer to the  question 'Did this patient have heterosexual relations with any of the following: Bisexual Man'.     Note that this question should be ignored for Male patients. The response is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.08
+    },
+    {
+      "fieldNumber": 14.09,
+      "fieldName": "SR W HEMOPHILIA/COAG DISORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to store the answer to the  question 'Did this patient have heterosexual relations with any of the following: Person with hemophilia/coagulation disorder.'  The response  is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.09
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "SR W TRANS RECIPIENT WITH AIDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to store the answer to the  question 'Did this patient have heterosexual relations with any of the following: Blood transfusion recipient with AIDS or documented HIV  infection.'  This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 14.11,
+      "fieldName": "TRANSPLANT RECIP-DOCUMNTD HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field should reflect whether the patient is  a transplant recipient with documented HIV infection.  The field is used on the CDC HIV/AIDS report form. ",
+      "fieldNumber_": 14.11
+    },
+    {
+      "fieldNumber": 14.12,
+      "fieldName": "SR W AIDS/HIV INFECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to store the answer to the  question 'Did this patient have heterosexual relations with any of the following: Person with AIDS or documented HIV infection.'  This field is  used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.12
+    },
+    {
+      "fieldNumber": 14.13,
+      "fieldName": "TRANS AFTER 77 AND BEFORE HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "This field is used to indicate if the patient had  a transfusion after 1977 and before diagnosis of AIDS.  This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.13
+    },
+    {
+      "fieldNumber": 14.14,
+      "fieldName": "DATE OF FIRST TRANSFUSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the first transfusion after  1977. This field is only required if the patient did have a transfusion after 1977 and before the diagnosis of AIDS, AND this is the only risk  factor for the patient. This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.14
+    },
+    {
+      "fieldNumber": 14.15,
+      "fieldName": "DATE OF LAST TRANSFUSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the last transfusion after  1977. This field is only required if the patient did have a transfusion after 1977 and before the diagnosis of AIDS (YES to field #14.13), AND this is the only risk factor for the patient.  This  field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.15
+    },
+    {
+      "fieldNumber": 14.16,
+      "fieldName": "TRANSPLANT OR ARTIF INSEMIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field is used to indicate whether the patient was the recipient of a transplant or artificial insemination following 1977 and prior to being diagnosed as HIV positive. This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.16
+    },
+    {
+      "fieldNumber": 14.17,
+      "fieldName": "WORK IN HEALTH CARE OR LAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:UNKNOWN;",
+      "helpText": "After 1977 and preceding the diagnosis of AIDS  did the patient work in a health care or clinical laboratory setting?  This field is used in printing part V of the CDC form. ",
+      "fieldNumber_": 14.17
+    },
+    {
+      "fieldNumber": 14.18,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient did work in a health care or  clinical lab after 1977 and prior to the diagnosis of AIDS (YES to field #14.17), this field is used to specify the occupation. ",
+      "fieldNumber_": 14.18
+    },
+    {
+      "fieldNumber": 16.01,
+      "fieldName": "HIV-1 EIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;9:NOT DONE;",
+      "helpText": "This field is used in filling out part VI of the  CDC form, and indicates whether an ELISA test for HIV was performed, and if so, what the result was. ",
+      "fieldNumber_": 16.01
+    },
+    {
+      "fieldNumber": 16.02,
+      "fieldName": "HIV-1 EIA DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to contain the date (month and  year) when the indicated result in part VI of the revised CDC form was originally determined. ",
+      "fieldNumber_": 16.02
+    },
+    {
+      "fieldNumber": 16.03,
+      "fieldName": "HIV-1/HIV-2 EIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;9:NOT DONE;",
+      "helpText": "This field is used to hold information on whether  an HIV-1/HIV-2 EIA was performed on the patient and, if so, the result.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 16.03
+    },
+    {
+      "fieldNumber": 16.04,
+      "fieldName": "HIV-1/HIV-2 EIA DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the date on which  an HIV-1/HIV-2 EIA test was performed.  It is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 16.04
+    },
+    {
+      "fieldNumber": 16.05,
+      "fieldName": "HIV-1 WESTERN BLOT/IFA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;8:INDETERMINATE;9:NOT DONE;",
+      "helpText": "This field is used in filling out part VI of the  CDC form, and indicates whether a WESTERN BLOT test was performed for HIV, and if so, what the result was. ",
+      "fieldNumber_": 16.05
+    },
+    {
+      "fieldNumber": 16.06,
+      "fieldName": "HIV-1 WESTERN BLOT/IFA DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to contain the date (month and  year) when the indicated result in part VI of the revised CDC form was originally determined. ",
+      "fieldNumber_": 16.06
+    },
+    {
+      "fieldNumber": 16.07,
+      "fieldName": "OTHER HIV ANTIBODY TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;8:INDETERMINATE;9:NOT DONE;",
+      "helpText": "This field is used in filling out part VI of the  CDC form, and is used to indicate whether an antibody test for HIV was performed other than the ELISA or WESTERN BLOT, and the result of this  test. ",
+      "fieldNumber_": 16.07
+    },
+    {
+      "fieldNumber": 16.08,
+      "fieldName": "OTHER HIV ANTIBODY TEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to contain the date (month and  year) when the indicated result in part VI of the revised CDC form was originally determined. ",
+      "fieldNumber_": 16.08
+    },
+    {
+      "fieldNumber": 16.09,
+      "fieldName": "OTHER HIV ANTIBODY TEST DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to name or describe the OTHER  ANTIBODY test used, if field 16.07 indicates that an OTHER ANTIBODY test was used.  This field is used in filling out part VI of the CDC form. ",
+      "fieldNumber_": 16.09
+    },
+    {
+      "fieldNumber": 16.11,
+      "fieldName": "* HIV-2 SERUM EIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;9:NOT DONE;",
+      "helpText": "This field is used to enter the results of a test  for the HIV-2 virus by serum EIA. ",
+      "fieldNumber_": 16.11
+    },
+    {
+      "fieldNumber": 16.12,
+      "fieldName": "* HIV-2 SERUM EIA DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to contain the date (month and  year) when the indicated result in part VI of the revised CDC form was originally determined. ",
+      "fieldNumber_": 16.12
+    },
+    {
+      "fieldNumber": 16.13,
+      "fieldName": "* HIV-2 WESTERN BLOT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:POSITIVE;0:NEGATIVE;8:INDETERMINATE;9:NOT DONE;",
+      "helpText": "This field is used to hold information on whether  an HIV-2 Western Blot test was performed on the patient and, if so, the result of the test. This information is used to generate the CDC HIV/AIDS  form. ",
+      "fieldNumber_": 16.13
+    },
+    {
+      "fieldNumber": 16.14,
+      "fieldName": "* HIV-2 WESTERN BLOT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which an  HIV-2 Western Blot test was performed on the patient.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 16.14
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "HIV CULTURE DETECTION TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which an  HIV culture test first produced a positive result.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 18.02,
+      "fieldName": "HIV ANTIGEN DETECTION TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used for the date of the first  positive HIV antigen detection test which was run. The data is used in generating the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.02
+    },
+    {
+      "fieldNumber": 18.03,
+      "fieldName": "HIV PCR, DNA, OR RNA PROBE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which an  HIV test involving PCR, DNA or RNA probes first produced a positive result.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.03
+    },
+    {
+      "fieldNumber": 18.04,
+      "fieldName": "TYPE OF OTHER POSITIVE TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the type of other  HIV detection test which yielded a positive result. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.04
+    },
+    {
+      "fieldNumber": 18.05,
+      "fieldName": "DATE OTHER POS DETECTION TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which a  positive HIV detection test was obtained with an \"other\" type of test. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.05
+    },
+    {
+      "fieldNumber": 18.06,
+      "fieldName": "LAST DOCUMNTD NEG HIV TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which the  patient last had a documented negative HIV test. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.06
+    },
+    {
+      "fieldNumber": 18.07,
+      "fieldName": "TYPE FOR LAST NEG TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to hold information on the type of test which resulted in the last documented negative HIV test (field 18.06). This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.07
+    },
+    {
+      "fieldNumber": 18.08,
+      "fieldName": "PHYS DOCUMNTD DIAGNOSIS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNONW;",
+      "helpText": "This field is used to indicate whether a physician has documented the diagnosis of HIV or AIDS in this patient. The information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 18.08
+    },
+    {
+      "fieldNumber": 18.09,
+      "fieldName": "DATE PHYS DOCUMNTD DIAG",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used for the date on which the  physician documented the diagnosis on this patient if this is the case as indicated by field 18.08. The information is used to generate the CDC  HIV/AIDS form. ",
+      "fieldNumber_": 18.09
+    },
+    {
+      "fieldNumber": 18.1,
+      "fieldName": "DETECTABLE VIRAL LOAD TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "11:NASBA (Organon);12:RT-PCR (Roche);13:bDNA (Chiron);18:Other;",
+      "fieldNumber_": 18.1
+    },
+    {
+      "fieldNumber": 18.11,
+      "fieldName": "DETECTABLE VIRAL LOAD RESULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 18.11
+    },
+    {
+      "fieldNumber": 18.12,
+      "fieldName": "DETECTABLE VIRAL LOAD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 18.12
+    },
+    {
+      "fieldNumber": 18.13,
+      "fieldName": "POSITIVE HIV DETECTION TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CULTURE;2:ANTIGEN;3:PCR, DNA OR RNA PROBE;",
+      "fieldNumber_": 18.13
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "CD4+ COUNT FOR CDC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to contain the CD4+ count  entered for part VI of the revised CDC form. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "CD4+ COUNT FOR CDC DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to contain the date (month and  year) when the indicated result in part VI of the revised CDC form was originally determined. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "CD4+ PERCENT FOR CDC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to enter the percentage of  CD4+ leukocytes present in the leukocyte population.  The value is used for part VI of the  revised CDC form. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "CD4+ PERCENT FOR CDC DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date on which the  percentage CD4 value was determined at or closest to the current diagnosis.  This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "CD4 COUNT FIRST <200",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used to contain the number count for the first CD4 count which was below the value of 200. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "CD4 COUNT FIRST <200 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which the  CD4 count was first below the value of 200. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 20.06
+    },
+    {
+      "fieldNumber": 20.07,
+      "fieldName": "CD4 PERCENT FIRST <14%",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used to hold the CD4 percentage  value which was obtained when the percentage was first below 14%. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 20.07
+    },
+    {
+      "fieldNumber": 20.08,
+      "fieldName": "CD4 PERCENT FIRST <14% DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to hold the date on which the  percentage CD4 value was first observed to be below 14%. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 20.08
+    },
+    {
+      "fieldNumber": 22.01,
+      "fieldName": "PATIENT BEEN INFORMED OF HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field is used to indicate whether the patient has been informed of the diagnosis of HIV infection. The field is used to supply data for the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.01
+    },
+    {
+      "fieldNumber": 22.02,
+      "fieldName": "PARTNERS NOTIFIED BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Health Dept.;2:Physician/Provider;3:Patient;9:Unknown;",
+      "helpText": "This field is used to indicate the entity with  responsibility for informing the patient's sexual partners of the patient's HIV infection. The data in this field will be used in the CDC HIV/AIDS  form. ",
+      "fieldNumber_": 22.02
+    },
+    {
+      "fieldNumber": 22.03,
+      "fieldName": "HIV RELATED MED SERVICES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field is used to hold the response related  to whether the patient is receiving or has been referred to receive HIV-related medical services. This information is used in preparing the CDC  HIV/AIDS form. ",
+      "fieldNumber_": 22.03
+    },
+    {
+      "fieldNumber": 22.04,
+      "fieldName": "RCVD ANTI-RETROVIRAL THERAPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "The response should indicate whether the patient  has received or is receiving anti-retroviral therapy. The data is used in generating the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.04
+    },
+    {
+      "fieldNumber": 22.05,
+      "fieldName": "RECEIVED PCP PROPHYLAXIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "The response should indicate whether the patient  has received or is receiving PCP prophylaxis. The data is used in generating the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.05
+    },
+    {
+      "fieldNumber": 22.06,
+      "fieldName": "ENROLLED AT CLINCAL TRIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NIH SPONSORED;2:OTHER;3:NONE;9:UNKNOWN;",
+      "helpText": "This field is used to indicate whether the patient is enrolled in a clinical trial, and which category of clinical trial. The data in this field is used in generating the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.06
+    },
+    {
+      "fieldNumber": 22.07,
+      "fieldName": "ENROLLED AT CLINIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HRSA SPONSORED;2:OTHER;3:NONE;9:UNKNOWN;",
+      "helpText": "This field is used to indicate whether the patient is enrolled in a clinic, and which category of clinic. The data in this field is used in generating the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.07
+    },
+    {
+      "fieldNumber": 22.08,
+      "fieldName": "PRIMARY REIMBURSER FOR MED RX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MEDICAID;2:PRIMARY INS/HMO;3:NO COVERAGE;4:OTHER PUBLIC FUNDS;7:CLINICAL TRIAL/GOVMNT PROGRAM;9:UNKNOWN;",
+      "helpText": "This field is used to indicate who was the PRIMARY reimburser for this patient's medical treatment. The entry is used in the generation of the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.08
+    },
+    {
+      "fieldNumber": 22.09,
+      "fieldName": "SUBSTANCE ABUSE TREATMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;8:N/A;9:UNKNOWN;",
+      "helpText": "This field is used to hold the response related to whether the patient is receiving or has been referred to receive substance abuse tratment  services. This information is used in preparing the CDC HIV/AIDS form. ",
+      "fieldNumber_": 22.09
+    },
+    {
+      "fieldNumber": 23.01,
+      "fieldName": "GYNECOLOGY OR OBSTETRIC CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field is applicable to female patients only. The field is used to indicate whether the patient is receiving obstetric or gynecological care. ",
+      "fieldNumber_": 23.01
+    },
+    {
+      "fieldNumber": 23.02,
+      "fieldName": "CURRENTLY PREGNANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;9:UNKNOWN;",
+      "helpText": "This field is applicable to female patients only.  The field is used to indicate whether the female patient is pregnant at the time the CDC HIV/AIDS form is generated. ",
+      "fieldNumber_": 23.02
+    },
+    {
+      "fieldNumber": 23.03,
+      "fieldName": "DELIVERED LIVE BORN INFANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;3:UNKNOWN;",
+      "helpText": "This field is applicable to female patients only. The field is used to indicate whether the female patient ever delivered a live born infant. The response is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 23.03
+    },
+    {
+      "fieldNumber": 23.04,
+      "fieldName": "CHILD'S DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the date of birth  of a child to a female patient who has been  diagnosed with HIV or AIDS. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 23.04
+    },
+    {
+      "fieldNumber": 23.05,
+      "fieldName": "CHILD'S HOSPITAL OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the birth hospital  for the most recent child of a female patient who has been diagnosed with HIV or AIDS. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 23.05
+    },
+    {
+      "fieldNumber": 23.06,
+      "fieldName": "CHILD'S HOSPITAL - CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to hold the city of the birth  hospital of the most recent child of a female diagnosed with HIV or AIDS. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 23.06
+    },
+    {
+      "fieldNumber": 23.07,
+      "fieldName": "CHILD'S HOSPITAL - STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to hold the state of the birth  hospital of the most recent child of a female diagnosed with HIV or AIDS. This information is used to generate the CDC HIV/AIDS form. ",
+      "fieldNumber_": 23.07
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CDC COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "799.425",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 799.425,
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 102,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "799.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

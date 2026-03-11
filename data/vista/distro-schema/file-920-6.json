@@ -1,0 +1,37 @@
+{
+  "fileNumber": 920.6,
+  "fileName": "IMM ROUTES TO SITES",
+  "globalRoot": "920.6",
+  "globalReference": "^PXV(920.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROUTE",
+      "dataType": "POINTER",
+      "rawType": "RP920.2'X",
+      "required": true,
+      "pointerTo": 920.2,
+      "helpText": "This is the route to be mapped. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITES",
+      "dataType": "POINTER",
+      "rawType": "920.61P",
+      "required": false,
+      "helpText": "These are the sites that are mapped to this route. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "920.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,368 @@
+{
+  "fileNumber": 458,
+  "fileName": "TIME & ATTENDANCE RECORDS",
+  "globalRoot": "458",
+  "globalReference": "^PRST(458,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAY PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The year and pay period for the time and attendance records in the format of the last two digits of the year, a hyphen, and the two digit pay period number (e.g., 92-26 for 1992 and pay period 26). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "458.01P",
+      "required": false,
+      "helpText": "Contains the time card data associated with the employee for this pay period. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TRANSMITTING CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the payroll person performing the transmission of the pay period data to the Austin Automation Center. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMITTING DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time of the transmission of pay period data to the Austin Automation Center. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TOTAL # EMPLOYEES TRANSMITTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The total number of employees for whom 8B records have been transmitted. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TOTAL # RECORDS TRANSMITTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The total number of 8B records that have been transmitted. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE 1",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the first day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE 2",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the second day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE 3",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the third day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE 4",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the fourth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE 5",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the fifth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE 6",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the sixth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE 7",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the seventh day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DATE 8",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the eighth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DATE 9",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the ninth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE 10",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the tenth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE 11",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the eleventh day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE 12",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the twelfth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE 13",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the thirteenth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DATE 14",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date of the fourteenth day of the pay period stored in FileMan format. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PRINT DATE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the first day of the pay period stored in a printable format. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PRINT DATE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the second day of the pay period stored in a printable format. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PRINT DATE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the third day of the pay period stored in a printable format. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PRINT DATE 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the fourth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "PRINT DATE 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the fifth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PRINT DATE 6",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the sixth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "PRINT DATE 7",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the seventh day of the pay period stored in a printable format. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PRINT DATE 8",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the eighth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PRINT DATE 9",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the ninth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PRINT DATE 10",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the tenth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PRINT DATE 11",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the eleventh day of the pay period stored in a printable format. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PRINT DATE 12",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the twelfth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PRINT DATE 13",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the thirteenth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PRINT DATE 14",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The date of the fourteenth day of the pay period stored in a printable format. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "MESSAGES TRANSMITTED",
+      "dataType": "POINTER",
+      "rawType": "458.03PA",
+      "required": false,
+      "helpText": "This multiple field contains a list of the mail message numbers generated during all transmissions. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 35,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AD10", "field": },
+    {"name": "AD11", "field": },
+    {"name": "AD12", "field": },
+    {"name": "AD13", "field": },
+    {"name": "AD14", "field": },
+    {"name": "AD2", "field": },
+    {"name": "AD3", "field": },
+    {"name": "AD4", "field": },
+    {"name": "AD5", "field": },
+    {"name": "AD6", "field": },
+    {"name": "AD7", "field": },
+    {"name": "AD8", "field": },
+    {"name": "AD9", "field": },
+    {"name": "ATC", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "458", "field": .01, "type": "regular"},
+    {"name": "458", "field": .01, "type": "regular"},
+    {"name": "458", "field": 10, "type": "regular"},
+    {"name": "458", "field": 11, "type": "regular"},
+    {"name": "458", "field": 12, "type": "regular"},
+    {"name": "458", "field": 13, "type": "regular"},
+    {"name": "458", "field": 14, "type": "regular"},
+    {"name": "458", "field": 15, "type": "regular"},
+    {"name": "458", "field": 16, "type": "regular"},
+    {"name": "458", "field": 17, "type": "regular"},
+    {"name": "458", "field": 18, "type": "regular"},
+    {"name": "458", "field": 19, "type": "regular"},
+    {"name": "458", "field": 20, "type": "regular"},
+    {"name": "458", "field": 21, "type": "regular"},
+    {"name": "458", "field": 22, "type": "regular"},
+    {"name": "458", "field": 23, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

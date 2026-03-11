@@ -1,0 +1,118 @@
+{
+  "fileNumber": 43.5,
+  "fileName": "G&L CORRECTIONS",
+  "globalRoot": "43.5DI",
+  "globalReference": "^DGS(43.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF CHANGE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The change was made to the patient movement on this date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF CHANGE",
+      "dataType": "POINTER",
+      "rawType": "P43.61'",
+      "required": false,
+      "pointerTo": 43.61,
+      "helpText": "The type of change (e.g. admission/discharge/transfer, treating specialty  entered/deleted/edited or changes to the ward or movement type)  made to patient movement. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the old value prior to change made to the patient  movement.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the new value after the change was made to the patient  movement. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the IFN for the patient involved. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ADMISSION THIS APPLIES TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the admission date/time that changes relates to. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ENTRY PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the IFN of the person who made the change to the  patient movement. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EARLIEST DATE TO CORRECT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the earliest date needed for recalc of the G&L/BSR  based on the change made to this patient movement. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TRANSFER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the transfer date change made to this patient movement. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RECALCULATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date recalculation was done for this change to the  patient movement. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AGL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "43.5", "field": .01, "type": "regular"},
+    {"name": "43.5", "field": .05, "type": "regular"},
+    {"name": "43.5", "field": .08, "type": "regular"},
+    {"name": "", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(43.61,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(43.61,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "W:$D(^(0)) \"   \",$S($D(^DPT(+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .06, "value": "W:$D(^(0)) \"   \",$E($P(^(0),U,6),4,5)_\"-\"_$E($P(^(0),U,6),6,7)_\"-\"_$E($P(^(0),U,6),2,3)"}
+  ]
+}

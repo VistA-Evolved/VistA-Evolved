@@ -1,0 +1,77 @@
+{
+  "fileNumber": 690.2,
+  "fileName": "MEDICINE VIEW",
+  "globalRoot": "690.2I",
+  "globalReference": "^MCAR(690.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT VIEW TEMPLATE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Name of the print template name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIMARY FILE",
+      "dataType": "POINTER",
+      "rawType": "*P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the procedure file that the print template uses as the primary file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELD",
+      "dataType": "SUBFILE",
+      "rawType": "690.22I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 690.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUB-FILE",
+      "dataType": "SUBFILE",
+      "rawType": "690.23",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 690.23,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "690.24P",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Type",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Full;B:Brief;C:Custom;",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "690.2", "field": .01, "type": "regular"},
+    {"name": "690.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

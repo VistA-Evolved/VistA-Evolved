@@ -1,0 +1,102 @@
+{
+  "fileNumber": 452.1,
+  "fileName": "PRSE PROGRAM/CLASS",
+  "globalRoot": "452.1",
+  "globalReference": "^PRSE(452.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROGRAM/CLASS TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFaX",
+      "required": true,
+      "helpText": "This is the name of the program or class. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a short description for reporting purposes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRSE PROGRAM/CLASS LENGTH HRS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,2",
+      "length": 7,
+      "required": true,
+      "helpText": "This field indicates the class duration in hours. reported to Austin. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUIRED FREQUENCY",
+      "dataType": "SET",
+      "rawType": "SXO",
+      "required": false,
+      "setOfCodes": "1M:MONTHLY;3M:QUARTERLY;6M:TWICE YEARLY;1Y:ONCE YEARLY;2Y:EVERY TWO YEARS;3Y:EVERY THREE YEARS;1T:ONE TIME ONLY;",
+      "helpText": "This field indicates the mandatory frequency or interval for attending the class. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF EDUCATION",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "M:Mandatory Inservice;C:Continuing Education;O:Other Training;W:Ward Inservice;",
+      "helpText": "This field categorizes the class as mandatory inservice, continuing education, ward inservice, or other. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "R*P454.1'X",
+      "required": true,
+      "pointerTo": 454.1,
+      "helpText": "This field associates the class with a specific service. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OPEN/CLOSED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CLOSED;0:OPEN;",
+      "helpText": "This field indicates if the class is opened to individuals outside of the service.  Closed programs will not be displayed to potential registrants from other services. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OBJECTIVE(S)",
+      "dataType": "SUBFILE",
+      "rawType": "452.18",
+      "required": false,
+      "helpText": "This field is used to indicate the class/program objectives. ",
+      "isMultiple": true,
+      "subFileNumber": 452.18,
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "452.1", "field": .01, "type": "regular"},
+    {"name": "452.1", "field": 5, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"   \",$P(^(0),U,6)"},
+    {"field": 5, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(452.1,5,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 7, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(452.1,7,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,9)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

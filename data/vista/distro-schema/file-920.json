@@ -1,0 +1,133 @@
+{
+  "fileNumber": 920,
+  "fileName": "VACCINE INFORMATION STATEMENT",
+  "globalRoot": "920",
+  "globalReference": "^AUTTIVIS(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the name of the Vaccine Information Statement (VIS). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EDITION DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This is the edition date of this Vaccine Information Statement distributed by the CDC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EDITION STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "C:CURRENT;H:HISTORIC;",
+      "helpText": "This is the status of this edition of this Vaccine Information Statement (VIS). A status of CURRENT indicates this VIS is in current use. A status of HISTORIC indicates this VIS is no longer in use. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LANGUAGE",
+      "dataType": "POINTER",
+      "rawType": "*P.85'a",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "This is the language translation of this Vaccine Information Statement (VIS). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VIS TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "920.02",
+      "required": false,
+      "helpText": "This is the text of the Vaccine Information Statement (VIS). ",
+      "isMultiple": true,
+      "subFileNumber": 920.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P920'Ia",
+      "required": false,
+      "pointerTo": 920,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "920.99DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 920.99,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "2D BAR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the barcode from the CDC VIS barcode lookup table. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "VIS URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the URL for this vaccine information statement. The URL may be  used to access this vaccine information statement directly over the  internet from the CDC website. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "BC", "field": },
+    {"name": "920", "field": .01, "type": "regular"},
+    {"name": "920", "field": 99.97, "type": "regular"},
+    {"name": "920", "field": 99.99, "type": "regular"},
+    {"name": "920", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(920,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DI(.85,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(.85,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

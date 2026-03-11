@@ -1,0 +1,36 @@
+{
+  "fileNumber": 6920.5,
+  "fileName": "WORK ACTION",
+  "globalRoot": "6920.5",
+  "globalReference": "^ENG(\"ACT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NEW WORK ACTION",
+      "dataType": "POINTER",
+      "rawType": "RP6920.1'",
+      "required": true,
+      "pointerTo": 6920.1,
+      "helpText": "Choose the NEW WORK ACTION which most closely matches the existing entry.  Installation of Engineering Version 7 will automatically convert existing WORK ACTIONS in your Work Order File from the old to the new. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6920.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

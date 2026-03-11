@@ -1,0 +1,204 @@
+{
+  "fileNumber": 810.5,
+  "fileName": "REMINDER PATIENT LIST",
+  "globalRoot": "810.5",
+  "globalReference": "^PXRMXP(810.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the unique name identifying the patient list.    Patient lists created as denominator lists in the rollup of national data to the Austin Automation Center begin with 'VA-'. The patient list name for this type of list begins with the name of the extract definition used to create the patient list.   e.g.  VA-IHD QUERI 2002 Q1 04/22/2002@10:00AM  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the extract year. Applies only if the patient list was created  from an extract run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REPORT PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the extract period (Q1,M1 etc). Applies only if the patient list  was created from an extract run. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ORIGINAL DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the patient list was originally created. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXTRACT DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "P810.2'",
+      "required": false,
+      "pointerTo": 810.2,
+      "helpText": "This is a pointer to the extract definition (#810.2) used to  create the patient list.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LIST RULE",
+      "dataType": "POINTER",
+      "rawType": "P810.4'",
+      "required": false,
+      "pointerTo": 810.4,
+      "helpText": "This is a pointer to the list rule (#810.4) used to create the patient  list. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to file 200. The DUZ of the user who created the  patient list will be stored in this field.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "PUB:PUBLIC;PVT:PRIVATE;",
+      "helpText": "This field is used to mark a list as being public or private. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CREATED BY REMINDER DUE REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be true if the patient list was created by a Reminders Due Report. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INCLUDE PCMM INSTITUTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set automatically to YES if the rule set used to create the patient list contains a finding rule that is associated with either of the terms VA-IHD STATION CODE or VA-PCMM INSTITUTION. It is used to control the display of the PCMM Institution column in the ListManager patient list interface.  ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INCLUDE DECEASED PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to record the user's answer to the prompt: Include deceased patients?  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INCLUDE TEST PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to store the user's response to the prompt: Include test patients?  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PATIENTS",
+      "dataType": "POINTER",
+      "rawType": "810.53P",
+      "required": false,
+      "helpText": "This is a multiple that contains the list of patients for the patient list. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DATA TYPE LIST",
+      "dataType": "SUBFILE",
+      "rawType": "810.535A",
+      "required": false,
+      "helpText": "This is the list of all possible data types for a patient list. ",
+      "isMultiple": true,
+      "subFileNumber": 810.535,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "USERS",
+      "dataType": "POINTER",
+      "rawType": "810.54P",
+      "required": false,
+      "helpText": "This multiple will store a list of users and their access to private patient lists. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "REMINDER LIST",
+      "dataType": "POINTER",
+      "rawType": "810.545P",
+      "required": false,
+      "helpText": "If the patient list was created by a Reminder Due Report this multiple contains the list of reminders that were evaluated for the report. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AUTOMATICALLY PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;0:N;",
+      "helpText": "This field is use to determine if the Patient List should be automatically  purge after five years. This field will be checked by the Reminder Extract  code that runs monthly when running the National Extract.  ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the patient list. National patient lists cannot be edited. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "CREATION DOCUMENTATION",
+      "dataType": "SUBFILE",
+      "rawType": "810.51",
+      "required": false,
+      "helpText": "This word-processing field documents how the patient list was created and it is created automatically when the patient list is built.  The information it contains shows the rule set details and how the rule set was processed to build the patient list. This includes the final Beginning Date/Time and Ending Date/Time for each finding used in the list rule for each sequence/step in the rule set.     ",
+      "isMultiple": true,
+      "subFileNumber": 810.51,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

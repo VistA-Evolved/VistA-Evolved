@@ -1,0 +1,437 @@
+{
+  "fileNumber": 2006.634,
+  "fileName": "MAGJ ZLIST SEARCH",
+  "globalRoot": "2006.634",
+  "globalReference": "^MAG(2006.634,",
+  "ddAccess": "Y",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Case Number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXAM LOCK IND",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Exam Lock Indicator. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Patient Name. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Patient Identification. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Priority of the case. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IMAGE DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to the Image Date and Time. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Status of the case. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NUMBER OF IMAGES",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Number of Images for the case. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ONLINE STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Online Status of the images. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IMAGING LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Imaging Location of the images. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REMOTE CACHE INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Remote Cache Indicator for the images. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "IMAGES EXIST INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Images Exist Indicator for the case. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "IMAGE DATE/TIME-SORTABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Image Date & Time Sortable. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Modality. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "INTERNAL EXAM STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Internal Exam Status. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "IMAGE TYPE ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Image Type Abbreviation. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PATIENT LOCATION ABBREV",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to Patient Location Abbreviation. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PATIENT LOCATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Patient Location Name.  ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "INTERPRETING RADIOLOGISTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Interpreting Radiologist. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SSN LAST 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the last 4 digits of the social  security number for the patient.. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RADIOLOGY DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Radiology division. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the Site code. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "INTERP BY LOGON RADIOLOGIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The search entry that corresponds to Interpreted By Login Radiologist. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PROCEDURE MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to Procedure Modifier. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PATIENT LOCATION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to Patient Location Type. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to the Procedure CPT Code ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "WARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to the Patient Ward ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "HISTORY IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The search entry that corresponds to the History List IEN. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "HISTORY TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to the History List timestamp. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "HISTORY LOCK STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "The search entry that corresponds to the History List lock status. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "HISTORY HP USED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The search entry that corresponds to the History List HP or TP used. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TECH INITIALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the radiology tech. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "REGISTRATION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the registration date/time. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "REGISTRATION TIME-SORTABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The search entry that corresponds to the registration date/time sortable. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "ASSIGNEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Assignee ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "ASSIGN NOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Assign note ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "ASSIGNMENT FILTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Assignment filter ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "FAVORITE KEYWORD-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ33",
+      "length": 33,
+      "required": false,
+      "helpText": "The search entry that corresponds to the FAVORITE KEYWORD-1 ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "FAVORITE KEYWORD-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ33",
+      "length": 33,
+      "required": false,
+      "helpText": "The search entry that corresponds to the FAVORITE KEYWORD-2 ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "FAVORITE NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "2006.634206",
+      "required": false,
+      "helpText": "The search entry that corresponds to the Favorite Notes ",
+      "isMultiple": true,
+      "subFileNumber": 2006.634206,
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "PATIENT AGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Patient Age. ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "PATIENT SEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Patient Sex. ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "PATIENT DOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Patient DOB. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "REPORT STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The search entry that corresponds to the Report Status of the case. ",
+      "fieldNumber_": 210
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.634", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

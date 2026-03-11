@@ -1,0 +1,64 @@
+{
+  "fileNumber": 2006.5714,
+  "fileName": "DICOM INCOMPLETE OBJECT",
+  "globalRoot": "2006.5714",
+  "globalReference": "^MAGDINPT(2006.5714,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME ADDED ($H)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the date and time that the incomplete file was recorded, in $H format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RAW IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.571'",
+      "required": true,
+      "pointerTo": 2006.571,
+      "helpText": "This is the ID of the raw image that is to be processed as an incomplete  object. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FILE PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the path for the DICOM file.  Usually, this will be  C:\\DICOM\\Image_In. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the piece of imaging equipment that captured the file that is  marked as incomplete. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME ADDED (FILEMAN)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the incomplete file was recorded, in  Fileman format. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5714", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

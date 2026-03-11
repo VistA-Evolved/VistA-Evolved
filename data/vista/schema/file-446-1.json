@@ -1,0 +1,126 @@
+{
+  "fileNumber": 446.1,
+  "fileName": "INVENTORY DISTRIBUTED PATIENT SUPPLIES",
+  "globalRoot": "446.1Ds",
+  "globalReference": "^PRCP(446.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field stores the date and time the items were distributed to the patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SURGERY CC/IK;",
+      "helpText": "This field stores the type of entry for populating the file. S = SURGERY CC/IK -> entry to file was from the distribution of case carts or instrument kits from the patients surgery. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field stores the patient which the supplies were distributed to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IN/OUT-PATIENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This field is used to identify if the patient is an inpatient or outpatient during the distribution of supplies. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FROM INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This field is used to track the inventory point which distributed the supplies to the patient. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 130.01,
+      "fieldName": "PRINCIPAL PROCEDURE CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This field stores the principal procedure for which the supplies were distributed to the patient. ",
+      "fieldNumber_": 130.01
+    },
+    {
+      "fieldNumber": 130.02,
+      "fieldName": "OPERATING ROOM",
+      "dataType": "POINTER",
+      "rawType": "P131.7'",
+      "required": false,
+      "pointerTo": 131.7,
+      "helpText": "This field stores the operating room used during the operation/procedure. ",
+      "fieldNumber_": 130.02
+    },
+    {
+      "fieldNumber": 130.03,
+      "fieldName": "SURGICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P137.45'",
+      "required": false,
+      "pointerTo": 137.45,
+      "helpText": "This field stores the surgical specialty for the operation/procedure. ",
+      "fieldNumber_": 130.03
+    },
+    {
+      "fieldNumber": 130.04,
+      "fieldName": "SURGEON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the surgeon for the operation/procedure. ",
+      "fieldNumber_": 130.04
+    },
+    {
+      "fieldNumber": 445.01,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "446.11P",
+      "required": false,
+      "helpText": "This field stores all the supplies (items) distributed to the patient. ",
+      "fieldNumber_": 445.01
+    },
+    {
+      "fieldNumber": 445.02,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field stores the total cost of supplies distributed to the patient for this entry. ",
+      "fieldNumber_": 445.02
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "446.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

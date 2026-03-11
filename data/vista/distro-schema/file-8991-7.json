@@ -1,0 +1,61 @@
+{
+  "fileNumber": 8991.7,
+  "fileName": "XUEPCS PSDRPH AUDIT",
+  "globalRoot": "8991.7",
+  "globalReference": "^XTV(8991.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who was edited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who did the editing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ALLOCATION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:DE-ALLOCATED;1:ALLOCATED;",
+      "helpText": "This field determines if the PSDRPH key was allocated or de-allocated to  the user. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME EDITED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field records the date/time the editing occurred. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DT", "field": },
+    {"name": "8991.7", "field": .01, "type": "regular"},
+    {"name": "8991.7", "field": .02, "type": "regular"},
+    {"name": "8991.7", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

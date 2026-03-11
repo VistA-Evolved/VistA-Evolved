@@ -1,0 +1,39 @@
+{
+  "fileNumber": 46.12,
+  "fileName": "RAI MDS WARD TRANSLATION",
+  "globalRoot": "46.12",
+  "globalReference": "^DGRU(46.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VISTA WARD NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P42'",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "The name of the Vista Ward Location which requires translation to a  different name on the Accu-Max system.  The name must be a ward name already in the Vista Ward Location file (#42). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COTS WARD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the ward on the Accu-Max system which represents the Vista  ward selected.   ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "46.12", "field": .01, "type": "regular"},
+    {"name": "46.12", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "fileNumber": 354.3,
+  "fileName": "BILLING THRESHOLDS",
+  "globalRoot": "",
+  "globalReference": "^IBE(354.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective date of this threshold. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:BASIC PENSION;2:PENSION PLUS A&A;",
+      "helpText": "These are the types of Thresholds that this entry is for.   The Medication Copayment exemption based on income uses the Basic Pension entry from 1996 to the present and uses Pension plus A&A threshold for years prior to 1996..  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BASE RATE FOR VETERAN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the rate for a single veteran. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BASE RATE WITH 1 DEPENDENT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the amount for the Veteran with 1 Dependent. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BASE RATE WITH 2 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 2 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount, it can be left null and computed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BASE RATE WITH 3 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 3 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BASE RATE WITH 4 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 4 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BASE RATE WITH 5 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 5 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "BASE RATE WITH 6 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 6 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "BASE RATE WITH 7 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 7 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BASE RATE WITH 8 DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the amount for the Veteran with 8 Dependents.  If this rate is the same as the rate for Veteran with 1 dependent plus an additional dependent amount for each dependent, it can be left null and computed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ADDITIONAL DEPENDENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the rate for each additional dependent. ",
+      "fieldNumber_": .12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "354.3", "field": .01, "type": "regular"},
+    {"name": "354.3", "field": .01, "type": "regular"},
+    {"name": "354.3", "field": .02, "type": "regular"},
+    {"name": "354.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.3,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": .04, "value": "W \"\""},
+    {"field": .12, "value": "W \"\""}
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "fileNumber": 131.02,
+  "fileName": "SPECIAL INSTRUMENTS",
+  "globalRoot": "131.02",
+  "globalReference": "^SRO(131.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of special instruments requested for this case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of the special instrument. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates the entry inactive and will prevent its selection and use by users of the Surgery Package. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SURGICAL SPECIALTIES",
+      "dataType": "POINTER",
+      "rawType": "131.23PA",
+      "required": false,
+      "helpText": "This field documents the assigned local specialty(ies). ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "131.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

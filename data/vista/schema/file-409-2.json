@@ -1,0 +1,76 @@
+{
+  "fileNumber": 409.2,
+  "fileName": "CANCELLATION REASONS",
+  "globalRoot": "409.2",
+  "globalReference": "^SD(409.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30I",
+      "length": 30I,
+      "required": true,
+      "helpText": "Reason for cancelling an appointment, whether it be done by the clinic/hospital or the patient.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "P:PATIENT;C:CLINIC;B:BOTH;",
+      "helpText": "Who is associated with the reason for cancelling an appointment.  For example, a 'clinic' type is assigned to a reason in which the clinic was cancelled due to a physician being absent.  A 'patient' type would be associated with a reason for cancelling by the patient. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "A synonym or abbreviation that can be used to choose a cancellation reason. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "Entry of '1' in this field indicates that a particular cancellation reason is inactive or no longer in use. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REOPEN REQUEST UPON CANCEL",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This flag indicates if the cancel reason will re-open the appointment  request when the corresponding appointment is cancelled. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SYSTEM USE ONLY",
+      "dataType": "SET",
+      "rawType": "RSt11",
+      "required": true,
+      "helpText": "This flag indicates if the cancel reason should be displayed in the UI  or not. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

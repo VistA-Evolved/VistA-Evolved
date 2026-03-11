@@ -1,0 +1,122 @@
+{
+  "fileNumber": 800000,
+  "fileName": "HMP SUBSCRIPTION",
+  "globalRoot": "800000",
+  "globalReference": "^HMP(800000,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the client system that is subscribing to data updates. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LASTUPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a flag, indicating if this URL should be notified via the nightly scheduled option HMP APPOINTMENTS of the list of patients expected to be seen tomorrow. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OPERATION DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNSUBCRIBED;1:SUBSCRIBED;2:INITIALIZED;",
+      "helpText": "This field holds a flag, indicating if this URL should be notified via http when a patient is admitted. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REPEAT POLLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This tracks the number of times the same \"last update\" value has been repeated.  A high repeat may be normal if data are not changing. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISK USAGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:WITHIN LIMIT;1:EXCEEDED LIMIT;",
+      "helpText": "The DISK USAGE STATUS flag is an indicator set automatically in the eHMP  subscription process. If the disk space usage in global ^XTMP by eHMP  subscriptions is above the threshold in the HMP EXTRACT DISK SIZE LIMIT  is exceeded this flag will be set. Similarly the flag is reset if usage  later falls below the threshold. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISK USAGE STATUS TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The DISK USAGE STATUS TIME is a field set automatically in the eHMP  subscription process. If the disk space usage in global ^XTMP by eHMP  subscriptions is above the threshold in the HMP EXTRACT DISK SIZE LIMIT is exceeded the DISK USAGE STATUS field will be set and the time of the  change recorded in this field . Similarly the flag and time fields will be reset if usage later falls below the threshold. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the primary eHMP subscription for this server. It  identifies this server as the default for operations such as selecting a  subscription to monitor in the option eHMP Dashboard [HMPMON DASHBOARD]. Only one server at a time can be set as the default. If this file contains only one record, then it will be used automatically as the default. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the fully qualified URL to call when updates are available. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "800000.01P",
+      "required": false,
+      "helpText": "This is a patient that will be monitored for new data and updates. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROSTER",
+      "dataType": "POINTER",
+      "rawType": "800000.02P",
+      "required": false,
+      "helpText": "This is a roster that will be monitored for new patients and updates. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "CONCURRENT UPDATE CALLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used to track the number of simultaneous calls to  getPtUpdates in API^HMPDJFS. This allows checkHealth to report if a  getPtUpdates RPC is in progress. ",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "800000", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

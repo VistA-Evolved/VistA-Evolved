@@ -1,0 +1,163 @@
+{
+  "fileNumber": 7107.1,
+  "fileName": "NOIS LIST DEFINITION",
+  "globalRoot": "7107.1I",
+  "globalReference": "^FSC(\"LIST\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the list of NOIS calls. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person that owns this list (able to edit it, be notified  from it).  If there is no entry then this is a public list. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE UPDATE;S:STORAGE ONLY;I:INDEXED;M:MANUAL UPDATE;",
+      "helpText": "This field defines the type of list for this list. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is meaningful when the list type is INDEXED.  The entry will be a subscript for the appropriate index.  Examples \"AIS\" or \"AIS\",5 ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INDEX FIELD",
+      "dataType": "POINTER",
+      "rawType": "P7107.2'",
+      "required": false,
+      "pointerTo": 7107.2,
+      "helpText": "This field is meaningful when the list type is INDEXED and their is no preset entry in the index.  ie. The entry is selected (these lists have a colon at the end of the name).  The entry of this field should be the appropriate NOIS field for the index. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NOTIFY METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MAIL:MAIL;ALERT:ALERT;",
+      "helpText": "This is the method of notification used by this list. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NOTIFY EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EDITED:EDITED;STATUS CHANGED:STATUS CHANGED;ADDED:ADDED;",
+      "helpText": "This is the event that initates notification. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REBUILD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NEVER:NEVER;DAILY:DAILY;WEEKLY:WEEKLY;MONTHLY:MONTHLY;",
+      "helpText": "This field will determine how often this list will be automatically rebuilt. This field applies only to active update type lists. If no entry is made this list will be automatically rebuilt weekly. The rebuild is performed by the nightly task to make sure a list is updated with appropriate calls. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REBUILD TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the approximate number of seconds it takes to rebuild this list. This is updated automatically whenever the list is updated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DEFINITIONS",
+      "dataType": "SUBFILE",
+      "rawType": "7107.11",
+      "required": false,
+      "helpText": "These are the query statements to define this list. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.11,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7107.12",
+      "required": false,
+      "helpText": "This is a description of the list. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.12,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "QUERY DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7107.13",
+      "required": false,
+      "helpText": "This is a description of the query.  This entry is made when defining lists with the NOIS software. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.13,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "RESTRICTION LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used to determine if the user should be asked for a restriction on this list when it is selected.  If the field is left blank or zero then no restriction is asked for.  If the field is a -1 then a restriction is always asked.  If the field is a positive number then that number is compared to the APPROXIMATE COUNT field; a restriction is asked if the APPROXIMATE COUNT field is greater than the RESTRICTION LIMIT. ",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "APPROXIMATE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is an approximate number of how many calls are on this list. It may be edited manually or is updated by the nightly NOIS task. ",
+      "fieldNumber_": 501
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7107.1", "field": .01, "type": "regular"},
+    {"name": "7107.1", "field": 1, "type": "regular"},
+    {"name": "7107.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "fileNumber": 164.44,
+  "fileName": "ONCOLOGY GRADE TABLES",
+  "globalRoot": "164.44",
+  "globalReference": "^ONCO(164.44,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20",
+      "length": 20,
+      "required": true,
+      "helpText": "This is the name of the Grade Table. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCHEMA",
+      "dataType": "SUBFILE",
+      "rawType": "164.441I",
+      "required": false,
+      "helpText": "The SCHEMA is a 5 digit data item linking the Site Specific Data Items with the appropriate site/histology grouping and accounts for every combination of site and histology.  The values are derived from the Primary Site, Histology and Schema Discriminator (if applicable). ",
+      "isMultiple": true,
+      "subFileNumber": 164.441,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.442I",
+      "required": false,
+      "helpText": "The Grade is the measure of aggressiveness of the tumor and an important prognostic indicator. ",
+      "isMultiple": true,
+      "subFileNumber": 164.442,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.44", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

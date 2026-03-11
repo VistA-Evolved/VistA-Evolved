@@ -1,0 +1,56 @@
+{
+  "fileNumber": 355.351,
+  "fileName": "HMS RESULT FILE STATUS",
+  "globalRoot": "355.351",
+  "globalReference": "^IBA(355.351,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the result file received from HMS through AITC mail message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CREATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date time that the result file was created from the message received from AITC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGES",
+      "dataType": "POINTER",
+      "rawType": "355.35103P",
+      "required": false,
+      "helpText": "List of the messages received from AITC DMI Queue that the result file is built from. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "355.3511D",
+      "required": false,
+      "helpText": "The Activity Log keeps track of the top level fields' past history.   It is mainly used for trouble shooting. Only 6 months (180 days) worth of data is kept in this sub-file in order to keep the file small.   ",
+      "isMultiple": true,
+      "subFileNumber": 355.3511,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.351", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

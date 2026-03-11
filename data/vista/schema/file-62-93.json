@@ -1,0 +1,36 @@
+{
+  "fileNumber": 62.93,
+  "fileName": "LAB SHIPPING CONDITIONS",
+  "globalRoot": "62.93",
+  "globalReference": "^LAHM(62.93,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the names of those environmental conditions under which laboratory clinical specimens are shipped to another testing facility. Examples would be Refrigerated, Ambient Temperature, or Frozen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An abbreviation for the shiping condition. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

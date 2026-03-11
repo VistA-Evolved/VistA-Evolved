@@ -1,0 +1,196 @@
+{
+  "fileNumber": 41.1,
+  "fileName": "SCHEDULED ADMISSION",
+  "globalRoot": "41.1PIO",
+  "globalReference": "^DGS(41.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'XI",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient that is scheduled for a future admission at this facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RESERVATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Enter the date/time this patient is scheduled to appear at your facility for this admission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LENGTH OF STAY EXPECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the length of time it is expected this patient will have to remain at your facility until inpatient treatment is complete. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADMITTING DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the diagnosis of the illness or injury for which this patient will be treated. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the provider who has ordered this admission. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SURGERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Answer YES if surgery will be required as part of the treatement this patient is scheduled for. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OPT/NSC STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter yes if this patient will be admitted under the movement type OPT-NSC. Otherwise, answer no. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "R*P42'",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "Enter the name of the ward this patient will be admitted to. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P45.7'",
+      "required": true,
+      "pointerTo": 45.7,
+      "helpText": "Enter the name of the treating specialty under which this patient will be treated. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "WARD OR TREATING SPECIALTY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "W:WARD;T:TREATING SPECIALTY;",
+      "helpText": "Respond W if this patient is being scheduled for an admission to a particular ward or T if the sheduled admission is for a particular treating specialty. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PERSON SCHEDULING ADMIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user entering the scheduled admission will be stored here. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "*P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Enter the name of the division to which this patient should report. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE/TIME CANCELLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this scheduled admission was cancelled, enter the date/time it was cancelled. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CANCELLED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If this scheduled admission was cancelled, this field will contain the name of the user that cancelled it. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REASON CANCELLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EXPIRED;2:OVERDUE;3:REFUSED ADMISSION;4:NO AVAILABLE BEDS;5:OTHER;",
+      "helpText": "Choose from the available list the reason this scheduled admission was cancelled. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WAS PATIENT NOTIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:YES;1:NO;2:NOT APPLICABLE;",
+      "helpText": "If the scheduled admission was cancelled, enter YES here if the patient was notified of the cancellation.  Otherwise answer NO. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ADMITTED",
+      "dataType": "POINTER",
+      "rawType": "*P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field will contain the admission entry in the PATIENT MOVEMENT file. If this field is not filled in, the patient was not admitted for this scheduled admission. ",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AMVT", "field": },
+    {"name": "ARSV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "41.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "41.1", "field": 2, "type": "regular"},
+    {"name": "41.1", "field": 8, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"},
+    {"name": "41.1", "field": 17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"  Sch. Adm. Date \",$E($P(^(\"0\"),U,2),4,5)_\"-\"_$E($P(^(\"0\"),U,2),6,7)_\"-\"_$E($P(^(\"0\"),U,2),2,3)"}
+  ]
+}

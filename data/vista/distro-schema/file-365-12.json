@@ -1,0 +1,82 @@
+{
+  "fileNumber": 365.12,
+  "fileName": "PAYER",
+  "globalRoot": "365.12",
+  "globalReference": "^IBE(365.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Insurance Company Name as named for electronic interface. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VA NATIONAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be created from the list of payers from the Eligibility Communicator which will be used to uniquely identify the Insurance Payers. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CMS NATIONAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If and when the Centers for Medicare and Medicaid services determine what national payer id should be assigned, then this field will get updated with that ID. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "DATE/TIME THAT THIS ENTRY WAS ADDED TO THE PAYER FILE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EDI ID NUMBER - PROF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID number used to identify the insurance company for  professional claim transmissions. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EDI ID NUMBER - INST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the id number used to identify the insurance company for  institutional claim transmissions. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "365.121P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "365.12", "field": .01, "type": "regular"},
+    {"name": "365.12", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

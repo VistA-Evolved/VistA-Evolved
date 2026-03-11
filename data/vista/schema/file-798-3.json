@@ -1,0 +1,49 @@
+{
+  "fileNumber": 798.3,
+  "fileName": "ROR PATIENT EVENTS",
+  "globalRoot": "798.3",
+  "globalReference": "^RORDATA(798.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The PATIENT NAME field identifies the patient. You can add a patient from the PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR",
+      "dataType": "POINTER",
+      "rawType": "798.31P",
+      "required": false,
+      "helpText": "This multiple stores references to those registries that have the patient processed with errors and has not been added to the registry.       When the problems are fixed, the data search must  start not from the date of the previous run of the registry update process but from the date that  was used when the problem arose. Otherwise, the data in the interval between those dates will not be checked and some important information may be missed.       This date cannot be stored in the registry file",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EVENT",
+      "dataType": "DATE",
+      "rawType": "798.32D",
+      "required": false,
+      "helpText": "This multiple stores event references created by the event protocols. The registry update uses these references to speed up the processing.   The event references are grouped by the data areas (protocols) and only one reference per associated  date (the DATE field) for each data area is stored at the moment. The \"AD\" cross-reference is used by the $$ADD^RORUPP02 function for this purpose. ",
+      "isMultiple": true,
+      "subFileNumber": 798.32,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "798.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

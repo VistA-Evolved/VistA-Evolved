@@ -1,0 +1,133 @@
+{
+  "fileNumber": 52.91,
+  "fileName": "TPB ELIGIBILITY",
+  "globalRoot": "52.91",
+  "globalReference": "^PS(52.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient IEN who is eligible for this new service. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE PHARMACY BENEFIT BEGAN",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the entry was made into the file during extraction either from the EWL or from the Schedule Appointment set by the post-install  routine. Manual entry to this file is also allowed for eligible patient,  and it will be set to the current date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVATION OF BENEFIT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This date can be set manually when the patient is no longer eligible for this benefit; or when the Non-VA prescriptions are either Discontinued or Expired; or set automatically due to a Date of Death entered in the Patient file (#2).  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVATION REASON CODE",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:SEEN BY VA PROVIDER;2:NO/SHOW/CANCELLATION;3:PATIENT ENDED;4:NON-FORMULARY RX NOT ACCEPTED;5:PATIENT EXPIRED;6:ALL RX'S INACTIVE;7:EXCLUSION;8:PATIENT REFUSED APPT;9:PATIENT UNREACHABLE;10:PROGRAM ENDED;",
+      "helpText": "This field contains a code representing the reason for inactivating a patient for this benefit. EXCLUSION code 7, is hidden and not user  selectable. It is used by the post-install routine during initial extraction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESIRED APPOINTMENT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Set by the EWL/Scheduling extract and is obtained from Scheduling file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WAIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EWL;M:MANUAL;S:SCHEDULED APPOINTMENT;X:SCHEDULED APPOINTMENT & EWL;",
+      "helpText": "The type of wait the patient is assigned. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "7 digit STATION NUMBER. First 3 digit station number plus any modifiers. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Is set by the EWL/Scheduling extract and is obtained from the Institution File (#4, field .01) ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EXCLUSION REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE RX;2:ACTUAL APPT. < 30 DAYS FROM DATE APPT. MADE;3:BOTH;",
+      "helpText": "Exclusion reason codes. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRIMARY CARE SCHEDULE APT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that a primary care appointment was scheduled. This  field is populated only by the post-install routine during initial  extraction. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Rx# if found during the extraction that made the patient flagged as excluded for this service. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE LETTER PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the letter was printed. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "52.91", "field": .01, "type": "regular"},
+    {"name": "52.91", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

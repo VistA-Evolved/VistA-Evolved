@@ -1,0 +1,45 @@
+{
+  "fileNumber": 1.521,
+  "fileName": "SQLI_SCHEMA",
+  "globalRoot": "1.521",
+  "globalReference": "^DMSQ(\"S\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "S_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "In FileMan, application groups are assigned SQL schema names Names are valid SQL identifiers, and are unique by site ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "S_SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A routine to check security by application group. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "S_DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short description of the schema ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.521", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

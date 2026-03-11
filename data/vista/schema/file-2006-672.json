@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.672,
+  "fileName": "MAG RAD BODY REGION",
+  "globalRoot": "2006.672",
+  "globalReference": "^MAG(2006.672,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The values used for this field are derived from the AMA CPT book's RADIOLOGY Chapter, and correspond to the subsection \"body part\" headings. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.672", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

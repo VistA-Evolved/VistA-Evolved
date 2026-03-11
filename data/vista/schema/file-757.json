@@ -1,0 +1,47 @@
+{
+  "fileNumber": 757,
+  "fileName": "MAJOR CONCEPT MAP",
+  "globalRoot": "757P",
+  "globalReference": "^LEX(757,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXPRESSION",
+      "dataType": "POINTER",
+      "rawType": "RP757.01'IO",
+      "required": true,
+      "pointerTo": 757.01,
+      "helpText": "Pointer to the clinical expression in the Expression file (#757.01) which  represents the preferred term for the Major Concept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This field is intended to provide applications the ability to group terms by categories, such as Cardiovascular, Pulmonary, etc. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is for future use.  It is intended to provide applications the ability to group terms by clinical category (not provided by UMLS), such as cardiovascular, pulmonary etc. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

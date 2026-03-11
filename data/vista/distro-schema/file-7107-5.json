@@ -1,0 +1,86 @@
+{
+  "fileNumber": 7107.5,
+  "fileName": "NOIS REPORT",
+  "globalRoot": "7107.5",
+  "globalReference": "^FSC(\"RPT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the NOIS report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a description used to identify the report. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will inactivate this report for selection, when set to YES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LIST",
+      "dataType": "POINTER",
+      "rawType": "P7107.1'",
+      "required": false,
+      "pointerTo": 7107.1,
+      "helpText": "This is the NOIS list associated with this report.  If no entry is made, the list will be prompted for selection. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P7107.6'",
+      "required": false,
+      "pointerTo": 7107.6,
+      "helpText": "This is the display format for this report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SORT FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P7107.6'",
+      "required": false,
+      "pointerTo": 7107.6,
+      "helpText": "This is the sort format for this report (optional). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPLAY FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P7107.7'",
+      "required": false,
+      "pointerTo": 7107.7,
+      "helpText": "This is the format type of this report. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7107.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "W:$D(^(.5)) \"   \",$P(^(.5),U,1)"}
+  ]
+}

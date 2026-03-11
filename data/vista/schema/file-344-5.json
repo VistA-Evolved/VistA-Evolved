@@ -1,0 +1,228 @@
+{
+  "fileNumber": 344.5,
+  "fileName": "AR EDI LOCKBOX MESSAGES",
+  "globalRoot": "344.5",
+  "globalReference": "^RCY(344.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the id to identify the message uniquely to the system.  It is calculated from the mail message number that delivers it to the system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "835ERA:ERA RECORD;835XFR:EOB TRANSFER;",
+      "helpText": "This is the type of information contained in the transmission record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE RECORDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the actual time the record was added to the file at the site. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UPDATE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT UPDATING;1:UPDATING;",
+      "helpText": "This is the indicator of whether or not the VistA database is being updated with the data contained in the electronic transmission record. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "UPDATE TASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the # of the background task that is updating the VistA data with the information in this electronic transmission record. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALLOW AUTO-UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the data in the record can be automatically updated into the VistA database or if it must be manually reviewed and updated. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ERA TOTALS RECORD",
+      "dataType": "POINTER",
+      "rawType": "P344.4'",
+      "required": false,
+      "pointerTo": 344.4,
+      "helpText": "This is the ERA totals batch entry that was created by this message. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXCEPTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO EXCEPTION;1:EXCEPTION EXISTS;",
+      "helpText": "This is the indicator used to inlcude/exclude the record from the exception processing list. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MULTI SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This number is used to associate ERA messages that must be broken up and sent in pieces from the FSC due to size constraints on the DMI Queues. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "EXCEPTION CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUMMARY RECORD STORE ERROR;2:PARTIAL MESSAGE RECEIVED;3:EOB TRANSFERRED IN;4:TRANSMISSION STORE ERROR;5:ERROR STORING EOB TRANSFER IN;6:NO VALID CLAIMS;99:OTHER;",
+      "helpText": "This is the specific exception that occurred to cause the ERA/EEOB record to be placed in an exception status. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "MAIL MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the list of message #s the ERA/EOB record was delivered in, separated by commas. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TRANSFERRED EOB RECEIVED FROM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the domain from which the transfer was received ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "REFERENCE AT OTHER SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the field that holds the reference to the entry in file 344.4 that correspond to this EOB message if it is a transfer EOB type. The format is ien of file 344 followed by a semicolon (;) followed by the ien of the entry in file 344.41. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "EOB ACCEPTANCE SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag that indicates whether or not an EOB has been confirmed as being accepted by the sending site.  This is used so multiple attempts at filing do not send multiple confirmation records. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DUPLICATE INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates the incoming 835 message is a duplicate transmission. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY DATA",
+      "dataType": "SUBFILE",
+      "rawType": "344.51",
+      "required": false,
+      "helpText": "This is the formatted data, extracted from the raw text of the message that will be used to update VistA.   ",
+      "isMultiple": true,
+      "subFileNumber": 344.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RAW MESSAGE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "344.52",
+      "required": false,
+      "helpText": "This is the actual text that was received at the site in the  electronic transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 344.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEQUENCE RECEIVED",
+      "dataType": "SUBFILE",
+      "rawType": "344.53A",
+      "required": false,
+      "helpText": "This multiple field stores all the sequences received for an ERA that was trasnmitted in 'pieces' due to the DMI queue's limit on the size of messages that can be transmitted. ",
+      "isMultiple": true,
+      "subFileNumber": 344.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "ERA PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the payer as provided on the ERA transmission record. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BILL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "344.54A",
+      "required": false,
+      "helpText": "This is a list of the bills included in the ERA record. ",
+      "isMultiple": true,
+      "subFileNumber": 344.54,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EXCEPTION MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "344.55",
+      "required": false,
+      "helpText": "This is where the text of the error or exception condition is stored. ",
+      "isMultiple": true,
+      "subFileNumber": 344.55,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AMSEQ", "field": },
+    {"name": "B", "field": },
+    {"name": "344.5", "field": .01, "type": "regular"},
+    {"name": "344.5", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

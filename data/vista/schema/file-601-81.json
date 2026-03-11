@@ -1,0 +1,78 @@
+{
+  "fileNumber": 601.81,
+  "fileName": "MH SECTIONS",
+  "globalRoot": "601.81",
+  "globalReference": "^YTT(601.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is a unique identifier for this Section. It is the IEN. Numbers under 100,000 are part of the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "P601.71'",
+      "required": false,
+      "pointerTo": 601.71,
+      "helpText": "A pointer to the NAME field (#.01) of the MH TESTS AND SURVEYS  file (#601.71) to which this section record applies. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIRSTQUESTION",
+      "dataType": "POINTER",
+      "rawType": "RP601.72'",
+      "required": true,
+      "pointerTo": 601.72,
+      "helpText": "First Question in instrument where section is to display. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TABCAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text for the Tab area. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SECTIONCAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text of the section heading. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DISPLAYID",
+      "dataType": "POINTER",
+      "rawType": "P601.88'",
+      "required": false,
+      "pointerTo": 601.88,
+      "helpText": "Pointer to the MH DISPLAY file (#601.88) to set attributes such as font and  bold. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "601.81", "field": .01, "type": "regular"},
+    {"name": "601.81", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

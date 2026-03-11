@@ -1,0 +1,104 @@
+{
+  "fileNumber": 365.18,
+  "fileName": "EIV EICD TRACKING",
+  "globalRoot": "365.18",
+  "globalReference": "^IBCN(365.18,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EICD TRANSMISSION",
+      "dataType": "POINTER",
+      "rawType": "RP365.1'",
+      "required": true,
+      "pointerTo": 365.1,
+      "helpText": "This is the IIV TRANSMISSION QUEUE record associated with this EICD Identification inquiry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EICD DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the IIV TRANSMISSION QUEUE entry was created for an EICD Identification inquiry.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EICD PAYER",
+      "dataType": "POINTER",
+      "rawType": "P365.12'",
+      "required": false,
+      "pointerTo": 365.12,
+      "helpText": "This is the National EICD PAYER entry used when creating an EICD Identification inquiry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EICD TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the IIV RESPONSE TRACE NUMBER (#365,.09) associated with an EICD  Identification response that traces back to the EICD TRANSMISSION  (#365.18,.01) field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EICD PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the PATIENT record associated with an EICD Identification inquiry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EICD RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P365'",
+      "required": false,
+      "pointerTo": 365,
+      "helpText": "This is the IIV RESPONSE file record associated with an EICD Identification response. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EICD RESPONSE RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Error;1:Active Policies Found;2:No Active Policies Found;3:Clearinghouse Timeout;",
+      "helpText": "This field contains a result code based on response data returned  from an EICD Identification inquiry. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INSURANCE DISCOVERED",
+      "dataType": "SUBFILE",
+      "rawType": "365.185A",
+      "required": false,
+      "helpText": "When an EICD Identification response returns with one or more  discovered policies, they are detailed in this sub-file to be used when creating Verification inquiries. ",
+      "isMultiple": true,
+      "subFileNumber": 365.185,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "365.18", "field": .01, "type": "regular"},
+    {"name": "365.18", "field": .04, "type": "regular"},
+    {"name": "365.18", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

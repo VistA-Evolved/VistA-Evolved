@@ -1,0 +1,647 @@
+{
+  "fileNumber": 60,
+  "fileName": "LABORATORY TEST",
+  "globalRoot": "60I",
+  "globalReference": "^LAB(60,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "This is the name of the Laboratory test you are defining in this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the cost of the test. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "60.1A",
+      "required": false,
+      "helpText": "This is another name for the test.  It may be the locally preferred name, or a common misspelling. ",
+      "isMultiple": true,
+      "subFileNumber": 60.1,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "I:INPUT (CAN BE ORDERED);O:OUTPUT (CAN BE DISPLAYED);B:BOTH;N:NEITHER;",
+      "helpText": "I == (Input) test can be ordered but not displayed by the computer. O == (Output) test can be displayed but never ordered by itself. B == (Both) test can be ordered and displayed. N == (Neither) test is internal to lab only. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "SXa",
+      "required": false,
+      "setOfCodes": "CH:CHEM, HEM, TOX, SER, RIA, ETC.;MI:MICROBIOLOGY;BB:BLOOD BANK;EM:ELECTRON MICROSCOPY;SP:SURGICAL PATHOLOGY;CY:CYTOLOGY;AU:AUTOPSY;WK:WORKLOAD;",
+      "helpText": "SUBSCRIPT is the pointer to the legal subscripts in the LR SUBSCRIPT file.  CH for Chem, Hem, Tox, Ser, Ria, etc., MI for Microbiology, BB for Blood Bank, EM for Electron Microscopy, SP for Surgical Pathology, CY for Cytology, AU for Autopsy. This field is required for all orderable tests.  Bank, EM for Electron Microscopy, SP for Surgical Pathology, CY for  Cytology, AU for Autopsy. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LOCATION (DATA NAME)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "LOCATION (DATA NAME) is the exact character representation of the  corresponding entry in the RESULTS file.  The input transform receives from SUBSCRIPT of the previously defined piece, as well as the node and  piece information from the data definition file for the result. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACCESSION AREA",
+      "dataType": "POINTER",
+      "rawType": "60.11PA",
+      "required": false,
+      "helpText": "This is the appropriate institution/division this test is performed at.  panel, all tests on that panel will be assigned to the entered accession area.  If some of the panel's tests go to other accession areas, leave this field blank. This will be the default accession area for this test. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "UNIQUE ACCESSION #",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field contains YES then this test will have a unique accession number whenever it is accessioned, even though it may be ordered with other tests.  If the test may be performed with other tests on the same specimen, this field should be blank. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "UNIQUE COLLECTION SAMPLE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be entered only if the test is never done on any other collection sample than the ONE designated in Select COLLECTION SAMPLE: The system will then not bother asking if the sample is the correct one. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAB COLLECTION SAMPLE",
+      "dataType": "POINTER",
+      "rawType": "P62'",
+      "required": false,
+      "pointerTo": 62,
+      "helpText": "This entry, for the given Laboratory Test, is THE collection sample brought back on routine phlebotomy collection by the lab when they make rounds on the wards.  If blank, the test CANNOT be ordered for routine collection. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REQUIRED TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field should be YES if this is a mandatory test, i.e., if no data is reported, the default status is \"pending\".  reported, the default status is \"pending\". ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Data Dictionary field in file 63. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PROCEDURE (SNOMED)",
+      "dataType": "POINTER",
+      "rawType": "P61.5",
+      "required": false,
+      "pointerTo": 61.5,
+      "helpText": "This is the SNOMED name or code of this test. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "*QUICK INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "No longer used.  Will be deleted after this version. index list.  Enter YES to include, @ to delete. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "EXTRA LABELS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "If blank, the minimum number of labels (accounting for required volume) is generated.  Enter a positive number for extra copies, -1 if NO label is desired. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "INSTITUTION EXTRA LABELS",
+      "dataType": "POINTER",
+      "rawType": "60.15P",
+      "required": false,
+      "helpText": "This field allows selection of a division in order to set the number of If present, this value is used for any user signed into this division. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "HIGHEST URGENCY ALLOWED",
+      "dataType": "POINTER",
+      "rawType": "RP62.05'a",
+      "required": true,
+      "pointerTo": 62.05,
+      "helpText": "The highest urgency allowed must be stored here. The smaller the number, the more urgent. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "FORCED URGENCY",
+      "dataType": "POINTER",
+      "rawType": "P62.05'a",
+      "required": false,
+      "pointerTo": 62.05,
+      "helpText": "This specifies the default urgency status of this test. It points to the URGENCY file. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Default test heading for cumulative results reports.  (May be different in LAB REPORTS file 64.5.) in LAB REPORTS file 64.5) ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "Reserved",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reserved for future use. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PRINT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Represents MUMPS code for extraction or justification of the value that is in the file.  It's particularly useful for displaying abbreviated information for sets.  It could be used to append trailing zeros after a decimal point. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PRETTY PRINT ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Pretty Print Routine (see next field) line entry point. Some programs have more than one entry to give a \"special\" display. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "PRETTY PRINT ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If no entry is made, (and the test is type 'O'utput or 'B'oth), display output from the [LRGEN] menu option is a general cumulative.  With a program name here, [LRGEN] instead runs the alternate program for display. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the print order of the test within its accession area. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "NATIONAL VA LAB CODE",
+      "dataType": "POINTER",
+      "rawType": "P64'",
+      "required": false,
+      "pointerTo": 64,
+      "helpText": "This field is used to map tests in file 60 to the VA National Lab codes found in file 64. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 64.1,
+      "fieldName": "RESULT NLT CODE",
+      "dataType": "POINTER",
+      "rawType": "P64'a",
+      "required": false,
+      "pointerTo": 64,
+      "helpText": "This is the workload procedure code associated with this test.  It is used in compiling laboratory workload statistics. ",
+      "fieldNumber_": 64.1
+    },
+    {
+      "fieldNumber": 64.2,
+      "fieldName": "CATALOG ITEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that this entry is to be included in the Electronic Catalog. ",
+      "fieldNumber_": 64.2
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "EDIT CODE",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "Points to EXECUTE CODE file. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "*BATCH DATA CODE",
+      "dataType": "POINTER",
+      "rawType": "P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "No longer used.  Will be deleted after 1/89. ",
+      "fieldNumber_": 99.1
+    },
+    {
+      "fieldNumber": 99.2,
+      "fieldName": "EXECUTE ON DATA REVIEW",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'X",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "At the time a test or panel of tests is reviewed, the execute code is run. ",
+      "fieldNumber_": 99.2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SITE/SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "60.01P",
+      "required": false,
+      "helpText": "Processing specimen type for each entry in the Lab Collection Sample field. Example:  Sodium can be determined on serum and urine.  Entries in  this field are not appropriate (or even used) if the test is a panel of  tests. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "GENERAL PROCESSING INST.",
+      "dataType": "SUBFILE",
+      "rawType": "60.09",
+      "required": false,
+      "helpText": "This may include any processing instructions pertinent to this test. ",
+      "isMultiple": true,
+      "subFileNumber": 60.09,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The creation date of the test. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "TEST INACTIVE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if a test is inactive. If it is Y the test is inactive. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "TEST INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that a Test was determined to be inactive. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "IN HOUSE TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Tests are performed on-site using instruments or manual methods. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "POC TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Tests performed using POC equipment, ie, glucometers, coagulation, INR, etc, that are performed outside the main laboratory, ie, wards, ICU, OR, etc. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "CALCULATION TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Whether the test result is calculated (not directly measured) ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "SCANNED IMAGE TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the result is scanned due to complexity. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "BILLABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Yes: Test satisfies definition of a Standardized Billable Test (SBT) and will count for Laboratory workload. Is a test that a provider can  order, has its own published CPT Code and is performed by Lab personnel. No: Test is not an SBT because it is either not separately orderable by a provider, does not have its own CPT Code, is a calculated test result, or is a test that is performed by non-lab personnel. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "WORKLOAD CAPTURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Yes: The test is a stand-alone product, ie, is an SBT, that has its own labor and supply costs. No: There is no labor or supply cost associated with producing the test because the test is already part of the labor/supply costs of another test. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "AUDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "60.28D",
+      "required": false,
+      "helpText": "This is the audit multiple for changes to select fields. ",
+      "isMultiple": true,
+      "subFileNumber": 60.28,
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "PERFORMING LAB",
+      "dataType": "SET",
+      "rawType": "60.16S",
+      "required": false,
+      "helpText": "This indicates the performing lab for this test. There can be multiple performing labs with each having a single order code. ",
+      "isMultiple": true,
+      "subFileNumber": 60.16,
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "LAB TEST INCLUDED IN PANEL",
+      "dataType": "POINTER",
+      "rawType": "60.02P",
+      "required": false,
+      "helpText": "Enter only if this is a panel of other tests, e.g. if the \"Laboratory Test\" is ELECTROLYTES, the entries here might be, NA, CL, K, CO2.  If it's an ADMIT PROFILE, they might be ELECTROLYTES, LIVER FUNCTION, CARDIAC ENZYMES. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "COLLECTION SAMPLE",
+      "dataType": "POINTER",
+      "rawType": "60.03IPA",
+      "required": false,
+      "helpText": "Enter the appropriate collection sample(s) for standard processing in the lab.  These are the common names that the phlebotomists and ward personnel would recognize.  The first entry is the \"default\" collection sample. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "GENERAL WARD INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "60.08",
+      "required": false,
+      "helpText": "Text to be seen by the ward each time the test is ordered regardless of the type of collection sample. ",
+      "isMultiple": true,
+      "subFileNumber": 60.08,
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 320,
+      "fieldName": "REQUIRED COMMENT",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "Points to EXECUTE CODE file. ",
+      "fieldNumber_": 320
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "DATA NAME",
+      "dataType": "POINTER",
+      "rawType": "*P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "If the test is a panel, skip this entry!  If it is an individual test, AND IS PART OF THE CHEM, HEM, TOX, SER, RIA, ETC. area, in order to be able to ENTER results, must have an entry!  Micro, Blood Bank, Anatomic Path, excluded. ",
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "INPUT TRANSFORM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ75",
+      "length": 75,
+      "required": false,
+      "helpText": "Computed field. ",
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 411,
+      "fieldName": "DATA TYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "Computed field. ",
+      "fieldNumber_": 411
+    },
+    {
+      "fieldNumber": 412,
+      "fieldName": "CULTURE ID PREFIX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": " Used by the Vitek to make the accession number unique for down load.   This number should be zero to nine. This number is appended to the  front of the accession number.    If there is no entry in this field, this test will not be downloaded. ",
+      "fieldNumber_": 412
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "VERIFY WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "60.12IP",
+      "required": false,
+      "helpText": "The College of American Pathologists Workload codes for  the test/procedure are entered here. ",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 500.1,
+      "fieldName": "ACCESSION WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "60.13IP",
+      "required": false,
+      "helpText": " This subfile holds the WKLD codes to be credited during the accession process. ",
+      "fieldNumber_": 500.1
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "*ASK AMIS/CAP CODES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " This field is not longer used by AMIS/WORKLOAD. It will be made obsolete with V5.2 and will be deleted in later release. Consult the section on workload in your implementation guide. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "COMBINE TEST DURING ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;0:YES;",
+      "helpText": "   This field works in conjunction with combine test field in 69.9 If you do not want this to be combined with any other test answer   NO --- A NULL ANSWER MEANS YES ",
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "CIS TEST CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field is used by Clinical Information System such as those found in MICU. This field is not used with the laboratory package it self but is a special field for interface with external system computer systems. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "SITE NOTES DATE",
+      "dataType": "DATE",
+      "rawType": "60.0505D",
+      "required": false,
+      "helpText": " This is the date of this particular note. ",
+      "isMultiple": true,
+      "subFileNumber": 60.0505,
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 506,
+      "fieldName": "DEFAULT SITE/SPECIMEN CPT",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "If a CPT cannot be determined by the SPECIMEN CPT (#96) field within the  SITE/SPECIMEN (#100) multiple, or by the HCPCS CODE (#507) field, or by locating an active CPT Code in the WKLD CODE file (#64) entry pointed to by the NATIONAL VA LAB CODE (#64) field, then the CPT in this field is the default. ",
+      "fieldNumber_": 506
+    },
+    {
+      "fieldNumber": 507,
+      "fieldName": "HCPCS CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "HCFA Common Procedure Coding System (HCPCS) is a coding system that is  composed of Level I codes (CPT codes), Level II codes (national codes), and Level III codes (local codes). Level I (CPT) codes are five digit numeric codes that describe procedures and tests. CPT codes are developed  and maintained by the AMA with annual updates. Level II (national) codes  are five digit alpha numeric codes that describe pharmaceuticals, supplies, procedures, tests and services. Level II codes are developed ",
+      "fieldNumber_": 507
+    },
+    {
+      "fieldNumber": 508,
+      "fieldName": "AMA COMPLIANT/BILLABLE PANEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "If this panel test is an AMA compliant or otherwise billable panel, enter a 'Yes' in this field.  If this field is set to 'Yes' and a valid  CPT code is on file, the CPT code for the panel will be sent to PCE for  billing purposes as a bundled panel.   If this field is set to 'No', the panel will be unbundled into it's  individual atomic tests and the CPT codes for those atomic tests will be  sent to PCE for billing purposes.   Note: This field is only functional for a panel test. This field is ",
+      "fieldNumber_": 508
+    },
+    {
+      "fieldNumber": 21661,
+      "fieldName": "CPRS SCREEN",
+      "dataType": "POINTER",
+      "rawType": "60.021661P",
+      "required": false,
+      "helpText": "This field point to the CPRS Screen for this test. The test SubScript  (CH,EM,CY...) must match the SubScript of the CPRS Screen. ",
+      "fieldNumber_": 21661
+    }
+  ],
+  "fieldCount": 61,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AV1", "field": },
+    {"name": "AV2", "field": },
+    {"name": "AX0", "field": },
+    {"name": "AX1", "field": },
+    {"name": "AX2", "field": },
+    {"name": "AX3", "field": },
+    {"name": "AX4", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "60", "field": .01, "type": "regular"},
+    {"name": "60", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "60", "field": 1, "type": "regular"},
+    {"name": "60", "field": 3, "type": "regular"},
+    {"name": "60", "field": 4, "type": "regular"},
+    {"name": "60", "field": 5, "type": "regular"},
+    {"name": "60", "field": 51, "type": "regular"},
+    {"name": "60", "field": 64, "type": "regular"},
+    {"name": "60", "field": 64, "type": "regular"},
+    {"name": "60", "field": 64, "type": "regular"},
+    {"name": "60", "field": 64.1, "type": "regular"},
+    {"name": "", "field": 133, "type": "regular"},
+    {"name": "", "field": 400, "type": "regular"},
+    {"name": "", "field": 400, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"\""},
+    {"field": 17, "value": "W \"\""},
+    {"field": 51, "value": "W \"\""},
+    {"field": 400, "value": "W \"\""}
+  ]
+}

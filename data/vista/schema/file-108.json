@@ -1,0 +1,116 @@
+{
+  "fileNumber": 108,
+  "fileName": "MICOM SITE PARAMETERS",
+  "globalRoot": "108",
+  "globalReference": "^%ZIS(\"Z\",108,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPU Volume Set",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The cpu volume set that will be used to connect to the command port. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Default Device to Command Port",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Device that connects to the command port on this CPU. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Default Device to Stats Port",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Device that connects to the statistics port on this CPU. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Print Action Definitions",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag for printing Action Definitions on daily statistics report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "Print Line Assignments",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag for printing Line Assignments on daily statistics report. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "Cumulative Statistics Stored",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag for storing the daily statistics for cumulative reports. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "Print Daily Statistics",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag to print the statistics on a daily basis. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "Print Time vs Activity",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag whether to print report on a daily basis. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "System Startup Configuration",
+      "dataType": "POINTER",
+      "rawType": "108.01P",
+      "required": false,
+      "helpText": "Stores the configurations to be loaded when the system starts up. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "Load Configurations at Startup",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag to load configurations stored in field 4 at system startup. ",
+      "fieldNumber_": 4.1
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "108", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

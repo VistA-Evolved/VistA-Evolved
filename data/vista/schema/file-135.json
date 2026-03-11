@@ -1,0 +1,58 @@
+{
+  "fileNumber": 135,
+  "fileName": "SURGERY CANCELLATION REASON",
+  "globalRoot": "135I",
+  "globalReference": "^SRO(135,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the cancellation reason.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the code corresponding to the cancellation reason.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AVOIDABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will be used as the default for the CANCELLATION AVOIDABLE field in the SURGERY file (130).   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to inactivate this entry to prevent its selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "135", "field": .01, "type": "regular"},
+    {"name": "135", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "D EN^DDIOL($P(^(0),U,2),\"\",\"?41\")"}
+  ]
+}

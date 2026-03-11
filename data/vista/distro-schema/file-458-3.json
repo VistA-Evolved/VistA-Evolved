@@ -1,0 +1,166 @@
+{
+  "fileNumber": 458.3,
+  "fileName": "ENVIRONMENTAL DIFF. REQUESTS",
+  "globalRoot": "458.3I",
+  "globalReference": "^PRST(458.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "A sequential number that identifies the environmental differential request. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "RP450'",
+      "required": true,
+      "pointerTo": 450,
+      "helpText": "A pointer to the PAID EMPLOYEE file (#450) which identifies the employee for whom the request is being made. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FROM DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date the environmental differential should begin. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FROM TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The time the environmental differential should begin. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEAL TIME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "The meal time in minutes. This will be subtracted from the end-start time to determine the time of exposure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TO TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The time the environmental differential should cease. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TYPE OF EXPOSURE",
+      "dataType": "POINTER",
+      "rawType": "R*P457.6'",
+      "required": true,
+      "pointerTo": 457.6,
+      "helpText": "A pointer to the ENVIRONMENTAL DIFFERENTIALS file (#457.6) which identifies the type of exposure the employee is subject to. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A free text response that states the justification for this request. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:Requested;A:Approved;D:Disapproved;X:Cancelled;",
+      "helpText": "The status of the request. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the person who entered the request. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time the request was entered. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the employee's supervisor. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SUPR. ACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the supervisor took action on this request. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SUPR. ES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "The supervisor's electronic signature code. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SUPR. COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A free text response for any comments the supervisor would like to make about this request. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "458.3", "field": .01, "type": "regular"},
+    {"name": "458.3", "field": 1, "type": "regular"},
+    {"name": "458.3", "field": 2, "type": "regular"},
+    {"name": "458.3", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "S %=$P(^(0),U,3) W \"   \",$E(%,4,5),\"-\",$E(%,6,7),\"-\",$E(%,2,3)"}
+  ]
+}

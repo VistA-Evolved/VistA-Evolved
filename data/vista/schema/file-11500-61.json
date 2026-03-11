@@ -1,0 +1,179 @@
+{
+  "fileNumber": 11500.61,
+  "fileName": "ODS BILLING SPECIALTY",
+  "globalRoot": "11500.61IP",
+  "globalReference": "^A1B2(11500.61,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P399.1'",
+      "required": true,
+      "pointerTo": 399.1,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ODS ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "R*P11500.2'",
+      "required": true,
+      "pointerTo": 11500.2,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LOS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "REGION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LOCAL PATIENT DFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CONTROL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "RECORD STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "ADMISSION CONTROL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRANSMITTED;2:NEVER TRANSMITTED;3:RE-TRANSMIT;0:PENDING;",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DATE INITIALLY TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "LAST MESSAGE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "fieldNumber_": 1.06
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AR", "field": },
+    {"name": "AX", "field": },
+    {"name": "AXDT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "11500.61", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "11500.61", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "11500.61", "field": .07, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "11500.61", "field": .08, "type": "regular"},
+    {"name": "11500.61", "field": .09, "type": "regular"},
+    {"name": "11500.61", "field": .14, "type": "regular"},
+    {"name": "", "field": .15, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "11500.61", "field": 1.01, "type": "regular"},
+    {"name": "11500.61", "field": 1.03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^A1B2(11500.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(11500.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"\""},
+    {"field": WRITE, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",'$D(^A1B2(11500.2,+$P(^(0),U,2),0)):\"\",$D(^A1B2(11500.1,+$P(^(0),U,2),0)):$P(^(0),U,2),1:\"\") W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

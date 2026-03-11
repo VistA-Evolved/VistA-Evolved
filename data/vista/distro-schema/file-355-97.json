@@ -1,0 +1,188 @@
+{
+  "fileNumber": 355.97,
+  "fileName": "IB PROVIDER ID # TYPE",
+  "globalRoot": "355.97",
+  "globalReference": "^IBE(355.97,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name used to describe the provider id type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE LEVEL MINIMUM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NONE;1:LICENSING/GOVT AGENCY - EACH PROV;2:FACILITY - ALL PROV;3:INSURANCE CO - ALL PROV;4:INSURANCE CO - EACH PROV;5:INSURANCE CO - ALL PROV BY CARE UNIT;",
+      "helpText": "This is the minimum level or criteria of data that MUST be used to search for this type of ID number for a provider.  If this field is zero or blank, there are no minimum data requirements to search for an ID for this id type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "X12 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the X12 code that determines the qualifier to be output in the X12 data stream when reporting this type of provider ID number. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FACILITY'S DEFAULT ID #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number that will be the default for all providers for the id type at the facility if no number exists for the specific provider/ins. co/care unit combination. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RESTRICT EDITING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether or not users may edit the id #'s for the provider type at the facility level. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VALID FOR PERFORMING PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the id type is valid for performing provider ids. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ALLOWABLE FORM TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INSTITUTIONAL;P:PROFESSIONAL;B:BOTH INSTITUTIONAL AND PROFESSIONAL;",
+      "helpText": "This is a flag used to determine what type of form this qualifier is  valid for.  It is used to validate provider id file set-up. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field must be set to YES to allow this qualifier to be selected.  Old entries that are no longer allowed should be set to NO. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STATE DEA#",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that tells the system this id type is a state DEA # and the data is stored in the NEW PERSON file by state. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "FEDERAL DEA#",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that tells the system this id type is a federal DEA # and the data is stored in the NEW PERSON file.              ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "STATE LICENSE #",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that tells the system this id type is a state license # and the data is stored in the NEW PERSON file by state.              ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "FEDERAL TAX # - FACILITY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that tells the system this id type is a facility federal tax id and the data is stored in the IB SITE PARAMETERS file. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "EMC ID TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag to indicate if the record is for an EMC ID # ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "NETWORK ID TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag to indicate if the record is for a network id #. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PROVIDER'S OWN ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that designates an id type is a personal # for the provider, not assigned by the facility or an insurance co ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "STORED OUTSIDE OF BILLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the flag that specifies the provider id data is not stored in an IB file. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "BILLING PROVIDER PRIMARY ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a 1 (YES) if this is the provider id type that represents the billing provider's primary id. ",
+      "fieldNumber_": 1.09
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.97", "field": .01, "type": "regular"},
+    {"name": "355.97", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

@@ -1,0 +1,537 @@
+{
+  "fileNumber": 991.8,
+  "fileName": "CIRN SITE PARAMETER",
+  "globalRoot": "991.8",
+  "globalReference": "^RGSITE(991.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PARAMETER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "Number assigned to given site parameter entry.  Entry number 1 is the only entry that should exist in this file.  MPI/PD does not support multiple site parameter entries for a single station. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CMOR REQUEST CHANGE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:MANUAL;1:AUTOMATIC;",
+      "helpText": "Based on this field setting, any Coordinating Master of Record (CMOR) change request received from another station can either be manually reviewed or automatically approved. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NEW REQUEST MAILGROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "If the CMOR Request Change parameter is set to manual, new CMOR change requests received will notify the mailgroup entered in this field.  This gives a means of prompting someone to review the new request. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOCAL/MISSING DATE LAST RAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the Local/Missing ICN  Resolution Background Job [MPIF LOC/MIS ICN RES] last ran to completion. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "AUTO ACCEPT DEMOGRAPHICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AUTO ACCEPT;0:NOT AUTO ACCEPT;",
+      "helpText": "This field is the parameter that a site would set to determine if data coming from another site, that is not the owner of the data, could be  automatically uploaded. If this field is not set, then the software will assume that all incoming data can not be automatically uploaded. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MPI/PD SEEDING COMP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field, 'MPI/PD SEEDING COMP DATE/TIME', is used to track the date/time our seeding process completed.  This field is used to ensure that the seeding process is run once and only once at a facility.  If a date is present, our seeding process terminates. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MPI/PD DATA COMPARE COMP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field, 'MPI/PD DATA COMPARE COMP DATE', is used to track the date/time our data comparison process completed.  This field is used to ensure that the data comparison process is run once and only once at a facility. If a date is present, our data comparison process terminates. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MPI/PD DATE LAST TREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "'MPI/PD DATE LAST TREATED' is used to track the completion date/time of the Date Last Treated process. This field is used to ensure that this Date Last Treated process is run only once at a facility. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STOP MPI/PD MESSAGING",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SEND MESSAGES;0:STOP MESSAGES;2:SUSPEND MESSAGES;",
+      "helpText": "This field will instruct the software to allow MPI/PD messaging, stop it or suspend it. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PRIMARY CARE CLINIC STOPS",
+      "dataType": "POINTER",
+      "rawType": "991.817P",
+      "required": false,
+      "helpText": "All primary care Clinic Stops (Decision Support System (DSS) Identifiers). Used in CMOR patient activity score calculations. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CMOR LAST PATIENT PROCESSED",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field keeps track of the last sequential patient processed through the CMOR patient activity score calculations process. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CMOR INIT STARTED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contain the date/time that the Start/Restart CMOR Score  Calculation option [RG CMOR START] was first run. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CMOR INIT STOPPED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contain the date/time that the Stop CMOR Score Calculation option [RG CMOR STOP] was last stopped either manually or normally. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CMOR INIT MANUAL STOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used to stop the background task started by the Start/Restart CMOR Score Calculation option [RG CMOR START]. This field is populated by the Stop CMOR Score Calculation option [RG CMOR STOP]. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CMOR DAILY START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the daily start time in 24 hour format for the CMOR activity score calculations. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CMOR DAILY STOP TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the daily stop time in 24 hour format for the CMOR activity score calculations. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CMOR INIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;SN:SUCCESSFULLY COMPLETED;SM:STOPPED MANUALLY;INT:INTERRUPTED ABNORMALLY;",
+      "helpText": "This field contains the current status of the CMOR Score Calculations process. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CMOR RUN TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INITIAL RUN;R:RESET ALL;RS:RESTART FROM LAST CALCULATED;",
+      "helpText": "This field contains the current type of CMOR Score Calculation run.   This field is used by the Start/Restart CMOR Score Calculation option [RG CMOR START] to identify a starting point. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CMOR LAST TASK#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the task number of the CMOR Score Calculation process. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CMOR COMP LAST PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This patient was the last processed patient in the CMOR Comparison process. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "CMOR COMP STARTED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the CMOR Comparison process started. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CMOR COMP STOPPED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "When the CMOR Comparison stopped, (either naturally or manually) a time is logged in this field for record. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "CMOR COMP STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;MS:MANUALLY STOPPED;C:COMPLETED;",
+      "helpText": "This is the status of the CMOR Comparison process in your system. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "CMOR COMP LAST TASK #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the task number that the CMOR Comparison ran on last. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "CMOR COMP FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag is for the user to request the CMOR Comparison process to stop.  ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "EXC PURGE START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the MPI/PD Exception Purge was last started. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "EXC PURGE STOP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the MPI/PD Exception Purge last completed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "EXC PURGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;C:COMPLETE;",
+      "helpText": "This field contains the current status of the MPI/PD Exception Purge process. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ADMIN POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The ADMIN POINT OF CONTACT field contains the name of the individual at the facility who is in a position to resolve patient issues for Master Patient Index/Patient Demographics.      This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail  group whose members maintain the point of contact list on the website. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "IRM POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The IRM POINT OF CONTACT field contains the name of the individual at the facility who supports the VistA Master Patient Index/Patient Demographics application.    This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail  group whose members maintain the point of contact list on the website. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "HL7 POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The HL7 POINT OF CONTACT field contains the name of the individual at the facility who supports the VistA Health Level Seven (HL7) application.  Master Patient Index/Patient Demographics uses HL7 for message transmission and frequently needs to contact the HL7 point of contact.    This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail  group whose members maintain the point of contact list on the website. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "ALT ADMIN POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The ALT ADMIN POINT OF CONTACT field contains the name of a second individual at the facility who is in a position to resolve patient issues for Master Patient Index/Patient Demographics.     This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail group whose members maintain the point of contact list on the website. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ALT IRM POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The ALT IRM POINT OF CONTACT field contains the name of a second individual at the facility who supports the VistA Master Patient Index/Patient Demographics application.     This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail group whose members maintain the point of contact list on the website. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ALT HL7 POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The ALT HL7 POINT OF CONTACT field contains the name of a second individual at the facility who supports the VistA Health Level Seven (HL7) application.  Master Patient Index/Patient Demographics uses HL7 for message transmission and frequently needs to contact the HL7 point of contact.    This field is populated using the Add/Edit Point of Contact [RG UPDATE POINT OF CONTACT] option.  The information is sent to a remote mail group whose members maintain the point of contact list on the website.",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "REL INIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;SN:STOPPED NORMALLY;SM:STOPPED MANUALLY;",
+      "helpText": "This field contains the current status of the religion status process. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "REL INIT START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the initial start date/time of the patient religion status process. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REL INIT STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the patient religion status process stopped. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "REL INIT LAST",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the last patient processed by the religion status process. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "REL INIT USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the person who ran the initial religion status process. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "MAR INIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;SN:STOPPED NORMALLY;SM:STOPPED MANUALLY;",
+      "helpText": "This field contains the status of the marital status initialization process. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "MAR INIT START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the starting date/time of the marital status initialization process. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "MAR INIT STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the marital status initialization process stopped. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "MAR INIT LAST",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the last PATIENT file (#2) entry that was processed by the marital status initialization process. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "MAR INIT USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user that ran the marital status initialization process. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "ELIG INIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;SN:STOPPED NORMALLY;SM:STOPPED MANUALLY;",
+      "helpText": "This field contains the status of the patient eligibility initialization process. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "ELIG INIT START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the patient eligibility initialization process was started. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "ELIG INIT STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the patient eligibility initialization process was stopped. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "ELIG INIT LAST",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the last PATIENT file (#2) entry processed by the patient eligibility initialization process. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "ELIG INIT USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user that ran the patient eligibility initialization process. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "PSEUDO INIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;SN:STOPPED NORMALLY;SM:STOPPED MANUALLY;",
+      "helpText": "This field contains the status of the Pseudo-SSN initialization process. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "PSEUDO INIT START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the start date/time of the Pseudo-SSN initialization process. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "PSEUDO INIT STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the Pseudo-SSN initialization process was stopped. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "PSEUDO INIT LAST",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the last PATIENT file (#2) entry that was processed by the Pseudo-SSN initialization process. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "PSEUDO INIT USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user that ran the Pseudo-SSN initialization process. ",
+      "fieldNumber_": 119
+    }
+  ],
+  "fieldCount": 54,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "991.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

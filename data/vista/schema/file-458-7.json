@@ -1,0 +1,282 @@
+{
+  "fileNumber": 458.7,
+  "fileName": "PT PHYSICIAN MEMORANDUM",
+  "globalRoot": "458.7",
+  "globalReference": "^PRST(458.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "RP450'",
+      "required": true,
+      "pointerTo": 450,
+      "helpText": "A pointer to the PAID EMPLOYEE file (#450) which identifies the name of the Part Time Physician employee. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the first day of the part-time physician's Memorandum of Service  Level Expectation.  This date must also be the first day of a pay period  and must be within 6 months of today.  The memorandum covers 26  full pay periods and will automatically expire on the last day of the 26th  pay period. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The End Date of the Part Time Physician's 364 day Memorandum of Service Level Expectation.  The End Date will always be the last day of a Pay Period.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AGREED # OF HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of hours that the Part Time Physician agreed to work during their 364 day memorandum.  This number must be equally divisible by 26. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INITIAL COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The initial comments entered by Human Resources as the memorandum was entered. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS OF MEMORANDUM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NOT STARTED;2:ACTIVE;3:RECONCILIATION STARTED;4:RECONCILED;",
+      "helpText": "The status of the Part Time Physician's memorandum.  Possible values are: 1:NOT STARTED, 2:ACTIVE, 3:RECONCILIATION STARTED, 4:RECONCILED ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Human Resource staff member who entered the Part Time Physician's Memorandum. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the memorandum was entered. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CARRYOVER HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The amount of hours carried over from the Part Time Physician's last memorandum.  Maximum carryover is +/- 5%. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TOTAL HOURS WORKED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total hours worked by the Part Time Physician since the beginning of their memorandum.  This includes both scheduled tour hours and extra hours worked. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TOTAL HOURS PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of scheduled tour hours paid since the memorandum began. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NONPAY HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of scheduled tour hours reported as Non Pay since the memorandum began. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "WITHOUT PAY HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The number of scheduled hours that were recorded as Leave With Out Pay (LWOP). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "% OF MEMORANDUM COMPLETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The percentage of the memorandum that has been completed.  This percentage is based on the Start Date and the last Pay Period processed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "% OF HOURS COMPLETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The percentage of scheduled hours completed since the beginning of the memorandum.  This percentage reflects any AWOL that may have occurred during the memorandum. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "AVE HRS/PP TO COMPLETE MEM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The average number of hours that the Part Time Physician will have to work to meet the Agreed Hours in their Memorandum of Service Level Expectation. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "% OFF TARGET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The percentage that the Part Time Physician is either ahead or behind on meeting their Agreed Hours.  This percentage is based on  the Part Time Physician's Normal Hours per Pay Period. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PT PHY'S RECONCILIATION CHOICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No reconciliation needed;2:Transfer negative balance;3:Pay VA for negative balance;4:Transfer positive balance;5:Pay Phy for positive balance;",
+      "helpText": "The PT Physician's choice on how to reconcile their last memorandum. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PT PHY'S RECONCILIATION NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comments entered by the PT Physician when they chose their reconciliation option. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "RECONCILED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Human Resource staff member who completed the reconciliation process. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE/TIME RECONCILED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that Human Resources completed the reconciliation process. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "HR RECONCILIATION COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any final comments entered by Human Resources during the reconciliation process. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TERMINATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date specified by Human Resources in which the PT Physician's current memorandum will expire so that the reconciliation process can begin. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TERMINATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Human Resources personnel who terminated the PT Physician's memorandum. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DATE/TIME TERMINATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the PT Physician's memorandum was terminated. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TERMINATION COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comments entered by Human Resources when they terminated the PT Physician's memorandum. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "PAY PERIOD",
+      "dataType": "SUBFILE",
+      "rawType": "458.701",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 458.701,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "ED", "field": },
+    {"name": "SD", "field": },
+    {"name": "458.7", "field": .01, "type": "regular"},
+    {"name": "458.7", "field": 1, "type": "regular"},
+    {"name": "458.7", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "fileNumber": 52.5,
+  "fileName": "RX SUSPENSE",
+  "globalRoot": "52.5PI",
+  "globalReference": "^PS(52.5,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX #",
+      "dataType": "POINTER",
+      "rawType": "RP52",
+      "required": true,
+      "pointerTo": 52,
+      "helpText": "This field is the pointer to the Prescription File (#52). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUSPENSE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to indicate the date the prescription will be printed from the suspense file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Refers to whom the medication is prescribed for.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MAIL;W:WINDOW;I:INPATIENT;",
+      "helpText": "`TYPE' refers to how the prescription is to be destributed. Respond by indicating M for Mail, W for Window or I for Inpatient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PARTIAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Respond with Y for YES or N for NO depending upon whether or not  this is a partial or full prescription. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This field is used to enter the division where the prescription was filled. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DRUG",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "`DRUG' refers to the name of the actual drug/supplies  specified by the prescription. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINTED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to indicate if the prescription was printed from suspense.  '1' is used to indicate 'Yes' the prescription has printed, '0' for 'No' the prescription has not printed. the suspened prescription has been reset to print again. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CMOP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Q:QUEUED FOR TRANSMISSION;X:TRANSMISSION COMPLETED;L:LOADING FOR TRANSMISSION;P:PRINTED LOCALLY;",
+      "helpText": "This field indicates the current status of a Consolidated Mail Outpatient Pharmacy prescription. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "DXI",
+      "required": false,
+      "helpText": "This indicates the date/time that this entry was queued to print. It is entered by the Outpatient package at the time of label print. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRINTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This indicates the user who queued this entry to print from suspense. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEA, SPECIAL HDLG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is taken from the DRUG File(#50) and entered by the Outpatient Package when the entry goes into the suspense file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used by Outpatient for printing labels in the proper sequence when labels are Reset for Reprinting. This field should not be edited through FileMan. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REPRINT",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If set to Yes, it means the entry is a suspended reprint, either through the Edit option or the Reprint option. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FILL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the fill number for the Rx if the Rx is not a partial. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUSPENSE HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is populated when the Print from Suspense function is executed  and for ePharmacy prescriptions only.  It will contain the date when 3/4 of the Days Supply will have elapsed.  ePharmacy prescriptions will be left on suspense until this date.  Otherwise, the prescription will print on or after the date stored in this field.   Non-ePharmacy prescriptions are not affected by this functionality. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADL", "field": },
+    {"name": "ADV", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AL", "field": },
+    {"name": "AO", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AS", "field": },
+    {"name": "AW", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "52.5", "field": .01, "type": "regular"},
+    {"name": "52.5", "field": .01, "type": "regular"},
+    {"name": "52.5", "field": .02, "type": "regular"},
+    {"name": "52.5", "field": .02, "type": "regular"},
+    {"name": "52.5", "field": .03, "type": "regular"},
+    {"name": "52.5", "field": .03, "type": "regular"},
+    {"name": "52.5", "field": .03, "type": "regular"},
+    {"name": "52.5", "field": .06, "type": "regular"},
+    {"name": "52.5", "field": .06, "type": "regular"},
+    {"name": "52.5", "field": 2, "type": "regular"},
+    {"name": "52.5", "field": 2, "type": "regular"},
+    {"name": "52.5", "field": 3, "type": "regular"},
+    {"name": "52.5", "field": 3, "type": "regular"},
+    {"name": "52.5", "field": 3, "type": "regular"},
+    {"name": "52.5", "field": 3, "type": "regular"},
+    {"name": "52.5", "field": 3, "type": "regular"},
+    {"name": "52.5", "field": 4, "type": "regular"},
+    {"name": "52.5", "field": 5, "type": "regular"},
+    {"name": "52.5", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$D(^(\"0\")) \"   \",$E($P(^(\"0\"),U,2),4,5)_\"-\"_$E($P(^(\"0\"),U,2),6,7)_\"-\"_$E($P(^(\"0\"),U,2),2,3)"},
+    {"field": .03, "value": "W:$D(^(\"0\")) \"   \",$S($D(^DPT(+$P(^(\"0\"),U,3),0))#2:$P(^(0),U,1),1:\"\"),$E(^PS(52.5,Y,0),0)"}
+  ]
+}

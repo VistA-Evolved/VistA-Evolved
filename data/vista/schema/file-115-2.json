@@ -1,0 +1,119 @@
+{
+  "fileNumber": 115.2,
+  "fileName": "FOOD PREFERENCES",
+  "globalRoot": "115.2",
+  "globalReference": "^FH(115.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a selectable food preference, such as coffee or tea, or a generic preference, such as 'no liver'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIKE OR DISLIKE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:LIKE;D:DISLIKE;",
+      "helpText": "This field indicates whether the item is a selectable item or a food preference. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RECIPE",
+      "dataType": "POINTER",
+      "rawType": "P114'",
+      "required": false,
+      "pointerTo": 114,
+      "helpText": "In the case of a selectable item, this field points to the selection in the Recipe file (114). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXCLUDED RECIPES",
+      "dataType": "POINTER",
+      "rawType": "115.21P",
+      "required": false,
+      "helpText": "In the case of a food preference, this multiple is the list of excluded recipes contained in the Recipe file (114) which should NOT be served to the patient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BREAD/BEVERAGE DEFAULT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field, if answered Yes, means this food preference is the standard default bread/beverage for the patients on the tray tickets else if answered No, means it is not. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MEALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the meals (B N and E) for which this standard default food preference is applicable. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "GMR ALLERGIES",
+      "dataType": "POINTER",
+      "rawType": "115.225P",
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a synonym for the food preference name. The synonym is generally terminology known and used by ward/medical  personnel. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EXCLUDE EMBEDDED RECIPES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Set this field to YES if recipes embedded in the excluded recipes for  this food preference should be removed from tray tickets. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this preference unless the FHMGR key is held. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "115.2", "field": .01, "type": "regular"},
+    {"name": "115.2", "field": 1, "type": "regular"},
+    {"name": "115.2", "field": 26, "type": "regular"},
+    {"name": "115.2", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

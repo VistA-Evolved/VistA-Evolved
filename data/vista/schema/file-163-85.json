@@ -1,0 +1,49 @@
+{
+  "fileNumber": 163.85,
+  "fileName": "FEE BASIS VA TYPE OF SERVICE",
+  "globalRoot": "163.85I",
+  "globalReference": "^FBAA(163.85,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "VA Type of Service Codes are codes that have been created to track \"types\" of medical services provided to fee basis patients so that a cost analysis can be completed.  With this information we can compare outpatient VA costs to outpatient fee basis costs for \"types\" of care provided.  When assigning the VA Type of Service Code we are trying to \"group\" types of VA outpatient care which is recorded by outpatient stop code and are reflected in the Cost Distribution Report(CDR).  When uncertain of ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the two character code which is sent with the payment record to Central Fee in Austin. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "163.851",
+      "required": false,
+      "helpText": "This field contains a detailed explanation of the VA Type of Service Code. ",
+      "isMultiple": true,
+      "subFileNumber": 163.851,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "163.85", "field": .01, "type": "regular"},
+    {"name": "163.85", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

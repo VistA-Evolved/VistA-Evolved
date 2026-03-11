@@ -1,0 +1,46 @@
+{
+  "fileNumber": 161.8,
+  "fileName": "FEE BASIS PROGRAM",
+  "globalRoot": "161.8",
+  "globalReference": "^FBAA(161.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of this Fee Basis program. Fee has many different programs such as Outpatient Medical, Contract Hospital, Dental, Oxygen etc. . ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CENTRAL FEE SYSTEM IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The code the Austin Central system uses to distinguish the different Fee programs. This will be the code identifying this Fee program. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field should indicate whether or not a fee program used in the FEE Basis package is active.  If active, user's will be able to select. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

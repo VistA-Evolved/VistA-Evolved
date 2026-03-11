@@ -1,0 +1,86 @@
+{
+  "fileNumber": 697.5,
+  "fileName": "MEDICAL DIAGNOSIS/ICD CODES",
+  "globalRoot": "697.5I",
+  "globalReference": "^MCAR(697.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a list of diagnoses for the various medical tests. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "697.51PA",
+      "required": false,
+      "helpText": "This field is a multiple field which stores ICD codes for the various Diagnoses. It is not being used at the present time and is expected to be converted to a singular field, so as to facilitate looking up diagnoses by ICD code, in the future. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIAL DIAGNOSIS TYPE",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "H:HEMATOLOGY-PROVISIONAL DIAGNOSIS;HF:HEMATOLOGY-FINAL DIAGNOSIS;PC:PFT CONSULT DIAGNOSIS;C:CARDIOLOGY DIAGNOSIS;G:GI DIAGNOSIS;P:PULMONARY DIAGNOSIS;",
+      "helpText": "This field is used as a screen to allow separation of diagnoses within a specified procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "697.53P",
+      "required": false,
+      "helpText": "This field stores the various procedures with which the diagnosis is applicable. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "PROCEDURE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "697.55",
+      "required": false,
+      "helpText": "This field stores the various procedures with which the diagnosis is applicable. ",
+      "isMultiple": true,
+      "subFileNumber": 697.55,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INTEGRATOR ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "697.5", "field": .01, "type": "regular"},
+    {"name": "697.5", "field": .01, "type": "regular"},
+    {"name": "697.5", "field": .01, "type": "regular"},
+    {"name": "697.5", "field": .01, "type": "regular"},
+    {"name": "697.5", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "fileNumber": 117.4,
+  "fileName": "DIETETIC REPORT CATEGORIES",
+  "globalRoot": "117.4",
+  "globalReference": "^FH(117.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the names of the categories used in the Annual Report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "S:Specialized Medical Program;D:Primary Delivery System;P:Primary Production System;E:Dietetic Service Equipment;",
+      "helpText": "This field contains the Type of Category. An \"S\" for Specialized Medical Program, a \"D\" for Primary Delivery System, a \"P\" for Primary Production System, and \"E\" for Dietetic Service Equipment. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "UPPERCASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the entry in uppercase text. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "117.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "117.4", "field": 99, "type": "regular"},
+    {"name": "117.4", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

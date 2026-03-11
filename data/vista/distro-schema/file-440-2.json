@@ -1,0 +1,98 @@
+{
+  "fileNumber": 440.2,
+  "fileName": "DIRECT DELIVERY PATIENTS",
+  "globalRoot": "440.2IP",
+  "globalReference": "^PRC(440.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2X'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STREET ADDR.1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the patient street address 1. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STREET ADDR.2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient address 2. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STREET ADDR.3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient street address 3. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city of the patient address. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "  This is the state of the patient address. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the zip code of the patient address. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DFN#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the DFN# number. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "440.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": 4, "value": "W \"   \",$P(^(0),U,5)"},
+    {"field": 5, "value": "W \"   \",$S($D(^DIC(5,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 6, "value": "W \"   \",$P(^(0),U,7)"}
+  ]
+}

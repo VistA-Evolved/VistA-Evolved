@@ -1,0 +1,54 @@
+{
+  "fileNumber": 409.44,
+  "fileName": "OUTPATIENT PROVIDER",
+  "globalRoot": "409.44IP",
+  "globalReference": "^SDD(409.44,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the outpatient provider. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "RP409.68'I",
+      "required": true,
+      "pointerTo": 409.68,
+      "helpText": "This field contains the outpatient encounter associated with this outpatient provider. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P8932.1'",
+      "required": false,
+      "pointerTo": 8932.1,
+      "helpText": "This field contains the provider type code associated with the provider at the time of the outpatient encounter. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AO", "field": },
+    {"name": "AO1", "field": },
+    {"name": "B", "field": },
+    {"name": "OE", "field": },
+    {"name": "409.44", "field": .01, "type": "regular"},
+    {"name": "409.44", "field": .01, "type": "regular"},
+    {"name": "409.44", "field": .02, "type": "regular"},
+    {"name": "409.44", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SCE(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(409.68,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

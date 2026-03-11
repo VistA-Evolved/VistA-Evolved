@@ -1,0 +1,225 @@
+{
+  "fileNumber": 424,
+  "fileName": "1358 DAILY RECORD",
+  "globalRoot": "424I",
+  "globalReference": "^PRC(424,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTHORIZATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the entry number of the 1358 daily record. Format: sta-obligation-seq number.  e.g., 503-C10001-1 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBLIGATION #",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This is the pointer to the obligation number in file 442. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OBLIGATION;L:LIQUIDATION;A:ADJUSTMENT;AU:AUTHORIZATION;",
+      "helpText": "Type of transaction. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LIQUIDATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The amount liquidated by fiscal on this authorization.  You can have multiple liquidations against a single authorization.  A liquidation is the amount Fiscal pays on a bill. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AUTHORIZATION BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the amount the service establishes for an authorization.  A detail of each bill received against this authorization is maintained in file 424.1. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OBLIGATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the amount obligated by fiscal.  each obligation is recorded here and balances maintained in file 442.  This field will also contain  corresponding adjustment data ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that the authorization is entered into the system. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User entering authorization. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "COMPLETED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COMPLETED;",
+      "helpText": "When set to one, additional posting of bills to this authorization will be prohibited.  This field is triggered by the final field in file 424.1. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This optional field is a short description to cross-reference a liquidation with a patient, vendor or some other item to identify the liquidation against a bill. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LAST SEQUENCE USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "    This is the last sequence used for the authorizations for the obligation. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AUTHORIZATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "   This field is used to store the authorization amount with increases. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ORIGINAL AUTHORIZATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,2",
+      "length": 13,
+      "required": true,
+      "helpText": "    This field is used to store the original authorization amount. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the user who last edited this authorization. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "CPA POINTER",
+      "dataType": "POINTER",
+      "rawType": "P410'",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "This field contains the pointer value of the corresponding entry in file 410.  This field will only be set on obligation, and adjustments. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "     This field is used to store comments about this authorization. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONVERTED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:CONVERTED;",
+      "helpText": "    This field is used to mark the entry as having been converted during the installation of v4 of IFCAP. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STOP",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:STOP CONVERSION;",
+      "helpText": "     This field is used to flag the conversion of 1358's in the installation of v4 of IFCAP as having been stopped. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INTERFACE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "INTERFACE ID  ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACONV", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "B1", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "424", "field": .01, "type": "regular"},
+    {"name": "424", "field": .01, "type": "regular"},
+    {"name": "424", "field": .01, "type": "regular"},
+    {"name": "424", "field": .02, "type": "regular"},
+    {"name": "424", "field": .03, "type": "regular"},
+    {"name": "424", "field": .03, "type": "regular"},
+    {"name": "424", "field": .03, "type": "regular"},
+    {"name": "424", "field": .09, "type": "regular"},
+    {"name": "424", "field": .1, "type": "regular"},
+    {"name": "424", "field": .15, "type": "regular"},
+    {"name": "424", "field": 2, "type": "regular"},
+    {"name": "424", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W \"   \",$P(^(0),U,10)"}
+  ]
+}

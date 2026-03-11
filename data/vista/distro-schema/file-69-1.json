@@ -1,0 +1,48 @@
+{
+  "fileNumber": 69.1,
+  "fileName": "COLLECTION LIST",
+  "globalRoot": "69.1",
+  "globalReference": "^LRO(69.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COLLECTION ROUTE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": " This field contains the numeric order of the collection list.^ ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": " This field contains the date of this collection list. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST",
+      "dataType": "POINTER",
+      "rawType": "69.11P",
+      "required": false,
+      "helpText": " This field contains the a listing of test to be collected from this patient. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "LRPH", "field": },
+    {"name": "LRPH1", "field": },
+    {"name": "69.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

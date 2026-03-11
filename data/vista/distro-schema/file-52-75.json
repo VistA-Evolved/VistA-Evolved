@@ -1,0 +1,112 @@
+{
+  "fileNumber": 52.75,
+  "fileName": "IV MEDICATION ORDERS DC'D",
+  "globalRoot": "52.75",
+  "globalReference": "^PS(52.75,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME D/C",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date time that an IV order was edited or discontinued through  CPRS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .662,
+      "fieldName": "SIG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the dosage that was entered in CPRS for the IV order. ",
+      "fieldNumber_": .662
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient for which this IV order was either edited or  discontinued in CPRS. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50.7'",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This field is a pointer to PHARMACY ORDERABLE ITEM file and is copied from the IV order entered in CPRS. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ROOM-BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the room-bed of the patient related to the order.  If  no room-bed is present in the HL7, the value will be 9999. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the ward the patient is currently  admitted to. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WARD IEN",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field is a pointer to the Hospital location file - and points to the  ward the patient is currently admitted to. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PS ORDER IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the order ien within the Pharmacy Patient (#55)  file.  The value here will be nnV with V denoting an IV order for patient  pdfn within the Pharmacy Patient file as follows:   ^PS(55,pdfn,\"IV\",nn, ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WARD GROUP",
+      "dataType": "POINTER",
+      "rawType": "P57.5'",
+      "required": false,
+      "pointerTo": 57.5,
+      "helpText": "This is a pointer to the Ward Group file (#57.5). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the status of the pharmacy order as it was received.   For the purposes of this file, only two statuses will be stored:  XO  (changed) or DC (discontinued).  Additionally, there are instances where  no status is transferred thus none stored.   ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.75", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

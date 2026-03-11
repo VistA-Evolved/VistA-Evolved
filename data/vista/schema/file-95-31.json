@@ -1,0 +1,59 @@
+{
+  "fileNumber": 95.31,
+  "fileName": "LAB LOINC COMPONENT",
+  "globalRoot": "95.31",
+  "globalReference": "^LAB(95.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPONENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The name of the component or analyte measured e.g., potassium, hemoglobin, or hepatitis C antigen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The descriptive name of the component or analyte measured. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The display name of the component or analyte measured. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RELATED NAME",
+      "dataType": "SUBFILE",
+      "rawType": "95.42",
+      "required": false,
+      "helpText": "This field contains related names of the component or analyte measured. ",
+      "isMultiple": true,
+      "subFileNumber": 95.42,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "VR", "field": },
+    {"name": "95.31", "field": .01, "type": "regular"},
+    {"name": "95.31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

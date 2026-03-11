@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.44,
+  "fileName": "BPS NCPDP HELP DESK PHONE NUMBER QUALIFIER",
+  "globalRoot": "9002313.44",
+  "globalReference": "^BPS(9002313.44,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "This field is the code for the NCPDP field 549-7F Help Desk Phone Number Qualifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This field is the description for the NCPDP field 549-7F Help Desk Phone Number Qualifier. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.44", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

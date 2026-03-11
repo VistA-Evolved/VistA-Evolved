@@ -1,0 +1,39 @@
+{
+  "fileNumber": 301.94,
+  "fileName": "IVM FINANCIAL QUERY CLOSURE REASON",
+  "globalRoot": "301.94",
+  "globalReference": "^IVM(301.94,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLOSURE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the the actual reason why an IVM Financial Query Log entry was closed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLOSURE CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a code which corresponds to the actual closure reason.  These codes are hard-coded in the software to identify a specific closure reason.  Thus, this field should not be edited. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "301.94", "field": .01, "type": "regular"},
+    {"name": "301.94", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

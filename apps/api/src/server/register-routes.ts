@@ -17,6 +17,9 @@ import { initIdentityProviders } from '../auth/idp/index.js';
 // WebSocket console
 import wsConsoleRoutes from '../routes/ws-console.js';
 
+// WebSocket SSH terminal proxy (pure Roll-and-Scroll)
+import { wsTerminalRoutes } from '../routes/ws-terminal.js';
+
 // Capabilities + write-backs
 import capabilityRoutes from '../routes/capabilities.js';
 import writeBackRoutes from '../routes/write-backs.js';
@@ -392,6 +395,9 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // WebSocket console (Phase 13F)
   server.register(wsConsoleRoutes);
+
+  // WebSocket SSH terminal proxy (Master Plan)
+  server.register(wsTerminalRoutes);
 
   // RPC capability discovery (Phase 14A)
   server.register(capabilityRoutes);
@@ -869,4 +875,16 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Auto-generated domain RPC stub routes
   registerDomainRoutes(server);
+
+  // Auto-generated VistA module routes (157 packages from vista-module-gen)
+  const { registerVistaModuleRoutes } = await import('../routes/vista/index.js');
+  await registerVistaModuleRoutes(server);
+
+  // VistA Help / Documentation API
+  const vistaHelpRoutes = (await import('../routes/vista-help.js')).default;
+  server.register(vistaHelpRoutes);
+
+  // VistA Documentation Assistant (Phase VII -- 157-module knowledge base)
+  const { docAssistantRoutes } = await import('../routes/doc-assistant-routes.js');
+  server.register(docAssistantRoutes);
 }

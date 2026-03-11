@@ -1,0 +1,135 @@
+{
+  "fileNumber": 601.88,
+  "fileName": "MH DISPLAY",
+  "globalRoot": "601.88",
+  "globalReference": "^YTT(601.88,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPLAY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the unique record number for MH DISPLAY file (#601.88). It is the IEN. Numbers  under 100,000 are part of the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FONTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of an existing font type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FONTBOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Specifies font should be displayed BOLD. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FONTITALIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Specifies font should be displayed ITALIC. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FONTUNDERLINED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Specifies font should be displayed UNDERLINED. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FONTSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Specifies font should be displayed at this SIZE. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FONTCOLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specifies font should be displayed in this COLOR. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ALIGNMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Left;R:Right;C:Center;",
+      "helpText": "Specifies text should be displayed justified, centered, left or right. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Specifies left hand spacing. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specifies font should be displayed using this MASK. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of columns specified. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMPONENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RA:RadioGroup;CK:CheckList;CO:ComboBox;LI:List;ED:Edit;MA:Mask Edit;SP:Spin Edit;ME:Memo;DA:Date Picker;TR:Track Bar;OR:ORcombo Box;NA:Not Applicable;OS:Staff combo;OC:Consultation combo;",
+      "helpText": "Set of components to use in the display. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.88", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

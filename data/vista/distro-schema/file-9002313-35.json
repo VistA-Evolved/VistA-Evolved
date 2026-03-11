@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.35,
+  "fileName": "BPS NCPDP BENEFIT STAGE INDICATOR",
+  "globalRoot": "9002313.35",
+  "globalReference": "^BPS(9002313.35,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "Benefit Stage Indicator being sent on a claim or returned from the payer.  This is based on the NCPDP Standards for field C51-9X. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "Textual explanation of the Benefit Stage Indicator. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

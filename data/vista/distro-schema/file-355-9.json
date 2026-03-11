@@ -1,0 +1,116 @@
+{
+  "fileNumber": 355.9,
+  "fileName": "IB BILLING PRACTITIONER ID",
+  "globalRoot": "355.9",
+  "globalReference": "^IBA(355.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRACTITIONER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RVX",
+      "required": true,
+      "helpText": "This is the practitioner (individual provider) for whom the id number is being defined. This practitioner can either be a VA provider and reside in the NEW PERSON file or can be a NON-VA provider and will reside in the IB NON-VA BILLING PROVIDER file as an individual provider (not as a facility). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSURANCE CO",
+      "dataType": "POINTER",
+      "rawType": "P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company that has assigned a specific id to the provider.  If this data is not entered, the id number will be assumed to apply to all insurance companies for the provider. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER ID CARE UNIT",
+      "dataType": "POINTER",
+      "rawType": "*P355.96'X",
+      "required": false,
+      "pointerTo": 355.96,
+      "helpText": "This is the actual data value of the care unit to use to assign this provider id to the insurance company and provider. *** NOT CURRENTLY USED *** ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TYPE APPLIED TO",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:BOTH UB-04 AND CMS-1500 FORMS;1:UB-04 FORMS ONLY;2:CMS-1500 FORMS ONLY;",
+      "helpText": "This designates whether the id number is to be used for just UB-04 form types, just CMS-1500 form types or both form types. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILL CARE TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "0:BOTH INPATIENT AND OUTPATIENT;1:INPATIENT ONLY;2:OUTPATIENT ONLY;3:PRESCRIPTION ONLY;",
+      "helpText": "This designates whether the id number is to be used for just inpatient episodes, just outpatient episodes, both inpatient and outpatient episodes, or for just prescriptions. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROVIDER ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P355.97'X",
+      "required": true,
+      "pointerTo": 355.97,
+      "helpText": "This is the indicator of what type of id is being recorded. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the provider id that will be used for a claim when all criteria defined on this record have been met. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "INDEX VALUE INSURANCE CO",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the key value for the insurance company or '*ALL*' if no insurance company is selected.  This is to assure uniqueness in the records in the file even if the insurance company is blank. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "INDEX VALUE CARE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the key value for the care unit or '*N/A*' if no care unit is selected.  This is to assure uniqueness in  the records in the file even if the care unit is blank. ",
+      "fieldNumber_": .16
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ACARE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "355.9", "field": .03, "type": "regular"},
+    {"name": "355.9", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(36,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(36,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.9,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.9,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(355.97,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(355.97,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "fileNumber": 800000.21,
+  "fileName": "HMP LIST DOMAIN",
+  "globalRoot": "800000.21",
+  "globalReference": "^HMPD(800000.21,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a VistA data domain which can be extracted for transmission. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the short name of the VistA data domain. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the actual name of the VistA data domain. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "800000.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

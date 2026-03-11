@@ -1,0 +1,38 @@
+{
+  "fileNumber": 71.7,
+  "fileName": "SITE OF ADMINISTRATION",
+  "globalRoot": "71.7",
+  "globalReference": "^RAMIS(71.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the site of drug administration used in imaging exams. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "71.701A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 71.701,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "71.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

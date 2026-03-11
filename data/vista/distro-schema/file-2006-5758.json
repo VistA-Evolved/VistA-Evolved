@@ -1,0 +1,104 @@
+{
+  "fileNumber": 2006.5758,
+  "fileName": "DICOM RADIOLOGY PROCEDURES",
+  "globalRoot": "2006.5758",
+  "globalReference": "^MAGDICOM(2006.5758,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RADIOLOGY PROCEDURE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a copy of the RADIOLOGY PROCEDURE NAME (#.01) field of file RAD/NUC MED PROCEDURES (#71).    The DICOM Gateway stores redundant information so that image processing can continue when a connection to VistA is lost. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RADIOLOGY PROCEDURE IEN",
+      "dataType": "POINTER",
+      "rawType": "P71'",
+      "required": false,
+      "pointerTo": 71,
+      "helpText": "This is the radiology procedure for the image being processed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCEDURE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BROAD;D:DETAILED;S:SERIES;P:PARENT;",
+      "helpText": "This field is a copy of the TYPE OF PROCEDURE field (#6) as defined  for the procedure in RAD/NUC MED PROCEDURES file (#71). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CPT CODE defined for the procedure in file RAD/NUC MED  PROCEDURE (#71).  The information is obtained from field CPT CODE (#9) in the RAD/NUC MED PROCEDURE FILE (#71).  Field #9 in file #71 is a  pointer to the CPT CODE file (#81); however the remote procedure called to update this file (#2006.5758) will interpret the field and bring in the actual CPT CODE value instead of the pointer value. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "IMAGING TYPE",
+      "dataType": "POINTER",
+      "rawType": "P79.2'",
+      "required": false,
+      "pointerTo": 79.2,
+      "helpText": "This is the TYPE OF IMAGING as defined for the procedure in file RAD/NUC MED PROCEDURES (#71).    The information is obtained from field TYPE OF IMAGING (#12) in file RAD/NUC MED PROCEDRUES (#71).     The remote procedure that updates this file (#2006.5758) will marry the TYPE OF IMAGING value for the procedure to the TYPE OF IMAGING value for the appropriate OUTSIDE IMAGING LOCATION in file (2006.5759).   For each outside location it should have a TYPE OF IMAGING and for each TYPE OF IMAGING a ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is a copy of the INACTIVATION DATE field (#100) as identified for the procedure in file RAD/NUC MED PROCEDURES file (#71). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OUTSIDE IMAGE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2006.5759'",
+      "required": false,
+      "pointerTo": 2006.5759,
+      "helpText": "This is the outside image location to be used for this procedure. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HOSPITAL LOCATION IEN",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is a copy of the HOSPITAL LOCATION field (#3) as identified for the outside location in file OUTSIDE IMAGING LOCATION (#2006.5759). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "HOSPITAL LOCATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name [copy of the NAME (#.01) field of the HOSPITAL LOCATION (#44) file] associated with the HOSPITAL LOCATION IEN (#8) field of this file. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5758", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

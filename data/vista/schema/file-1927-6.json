@@ -1,0 +1,67 @@
+{
+  "fileNumber": 1927.6,
+  "fileName": "NUPA DISCHARGE PLANNING GOAL COMMENTS",
+  "globalRoot": "1927.6",
+  "globalReference": "^NUPA(1927.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4'",
+      "required": true,
+      "pointerTo": 1927.4,
+      "helpText": "The care plan that this discharge planning issue comment is attached to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISCHARGE PLANNING ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "This is the discharge planning issue that is being commented on. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.61",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.61,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER ENTERING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User entering the comment. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date & time the comment was entered. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

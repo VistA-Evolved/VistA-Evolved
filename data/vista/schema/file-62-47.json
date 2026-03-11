@@ -1,0 +1,80 @@
+{
+  "fileNumber": 62.47,
+  "fileName": "LAB CODE MAPPING",
+  "globalRoot": "62.47",
+  "globalReference": "^LAB(62.47,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Sequence number (IEN). ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONCEPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Indicates the nature of the codes and what area of the laboratory the concept relates.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LR SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CH:CHEM, HEM, TOX, RIA, SER, etc.;MI:MICROBIOLOGY;EM:ELECTRON MICROSCOPY;SP:SURGICAL PATHOLOGY;CY:CYTOLOGY;AU:AUTOPSY;BB:BLOOD BANK;",
+      "helpText": "Lab Data file (#63) subscript for this entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATABASE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P64.061'",
+      "required": true,
+      "pointerTo": 64.061,
+      "helpText": "For 'result' type codes this field indicates the related area of the Laboratory package database where answers to this code area to be stored.  The database code indicates the storage location within the Laboratory package.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ALTERNATE CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "P62.47'",
+      "required": false,
+      "pointerTo": 62.47,
+      "helpText": "Used to designate an alternate concept when the answer associated with this concept is not in a form that can be stored within the current VistA database.   Example is when VistA expects to store the answer as a pointer to a VistA file and the instance of an answer is free text.   This field will point to a concept that will allow the answer to be stored in a field which can accept the answer. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IDENTIFIER",
+      "dataType": "SUBFILE",
+      "rawType": "62.4701I",
+      "required": false,
+      "helpText": "The Identifier contains the codes/codesets that are associated  with this Concept. ",
+      "isMultiple": true,
+      "subFileNumber": 62.4701,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "62.47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

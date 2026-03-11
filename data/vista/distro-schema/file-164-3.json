@@ -1,0 +1,46 @@
+{
+  "fileNumber": 164.3,
+  "fileName": "OTHER STAGING FOR ONCOLOGY",
+  "globalRoot": "164.3",
+  "globalReference": "^ONCO(164.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "RECORDS THE NAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD RECORDING TEXT. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "164.31PA",
+      "required": false,
+      "helpText": "POINTS TO FILE CONTAINING SITE INFORMATION. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

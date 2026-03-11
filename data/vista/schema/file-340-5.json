@@ -1,0 +1,260 @@
+{
+  "fileNumber": 340.5,
+  "fileName": "AR REPAYMENT PLAN",
+  "globalRoot": "340.5",
+  "globalReference": "^RCRP(340.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPAYMENT PLAN ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ17",
+      "length": 17,
+      "required": true,
+      "helpText": "This field contains the full ID of the Repayment Plan.  The ID is in the  following format:   <site #>-RPP-<RPP # for veteran>-<IEN>   Where:   Site # ------ The Institution File Station Number   RPP # for veteran ----------------- The plan # for the veteran (i.e. if the Veteran is on their 5th plan, the plan # would be 05).   IEN --- Internal Entry Number for the plan in this file   Example:   442-RPP-01-000322 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEBTOR",
+      "dataType": "POINTER",
+      "rawType": "RP340'",
+      "required": true,
+      "pointerTo": 340,
+      "helpText": "This field contains the Debtor who is responsible for repaying the debt  contained in the Repayment Plan. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the Date the Repayment Plan was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date the first payment is due on the repayment  plan.  It will be different than the Creation Date.  The default date of  the month for a Repayment Plan Start Date will be the 28th of the month. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NO. OF PAYMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field contains the number of payments needed to pay off the  Repayment Plan.  The maximum number of payments allowed is 999. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "AMOUNT PER MONTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the monthly payment amount needed to pay off the  Repayment Plan in the number of payments listed in NO. OF PAYMENTS field. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NEW;2:CURRENT;3:LATE;4:DELINQUENT;5:DEFAULTED;6:TERMINATED;7:CLOSED;8:PAID IN FULL;",
+      "helpText": "This field contains the status of the Repayment Plan.  There are 8  statuses currently defined for the plan. The statuses and their  definitions are:   New --- The time period starting at the creation of the plan until the first payment is due.   Current ------- Payments on the plan are equal to or greater than the expected amount of payment.   Late ---- If the amount paid on the plan is less than the amount expected to be paid, but within the 30 days of the due date.                            ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date the current status took effect. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NO. OF FORBEARANCES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the total number of forbearances granted to the  debtor for this Repayment Plan. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PLAN AMOUNT OWED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total amount owed by the debtor.  This total is  calculated by all debt owed on the bills included in the plan at the time  they are added to the plan. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AUTO ADD",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether or not the Repayment Plan nightly process can add new bills for the Debtor who is linked to this plan. Y indicates  that the Debtor has given permission to allow new bills to be added to  the Repayment Plan.  N or NULL indicates that the Debtor did not give  permission. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ORIGINAL BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the original balance of the Repayment Plan when it was created using the Enter a New Repayment Plan option. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ORIGINAL NO. PAYMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Repayment Plan's originally planned number of  payments. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REVIEW?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether a Repayment Plan needs a review.  Plans with  this flag set will appear on the REPAYMENT PLAN TERMS EXCEPTION REPORT.  This field will be set when a plan's # of payments exceeds 57 months.  It  will be cleared when the plan is edited and the # payments remaining  drops below 57 months. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PRINT DEFAULT?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether a Repayment Plan needs to have the Repayment  Plan Default printed.  Plans with this field set to yes will appear on  the PRINT DEFAULT LETTER Report. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PRINT DELINQUENT?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether or not a Repayment Plan Delinquency Letter  needs to be printed for this plan.  Plans with this field set to Yes will  appear on the PRINT DELINQUENCY LETTER Report. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "AT CS?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether or not the Debtor associated with this plan  has any bills currently at Treasury for Cross Servicing Debt Referral. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "TERM LIMIT EXCEEDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the number of payments exceeded 57 (term  length).  This field is cleared when the plan is edited and the number of  payments goes below 57. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "36 MONTHS REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEEDS APPROVAL;1:APPROVED;2:DENIED;",
+      "helpText": "This field contains the status of 36 months review for plans that have  term length greater than 36 months. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCHEDULE",
+      "dataType": "DATE",
+      "rawType": "340.52DA",
+      "required": false,
+      "helpText": "This sub-file contains the payment schedule for the repayment plan. ",
+      "isMultiple": true,
+      "subFileNumber": 340.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PAYMENT",
+      "dataType": "DATE",
+      "rawType": "340.53DA",
+      "required": false,
+      "helpText": "This sub-file stores information on all of the payments made against the  repayment plan. ",
+      "isMultiple": true,
+      "subFileNumber": 340.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AUDIT",
+      "dataType": "DATE",
+      "rawType": "340.54DA",
+      "required": false,
+      "helpText": "This sub-file contains a log of the edits that have occurred to the plan. ",
+      "isMultiple": true,
+      "subFileNumber": 340.54,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FORBEARANCE",
+      "dataType": "DATE",
+      "rawType": "340.55DA",
+      "required": false,
+      "helpText": "This sub-file contains the forbearance information associated with this Repayment Plan. ",
+      "isMultiple": true,
+      "subFileNumber": 340.55,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "AR BILL",
+      "dataType": "POINTER",
+      "rawType": "340.56PA",
+      "required": false,
+      "helpText": "This field contains a list of all bills associated with the Repayment  Plan. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "PRTDEF", "field": },
+    {"name": "PRTDEL", "field": },
+    {"name": "340.5", "field": .01, "type": "regular"},
+    {"name": "340.5", "field": .02, "type": "regular"},
+    {"name": "340.5", "field": 1.02, "type": "regular"},
+    {"name": "340.5", "field": 1.03, "type": "regular"},
+    {"name": "340.5", "field": 1.05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

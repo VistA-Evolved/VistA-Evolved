@@ -1,0 +1,40 @@
+{
+  "fileNumber": 52.8,
+  "fileName": "PHARMACY ARCHIVE",
+  "globalRoot": "52.8P",
+  "globalReference": "^PSOARC(",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX #",
+      "dataType": "POINTER",
+      "rawType": "RP52'X",
+      "required": true,
+      "pointerTo": 52,
+      "helpText": "Pointer to the PRESCRIPTION file ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT #",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is used for the name of the patient. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "52.8", "field": .01, "type": "regular"},
+    {"name": "52.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

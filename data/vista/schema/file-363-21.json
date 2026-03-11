@@ -1,0 +1,37 @@
+{
+  "fileNumber": 363.21,
+  "fileName": "BILLING ITEMS",
+  "globalRoot": "363.21",
+  "globalReference": "^IBA(363.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Item that may be found on a bill that is billable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NDC #;9:MISCELLANEOUS;",
+      "helpText": "This defines the type of entry. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "363.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

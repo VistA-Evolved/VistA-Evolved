@@ -1,0 +1,118 @@
+{
+  "fileNumber": 8987.1,
+  "fileName": "MSM RTHIST SITE",
+  "globalRoot": "8987.1",
+  "globalReference": "^XUCS(8987.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "       This is the name of your site.  For example: SAN FRANCISCO VAMC ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "       This is your station number.  For example, 662 ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VOL GROUP (NODE)",
+      "dataType": "SUBFILE",
+      "rawType": "8987.13",
+      "required": false,
+      "helpText": "       This multiple defines the each node on the MPM network.  This is the same as the System Name when you install MSM. ",
+      "isMultiple": true,
+      "subFileNumber": 8987.13,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DAYS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "       This field represents the number of days data will be kept in  File #8987.2.  If NULL, then 45 days is the used for the default. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DFLT ROU NAME LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "       This is a required field that is used by the Routine Report so that routines can be grouped by name.  For example, if you enter a \"3\", then routine commands and routine global accesses will be grouped together by the first 3 characters of their name. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "DFLT GBL NAME LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "       This is a required field that is used by the Global Report so that global accesses can be grouped.  For example, if you enter a \"3\", then the global names will be grouped together by the first 3 characters of their name. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "<thresh ROU CMDS/SEC",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,1",
+      "length": 8,
+      "required": true,
+      "helpText": "       Some DHCP routines are executed very briefly.  Therefore, the number of commands they execute are relativity very small for a RTHIST session. A \"bucket\" called '<thresh' in the Routine command report is where all command counts for these types of routine(s) will be collected.  For example, if routine ABC executes 976 commands for a RTHIST session and you specify 1000 as the thresh hold value, then ABC's command count will be placed in the '<thresh' bucket. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "<thresh GBL GREFS/SEC",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,1",
+      "length": 8,
+      "required": true,
+      "helpText": "       Some DHCP routines reference global(s) very little.  Therefore, the number of global references are relativity very small for a RTHIST session.  A \"bucket\" called '<thresh' in the Global Access report is where all these type of global(s) will get placed.  For example, if global ABC is referenced 109 times fora RTHIST session and you specify 300 as the thresh hold, the ABC's reference count will be placed in the '<thresh' bucket. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCAL CMP RECIPIENTS",
+      "dataType": "POINTER",
+      "rawType": "8987.16PA",
+      "required": false,
+      "helpText": "  This field contains the local recipients of MPM alerts or informational messages from the performance monitor. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REMOTE CMP RECIPIENTS",
+      "dataType": "SUBFILE",
+      "rawType": "8987.17A",
+      "required": false,
+      "helpText": "These recipients will receive MSM PERFORMANCE DATA. They could be remote mail groups or server names specified by your ISC. Data from ALL sites will always be sent to G.CMP@ISC-SF.DOMAIN.EXT and does not need to be added here (this is the Capacity Management Directorate).   Other ISC's who wish to collect performance data from one or more sites should first create a similar mail group. To this group, add appropriate recipients, as well as the server option S.A6ALOAD2. This option should look lik",
+      "isMultiple": true,
+      "subFileNumber": 8987.17,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8987.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

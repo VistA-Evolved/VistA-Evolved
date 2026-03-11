@@ -1,0 +1,77 @@
+{
+  "fileNumber": 7118.11,
+  "fileName": "HDIS TERM/CONCEPT VUID ASSOCIATION",
+  "globalRoot": "7118.11",
+  "globalReference": "^HDISV(7118.11,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM/CONCEPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A Term is any string.  A Concept is an abstract expression of a meaning.  A concept may have multiple expressions.  For instance, the concept of blood pressure can be expressed as hypertension or high blood pressure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and timethe record is created by HDIS during VUID Implementation.   It will not be set if the VUID is assigned by Enterprise Reference Terminology (ERT). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "NATIONAL STANDARD FLAG",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The Term/Concept is part of the national standard. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FILE/FIELD",
+      "dataType": "POINTER",
+      "rawType": "7118.13PA",
+      "required": false,
+      "helpText": "The File/Field associated with the record. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID).  A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "7118.12DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 7118.12,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "7118.11", "field": .01, "type": "regular"},
+    {"name": "7118.11", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

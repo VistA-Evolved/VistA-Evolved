@@ -1,0 +1,36 @@
+{
+  "fileNumber": 160.4,
+  "fileName": "RECONSTRUCTIVE SURGERY",
+  "globalRoot": "160.4",
+  "globalReference": "^ONCO(160.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "RECONSTRUCTIVE SURGERY reconstructs, restores, or improves the shape and appearance or function of body structures that are missing, defective, damaged or misshapen by cancer or cancer-directed therapies. Reconstruction may be a part of the first course of therapy or may be done after the first course is completed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Definition of RECONSTRUCTIVE SURGERY codes. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "160.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

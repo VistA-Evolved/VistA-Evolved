@@ -1,0 +1,162 @@
+{
+  "fileNumber": 6002.03,
+  "fileName": "VBECS DSS EXTRACT",
+  "globalRoot": "6002.03",
+  "globalReference": "^VBEC(6002.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an identifier unique to this record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the PATIENT (#2) file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDERING LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the location associated with the patient hospital location at the  time of order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSFUSION LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the VBECS Facility ID (3-5 character station number) of the  Blood Bank where the specimen work (pre-transfusion testing) is done.  This field will consist of the station number + the division of where the  Blood Bank is located.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the provider that ordered the blood  product for transfusion, when avialable in VBECS. This physician may or may not be the same as the ORDERING PROVIDER. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the IEN from file 200 of the provider that ordered the Type and  Crossmatch in preparation for a transfusion. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRODUCT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PRODUCT NAME and is also referred to as the COMPONENT. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COMPONENT ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Component Class Short Name for the transfused  component. The abbreviations for component classes are: RBC = RED BLOOD CELLS FFP = FRESH FROZEN PLASMA CRYO = CRYOPRECIPITATE PLT = PLATELETS OTHER = OTHER WB = WHOLE BLOOD ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NUMBER OF UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the total number of units pooled for transfusion.  The data from  VBECS should consist of the total number of units transfused. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE/TIME OF TRANSFUSION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date and time of the blood component transfusion. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE/TIME OF RECORD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that this record was created. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the total transfused volume. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REACTION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the type of transfusion reaction.  It should consist of the first  10 characters from the VBECS source file. The values stored in this field  and the full tex associated wiht them are as follows: Anaphylaxi = Anaphylaxis Circulator = Circulatory Delayed He = Delayed Hemolytic Febrile No = Febrile Nonhemolytic Graft vs.  = Graft vs. Host disease Acute Hemo = Acute Hemolytic Transfusio = Transfusion Related Acute Lung Injury Other      = Other Post Trans = Post Transfusion - Associated Dis",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "UNIT MODIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field notes the type of modification made to the unit before  transfusion. The modification types are indicated by a single character  code. Multiple modifications are indicated as a string of single  character codes. The codes are as follows: D = Deglycerolize, F = Freeze, I = Irradiate, L = Leukoreduce, P = Pool, R = Rejuvenate, S = Split/Divide, T = Thaw, U = Thaw/Pool Cryo, V = Volume Reduce, W = Wash ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TRANSFUSION REACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if a transfusion reaction has been  indicated or not. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6002.03", "field": .01, "type": "regular"},
+    {"name": "6002.03", "field": 9, "type": "regular"},
+    {"name": "6002.03", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

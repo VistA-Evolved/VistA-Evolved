@@ -1,0 +1,38 @@
+{
+  "fileNumber": 392.8,
+  "fileName": "BENEFICIARY TRAVEL DENIAL REASONS",
+  "globalRoot": "392.8",
+  "globalReference": "^DGBT(392.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DENIAL REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the reason the Beneficiary Travel is denied. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "392.81",
+      "required": false,
+      "helpText": "This is the complete explanation for the reason the claim was denied. ",
+      "isMultiple": true,
+      "subFileNumber": 392.81,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

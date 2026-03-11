@@ -1,0 +1,250 @@
+{
+  "fileNumber": 164.33,
+  "fileName": "AJCC STAGING GROUPS",
+  "globalRoot": "164.33",
+  "globalReference": "^ONCO(164.33,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "RECORDS NUMERIC VALUE. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FREE TEXT FIELD RECORDING NAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "T-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.331I",
+      "required": false,
+      "helpText": "FREE TEXT FIELD CONTAINING TUMOR CLASS ENCODING INFOMATION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.331,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "N-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.332",
+      "required": false,
+      "helpText": "FREE TEXT FIELD CONTAINING LYMPH NODE CLASS ENCODING INFORMATION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.332,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STAGE GROUPING",
+      "dataType": "SUBFILE",
+      "rawType": "164.333",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING STAGE GROUPING INFORMATION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.333,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "M-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.334",
+      "required": false,
+      "helpText": "FREE TEXT FIELD CONTAINING METASTASIS CLASS ENCODING INFORMATION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.334,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "4TH EDITION M-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.335A",
+      "required": false,
+      "helpText": "This multiple contains the M (distant metastasis) codes from the fourth edition of the AJCC Manual on Staging of Cancer. ",
+      "isMultiple": true,
+      "subFileNumber": 164.335,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "5TH EDITION T-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.336",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.336,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "5TH EDITION N-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.337",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.337,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "5TH EDITION M-CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.338",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.338,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "6TH EDITION (T) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.34",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.34,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "6TH EDITION (T) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3311",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.3311,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "6TH EDITION (N) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.3312",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.3312,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "6TH EDITION (N) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3313",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.3313,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "6TH EDITION (M) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.3314",
+      "required": false,
+      "helpText": "This field contains the Sixth Edition Distant Metastasis (M) codes. M codes record the absence or presence of distant metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3314,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "6TH EDITION (M) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3315",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 164.3315,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "7TH EDITION (T) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.3316",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Primary Tumor (T) codes.  T codes  record the extent of the primary tumor. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3316,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "7TH EDITION (T) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3317",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Primary Tumor  (T) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3317,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "7TH EDITION (N) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.3318",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Regional Lymph Nodes (N) codes.   N codes record the absence or presence and extent of regional lymph node  metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3318,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "7TH EDITION (N) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3319",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Regional Lymph  Nodes (N) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3319,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "7TH EDITION (M) CODES",
+      "dataType": "SUBFILE",
+      "rawType": "164.35",
+      "required": false,
+      "helpText": "This field contains the Seventh Edition Distant Metastasis (M) codes.  M  codes record the absence or presence of distant metastasis. ",
+      "isMultiple": true,
+      "subFileNumber": 164.35,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "7TH EDITION (M) CODE HELP",
+      "dataType": "SUBFILE",
+      "rawType": "164.3321",
+      "required": false,
+      "helpText": "This field contains the full text of the Seventh Edition Distant  Metastasis (M) code definitions. ",
+      "isMultiple": true,
+      "subFileNumber": 164.3321,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "X", "field": },
+    {"name": "164.33", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

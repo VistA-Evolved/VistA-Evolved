@@ -1,0 +1,58 @@
+{
+  "fileNumber": 2005.83,
+  "fileName": "IMAGE INDEX FOR TYPES",
+  "globalRoot": "2005.83",
+  "globalReference": "^MAG(2005.83,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "  This field describes the image type.  It is required for   all images: Document Images and Clinical Images. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASS",
+      "dataType": "POINTER",
+      "rawType": "RP2005.82'",
+      "required": true,
+      "pointerTo": 2005.82,
+      "helpText": "Images are indexed by Class, and the Type of Image depends on the Class of Image. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field is used to inactivate an entry in this file. It affects which types can be selected in the filtering option of VistA Imaging Display. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter an abbreviation for this image type. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.83", "field": .01, "type": "regular"},
+    {"name": "2005.83", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

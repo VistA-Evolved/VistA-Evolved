@@ -1,0 +1,85 @@
+{
+  "fileNumber": 78.3,
+  "fileName": "DIAGNOSTIC CODES",
+  "globalRoot": "78.3",
+  "globalReference": "^RA(78.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of this diagnostic code.  This provides a way to do quick look-ups of a diagnostic code by its number.   Diagnostic code numbers are assigned by the system and are between 1 and 998.  Diagnostic codes above 998 are assigned by Radiology patches.       Code Number     Usage     -----------     -------------------------      999-1003       Nat'l Teleradiology Prog.     1100-1106       BI-RADS     1200-1202       Abdominal Aortic Aneurysm ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSTIC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains a short diagnostic code to indicate the results of the interpreting physician's analysis of the images.  Diagnostic codes can be between 3 and 60 characters in length and can be used as a basis for database searches.  (ie. How many 'Normal' chest exams were performed during a specific time period?)   Eight diagnostic codes are included with the original package.  Other site-specific diagnostic codes may be entered by the rad/nuc med coordinator at each site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to give a description of the diagnostic code and may be from 1-80 characters in length. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRINT ON ABNORMAL REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains a 'Yes' or 'No' value to indicate if exams with this diagnostic code should be printed on the 'Abnormal Exam Report'.  The report is used to ensure that the physician is notified of abnormal results of an exam.  This field must be set to 'Yes' before the diagnostic code is entered on the exam in order for that exam to appear on the 'Abnormal Exam Report'. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GENERATE ABNORMAL ALERT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If this code should generate an abnormal alert, enter 'y', yes at this prompt. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EXPRESSION",
+      "dataType": "POINTER",
+      "rawType": "P757.01'I",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This field is associated with the .01 field used for BI-RADS codes under  the MQSA coding system mandated by the FDA.  Whenever the BI-RADS codes  from field .01 is displayed, this field will be used to retrieve the  current FDA-mandated wording for .01 field values of \"BI-RADS CATEGORY 0\"  through \"BI-RADS CATEGORY 6\", which are in record numbers 1100 through  1106.  The retrieved value will be displayed next to the .01 field  value.  This field is initially populated by patch RA*5.0*97.  The  ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "78.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL($$EN1^RABIRAD,\"\",\"?33\")"}
+  ]
+}

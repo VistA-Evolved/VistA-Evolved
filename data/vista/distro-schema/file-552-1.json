@@ -1,0 +1,256 @@
+{
+  "fileNumber": 552.1,
+  "fileName": "CMOP REFERENCE",
+  "globalRoot": "552.1",
+  "globalReference": "^PSX(552.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY BATCH REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The unique number which identifies this data transmission. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RECEIVED;2:QUEUED;3:PROCESSED;4:CLOSED;5:HOLD;6:PRINTED;99:REJECTED;7:PROCESSING;",
+      "helpText": "The current status of this transmission.    Received   - Downloading to CMOP Database.    Queued     - Ready to transmit to vendor.    Processed  - Transmitted to vendor.    Closed     - All Rx's processed.    Hold       - Hold for review.    Printed    - Labels printed by DHCP.    Rejected   - Transmission rejected by vendor system.    Processing - Transmission is either downloading to the vendor system or                 labels are being printed on the DHCP system. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The outpatient pharmacy division responsible for this transmission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SITE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The site number of the outpatient pharmacy division responsible for this transmission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SENDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The individual responsible for this transmission. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMISSION DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the transmission was sent from the facility. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECEIVED DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the transmission was received and downloaded into the  CMOP DATABASE file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CLOSED DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time all processing was completed for this transmission. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "START SEQ #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The beginning message number from the CMOP Rx Queue file.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "END SEQ #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The ending message number from the facility's CMOP Rx Queue file.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TOTAL ORDERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The total number of patient orders included in this transmission. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TOTAL RXS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The total number of individual prescriptions included in this transmission. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RETRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "A \"1\" indicates this is a retransmission of previously sent data. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "BATCH REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The facility-batch reference number of the original transmission. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SITE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "552.114A",
+      "required": false,
+      "helpText": "  The site specific information required for processing this transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 552.114,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "552.115",
+      "required": false,
+      "helpText": "Comments or notes regarding this transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 552.115,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PROCESSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when all entries in the data transmission were  marked processed. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LABELS PRINTED",
+      "dataType": "DATE",
+      "rawType": "552.117D",
+      "required": false,
+      "helpText": "  The date/time labels were printed by DHCP. ",
+      "isMultiple": true,
+      "subFileNumber": 552.117,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ACKNOWLEDGEMENT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The general acknowledgement message for this data transmission. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PURGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:READY TO PURGE;2:PURGE COMPLETE;",
+      "helpText": "  This status indicates the purge status for the transmission.  If the status equals 1, the transmission data in the files is ready to be purged.  If the status equals 2, the purge of the data has been completed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used to store the priority for download to the vendor. If no priority has been established or the transmission has been downloaded to the vendor, this field will be null. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CONTROLLED SUBSTANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Non-CS Transmission;1:CS Transmission;",
+      "helpText": "A 1 indicates that this CMOP batch contains controlled substances. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AH", "field": },
+    {"name": "AL", "field": },
+    {"name": "AP", "field": },
+    {"name": "APQ", "field": },
+    {"name": "APRG", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AR", "field": },
+    {"name": "ART", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "552.1", "field": .01, "type": "regular"},
+    {"name": "552.1", "field": 1, "type": "regular"},
+    {"name": "552.1", "field": 1, "type": "regular"},
+    {"name": "552.1", "field": 1, "type": "regular"},
+    {"name": "552.1", "field": 1, "type": "regular"},
+    {"name": "552.1", "field": 6, "type": "regular"},
+    {"name": "552.1", "field": 6, "type": "regular"},
+    {"name": "552.1", "field": 7, "type": "regular"},
+    {"name": "552.1", "field": 12, "type": "regular"},
+    {"name": "552.1", "field": 16, "type": "regular"},
+    {"name": "552.1", "field": 19, "type": "regular"},
+    {"name": "552.1", "field": 20, "type": "regular"},
+    {"name": "552.1", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

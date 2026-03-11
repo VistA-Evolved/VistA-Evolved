@@ -1,0 +1,106 @@
+{
+  "fileNumber": 393.3,
+  "fileName": "IRT TYPE OF DEFICIENCY",
+  "globalRoot": "393.3",
+  "globalReference": "^VAS(393.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the names of the reports or Items that will be tracked by the IRT package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the three character abbreviation for the type of  report. It is used on the outputs. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DAYS FOR DICTATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number in days before the report being tracked is considered incomplete for dictation. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DAYS FOR SIGNATURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number in days before the report being tracked is considered incomplete for the physicians signature. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DAYS FOR REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number in days before the report being tracked is considered incomplete for review, if the facility reviews. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP393.41'",
+      "required": true,
+      "pointerTo": 393.41,
+      "helpText": "This field is a pointer to the TYPE OF CATEGORY file 393.41. It stores the category that the deficiency falls under. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TRACK DEFICIENCY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field turns the tracking of the deficiency on or off. If this field is set to 'Yes' or 1, the deficiency will be one that is tracked by the site.  If this field is set to 'N0' or 0, the facility will not track this deficiency and this  deficiency will not appear as a choice in any of the  Enter/Edit options. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STANDARD DEFICIENCY?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is checked by the IRT background jobs,  Options:   (IRT Update Std. Deficiencies & IRT Update Std. Def. Background Job). If the field is set to 1 (YES) this deficiency is considered a standard deficiency by the site.  The background job will then check this field and create an entry for the patient by admission for the standard deficiency.  If this field is set to 0 (NO), it is not considered a standard deficiency and therefore no IRT entry will be made for that deficiency. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "UNEDITABLE DEFICIENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is not seen by the user.  It distinguishes the deficiencies that are transported with the TYPE OF DEFICIENCY file 393.3.  Those deficiencies are highlighted  on the screen under the  Add a New/Edit Deficiency option.  This is the field that is checked for highlighting purposes. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "393.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

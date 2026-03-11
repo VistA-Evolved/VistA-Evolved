@@ -1,0 +1,27 @@
+{
+  "fileNumber": 58.82,
+  "fileName": "CS ORDER STATUS",
+  "globalRoot": "",
+  "globalReference": "^PSD(58.82,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The order status for Controlled Substances requests. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.82", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

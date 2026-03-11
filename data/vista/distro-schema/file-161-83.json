@@ -1,0 +1,40 @@
+{
+  "fileNumber": 161.83,
+  "fileName": "FEE BASIS ID CARD AUDIT",
+  "globalRoot": "161.83P",
+  "globalReference": "^FBAA(161.83,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Veteran for whom ID card was changed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME CARD NUMBER CHANGED",
+      "dataType": "DATE",
+      "rawType": "161.831DA",
+      "required": false,
+      "helpText": "Date and time the ID card number was modified. ",
+      "isMultiple": true,
+      "subFileNumber": 161.831,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.83", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

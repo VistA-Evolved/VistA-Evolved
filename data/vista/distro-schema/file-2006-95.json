@@ -1,0 +1,140 @@
+{
+  "fileNumber": 2006.95,
+  "fileName": "IMAGE ACCESS LOG",
+  "globalRoot": "2006.95",
+  "globalReference": "^MAG(2006.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMAGE ACCESS IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This field contains the internal entry number of the image access. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACCESS TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field describes the type of access made to the image or page of image abstracts. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user who accessed the image or page of abstracts. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2005'",
+      "required": true,
+      "pointerTo": 2005,
+      "helpText": "This field contains a pointer to the image that was accessed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USER INTERFACE SOFTWARE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates the software package that was being used to access the image. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WORKSTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field records the 3-letter abbreviation of the workstation on which the image access was made.  Meaningful only for MSM  systems. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACCESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date and time of the image access. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field indicates the patient whose images were accessed (optional). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IMAGE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of images accessed for abstract accesses ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SESSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the IEN of the Imaging Windows Session file. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Records the institution where the Imaging event took place.  ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ADDITIONAL DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains audit-specific information that cannot be fully  recorded in other fields in the IMAGE ACCESS LOG File.  The specific  information contained is based on the value of the USER INTERFACE  SOFTWARE Field (#4). ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.95", "field": .01, "type": "regular"},
+    {"name": "2006.95", "field": 6, "type": "regular"},
+    {"name": "2006.95", "field": 9, "type": "regular"},
+    {"name": "2006.95", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 7, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

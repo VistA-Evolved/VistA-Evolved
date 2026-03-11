@@ -1,0 +1,165 @@
+{
+  "fileNumber": 409.48,
+  "fileName": "SDSC SERVICE CONNECTED CHANGES",
+  "globalRoot": "409.48",
+  "globalReference": "^SDSC(409.48,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "RP409.68'X",
+      "required": true,
+      "pointerTo": 409.68,
+      "helpText": "This is the Encounter Number from file #409.68 (Outpatient Encounter)  which was determined needs to be reviewed.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that this encounter was last edited through the ASCD options. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who last edited this encounter through the ASCD options. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date that this encounter was added to this file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NEW;R:REVIEW;C:COMPLETED;",
+      "helpText": "This field contains the status of this encounter.     \"NEW\"       - this encounter was recently added to this file.     \"REVIEW\"    - this encounter was forwarded for clinical review.     \"COMPLETED\" - edits to this encounter are complete and only a                   supervisor may make further modifications. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SERV. CONNECT (OK BY USER?)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will contain 1 ('YES') or 0 ('NO') based on the user determination of the encounter's service connected value. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE OF ENCOUNTER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the actual date of the encounter copied from the OUTPATIENT ENCOUNTER file #409.68 at the time of the compile. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the primary provider for the encounter determined  at the time of the compile. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SERV. CONNECT (OK BY VBA/ICD?)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will contain 1 ('YES') or 0 ('NO') depending on whether the automation or compile determined that the VBA/ICD codes found for this patient and encounter provided a match. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CLAIMS TRACKING ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will contain the Claims Tracking Entry for a record which may  have been modified. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the  patient's DFN for the encounter. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field is the medical center division assigned to the encounter. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SERV. CONNECT (ORIGINAL VALUE)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will contain 1 ('YES') or 0 ('NO') based on the original encounter's service connected value. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRACK EDITS",
+      "dataType": "SUBFILE",
+      "rawType": "409.481A",
+      "required": false,
+      "helpText": "This multiple field tracks each edit made to this encounter through the ASCD options. ",
+      "isMultiple": true,
+      "subFileNumber": 409.481,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "409.48", "field": .01, "type": "regular"},
+    {"name": "409.48", "field": .02, "type": "regular"},
+    {"name": "409.48", "field": .04, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "409.48", "field": .07, "type": "regular"},
+    {"name": "409.48", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

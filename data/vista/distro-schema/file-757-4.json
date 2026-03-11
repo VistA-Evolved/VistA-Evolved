@@ -1,0 +1,41 @@
+{
+  "fileNumber": 757.4,
+  "fileName": "SHORTCUTS",
+  "globalRoot": "757.4P",
+  "globalReference": "^LEX(757.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXPRESSION",
+      "dataType": "POINTER",
+      "rawType": "RP757.01'",
+      "required": true,
+      "pointerTo": 757.01,
+      "helpText": "Pointer to an expression in file #757.01.  This expression will be returned if any of the context sensitive shortcuts are detected in the user input. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORTCUTS",
+      "dataType": "SUBFILE",
+      "rawType": "757.401",
+      "required": false,
+      "helpText": "This is a list of shortcuts by context. ",
+      "isMultiple": true,
+      "subFileNumber": 757.401,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "ARA", "field": },
+    {"name": "B", "field": },
+    {"name": "757.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

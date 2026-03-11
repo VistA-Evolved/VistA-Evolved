@@ -1,0 +1,358 @@
+{
+  "id": "fileman",
+  "name": "VA FileMan",
+  "description": "Data dictionary, file editing, inquire, search, print",
+  "vdlManual": "fileman-technical-manual.pdf",
+  "generatedAt": "2026-03-11T04:21:11.854Z",
+  "files": {
+    "count": 7,
+    "items": [
+      {
+        "fileNumber": 0,
+        "fileName": "File #0",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 0.4,
+        "fileName": "File #0.4",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 1,
+        "fileName": "File #1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 1.1,
+        "fileName": "File #1.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 1.2,
+        "fileName": "File #1.2",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 1.5,
+        "fileName": "File #1.5",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 1.6,
+        "fileName": "File #1.6",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 10,
+    "items": [
+      {
+        "name": "DDR GETS ENTRY DATA",
+        "tag": "GETSC",
+        "routine": "DDR2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GETS ATTRIBUTES",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Calls database server at GETS^DIQ. "
+      },
+      {
+        "name": "DDR LISTER",
+        "tag": "LISTC",
+        "routine": "DDR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "LIST ATTRIBUTES",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "DDR FILER",
+        "tag": "FILEC",
+        "routine": "DDR3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "EDIT RESULTS",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "EDIT MODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Generic call to file edits into FM file. "
+      },
+      {
+        "name": "DDR VALIDATOR",
+        "tag": "VALC",
+        "routine": "DDR3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMETERS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This function allows the application to validate user input to a field before filing data. The call uses the database server VAL^DIE call. "
+      },
+      {
+        "name": "DDR DELETE ENTRY",
+        "tag": "DIKC",
+        "routine": "DDR1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMETERS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This function deletes an entry in a FileMan file using ^DIK. "
+      },
+      {
+        "name": "DDR LOCK/UNLOCK NODE",
+        "tag": "LOCKC",
+        "routine": "DDR1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMETERS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This function will lock or unlock an M global node.  Also, this function allows the calling application to specify the timeout (in seconds) for a 'lock' command. "
+      },
+      {
+        "name": "DDR FIND1",
+        "tag": "FIND1C",
+        "routine": "DDR2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMETERS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This function returns the internal entry number of a record using $$FIND1^DIC. "
+      },
+      {
+        "name": "DDR GET DD HELP",
+        "tag": "GETHLPC",
+        "routine": "DDR2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "DDR FINDER",
+        "tag": "FINDC",
+        "routine": "DDR0",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "FIND ATTRIBUTES",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "DDR KEY VALIDATOR",
+        "tag": "KEYVAL",
+        "routine": "DDR3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VALUES TO VALIDATE",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Validates that values passed in do not violate key integrity.  Underlying DBS call is KEYVAL^DIE. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 10,
+    "items": [
+      {
+        "name": "DI SET MUMPS OS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI MGMT MENU",
+        "type": "menu",
+        "securityKey": "XUMGR",
+        "displayText": ""
+      },
+      {
+        "name": "DI REINITIALIZE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI PRINT COMPILE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI INPUT COMPILE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI DD COMPILE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI DDMAP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI DDUCHK",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI DDU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DI SORT COMPILE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 10,
+    "items": [
+      {
+        "prompt": "GETS ATTRIBUTES:",
+        "rpcName": "DDR GETS ENTRY DATA",
+        "paramName": "GETS ATTRIBUTES",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LIST ATTRIBUTES:",
+        "rpcName": "DDR LISTER",
+        "paramName": "LIST ATTRIBUTES",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EDIT RESULTS:",
+        "rpcName": "DDR FILER",
+        "paramName": "EDIT RESULTS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EDIT MODE:",
+        "rpcName": "DDR FILER",
+        "paramName": "EDIT MODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMETERS:",
+        "rpcName": "DDR VALIDATOR",
+        "paramName": "PARAMETERS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMETERS:",
+        "rpcName": "DDR DELETE ENTRY",
+        "paramName": "PARAMETERS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMETERS:",
+        "rpcName": "DDR LOCK/UNLOCK NODE",
+        "paramName": "PARAMETERS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMETERS:",
+        "rpcName": "DDR FIND1",
+        "paramName": "PARAMETERS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FIND ATTRIBUTES:",
+        "rpcName": "DDR FINDER",
+        "paramName": "FIND ATTRIBUTES",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VALUES TO VALIDATE:",
+        "rpcName": "DDR KEY VALIDATOR",
+        "paramName": "VALUES TO VALIDATE",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 4.6,
+  "fileName": "TRANSMISSION SCRIPT",
+  "globalRoot": "4.6",
+  "globalReference": "^XMB(4.6,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Transmission scripts are used by the MailMan script processor to link up systems.  The entries in this file are 'Called' as a kind of 'macro' by any of the scripts in the DOMAIN file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "4.61",
+      "required": false,
+      "helpText": "This is the actual script.  It consists of a command per line that is interpreted by the MailMan script processor. ",
+      "isMultiple": true,
+      "subFileNumber": 4.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "4.62",
+      "required": false,
+      "helpText": "A brief description of the purpose of the script. ",
+      "isMultiple": true,
+      "subFileNumber": 4.62,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

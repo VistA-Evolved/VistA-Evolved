@@ -207,13 +207,13 @@ function PatientTable({ patients, loading, emptyMessage }: { patients: PatientEn
 function WardListsTab() {
   const [wards, setWards] = useState<Ward[]>([]);
   const [wardsLoading, setWardsLoading] = useState(true);
-  const [wardsPendingTargets, setWardsPendingTargets] = useState<string[]>([]);
+  const [, setWardsPendingTargets] = useState<string[]>([]);
   const [wardsRpcUsed, setWardsRpcUsed] = useState<string[]>([]);
   const [wardsError, setWardsError] = useState<string | null>(null);
   const [selectedWard, setSelectedWard] = useState('');
   const [patients, setPatients] = useState<PatientEntry[]>([]);
   const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [, setPatientsPendingTargets] = useState<string[]>([]);
   const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
 
   useEffect(() => {
@@ -298,12 +298,12 @@ function ProviderPatientsTab() {
 function TeamsTab() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [teamsLoading, setTeamsLoading] = useState(true);
-  const [teamsPendingTargets, setTeamsPendingTargets] = useState<string[]>([]);
+  const [, setTeamsPendingTargets] = useState<string[]>([]);
   const [teamsRpcUsed, setTeamsRpcUsed] = useState<string[]>([]);
   const [selectedTeam, setSelectedTeam] = useState('');
   const [patients, setPatients] = useState<PatientEntry[]>([]);
   const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [, setPatientsPendingTargets] = useState<string[]>([]);
   const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
 
   useEffect(() => {
@@ -360,12 +360,12 @@ function TeamsTab() {
 function SpecialtyTab() {
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [specialtiesLoading, setSpecialtiesLoading] = useState(true);
-  const [specialtiesPendingTargets, setSpecialtiesPendingTargets] = useState<string[]>([]);
+  const [, setSpecialtiesPendingTargets] = useState<string[]>([]);
   const [specialtiesRpcUsed, setSpecialtiesRpcUsed] = useState<string[]>([]);
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
   const [patients, setPatients] = useState<PatientEntry[]>([]);
   const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [, setPatientsPendingTargets] = useState<string[]>([]);
   const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
 
   useEffect(() => {

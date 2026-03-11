@@ -1,0 +1,3407 @@
+{
+  "fileNumber": 423,
+  "fileName": "CALM/LOG CODE SHEET",
+  "globalRoot": "423I",
+  "globalReference": "^PRCF(423,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the code sheet identifier or CALM reference number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this code sheet was created. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SYSTEM IDENTIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "LOG:LOG;CLM:CALM;FEE:FEE;FEN:FEN;CAP:CAPPS;IRS:IRS;ISM:ISMS;PHA:PHA;CLI:CALM;PRC:PRC;",
+      "helpText": "This is the system identifier. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CODE",
+      "dataType": "SUBFILE",
+      "rawType": "423.06A",
+      "required": false,
+      "helpText": "This is the CALM code. ",
+      "isMultiple": true,
+      "subFileNumber": 423.06,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "BATCH LIST KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "TRANSMIT LIST KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the string identifying the time and user creating a list of code sheets to be transmitted to Austin. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "ERROR IN BATCHING KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the key number ($H_\"-\"_DUZ) used to differentiate code sheets errors found by the code sheet batch and print option. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .231,
+      "fieldName": "BATCHING ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO 'ZEROTH' NODE;2:NO 'TRANS' NODE;3:MISSING TRANSMISSION DATE;4:MISSING TECHNICIAN;5:INVALID OR MISSING STATION #;6:INVALID OR MISSING BATCH TYPE;",
+      "fieldNumber_": .231
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "REPRINT LIST KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the string of time_user.  It is used for creating a  list of code sheets to be retransmitted to Austin. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "ON BUDGET LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "BATCHED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;I:BATCHFLAG;Y:YES;",
+      "helpText": "YES identifies if this code sheet is to be printed. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "BACKGROUND BATCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used as a flag to process code sheets in a background job. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "DATE PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the code sheet was printed. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the transmission date of this CALM code sheet. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "BATCH TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP423.9'",
+      "required": true,
+      "pointerTo": 423.9,
+      "helpText": "This is the batch type for this transmission. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the batch number for this transmission. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "BATCH PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the batch priority for this transmission. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "TRANSMISSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CALM batch transmission number. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": .95,
+      "fieldName": "CODE SHEET LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the length of the code sheet. ",
+      "fieldNumber_": .95
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of the station making the transmission. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EDIT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the edit template for this transmission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the transaction status code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the transaction date. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "DOCUMENT DATE",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is the date of the transaction document. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the reference number for this transaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "PAT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This is the PAT number for this transaction. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "VOUCHER/TICKET NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the voucher/ticket number. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "YALD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the standard YALD code or a dollar amount. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DELIVERY MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the delivery month. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOURCE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VA SUPPLY FUND - DEPOT;2:VA SUPPLY FUND - STATION;3:NON-FEDERAL SOURCES;4:GSA;5:OTHER FED AGENCIES, A/C, OTHER VA;6:ACCRUED SVCS PAY - FEDERAL;7:ACCRUED SVCS PAY - NON FEDERAL;",
+      "helpText": "This is the source code. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the date of the delivery. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CONTROL POINT ($ ALLOWED)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Fund Control Point number. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the standard 6 digit cost center number. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ANALYSIS ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the analysis of the account. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SUBACCOUNT 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the CALM 4 standard number sub-account. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount of the transaction for the first subaccount. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SUBACCOUNT 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the sub-account number. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "AMOUNT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount of the transaction for the second subaccount. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LIQUIDATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:C;P:P;F:F;$:$;",
+      "helpText": "This is the liquidation code. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LIQUIDATION AMOUNT 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the liquidation amount 1. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LIQUIDATION AMOUNT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the liquidation amount 2. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RECEIVABLE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CONTING ASSET T/C 932;1:FEDERAL G/L 3011;2:NON FEDERAL G/L 3012;3:REIMB - FED  G/L 1022;4:REIMB - NON FED G/L 1022;5:REIMB - Q&S G/L 1022;",
+      "helpText": "This is the receivable code. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SUB ACCOUNT/PAYROLL ANALYSIS",
+      "dataType": "SUBFILE",
+      "rawType": "423.01A",
+      "required": false,
+      "helpText": "This is the subaccount payroll analysis. ",
+      "isMultiple": true,
+      "subFileNumber": 423.01,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SOC SEC NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the social security number of the employee, if appropriate. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "STUB NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the stub name. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "LINE NUMBER (1-38)",
+      "dataType": "SUBFILE",
+      "rawType": "423.02A",
+      "required": false,
+      "helpText": "This is the line number of the transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 423.02,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PAT REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PENDING ACCOUNTING TRANSACTION reference number. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SECOND STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the three character second station number. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "INVENTORY ACCOUNT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 2 character inventory account code. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "TRANSFER FROM STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station that is the source of the transferred funds. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "TRANSFER TO STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station that receives the transferred funds. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ACCRUAL COST CENTER LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "423.03A",
+      "required": false,
+      "helpText": "This is the accrual cost center line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.03,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SECTION A",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an 'A' if section A is to be used, or a '$'  to terminate the code sheet. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SECTION B",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 'B' if section B is to be used, or a '$' to terminate the code sheet. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SECTION C",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 'C' if section C is to be used, or a '$' to terminate the code sheet. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SECTION D",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 'D' if section D is to be used, or a '$' to terminate the code sheet. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "SECTION B LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "423.04A",
+      "required": false,
+      "helpText": "This is the section B line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.04,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "Q & S AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the quarter and subsistence amount. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "Q & S STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TERMINAL LEAVE PAYMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Theses are terminal leave payments. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ACCOUNTING MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the accounting month. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "REC STA OR FCP",
+      "dataType": "SUBFILE",
+      "rawType": "423.05A",
+      "required": false,
+      "helpText": "This is the receiving station or the fund control point. ",
+      "isMultiple": true,
+      "subFileNumber": 423.05,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LIQ CODE 1",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:C;P:P;F:F;1:1;2:2;3:3;",
+      "helpText": "This is the liquidation code 1, letters for the current year and numbers for the prior year. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "LIQ CODE 2",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "F:F;C:C;P:P;",
+      "helpText": "This is the liquidation code 2. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "VENDOR ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the vendor identification number. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "CHECK ENCLOSURE CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:1;2:2;5:5;F:F;P:P;X:X;",
+      "helpText": "This is the standard CALM check enclosure code number. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "VENDOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor name. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "FIRST ADDRESS LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the vendor address. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "SECOND ADDRESS LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the vendor address. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the vendor address. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the two character abbreviation of the state of the vendor address. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 5 or 9 digit zip code of the  vendor address. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "INVOICE/BILL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the invoice or bill number to identify the payment. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "COST CENTER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 6 digit cost center 2 number. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "ANALYSIS ACCOUNT 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the analysis account 2. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "COST CENTER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 6 digit cost center 2 number. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "VENDOR/AGENT CASHIER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor/agent cashier identification number. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PAT ADVANCE REF #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the PENDING ACCOUNTING TRANSACTION (PAT) advance reference number. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ADVANCE AMT/APPLIED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the advance applied amount. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "AMOUNT CLAIMED 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount claimed 1. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "AMOUNT CLAIMED 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount claimed 2. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the employee receiving a travel advance. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DELIVERY MONTH - 921.60",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the 2 letter delivery month. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DELIVERY DATE - 920",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 3 character delivery date. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "RECEIVING STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the receiving station. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "CONTROL POINT ($ NOT ALLOWED)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the fund control point number. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "DOCUMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the document number. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "SF ACCT CODE LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "423.07A",
+      "required": false,
+      "helpText": "This is the SF Accounting code line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.07,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "FROM SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the lender to section A on a CALM 973 code sheet. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "APPROPRIATION CODE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the appropriation code 1. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "ACCOUNT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the account code. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "COST CENTER 'A' LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "423.08A",
+      "required": false,
+      "helpText": "This is the cost center line 'A' number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.08,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "TO SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the receiving section on a CALM 973 code sheet. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "APPROPRIATION CODE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the appropriation code 2. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "FUND CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the fund control point number. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "COST CENTER 'B' LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "423.09A",
+      "required": false,
+      "helpText": "This is the cost center line 'B' number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.09,
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TT974 LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "423.1A",
+      "required": false,
+      "helpText": "This is the TT974 line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.1,
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "LINE #",
+      "dataType": "SUBFILE",
+      "rawType": "423.11A",
+      "required": false,
+      "helpText": "This is the line number for various multiple fields within CALM. ",
+      "isMultiple": true,
+      "subFileNumber": 423.11,
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "ACTION CODE 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADDITIONS;2:SUBTRACTIONS;3:DATA OR POSITIVE AMT (OVERLAY);4:NEGATIVE AMOUNTS (OVERLAY);",
+      "helpText": "This is the action code 1. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "ACTION CODE 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADDITIONS;2:SUBTRACTIONS;3:DATA OR POSITIVE AMT (OVERLAY);4:NEGATIVE AMOUNTS (OVERLAY);$:$;",
+      "helpText": "This is the action code 2. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "AMOUNT 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount 1. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "AMOUNT 2 (9)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount 2. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "LIQ. CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:C;P:P;F:F;",
+      "helpText": "This is the liquidation code. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "SUB ACCT/GL ACCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the standard subaccount number or general ledger account number. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "GROSS PAYMENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the gross payment amount. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "AMOUNT TO BE LIQUIDATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount to be liquidated. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "GENERAL LEDGER ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the standard 4 number general ledger account number. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "OFFSET AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the amount to be offset. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "OFFSET REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reference number of the offset. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "OFFSET STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station number of the offset. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "REF # (2ND LINE)",
+      "dataType": "SUBFILE",
+      "rawType": "423.12A",
+      "required": false,
+      "helpText": "This is the second line reference number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.12,
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "941 LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "423.13A",
+      "required": false,
+      "helpText": "This is the 941 line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.13,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "CREDITOR SSN OR VENDOR ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the creditor social security number or the vendor identification number. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "VENDOR TYPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the vendor type. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "ORIGINAL TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the original transaction code. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "ORIGINAL STATUS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the original status code. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "ORIGINAL TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "RDXO",
+      "required": true,
+      "helpText": "This is the original transaction date. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "PAT TYPE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:B;C:C;J:J;L:L;S:S;T:T;W:W;",
+      "helpText": "This is the PENDING ACCOUNTING TRANSACTION (PAT) type code. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "945 LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "423.14A",
+      "required": false,
+      "helpText": "This is the 945 line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.14,
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "946 LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "423.15A",
+      "required": false,
+      "helpText": "This is the 946 line number. ",
+      "isMultiple": true,
+      "subFileNumber": 423.15,
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "SUB ACCOUNT",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the subaccount. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "LINE NUMBER (1-5)",
+      "dataType": "SUBFILE",
+      "rawType": "423.16A",
+      "required": false,
+      "helpText": "This is a line number which cannot exceed 5 records. ",
+      "isMultiple": true,
+      "subFileNumber": 423.16,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ACCOMPLISHED DATE",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is the accomplished date. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PAT ACTION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:UPDATE EXISTING PAT RECORD;2:REESTABLISH RECEIVABLE PAT RECORD;",
+      "helpText": "This is the PENDING ACCOUNTING TRANSACTION code. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "SERVICE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:01;02:02;03:03;04:04;05:05;06:06;07:07;08:08;09:09;10:10;11:11;12:12;13:13;14:14;15:15;16:16;17:17;18:18;19:19;20:20;21:21;22:22;40:40;41:41;42:42;43:43;44:44;45:45;46:46;",
+      "helpText": "This is the service code. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "INVOICE OR BILL #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the invoice or bill number. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "DOCUMENT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the document number. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "929 ANALYSIS ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 929 analysis account. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "929 ANALYSIS ACCOUNT 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 929 analysis account 2. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "BALANCE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the balance amount. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "BALANCE AMOUNT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the balance amount 2. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CP/ALD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the fund control point number or Appropriation Limitation Department (ALD) code. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "P/S ANALYSIS ACCOUNT",
+      "dataType": "SUBFILE",
+      "rawType": "423.17A",
+      "required": false,
+      "helpText": "This is the personal service analysis account. ",
+      "isMultiple": true,
+      "subFileNumber": 423.17,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "KEYPUNCH CODE",
+      "dataType": "SUBFILE",
+      "rawType": "423.18",
+      "required": false,
+      "helpText": "This is the keypunch code. ",
+      "isMultiple": true,
+      "subFileNumber": 423.18,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "BLANK FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a blank field used to hold a space and a CALM \\ code sheet. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "RECEIVING STATION - 920.04",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the receiving station. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "939 YALD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the valid YALD code. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "COST CENTER #1",
+      "dataType": "POINTER",
+      "rawType": "P420.1'",
+      "required": false,
+      "pointerTo": 420.1,
+      "helpText": "This field contains the 921 analysis account for VACO. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 116.1,
+      "fieldName": "PERCENT 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 116.1
+    },
+    {
+      "fieldNumber": 116.2,
+      "fieldName": "YALD 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 116.2
+    },
+    {
+      "fieldNumber": 116.3,
+      "fieldName": "CP 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 116.3
+    },
+    {
+      "fieldNumber": 116.4,
+      "fieldName": "COST CENTER #2",
+      "dataType": "POINTER",
+      "rawType": "P420.1'",
+      "required": false,
+      "pointerTo": 420.1,
+      "fieldNumber_": 116.4
+    },
+    {
+      "fieldNumber": 116.5,
+      "fieldName": "PERCENT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 116.5
+    },
+    {
+      "fieldNumber": 116.6,
+      "fieldName": "YALD 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 116.6
+    },
+    {
+      "fieldNumber": 116.7,
+      "fieldName": "CP 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 116.7
+    },
+    {
+      "fieldNumber": 116.8,
+      "fieldName": "COST CENTER 3",
+      "dataType": "POINTER",
+      "rawType": "P420.1'",
+      "required": false,
+      "pointerTo": 420.1,
+      "fieldNumber_": 116.8
+    },
+    {
+      "fieldNumber": 116.9,
+      "fieldName": "PERCENT 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 116.9
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "P&R CC (1-7)",
+      "dataType": "POINTER",
+      "rawType": "423.0117PA",
+      "required": false,
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 117.1,
+      "fieldName": "YALD 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 117.1
+    },
+    {
+      "fieldNumber": 117.2,
+      "fieldName": "CP 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 117.2
+    },
+    {
+      "fieldNumber": 117.3,
+      "fieldName": "COST CENTER 4",
+      "dataType": "POINTER",
+      "rawType": "P420.1'",
+      "required": false,
+      "pointerTo": 420.1,
+      "fieldNumber_": 117.3
+    },
+    {
+      "fieldNumber": 117.4,
+      "fieldName": "PERCENT 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 117.4
+    },
+    {
+      "fieldNumber": 117.5,
+      "fieldName": "YALD 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 117.5
+    },
+    {
+      "fieldNumber": 117.6,
+      "fieldName": "CP 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 117.6
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "TRANSPORTATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "MARK UP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "PAYABLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "DOCUMENT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CERTIFIED INVOICE;",
+      "helpText": "This is the document type. ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "DOCUMENT LOCATOR NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the document locator number. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "DISCOUNT PERCENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2O",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the discount percent amount. ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "DISCOUNT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0O",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of discount days. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "DISCOUNT TERMS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "X:STANDARD;P:PROX;E:EOM;",
+      "helpText": "This is the set of codes for discount terms. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "DISCOUNT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0O",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the discount amount. ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the invoice number. ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "INVOICE DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "This is the date of the invoice. ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "INVOICE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0O",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the invoice amount. ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "SHIPPING AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2O",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the shipping amount. ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "DATE INVOICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "This is the date the invoice was received. ",
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "MEMO 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the first memo. ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "MEMO 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the second memo, if applicable. ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "MEMO 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the third memo, if applicable. ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "INTEREST INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "X:BLANK;I:INTEREST ONLY;P:PAYMENT ONLY;",
+      "helpText": "This is the interest indicator. ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "INVOICE SUFFIX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the invoice suffix. ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "CAPPS LIQUIDATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COMPLETE;P:PARTIAL;",
+      "helpText": "This is the CAPPS liquidation code. ",
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 167,
+      "fieldName": "CAPPS LIQUIDATION AMT 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2O",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the CAPPS liquidation amount 1. ",
+      "fieldNumber_": 167
+    },
+    {
+      "fieldNumber": 168,
+      "fieldName": "CAPPS LIQUIDATION AMT 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2O",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the CAPPS liquidation amount 2. ",
+      "fieldNumber_": 168
+    },
+    {
+      "fieldNumber": 169,
+      "fieldName": "DATE SERVICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is the date that the services were performed or completed. ",
+      "fieldNumber_": 169
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "MONEY MANAGEMENT EXEMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLANK;X:EXEMPT;",
+      "helpText": "This is the indicator for whether funds are money  management exempt. ",
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "CAPPS PRODUCT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "X:NORMAL;P:PRODUCE;M:MEAT;F:PROGRESS;D:DAIRY;C:CONTRACT;V:PRIME VENDOR;",
+      "helpText": "This is the set of codes for the CAPPS product type. ",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "CAPPS SUBACCOUNT 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the CAPPS subaccount 1. ",
+      "fieldNumber_": 172
+    },
+    {
+      "fieldNumber": 173,
+      "fieldName": "CAPPS SUBACCOUNT 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is CAPPS subaccount 2. ",
+      "fieldNumber_": 173
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "LINE ITEM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the line item number. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 300.1,
+      "fieldName": "LOG BATCH NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number that is created automatically upon creation of new log code sheets (i.e., Station Number, Purchase Order Number, (period (.)), and Partial Number (period and partial number are used for receiving only). ",
+      "fieldNumber_": 300.1
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "TOTAL VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,2O",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the total value. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "QUANTITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the quantity of invoice items. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "RP420.5'O",
+      "required": true,
+      "pointerTo": 420.5,
+      "helpText": "This is the unit of issue for the invoice item(s). ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "FISCAL YEAR OF FUNDING",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0O",
+      "length": 1,
+      "required": true,
+      "helpText": "This is the fiscal year of funding. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "FISCAL MONTH",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "1:JANUARY;2:FEBRUARY;3:MARCH;4:APRIL;5:MAY;6:JUNE;7:JULY;8:AUGUST;9:SEPTEMBER;0:OCTOBER;J:NOVEMBER;K:DECEMBER;",
+      "helpText": "This is the month of fiscal funding. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "DUE-IN DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "This is the due-in date for the invoice item(s). ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 306.1,
+      "fieldName": "DATE OF RECEIPT",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is the partial receipt date. ",
+      "fieldNumber_": 306.1
+    },
+    {
+      "fieldNumber": 306.2,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "This is the date of item receipt. ",
+      "fieldNumber_": 306.2
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "STOCK NUMBER (NSN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "   DLA ACQUISITIONS code sheets, enter 13 digit NSN.    UNPOSTED RECEIVING non-drug items, or drug items from Depot,  enter 3 blanks followed by 9 or 10 digit N.I.I.N. code (National  Stock number, without leading FSC code.)    UNPOSTED RECEIVING  Drugs from any source other than Depot    cc 1     'A' if narcotic, 'L' if controlled substance, or 'D' otherwise.    cc 2-13  NDC             cc 2-7 labeler code.  If not 6 digits, put in 1 leading 0.             cc 8-11 product code.             cc 1",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "N.I.I.N. (STOCK NO.)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the last nine digits of the National Stock Number and the Suffix. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "NOMENCLATURE (21)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the 21 character nomenclature entry. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "NOMENCLATURE (15)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the fifteen character nomenclature entry. ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 310.5,
+      "fieldName": "NOMENCLATURE (20)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the fifteen character nomenclature entry. ",
+      "fieldNumber_": 310.5
+    },
+    {
+      "fieldNumber": 310.6,
+      "fieldName": "SERIAL NO./NOMENCLATURE (GSA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the serial number/nomenclature for GSA. ",
+      "fieldNumber_": 310.6
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "ACTIVITY ADDRESS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFOX",
+      "required": true,
+      "helpText": "This is the Activity Address Code. ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "ROUTING IDENTIFIER CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'O",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is the routing identifier code. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 313,
+      "fieldName": "DOCUMENT IDENTIFIER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the document identifier code. ",
+      "fieldNumber_": 313
+    },
+    {
+      "fieldNumber": 314,
+      "fieldName": "FUND CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Fund Control Point. ",
+      "fieldNumber_": 314
+    },
+    {
+      "fieldNumber": 315,
+      "fieldName": "COST CENTER NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the cost center number. ",
+      "fieldNumber_": 315
+    },
+    {
+      "fieldNumber": 325,
+      "fieldName": "BLANK (1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This field is for entry of a blank space. ",
+      "fieldNumber_": 325
+    },
+    {
+      "fieldNumber": 326,
+      "fieldName": "BLANK (3)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This field is for entry of three blank spaces. ",
+      "fieldNumber_": 326
+    },
+    {
+      "fieldNumber": 327,
+      "fieldName": "BLANK (5)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This field is for entry of five blank spaces. ",
+      "fieldNumber_": 327
+    },
+    {
+      "fieldNumber": 330,
+      "fieldName": "DEPARTMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the department number. ",
+      "fieldNumber_": 330
+    },
+    {
+      "fieldNumber": 331,
+      "fieldName": "DO NOT SUB",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:NO SUBSTITUTION;",
+      "helpText": "This is the indicator for whether an item which is not in stock may have a similar item substituted for it. ",
+      "fieldNumber_": 331
+    },
+    {
+      "fieldNumber": 332,
+      "fieldName": "DO NOT B/O",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:NO BACKORDER;",
+      "helpText": "This is the indicator for whether an item which is currently out of stock should be backordered. ",
+      "fieldNumber_": 332
+    },
+    {
+      "fieldNumber": 333,
+      "fieldName": "DIETETIC PERIOD",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:FIRST REPORT (1ST-15TH);2:SECOND REPORT (16TH-31ST);N:NO REPORT-DIETETICS SUPPLIES;",
+      "helpText": "This is the set of codes for first, second, or no report for dietetics supplies. ",
+      "fieldNumber_": 333
+    },
+    {
+      "fieldNumber": 334,
+      "fieldName": "FOOD GROUP",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:Meat, Fish, Poultry, Eggs & Convenience Entrees;2:Milk, Milk Products;3:Fruits, Vegetables;4:Bread, Flour, Cereal, etc.;5:Commercial Nutritional Products, Tube feedings & supplements;6:Miscellaneous, Foods;",
+      "helpText": "This is the set of codes for food groups. ",
+      "fieldNumber_": 334
+    },
+    {
+      "fieldNumber": 335,
+      "fieldName": "CONVERSION FACTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the conversion factor. ",
+      "fieldNumber_": 335
+    },
+    {
+      "fieldNumber": 336,
+      "fieldName": "COMMODITY CODE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:DRUGS;2:OTHER MEDICAL;3:GENERAL;6:FUEL;8:SUBSISTENCE;",
+      "helpText": "This is the commodity code. ",
+      "fieldNumber_": 336
+    },
+    {
+      "fieldNumber": 337,
+      "fieldName": "GROUP SPLIT CIV",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the three letter CIV code.  Items having the same code will be grouped together on the CIV. ",
+      "fieldNumber_": 337
+    },
+    {
+      "fieldNumber": 338,
+      "fieldName": "CONSUMER LEVEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the consumer level, the normal stock level of an item at an inventory point. ",
+      "fieldNumber_": 338
+    },
+    {
+      "fieldNumber": 339,
+      "fieldName": "CONSUMER LEVEL OVERRIDE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:IGNORE CONSUMER LEVEL;A:IGNORE FIS ISSURE MULTIPLE AND CONSUMER LEVEL;",
+      "helpText": "This is the indicator for whether the consumer level for the item can be overriden. ",
+      "fieldNumber_": 339
+    },
+    {
+      "fieldNumber": 340,
+      "fieldName": "REASON CODE",
+      "dataType": "SET",
+      "rawType": "R*SO",
+      "required": true,
+      "setOfCodes": "1:REGULAR;2:RESUBMISSION OF REJECTS;3:CALM BYPASS;G:ACQUISITIONS DIRECT TO GSA;",
+      "helpText": "This is the reason code for the code sheet. ",
+      "fieldNumber_": 340
+    },
+    {
+      "fieldNumber": 341,
+      "fieldName": "SOURCE CODE (LOG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the LOG source code. (See MP-6, Part XIV, Supp 6.1, Para. 1201.04) ",
+      "fieldNumber_": 341
+    },
+    {
+      "fieldNumber": 342,
+      "fieldName": "SOURCE DEVIATION",
+      "dataType": "POINTER",
+      "rawType": "*P441.4'O",
+      "required": false,
+      "pointerTo": 441.4,
+      "helpText": "This is the source deviation code. ",
+      "fieldNumber_": 342
+    },
+    {
+      "fieldNumber": 343,
+      "fieldName": "COMPLETE INDICATOR",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "P:PARTIAL;",
+      "helpText": "This is the complete indicator. ",
+      "fieldNumber_": 343
+    },
+    {
+      "fieldNumber": 344,
+      "fieldName": "DOCUMENT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the document identifier. ",
+      "fieldNumber_": 344
+    },
+    {
+      "fieldNumber": 345,
+      "fieldName": "DEPOT (OR RELEASING FACILITY)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the depot or releasing facility. ",
+      "fieldNumber_": 345
+    },
+    {
+      "fieldNumber": 346,
+      "fieldName": "PAYABLE CODE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "A:REGULAR POSTED;B:IMPREST FUND;J:DONATED;",
+      "helpText": "This is the payable code. ",
+      "fieldNumber_": 346
+    },
+    {
+      "fieldNumber": 347,
+      "fieldName": "BACKORDER CONTROL",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "-:ESTABLISH BACKORDER;",
+      "helpText": "This is the backorder control indicator. Enter '-' to establish a backorder. ",
+      "fieldNumber_": 347
+    },
+    {
+      "fieldNumber": 348,
+      "fieldName": "SUBSTITUTE CONTROL",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "-:NO SUBSTITUTION;",
+      "helpText": "This indicates whether substitution of a supply item is authorized. ",
+      "fieldNumber_": 348
+    },
+    {
+      "fieldNumber": 349,
+      "fieldName": "MAXIMUM OVERRIDE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:OVERRIDE THE MAXIMUM ORDER QUANTITY;",
+      "helpText": "This permits the requisitioner to override the maximum order quantity for a supply item.  ",
+      "fieldNumber_": 349
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "MEDIA & STATUS CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'O",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is a pointer to the DLA/LOG Codes File, #441.4.  It contains the Defense Logistics Agency (DLA) media and status code. ",
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 351,
+      "fieldName": "DEPT.DESIGNATION (DEMAND CODE)",
+      "dataType": "POINTER",
+      "rawType": "*P441.4'O",
+      "required": false,
+      "pointerTo": 441.4,
+      "helpText": "This is a pointer to the DLA/LOG Codes File, #441.4.  It contains the Demand Code for Troop Issue or Dietetic Sale. ",
+      "fieldNumber_": 351
+    },
+    {
+      "fieldNumber": 352,
+      "fieldName": "SIGNAL CODE",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "A:Ship to Requisitioner. Bill to Requisitioner (cc 30-35);",
+      "helpText": "This is the code indicating to send the shipment/billing to the requisitioner. ",
+      "fieldNumber_": 352
+    },
+    {
+      "fieldNumber": 353,
+      "fieldName": "FUND CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This code is defined by the facility for the Defense Logistics Agency (DLA) code sheets. ",
+      "fieldNumber_": 353
+    },
+    {
+      "fieldNumber": 354,
+      "fieldName": "DISTRIBUTION CODE (OPTIONAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This code is defined by the facility. ",
+      "fieldNumber_": 354
+    },
+    {
+      "fieldNumber": 355,
+      "fieldName": "PROJECT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the Department Number. ",
+      "fieldNumber_": 355
+    },
+    {
+      "fieldNumber": 356,
+      "fieldName": "PRIORITY CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'O",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is a pointer to the DLA/LOG Codes File, #441.4.  It contains the Defense Logistics Agency (DLA) priority code. ",
+      "fieldNumber_": 356
+    },
+    {
+      "fieldNumber": 357,
+      "fieldName": "ADVICE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'O",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is a pointer to the DLA/LOG Codes File, #441.4.  It contains the Defense Logistics Agency (DLA) advice code. ",
+      "fieldNumber_": 357
+    },
+    {
+      "fieldNumber": 358,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "fieldNumber_": 358
+    },
+    {
+      "fieldNumber": 359,
+      "fieldName": "SOURCE DEVIATION/SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "fieldNumber_": 359
+    },
+    {
+      "fieldNumber": 360,
+      "fieldName": "SPECIAL CODE",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "Y:MUST ENTER 'Y';",
+      "fieldNumber_": 360
+    },
+    {
+      "fieldNumber": 361,
+      "fieldName": "CANCEL",
+      "dataType": "SET",
+      "rawType": "*SO",
+      "required": false,
+      "setOfCodes": "C:CANCEL DUE-IN;A:ADJUST DUE-IN;*:GSA FOLLOW-UP;X:GSA CANCELLATION;",
+      "helpText": "This code indicates whether there should be cancellation or adjustment of due-ins; or GSA cancellation or follow-up.  ",
+      "fieldNumber_": 361
+    },
+    {
+      "fieldNumber": 362,
+      "fieldName": "PUSH RELEASE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 362
+    },
+    {
+      "fieldNumber": 364,
+      "fieldName": "FEDERAL SUPPLY CLASSIFICATION",
+      "dataType": "POINTER",
+      "rawType": "RP441.2'O",
+      "required": true,
+      "pointerTo": 441.2,
+      "helpText": "This is a pointer to the Federal Supply Classification (FSC) file, #441.2.  It is the FSC of the requisition. ",
+      "fieldNumber_": 364
+    },
+    {
+      "fieldNumber": 365,
+      "fieldName": "SERIAL NO.(FOLLOW-UP/CANCEL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This is an indicator to follow-up or cancel a requisition. ",
+      "fieldNumber_": 365
+    },
+    {
+      "fieldNumber": 366,
+      "fieldName": "SERIAL NO.(DLA)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the Defense Logistics Agency (DLA) serial number for the requisition that is assigned by the facility . ",
+      "fieldNumber_": 366
+    },
+    {
+      "fieldNumber": 367,
+      "fieldName": "DOCUMENT IDENTIFIER (DLA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the assigned common number, including Fiscal Year (i.e., PAT - Pending Accounting Transaction - number). ",
+      "fieldNumber_": 367
+    },
+    {
+      "fieldNumber": 368,
+      "fieldName": "DEPOT VOUCHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the depot voucher (number) found on the shipping document. ",
+      "fieldNumber_": 368
+    },
+    {
+      "fieldNumber": 369,
+      "fieldName": "REQUISITION NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the facility requisition number, a three (3) character sequential number, followed by Fiscal Year (e.g.,12391). ",
+      "fieldNumber_": 369
+    },
+    {
+      "fieldNumber": 370,
+      "fieldName": "CANCEL/ADJUST/RELEASE",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "C:CANCEL ALL TRANSACTIONS;R:RELEASE ALL/ADJUST SINGLE ITEM;P:RELEASE SINGLE ITEM;",
+      "helpText": "This code indicates, for processing requisitions, whether there should be cancellation of all transactions (C); release of all or adjustment of a single item (R); or release of a single item (P).  ",
+      "fieldNumber_": 370
+    },
+    {
+      "fieldNumber": 371,
+      "fieldName": "VALUE (OLD)",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,2O",
+      "length": 8,
+      "required": true,
+      "helpText": "This is a dollar amount indicating the original value of the shipment.  ",
+      "fieldNumber_": 371
+    },
+    {
+      "fieldNumber": 372,
+      "fieldName": "VALUE (NEW)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2O",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the dollar amount indicating a change from the original value of the shipment. ",
+      "fieldNumber_": 372
+    },
+    {
+      "fieldNumber": 373,
+      "fieldName": "QUANTITY (OLD)",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0O",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the original quantity specified on the shipping document. ",
+      "fieldNumber_": 373
+    },
+    {
+      "fieldNumber": 374,
+      "fieldName": "QUANTITY (NEW)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the new quantity, a change from the original quantity specified on the shipping document. ",
+      "fieldNumber_": 374
+    },
+    {
+      "fieldNumber": 375,
+      "fieldName": "NONISSUABLE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "N:PICK UP INTO NONISSUABLE;",
+      "helpText": "This is the code indicating nonissuable stock(N). ",
+      "fieldNumber_": 375
+    },
+    {
+      "fieldNumber": 376,
+      "fieldName": "ACCOUNT (NONISSUABLE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the nonissuable account code specified if (N) is placed in the field indicating nonissuable stock.  ",
+      "fieldNumber_": 376
+    },
+    {
+      "fieldNumber": 377,
+      "fieldName": "DOCUMENT NUMBER (LOG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the requisition number for Source 1 (Depot), under Posted Receipts.  Otherwise, it is the common number. ",
+      "fieldNumber_": 377
+    },
+    {
+      "fieldNumber": 378,
+      "fieldName": "DOCUMENT IDENTIFIER (DRUGS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the Depot drug requisition number. ",
+      "fieldNumber_": 378
+    },
+    {
+      "fieldNumber": 379,
+      "fieldName": "DOCUMENT ID (SUBSISTENCE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the Depot drug subsistence number. ",
+      "fieldNumber_": 379
+    },
+    {
+      "fieldNumber": 380,
+      "fieldName": "COMMON NUMBER (DRUGS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the common number for Depot drugs. ",
+      "fieldNumber_": 380
+    },
+    {
+      "fieldNumber": 381,
+      "fieldName": "COMMON NUMBER (SUBSISTENCE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the common number for Depot subsistence. ",
+      "fieldNumber_": 381
+    },
+    {
+      "fieldNumber": 382,
+      "fieldName": "COMMON NUMBER (DEPOT REGULAR)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the common number for Depot regular posted stock. ",
+      "fieldNumber_": 382
+    },
+    {
+      "fieldNumber": 383,
+      "fieldName": "EMERGENCY SOURCE 2 PROCUREMENT",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "*:YES;",
+      "helpText": "This an emergency procurement for drugs (commodity code 1) or other medical stock (commodity code 2). ",
+      "fieldNumber_": 383
+    },
+    {
+      "fieldNumber": 384,
+      "fieldName": "AMENDMENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0O",
+      "length": 3,
+      "required": false,
+      "helpText": "Purchase Order Amendment number ",
+      "fieldNumber_": 384
+    },
+    {
+      "fieldNumber": 385,
+      "fieldName": "PURCHASE ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is the date the purchase order was issued. ",
+      "fieldNumber_": 385
+    },
+    {
+      "fieldNumber": 386,
+      "fieldName": "PURCHASE AUTHORIZATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 386
+    },
+    {
+      "fieldNumber": 387,
+      "fieldName": "DELIVERY POINT",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "793:HINES;794:SOMMERVILLE;79A:BELL;",
+      "helpText": "This is the number of the Depot where delivery is to be made. ",
+      "fieldNumber_": 387
+    },
+    {
+      "fieldNumber": 388,
+      "fieldName": "UNIT COST (LOG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2O",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the dollar amount of the unit. ",
+      "fieldNumber_": 388
+    },
+    {
+      "fieldNumber": 389,
+      "fieldName": "REASON CODE (LOG)",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "R:REGULAR;T:TEST;C:CORRECTION; :BLANK;",
+      "helpText": "This is a code indicating whether to establish a Purchase Order (PO) due-in; delete a regular due-in or delete a Held for Test  due-in; or change quantity, unit cost, or schedule the delivery on a PO Due-in.  ",
+      "fieldNumber_": 389
+    },
+    {
+      "fieldNumber": 390,
+      "fieldName": "CORRECTED QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This is a correction to the quantity specified on the requisition. ",
+      "fieldNumber_": 390
+    },
+    {
+      "fieldNumber": 391,
+      "fieldName": "CORRECTED UNIT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2O",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a correction to the unit cost on the requisition. ",
+      "fieldNumber_": 391
+    },
+    {
+      "fieldNumber": 392,
+      "fieldName": "CORRECTED DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is a correction to the delivery date specified on the requisition. ",
+      "fieldNumber_": 392
+    },
+    {
+      "fieldNumber": 393,
+      "fieldName": "LOG DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "Date for LOG transactions on which the receipt was processed or accepted ",
+      "fieldNumber_": 393
+    },
+    {
+      "fieldNumber": 394,
+      "fieldName": "EXPIRATION/DATE OF PACK",
+      "dataType": "DATE",
+      "rawType": "DOX",
+      "required": false,
+      "helpText": "This is mandatory information on the stock, including the date of the pack, or the expiration date of the drug. ",
+      "fieldNumber_": 394
+    },
+    {
+      "fieldNumber": 395,
+      "fieldName": "COMPLETION CODE (LOG)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:COMPLETE;2:COMP IN 2 LINES;3:COMP IN 3 LINES;4:COMP IN 4 LINES;5:COMP IN 5 LINES;6:COMP IN 6 LINES;7:COMP IN 7 LINES;8:COMP IN 8 LINES;9:COMP IN 9 LINES;0:PARTIAL;-:NO DUE-IN EST.;T:TEST;",
+      "helpText": "This is a code indicating the number of transactions submitted for the item, including 0 for a partial receipt or 1 through 9 for a complete receipt; (-) for No Due-In Est.(estimate); or T for Test. ",
+      "fieldNumber_": 395
+    },
+    {
+      "fieldNumber": 396,
+      "fieldName": "CONDITION CODE (LOG)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ISSUABLE;",
+      "helpText": "This is the code indicating whether the stock is ready for issue. ",
+      "fieldNumber_": 396
+    },
+    {
+      "fieldNumber": 397,
+      "fieldName": "PRIORITY CODE (LOG)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;P:PRIORITY;B:BROKEN;L:LOOSE;",
+      "helpText": "This a code indicating the condition of the stock, including N for normal stock; P for priority issue; L for loose issue; or B for broken pack on a mandatory issue package. ",
+      "fieldNumber_": 397
+    },
+    {
+      "fieldNumber": 398,
+      "fieldName": "WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the weight (of the original pack ) used to represent the broken or whole original pack.  Loose issue or broken intermediate packs require an entry of zero (0). ",
+      "fieldNumber_": 398
+    },
+    {
+      "fieldNumber": 399,
+      "fieldName": "CUBE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0OX",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the measurement (in cubic ft.) of the original pack. ",
+      "fieldNumber_": 399
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "FCC SUFFIX",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "  :DEFAULT;",
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This is the identification for the storage location (area, bay, or row)  of the item received (e.g., 22A333 - non-bulk location; R 1234 - bulk location). ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 402,
+      "fieldName": "UNITS IN O/P",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of units in the original pack.  Loose issue requires an entry of 1; broken O/Ps or I/Ps (original packs or intermediate packs) require an entry corresponding with that of the Quantity field. ",
+      "fieldNumber_": 402
+    },
+    {
+      "fieldNumber": 403,
+      "fieldName": "TRANSPORTATION COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the transportation cost for the line item (if origin is FOB). ",
+      "fieldNumber_": 403
+    },
+    {
+      "fieldNumber": 404,
+      "fieldName": "VALUE (LOG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 404
+    },
+    {
+      "fieldNumber": 405,
+      "fieldName": "QUANTITY (401)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0O",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 405
+    },
+    {
+      "fieldNumber": 406,
+      "fieldName": "DUE-IN (401)",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "fieldNumber_": 406
+    },
+    {
+      "fieldNumber": 407,
+      "fieldName": "DEPOT (HINES)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "793:HINES;794:SOMMERVILLE;79A:BELL;",
+      "helpText": "This is the code indicating the Depot (i.e., Hines = 793; Sommerville = 794; and Bell = 79A). ",
+      "fieldNumber_": 407
+    },
+    {
+      "fieldNumber": 408,
+      "fieldName": "DEPOT CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "7M1:MEDICAL SUPPLIES;7M4:SUBSISTENCE;7M5:DRUGS;",
+      "helpText": "This is the depot code representing medical supplies, subsistence, or drugs (i.e., 7M1, 7M4 , or 7M5, respectively). ",
+      "fieldNumber_": 408
+    },
+    {
+      "fieldNumber": 409,
+      "fieldName": "CONTAINER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CT:CARTON;SA:SACK;XX:OTHER;",
+      "helpText": "This is the type of container received (i.e., CT = Carton; SA = Sack; and XX = other). ",
+      "fieldNumber_": 409
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "SUFFIX (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 411,
+      "fieldName": "TYPE TRANS (664)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ESTABLISH NEW DEPARTMENT;C:CHANGE;D:DELETE;A:ADD;L:LABELS;M:REPORT 039;P:ISSUE BOOKS AND WORKDECKS;X:EXPANDED NOMENCLATURE CATALOG;",
+      "fieldNumber_": 411
+    },
+    {
+      "fieldNumber": 412,
+      "fieldName": "LEVEL (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 412
+    },
+    {
+      "fieldNumber": 413,
+      "fieldName": "SEQUENCE (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 413
+    },
+    {
+      "fieldNumber": 414,
+      "fieldName": "FREQUENCY (664)",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "M:MONTHLY;Q:QUARTERLY;0:DEFAULT;",
+      "fieldNumber_": 414
+    },
+    {
+      "fieldNumber": 415,
+      "fieldName": "COPIES (664)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0O",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 415
+    },
+    {
+      "fieldNumber": 416,
+      "fieldName": "DECKS (664)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0O",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 416
+    },
+    {
+      "fieldNumber": 417,
+      "fieldName": "SUPPL ID (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 417
+    },
+    {
+      "fieldNumber": 418,
+      "fieldName": "COST CENTER (664)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0O",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 418
+    },
+    {
+      "fieldNumber": 419,
+      "fieldName": "CONTROL POINT (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 419
+    },
+    {
+      "fieldNumber": 420,
+      "fieldName": "DEPT NO. (664)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 420
+    },
+    {
+      "fieldNumber": 421,
+      "fieldName": "NON ADJ REASON CODE",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "A:ISSUABLE TO NONISSUABLE;B:NONISSUABLE TO ISSUABLE;C:+ OR - NONISSUABLE;D:RECALL ISSUABLE TO NON;E:RELEASE NON TO ISSUABLE;F:RECALL, RETURNS, CREDITS;G:INVENTORY;H:DAMAGE;I:ERROR;J:SURVEY;",
+      "fieldNumber_": 421
+    },
+    {
+      "fieldNumber": 422,
+      "fieldName": "GL ACCOUNT CODE",
+      "dataType": "POINTER",
+      "rawType": "*P441.4'O",
+      "required": false,
+      "pointerTo": 441.4,
+      "fieldNumber_": 422
+    },
+    {
+      "fieldNumber": 423,
+      "fieldName": "+ OR -",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "+:PLUS;-:MINUS;",
+      "fieldNumber_": 423
+    },
+    {
+      "fieldNumber": 424,
+      "fieldName": "QUANTITY (605)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 424
+    },
+    {
+      "fieldNumber": 425,
+      "fieldName": "VALUE (605)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2O",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 425
+    },
+    {
+      "fieldNumber": 426,
+      "fieldName": "QUAN/VAL ADJ REASON CODE",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "A:WAREHOUSE INVENTORY;B:REPORT OF SURVEY;C:DAMAGE;E:ERRONEOUS INPUT;F:RECALLS, RETURNS AND CREDITS;",
+      "fieldNumber_": 426
+    },
+    {
+      "fieldNumber": 427,
+      "fieldName": "CHANGE ADJ REASON CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:CHANGE OF ISSUE;C:CHANGE OF ISSUE TO NONISSUABLE;D:CHANGE OF ISSUE-DROP;E:CHANGE OF ISSUE-DIETETIC ONLY;",
+      "fieldNumber_": 427
+    },
+    {
+      "fieldNumber": 428,
+      "fieldName": "COMMON NUMBER (607D)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 428
+    },
+    {
+      "fieldNumber": 429,
+      "fieldName": "SELLING COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,2O",
+      "length": 8,
+      "required": true,
+      "fieldNumber_": 429
+    },
+    {
+      "fieldNumber": 430,
+      "fieldName": "ORIGINAL TRANS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "fieldNumber_": 430
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "ISMS IDENTIFIER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "ISM:ISMS;PSM:PRISM;",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "ISMS TRANS DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "ISMS TRANS TIME",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "ISMS REFERENCE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 503.1,
+      "fieldName": "ISMS SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 503.1
+    },
+    {
+      "fieldNumber": 503.2,
+      "fieldName": "ISMS TOTAL SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 503.2
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "ISMS TRANS INT VER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "NATIONAL STOCK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 506,
+      "fieldName": "ISMS SEGMENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 506
+    },
+    {
+      "fieldNumber": 507,
+      "fieldName": "ISMS TRANS TERMINATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 507
+    },
+    {
+      "fieldNumber": 515.85,
+      "fieldName": "ISMS VENDOR STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 515.85
+    },
+    {
+      "fieldNumber": 516,
+      "fieldName": "SEGMENT 6 TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 516
+    },
+    {
+      "fieldNumber": 520,
+      "fieldName": "LINE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 520
+    },
+    {
+      "fieldNumber": 521,
+      "fieldName": "L/C REFERENCE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 521
+    },
+    {
+      "fieldNumber": 530,
+      "fieldName": "ISMS LINE ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "423.19A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 423.19,
+      "fieldNumber_": 530
+    },
+    {
+      "fieldNumber": 550,
+      "fieldName": "NX ITEMS",
+      "dataType": "SUBFILE",
+      "rawType": "423.2",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 423.2,
+      "fieldNumber_": 550
+    },
+    {
+      "fieldNumber": 581,
+      "fieldName": "ISMS COST CENTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "fieldNumber_": 581
+    },
+    {
+      "fieldNumber": 582,
+      "fieldName": "ISMS FCP #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "fieldNumber_": 582
+    },
+    {
+      "fieldNumber": 997,
+      "fieldName": "APPROVED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the person appropriation. ",
+      "fieldNumber_": 997
+    },
+    {
+      "fieldNumber": 998,
+      "fieldName": "AUTOMATIC TERMINATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the automatic terminator for this code sheet. ",
+      "fieldNumber_": 998
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person completing the code sheet. ",
+      "fieldNumber_": 999
+    },
+    {
+      "fieldNumber": 999.1,
+      "fieldName": "COMPLETED BY INITIALS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "These are the initials of the person who completes the code sheet. ",
+      "fieldNumber_": 999.1
+    },
+    {
+      "fieldNumber": 999.2,
+      "fieldName": "USER LOGGED IN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who is logged in at the time the code sheet is  created. ",
+      "fieldNumber_": 999.2
+    },
+    {
+      "fieldNumber": 999.3,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "This is the electronic signature of the person releasing the code sheet. ---------THIS FIELD USED TO BE CALLED ELECTRONIC SIGNATURE------- ",
+      "fieldNumber_": 999.3
+    },
+    {
+      "fieldNumber": 999.5,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,5O",
+      "length": 11,
+      "required": false,
+      "helpText": "THIS IS THE VALIDATION VERSION OF A RECORD WITH A VALIDATION CODE ON IT. ",
+      "fieldNumber_": 999.5
+    },
+    {
+      "fieldNumber": 999.7,
+      "fieldName": "VALIDATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "THIS IS THE TIME THE VALIDATION CODE WAS ENTERED ON THE RECORD. ",
+      "fieldNumber_": 999.7
+    },
+    {
+      "fieldNumber": 999.8,
+      "fieldName": "ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 999.8
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "PAYMENT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:CHECK REPLENISHMENT;1:CTP DIRECT DEPOSIT REPLENISHMENT;2:CCD+ DIRECT DEPOSIT REPLENISHMENT;",
+      "helpText": "This is a code indicating the type of payment forms to be replenished (i.e., check or direct deposit). ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "ACCOUNT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CHECKING;S:SAVINGS;",
+      "helpText": "This is a code indicating the type of account (i.e.,checking or saving). ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1002,
+      "fieldName": "DEPOSITOR ACCOUNT NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the depositor account number. ",
+      "fieldNumber_": 1002
+    },
+    {
+      "fieldNumber": 1003,
+      "fieldName": "ROUTING NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the first eight (8) digits of the bank routing number. ",
+      "fieldNumber_": 1003
+    },
+    {
+      "fieldNumber": 1004,
+      "fieldName": "CHECK DIGIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the ninth (9) digit of the bank routing number. ",
+      "fieldNumber_": 1004
+    },
+    {
+      "fieldNumber": 1005.01,
+      "fieldName": "AGENCY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the agency code to be entered as 04. ",
+      "fieldNumber_": 1005.01
+    },
+    {
+      "fieldNumber": 1005.02,
+      "fieldName": "SUBAGENCY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the subagency code to be entered as 81. ",
+      "fieldNumber_": 1005.02
+    },
+    {
+      "fieldNumber": 1005.03,
+      "fieldName": "NAME CONTROL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "fieldNumber_": 1005.03
+    },
+    {
+      "fieldNumber": 1005.04,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the Social Security Number. ",
+      "fieldNumber_": 1005.04
+    },
+    {
+      "fieldNumber": 1005.05,
+      "fieldName": "TYPE INDICATOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:DECREASE OR DELETION IN AMOUNT;",
+      "fieldNumber_": 1005.05
+    },
+    {
+      "fieldNumber": 1005.06,
+      "fieldName": "FILLER-14",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field places 14 blanks on a code sheet. ",
+      "fieldNumber_": 1005.06
+    },
+    {
+      "fieldNumber": 1005.07,
+      "fieldName": "FILLER-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is reserved for Filler. ",
+      "fieldNumber_": 1005.07
+    },
+    {
+      "fieldNumber": 1005.08,
+      "fieldName": "YEAR OF ORIGINAL OFFSET",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field that is reserved for the original offset year must contain two (2) zeros. ",
+      "fieldNumber_": 1005.08
+    },
+    {
+      "fieldNumber": 1005.09,
+      "fieldName": "DMF PROGRAM YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "fieldNumber_": 1005.09
+    },
+    {
+      "fieldNumber": 1005.11,
+      "fieldName": "SUBAGENCY PRIORITY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the subagency priority code to be entered as zero (0). ",
+      "fieldNumber_": 1005.11
+    },
+    {
+      "fieldNumber": 1005.12,
+      "fieldName": "LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the individual's last name. ",
+      "fieldNumber_": 1005.12
+    },
+    {
+      "fieldNumber": 1005.13,
+      "fieldName": "FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the individual's first name. ",
+      "fieldNumber_": 1005.13
+    },
+    {
+      "fieldNumber": 1005.14,
+      "fieldName": "AMOUNT (IRS)",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,2XO",
+      "length": 13,
+      "required": true,
+      "helpText": "This is the dollar amount required by the Internal Revenue Service. ",
+      "fieldNumber_": 1005.14
+    },
+    {
+      "fieldNumber": 1005.15,
+      "fieldName": "AGENCY INFORMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field that is reserved for agency information must contain two (2) blanks. ",
+      "fieldNumber_": 1005.15
+    },
+    {
+      "fieldNumber": 1005.16,
+      "fieldName": "LOCAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field that is reserved for the local code must contain three (3) zeros. ",
+      "fieldNumber_": 1005.16
+    },
+    {
+      "fieldNumber": 1005.17,
+      "fieldName": "VA IDENT NO.",
+      "dataType": "POINTER",
+      "rawType": "RP412'O",
+      "required": true,
+      "pointerTo": 412,
+      "helpText": "This is a pointer to the AR (Accounts Receivable) Debtor File, #412. ",
+      "fieldNumber_": 1005.17
+    },
+    {
+      "fieldNumber": 1005.18,
+      "fieldName": "DELINQUENT DATE",
+      "dataType": "DATE",
+      "rawType": "RDO",
+      "required": true,
+      "helpText": "This is the date that payment is overdue. ",
+      "fieldNumber_": 1005.18
+    },
+    {
+      "fieldNumber": 1005.19,
+      "fieldName": "JUDGEMENT DEBT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This indicates whether a judgement on the debt has been made. ",
+      "fieldNumber_": 1005.19
+    },
+    {
+      "fieldNumber": 1005.2,
+      "fieldName": "MASTER FILE CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This will contain a '1' and is used on both the Master and Update codesheets. ",
+      "fieldNumber_": 1005.2
+    },
+    {
+      "fieldNumber": 1005.21,
+      "fieldName": "FILLER-54",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field is reserved for fifty-four (54) characters of filler. ",
+      "fieldNumber_": 1005.21
+    },
+    {
+      "fieldNumber": 1005.22,
+      "fieldName": "FILLER-12",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field is reserved for twelve (12) characters of filler. ",
+      "fieldNumber_": 1005.22
+    },
+    {
+      "fieldNumber": 1006.01,
+      "fieldName": "FILLER-52",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field is used to place 52 blanks on a code sheet.  Used for the IRS Offset Master Record. ",
+      "fieldNumber_": 1006.01
+    },
+    {
+      "fieldNumber": 1006.02,
+      "fieldName": "FILLER-15",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This field is used to place 12 blanks on a code sheet.  Used for the IRS Offset Weekly Update. ",
+      "fieldNumber_": 1006.02
+    }
+  ],
+  "fieldCount": 360,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "AO", "field": },
+    {"name": "AP", "field": },
+    {"name": "AQ", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "423", "field": .01, "type": "regular"},
+    {"name": "423", "field": .01, "type": "regular"},
+    {"name": "423", "field": .01, "type": "regular"},
+    {"name": "423", "field": .01, "type": "regular"},
+    {"name": "423", "field": .21, "type": "regular"},
+    {"name": "423", "field": .22, "type": "regular"},
+    {"name": "423", "field": .23, "type": "regular"},
+    {"name": "423", "field": .24, "type": "regular"},
+    {"name": "423", "field": .25, "type": "regular"},
+    {"name": "423", "field": .3, "type": "regular"},
+    {"name": "423", "field": .31, "type": "regular"},
+    {"name": "423", "field": .5, "type": "regular"},
+    {"name": "423", "field": .7, "type": "regular"},
+    {"name": "423", "field": .8, "type": "regular"},
+    {"name": "423", "field": 5, "type": "regular"},
+    {"name": "423", "field": 5.1, "type": "regular"},
+    {"name": "423", "field": 300.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .7, "value": "W:$D(^(\"TRANS\")) \"   \",$P(^(\"TRANS\"),U,5)"},
+    {"field": Z3, "value": "W:$D(^(0)) \"   \",$P(^(0),U,4)"},
+    {"field": Z4, "value": "W:$D(^(0)) \"   \",$P(^(0),U,5)"},
+    {"field": Z5, "value": "W:$D(^(0)) \"   \",$P(^(0),U,6)"}
+  ]
+}

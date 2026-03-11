@@ -1,0 +1,70 @@
+{
+  "fileNumber": 2006.172,
+  "fileName": "MUSE FORMAT TABLE",
+  "globalRoot": "2006.172",
+  "globalReference": "^MAG(2006.172,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "Enter a description of the mapping. Example 'Kansas Stress with Grid' ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NETWORK LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP2005.2'",
+      "required": true,
+      "pointerTo": 2005.2,
+      "helpText": "This is the MUSE System from the NETWORK LOCATION File. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEST TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.171'",
+      "required": true,
+      "pointerTo": 2006.171,
+      "helpText": "Enter the MUSE TEST TYPE that will be mapped to a MUSE Format ID  number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GRID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter YES if this Format has the Grid displayed. Enter NO if this Format does not have the Grid displayed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FORMAT ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field holds the Format ID Number that is defined on the MUSE System. The Format ID Number must exist on the MUSE System. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.172", "field": .01, "type": "regular"},
+    {"name": "2006.172", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "fileNumber": 19620.21,
+  "fileName": "DSIR BILL TRACKING",
+  "globalRoot": "19620.21",
+  "globalReference": "^DSIR(19620.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL",
+      "dataType": "POINTER",
+      "rawType": "RP19620.2'",
+      "required": true,
+      "pointerTo": 19620.2,
+      "helpText": "POINTER TO 19620.2, BILLS FILE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AMOUNT RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "AMOUNT RECIEVED OR WAIVED IN THE CURRENT BILLING TRANSACTION ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RECEIVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "POINTER TO FILE 200 INDICATING WHO REDEIVED A PAYMENT OR WAVED A FEE. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "BILLING TRANSACTION DATE AND TIME ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FEES WAIVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "NOT CURRENTLY USED ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PAYMENT RECEIVED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "BILLING TRANSACTION DATE WITHOUT THE TIME ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ALLOWANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "SET OF VALUES INDICATING WHETHER OR NOT THE TRANSACITON IS A WAIVER OF  FEES.   0=NO, 1=YES ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR SHORT COMMENT CONCERNING BILLING TRANSACTION ",
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "APD", "field": },
+    {"name": "B", "field": },
+    {"name": "19620.21", "field": .01, "type": "regular"},
+    {"name": "19620.21", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

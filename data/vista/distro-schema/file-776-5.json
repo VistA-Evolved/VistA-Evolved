@@ -1,0 +1,135 @@
+{
+  "fileNumber": 776.5,
+  "fileName": "HL7 MONITOR EVENTS PROFILE",
+  "globalRoot": "776.5",
+  "globalReference": "^HLEV(776.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the owner of the profile. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROFILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ALL SITES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not events should be screened based on a  list of particular sites.  If YES,  events from all sites will be  included in the Event Log display. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ALL EVENT TYPES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALL SENDING APPLICATIONS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ALL REVIEW STATUSES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TIME PERIOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIOR HOUR;2:PRIOR 2 HOURS;3:PRIOR 6 HOURS;4:TODAY;5:LAST 24 HOURS;6:TODAY AND YESTERDAY;7:LAST 48 HOURS;8:LAST 72 HOURS;9:LAST 7 DAYS;0:ALL;",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ONLY URGENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITES",
+      "dataType": "POINTER",
+      "rawType": "776.51P",
+      "required": false,
+      "helpText": "This is a list of sites that should be included in displays based on this profile. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EVENT TYPES",
+      "dataType": "POINTER",
+      "rawType": "776.52P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SENDING APPLICATIONS?",
+      "dataType": "POINTER",
+      "rawType": "776.53P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REVEIW STATUS CODES",
+      "dataType": "SET",
+      "rawType": "776.54S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 776.54,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "776.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

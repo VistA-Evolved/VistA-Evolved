@@ -1,0 +1,30 @@
+{
+  "fileNumber": 9999999.06,
+  "fileName": "LOCATION",
+  "globalRoot": "9999999.06IP",
+  "globalReference": "^AUTTLOC(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field points to the Institution file (#4) and has the same internal number as that file.  Thus, the location has the same name as the Institution file (#4).  The location is also referred to as the Facility. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9999999.06", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"\""},
+    {"field": .05, "value": "W \"\""},
+    {"field": .07, "value": "W \"\""}
+  ]
+}

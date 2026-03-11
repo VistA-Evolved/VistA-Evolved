@@ -1,0 +1,67 @@
+{
+  "fileNumber": 2006.539,
+  "fileName": "DICOM UID SPECIFIC ACTION",
+  "globalRoot": "2006.539",
+  "globalReference": "^MAGDICOM(2006.539,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that conforms to the format of a DICOM UID (Unique Object Identifier). A UID is a string that consists of only digits and periods. The first and the last characters must be digits, and none of the integer numbers in the string (that are separated by periods) may have leading or trailing zeroes.   The meanings of UIDs are defined in the DICOM standard. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string. This string is a descriptive text that explains the meaning of the UID in this record. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string describes the usage of this UID.   The DICOM standard currently identifies the following possible values:    Application Context Name    Coding Scheme    DICOM UIDs as a Coding Scheme    LDAP OID    Meta SOP Class    SOP Class    Service Class    Transfer Syntax    Well-known Print Queue SOP Instance    Well-known Printer SOP Instance    Well-known SOP Instance    Well-known frame of reference ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUBTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies a sub-type for the UID. Sub-types are not defined in the DICOM standard but are used to distinguish between application-specific usages of UIDs.   For instance, an UID that has a \"type\" of \"SOP Class\" may have a \"sub-type\" of \"Storage\". ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PURPOSE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5391A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5391,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "2006.539", "field": .01, "type": "regular"},
+    {"name": "2006.539", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

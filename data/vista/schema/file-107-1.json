@@ -1,0 +1,36 @@
+{
+  "fileNumber": 107.1,
+  "fileName": "MICOM ACTION TYPES",
+  "globalRoot": "107.1",
+  "globalReference": "^%ZISL(107.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Type Abbreviation",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Statistic Action Type abbreviation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Action Description",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Type of action ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "107.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

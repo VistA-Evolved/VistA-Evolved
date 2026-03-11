@@ -1,0 +1,57 @@
+{
+  "fileNumber": 58.812,
+  "fileName": "DA UPLOAD",
+  "globalRoot": "58.812",
+  "globalReference": "^PSD(58.812,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRIME VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field identifies the sender of the invoice data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUPPLY ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "58.8121A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 58.8121,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER UNIT",
+      "dataType": "SUBFILE",
+      "rawType": "58.8122A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 58.8122,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BACK GROUND JOB",
+      "dataType": "SUBFILE",
+      "rawType": "58.8123A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 58.8123,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.812", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

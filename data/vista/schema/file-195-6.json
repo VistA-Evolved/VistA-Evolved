@@ -1,0 +1,60 @@
+{
+  "fileNumber": 195.6,
+  "fileName": "REASONS",
+  "globalRoot": "195.6I",
+  "globalReference": "^DIC(195.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "These entries provide standard answers which can provide statistical analysis. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF REASON",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "c:CANCEL REQUEST;m:MISSING RECORD;g:GENERAL;",
+      "helpText": "CANCEL requests limits use of certain reasons for canceling requests. MISSING records limits use of certain reasons for missing records. GENERAL allows the reason to be used anywhere. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP195.1'",
+      "required": true,
+      "pointerTo": 195.1,
+      "helpText": "This limits the reason for use in a particular application. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "195.61",
+      "required": false,
+      "helpText": "This allows the reason to be full described with free text.  Laygo may be allowed to provide additional explanations. ",
+      "isMultiple": true,
+      "subFileNumber": 195.61,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "195.6", "field": .01, "type": "regular"},
+    {"name": "195.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""}
+  ]
+}

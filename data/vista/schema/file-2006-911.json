@@ -1,0 +1,57 @@
+{
+  "fileNumber": 2006.911,
+  "fileName": "DICOM GATEWAY INSTRUMENT DICTIONARY",
+  "globalRoot": "2006.911",
+  "globalReference": "^MAGDICOM(2006.911,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HOSTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the hostname of the computer used for the DICOM Gateway. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the location for which the DICOM Gateway operates. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME UPDATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time when the INSTRUMENT field multiple (#3) was last updated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9112A",
+      "required": false,
+      "helpText": "Subfile to hold instruments information. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9112,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.911", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

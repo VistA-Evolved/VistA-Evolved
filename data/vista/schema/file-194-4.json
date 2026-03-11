@@ -1,0 +1,80 @@
+{
+  "fileNumber": 194.4,
+  "fileName": "LABEL FORMAT",
+  "globalRoot": "194.4I",
+  "globalReference": "^DIC(194.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This identifies different label formats for records, requests, and borrowers and allows copies of standard formats to be customized by application and site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF ROWS IN FORMAT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This identifies the number of lines on the label ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P195.1'",
+      "required": false,
+      "pointerTo": 195.1,
+      "helpText": "This allows applications to use different label formats for records or requestors. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF LABEL",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "r:RECORD;b:BORROWER;q:REQUEST;",
+      "helpText": "Record labels are barcoded for the record file, Request labels for the request file, and Borrower labels for the borrower/file areas file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PRINT FIELDS",
+      "dataType": "POINTER",
+      "rawType": "194.41PA",
+      "required": false,
+      "helpText": "This identifies the data to be printed on the label. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "COMPILED LOGIC",
+      "dataType": "SUBFILE",
+      "rawType": "194.42",
+      "required": false,
+      "helpText": "This is the executable code which prints the label. ",
+      "isMultiple": true,
+      "subFileNumber": 194.42,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "194.4", "field": .01, "type": "regular"},
+    {"name": "194.4", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$S($D(^DIC(195.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

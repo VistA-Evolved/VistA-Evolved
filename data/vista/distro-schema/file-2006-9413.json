@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.9413,
+  "fileName": "MAG WORK ITEM STATUS",
+  "globalRoot": "2006.9413",
+  "globalReference": "^MAGV(2006.9413,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a status. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.9413", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

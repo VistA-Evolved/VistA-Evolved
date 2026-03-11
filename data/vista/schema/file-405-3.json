@@ -1,0 +1,27 @@
+{
+  "fileNumber": 405.3,
+  "fileName": "MAS MOVEMENT TRANSACTION TYPE",
+  "globalRoot": "405.3",
+  "globalReference": "^DG(405.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the type of transaction that is acceptable by the MAS package.  This field must NOT be altered as it could severely and adversely affect the MAS package. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "405.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

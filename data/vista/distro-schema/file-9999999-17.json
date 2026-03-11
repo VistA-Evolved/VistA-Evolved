@@ -1,0 +1,47 @@
+{
+  "fileNumber": 9999999.17,
+  "fileName": "TREATMENT",
+  "globalRoot": "9999999.17I",
+  "globalReference": "^AUTTTRT(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the treatment that is being administered.   Enter the name of a treatment using 3 to 30 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate a treatment type.  If this field contains a \"1\" then the treatment is inactive.  Inactive treatments cannot be selected in the manual data entry process.  Treatment entries should be made inactive when they are no longer used.  Do not delete the entry or change the meaning of the treatment entry.   To make an inactive treatment type active, enter the \"@\" symbol to delete the \"1\" from the field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 8801,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "(Optional) This is a mnemonic for this treatment.   Enter a mnemonic that's 1 - 6 characters in length. ",
+      "fieldNumber_": 8801
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9999999.17", "field": .01, "type": "regular"},
+    {"name": "9999999.17", "field": 8801, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

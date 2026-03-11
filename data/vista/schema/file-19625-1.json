@@ -1,0 +1,48 @@
+{
+  "fileNumber": 19625.1,
+  "fileName": "DSIV REPORT DATA",
+  "globalRoot": "19625.1",
+  "globalReference": "^DSI(19625.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Contains the date that the background job ran and created the report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EXCEPTION;A:AUDIT;S:SUMMARY;",
+      "helpText": "Contains the ICB Report type.  The only type supported at this time is  the Exception Report. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXCEPTION DATA",
+      "dataType": "SUBFILE",
+      "rawType": "19625.11A",
+      "required": false,
+      "helpText": "A multiple containing the report data that was compiled in the background  process. ",
+      "isMultiple": true,
+      "subFileNumber": 19625.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19625.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

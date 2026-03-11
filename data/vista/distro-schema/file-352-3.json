@@ -1,0 +1,90 @@
+{
+  "fileNumber": 352.3,
+  "fileName": "NON-BILLABLE CLINIC STOP CODES",
+  "globalRoot": "352.3",
+  "globalReference": "^IBE(352.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "RP40.7'",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "This field is a pointer to the CLINIC STOP (#40.7) file and identifies the clinic stop code which is being established as either billable or non-billable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which billing for this clinic stop code should be activated or ignored. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IGNORE MEANS TEST BILLING?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine whether Means Test billing should be activated or ignored, as of the EFFECTIVE DATE (field #.02).   Please note that you only need an entry in this file for a clinic stop code for which you would like Means Test billing to be IGNORED. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:MEANS TEST;2:THIRD PARTY;",
+      "helpText": "This specifies the type of billing this bill/not bill Stop Code flag applies to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "THIRD PARTY NON-BILLABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the stop code should be billed to a  Third Party payer. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "THIRD PARTY AUTO BILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;0:YES;",
+      "helpText": "Enter 'No' if the Third Party auto biller should NOT create bills for  visits with this stop code.  This should only be set for stops that are billable. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT2", "field": },
+    {"name": "AIVDTT", "field": },
+    {"name": "AIVDTT1", "field": },
+    {"name": "AIVDTT2", "field": },
+    {"name": "B", "field": },
+    {"name": "352.3", "field": .01, "type": "regular"},
+    {"name": "352.3", "field": .01, "type": "regular"},
+    {"name": "352.3", "field": .01, "type": "regular"},
+    {"name": "352.3", "field": .02, "type": "regular"},
+    {"name": "352.3", "field": .02, "type": "regular"},
+    {"name": "352.3", "field": .04, "type": "regular"},
+    {"name": "352.3", "field": .04, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

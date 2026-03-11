@@ -1,0 +1,80 @@
+{
+  "fileNumber": 161.96,
+  "fileName": "IPAC VENDOR AGREEMENT MRA",
+  "globalRoot": "161.96",
+  "globalReference": "^FBAA(161.96,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "Sequence number is the same as the internal entry number (IEN) of the  record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IPAC VENDOR AGREEMENT",
+      "dataType": "POINTER",
+      "rawType": "P161.95'",
+      "required": false,
+      "pointerTo": 161.95,
+      "helpText": "The IPAC VENDOR AGREEMENT that requires a master record adjustment (MRA) transaction to be sent to Central Fee. This field is null when the action of the (MRA) transaction is DELETE. This is because the IPAC agreement has been removed from the database. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IPAC VENDOR AGREEMENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The ID of the IPAC VENDOR AGREEMENT (#161.95).  This value is used when generating delete MRAs since the IPAC VENDOR AGREEMENT will have already been deleted from file 161.95. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADD;C:CHANGE;D:DELETE;",
+      "helpText": "The type of master record adjustment (MRA). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING;T:TRANSMITTED;",
+      "helpText": "The status of the master record adjustment.  There should not be more than one master record adjustment with a pending status for a given IPAC VENDOR AGREEMENT. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the MRA was transmitted to Central Fee. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "161.96", "field": .01, "type": "regular"},
+    {"name": "161.96", "field": 4, "type": "regular"},
+    {"name": "161.96", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

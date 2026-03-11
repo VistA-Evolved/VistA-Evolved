@@ -1,0 +1,58 @@
+{
+  "fileNumber": 693,
+  "fileName": "MEDICAL DESCRIPTION",
+  "globalRoot": "693",
+  "globalReference": "^MCAR(693,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field serves as a list of Echo conclusions for the Echo file and a list of Bone Marrow Descriptions for the Hematology file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows an alternate name for the Medical description. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ICD POINTER",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This field links the description with an ICD diagnosis. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CARDIOLOGY;H:HEMATOLOGY;P:PULMONARY;",
+      "helpText": "This field is used as a screen to separate the Echo conclusions from the Hematology bone marrow description ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "693", "field": .01, "type": "regular"},
+    {"name": "693", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

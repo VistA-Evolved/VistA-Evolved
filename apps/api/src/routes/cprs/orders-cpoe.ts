@@ -36,7 +36,7 @@ import { validateCredentials } from '../../vista/config.js';
 import { callRpc, connect, disconnect, getDuz, withBrokerLock } from '../../vista/rpcBrokerClient.js';
 import { poolRunRpcSequence } from '../../vista/rpcConnectionPool.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
-import { probeTier0Rpc } from '../../lib/tier0-response.js';
+// tier0Gate eliminated -- zero-pending policy enforced
 import { getCurrentRpcContext, safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
 import { audit } from '../../lib/audit.js';
 import { log } from '../../lib/logger.js';
@@ -483,14 +483,12 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
 
     const check = optionalRpc('ORWORR AGET');
     if (!check.available) {
-      const ordersProbe = probeTier0Rpc('ORWORR AGET', 'orders');
       return reply.code(502).send({
         ok: false,
         orders: [],
         rpcUsed: ['ORWORR AGET'],
         vivianPresence,
-        capabilityProbe: ordersProbe,
-        error: 'ORWORR AGET RPC capability not detected at runtime',
+        error: 'ORWORR AGET RPC not available in this VistA instance',
       });
     }
 
@@ -570,9 +568,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // If no quick order found, return capability-probed response
+    // If no quick order found, return draft response
     if (!qoIen) {
-      const probe = probeTier0Rpc('ORWDXM AUTOACK', 'orders');
       const draft = createDraft('order-sign', validDfn!, 'ORWDX SAVE', {
         action: 'lab-order',
         labTest: String(labTest || ''),
@@ -1421,15 +1418,13 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // Order checks -- capability-probed fallback
-    const checksProbe = probeTier0Rpc('ORWDXC ACCEPT', 'orders');
     audit(
       'clinical.order-check',
       'success',
       { duz: actor },
       {
         patientDfn: validDfn!,
-        detail: { mode: 'capability-probed' },
+        detail: { mode: 'fallback' },
       }
     );
 
@@ -1439,8 +1434,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       checkCount: 0,
       rpcUsed: ['ORWDXC ACCEPT', 'ORWDXC DISPLAY', 'ORWDXC SAVECHK'],
       vivianPresence,
-      capabilityProbe: checksProbe,
-      error: 'Order checks RPCs available but require valid order context with proper orderable items.',
+      error: 'Order checks RPCs require valid order context with proper orderable items.',
     });
   });
 

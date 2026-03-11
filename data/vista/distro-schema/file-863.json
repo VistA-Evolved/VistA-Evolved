@@ -1,0 +1,90 @@
+{
+  "fileNumber": 863,
+  "fileName": "OCX MDD CLASS",
+  "globalRoot": "863",
+  "globalReference": "^OCXS(863,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,7",
+      "length": 17,
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PARENT CLASS",
+      "dataType": "POINTER",
+      "rawType": "P863'",
+      "required": false,
+      "pointerTo": 863,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The mnemonic is a unique identifier for the class ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.01P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "863.02",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Unique object ID triggered by the .01 field. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ACLS", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "MN", "field": },
+    {"name": "UID", "field": },
+    {"name": "863", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863", "field": .02, "type": "regular"},
+    {"name": "863", "field": .03, "type": "regular"},
+    {"name": "863", "field": .04, "type": "regular"},
+    {"name": "863", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

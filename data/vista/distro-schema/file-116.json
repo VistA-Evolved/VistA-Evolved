@@ -1,0 +1,60 @@
+{
+  "fileNumber": 116,
+  "fileName": "MENU CYCLE",
+  "globalRoot": "116",
+  "globalReference": "^FH(116,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a menu cycle, and is often 'Summer cycle' or 'Winter cycle.' ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DAY",
+      "dataType": "SUBFILE",
+      "rawType": "116.01",
+      "required": false,
+      "helpText": "This field contains the day number within the cycle and is therefore 1 to the number of days in the cycle. ",
+      "isMultiple": true,
+      "subFileNumber": 116.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NO. DAYS IN CYCLE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of days in the cycle, after which it will repeat. The day numbers in the Day Field (Field 1) should run from 1 to this number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "116.02D",
+      "required": false,
+      "helpText": "This multiple contains dates upon which this cycle will become effective and will continue until superceded by the effective date of this or another cycle. The date becomes Day 1 of the selected cycle. ",
+      "isMultiple": true,
+      "subFileNumber": 116.02,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "116", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

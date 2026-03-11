@@ -1,0 +1,82 @@
+{
+  "fileNumber": 107,
+  "fileName": "MICOM STATISTICS",
+  "globalRoot": "107",
+  "globalReference": "^%ZISL(107,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Entry Number",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Statistics number sent by the Micom Statistics Port. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Type",
+      "dataType": "POINTER",
+      "rawType": "P107.1'",
+      "required": false,
+      "pointerTo": 107.1,
+      "helpText": "Type of action: Connect, Disconnect, Failure to connect, etc. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Initiating line or port",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line or Port responsible for TYPE of action. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Destination line or port",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line or Port the Initiating Line or Port had action upon. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Class",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Class initiating line or port connected to. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Day of Year",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The number of the day in the year with Jan 1 being day 1. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "Time",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Time the action occured in military time. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "107", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

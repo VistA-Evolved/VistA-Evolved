@@ -1,0 +1,58 @@
+{
+  "fileNumber": 354.4,
+  "fileName": "BILLING ALERTS",
+  "globalRoot": "354.4P",
+  "globalReference": "^IBA(354.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILLING ALERT",
+      "dataType": "POINTER",
+      "rawType": "RP354.5'",
+      "required": true,
+      "pointerTo": 354.5,
+      "helpText": "This is a pointer to the type of Billing Alert associated with this Alert. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME OF ALERT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date time the alert occured. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RESOLVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who resolved the alert. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "WHEN RESOLVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when the alert was resolved. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "354.4", "field": .01, "type": "regular"},
+    {"name": "354.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

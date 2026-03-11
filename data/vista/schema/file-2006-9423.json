@@ -1,0 +1,42 @@
+{
+  "fileNumber": 2006.9423,
+  "fileName": "MAGV IMPORT SERVICE",
+  "globalRoot": "2006.9423",
+  "globalReference": "^MAGV(2006.9423,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODPROC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ128",
+      "length": 128,
+      "required": true,
+      "helpText": "This is the Modality and Procedure of Import image. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Service of import image, that is associated with Modality and  Procedure. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "S", "field": },
+    {"name": "2006.9423", "field": .01, "type": "regular"},
+    {"name": "2006.9423", "field": .01, "type": "regular"},
+    {"name": "2006.9423", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

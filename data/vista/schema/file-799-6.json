@@ -1,0 +1,152 @@
+{
+  "fileNumber": 799.6,
+  "fileName": "ROR HISTORICAL DATA EXTRACTION",
+  "globalRoot": "799.6",
+  "globalReference": "^RORDATA(799.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This field stores the unique name of the historical data extraction. If an extraction is initiated by a patch, it is a good idea to include the patch number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:Auto (HL7 messages);2:Manual (host files);",
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This field defines the type of data extraction.   Automatic data extractions are initiated by the  CCR patches. Data is extracted by the nightly task and sent via regular batch HL7 messages.   Manual data extractions are initiated by the users using the options from the maintenance menu. They  schedule the data extraction tasks and verify  their completion. Data is written to host files,  which are",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This field indicates the start date for the  historical data extraction. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This field indicates the end date for the  historical data extraction. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENTS PER BATCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   The PATIENTS PER BATCH field holds the maximum number of patients whose data is written into a single historical data extraction output file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAXIMUM MESSAGE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This field stores the maximum size (in megabytes) of a batch HL7 message that can be sent to Austin Automation Center (AAC). If this field is empty or contains 0, the size is not limited. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used only for automatic data  extractions. If it is empty, then the nightly task ignores this record completely. Otherwise, the data extraction will not start before the date and time stored in this field. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BASE FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The base part for the output file names is stored in this field. It is populated either by a patch  or by the user (if they are instructed to do so).   The output file names will have the following structure:     BASE-SSS-TT.HDT   where 'BASE' is the value of this field, 'SSS' is the site number (3 digits), and 'TT' is the sequential number of the task (2 digits).                                                       If the task is restarted, the optional numeric modifier '##' (2 digits) will be",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   National historical data extractions (backpulls) must have this field set to \"YES\". This prevents local editing of other fields of the definitions. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA AREA",
+      "dataType": "POINTER",
+      "rawType": "799.61P",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A  NATIONAL HISTORICAL DATA EXTRACTION DEFINITION!   This multiple lists all data areas in which the  data extraction will be performed. It can also contain additional time frames for these data areas. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OUTPUT DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A directory must be created within the file system of the host operating system (VMS, Windows, etc.). Text files containing historical data in the HL7 format will be created in this directory by the data extraction tasks.   The full name of the directory must be entered as a value of this field. For example, the value can look something like this:      VA2$:[OUTPUT] - VAX VMS     D:\\Output\\    - Windows, MS-DOS   Because a file name will be concatenated to the directory name, the trailing slash ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REGISTRY NAME",
+      "dataType": "SUBFILE",
+      "rawType": "799.63",
+      "required": false,
+      "helpText": "This multiple references the registries that the data extraction will be performed for and indicates the extraction status. ",
+      "isMultiple": true,
+      "subFileNumber": 799.63,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TASK",
+      "dataType": "SUBFILE",
+      "rawType": "799.64",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 799.64,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates a generic status of the  historical data extraction:     \"\"  Unknown/Undefined    0  Inactive    1  Pending/Active    2  Completed ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "fileNumber": 142.98,
+  "fileName": "HEALTH SUMMARY USER PREFERENCES",
+  "globalRoot": "142.98",
+  "globalReference": "^GMT(142.98,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HEALTH SUMMARY LIST BUILD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OVERWRITE;1:APPEND;",
+      "helpText": "This field determines how the list of Health Summary Types for the CPRS GUI  report tab is to be organized (APPEND or OVERWRITE) for user selection.   There are three major classes of Health Summary types, National (remote data  view), user defined and system defined.  User and system Health Summary  Types are defined in the Kernel Parameters file.  Append creates a single  list, removing duplicates, and keeps the National Health Summary types group  together.  Overwrite stops building the list ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "HEALTH SUMMARY LIST PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "There are three major classes of Health Summary types, National (remote data view), user defined and system defined.  This field provides order in which  these groups of Health Summary Types are added to the Health Summary Types  list for the CPRS GUI reports tab.  ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "142.98", "field": .01, "type": "regular"},
+    {"name": "142.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

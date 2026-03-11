@@ -1,0 +1,314 @@
+{
+  "fileNumber": 9002313.92,
+  "fileName": "BPS NCPDP FORMATS",
+  "globalRoot": "9002313.92",
+  "globalReference": "^BPSF(9002313.92,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD FORMAT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Textual description of this record format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "51:Version 5.1;D0:Version D.0;",
+      "helpText": "This is the NCPDP Version Number.  The request that is created will follow the specification of this NCPDP Version. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "PRODUCTION STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:DISABLED;1:DEVELOPMENT;2:FIELD TESTING;3:PRODUCTION;",
+      "helpText": "To be used as a screen when attaching a format to an insurer. Don't allow non-production formats.  Those will have to be entered directly with Fileman. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "TOTAL EXCLUSIVE PATIENT AMOUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;0:N;",
+      "helpText": "This refers to the interpretation of the fields in the response packets, as copied to 9002313.03, Response(s) multiple, fields 509 Total Amount Paid and 505 Patient Paid Amount.  For most formats and insurers 509 Total Amount Paid means Total, Patient plus Insurer.  Other insurers don't do it that way - for them, 509 contains only the amount paid by insurance. $$NETPAID1 needs to know whether to do the subtraction.  If $$NETPAID1 encounters a case where (#509)<(#505), it will set the flag in the",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "ASLEEP PROBER",
+      "dataType": "POINTER",
+      "rawType": "P9002313.59'",
+      "required": false,
+      "pointerTo": 9002313.59,
+      "helpText": "The BPS Transaction used as the test prober to test when the insurer is  'awake'. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "ASLEEP RETRY TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The time to wait before re-trying to see if the insurer is 'awake'. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "PAYER SHEET VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "Which version of the NCPDP standard this payer sheet is for. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "TRANSACTION HEADER SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9205A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9205,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "PATIENT SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9206A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9206,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "INSURANCE SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9207A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9207,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "CLAIM SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9208A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9208,
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "PHARMACY PROVIDER SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9209A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9209,
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "PRESCRIBER SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.921A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.921,
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "COB OTHER PAYMENTS SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9213A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9213,
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "WORKERS COMP SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9214A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9214,
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "DUR PPS SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9215A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9215,
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "PRICING SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9216A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9216,
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "COUPON SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9217A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9217,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "COMPOUND SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9218A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9218,
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "PRIOR AUTH SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9219A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.9219,
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "CLINICAL SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.922A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9002313.922,
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "ADDL DOC SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9223A",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the Additional  Documentation Segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9223,
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "FACILITY SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9224A",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the Facility  segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9224,
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "NARRATIVE SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9225A",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the Narrative  segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9225,
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 270,
+      "fieldName": "PURCHASER SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9227A",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the Purchaser segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9227,
+      "fieldNumber_": 270
+    },
+    {
+      "fieldNumber": 280,
+      "fieldName": "SERVICE PROVIDER SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9228A",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the  Service Provider segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9228,
+      "fieldNumber_": 280
+    },
+    {
+      "fieldNumber": 290,
+      "fieldName": "INTERMEDIARY SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.9229",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the NCPCP  Intermediary Segment ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.9229,
+      "fieldNumber_": 290
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "LAST KNOWN 4RX SEGMENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.923",
+      "required": false,
+      "helpText": "This subfile holds the fields and processing rules for the NCPDP Last  Known 4RX segment. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.923,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 1901,
+      "fieldName": "DEVELOPMENT REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.921901",
+      "required": false,
+      "helpText": "General remarks for the payer sheet, anything that will help describe the  function of the sheet, etc.   ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.921901,
+      "fieldNumber_": 1901
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

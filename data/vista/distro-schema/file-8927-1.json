@@ -1,0 +1,205 @@
+{
+  "fileNumber": 8927.1,
+  "fileName": "TIU TEMPLATE FIELD",
+  "globalRoot": "8927.1",
+  "globalReference": "^TIU(8927.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Unique Dialog Field Name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:Edit Box;C:Combo Box;B:Button;X:Check Boxes;R:Radio Buttons;D:Date;N:Numeric;H:Hyperlink;W:Word Processing;T:Text;",
+      "helpText": "Type of template field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Disable template field ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the display length of edit and combo boxes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEFAULT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Default text. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LIST MANAGER TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text to insert into a boilerplate when expanded from a list manager interface. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT INDEX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Line # of default item in the ITEMS field. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that entry into the template field is required. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SEPARATE LINES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if Check Box or Radio Group fields should be displayed on separate lines, or if they should wrap. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "MAX LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the maximum number of characters that can be typed in an edit box or combo box.  This can be longer than the Length field, which is the display width of the control. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INDENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of characters to indent the control in the dialog.  Has no affect on the spacing of text generated from the control. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of characters to indent the text generated from the control.  Has no affect on the position of the control in the dialog. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "MIN VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Min allowed value on numeric fields. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "MAX VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Max allowed value on numeric fields. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "INCREMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Amount to increment numeric fields with the up and down arrow buttons are used. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DATE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DATE;T:DATE & TIME;R:DATE & REQUIRED TIME;C:COMBO STYLE;Y:COMBO YEAR ONLY;M:COMBO YEAR & MONTH;",
+      "helpText": "Indicates the type of control to use to represent a date value. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8927.12",
+      "required": false,
+      "helpText": "A word processing field containing a description of the field, or other  notes and history information. ",
+      "isMultiple": true,
+      "subFileNumber": 8927.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Web address of hyperlink fields. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEMS",
+      "dataType": "SUBFILE",
+      "rawType": "8927.11",
+      "required": false,
+      "helpText": "Word processing field representing either the list of items that can be selected, or the default word processing text. ",
+      "isMultiple": true,
+      "subFileNumber": 8927.11,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

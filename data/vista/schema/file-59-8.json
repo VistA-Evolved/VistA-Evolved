@@ -1,0 +1,36 @@
+{
+  "fileNumber": 59.8,
+  "fileName": "OUTPATIENT CLINIC SORT GROUP",
+  "globalRoot": "",
+  "globalReference": "^PS(59.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will store the name of the sort group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SORT GROUP",
+      "dataType": "POINTER",
+      "rawType": "59.81P",
+      "required": false,
+      "helpText": "This sub-file will be used to store the name of the clinics associated with a sort group. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

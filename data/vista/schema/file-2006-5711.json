@@ -1,0 +1,26 @@
+{
+  "fileNumber": 2006.5711,
+  "fileName": "DICOM M2MB RPC QUEUE",
+  "globalRoot": "2006.5711",
+  "globalReference": "^MAGDINPT(2006.5711,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATA RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The value of this field is a record to be passed on to the remote procedure call.   One of the parameters of this remote procedure decides how to treat the data record that is stored in this field. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

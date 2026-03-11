@@ -1,0 +1,64 @@
+{
+  "fileNumber": 120.55,
+  "fileName": "GMRV ORDERS",
+  "globalRoot": "120.55P",
+  "globalReference": "^GMR(120.55,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P100'X",
+      "required": true,
+      "pointerTo": 100,
+      "helpText": "This field is a pointer to the OE/RR ORDERS file (#100).  This record  contains detailed information about the order it points to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMINISTRATION SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents the frequency of administration of this order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ADMINISTRATION TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field reflects the times of the day that the requested vitals should be taken.  Use military time (24 hour clock) when entering these times,  separating each time with a '-'.  Be sure that the times are in ascending order, i.e., 06-14-22 or 0600-1400-2200.  All times must be the same length, either 2 or 4 digits. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field reflects the number of minutes between each vital measurement reading. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OTHER INFORMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains any additional information regarding this order. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "120.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

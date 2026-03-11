@@ -1,0 +1,82 @@
+{
+  "fileNumber": 863.7,
+  "fileName": "OCX MDD PUBLIC FUNCTION",
+  "globalRoot": "863.7",
+  "globalReference": "^OCXS(863.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EXTRINSIC FUNCTION;2:PARAMETERIZED SUBROUTINE;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "863.72",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.72,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FUNCTION CALL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.74P",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique ID for this object. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.7", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.7", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

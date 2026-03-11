@@ -1,0 +1,71 @@
+{
+  "fileNumber": 802.2,
+  "fileName": "NLM VALUE SETS",
+  "globalRoot": "802.2",
+  "globalReference": "^PXRM(802.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the value set.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Object Identifier of the value set.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short Identifier of the value set.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Version Date associated with the value set. The combination of OID and Version Date uniquely identify a value set.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CODE LIST",
+      "dataType": "POINTER",
+      "rawType": "802.24PA",
+      "required": false,
+      "helpText": "This multiple contains a list of all the standard codes in the value set.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MEASURE LIST",
+      "dataType": "POINTER",
+      "rawType": "802.25PA",
+      "required": false,
+      "helpText": "This is a list of all the Clinical Quality Measures that use the value set.  ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(1)) \"   \",$P(^(1),U,2)"}
+  ]
+}

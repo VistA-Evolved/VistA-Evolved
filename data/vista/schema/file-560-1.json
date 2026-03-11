@@ -1,0 +1,62 @@
+{
+  "fileNumber": 560.1,
+  "fileName": "VPR CONTAINER",
+  "globalRoot": "560.1",
+  "globalReference": "^VPRC(560.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is a unique identifying name for the container. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the mixed case name of the container as defined by the Summary Document Architecture (SDA) data model. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTITY",
+      "dataType": "POINTER",
+      "rawType": "P1.5'",
+      "required": false,
+      "pointerTo": 1.5,
+      "helpText": "This field holds the single Entity to be used for whole container extracts, if appropriate; if multiple entities are needed to find all records, then this field should be left blank. Entities supporting specific source files can (and should) still be defined in the Source File sub-file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOURCE FILE",
+      "dataType": "SUBFILE",
+      "rawType": "560.11",
+      "required": false,
+      "helpText": "This sub-file contains the list of VistA files that can populate this container. ",
+      "isMultiple": true,
+      "subFileNumber": 560.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "560.1", "field": .01, "type": "regular"},
+    {"name": "560.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

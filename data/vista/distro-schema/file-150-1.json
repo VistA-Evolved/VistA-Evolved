@@ -1,0 +1,27 @@
+{
+  "fileNumber": 150.1,
+  "fileName": "ANCILLARY DSS ID",
+  "globalRoot": "150.1",
+  "globalReference": "^VSIT(150.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AMIS CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "150.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

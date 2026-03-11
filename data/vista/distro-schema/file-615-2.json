@@ -1,0 +1,364 @@
+{
+  "fileNumber": 615.2,
+  "fileName": "SECLUSION/RESTRAINT",
+  "globalRoot": "615.2ID",
+  "globalReference": "^YS(615.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Actual date/time of entry of transaction into file. This field is transparent to the user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Name (DFN) of patient placed under seclusion and/or restraint for this episode. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME APPLIED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date/time seclusion and/or restraint actually applied to patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "Ward (hospital location) seclusion/restraint occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NAME OF NURSE PRESENT",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Supervisory nurse responsible for carrying out of seclusion/restraint action. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NURSING SHIFT",
+      "dataType": "POINTER",
+      "rawType": "RP211.6'",
+      "required": true,
+      "pointerTo": 211.6,
+      "helpText": "Nursing shift during which seclusion/restraint episode commenced. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PATIENT SEARCHED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Question as to whether or not a patient was searched for possible harmful objects on his/her person. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SEARCH COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "615.33",
+      "required": false,
+      "helpText": "If a patient was not searched, a reason must be given as to why the procedure was not done. ",
+      "isMultiple": true,
+      "subFileNumber": 615.33,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INITIAL TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Person placing information into file.  TRANSPARENT TO USER. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF SECLUSION/RESTRAINT",
+      "dataType": "POINTER",
+      "rawType": "615.34PA",
+      "required": false,
+      "helpText": "Manner in which seclusion/restraint is performed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ATTEMPTED ALTERNATIVES",
+      "dataType": "POINTER",
+      "rawType": "615.35PA",
+      "required": false,
+      "helpText": "Different clinical strategies employed prior to placing patient into seclusion/restraint. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The diagnosis may be an actual DSM diagnosis selected from the PTF file or it may be a perceived diagnosis by caretaker. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST4 SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "This computed field returns the last four digits of the patient's social security number. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REASONS FOR S/R",
+      "dataType": "POINTER",
+      "rawType": "615.21PA",
+      "required": false,
+      "helpText": "A reason for the seclusion/restraint action. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MEDICATIONS",
+      "dataType": "POINTER",
+      "rawType": "615.23PA",
+      "required": false,
+      "helpText": "A list of medications given to the patient during this seclusion/restraint episode. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BEHAVIOR REQUIRED FOR RELEASE",
+      "dataType": "POINTER",
+      "rawType": "615.24PA",
+      "required": false,
+      "helpText": "Actions required on the part of the patient prior to release from seclusion/restraint. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Caretaker responsible for initiating the seclusion/restraint action. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ORDER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "w:WRITTEN;e:EMERGENCY;p:PHONE;",
+      "helpText": "Method by which the seclusion/restraint order was conveyed by the responsible caretaker to appropriate personnel. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DATE/TIME OF ORDER",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time the order was written, phoned or the situation required emergency action. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DATE ORDER CHANGED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Field will only contain data when the order is altered.  It indicates the date and time the order was changed.  TRANSPARENT TO USER. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "GENERAL COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "615.27",
+      "required": false,
+      "helpText": "Additional comments concerning this seclusion/restraint episode. ",
+      "isMultiple": true,
+      "subFileNumber": 615.27,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "RELEASE ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "*RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Caretaker ordering cessation of seclusion/restraint order. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PERSONNEL EFFECTING RELEASE",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Personnel actually performing release of patient from seclusion/restraint. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TIME REMOVED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Actual date/time release was performed. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "RELEASE TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Person entering release information into file.  TRANSPARENT TO USER. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "RELEASE FILED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time release information placed in file.  TRANSPARENT TO USER. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CIRCUMSTANCES/FURTHER ACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "615.28",
+      "required": false,
+      "helpText": "Narrative concerning release action and possible follow-up care. ",
+      "isMultiple": true,
+      "subFileNumber": 615.28,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Personnel, in authority, reviewing action. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:APPROPRIATE;I:INAPPROPRIATE;O:OTHER (See Reviewer's Comments);",
+      "helpText": "Decision of the reviewer as to whether or not action taken was appropriate. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "ACTUAL DATE OF REVIEW",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Actual date/time review was made by personnel. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "REVIEW TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Personnel entering review into file.  TRANSPARENT TO USER. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "REVIEW FILED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Actual date/time review entered into file by transcriber. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "REVIEWER'S COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "615.29",
+      "required": false,
+      "helpText": "Narrative of additional comments provided by the reviewer. ",
+      "isMultiple": true,
+      "subFileNumber": 615.29,
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "OBSERVATION CHECK TIME",
+      "dataType": "DATE",
+      "rawType": "615.3DA",
+      "required": false,
+      "helpText": "A history of observations performed during a single patient episode. ",
+      "isMultiple": true,
+      "subFileNumber": 615.3,
+      "fieldNumber_": 60
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "615.2", "field": .01, "type": "regular"},
+    {"name": "615.2", "field": .02, "type": "regular"},
+    {"name": "615.2", "field": .02, "type": "regular"},
+    {"name": "615.2", "field": .04, "type": "regular"},
+    {"name": "615.2", "field": 26, "type": "regular"},
+    {"name": "615.2", "field": 44, "type": "regular"},
+    {"name": "615.2", "field": 44, "type": "regular"},
+    {"name": "615.2", "field": 54, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$$FMTE^XLFDT($P(^(0),U,3),\"5ZD\")"}
+  ]
+}

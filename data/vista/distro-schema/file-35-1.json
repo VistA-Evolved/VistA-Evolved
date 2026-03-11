@@ -1,0 +1,50 @@
+{
+  "fileNumber": 35.1,
+  "fileName": "SHARING AGREEMENT CATEGORY",
+  "globalRoot": "35.1",
+  "globalReference": "^DG(35.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "A/P",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P35.2",
+      "required": false,
+      "pointerTo": 35.2,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "35.1", "field": .01, "type": "regular"},
+    {"name": "35.1", "field": .01, "type": "regular"},
+    {"name": "35.1", "field": .02, "type": "regular"},
+    {"name": "35.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

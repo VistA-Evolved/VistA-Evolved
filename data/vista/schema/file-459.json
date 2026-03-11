@@ -1,0 +1,49 @@
+{
+  "fileNumber": 459,
+  "fileName": "PAID PAYRUN DATA",
+  "globalRoot": "459",
+  "globalReference": "^PRST(459,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAY PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the year-pay period in the form of YY-PP where YY represents the year and PP represents the pay period. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "459.01IP",
+      "required": false,
+      "helpText": "This subfile contains all the accounting and some master record data on an employee for a particular pay period. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PAY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the official pay date for the pay period. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "459", "field": .01, "type": "regular"},
+    {"name": "459", "field": .01, "type": "regular"},
+    {"name": "459", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

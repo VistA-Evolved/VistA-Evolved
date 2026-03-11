@@ -1,0 +1,36 @@
+{
+  "fileNumber": 42.8,
+  "fileName": "AMIS 358",
+  "globalRoot": "42.8D",
+  "globalReference": "^DGAM(358,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH-YEAR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "42.801PA",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ALST", "field": },
+    {"name": "B", "field": },
+    {"name": "42.8", "field": .01, "type": "regular"},
+    {"name": "42.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

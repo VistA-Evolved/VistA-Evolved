@@ -1,0 +1,39 @@
+{
+  "fileNumber": 2263.2,
+  "fileName": "ASISTS DOL CAUSE OF INJURY CODES",
+  "globalRoot": "2263.2",
+  "globalReference": "^OOPS(2263.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This is the NAME of the Cause of Injury Code as defined by the Department of Labor (DOL).  The NAME of any Cause of Injury Code must not be changed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0I",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the CODE which corresponds to the name of the Cause of Injury as defined by the Department of Labor (DOL).  The CODE of any Cause of Injury  Code must not be changed. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2263.2", "field": .01, "type": "regular"},
+    {"name": "2263.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

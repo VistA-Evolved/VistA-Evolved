@@ -1,0 +1,264 @@
+{
+  "fileNumber": 914,
+  "fileName": "ESP VIOLATIONS",
+  "globalRoot": "914I",
+  "globalReference": "^ESP(914,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the violation ID #.  It is the site # concatenated with year and the internal entry number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME OF OFFENSE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date/time of the commission of the offense charged.  Future dates  are not allowed.  Enter the date/time of the commission of the offense charged.  BOTH date and time must be entered. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COURTESY/VIOLATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COURTESY;V:USDCVN;",
+      "helpText": "Enter 'C' if this is a courtesy ticket or 'V' if this is a USDCVN. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OFFENSE CHARGED",
+      "dataType": "POINTER",
+      "rawType": "RP915'",
+      "required": true,
+      "pointerTo": 915,
+      "helpText": "Enter the specific statute or regulation violated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VIOLATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "Enter the number assigned to the U.S.D.C. Violation Notice.  Enter only the numerics of the number, the \"V\" is understood to exist since it has already been designated as a Violation Notice. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ISSUING OFFICER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the police officer issuing the ticket.  The officer's name must already be entered into the NEW PERSON file (200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter two reference points to identify the location where the violation occurred, (i.e., 10th Street and Union Avenue, Ward 37, Room 134, Building 13D, Canteen). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "OFFENSE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The description of the violation charged.  This space may be used to provide shorthand titles for common violations such as speeding or parking. This type of entry may be useful in developing violation trend studies. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "OFFENDER",
+      "dataType": "POINTER",
+      "rawType": "P910",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "Enter the name of the person receiving the ticket.  The name must also entered in the Master Name File (910).  The standard LAST,FIRST MIDDLE name format is to be used. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Use this field to identify the Facility that this violation is associated  with.  ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DECAL #",
+      "dataType": "POINTER",
+      "rawType": "*P910.2'",
+      "required": false,
+      "pointerTo": 910.2,
+      "helpText": "Enter the parking permit decal number. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DECAL COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the decal.  It must be in the Selectables file. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "LICENSE TAG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the license tag number of the vehicle involved in a vehicle related offense. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LICENSE TAG STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state that issued the license tag number. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "VEHICLE MAKE",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the make of this vehicle.  It must be in the Selectables file. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "VEHICLE MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the model of this vehicle, i.e., GALAXIE, MUSTANG, BLAZER, etc. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "VEHICLE STYLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the style of this vehicle, for example, TWO DOOR. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "VEHICLE COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of this vehicle.  It must be in the Selectables file. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "YEAR OF MANUFACTURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the year of manufacture of the vehicle, may be entered as 1990 or 90, etc. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COURT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date/time of the court appearance. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DISPOSITION",
+      "dataType": "POINTER",
+      "rawType": "*P911.2",
+      "required": false,
+      "pointerTo": 911.2,
+      "helpText": "Enter the code designating the disposition of this case.  The disposition entered must be contained in the ESP DISPOSITION CODE file (911.2). ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is automatically triggered by the Institution File. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "914.01",
+      "required": false,
+      "helpText": "Enter any remarks that you feel may be pertinent to record for this record. ",
+      "isMultiple": true,
+      "subFileNumber": 914.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "I", "field": },
+    {"name": "914", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "914", "field": .01, "type": "regular"},
+    {"name": "914", "field": .02, "type": "regular"},
+    {"name": "914", "field": .03, "type": "regular"},
+    {"name": "914", "field": .04, "type": "regular"},
+    {"name": "914", "field": .05, "type": "regular"},
+    {"name": "914", "field": .06, "type": "regular"},
+    {"name": "914", "field": .09, "type": "regular"},
+    {"name": "914", "field": 1.02, "type": "regular"},
+    {"name": "914", "field": 1.03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ESP(915,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(915,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 1.03, "value": "W:$D(^(1)) \"   \",$P(^(1),U,3)"},
+    {"field": WRITE, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(914,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": WRITE1, "value": "W \"   \",$P(^(0),U,5)"}
+  ]
+}

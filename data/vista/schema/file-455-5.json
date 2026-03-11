@@ -1,0 +1,172 @@
+{
+  "fileNumber": 455.5,
+  "fileName": "T&L UNIT",
+  "globalRoot": "455.5",
+  "globalReference": "^PRST(455.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the three-character code assigned to the T&L Unit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a descriptive name for the T&L unit. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CURRENT PAY PERIOD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TIMEKEEPER CLOSED;P:PAYROLL REVIEWED;X:SENT TO AUSTIN;",
+      "helpText": "This field indicates the status of the T&L unit for the current pay period. The status is updated only when all employees in the unit have been processed by the Timekeeper or reviewed by Payroll. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TIMEKEEPER",
+      "dataType": "POINTER",
+      "rawType": "455.51P",
+      "required": false,
+      "helpText": "This field contains the Timekeepers assigned to the T&L Unit. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "455.511P",
+      "required": false,
+      "helpText": "This is a list of the persons who may function as OT/CT supervisors in that they officially request OT/CT time and verify the time worked for this T&L unit. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OT/CT APPROVER",
+      "dataType": "POINTER",
+      "rawType": "455.512P",
+      "required": false,
+      "helpText": "This is a list of persons who may function as OT/CT approving officials for OT/CT requests from this T&L unit. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a pointer to the Institution file and is the station with which this T&L is associated. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field points to an entry in the INSTITUTION file (#4).  It may be a stand alone facility or in the case of an integrated site it could be the  parent facility or any of its subordinates. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is a pointer into the Service/Section file (49) and indicates the Service with which this T&L is associated. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field indicating the service sub-unit or division with which this T&L unit is associated. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ENTITLED TO PREMIUMS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the time and leave unit is entitled to premium pay. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "TIME SLEEP-TIME BEGINS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "When Sleep Time begins for Standby tours of duty in this time and leave unit. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "POC DATA ENTRY PERSONNEL",
+      "dataType": "POINTER",
+      "rawType": "455.52P",
+      "required": false,
+      "helpText": "This field contains persons that are responsible for entering additional data about VA nurses time and attendance activity for this T&L unit that will be used by the VANOD database. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "POC DATA APPROVAL PERSONNEL",
+      "dataType": "POINTER",
+      "rawType": "455.531P",
+      "required": false,
+      "helpText": "This field contains persons that are responsible for approving additional data about VA nurses time and attendance activity for this T&L unit that will be used by the VANOD database. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PENDING CERTIFICATION ACTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of pending actions relating to leave, overtime, tour changes, and prior pay period corrections which require supervisory certification. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PENDING OT/PPA ACTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of OT/CT and Prior Pay Period Adjustment actions requiring second-level approval. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AS", "field": },
+    {"name": "ASX", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "455.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"    \",$P($G(^(0)),U,2)"}
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "fileNumber": 553,
+  "fileName": "CMOP INTERFACE",
+  "globalRoot": "553",
+  "globalReference": "^PSX(553,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Free text name of the CMOP site.          ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTENTION RETRY DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0XI",
+      "length": 2,
+      "required": false,
+      "helpText": "The time delay (in seconds) between unsuccessful bids for master status.             ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAXIMUM BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0IX",
+      "length": 2,
+      "required": false,
+      "helpText": "The maximum size of a block of data (in bytes).                    ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAXIMUM MESSAGE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0IX",
+      "length": 4,
+      "required": false,
+      "helpText": "The maximum size of a message (in bytes). A message can contain many blocks of data.               ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BLOCK XMIT RETRIES (L)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0IX",
+      "length": 2,
+      "required": false,
+      "helpText": "The maximum number of times a block of data can be retransmitted.                       ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LINE BID RETRIES (M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0IX",
+      "length": 2,
+      "required": false,
+      "helpText": "The maximum number of retries in bidding for master status.                        ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CMOP DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "The name of the device used to transmit data to the vendor system.                    ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "R:RUNNING;S:STOPPED;",
+      "helpText": "  This field indicates the current status of the CMOP Interface and is used in combination with other system parameters to control the operations of the CMOP.                             ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "PRINT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;S:STOPPED;",
+      "helpText": "This field indicates if labels are printing for a queued data transmission and is used in combination with other system parameters to control the operations of the CMOP Interface. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TIMER A",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Response timer used by a sending station to protect against an invalid response or no response. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TIMER B",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Receive timer used by a slave station to protect against failure to  recognize the end of a block. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TIMER D",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Inter-Block timer that serves to prevent a station from hanging in slave  mode ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TIMER E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Line Check timer that triggers a check of the communications link when neither station has requested to be master for some time. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "QUANTITY LIMIT REQUEST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  The maximum (quantity limit) number of responses for a query request. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LAST MESSAGE TRANSMITTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The message control ID of the last message transmitted to the non-DHCP vendor system. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "QUERY TIME INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter the time interval between queries. This time is entered in hours. Time can be entered as a fraction of an hour. Example: 1.5, .75, 2.25, etc. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "QUERY STATUS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "R:RUNNING;S:STOPPED;",
+      "helpText": "This field indicates whether or not a Query Request is currently in progress and is used with other system parameters to control the operations of the CMOP Interface. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FILER STATUS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "R:RUNNING;S:STOPPED;",
+      "helpText": "This field indicates when the background filer is running and is used in combination with other system parameters to control the operations of  the CMOP Interface. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MAX LOG ENTRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the maximum number of log entries that will be maitained in the CMOP Interface file. The recommended default is 1,000 entries. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "LOG",
+      "dataType": "DATE",
+      "rawType": "553.01DA",
+      "required": false,
+      "helpText": "The interface log of activity during data transmissions. This data is used mostly for troubleshooting problems with the running of the interface.                    ",
+      "isMultiple": true,
+      "subFileNumber": 553.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "FILER TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  This is the TaskMan task number for the background filer.    ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PURGE RELEASE FILE TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "  This is the TaskMan task number for the nightly job that purges the   release file. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "553", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

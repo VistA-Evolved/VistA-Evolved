@@ -1,0 +1,61 @@
+{
+  "fileNumber": 704.201,
+  "fileName": "HEMODIALYSIS ACCESS POINTS",
+  "globalRoot": "704.201",
+  "globalReference": "^MDK(704.201,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field displays the name of the patient for whom the access point of the dialysis treatment history is recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ACCESS POINTS",
+      "dataType": "SUBFILE",
+      "rawType": "704.2011",
+      "required": false,
+      "helpText": "This field holds the XML in UUEncoded format for this patient's access  points for dialysis treatments. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2011,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "ACCESS HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "704.2012",
+      "required": false,
+      "helpText": "This field holds the XML in UUEncoded format for this patient's access history for dialysis treatments. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2012,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "INFECTION HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "704.2013",
+      "required": false,
+      "helpText": "This field holds the XML in UUEncoded format for this patient's infection history for dialysis treatments. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2013,
+      "fieldNumber_": .3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "704.201", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

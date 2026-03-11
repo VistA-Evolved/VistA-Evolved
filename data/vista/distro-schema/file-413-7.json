@@ -1,0 +1,37 @@
+{
+  "fileNumber": 413.7,
+  "fileName": "COUNTER",
+  "globalRoot": "413.7",
+  "globalReference": "^PRCN(413.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the identifying portion of the Sequential Transaction Number. It's structure is Site#-CMR#-Fiscal Year. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST NUMBER USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the last sequential number that was used for a Sequential Transaction Number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "413.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

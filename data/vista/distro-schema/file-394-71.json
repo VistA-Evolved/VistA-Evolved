@@ -1,0 +1,97 @@
+{
+  "fileNumber": 394.71,
+  "fileName": "VAQ - DATA SEGMENT",
+  "globalRoot": "394.71I",
+  "globalReference": "^VAT(394.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Data Segment Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Name of the data segment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Abbreviation",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation for the data segment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Extract Is Display Ready",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to YES if the Extraction Method returns information in display ready format (returns Display Array instead of Extraction Array). Set to NO if Extraction Method does not (returns Extraction Array). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "Health Summary Component",
+      "dataType": "POINTER",
+      "rawType": "P142.1'",
+      "required": false,
+      "pointerTo": 142.1,
+      "helpText": "  Set to the Health Summary Component that this data segment is associated with.  Leave blank if data segment is not a Health Summary Component. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "Maximum Time Limit",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Maximum time limit facility will allow when automatically processing a PDX Request with this segment ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "Maximum Occurrence Limit",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "  Maximum occurrence limit facility will allow when automatically processing a PDX Request with this segment ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Extraction Method",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Function call to extract data segment. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Display Method",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Function call to display data segment.  This field is not used when the Extraction Method returns information in display ready format. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "394.71", "field": .01, "type": "regular"},
+    {"name": "394.71", "field": .01, "type": "regular"},
+    {"name": "394.71", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE1, "value": "W ?40,\"(\",$P(^(0),U,2),\")\""}
+  ]
+}

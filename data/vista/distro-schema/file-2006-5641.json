@@ -1,0 +1,48 @@
+{
+  "fileNumber": 2006.5641,
+  "fileName": "DICOM GATEWAY MACHINE ID",
+  "globalRoot": "2006.5641",
+  "globalReference": "^MAGDICOM(2006.5641,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MACHINE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "The value of this field is the same as the internal entry number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOSTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string. This string represents the 'hostname' of the computer that is used for the DICOM Gateway that is described in the current record.   The format of the 'hostname' is subject to VA policy. Policies regarding the format of these names are subject to change, hence no additional formatting restrictions are imposed in this data definition.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a date/time value ($Horolog format). This value represents the date and time when the content of this record was most recently confirmed. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.5641", "field": .01, "type": "regular"},
+    {"name": "2006.5641", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

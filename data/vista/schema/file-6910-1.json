@@ -1,0 +1,94 @@
+{
+  "fileNumber": 6910.1,
+  "fileName": "ENGINEERING COMPUTER PORT",
+  "globalRoot": "6910.1IP",
+  "globalReference": "^DIC(6910.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEVICE #",
+      "dataType": "POINTER",
+      "rawType": "RP3.5'",
+      "required": true,
+      "pointerTo": 3.5,
+      "helpText": "Pointer to DEVICE file.  Entries should be made for output devices (printers) only. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEVICE # TRIGGERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Text that would be recognizable by routine ^%ZIS. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEVICE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Brief text that would enable a user to recognize this device. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BAR CODE EQUIPMENT FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "There should be an entry for this field if and only if this device is used to print bar coded equipment labels using a customized format. Entries must contain no more then 245 characters of executable M code.   If this device does not require formatting, just enter a 'Q' as the BAR CODE EQUIPMENT FORMAT field and no formatting instructions will be sent.   If the device does require formatting (and most thermal transfer bar code printers do) and you wish to customize it, then you are advised to e",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BAR CODE LOCATION FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "There should be an entry for this field if and only if this device is used to print bar coded location labels using a customized format. Entries must contain no more then 245 characters of executable M code.    If this device does not require formatting, just enter a 'Q' as the BAR CODE LOCATION FORMAT field and no formatting instructions will be sent.   If the device does require formatting (and most thermal transfer bar code printers do) and you wish to customize it, then you are advised to en",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BAR CODE EQUIPMENT DATA",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "There should be an entry for this field if and only if this device is used to print bar coded equipment labels including a customized arrangement of fields from within the Equipment file (#6914). Entries must contain no more than 245 characters of executable M code.   If there is no entry in this field and the device is used to print bar coded equipment labels, then the standard field layout will be used automatically. The standard field layout includes the equipment entry number and facility na",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BAR CODE LOCATION DATA",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "There should be an entry for this field if and only if this device is used to print bar coded location labels using a customized arrangement of fields from within the Space file (#6928). Entries must contain no more than 30 characters of executable M code.   If there is no entry in this field and the device is used to print bar coded location labels, then the standard field layout will be used automatically. The standard field layout includes the physical location (as ROOM-BUILDING-DIVISION) and",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SUPPRESS LISTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INCLUDE IN LIST;1:EXCLUDE FROM LIST;",
+      "helpText": "Enter a 1 to prevent system from displaying this device as a selectable entry. It's usually a good idea to do this for bar code printers that have been included in the Engineering Computer Port file in order that their labels may be customized. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "6910.1", "field": .01, "type": "regular"},
+    {"name": "6910.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

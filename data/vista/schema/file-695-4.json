@@ -1,0 +1,36 @@
+{
+  "fileNumber": 695.4,
+  "fileName": "PAST HISTORY AND RISK FACTOR",
+  "globalRoot": "695.4I",
+  "globalReference": "^MCAR(695.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RISK FACTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of risk factors and past histories that are risk factors for use by the Medicine package.  It is currently being used by the Cardiology and Pacemaker modules. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SURGERY RISK FACTOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:USED AS CARDIAC SURGERY RISK FACTOR;",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "695.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "fileNumber": 59.73,
+  "fileName": "VENDOR DISABLE/ENABLE",
+  "globalRoot": "59.73",
+  "globalReference": "^PS(59.73,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISABLE/ENABLE FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:ENABLE;1:DISABLE;",
+      "helpText": "This field is a flag that determines whether the Vendor interface is enabled or disabled. The status of the Vendor interface should only be modified when the Vendor  database is being updated ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "59.731DA",
+      "required": false,
+      "helpText": "This is the sub-file that records any changes to the Vendor  interface ",
+      "isMultiple": true,
+      "subFileNumber": 59.731,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.73", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

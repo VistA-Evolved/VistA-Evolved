@@ -1,0 +1,57 @@
+{
+  "fileNumber": 350.7,
+  "fileName": "AMBULATORY CHECK-OFF SHEET",
+  "globalRoot": "350.7IO",
+  "globalReference": "^IBE(350.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Title for this sheet (group), printed on the CPT list for the associated clinics.  Maximum length allowed is calculated because it will change depending on the line format for the sheet. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY CHARGE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates if the charge should be displayed on this check-off sheet. If charge is displayed, then the number of characters available for the procedure name is decreased. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COLUMNS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "2:TWO VERTICAL;3:THREE VERTICAL;",
+      "helpText": "The number of vertical columns used when printing this check-off sheet. The number of columns on a page determines the column width and the number of characters available for the procedure/subheader name. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LINE FORMAT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CODE/NAME/$;2:NAME/CODE/$;",
+      "helpText": "Position of data elements within a column. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "350.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

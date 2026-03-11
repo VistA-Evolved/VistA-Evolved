@@ -1,0 +1,903 @@
+{
+  "fileNumber": 69.9,
+  "fileName": "LABORATORY SITE",
+  "globalRoot": "69.9",
+  "globalReference": "^LAB(69.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "There can be only one entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "BLOOD DONOR UNIT ID PREFIX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The number of eye readable (non bar coded) characters  as a prefix in the blood donor unit ID.  A x-ref will be set ^DD(65.54,4,1,3,1) for the unit ID to exclude  this prefix. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "DEFAULT LAB OOS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Occassion Of Service (OOS)   This field contains the default laboratory OOS location use to capture NPCDB workload. This field should contain the primary institution's laboratory OOS location. This location is used whenever a given Accession Area does not have a specific LAB OOS LOCATION assigned to capture NPCDB workload. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "  Certain workload functions are performed in the background, that is a user is not identified. In this circumstance, the system has no way of identifying the institution the workload should be credited. This field is the default value to be used by the system.   Enter the institution which should be considered the primary reporting institution. If this site is a multidivisional site, enter the parent institution in this field.   If this field is not filled in the Mailman domain value will be us",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "IMMED LAB COLLECT DIV.",
+      "dataType": "POINTER",
+      "rawType": "69.9006P",
+      "required": false,
+      "helpText": " If your laboratory provides specimen collection service outside of the normal routine collection, use this subfile to enter data about your particular site. The parameters of Immediate Lab Collect define one institution. Therefore, multidivisional sites can have different parameters for each division. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BLOOD BANK DEFAULTS",
+      "dataType": "SUBFILE",
+      "rawType": "69.98A",
+      "required": false,
+      "helpText": "Defaults for Donor, Inventory, and Patient portions of the blood bank. ",
+      "isMultiple": true,
+      "subFileNumber": 69.98,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "BLOOD BANK DIVISION",
+      "dataType": "POINTER",
+      "rawType": "69.981PA",
+      "required": false,
+      "helpText": "  Indicate here which institution will be considered primary for this site. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "HOSPITAL SITE",
+      "dataType": "POINTER",
+      "rawType": "69.99P",
+      "required": false,
+      "helpText": "This is where parameters are selected for sites throughout the hospital to control various aspects of lab order entry through OE/RR. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*ASK PROVIDER",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": " Because of OERR Alert generation, a provider must be entered for all ordered test. Therefore this field is no longer active. It will be deleted in a later version. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "QUE CH,HE,etc VERIFIED TEST(S)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the verified test notice is to be automatically queued, this field must contain YES. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "ASK FROZEN SECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "If frozen sections are to be put in a separate field (DD(63.08,1.3)  'YES' should be entered. ",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "ASK SURG PATH DIAGNOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "If diagnoses are to be put in a separate field 'YES' should  be entered. ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "ASK CYTOPATH DIAGNOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "If diagnoses are to be put in a separate field 'YES' should  be entered. ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 11.4,
+      "fieldName": "ASK EM DIAGNOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "If diagnoses are to be put in a separate field 'YES' should  be entered. ",
+      "fieldNumber_": 11.4
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "QUE MICRO VERIFIED TESTS(S)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If technologist approved work is to be automatically queued, this field must contain YES. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRINT LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If you want labels automatically printed, this field must contain YES. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ALLOW LAB TO ADD PATIENTS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;",
+      "helpText": "This field is not functional.  It is no longer used to allow Lab to add  patients to the Patient file.     ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CHOICE OF ACCESSION NUMBERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALLOWED;0:NOT ALLOWED;",
+      "helpText": "If you are running this system in parallel with another, setting this field to YES enables you to change or choose accession numbers.  When actually running, this field should be set to NO. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "GRACE PERIOD FOR ORDERS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of days that inactive orders will be kept.  (Minimum is 7 days.) ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "GRACE PERIOD FOR CUMULATIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The cumulative report (^LAC global) will be purged automatically when the cumulative report is run.  Inpatient data is not purged.  Patients currently enrolled in clinics are not purged.  All other data (inactive for the number of days specified by this field) is purged. No entry means that no data will be purged. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "WKLD STATS ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "To have WKLD statistics collected at the time of accessioning and verification, set this field to YES.   This is the primary switch to turn on workload collection. This entry turns off the entire function.   There is also a secondary switch (field) which allow each accession area to be turned on independently. It must also be answered yes to allow workload data collection in that specific accession area.   It is located in the ACCESSION AREA file (#68), WORKLOAD ON field (#10).   NOTE: BOTH FIEL",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "*AMIS/CAP DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " This field is marked for deletion. It is no longer used after version 5.2 Workload release. default AMIS/CAP code for each test.   A YES entry means that the defaults setup in file 60 will be used and no extra AMIS/CAP related questions are asked at the time of verification unless you have indicated in the field ASK AMIS/CAP CODES in file 60 that the specific test on the accession being verified should have the AMIS/CAP code questions asked. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*GRACE PERIOD FOR STATISTICS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "NOTE: THIS FIELD NO LONGER SERVES THIS FUNCTION. IT WILL BE DELETED IN 18 MONTHS AFTER THE RELEASE OF V 5.2. field to determine the number of days to go back to before purging data from these files.  Allow enough time for you to get your monthly or quarterly lab statistics reports. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "GRACE PERIOD FOR INACTIVITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the number of days that a patient has to be inactive (no lab orders), for the \"Force cumulative data to permanent page\" option to identify the patient data as qualified to be forced to permanent. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DAYS BACK FOR DELTA CHECKS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days going backwards to use for delta checking. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 64.913,
+      "fieldName": "LAST IEN PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the last IEN processed by the TaskMan job that monitors the LABORATORY TEST (#60) file for changes that might require quick order  updates. This field is updated by a TaskMan job so it is recommended you DO NOT edit this field manually. ",
+      "fieldNumber_": 64.913
+    },
+    {
+      "fieldNumber": 64.914,
+      "fieldName": "LAST DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time processed by the TaskMan job that monitors the LABORATORY TEST (#60) file for changes that might require quick order  updates. This field is updated by a TaskMan job so  it is recommended you DO NOT edit this field manually. ",
+      "fieldNumber_": 64.914
+    },
+    {
+      "fieldNumber": 95.3,
+      "fieldName": "LOINC HISTORICAL MAPPING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the LOINC Historical mapping was completed. The LAB  DATA LOINC Mapping [LR LOINC HISTORICAL MAPPER 63] option populates this  field after it has successfully completed all mapping. ",
+      "fieldNumber_": 95.3
+    },
+    {
+      "fieldNumber": 95.31,
+      "fieldName": "LOINC HISTORICAL LAST LRDFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the last LRDFN that was mapped by the LAB  DATA LOINC Mapping [LR LOINC HISTORICAL MAPPER 63] option. ",
+      "fieldNumber_": 95.31
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DEFAULT BLOOD SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "The blood specimen that will be used as a default choice. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DEFAULT URINE SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "The urine specimen that will be used as a default choice. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DEFAULT SERUM SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "The serum specimen that will be used as a default choice. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DEFAULT PLASMA SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "The plasma specimen that will be used as a default choice. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "DEFAULT UNKNOWN SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "When the specimen is unknown, this is the specimen that will be chosen. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 150.1,
+      "fieldName": "DEFAULT NATURE OF ORDER",
+      "dataType": "POINTER",
+      "rawType": "*P100.02'",
+      "required": false,
+      "pointerTo": 100.02,
+      "helpText": "This is the default Nature of order for orders placed with Lab options. This field points to OE/RR's Nature of order file. ",
+      "fieldNumber_": 150.1
+    },
+    {
+      "fieldNumber": 150.2,
+      "fieldName": "DEFAULT DC REASON",
+      "dataType": "POINTER",
+      "rawType": "*P100.03'",
+      "required": false,
+      "pointerTo": 100.03,
+      "helpText": "This is the default DC Reason used when orders are canceled or deleted with Lab options.  This field points to OE/RR's Order Reason file. ",
+      "fieldNumber_": 150.2
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "MICRO SURVEY REPORT DEFAULTS",
+      "dataType": "SET",
+      "rawType": "69.9002S",
+      "required": false,
+      "helpText": "  This field contains the default parameters used to print Micro survey report. ",
+      "isMultiple": true,
+      "subFileNumber": 69.9002,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "MICRO TREND REPORT DEFAULTS",
+      "dataType": "SET",
+      "rawType": "69.9005S",
+      "required": false,
+      "helpText": " This field contains the default parameters for the Micro Trend Report. ",
+      "isMultiple": true,
+      "subFileNumber": 69.9005,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "MICRO REPORT FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERPRETATION ONLY;R:RESULT ONLY;B:BOTH INTERPRETATION AND RESULT;",
+      "helpText": "The output of the microbiology patient's report can display antibiotic susceptiblities as:  I - interpretation only,  R - results only, or B - both interpretation and results.  No entry will default to interpretation only. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "MICRO DEFAULT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Contains the edit template name that will be used for entering antimicrobial results for those organisms that do not have a SUSCEPTIBILITY EDIT TEMPLATE defined in the ETIOLOGY file. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "MICRO OTHER TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Contains the edit template name that will be used for entering  antimicobial results that are not on the template specific for the  organism.  Generally, this template will include all antibiotic fields  being reported. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "DOWNLOAD FULL DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine how much data is to be downloaded to an instrument. If this field is set to download full data it will send data for all those instrument fields we have data for.  A caution when setting this field is that the more data sent to the instrument the larger the records get and the longer it takes to complete a download. Also if there is limited disk space on the instrument you may  overrun the space available causing the download to abort before you have all the data ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "HOLD-OVER SORT URGENCY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,1",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the urgency of hold-overs in building a load list.  '0' is before STAT, and '10' is after ROUTINE.  Choose from the numbers listed in the URGENCY file. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "DEFAULT URGENCY",
+      "dataType": "POINTER",
+      "rawType": "RP62.05'",
+      "required": true,
+      "pointerTo": 62.05,
+      "helpText": "The urgency that will be used as the default choice, usually Routine. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "LABEL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:2X5 UNEVEN;2:ORDER # FIRST;3:MEDLAB;4:SITE FILE;5:SITE DEVELOPED (VAF 10-1392);6:INTERMEC 1X3;",
+      "helpText": "Determines the format of the label that is printed.  Choice of predefined  default label (Null), 2x5 uneven (SLC special #1), or Order # first (#2),  Medlab 7 part (#3), Site file label (routine LRLABEL4, #4), Site  developed (VAF 10-1392) label (routine LRLABEL5, #5). Intermec printer, label stock No. 049114 1X3 inch (routine LRLABEL6, #6) ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "LOG PRINTER FOR ROUTINE LC",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the device you want the Routine Lab Collect Request to print on.   It is recommended that this printer be different one than the one use for immediate lab collect listing. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "RESERVED FIELD #1",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": " This field is reserved for future development. Will be used to indicate if data can be transferred to a foreign computer.   NOT PRESENTLY USED ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "PRINTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "69.9007P",
+      "required": false,
+      "helpText": "This sub-file is for multidivisional sites that wish to print lab collect orders at separate divisions.  If this field is left blank, then the #303 Log Printer for Routine LC is used.  Also, this sub-file is for multi- divisional sites that wish to have default label printers from LABLABEL to a division specific printer. ",
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 360,
+      "fieldName": "LABEL DEVICE",
+      "dataType": "POINTER",
+      "rawType": "69.9008P",
+      "required": false,
+      "helpText": "Used by Laboratory software to identify which devices are label printers. This allows the software to handle various types of label printers and label stock. ",
+      "fieldNumber_": 360
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "PHLEBOTOMY ORDER CUT-OFF TIME",
+      "dataType": "SUBFILE",
+      "rawType": "69.9001",
+      "required": false,
+      "helpText": "The order cut-off time for associated collection time.  Time is in 24 hour format.  Orders placed after the cut-off time will be put on the next routine lab collection. ",
+      "isMultiple": true,
+      "subFileNumber": 69.9001,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "COLLECT THURSDAY ORDERS IN ",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "COLLECT FRIDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "COLLECT SATURDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "COLLECT SUNDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "COLLECT MONDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "COLLECT TUESDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 506,
+      "fieldName": "COLLECT WEDNESDAYS ORDERS IN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The number of days until the next phlebotomy collection. ",
+      "fieldNumber_": 506
+    },
+    {
+      "fieldNumber": 507,
+      "fieldName": "IGNORE HOLIDAYS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field indicates if this institution operates at full service during federal holidays. ",
+      "fieldNumber_": 507
+    },
+    {
+      "fieldNumber": 509,
+      "fieldName": "EXCEPTED LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "69.9004P",
+      "required": false,
+      "helpText": " This field contains those locations which have special printing or specimen collection status apart from other hospital locations. ",
+      "fieldNumber_": 509
+    },
+    {
+      "fieldNumber": 510,
+      "fieldName": "BUILDING COLLECTION LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is here only to allow a site to reset it if the system stopped during the building of the phlebotomy collection list. IF THE USER SETS THIS TO YES THE COLLECTION LIST WILL NOT WORK!!! ",
+      "fieldNumber_": 510
+    },
+    {
+      "fieldNumber": 511,
+      "fieldName": "COLLECTION LIST BUILD $H",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is used and filled in by the collection list when it is built.  It contains the date that the list was built. For troubleshooting purposes only. ",
+      "fieldNumber_": 511
+    },
+    {
+      "fieldNumber": 512,
+      "fieldName": "COLLECTION LIST BUILDER (DUZ)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used and filled in by the collection list when it is  built.  It contains the DUZ of the user that built the list. For troubleshooting purposes only. ",
+      "fieldNumber_": 512
+    },
+    {
+      "fieldNumber": 513,
+      "fieldName": "COLLECTION LIST TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used and filled in by the collection list when it is built.  It contains the time that the list is built. For troubleshooting purposes only. ",
+      "fieldNumber_": 513
+    },
+    {
+      "fieldNumber": 514,
+      "fieldName": "COLLECTION LIST PRINT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used and filled in by the collection list when it is built and printed.  It contains a count of the number of times a collection list is printed. For troubleshooting purposes only. ",
+      "fieldNumber_": 514
+    },
+    {
+      "fieldNumber": 520,
+      "fieldName": "DATE ROLLOVER LAST RUN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This field contains the date that Rollover last run. ",
+      "fieldNumber_": 520
+    },
+    {
+      "fieldNumber": 521,
+      "fieldName": "ROLLOVER RUNNING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be automatically set to YES when rollover is running. ",
+      "fieldNumber_": 521
+    },
+    {
+      "fieldNumber": 530,
+      "fieldName": "STANDARD LOCATIONS ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If you want to restrict accessioning to only allow the entry of standard locations (locations defined in the Hospital location file), set this field to YES. ",
+      "fieldNumber_": 530
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "ARCHIVE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "69.9003A",
+      "required": false,
+      "helpText": " This field contains a history of archive activity done in the past. It also may contain information concerning archive process in progress. ",
+      "isMultiple": true,
+      "subFileNumber": 69.9003,
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "DEFAULT PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter a 1 if you want to be defaulted with a provider if the patient is an outpatient. ",
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 602,
+      "fieldName": "COMBINE TEST DURING ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "   This field allows a site to turn on or off the feature of combining test with in a panel which have the same sample and urgency during the ordering process. The software will check here first before attempting to combine single test with profiles. If there are certain test which never should be combined, edit ^LAB(60, field SHOULD NOT BE COMBINE. Then this test will not be combine with any other panel during ordering process. ",
+      "fieldNumber_": 602
+    },
+    {
+      "fieldNumber": 603,
+      "fieldName": "LAST LRDFN ARCHIVE SEARCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the last LRDFN that was found that required archiving during the search process of lab archive. ",
+      "fieldNumber_": 603
+    },
+    {
+      "fieldNumber": 604,
+      "fieldName": "LAST PURGED LRDFN FROM ARCHIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the last LRDFN that the archive process had purged from the LAR global. ",
+      "fieldNumber_": 604
+    },
+    {
+      "fieldNumber": 605,
+      "fieldName": "TAPE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the tape number that the archive process is using during the output of archive data to a tape media. ",
+      "fieldNumber_": 605
+    },
+    {
+      "fieldNumber": 606,
+      "fieldName": "# OF DAYS FOR ERRORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": " This field is used by the ^LABERR routine to determine the how many days before auto-instrument errors will be purged out of ^LA(\"ERR\"). If this entry is blank, a default value of 3 days will be used. ",
+      "fieldNumber_": 606
+    },
+    {
+      "fieldNumber": 607,
+      "fieldName": "DEFAULT OPT TREATING SP. ",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": " This field will be used as the default treating speciality for all out patient workload data collection for WKLD. It is recommended that an entry in the FACILITY TREATING SPECIALITY (#45.7) be made for AMBULATORY CARE.   Then use that entry in this field.  IF THIS FIELD IS BLANK, THEN THERE WILL BE NO TREATING SPECIALITY FOR OUTPATIENT WORKLOAD. PURPOSES. ",
+      "fieldNumber_": 607
+    },
+    {
+      "fieldNumber": 608,
+      "fieldName": "LRNIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This node is used for preventing two copies of the WORKLOAD data collection routine from being executed at the same time.  This node contains the date/time that the WORKLOAD collection routine began processing the data.  The node is set to null when the  process completes.  This node should NOT be set through FILEMAN. TO RECOVER AFTER A SYSTEM FAILURE: DELETE THIS ENTRY TO ALLOW THE WORKLOAD COLLECTION ROUTINE TO PROCEED. ",
+      "fieldNumber_": 608
+    },
+    {
+      "fieldNumber": 609,
+      "fieldName": "PHLEB/STOP CODE RUNNING",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  Do not enter a date in this field. Doing so may stop the data collection process. The routines will fill in the field during the data collection process and delete the date when the process has gone to a normal completion.   If the system goes down during the data collection process, you must delete the date from this field. When the scheduled run time occures, the data collect- ion will continue automatically.  However if the routine error doing the collection process this field will contain ",
+      "fieldNumber_": 609
+    },
+    {
+      "fieldNumber": 611,
+      "fieldName": "CLINIC STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": " Enter the clinic stop code to used by the laboratory for the MAS package stop code credit.  Generally the code number is 108. Select the stop code with the STOP CODE of 108.  NOTE: THE DEFAULT VALUE IS 108. ",
+      "fieldNumber_": 611
+    },
+    {
+      "fieldNumber": 612,
+      "fieldName": "COUNTING BB WORKLOAD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field is filled in by the routine while it processes the Blood Bank workload. ",
+      "fieldNumber_": 612
+    },
+    {
+      "fieldNumber": 613,
+      "fieldName": "URGENCY ALERT",
+      "dataType": "POINTER",
+      "rawType": "P62.05'",
+      "required": false,
+      "pointerTo": 62.05,
+      "helpText": " This field is used as a cutoff level (urgency) to control the flashing the urgency alert display during verification.   Any urgency equal or less than this urgency will cause the display to flash.   For example, if you enter the urgency of OUTPATIENT, it has a value of 3. Then the urgencies of STAT, ASAP and OUTPATIENT for any  accession will be flashed on the screen when data is entered.     NOTE - If your ternimal type file is setup incorrectly or the terminal you are using does not support r",
+      "fieldNumber_": 613
+    },
+    {
+      "fieldNumber": 614,
+      "fieldName": "*TRAMSMIT CLINIC STOP CODES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " This field is no longer used to control reporting of clinic stop codes. The PCE package has replaced the  clinic stop codes with CPT codes for each test collected. You should now use PCE/VSIT ON (#615) in  LABORATORY SITE (#69.9) file to control both clinic stop code and CPT code transmission. Patch LR*5.2*127 automatically sets the PCE/VSIT ON field to report both clinic stop and CPT codes. It expected that beginning with Oct. 1, 1996 VA DHCP will begin reporting workload using CPT codes. Logi",
+      "fieldNumber_": 614
+    },
+    {
+      "fieldNumber": 615,
+      "fieldName": "PCE/VSIT ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:PCE/VSIT ONLY;2:BOTH PCE/VSIT AND STOP CODES;",
+      "helpText": " This field controls how clinic stop codes are reported. Laboratory encounters are being converted from Clinic Stop Codes to CPT codes. CPT codes are passed via a PCE interface.    Enter OFF to stop all reporting.  Enter PCE/VSIT to send only CPT codes and no Clinic Stop Code   Reporting.  Enter BOTH PCE/VSIT AND STOP CODES to continue sending Stop codes   in addition to CPT Codes. ",
+      "fieldNumber_": 615
+    },
+    {
+      "fieldNumber": 616,
+      "fieldName": "COLLECT WKLD LOG FILE DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "The use of this field must be coordinated with the local DSS program official. New functionality now extracts this data in batch mode. All data in this file is purged before each batch data extraction session.   HIGHLY RECOMMEND THIS FIELD BE SET TO NULL      This field controls if data should be accumulated in the  WKLD LOG FILE (#64.03). This file can be used for special onsite local interest in laboratory workload. This file contains information about what test are performed by the laboratory",
+      "fieldNumber_": 616
+    },
+    {
+      "fieldNumber": 617,
+      "fieldName": "PCE DEFAULT PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": " The provider entered will be used if the ordering provider has been terminated or does not have a person class assigned on the date of the encounter (LAB ARRIVAL TIME). Great care should be taken not to terminate or remove the default provider's person class. In addition the person class should be appropriate for a primary care provider. Failure to enter or the removal of the default provider will cause ALL WORKLOAD REPORTING TO STOP. No workload will be passed to PCE and no laboratory phleboto",
+      "fieldNumber_": 617
+    },
+    {
+      "fieldNumber": 618,
+      "fieldName": "DIVISION PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "69.9618P",
+      "required": false,
+      "fieldNumber_": 618
+    },
+    {
+      "fieldNumber": 619,
+      "fieldName": "AP ESIG ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to activate the electronic signature function for Anatomic Pathology reports.  If the flag is turned on, at the time a report is verified/released, the user will be prompted for an electronic signature.  The document will then be stored in TIU.  If the flag is off, the report will be verified/released without electronic signature and the document will not be stored in TIU. ",
+      "fieldNumber_": 619
+    },
+    {
+      "fieldNumber": 620,
+      "fieldName": "PANEL PROCESS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The day of the month used for processing panel tests that contain  pending atomic tests for the prior calendar month.  This should be one day prior to the monthly PCE roll-up date. ",
+      "fieldNumber_": 620
+    },
+    {
+      "fieldNumber": 21661,
+      "fieldName": "CPRS AP DIALOG ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates that the CPRS AP Dialog function is active. This  field determines if the CPRS AP Order dialog is processed during AP  Log-in. ",
+      "fieldNumber_": 21661
+    }
+  ],
+  "fieldCount": 88,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AXX", "field": },
+    {"name": "AXX1", "field": },
+    {"name": "AXX2", "field": },
+    {"name": "AXX3", "field": },
+    {"name": "AXX5", "field": },
+    {"name": "AXX6", "field": },
+    {"name": "AXX7", "field": },
+    {"name": "AXX8", "field": },
+    {"name": "B", "field": },
+    {"name": "LRCNVRTED", "field": },
+    {"name": "69.9", "field": .01, "type": "regular"},
+    {"name": "69.9", "field": .01, "type": "regular"},
+    {"name": "69.9", "field": .01, "type": "regular"},
+    {"name": "69.9", "field": 500, "type": "regular"},
+    {"name": "69.9", "field": 501, "type": "regular"},
+    {"name": "69.9", "field": 502, "type": "regular"},
+    {"name": "69.9", "field": 503, "type": "regular"},
+    {"name": "69.9", "field": 504, "type": "regular"},
+    {"name": "69.9", "field": 505, "type": "regular"},
+    {"name": "69.9", "field": 506, "type": "regular"},
+    {"name": "69.9", "field": 507, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

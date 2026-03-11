@@ -1,0 +1,62 @@
+{
+  "fileNumber": 394.82,
+  "fileName": "VAQ - RELEASE GROUP",
+  "globalRoot": "394.82P",
+  "globalReference": "^VAT(394.82,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Remote Facility",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "  Name of remote facility being granted 'Automatic Processing'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Remote Domain",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "Remote facility's E-Mail address. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Added By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who added this facility to the Release Group. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "Date Added",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the facility was added. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "394.82", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "394.82", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

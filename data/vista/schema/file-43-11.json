@@ -1,0 +1,37 @@
+{
+  "fileNumber": 43.11,
+  "fileName": "MAS AWARD",
+  "globalRoot": "43.11I",
+  "globalReference": "^DG(43.11,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "The 'number' is the internal reference number automatically assigned to the next entry into the file.  For example, there are currently 12 entries, with the entry of another MAS Award, the number would be '13'. | ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Service connected disabilities are rated at a percentage in increments of 10, ranging from 0% to 100% based on the degree of disability the veteran has as a result of an injury sustained while on active duty. These percentages are adjudicated only by the Department of Veterans Benefits following examination.  The 'Type' is the rate of service connected disability incurred by the veteran/patient. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "43.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

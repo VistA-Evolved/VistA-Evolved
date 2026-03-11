@@ -1,0 +1,37 @@
+{
+  "fileNumber": 48.5,
+  "fileName": "MAS MODULE",
+  "globalRoot": "48.5",
+  "globalReference": "^DG(48.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The internal reference number assigned to any particular entry automatically as each new one is entered into the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the MAS (Medical Administration Service) module or section of the software.  For example ADT = Admission/Discharge/Transfer                               IRT = Incomplete Record Tracking These modules are distributed with the nationally released software. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "48.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

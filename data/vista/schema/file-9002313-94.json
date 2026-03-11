@@ -1,0 +1,48 @@
+{
+  "fileNumber": 9002313.94,
+  "fileName": "BPS AUTO CLOSE REJECT CODE",
+  "globalRoot": "9002313.94",
+  "globalReference": "^BPSACR(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTO CLOSE REJECT CODE",
+      "dataType": "POINTER",
+      "rawType": "RP9002313.93'",
+      "required": true,
+      "pointerTo": 9002313.93,
+      "helpText": "This field is a pointer to the BPS NCPDP REJECT CODES file  (#9002313.93).  This field indicates reject codes that will be defined as  auto close rejects. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RNB PTR",
+      "dataType": "POINTER",
+      "rawType": "R*P356.8'",
+      "required": true,
+      "pointerTo": 356.8,
+      "helpText": "When a pharmacist ignores a reject, which is defined as an auto close  reject, a Claims Tracking Non-Billable Reason will be applied in Claims  Tracking.  This field is the pointer to the code in file #356.8 that will  be applied. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOLLAR THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "If the value of this field is set to 0, then all claims with this reject  code will be auto closed by the system if the reject is ignored by the pharmacist.       OR   If the Gross Amount Due is greater than or equal to the value of this field then the claim will not be auto closed by the system if the reject  is ignored by the pharmacist. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

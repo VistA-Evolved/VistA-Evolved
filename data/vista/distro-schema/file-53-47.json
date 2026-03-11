@@ -1,0 +1,36 @@
+{
+  "fileNumber": 53.47,
+  "fileName": "INFUSION INSTRUCTIONS",
+  "globalRoot": "53.47",
+  "globalReference": "^PS(53.47,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviated text that will be replaced with expanded text when entered in  the INFUSION RATE (#59) field in the NON-VERIFIED ORDERS (#53.1) file,  or the INFUSION RATE (#.08) field in the IV (#100) multiple of the  PHARMACY PATIENT (#55) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Expanded text that will replace abbreviated text entered in the INFUSION RATE (#59) field in the NON-VERIFIED ORDERS (#53.1) file, or the INFUSION RATE (#.08) field in the IV (#100) multiple of the PHARMACY PATIENT (#55) file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "53.47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?12,$P(^(\"0\"),U,2)"}
+  ]
+}

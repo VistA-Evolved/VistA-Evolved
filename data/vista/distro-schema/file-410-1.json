@@ -1,0 +1,56 @@
+{
+  "fileNumber": 410.1,
+  "fileName": "TRANSACTION NUMBER",
+  "globalRoot": "410.1",
+  "globalReference": "^PRCS(410.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STA-FY-FCP, STA-PAT# OR STA-FY-QTR-FCP-CC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "STA-FY-FCP is used in file 410. STA-PAT is used in file 410. STA-FY-QTR-FCP-CC is used in file 410.3.   The pieces are:   STA = Station Number;   FY  = Fiscal Year;   FCP = Fund Control Point;    PAT# = Pending Accounting Transaction number - the primary CALM         reference number;   QTR = Quarter of Fiscal Year;   CC  = Cost Center. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the counter that is used to keep track of the last transaction number used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST DATE ACCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when the transaction was last accessed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number identifying the fee basis (FB).   Fee basis is the Department of Veteran's Affairs fee for service (fee basis) program.  Under this program, eligible Veterans are authorized fee basis care if VA facilities are not feasibly available to meet the patient's medical needs. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "410.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,436 @@
+{
+  "fileNumber": 727.817,
+  "fileName": "TREATING SPECIALTY CHANGE EXTRACT",
+  "globalRoot": "727.817",
+  "globalReference": "^ECX(727.817,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the Station Number of the Division where the Treating  Specialty Change occurred. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ASIH (OTHER FACILITY);",
+      "helpText": "Indicates the patient's status for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "An 8-character numeric string that represents the date on which the Treating Specialty change took place. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRODUCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The product or feeder key for this extract. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Patient's admission date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Patient's discharge date. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The type of movement for this patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "NEW TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The treating specialty code for this patient at the date and time of this record. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LOSING TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's treating specialty code from prior treating specialty  record. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "LOSING TREATING SPECIALTY LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The length of stay, in days, on the prior treating specialty. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LOSING ATTENDING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Attending Physician associated with the previous treating specialty change record in file #405. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MOVEMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P405.2'",
+      "required": false,
+      "pointerTo": 405.2,
+      "helpText": "The MAS movement type for this movement. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "TRT TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A 6-character numeric string representing the time of day when the Treating Specialty change took place. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ADMISSION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "The time at which the patient admission occurred in HHMMSS.  A 24 hour  clock format is used (e.g. 8:31:12 p.m. would be 203112). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "NEW PRIMARY WARD PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The new Primary Provider associated with the current patient movement record in file #405. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "NEW ATTENDING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The new Attending Physician associated with the current patient movement record in file #405. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LOSING PRIMARY WARD PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The losing Primary Provider for the patient movement; i.e., the Primary Provider of the previous treating specialty chnage record. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "MASTER PATIENT INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A national VA system identifier which uniquely identifies a patient. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as DSS DEPT., is no longer needed.  The name has been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ATTENDING PHYSICIAN LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The patient's length of stay with the losing attending physician. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PRIMARY WARD PROVIDER LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The patient's length of stay with the losing primary ward provider. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CWT/TR;",
+      "helpText": "Indicates if the patient is admitted to either a RRTP, PRRTP or SARRTP at the time care is provided. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "Indicates if patient is considered to be an observation patient. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique number assigned for DSS.  ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Data represents the medical center division the work was performed in. This field corresponds to an entry in the INSTITUTION file (#4). ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LOSING ATTENDING PHYSICIAN PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Losing Attending Physician associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "NEW PRIMARY WARD PROVIDER PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the New Primary Ward Provider associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "NEW ATTENDING PHYSICIAN PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the New Attending Provider associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "LOSING PRIMARY WARD PROV PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Losing Primary Ward Provider associated with this record. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "LOSING ATTENDING PHYSICIAN NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the attending physician  associated with the previous treating specialty change record. This field  has a length of fifteen characters.  ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LOSING PRIM WARD PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the losing primary ward  provider for the patient movement (i.e., the Primary Provider of the  previous treating specialty change record). This field has a length of  fifteen characters. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "NEW ATTENDING PHYSICIAN NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the new attending physician  associated with the current patient movement record in the PATIENT  MOVEMENT File (#405). This field has a length of fifteen characters. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "NEW PRIMARY WARD PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the new primary ward provider  associated with the current patient movement record in PATIENT MOVEMENT  File (#405).  This field has a length of fifteen characters. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 44
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.817", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

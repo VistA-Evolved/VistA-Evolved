@@ -1,0 +1,936 @@
+{
+  "fileNumber": 691.7,
+  "fileName": "EXERCISE TOLERANCE TEST",
+  "globalRoot": "691.7ID",
+  "globalReference": "^MCAR(691.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF TEST",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field identifies the precise Exercise Tolerance procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the patient's identification number assigned by the medical facility.  In most cases it is the person's social security number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;T:TECHNICALLY UNSATISFACTORY;",
+      "helpText": "This field contains the gross evaluation of the results of this procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYMPTOM",
+      "dataType": "POINTER",
+      "rawType": "691.701PA",
+      "required": false,
+      "helpText": "This field contains the patient's physical complaints or symptoms. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RISK FACTOR",
+      "dataType": "POINTER",
+      "rawType": "691.702PA",
+      "required": false,
+      "helpText": "This field contains the morbidity factors which   this patient is most susceptible to in regards to this procedure. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient's last name, followed by a comma, followed by a space (optional), followed by the first name, followed by a space, followed by the middle initial. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME OF APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date/time field documents the scheduled time for this procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REASON FOR TEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Overt or Latent C.H.D.;B:Diff. diag. - chest pain etiology;C:Determination of functional capacity;D:Determination of need for cardiac rehab.;E:Research - drug evaluation;F:Screening for employm. or ins.;",
+      "helpText": "This field documents the rationale of the procedure for this patient. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HEART MED",
+      "dataType": "POINTER",
+      "rawType": "691.71PA",
+      "required": false,
+      "helpText": "This field (multiple) contains the cardiac medicines that the patient is taking at  the time of this procedure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "OTHER MEDICATION",
+      "dataType": "SUBFILE",
+      "rawType": "691.74A",
+      "required": false,
+      "helpText": "This field (multiple) contains the non-cardiac medicines that the patient was taking at the time of this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.74,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESTING EKG",
+      "dataType": "SUBFILE",
+      "rawType": "691.72",
+      "required": false,
+      "helpText": "This field refers to the latest, pre-exercise EKG procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.72,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REF. MD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the referring physician. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "WT LBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the patient's weight in pounds at the time of this procedure. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ETT PROTOCOL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BR:BRUCE;M:MODIFIED BRUCE;N:NAUGHTON;BA:BALKE;L:LEVEL MODIFIED BRUCE;S:SPECIAL;BL:BLOCKER;MN:MODIFIED NAUGHTON;BI:BICYCLE ERGOMETRY;A:ARM ERGOMETRY;",
+      "helpText": "This field defines the protocol used  in this procedure. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HYPERVENTILATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to enter information about the patient and hyperventilation. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RS HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/supine heart rate. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RS SBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/supine systolic blood pressure. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RS DBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies resting/supine Diastolic blood pressure. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RS RPP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies a number based on the resting heart rate and resting systolic pressure.  ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RU HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/upright heart rate. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RU SBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting,upright systolic blood pressure. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "RU DBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/upright diastolic blood pressure. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "RU RPP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies based on the resting/upright heart rate and systolic pressure.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "RS ST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/supine ST elevation. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "RU ST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/upright ST elevation. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "RS ST SLOPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/supine ST slope. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "RU ST SLOPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the resting/upright ST slope. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CP TME MIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the minutes portion of the elapsed time, that the chest pain occurred. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CP TME SEC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the seconds portion of the elapsed time, that the chest pain occurred. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.5,
+      "fieldName": "CP MODIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DURING EXERCISE;A:AFTER EXERCISE;C:COMBINED;",
+      "helpText": "This field qualifies the type of chest pain that the patient experienced. ",
+      "fieldNumber_": 21.5
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CP TIME TOTAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is the total time of chest pain in seconds computed from the two fields, CP TIME MIN and CP TIME SEC. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ONSET CP HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the heart rate at the onset of chest pain. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ONSET CP SBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the systolic blood pressure at the onset of chest pain. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ONSET CP DBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the diastolic blood pressure at the onset of chest pain. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ONSET CP ST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the ST elevation at the onset of chest pain. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ONSET CP ST SLOPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the ST slope at the onset of chest pain. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ONSET CP RPP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the RPP at the onset of chest pain. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PK HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak heart rate. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PK SBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak systolic blood pressure. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PK DBP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak diastolic blood pressure. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PK EX MPH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak exercise miles per hour. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "KILO POND METERS (KPM)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the kilo pond meters. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "WATTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the wattage. ",
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PK EX GRADE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the peak exercise grade. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "METS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the METS (Metabolic Equivalents-1 MET=3.5ml of O2 resting).  ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PK ST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak ST elevation. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PK ST SLOPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the peak ST slope. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PK RPP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the peak RPP. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "EX TIME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the time at which exercise began. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "EX TIME MIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the minutes portion of the elapsed time, that the exercise occurred. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "EX TIME SEC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the seconds portion of the elapsed time, that the exercise occurred. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PREDICTED HR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the predicted heart rate. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "TIME ST - 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field identifies time of ST-1. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "% TARGET HR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the percentage of target heart rate achieved. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "TIME ST - 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field identifies the time of ST-2. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "REASON FOR STOPPING",
+      "dataType": "POINTER",
+      "rawType": "*P695.8'",
+      "required": false,
+      "pointerTo": 695.8,
+      "helpText": "This field identifies the rationale for terminating the procedure. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ARRHYTHMIAS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;DP:DEC PVCS;IFP:INC FREQ PVCS;IGC:INC GRADE, COUPLETS;IGT:INC GRADE, TRIPLETS;IVT:INC SUST VT (>10);",
+      "helpText": "This field identifies the documented cardiac rhythm irregularity. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "OTHER EKG CHANGE",
+      "dataType": "SUBFILE",
+      "rawType": "691.75",
+      "required": false,
+      "helpText": "This field identifies an irregularity. ",
+      "isMultiple": true,
+      "subFileNumber": 691.75,
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "HEART RATE RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;",
+      "helpText": "This field identifies the heart rate response. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.5,
+      "fieldName": "BLOOD PRESSURE RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SR:SYSTOLIC ROLL-OVER;N:NORMAL;H:HYPERTENSIVE;",
+      "helpText": "This field identifies the blood pressure response. ",
+      "fieldNumber_": 53.5
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "TIME RETURN BASELINE ST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the time that the ST segment returned to baseline. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "INTERPRETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;",
+      "helpText": "This field identifies the interpretation field. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.73",
+      "required": false,
+      "helpText": "This field identifies the comment (word-processing) field. ",
+      "isMultiple": true,
+      "subFileNumber": 691.73,
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "EKG TECHNICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the staff member responsible for hooking up the patient. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "ATTN PHYS",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the patient's attending physician. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "MPH MOD BRUCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This identifies the MPH MOD BRUCE field (miles/hr of lower intensity standardized exercise test).  ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "MPH SPECIAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the MPH Special field. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "MPH BALKE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the MPH BALKE field. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "GRADE SPECIAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the GRADE SPECIAL field. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "GRADE BALKE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the GRADE BALKE field. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in-house patient location. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "COMPLICATIONS",
+      "dataType": "POINTER",
+      "rawType": "691.703P",
+      "required": false,
+      "helpText": "This field identifies the complications field. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer must be 1-79 characters in length.  This will appear on the 'Summary of Patient Procedures.' ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.704P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    }
+  ],
+  "fieldCount": 94,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "691.7", "field": .01, "type": "regular"},
+    {"name": "691.7", "field": .01, "type": "regular"},
+    {"name": "691.7", "field": 1, "type": "regular"},
+    {"name": "691.7", "field": 1, "type": "regular"},
+    {"name": "", "field": 58, "type": "regular"},
+    {"name": "691.7", "field": 900, "type": "regular"},
+    {"name": "691.7", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S ZZ=$P(^(0),\"^\",2) W \"   \",$S($D(^MCAR(690,ZZ,0))#2:$P(^DPT(ZZ,0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\") K ZZ"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(691.7,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

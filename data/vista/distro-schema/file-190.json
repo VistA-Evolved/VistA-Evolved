@@ -1,0 +1,305 @@
+{
+  "fileNumber": 190,
+  "fileName": "RECORDS",
+  "globalRoot": "190sIOV",
+  "globalReference": "^RT(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the internal number which is barcoded for record selection. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ASSOCIATED ENTITY OR ITEM",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RVI",
+      "required": true,
+      "helpText": "This defines the items in variable pointed to files which will be tracked as records. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field is stuffed with the value of ^DD(\"SITE\",1) upon creation. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP195.2'I",
+      "required": true,
+      "pointerTo": 195.2,
+      "helpText": "This allows records of the same source to be differentiated by type. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP195.1'I",
+      "required": true,
+      "pointerTo": 195.1,
+      "helpText": "This allows multiple applications to access the record file as if each application had its own file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PARENT RECORD",
+      "dataType": "POINTER",
+      "rawType": "*P190'I",
+      "required": false,
+      "pointerTo": 190,
+      "helpText": "This identifies the original or initial record of a set of records that are logically or physically described in terms of volumes. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HOME LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9'X",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This identifies the place where a record normally resides when it isn't charged to a borrower. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VOLUME NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0I",
+      "length": 2,
+      "required": true,
+      "helpText": "This further identifies a record which is a type which is normally allowed to have multiple volumes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BARCODE LAST PRINTED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This gives an indication of the age of the label which was attached to the record.  Labels wear out and have to be reprinted. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PATIENT FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This allows faster access to the patient file entities for the MAS RADIOLOGY DHCP applications. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REASON NOT TO RETIRE RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "t:TEACHING;r:TUMOR REGISTRY;o:OK TO RETIRE;",
+      "helpText": "This marks the record to identify action that may not be appropriate. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CONTENT DESCRIPTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows free text descriptions for further delineation of record contents. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LOOSE FILING INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This is a flag that indicates the record may have items which should be added to it. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines a time when the record should no longer be used or is no longer useful to a borrower. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TEMPORARY COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows free text to be added to the record description to aid in its distribution. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ASSOCIATED REQUEST",
+      "dataType": "POINTER",
+      "rawType": "*P190.1'",
+      "required": false,
+      "pointerTo": 190.1,
+      "helpText": "This defines the reason why a record is moved in the system. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "ASSOCIATED MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "*P190.3",
+      "required": false,
+      "pointerTo": 190.3,
+      "helpText": "This defines the most recent action that has taken place on the record. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "CURRENT BORROWER/FILE ROOM",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9X",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This identifies the current location of the record as known by the record tracking system. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DATE/TIME CHARGED TO BORROWER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This identifies the time of the last movement of a record. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "USER THAT CHARGED RECORD",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user of the system responsible for the movement of the record to a borrower. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "TYPE OF MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "*P195.3'",
+      "required": false,
+      "pointerTo": 195.3,
+      "helpText": "This identifies the most recent action on the record by the system. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "ASSOCIATED BORROWER",
+      "dataType": "POINTER",
+      "rawType": "*P195.9X",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This identifies a borrower in the system which is associated with the area where the record has been moved. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "LAST TIME SELECTED BY BARCODE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This allows a guarantee that the last movement was valid since the selection by barcode means positive identification of the record. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "# DAYS CHARGED TO BORROWER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount of time the record has been with the borrower. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DAYS OVERDUE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This identifies from the system defined limit that the record should be returned to the home file room. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "NUMBER OF MOVEMENTS ON FILE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0X",
+      "length": 8,
+      "required": false,
+      "helpText": "This shows how much background information on a record's movements is  available in the system. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "OLD BARCODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is to be used by VA consolidated sites ONLY.  It will be set as part of the consolidation process and must not be altered in any way.   The purpose of this field is to allow consolidated sites to continue to use existing barcoded labels on their records rather than having to relabel all records.  It will store the value of the record label's barcode.  A cross-reference has been added to allow the look-up to select the appropriate record.  This will only be used for records created pri",
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "ABOR", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACC", "field": },
+    {"name": "ACCC", "field": },
+    {"name": "AH", "field": },
+    {"name": "AL", "field": },
+    {"name": "AOLDBC", "field": },
+    {"name": "AR", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "P", "field": },
+    {"name": "190", "field": .01, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "190", "field": 3, "type": "regular"},
+    {"name": "190", "field": 4, "type": "regular"},
+    {"name": "190", "field": 5, "type": "regular"},
+    {"name": "190", "field": 6, "type": "regular"},
+    {"name": "190", "field": 6, "type": "regular"},
+    {"name": "190", "field": 9, "type": "regular"},
+    {"name": "190", "field": 11, "type": "regular"},
+    {"name": "190", "field": 13, "type": "regular"},
+    {"name": "190", "field": 105, "type": "regular"},
+    {"name": "190", "field": 105, "type": "regular"},
+    {"name": "190", "field": 106, "type": "regular"},
+    {"name": "190", "field": 300, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D DISP^RTUTL1,LINE^RTUTL3 I $D(^RT(+Y,0)) Q"}
+  ]
+}

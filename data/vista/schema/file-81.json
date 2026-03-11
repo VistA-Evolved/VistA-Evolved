@@ -1,0 +1,173 @@
+{
+  "fileNumber": 81,
+  "fileName": "CPT",
+  "globalRoot": "81I",
+  "globalReference": "^ICPT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This file contains both CPT from the AMA and HCFA. The AMA entries will have an internal number less than 99999. The AMA CPT are '5' numbers that coorespond to the internal number. The HCFA codes will have an internal number of 100000 or greater. These codes are '1' alpha followed by '4' numbers, which will NOT correspond to the internal number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains a short description of the CPT code. It must be  between 1 and 28 characters. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CPT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P81.1'",
+      "required": false,
+      "pointerTo": 81.1,
+      "helpText": "This field contains the CPT Category associated with CPT Code.   It is a pointer to the CPT Category File. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE CODE;",
+      "helpText": "This field is used to inactivate a CPT code. If this field contains a '1' then the code is inactive. During the annual update of the CPT file  no entries are deleted; they are inactivated by setting this flag. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CPT;H:HCPCS;L:LOCAL;",
+      "helpText": "Contains the source of the code - CPT, HCPCS or Local. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the CPT code becomes/became inactivated. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the CPT code becomes/became activated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "AGE(LOW)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Code reasonable for age within Age(low) and Age(high) values.  Blank,  otherwise. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "AGE(HIGH)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Code reasonable for age within Age(low) and Age(high) values.  Blank, otherwise. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Code acceptable if: F = Female; M = Male. Blank otherwise. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "81.01A",
+      "required": false,
+      "helpText": "This multiple contains the descriptions for various CPT codes. ",
+      "isMultiple": true,
+      "subFileNumber": 81.01,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "81.02DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 81.02,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "SHORT NAME (VERSIONED)",
+      "dataType": "DATE",
+      "rawType": "81.061D",
+      "required": false,
+      "helpText": "This is a history of the Procedures (short text) to include the date the text was first used along with the text. ",
+      "isMultiple": true,
+      "subFileNumber": 81.061,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DESCRIPTION (VERSIONED)",
+      "dataType": "DATE",
+      "rawType": "81.062D",
+      "required": false,
+      "helpText": "This is a history of the descriptive text to include the date the  text was first used and the text used. ",
+      "isMultiple": true,
+      "subFileNumber": 81.062,
+      "fieldNumber_": 62
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "ADS", "field": },
+    {"name": "AST", "field": },
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "81", "field": .01, "type": "regular"},
+    {"name": "81", "field": .01, "type": "regular"},
+    {"name": "81", "field": .01, "type": "regular"},
+    {"name": "81", "field": .01, "type": "regular"},
+    {"name": "81", "field": .01, "type": "regular"},
+    {"name": "81", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "D EN^DDIOL((\"  \"_$$IDCPS^ICPTID(+Y)),\"\",\"?0\") D:$D(SRSITE) ^SROCPT"},
+    {"field": 5, "value": "D EN^DDIOL((\"   \"_$$IDCP^ICPTID(+Y,5)),\"\",\"?0\")"}
+  ]
+}

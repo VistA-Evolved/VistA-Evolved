@@ -1,0 +1,646 @@
+{
+  "fileNumber": 700,
+  "fileName": "PULMONARY FUNCTION TESTS",
+  "globalRoot": "700DI",
+  "globalReference": "^MCAR(700,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field identifies the date/time of the Pulmonary Function tests. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;T:TECHNICALLY UNSATISFACTORY;",
+      "helpText": "This field identifies a brief summary of the PFT for use on the Summary of Patient Procedures and the Health Summary.  The Results portion of OERR is expected to trigger off this field in the future. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HEIGHT (CM)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the Height of the patient in Centimeters. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HEIGHT (INCHES.TENTHS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies the height of the patient in inches and tenths of inches.  This value will be converted to Centimeters for the report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WEIGHT (POUNDS.TENTHS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the weight of the patients in pounds and tenths of pounds.  This value will be converted to Kilograms for the report. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WEIGHT (KG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the weight of the patient in Kilograms. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BAROMETRIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field identifies the Barometric Pressure in Torr units at the time the PFT was done ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "ROOM TEMPERATURE (CENTIGRADE)",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field identifies the room temperature in degrees centigrade at the time the PFT was done ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SMOKER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field tells whether the patient is a smoker or a non-smoker. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CURRENT BRONCHODILATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field tells whether the patient had used a Bronchodilator within 4 hours of the test. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field will be a ward if the patient is an inpatient, a clinic if the patient is an outpatient. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REFERRING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field refers to the Physician who ordered the PFT. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CONSULT DX",
+      "dataType": "POINTER",
+      "rawType": "700.01PA",
+      "required": false,
+      "helpText": "This field identifies the diagnosis sent to the PFT lab by the Referring Physician.  ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "VOLUME STUDY",
+      "dataType": "SET",
+      "rawType": "700.017SA",
+      "required": false,
+      "helpText": "The subfields of this field hold the Volume Study Data for the PFT. ",
+      "isMultiple": true,
+      "subFileNumber": 700.017,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "FLOWS STUDY",
+      "dataType": "SET",
+      "rawType": "700.018SA",
+      "required": false,
+      "helpText": "This field identifies stores data of the Flow Study done on the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 700.018,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DLCO-SB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the measured Diffusing Capacity. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BLOOD GAS",
+      "dataType": "SET",
+      "rawType": "700.02SA",
+      "required": false,
+      "helpText": "This field is a multiple field which stores the data for the Arterial Blood Gas (ABG) Study. ",
+      "isMultiple": true,
+      "subFileNumber": 700.02,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INTERPRETATION BY",
+      "dataType": "POINTER",
+      "rawType": "700.021PA",
+      "required": false,
+      "helpText": "This field identifies the provider who interpreted the PFT ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "COMP. GEN. VOLUME INTERP.",
+      "dataType": "POINTER",
+      "rawType": "700.022PA",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "VOLUME INTERPRETATION",
+      "dataType": "SUBFILE",
+      "rawType": "700.06",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 700.06,
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "COMP. GEN. FLOWS INTERP.",
+      "dataType": "POINTER",
+      "rawType": "700.023PA",
+      "required": false,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 23.5,
+      "fieldName": "FLOWS INTERPRETATION",
+      "dataType": "SUBFILE",
+      "rawType": "700.07",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 700.07,
+      "fieldNumber_": 23.5
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "COMP. FLOW VOL. LOOP INTERP.",
+      "dataType": "POINTER",
+      "rawType": "700.024PA",
+      "required": false,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 24.5,
+      "fieldName": "FLOW VOLUME LOOP INTERP.",
+      "dataType": "SUBFILE",
+      "rawType": "700.08",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 700.08,
+      "fieldNumber_": 24.5
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "COMP. GEN. DIFFUSION INTERP.",
+      "dataType": "POINTER",
+      "rawType": "700.026PA",
+      "required": false,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.5,
+      "fieldName": "DIFFUSION INTERPRETATION",
+      "dataType": "SUBFILE",
+      "rawType": "700.09",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 700.09,
+      "fieldNumber_": 26.5
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "COMP. GEN. ABG INTERP.",
+      "dataType": "POINTER",
+      "rawType": "700.027PA",
+      "required": false,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PREDICTED VALUE FORMULAS USED",
+      "dataType": "POINTER",
+      "rawType": "R*P700.1'",
+      "required": true,
+      "pointerTo": 700.1,
+      "helpText": "This field identifies a pointer to the set of formulas used to calculate predicted values. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "IMPRESSION",
+      "dataType": "POINTER",
+      "rawType": "700.029P",
+      "required": false,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COMMENTS AND RECOMMENDATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "700.03",
+      "required": false,
+      "helpText": "This field identifies a word processing field which allows comments and recommendations to be entered by the interpreter. ",
+      "isMultiple": true,
+      "subFileNumber": 700.03,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the provider who reviewed the PFT. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SPECIAL STUDY",
+      "dataType": "SET",
+      "rawType": "700.032S",
+      "required": false,
+      "helpText": "This field identifies allows special study data to be entered for this PFT ",
+      "isMultiple": true,
+      "subFileNumber": 700.032,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "COMP. GENERATED INTERPRETATION",
+      "dataType": "POINTER",
+      "rawType": "700.033PA",
+      "required": false,
+      "helpText": "This field identifies stores the Computer Generated Interpretation(s) for the PFT and whether or not the Interpreter accepted the Interpretation. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.5,
+      "fieldName": "FREE TEXT INTERPRETATION",
+      "dataType": "SUBFILE",
+      "rawType": "700.04",
+      "required": false,
+      "helpText": "This field identifies a word processing field which allows the Interpreter to enter Interpretation(s) in addition to, or instead of, the Computer Generated Interpretations. ",
+      "isMultiple": true,
+      "subFileNumber": 700.04,
+      "fieldNumber_": 33.5
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "TECHNICIAN",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field identifies the Technician who performed the PFT. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "FLOW STUDY MACHINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FLOW TURBINE;P:PNEUMOTACH;A:ANEMOMETER;DS:DRY WATER SEAL;WS:WATER SEAL;W:WEDGE;",
+      "helpText": "This field identifies the type of machine used for the Flow Study. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "DIFFUSING CAPACITY METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SINGLE BREATH;2:STEADY STATE;",
+      "helpText": "This field identifies the Method used for the Diffusing Capacity (DLCO) Test. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "USE RACE CORRECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field allows the user to decide whether certain data should be race corrected.  Used for Black or Oriental patients. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 38.5,
+      "fieldName": "RACE CORRECTIONS FOR RACE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLACK;A:ASIAN;",
+      "helpText": "If the 'USE RACE CORRECTIONS' is set to YES and the race value is both  BLACK and ASIAN, this field will store which race type the race  correction will be for. ",
+      "fieldNumber_": 38.5
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PATIENT EFFORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EXCELLENT;G:GOOD;P:POOR;",
+      "helpText": "This field indicates the patient effort:  GOOD, EXCELLENT, or POOR. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "RELEASE REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "OTHER REASON FOR STOPPING",
+      "dataType": "SUBFILE",
+      "rawType": "700.041",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 700.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a required 79 character summary of the PFT.  Will appear on the Summary of Patient Procedures. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "700.05P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    }
+  ],
+  "fieldCount": 65,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "APCE", "field": },
+    {"name": "AS", "field": },
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "700", "field": .01, "type": "regular"},
+    {"name": "700", "field": .01, "type": "regular"},
+    {"name": "700", "field": 1, "type": "regular"},
+    {"name": "700", "field": 1, "type": "regular"},
+    {"name": "700", "field": 1, "type": "regular"},
+    {"name": "", "field": 31, "type": "regular"},
+    {"name": "700", "field": 900, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(700,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

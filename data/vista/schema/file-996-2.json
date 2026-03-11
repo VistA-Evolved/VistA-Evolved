@@ -1,0 +1,29 @@
+{
+  "fileNumber": 996.2,
+  "fileName": "EXTENSIBLE EDITOR SPELLCHECKER",
+  "globalRoot": "996.2",
+  "globalReference": "^RGED3(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A free text field of up to 100 characters. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "996.2", "field": .01, "type": "regular"},
+    {"name": "996.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

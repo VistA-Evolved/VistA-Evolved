@@ -1,0 +1,98 @@
+{
+  "fileNumber": 129.21,
+  "fileName": "RXNORM SIMPLE CONCEPT AND ATOM ATTRIBUTES",
+  "globalRoot": "129.21",
+  "globalReference": "^ETSRXN(129.21,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RXCUI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ8",
+      "length": 8,
+      "required": true,
+      "helpText": "RxNorm Unique identifier for concept (concept ID) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE (SAB)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Abbreviation of the source of the attribute. Possible values appear in  RXNSAB.RRF and are listed on the UMLS Source Vocabularies page ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUPPRESSION FLAG (SUPPRESS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Suppressible flag. Values = O, Y, or N. Reflects the suppressible status  of the attribute.    N - Attribute is not suppressed.    O - Attribute is suppressed at source level.     Y - Attribute is suppressed by RxNorm editors. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CONTENT_VIEW_FLAG (CVF)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This fields denotes whether or not a concept is currently prescribable. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "\"Most useful\" source asserted identifier (if the source vocabulary  contains more than one). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ATTRIBUTE_NAME (ATN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1000",
+      "length": 1000,
+      "required": false,
+      "helpText": "Attribute name. Possible values appear in RXNDOC.RRF and are described on  the UMLS Attribute Names page ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ATTRIBUTE VALUE (ATV)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4000",
+      "length": 4000,
+      "required": false,
+      "helpText": "Attribute value described under specific attribute name on the UMLS  Attribute Names page. A few attribute values exceed 1,000 characters.  Many of the abbreviations used in attribute values are explained in  RXNDOC.RRF and included UMLS Abbreviations Used in Data Elements page ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "UNIQUE RECORD ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This field is a unique ID for every row and will be used to keep the  records in the central repository in sync with the records in this file. During initial population, it will be derived from the line number in the RXNSAT.RRF file.  ",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "129.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

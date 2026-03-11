@@ -1,0 +1,27 @@
+{
+  "fileNumber": 211.5,
+  "fileName": "NURS CLINICAL BACKGROUND",
+  "globalRoot": "211.5",
+  "globalReference": "^NURSF(211.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Area of professional experience. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "211.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

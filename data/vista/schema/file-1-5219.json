@@ -1,0 +1,48 @@
+{
+  "fileNumber": 1.5219,
+  "fileName": "SQLI_FOREIGN_KEY",
+  "globalRoot": "1.5219",
+  "globalReference": "^DMSQ(\"F\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "F_TBL_ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "RP1.5216'",
+      "required": true,
+      "pointerTo": 1.5216,
+      "helpText": "IEN of foreign key table element in SQLI_TABLE_ELEMENT ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "F_PK_ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "RP1.5218'",
+      "required": true,
+      "pointerTo": 1.5218,
+      "helpText": "IEN of primary key element in SQLI_PRIMARY_KEY of foreign table ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "F_CLM_ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "RP1.5217'",
+      "required": true,
+      "pointerTo": 1.5217,
+      "helpText": "IEN of column of this table in SQLI_COLUMN which matches foreign PK ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.5219", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

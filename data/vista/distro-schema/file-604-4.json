@@ -1,0 +1,38 @@
+{
+  "fileNumber": 604.4,
+  "fileName": "ASI LIVING ARRANGEMENTS",
+  "globalRoot": "604.4",
+  "globalReference": "^YSTX(604.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains Addiction Severity Index CODE for living arrangements. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ARRANGEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the literal text of the Addiction Severity Index codes for living arrangements. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "604.4", "field": .01, "type": "regular"},
+    {"name": "604.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

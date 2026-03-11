@@ -1,0 +1,37 @@
+{
+  "fileNumber": 712.6,
+  "fileName": "GMT MSA CODE",
+  "globalRoot": "712.6",
+  "globalReference": "^EAS(712.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Valid ZIPCODE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MSA CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "Metropolitan Statistical Area (MSA) Code associated with ZIPCODE for specific metropolitan area. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "712.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

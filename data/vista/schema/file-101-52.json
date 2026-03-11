@@ -1,0 +1,309 @@
+{
+  "fileNumber": 101.52,
+  "fileName": "ORDER DEA ARCHIVE INFO",
+  "globalRoot": "101.52",
+  "globalReference": "^ORPA(101.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPRS ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP100'a",
+      "required": true,
+      "pointerTo": 100,
+      "helpText": "The CPRS order number that is associated with this archive entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRESCRIPTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P52'a",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "The prescription number associated with this archive entry. This field is populated once Outpatient Pharmacy has determined that the contents of the prescription received match what was entered by the provider. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIG SIG HASH",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the digital signature hash associated with this order. This  'hash' is calculated by a Microsoft API that is called by the Kernel code  during the signature process in CPRS.   It is stored here so that, at any time, a hash can be calculated and  compared to this value to ensure the contents have not changed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ISSUANCE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this order was issued. In other words, what date was it  entered into CPRS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DRUG NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the drug name associated with the CPRS orderable item for this  order. It will only be present if the dispense drug is known at the time  the archive entry is created. This information comes from the GENERIC  NAME field (#.01) from the DRUG file (#50). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "QTY PRESCRIBED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the quantity of pills/tablets/liquid specified by the provider  for this order. This field correlates to the QTY field (#7) in the  PRESCRIPTION file (#52). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DIRECTIONS FOR USE (SIG)",
+      "dataType": "SUBFILE",
+      "rawType": "101.529A",
+      "required": false,
+      "helpText": "This is a multiple field for storing the directions for use. In this  particular storage location, directions are stored in the format that  they are transmitted via the HL7 array and protocols to Pharmacy, rather  than in human readable format. ",
+      "isMultiple": true,
+      "subFileNumber": 101.529,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEA #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DEA license number of the provider that signed the order. The  DEA number is pulled from one of two places. If present and valid, it  will be the DEA# field (#53.2) in the NEW PERSON file (#200) at the time the order is signed.   If the provider doesn't have personal DEA credentials, this field will  contain the facility DEA number, followed by a '-', followed by the provider's VA suffix. This number pulls from the FACILITY DEA NUMBER field (#52) in the INSTITUTION file (#4) and the ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DETOX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Detox/Maintenance license number associated with the provider  that signed this order. This comes from the DETOX/MAINTENANCE ID  NUMBER field (#53.11) from the NEW PERSON file (#200) at the time the order is signed.   Not every medication requires a Detox/Maintenance license, so this field  will frequently be blank. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the provider, from the NAME field (#.01) of the NEW PERSON file (#200), at the time the order is signed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PROVIDER ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VA facility name where this order was signed. This comes from the NAME field (.01) of the INSTITUTION file (#4). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PROVIDER ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the street address for the VA facility  where this order was signed. This comes from the STREET ADDR. 1 field (1.01) of the INSTITUTION file (#4). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PROVIDER ADDRESS #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the street address of the VA facility  where this order was signed. This comes from the STREET ADDR. 2 field (#1.02) in the INSTITUTION file (#4). ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PROVIDER CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city associated with the VA facility where this order was  signed. This comes from the CITY field (#1.03) in the INSTITUTION file (#4). ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PROVIDER STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the state associated with the VA facility where this order was  signed. This is from the NAME field (.01) of the STATE file (#5). ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "PROVIDER ZIP+4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ZIP or ZIP + 4 of the VA facility where this order was  signed. This field comes from the ZIP field (#1.04) in the INSTITUTION file (#4). ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient name of the patient for whom the prescription was  written and signed. This is correlated to the NAME field (#.01) of the  PATIENT file (#2). ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient associated with this order. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Integration Control Registration (ICN) number associated with  the patient for which this order was written/signed. This is the value  returned from GETICN^MPIF001. It may be a national ICN or a local ICN. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PATIENT ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the address of the patient at the time the order was placed. It  is the VAPA(1) return value from the call to ADD^VADPT. Assuming no  temporary or foreign address, it would be the STREET ADDRESS [LINE 1] field (#.111) from the PATIENT file (#2). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PATIENT ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is address line 2 of the patient associated with this order. It is  the VAPA(2) return value from the call to ADD^VADPT. Assuming no  temporary or foreign address, it would be the STREET ADDRESS [LINE 2] field (#.112) from the PATIENT file (#2). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PATIENT ADDRESS #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is address line 3 for the patient associated with this order. It is  the VAPA(3) return value from the call to ADD^VADPT. Assuming no  temporary or foreign address, it would the STREET ADDRESS [LINE 3] field  (#.113) from the PATIENT file (#2). ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PATIENT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city associated with the address for the patient associated  with this order. It is the VAPA(4) return value from the call to ADD^VADPT. Assuming no temporary or foreign address, it would the CITY  field (#.114) from the PATIENT file (#2). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PATIENT STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the state for the address of the patient associated with this  order. It is the VAPA(5) return value from the call to ADD^VADPT. Assuming no temporary or foreign address, it would the STATE field (#.115) from the PATIENT file (#2). ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PATIENT ZIP+4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ZIP or ZIP+4 code for the city of the address for the patient  associated with this order. It is the VAPA(6) return value from the call to ADD^VADPT. Assuming no temporary or foreign address, it would the ZIP CODE field (#.116) from the PATIENT file (#2). ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "# OF REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of refills specified by the provider at the time the  drug is ordered. There are some limitations on refills for controlled  substances and there are times when Pharmacy may correct this after  validating the hash. This is correlated to the # OF REFILLS (#9) of the  PRESCRIPTION file (#52). ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DISPENSE DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the dispense drug associated with this order. It is possible this field will be blank if there is no dispense drug known at the time the order was signed in CPRS. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DEA SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Drug Enforcement Agency (DEA) drug schedule associated with  the medication on this order. For example: 2 for a schedule two  non-narcotic or 2n for the schedule two narcotic. This comes from the  DEA, SPECIAL HDLG field (#3) in the DRUG file (#50). ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who signed this order. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "SOURCE",
+      "dataType": "SUBFILE",
+      "rawType": "101.53",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 101.53,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "STACK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the stack trace of the process that created this entry. ",
+      "fieldNumber_": 41
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "101.52", "field": .01, "type": "regular"},
+    {"name": "101.52", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

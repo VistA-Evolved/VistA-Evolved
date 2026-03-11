@@ -1,0 +1,466 @@
+{
+  "fileNumber": 2005.64,
+  "fileName": "IMAGE SOP INSTANCE",
+  "globalRoot": "2005.64",
+  "globalReference": "^MAGV(2005.64,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOP INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the SOP Record ID - Primary identifier. DICOM Tag: SOP Instance UID   (0008,0018). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORIGINAL SOP INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the old SOP Instance record ID. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACQUISITION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the creation date/time of the original instance. DICOM Tag: Content Date + Content Time (0008,0023) + (0008,0033). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACQUISITION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "A number identifying the single continuous gathering of data of a period of time that resulted in this image.  It does not have to be unique within the series. DICOM Tag: Acquisition Number  (0020, 0012). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTANCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "A number that identifies the image. DICOM Tag: Instance Number  (0020,0013). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WINDOW CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the value that is the center of the window.  Window center is used to specify a linear conversion from stored pixel values to values to be displayed. DICOM Tag: Window Center  (0028,1050). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WINDOW WIDTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the value that is the width of the window.  Window center is used with window width to specify a linear conversion from stored pixel  values to values to be displayed. DICOM Tag: Window Width (0028,1051). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NUMBER OF FRAMES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of frames in a multiframe SOP Instance.  Null or no value means 1 frame. DICOM Tag: Number of Frames (0028,0008). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SERIES REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.63'",
+      "required": false,
+      "pointerTo": 2005.63,
+      "helpText": "This is the image series associated with this image SOP instance. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ARTIFACT ON FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ON FILE;1:AOF;",
+      "helpText": "This field is a flag that records whether an artifact is on file or not. Artifact On File (AOF) means that at least one Object is already stored on disk. An Object can be an image, an abstract or a text file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SOP CLASS UID",
+      "dataType": "POINTER",
+      "rawType": "P2006.532'",
+      "required": false,
+      "pointerTo": 2006.532,
+      "helpText": "This field contains the SOP Class UID for the object stored. DICOM Tag: SOP Class UID (0008,0016). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TYPE INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.83",
+      "required": false,
+      "pointerTo": 2005.83,
+      "helpText": "This field contains the type of image by content or use (ex. image, video). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a brief description of the image. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "KEY OBJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field denotes if an image is identified as a Key Image.  A key image has a value of \"YES\". ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "QUESTIONABLE IMAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates the image questionable integrity.  '1' means that the image has questionable integrity. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CONTRAST OR BOLUS AGENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the contrast or bolus agent used. DICOM Tag: Contrast/Bolus Agent   (0018,0010). ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the image pixel matrix's number of rows. DICOM Tag: Rows   (0028,0010) . ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the image pixel matrix's number of columns. DICOM Tag: Columns  (0028,0011). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PHOTOMETRIC INTERPRETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MONOCHROME1;2:MONOCHROME2;3:PALETTE COLOR;4:RGB;5:YBR_FULL;6:YBR_FULL_422;7:YBR_PARTIAL_422;8:YBR_RCT;9:YBR_ICT;10:YBR_PARTIAL_420;",
+      "helpText": "This field contains the photometric interpretation for a series. DICOM Tag: Photometric Interpretation (0028,0004). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PIXEL SPACING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the pixel spacing for image matrix. According to the DICOM standard, it is formatted as row pixel spacing and column pixel spacing separated by \"\\\". Pixel spacing is in millimetres, using scientific notation. DICOM Tag: Pixel Spacing (0028,0030). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SAMPLES PER PIXEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of separate planes in this image. DICOM Tag: Samples Per Pixel (0028,0002). ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "BITS ALLOCATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of bits allocated for 1 pixel. DICOM Tag: Bits Allocated (0028,0100). ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "BITS STORED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of bits used to store image information. DICOM Tag: Bits Stored (0028,0101). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "HIGH BIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the high bit number.   DICOM Tag: High Bit (0028,0102). ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PIXEL REPRESENTATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Unsigned Integer;1:Signed Integer (2's Complement);",
+      "helpText": "This is the DICOM pixel representation. DICOM Tag: Pixel Representation  (0028,0103). ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RESCALE INTERCEPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the rescale intercept.  It is the value b in the equation output units = m*SV + b. DICOM Tag: Rescale Intercept (0028,1052). ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "RESCALE SLOPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the rescale slope.  It is the value m in the equation output units = m*SV +b. DICOM Tag: Rescale Slope (0028,1053). ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PLATE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID or serial number of the (CR) sensing plate upon which the image was acquired (if applicable). DICOM Tag: Plate ID (0018,1004). ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SLICE THICKNESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Nominal (CT) slice thickness, in millimeters (if applicable). Numbers are in millimeters in scientific notation. DICOM Tag: Slice Thickness  (0018,0050). ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "RECONSTRUCTION DIAMETER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the diameter in millimeters of the region from within which data was used in creating the reconstruction of the image.  Data may exist outside of this region. Numbers are in millimeters in scientific notation. DICOM Tag: Reconstruction Diameter (0018,1100). ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SCANNING SEQUENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Magnetic Resonance (MR) scanning sequence. DICOM Tag: Scanning Sequence (0018,0020). ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SCANNING VARIANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the scanning variant of the scanning sequence. DICOM Tag: Scanning Variant (0018,0021). ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MR ACQUISITION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the MR Acquisition data encoding scheme identifier. DICOM Tag: MR Acquisition Type (0018,0023). ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ACQUISITION CONTEXT DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Acquisition Context Description. DICOM Tag: Acquisition Context Description  (0040,0556). ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "REPETITION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the period of time in milliseconds between the beginning of a pulse sequence and the beginning of the succeeding pulse sequence. Numbers are in milliseconds in scientific notation. DICOM Tag: Repetition Time  (0018,0080). ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ECHO TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the time in milliseconds between the middle of the excitation pulse and the peak of the echo produced. Numbers are in milliseconds in scientific notation. DICOM Tag: Echo Time (0018,0081). ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "MICROSCOPIC OBJECTIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of the Microscopic Objective selected by the pathologist.  It identifies the power of the microscope objective used when capturing the image of the slide. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This field indicates whether the SOP Instance is ACCESSIBLE or INACCESSIBLE.   ACCESSIBLE means that the SOP Instance can be retrieved by Imaging database  methods. INACCESSIBLE means that the study will not be retrieved by Imaging database  methods and that no Active children exist in the IMAGE INSTANCE file (#2005.65). ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "LAST UPDATE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date/time of the last record update. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "SOURCE OF REFERENCE INSTANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DICOM tag number where the Frame of Reference instance(s) are extracted from. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "HISTOLOGICAL STAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the description of the histological stain. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "LAB SLIDE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the specimen number for a given slide. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "REFERENCED SOP INSTANCES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field uniquely identifies the referenced SOP Class and SOP Instance. If not in header this field is Null. DICOM Tag: Referenced SOP Instances (0008,1150)\"\\\"(0008,1155). ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PATIENT ORIENTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's orientation relative to the image plane. DICOM Tag: Patient Orientation (0020,0020). ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "IMAGE ORIENTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the separated directions cosines of the first row and first column with respect to the patient. DICOM Tag: Image Orientation (0020,0037). ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "IMAGE POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates the x,y, and z coordinates of the upper left hand corner of the image in millimeters (separated by \"/\"). DICOM Tag: Image Position (0020,0032). ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "IMAGE LATERALITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RIGHT;L:LEFT;U:UNPAIRED;B:BOTH;",
+      "helpText": "This is the laterality of the images taken, e.g. Image of the Right Knee. DICOM Tag: Laterality   (0020,0062). ",
+      "fieldNumber_": 51
+    }
+  ],
+  "fieldCount": 47,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "I", "field": },
+    {"name": "2005.64", "field": .01, "type": "regular"},
+    {"name": "2005.64", "field": 1, "type": "regular"},
+    {"name": "2005.64", "field": 11, "type": "regular"},
+    {"name": "2005.64", "field": 16, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

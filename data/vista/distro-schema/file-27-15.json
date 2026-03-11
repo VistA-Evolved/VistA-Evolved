@@ -1,0 +1,66 @@
+{
+  "fileNumber": 27.15,
+  "fileName": "ENROLLMENT STATUS",
+  "globalRoot": "27.15",
+  "globalReference": "^DGEN(27.15,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field will indicate the internal entry number associated with the enrollment status. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the enrollment status name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENROLLMENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ENROLLED;N:NOT ENROLLED;P:IN PROCESS;",
+      "helpText": "This field will contain the enrollment category associated with the enrollment status. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date that the enrollment status became inactive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "27.1525",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 27.1525,
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "27.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

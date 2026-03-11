@@ -1,0 +1,357 @@
+{
+  "fileNumber": 727.824,
+  "fileName": "LAB RESULTS EXTRACT",
+  "globalRoot": "",
+  "globalReference": "^ECX(727.824,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the facility/division where the extract was performed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ASIH (OTHER FACILITY);",
+      "helpText": "Indicates the patient's status for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Date the Lab Test/Specimen was collected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TEST CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The coded value of the lab test as specified by the vendor. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PLACEHOLD RESULTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,4",
+      "length": 10,
+      "required": false,
+      "helpText": "This field, previously known as RESULTS, is no longer needed. The name has been changed to PLACEHOLD RESULTS and its value will be set to null.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "HI/LO INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:HIGH;L:LOW;",
+      "helpText": "Indicates High or Low test result. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "An 8-character numeric string that represents the date on which the Laboratory test was ordered. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TIME ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A 6-character numeric string that represents the time of day at which the Laboratory test was ordered. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE RESULTS READY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "An 8-character numeric string that represents the date on which the Laboratory test result was ready for reporting. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TIME RESULTS READY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "A 6-character numeric string that represents the time of day at which the Laboratory test result was ready for reporting. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PTF CODE of the treating specialty associated with this extract record. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "WORKLOAD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The LMIP/NLT workload code for this record. May correspond to a College of American Pathologists (CAP) code. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MASTER PATIENT INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A national VA system identifier which uniquely identifies a patient. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as DSS DEPT., is no longer needed.  The name has been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CET/TR;",
+      "helpText": "Indicates if the patient is admitted to either a RRTP, PRRTP or SARRTP at  time care is provided. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TIME COLLECTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Time of day specimen was collected. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "Indicates if patient is considered to be an observation patient. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique number assigned for DSS. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the division/facility where the work was performed. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PLACEHOLD LAB RESULTS TRANS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field, previously known as LAB RESULTS TRANSLATION, is no longer needed.  The name has been changed to PLACEHOLD LAB RESULTS TRANS and its value will be set to null.   ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The provider ordering this lab test. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ORDERING PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the Ordering Provider as of the date  of this extract record. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ORDERING PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the provider who ordered the  lab test.  This field has a length of fifteen characters. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LOINC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A universal coding standard for identifying laboratory observations. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PLACEHOLD ENCOUNTER SC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, previously known as ENCOUNTER SC, is no longer needed. The name has been changed to PLACEHOLD ENCOUNTER SC and its value will be set to null.   ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "CAMP LEJEUNE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if patient was exposed to contaminated water while stationed at Camp Lejeune, NC between January 1, 1957 and December 31, 1987. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PLACEHOLD ENC CAMP LEJEUNE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, previously known as ENCOUNTER CAMP LEJEUNE, is no longer needed. The name has been changed to PLACEHOLD ENC CAMP LEJEUNE and its value will be set to null.   ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LONG RESULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This field will store up to 35 characters of the lab test result. ",
+      "fieldNumber_": 36
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.824", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

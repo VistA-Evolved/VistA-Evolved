@@ -1,0 +1,174 @@
+{
+  "fileNumber": 365.19,
+  "fileName": "INTERFACILITY INSURANCE UPDATE",
+  "globalRoot": "365.19",
+  "globalReference": "^IBCN(365.19,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient whose insurance was recently verified as 'active'.  This patient's verified active policy was either sent to a VAMC(s) or received from another VAMC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that this entry was created in this file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DIRECTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "S:SENDER;R:RECEIVER;",
+      "helpText": "This is the data flow of this policy from the perspective of this VAMC.  The direction is to be set to SENDER if this VAMC was sending/sharing the  recently verified active policy with one or more VAMCs. Direction is to  be set to RECEIVER if this VAMC received the recently verified active  policy from another VAMC. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SENDER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WAITING;P:PARTIAL;C:COMPLETE;F:FAILED MISSING DATA;",
+      "helpText": "This is the overall status of the SENDER entry. It indicates whether the  entry has finished sending the policy to all VAMCs that it intended to. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PAYER",
+      "dataType": "POINTER",
+      "rawType": "P365.12'",
+      "required": false,
+      "pointerTo": 365.12,
+      "helpText": "This is the Payer with whom this policy is associated. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "INSUR RECORD IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is the IEN of the insurance record which Interfacility Insurance Update (IIU) uses to pull policy information to send to  another VAMC. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "EIV AUTO-UPDATE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether or not the active policy was verified via  eIV's AUTO UPDATE process (no touch process). ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "SENDER BUFFER",
+      "dataType": "POINTER",
+      "rawType": "P355.33'",
+      "required": false,
+      "pointerTo": 355.33,
+      "helpText": "This field points to the buffer record that was verified as active  insurance if the eIV AUTO-UPDATE (#365.19,1.04) field is \"NO\". ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "SENDER SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This field is used by reports to display the Subscriber ID that was sent as part of the verified active policy. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "SEND COORDINATION OF BENEFITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Primary;2:Secondary;3:Tertiary;",
+      "helpText": "This field is used by reports to display the Coordination of Benefits (COB) that was sent as part of the verified active policy. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "ICB PROCESSED BUFFER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "The buffer entry in the INSURANCE VERIFICATION PROCESSOR file #355.33 was  processed by the COTS ICB product. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "DESTINATION VAMC",
+      "dataType": "POINTER",
+      "rawType": "365.191PA",
+      "required": false,
+      "helpText": "Track the VAMCs that this patient visited, thus where this verified active policy should be SENT. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "RECEIVER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SAVED TO BUFFER;V:VISITED TOO LONG AGO;R:RECEIVE IIU DATA IS OFF;D:DUPLICATE;I:IIU ENABLED IS OFF;E:ERROR SAVING TO IIU;B:ERROR SAVING TO BUFFER;",
+      "helpText": "This is the overall status of the received entry. It indicates whether or not the policy that was received from another VAMC was saved to the INSURANCE VERIFICATION PROCESSOR (#355.33) file as a buffer entry. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "RECEIVER STATUS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date/time that this policy was received from  another VAMC. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "RECEIVER BUFFER",
+      "dataType": "POINTER",
+      "rawType": "P355.33'",
+      "required": false,
+      "pointerTo": 355.33,
+      "helpText": "This is the entry in the INSURANCE VERIFICATION PROCESSOR (#355.33) of  where this policy was saved for user processing. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "ORIGINATING VAMC",
+      "dataType": "POINTER",
+      "rawType": "365.192PA",
+      "required": false,
+      "fieldNumber_": 2.1
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "365.19", "field": .01, "type": "regular"},
+    {"name": "365.19", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 2.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

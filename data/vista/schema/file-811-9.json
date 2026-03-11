@@ -1,0 +1,690 @@
+{
+  "fileNumber": 811.9,
+  "fileName": "REMINDER DEFINITION",
+  "globalRoot": "811.9",
+  "globalReference": "^PXD(811.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the name of a clinical reminder definition. Nationally distributed reminder definition names are prefixed with \"VA-\". The VA- prefixed reminder definitions cannot be altered by a site, but may be inactivated so they will not be selectable or evaluated in the CPRS GUI.   Local modifications can be made to any \"VA-\" reminder definition by copying the definition to a new one with a unique name and then making modifications to the new definition which meet local criteria. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ64",
+      "length": 64,
+      "required": false,
+      "helpText": "This is the name that is used when the results of a reminder evaluation are displayed.  ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "DO IN ADVANCE TIME FRAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to let a reminder become due earlier than the date determined by adding the frequency to the date when the reminder was last resolved. For example, if the frequency is 1Y (one year) and the DO IN ADVANCE TIME FRAME is 1M (one month), the reminder would have a status of \"DUE SOON\" 11 months after it was last resolved. After one year has passed, the STATUS would be \"DUE\".  Frequencies have the form IU where I is an integer and U is one of the following units: H (hours), D (days)",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "RELATED REMINDER GUIDELINE",
+      "dataType": "POINTER",
+      "rawType": "P811.9'",
+      "required": false,
+      "pointerTo": 811.9,
+      "helpText": "If a local reminder replaces a national reminder, this field can be used to identify the related national reminder. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "Reminders that are inactive will not be evaluated. The Clinical Maintenance component will return a message stating the reminder is inactive and the date when it was made inactive.  Other applications that use reminders may use this flag to determine if a reminder can be selected for inclusion. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "INACTIVE CHANGE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time when the INACTIVE FLAG was last changed. It is set automatically. Users should never edit this field. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "IGNORE ON N/A",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field allows the user to stop reminders from being printed in the Clinical Maintenance component if the reminder is N/A. This is a free text field that can contain any combination of the following codes:   Code  Description  A    N/A due to not meeting age criteria.  I    N/A due to inactive reminder.  R    N/A due to the wrong race.  S    N/A due to the wrong sex.  *    N/A for any reason. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "SEX SPECIFIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "This field is used to make a reminder sex specific. If an \"F\" is entered, the reminder applies only to females. If an \"M\" is entered, the reminder applies only to males. If it is left blank, then the reminder is applicable to either sex.  If CUSTOM COHORT LOGIC is defined and it does not contain SEX, then this field will be ignored.  ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 1.91,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIGH;2:MEDIUM;3:LOW;",
+      "helpText": "REMINDER PRIORITY is used by the CPRS GUI for sorting purposes. ",
+      "fieldNumber_": 1.91
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.92",
+      "required": false,
+      "helpText": "This field contains a description of the clinical reminder. It is used to document its purpose and intended usage. ",
+      "isMultiple": true,
+      "subFileNumber": 811.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TECHNICAL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.93",
+      "required": false,
+      "helpText": "The TECHNICAL DESCRIPTION is for documenting how a reminder is supposed to function and why the definition is set up the way it is. ",
+      "isMultiple": true,
+      "subFileNumber": 811.93,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "BASELINE AGE FINDINGS",
+      "dataType": "SUBFILE",
+      "rawType": "811.97",
+      "required": false,
+      "helpText": "This multiple is for defining reminder frequency age ranges sets. It can be used to specify different frequencies for different ages. For example, you could define a frequency of every 3 years for ages 40 to 49 as the first age range set, a frequency of every 2 years for ages 50 to 59 as the second, and a frequency of once a year for ages 60 to 75. With this set the reminder would be due every 3 years for ages 40 to 49, every 2 years for ages 50 to 59, and once a year for ages 60 to 75. ",
+      "isMultiple": true,
+      "subFileNumber": 811.97,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FINDINGS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "811.902V",
+      "required": false,
+      "helpText": "This multiple identifies which finding items to use when evaluating the reminder. Finding items may be categorized into 4 types of findings: age, patient cohort, resolution, and informational. How patient findings are used depends on the values given to the various fields associated with  findings. See the description of those fields to learn what they do. ",
+      "isMultiple": true,
+      "subFileNumber": 811.902,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FUNCTION FINDINGS",
+      "dataType": "SUBFILE",
+      "rawType": "811.925I",
+      "required": false,
+      "helpText": "This multiple is used to define function findings; each function finding is labeled by an integer: the FUNCTION FINDING NUMBER. The user defines a function finding by inputting a FUNCTION FINDING NUMBER and associated FUNCTION STRING. Function Findings are then used in the reminder definition logic by reference to FF(FUNCTION FINDING NUMBER). For example, if function findings 1 and 2 were defined, then they could be used in the cohort or resolution logic as FF(1) and FF(2).  Function findings ca",
+      "isMultiple": true,
+      "subFileNumber": 811.925,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CUSTOMIZED COHORT LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field may be used to define a customized Patient Cohort Logic string. Typically this is done when the USE IN PATIENT COHORT LOGIC fields associated with each finding do not provide the ability to create the required logic string. The requirement for custom logic arises when the required logic is more complex than can be represented by simple concatenation of Boolean logical operators and findings.  Detailed information on how to create the custom logic string can be found in the Clinical Re",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "INTERNAL PATIENT COHORT LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PATIENT COHORT FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PATIENT COHORT FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "CUSTOMIZED RESOLUTION LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field may be used to define a customized Resolution Logic string. Typically this is done when the USE IN RESOLUTION LOGIC fields associated with each finding do not provide the ability to create the required logic string. The requirement for custom logic arises when the required logic is more complex than can be represented by simple concatenation of Boolean logical operators and findings.  Detailed information on how to create the custom logic string can be found in the Clinical Reminders ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "INTERNAL RESOLUTION LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "RESOLUTION FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "RESOLUTION FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "AGE FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "AGE FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "INFORMATION FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "INFORMATION FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CUSTOM DATE DUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "When a CUSTOM DATE DUE is defined, it takes precedence over the standard date due calculation. This means the normal date due calculation that is based on the dates of the resolution findings and the final frequency is not done. Only the dates of the findings and the frequencies specified in the Custom Date Due string are used. Any finding that is in the reminder definition can be used in the Custom Date Due string; it is not limited to those defined as resolution findings.  The final age range ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "CUSTOM DATE DUE FUNCTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the function used in the CUSTOM DATE DUE. It is created automatically and should not be set by hand. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "NUMBER OF ARGUMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of arguments (findings) used in the CUSTOM DATE DUE. It is created automatically and should not be set by hand. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "CUSTOM DATE DUE ARG LIST",
+      "dataType": "SUBFILE",
+      "rawType": "811.948A",
+      "required": false,
+      "helpText": "This is the list of arguments (findings) used in the CUSTOM DATE DUE. It is used to efficiently calculate the resolution date from the custom date due string. It is created automatically and should not be set by hand. ",
+      "isMultiple": true,
+      "subFileNumber": 811.948,
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "WEB SITES",
+      "dataType": "SUBFILE",
+      "rawType": "811.9002",
+      "required": false,
+      "helpText": "This multiple contains Web sites that have information related to this reminder. The list of web sites will be displayed in the CPRS GUI if the user right-clicks on a reminder and then selects reference information. If a particular web site is clicked on, the GUI will open a browser at that web site. ",
+      "isMultiple": true,
+      "subFileNumber": 811.9002,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LINKED REMINDER DIALOG",
+      "dataType": "POINTER",
+      "rawType": "*P801.41'",
+      "required": false,
+      "pointerTo": 801.41,
+      "helpText": "This is the Reminder Dialog that will be used when the reminder is processed in the CPRS GUI. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "GENERAL COHORT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.9003",
+      "required": false,
+      "helpText": "This optional field defines the detailed text to display when the Patient Cohort Logic is true. Detailed text is used for components such as Clinical Maintenance and MyHealtheVet Detailed. ",
+      "isMultiple": true,
+      "subFileNumber": 811.9003,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "GENERAL COHORT NOT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.961",
+      "required": false,
+      "helpText": "This optional field defines the detailed text to display when the Patient Cohort Logic is false. Detailed text is used for components such as Clinical Maintenance and MyHealtheVet Detailed.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.961,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "# OF GEN. COHORT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the GENERAL COHORT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.  ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "# GEN. COHORT NOT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the GENERAL COHORT NOT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.  ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "GENERAL RES. FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.965",
+      "required": false,
+      "helpText": "This optional field defines the detailed text to display when the Resolution Logic is true. Detailed text is used for components such as Clinical Maintenance and MyHealtheVet Detailed.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.965,
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "GENERAL RES. NOT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.966",
+      "required": false,
+      "helpText": "This optional field defines the detailed text to display when the Resolution Logic is false. Detailed text is used for components such as Clinical Maintenance and MyHealtheVet Detailed.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.966,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "# GEN. RES. FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the GENERAL RESOLUTION FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.  ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "# GEN. RES. NOT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the GENERAL RESOLUTION NOT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.  ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "RESCISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the rescission date for this reminder definition. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "SUMMARY COHORT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.9004",
+      "required": false,
+      "helpText": "This optional field defines the summary text to display when the Patient Cohort Logic is true. Summary text is used for components such as MyHealtheVet Summary. ",
+      "isMultiple": true,
+      "subFileNumber": 811.9004,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "SUMMARY COHORT NOT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.971",
+      "required": false,
+      "helpText": "This optional field defines the summary text to display when the Patient Cohort Logic is false. Summary text is used for components such  MyHealtheVet Summary. ",
+      "isMultiple": true,
+      "subFileNumber": 811.971,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "# SUM. COHORT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the SUMMARY COHORT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.    ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "# SUM. COHORT NOT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the SUMMARY COHORT NOT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.   ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "SUMMARY RES. FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.975",
+      "required": false,
+      "helpText": "This optional field defines the summary text to display when the Resolution Logic is true. Summary text is used for components such  as MyHealtheVet Summary.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.975,
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "SUMMARY RES. NOT FOUND TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.976",
+      "required": false,
+      "helpText": "This optional field defines the summary text to display when the Resolution Logic is false. Summary text is used for components such  as MyHealtheVet Summary.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.976,
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "# SUM. RES. FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the SUMMARY RESOLUTION FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand.    ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "# SUM. RES. NOT FOUND LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the SUMMARY RESOLUTION NOT FOUND TEXT. If the number ends with \"T\" then the text contains TIU objects. This field is set automatically during reminder edit and should never be edited by hand. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "CONTRAINDICATED LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "This field defines the CONTRAINDICATED LOGIC. When this logic evaluates  to TRUE, the reminder evaluation status will be CONTRA.   Detailed information on how to create logic strings can be found in the  Clinical Reminders Manager's Manual. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "CONTRAINDICATED FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "CONTRAINDICATED FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ512",
+      "length": 512,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should  never be edited by hand. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "CONTRAINDICATED TRUE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.983",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 811.983,
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "CONTRAINDICATED FALSE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.984",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 811.984,
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "# OF CONTRA TRUE LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of lines in the CONTRAINDICATED TRUE TEXT. If the number ends with \"T\", then the text contains TIU objects. If the  number ends with \"C\", then the text contains CSUB objects. This field is set automatically during reminder edit and should never be edited by hand. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "# OF CONTRA FALSE LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of lines in the CONTRAINDICATED FALSE TEXT. If the number ends with \"T\", then the text contains TIU objects. If the  number ends with \"C\", then the text contains CSUB objects. This field is set automatically during reminder edit and should never be edited by hand. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "REFUSED LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "This field defines the REFUSED LOGIC. When this logic evaluates to TRUE, the reminder evaluation status will be REFUSED, as long as, the status has not already been determined to be CONTRA; CONTRA takes precedence over  REFUSED.                                   Detailed information on how to create logic strings can be found in the Clinical Reminders Manager's Manual. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "REFUSED FINDINGS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should  never be edited by hand. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "REFUSED FINDINGS LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ512",
+      "length": 512,
+      "required": false,
+      "helpText": "This field is computed by the Clinical Reminders software and should never be edited by hand. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "REFUSED TRUE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.993",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 811.993,
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "REFUSED FALSE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "811.994",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 811.994,
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "# OF REFUSED TRUE LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of lines in the REFUSED TRUE TEXT. If the number ends  with \"T\", then the text contains TIU objects. If the number ends with  \"C\", then the text contains CSUB objects. This field is set automatically during reminder edit and should never be edited by hand. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "# OF REFUSED FALSE LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of lines in the REFUSED FALSE TEXT. If the number  ends with \"T\", then the text contains TIU objects. If the number ends  with \"C\", then the text contains CSUB objects. This field is set automatically during reminder edit and should never be edited by hand. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of the definition. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National definitions cannot be edited by sites.   ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6X",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this definition. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the definition should be reviewed to verify that it is current with the latest standards and guidelines. You can find all reminder definitions whose review date has passed using the Clinical Reminders Review Date Report. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "USAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Usage field describes how the reminder definition can be used. This field must contain C or * if the reminder is to be selected in CPRS. The L or the O values will override all other values. For example, if L and C are defined in the Usage field, the Reminder will not show on the cover sheet in CPRS, because L is in the Usage field. The A will not allow a reminder to be used on the CPRS  coversheet unless the value of C is set also in the usage field.   This is free text field and can contai",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "811.9001D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the definition. ",
+      "isMultiple": true,
+      "subFileNumber": 811.9001,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 68,
+  "crossReferences": [
+    {"name": "AG", "field": },
+    {"name": "", "field": 1.6, "type": "regular"},
+    {"name": "811.9", "field": 51, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(811.9,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

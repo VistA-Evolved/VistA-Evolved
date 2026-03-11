@@ -1,0 +1,181 @@
+{
+  "fileNumber": 548260,
+  "fileName": "PATCH PACKAGE",
+  "globalRoot": "548260",
+  "globalReference": "^AXA(548260,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRIMARY PROGRAMMER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .032,
+      "fieldName": "PRIMARY PROGRAMMER PHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": .032
+    },
+    {
+      "fieldNumber": .034,
+      "fieldName": "PRIMARY PROGRAMMER PAGER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .034
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SECONDARY PROGRAMMER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .042,
+      "fieldName": "SECONDARY PROGRAMMER PHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": .042
+    },
+    {
+      "fieldNumber": .044,
+      "fieldName": "SECONDARY PROGRAMMER PAGER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .044
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRIMARY ADPAC",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .052,
+      "fieldName": "PRIMARY ADPAC PHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": .052
+    },
+    {
+      "fieldNumber": .054,
+      "fieldName": "PRIMARY ADPAC PAGER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .054
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SECONDARY ADPAC",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .062,
+      "fieldName": "SECONDARY ADPAC PHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": .062
+    },
+    {
+      "fieldNumber": .064,
+      "fieldName": "SECONDARY ADPAC PAGER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .064
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LEAD PROGRAMMER",
+      "dataType": "POINTER",
+      "rawType": "*P548270'",
+      "required": false,
+      "pointerTo": 548270,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "CURRENT VERSION (LIVE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "CURRENT VERSION (TEST)",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .19
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "ADNS", "field": },
+    {"name": "ADNS2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "548260", "field": .01, "type": "regular"},
+    {"name": "548260", "field": .02, "type": "regular"},
+    {"name": "548260", "field": .02, "type": "regular"},
+    {"name": "548260", "field": .03, "type": "regular"},
+    {"name": "548260", "field": .05, "type": "regular"},
+    {"name": "548260", "field": .19, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

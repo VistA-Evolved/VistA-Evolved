@@ -1,0 +1,37 @@
+{
+  "fileNumber": 699.55,
+  "fileName": "GROSS",
+  "globalRoot": "699.55",
+  "globalReference": "^MCAR(699.55,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the allowable gross list for the various GI and Pulmonary procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "699.551P",
+      "required": false,
+      "helpText": "This field identifies field is used to allow a separate gross list for each GI and Pulmonary Endoscopic procedure. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

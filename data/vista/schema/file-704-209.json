@@ -1,0 +1,76 @@
+{
+  "fileNumber": 704.209,
+  "fileName": "HEMODIALYSIS SETTINGS",
+  "globalRoot": "704.209",
+  "globalReference": "^MDK(704.209,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SETTING NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the descriptive name of the data contained in this setting. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field displays the owner name of the option setting in the Hemodialysis client application. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field displays the user name that is locking the Hemodialysis setting option. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME OF LOCK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will store the date and time of when the Hemodialysis setting  option was locked for use. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROCESS ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will store the JOB ID of the process that is locking the  Hemodialysis setting option. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "XML DOCUMENT",
+      "dataType": "SUBFILE",
+      "rawType": "704.2091",
+      "required": false,
+      "helpText": "This field contains the XML document for this setting in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2091,
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "704.209", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

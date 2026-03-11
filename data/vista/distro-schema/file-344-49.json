@@ -1,0 +1,115 @@
+{
+  "fileNumber": 344.49,
+  "fileName": "EDI LOCKBOX EOB WORKLIST",
+  "globalRoot": "344.49",
+  "globalReference": "^RCY(344.49,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERA REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "RP344.4'X",
+      "required": true,
+      "pointerTo": 344.4,
+      "helpText": "This is the pointer to the record in file 344.4 that contains the ERA detail as received from the EDI Lockbox transmission. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RECEIPT #",
+      "dataType": "POINTER",
+      "rawType": "P344'",
+      "required": false,
+      "pointerTo": 344,
+      "helpText": "This is the pointer to the receipt entry that was created as a result of this EDI Lockbox Worklist entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TOTAL PAYMENT RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,2",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the total amount of money that was received in conjunction with the ERA.  This amount must equal the total amount being posted in the receipt. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHECK #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the paper check number that is matched to this ERA. It will be included on each receipt transaction if the receipt is created through the EOB Worklist options. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CHECK DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on the check. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BANK ROUTING #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the bank routing number to be put on the receipt. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEQUENCE #",
+      "dataType": "SUBFILE",
+      "rawType": "344.491A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 344.491,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER PREFERENCE",
+      "dataType": "POINTER",
+      "rawType": "344.492PA",
+      "required": false,
+      "helpText": "This is a collection of all the preferences recorded for a user so default settings can be applied customized by user when the worklist entry is selected. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BATCH",
+      "dataType": "SUBFILE",
+      "rawType": "344.493I",
+      "required": false,
+      "helpText": "This multiple field holds a record for each batch defined for the ERA. It will hold the number of the batch, the name of the batch and other data related specifically to each batch within the ERA. ",
+      "isMultiple": true,
+      "subFileNumber": 344.493,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OTHER RECEIPT NUMBERS",
+      "dataType": "POINTER",
+      "rawType": "344.494P",
+      "required": false,
+      "helpText": "This sub-file is used to store additional receipt information for this  entry. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AINUSE", "field": },
+    {"name": "B", "field": },
+    {"name": "344.49", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

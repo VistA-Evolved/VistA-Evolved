@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.37,
+  "fileName": "BPS NCPDP PATIENT PAY COMPONENT QUALIFIER",
+  "globalRoot": "9002313.37",
+  "globalReference": "^BPS(9002313.37,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Patient Pay Component Qualifier being returned by the payer. This is  based on the NCPDP Standards for field C95-KQ. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "The name of the Patient Pay Component Qualifier. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.37", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "fileNumber": 19619.2,
+  "fileName": "VEJD E&M CODES",
+  "globalRoot": "19619.2",
+  "globalReference": "^VEJD(19619.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LEVEL 1 CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LEVEL 2 CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LEVEL 3 CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LEVEL 4 CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LEVEL 5 CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19619.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

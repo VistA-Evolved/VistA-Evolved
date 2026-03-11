@@ -1,0 +1,36 @@
+{
+  "fileNumber": 19.8,
+  "fileName": "MENUMAN QUICK HELP",
+  "globalRoot": "19.8",
+  "globalReference": "^DIC(19.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HELP TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "19.81",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19.81,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

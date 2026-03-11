@@ -1,0 +1,50 @@
+{
+  "fileNumber": 743.5,
+  "fileName": "GROUP",
+  "globalRoot": "743.5I",
+  "globalReference": "^QA(743.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "R*P1'I",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This field determines which file the group entries are to be found in. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GROUP MEMBER",
+      "dataType": "SUBFILE",
+      "rawType": "743.51A",
+      "required": false,
+      "helpText": "This field contains the actual members of the group. ",
+      "isMultiple": true,
+      "subFileNumber": 743.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "743.5", "field": .01, "type": "regular"},
+    {"name": "743.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

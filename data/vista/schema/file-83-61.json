@@ -1,0 +1,68 @@
+{
+  "fileNumber": 83.61,
+  "fileName": "DRG PROCEDURE GROUPS",
+  "globalRoot": "83.61",
+  "globalReference": "^ICDD(83.61,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE CLUSTER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Cluster ID is an assigned number that provides a unique identifier for  the grouping of procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROCEDURE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPERATING ROOM;N:NON-OPERATING ROOM;",
+      "helpText": "The MDC classification of a Procedure, either Operating Room or  Non-Operating Room.  All Procedures are identified as either Operating  Room or Non-Operating Room procedures.      In this case the cluster acts as a single Procedure, given that all the  cluster procedures are assigned to the record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLUSTER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:ONE OF WITH;",
+      "helpText": "Cluster Type identifies the original structure of the cluster.  The  standard type is a simple list of procedures included in the cluster.   The Type identified as 'ONE OF WITH' were originally structured as two  list, the first was 'One of' the second list was 'with'.  These were  expanded from two lists to the standard structure with a cluster for each  combined list. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ATTRIBUTES",
+      "dataType": "DATE",
+      "rawType": "83.6101D",
+      "required": false,
+      "helpText": "The attributes are various characteristics of the Procedure Cluster,  specific to the DRG assignment.  There can be only one record of  attributes active for a date range.  Each version that modifies any  of the attributes will have a separate date based record. ",
+      "isMultiple": true,
+      "subFileNumber": 83.6101,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PROCEDURES",
+      "dataType": "POINTER",
+      "rawType": "83.6102P",
+      "required": false,
+      "helpText": "The list of all Procedures that define a Cluster.  These will act as a  single Procedure within the DRG calculations. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "83.61", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

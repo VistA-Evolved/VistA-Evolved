@@ -1,0 +1,90 @@
+{
+  "fileNumber": 79.3,
+  "fileName": "HL7 MESSAGE EXCEPTIONS",
+  "globalRoot": "79.3",
+  "globalReference": "^RA(79.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXCEPTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time of the exception message ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SENDING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "The Sending Application which generated the exception message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient name linked to the exception message. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the case number of the exam for our message exception. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HL7 MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "RP773'",
+      "required": true,
+      "pointerTo": 773,
+      "helpText": "This is the HL7 Message that was rejected ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the radiology user linked to the message exception ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the reason that this message was rejected. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "79.3", "field": .01, "type": "regular"},
+    {"name": "79.3", "field": .02, "type": "regular"},
+    {"name": "79.3", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

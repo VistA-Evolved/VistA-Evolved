@@ -1,0 +1,26 @@
+{
+  "fileNumber": 853.875,
+  "fileName": "VPS QUESTIONNAIRE NAME",
+  "globalRoot": "853.875",
+  "globalReference": "^VPS(853.875,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "VPS Clinical Survey Questionnaire Name ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

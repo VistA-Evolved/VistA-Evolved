@@ -1,0 +1,38 @@
+{
+  "fileNumber": 604.68,
+  "fileName": "ASI NARRATIVE",
+  "globalRoot": "604.68",
+  "globalReference": "^YSTX(604.68,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the specific ASI title used in the construction of the narrative report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "604.681",
+      "required": false,
+      "helpText": "This field contains the text and M code used to construct the ASI narrative. ",
+      "isMultiple": true,
+      "subFileNumber": 604.681,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "604.68", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

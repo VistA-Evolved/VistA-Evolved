@@ -1,0 +1,81 @@
+{
+  "fileNumber": 211.8,
+  "fileName": "NURS POSITION CONTROL",
+  "globalRoot": "211.8IP",
+  "globalReference": "^NURSF(211.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P44'X",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "Nursing location for this budgeted FTEE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SERVICE CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:REGISTERED NURSE;L:LICENSED PRACTICAL NURSE;N:NURSE ASSISTANT;C:CLERICAL;O:OTHER;S:SUMMER EMPLOYEE;A:ADMIN;",
+      "helpText": "Service category for this location (e.g., RN, LPN, NA). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BUDGETED FTEE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": " This field contains the computed value of the budgeted service category  FTEE for this location based on the budgeted service position FTEE that has  been entered for this location. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OCCUPANCY/TRANSFERRED DATE",
+      "dataType": "DATE",
+      "rawType": "211.82ID",
+      "required": false,
+      "helpText": "Date this FTEE was/or will be occupied or transferred. ",
+      "isMultiple": true,
+      "subFileNumber": 211.82,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "POSITION BUDGETED",
+      "dataType": "POINTER",
+      "rawType": "211.83P",
+      "required": false,
+      "helpText": "Indicate the service position to be budgeted within this category. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADAE", "field": },
+    {"name": "AE", "field": },
+    {"name": "ASDT", "field": },
+    {"name": "ASDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "SC", "field": },
+    {"name": "211.8", "field": .01, "type": "regular"},
+    {"name": "211.8", "field": .01, "type": "regular"},
+    {"name": "211.8", "field": .02, "type": "regular"},
+    {"name": "211.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(211.8,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

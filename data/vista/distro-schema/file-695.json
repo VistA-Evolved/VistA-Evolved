@@ -1,0 +1,40 @@
+{
+  "fileNumber": 695,
+  "fileName": "MEDICATION",
+  "globalRoot": "695P",
+  "globalReference": "^MCAR(695,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GENERIC NAME",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "This field contains a list of drugs used by the various medical specialties. This list is built through management options on various Medicine package modules.  It is currently used by Cardiology,GI,Pulmonary, and Rheumatology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "695.01S",
+      "required": false,
+      "helpText": "This field is used as a screen to differentiate the various medical specialties the drug is used by. ",
+      "isMultiple": true,
+      "subFileNumber": 695.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "695", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

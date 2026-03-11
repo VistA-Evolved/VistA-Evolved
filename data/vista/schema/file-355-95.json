@@ -1,0 +1,57 @@
+{
+  "fileNumber": 355.95,
+  "fileName": "IB PROVIDER ID CARE UNIT",
+  "globalRoot": "355.95",
+  "globalReference": "^IBA(355.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the care unit value that will be used by the insurance co to identify a particular provider on a bill. The definition of care value is specific to the insurance co, but usually indicates an area or type of care that the insurance co wants to use to categorize the care being issued by the care-giver. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the care unit.  It will be displayed next to the value whenever a lookup on this entry is done.  This is an optional field that may be 1-50 characters in length. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "RP36'",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company that is using this care unit ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the division for which the care unit is being defined for this  insurance company.  Entries with divisions are for billing provider  secondary IDs while those with out divisions are used for people providers (rendering/attending, referring, etc)    ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(36,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(36,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

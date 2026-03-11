@@ -1,0 +1,51 @@
+{
+  "fileNumber": 45.83,
+  "fileName": "PTF RELEASE",
+  "globalRoot": "45.83D",
+  "globalReference": "^DGP(45.83,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date the PTF records are entered into the system for transmission to Austin. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the PTF records were transmitted to Austin. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PTF RECORD",
+      "dataType": "POINTER",
+      "rawType": "45.831PI",
+      "required": false,
+      "helpText": "This multiple contains the associated PTF record with this release. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ANT", "field": },
+    {"name": "ANT1", "field": },
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "45.83", "field": .01, "type": "regular"},
+    {"name": "45.83", "field": .01, "type": "regular"},
+    {"name": "45.83", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

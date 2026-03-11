@@ -1,0 +1,147 @@
+{
+  "fileNumber": 8994,
+  "fileName": "REMOTE PROCEDURE",
+  "globalRoot": "8994",
+  "globalReference": "^XWB(8994,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the TAG to be used as the entry point for the ROUTINE. Leave this  field empty if a TAG is not required. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ16",
+      "length": 16,
+      "required": true,
+      "helpText": "This is the name of the routine used by this API. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RETURN VALUE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SINGLE VALUE;2:ARRAY;3:WORD PROCESSING;4:GLOBAL ARRAY;5:GLOBAL INSTANCE;",
+      "helpText": "This field tells RPC Broker how to process the resulting data from the call.  SINGLE VALUE: Broker will return the value of the return parameter (first    parameter in the formal list).  For example,        TAG(RESULT)     ;                S RESULT=\"DOE, JOHN\"                Q  ARRAY: Using $ORDER Broker will traverse the return parameter (first    parameter in the formal list), returning all elements of the array.    For example,        TAG(RESULT)     ;                S RESULT(1)=\"ONE\"        ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AVAILABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PUBLIC;S:SUBSCRIPTION;A:AGREEMENT;R:RESTRICTED;",
+      "helpText": "This field is used to indicate the availability of the API to various users.  PUBLIC indicates that the API is available for general use by any package, and it is not necessary to either indicate that the API is being used or to request permission to use it.  SUBSCRIPTION indicates that the API is available to those packages that wish to use it, BUT the package needs to indicate that it is using the API or subscribing to it.  AGREEMENT indicates that the API is available to packages, other than ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;2:LOCAL INACTIVE (ACTIVE REMOTELY);3:REMOTE INACTIVE (ACTIVE LOCALLY);",
+      "helpText": "This field is used to indicate that the RPC is not available for use for some reason.  An RPC can be marked as completely unusable (1), unusable locally (2), or unusable remotely (3).  Local use means in the account the user is logged into; remote use means in an account other than the one the user is directly logged into (i.e., a 'Remote RPC').  The Broker will not run an RPC that is marked as unusable in the applicable context. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CLIENT MANAGER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to identify those APIs which may be initiated to control the client or to send data to the client unrelated to requests from the client.  These actions usually require additional information on the configuration which is present. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "WORD WRAP ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Affects GLOBAL ARRAY and WORD PROCESSING return value types only. If set to FALSE, all data values are returned in a single concatenated string in Results[0]. If set to TRUE, each array node on the M side is returned as a distinct array item in the Results property of the TRPCBroker.  If you're returning some text to the client and you'd rather let the memo box of the client control the wrapping of lines, set WORD WRAP ON to FALSE.  On the other hand, if you want to preserve line breaks as they ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,5",
+      "length": 10,
+      "required": false,
+      "helpText": "A number to identify the version of the Remote Procedure.  Currently this number is only checked if the Remote Procedure is being run on a foreign server.  If a version number is passed to the Broker by the application requesting that the Remote Procedure be run on the foreign server, the Remote Procedure will only be run if the value of this field is equal to or greater than the passed version number. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "APP PROXY ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field must be set to Allowed if this RPC is to be run by an  APPLICATION PROXY user. The default is to NOT allow access. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8994.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8994.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INPUT PARAMETER",
+      "dataType": "SUBFILE",
+      "rawType": "8994.02A",
+      "required": false,
+      "helpText": "Input parameter is what RPC Broker passes into your remote procedure.  The name that you may call the input parameter has no special meaning to the Broker.  However, you should choose a name that best describes the data that the parameter is used for. ",
+      "isMultiple": true,
+      "subFileNumber": 8994.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RETURN PARAMETER DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8994.03",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8994.03,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8994", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 615.8,
+  "fileName": "S/R ALTERNATIVES",
+  "globalRoot": "615.8",
+  "globalReference": "^YSR(615.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ALTERNATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Short narrative describing other course of actions that may be take prior to placing a patient in seclusion/restraint. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "615.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

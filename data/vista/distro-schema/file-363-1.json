@@ -1,0 +1,89 @@
+{
+  "fileNumber": 363.1,
+  "fileName": "CHARGE SET",
+  "globalRoot": "363.1",
+  "globalReference": "^IBE(363.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name to help identify the billable items and the rated defined by the Charge Set. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILLING RATE",
+      "dataType": "POINTER",
+      "rawType": "RP363.3'",
+      "required": true,
+      "pointerTo": 363.3,
+      "helpText": "This is the type of rate which defines the charges associated with this Charge Set. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BILLABLE EVENT",
+      "dataType": "POINTER",
+      "rawType": "R*P399.1'",
+      "required": true,
+      "pointerTo": 399.1,
+      "helpText": "This is the type of care being billed or itemized on a bill that the payer is charged for.  This should correspond to an actual item that may be found on a bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHARGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INSTITUTIONAL;2:PROFESSIONAL;",
+      "helpText": "Defines the charges in this Charge Set as exclusively either professional charges or institutional charges.   This is used to identify the charges to add to bills that are defined as exclusively professional or institutional bills. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEFAULT REVENUE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P399.2'",
+      "required": false,
+      "pointerTo": 399.2,
+      "helpText": "This revenue code will be the default for all items in this Charge Set. If a Charge Item does not have a Revenue Code defined for it, this code will be used.  Therefore, if most charges for this set should have the same revenue code, enter that code here.   If there is no Default Revenue Code for a Charge Set, then each Charge Item of that set will be required to have a Revenue Code. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "*P399.1'",
+      "required": false,
+      "pointerTo": 399.1,
+      "helpText": "Bedsection is required to add charges to a bill.  This is a bedsection that represents the service responsible for the charges in this Set.   If the charge for this Billing Rate is not associated with a bedsection, then add the bedsection that should be added to a bill with the charges for this Set. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REGION",
+      "dataType": "POINTER",
+      "rawType": "P363.31'",
+      "required": false,
+      "pointerTo": 363.31,
+      "helpText": "This is the region the charges this set apply to.  This is only needed if the charges for this set are modified based on locality/region. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "363.1", "field": .01, "type": "regular"},
+    {"name": "363.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

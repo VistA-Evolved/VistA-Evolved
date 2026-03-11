@@ -1,0 +1,359 @@
+{
+  "fileNumber": 2006.575,
+  "fileName": "DICOM FAILED IMAGES",
+  "globalRoot": "2006.575",
+  "globalReference": "^MAGD(2006.575,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILEPATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name, including the directory path, of the image file that failed the matching process on  the local DICOM Image gateway processing the image. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FAILED REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO CASE #:No case number;PID ERROR:Could not match patient;UNKNOWN:Any other reason;BAD CASE #:Format error in case number;CANCELLED:Case cancelled;",
+      "helpText": "The value of this field is a code that indicates the reason why the image file that is described in the current entry could not be matched with a patient and study.   The possible values for this field are NOCASE#, PATIENT, UNKNOWN or  CANCELLED.   When the entry is processed the match for the Radiology entry is by case number and then by patient ID. If these entries are not provided correctly then entries are made into this file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the value that is transmitted by the modality for DICOM element 0010,0020. Typically, the value of this field is equal to the Social Security Number of the patient for whom the study is scheduled. (Without the dashes between the number-groups.)   This value is copied from the VistA Database, so that worklist queries can also be performed when the network connection (DDP) with the main Hospital Information System is not available. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of the patient.   This value is reformatted as LAST NAME,FIRST NAME MID. The actual name sent by the Radiology modality is in field PNAMEDCM. This field will be used as one of the possible lookups for correction to this entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PNAMEDCM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of the patient.   This value is copied from the information that was transmitted by the Radiology modality. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CASENUMB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the case number for the study.   This value is copied from the information that was transmitted by the Radiology X-Ray equipment. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CASE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the case number for the study.   This value is copied from the information that was entered by the technician during the image capture at the Radiology X-Ray modality. This field will usually be empty since the file will contain only entries that failed during the copying of images to the Imaging file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date value.   This value must be an exact date and represents the date on which the entry was made into this file. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IMAGE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the Image UID.   This value is copied from the information that is transmitted by the modality. The Image UID is a unique ID number assigned to the image by the Radiology X-Ray modality. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STUDY UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the Study UID.   This value is copied from the information that is transmitted by the modality. The Image UID is a unique ID number assigned to the image by the Radiology X-Ray modality. A case study will consist of several images, each of which has its own unique Image UID code. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of the instrument that produced the image file.   Typical values for this field are texts like CT1, CT2, CR3, and so forth. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ROWS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an integer number that represents the number of pixel rows in the image.   This value is copied from the information that is transmitted by the Radiology modality. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "COLUMNS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an integer number that represents the number of pixel columns in the image.   This value is copied from the information that is transmitted by the Radiology modality. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "OFFSET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an integer number that represents the byte address in the image file where the image data begins.   This value is copied from the information that is transmitted by the Radiology modality. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MODIEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a pointer to the Modality file (# 2006.582, stored in ^MAGDICOM(2006.582,...).   This value identifies the modality (type of instrument) that transmitted the image file. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FIXED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "The value of this field is a code that identifies whether or not the problem that is reported in the current entry has been corrected.   Entries are corrected in this file using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE   When the entry is manually matched with a patient and procedure the correction routine will update this field. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NEWDFN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a pointer to the Patient file (# 2, stored in ^DPT(...).   This value identifies the (new) patient, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "NEWNME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of a patient.   This value identifies the (new) patient, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "NEWSSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the Social Security Number of a patient.   This value identifies the (new) patient, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NEWCASE NO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the accession number for a study.   This value identifies the (new) study, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "NEW RADTI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the date and time when the study was executed.   This value is a 'reverse' date time, as defined by the Radiology software. It is used as the second subscript (RADTI) in references like ^RARPT(RADPT,\"DT\",RADTI,\"P\",RACNI   This value timestamps the (new) study, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "NEW RACNI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the case number for the study.   This value is used as the third subscript (RADCNI) in references like ^RARPT(RADPT,\"DT\",RADTI,\"P\",RACNI   This value identifies the (new) study, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents a date/time value.   This value is copied from the information that was transmitted by the Radiology modality. It is a timestamp for the moment when the image file was processed. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "NEW PROC IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a pointer to the Rad/Nuc procedure file (#71, stored in ^RAMIS(71,...).   This value is an internal entry number, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "NEW PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the new procedure name defined using the MAGD FIX DICOM or MAGD FIX MEDICINE menu option. The value of this field is a string that represents the name of a procedure found in the Rad/Nuc procedure file (#71, stored in ^RAMIS(71,...).   This value is the name of a procedure, and is defined using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "RELATED IMAGES",
+      "dataType": "POINTER",
+      "rawType": "2006.57526PA",
+      "required": false,
+      "helpText": "This is the multiple sub-file that repoints to this file.  This sub-file will point to all the related images having the same study instance UID. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of a modality.   This value represents the name of the modality (i.e., the type of of instrument) for the images requiring manual correction. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MACHINE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the VistA DICOM Image Gateway  computer that received the image file. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents a comment.   This value is copied from the information that was transmitted by the Radiology equipment.   Typically, this value contains the accession number. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "IMAGE POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "The value of this field is a pointer to the Image file (#2005, stored in ^MAG(2005,...).   This value identifies the image that is the 'parent' of the group to which the image that is described in this entry belongs. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PARENT FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The value of this field is a pointer to the File of Files (#1, stored in ^DIC(...).   This value identifies the Imaging Parent file that contains the clinical information of which the image file that is described in this entry is a part.   Possible parent files are:     3.9    MAIL MESSAGE    63      AUTOPSY (MICROSCOPIC)    63.02   ELECTRON MICROSCOPY    63.08   SURGICAL PATHOLOGY    63.09   CYTOLOGY    63.2    AUTOPSY (GROSS)    74      RADIOLOGY   130      SURGERY   691      ECHOCARDIOGRAM   ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SERVICE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the 'imaging service' that is performed by the instrument that is described in this entry.   The imaging services are itemized in file 2006.589 (stored in ^MAGDICOM(2006.589,...)   Currently, the only entries in this file are RAD and MED-ENDO. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DELETE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FILE IS DELETED;",
+      "helpText": "The value of this field is a code that indicates whether of not the image file that is described in this entry is to be deleted.   Corrections are made using either of the menu options  MAGD FIX DICOM or  MAGD FIX MEDICINE   If the images files are for a test patient, then setting this field will not process the images but delete the files from the DICOM Image gateway.  ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the manufacturer of the instrument that transmitted the images that require manual correction. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the model of the instrument that transmitted the images that require manual correction. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "GATEWAY LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field will contain the institution where the gateway is located. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "Instrument Site",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the institution where the instrument is located. ",
+      "fieldNumber_": 37
+    }
+  ],
+  "fieldCount": 37,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "F", "field": },
+    {"name": "2006.575", "field": .01, "type": "regular"},
+    {"name": "2006.575", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

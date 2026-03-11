@@ -1,0 +1,582 @@
+{
+  "fileNumber": 409.3,
+  "fileName": "SD WAIT LIST",
+  "globalRoot": "409.3",
+  "globalReference": "^SDWL(409.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient from the Patient file #2 that is to be on the Sch/PCMM Wait List. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORIGINATING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the patient was placed on the Wait List (Sch/PCMM) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The Institution the patient is on the Wait List (Sch/PCMM) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANMISSION STATUS TO ACC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT TRANSMITTED;1:TRANSMITTED;",
+      "helpText": "Reflects the current transmission status (transmitted/not transmitted) of  the wait list entry ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "DATE OF TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "409.33D",
+      "required": false,
+      "helpText": "Wait List Transmission date information - multiple ",
+      "isMultiple": true,
+      "subFileNumber": 409.33,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WAIT LIST TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:PCMM TEAM ASSIGNMENT;2:PCMM POSITION ASSIGNMENT;3:SERVICE/SPECIALITY;4:SPECIFIC CLINIC;",
+      "helpText": "The type of wait list the patient is assigned. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WL SPECIFIC TEAM",
+      "dataType": "POINTER",
+      "rawType": "*P404.51'",
+      "required": false,
+      "pointerTo": 404.51,
+      "helpText": "If the patient is waiting for a PCMM Team Assignment, the team that the patient is waiting to be assigned is to be entered here.   The team must be active at the designated institution, must be above capacity.Patients can be assigned to multiple PCMM Teams. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WL SPECIFIC POSITION",
+      "dataType": "POINTER",
+      "rawType": "P404.57'",
+      "required": false,
+      "pointerTo": 404.57,
+      "helpText": "If the patient is waiting for a PCMM Position, the position that the patient is waiting to be assigned is entered here. The position must be active, assigned to the team the patient is currently assigned and the position must be above capacity. The patient can have multiple open Position Wait List assignments. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WL SERVICE/SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P409.31'",
+      "required": false,
+      "pointerTo": 409.31,
+      "helpText": "If the patient has been assigned to the Service/Specialty Wait List, enter the DSS ID that represents the service/specialty the patient is waiting for an appointment. This DSS ID must be active in file 409.31. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "WL SPECIFIC CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP409.32'",
+      "required": true,
+      "pointerTo": 409.32,
+      "helpText": "If the patient has been assigned to the Specific Clinic Wait List, enter the clinic that the patient is waiting for an appointment. The clinic must be active and must be assigned to the institution designated. It must be an active clinic in file 409.32.  ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "WL SPECIFIC HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the HOSPITAL LOCATION in which the WL SPECIFIC CLINIC points to. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "WL APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P409.1'a",
+      "required": false,
+      "pointerTo": 409.1,
+      "helpText": "This field represents the appointment type for the appointment that is to  be associated with this wait list request. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORIGINATING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User that enters the patient to the wait list. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and optional Time that this Wait List entry was entered. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ASAP;F:FUTURE;",
+      "helpText": "If the patient is assigned to either the Service/Specialty or Specific Clinic Wait List, a priority of Future or ASAP (as soon as possible) must be entered. Future indicates that the patient needs an appointment in the future and a desired will be entered by the user. ASAP indicates that the patient needs an appointment before the currently next available appointment (as soon as a slot opens). The  desired date for ASAP will be set by the system as the current date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GROUP 1;2:GROUP 2;3:GROUP 3;4:GROUP 4;5:GROUP 5;6:GROUP 6;7:GROUP 7;8:GROUP 8;",
+      "helpText": "The ENROLLMENT PRIORITY field represents the Wait List Enrollment  Priority. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REQUEST BY",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:PROVIDER;2:PATIENT;",
+      "helpText": "If the patient is placed on a Service/Specialty or Specific Clinic Wait List type, the user must enter who requested the appointment  - the patient or a provider. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If the patient's appointment was requested by a provider, this is the provider that requested the patient's appointment. Must be an active provider in file 200. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SCHEDULED DATE OF APPT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Appointment date scheduled for a patient. This appointment may be  used as a reason for closing Electronic Wait List entry. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "DATE APPT. MADE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the appointment was created. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.2,
+      "fieldName": "APPT CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is a clinic the appointment was created for. ",
+      "fieldNumber_": 13.2
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "APPT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The institution the clinic appointment belongs to. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 13.4,
+      "fieldName": "APPT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "The stop code/specialty of a clinic associated with the patient  appointment. ",
+      "fieldNumber_": 13.4
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "APPT CREDIT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "The credit stop code optionally assigned to the Hospital Location file associated with the scheduled appointment. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 13.6,
+      "fieldName": "APPT STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 3 digit station number assigned to the facility plus optional modifiers. ",
+      "fieldNumber_": 13.6
+    },
+    {
+      "fieldNumber": 13.7,
+      "fieldName": "APPT CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a person who assigned the appointment to the EWL entry. ",
+      "fieldNumber_": 13.7
+    },
+    {
+      "fieldNumber": 13.8,
+      "fieldName": "APPT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:Scheduled/Kept;I:Inpatient;NS:No-Show;NSR:No_Show, Rescheduled;CP:Canceled by Patient;CPR:Canceled by Patient, Rescheduled;CC:Canceled by Clinic;CCR:Canceled by Clinic, Rescheduled;NT:No Action Taken;",
+      "helpText": "This is an appointment status. ",
+      "fieldNumber_": 13.8
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SERVICE CONNECTED PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SERVICE CONNECTED PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DO NOT REMOVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the patient has met the criteria that should remove  him/her from the wait list but the user does not want the patient removed ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "USER ENTERING NO REMOVE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User entering 'Do Not Remove' ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DO NOT REMOVE REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Appointment Criteria Not Met;P:Patient wants another appointment;PR:Provider wants another appointment;O:Other;",
+      "helpText": "Reason why the patient is not removed from Waiting List(Sch/PCMM) ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 18.1,
+      "fieldName": "DO NOT REMOVE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free Text comment (1-50 characters) for why wait list entry should not be  removed when an appointment has met the wait list criteria. ",
+      "fieldNumber_": 18.1
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE DISPOSITIONED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date patient is dispositioned from the Wait List(Sch/PCMM) ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DISPOSITIONED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who dispositioned patient from Wait List(Sch/PCMM) ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DEATH;NC:REMOVED/NON-VA CARE;SA:REMOVED/SCHEDULED-ASSIGNED;CC:REMOVED/VA CONTRACT CARE;NN:REMOVED/NO LONGER NECESSARY;ER:ENTERED IN ERROR;TR:TRANSFERRED;CL:CHANGED CLINIC;",
+      "helpText": "Reason patient has been dispositioned from Wait List(Sch/PCMM) ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DESIRED DATE OF APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "If a patient is placed on a Service/Specialty or Clinic Specific Wait List type, the date the appointment is needed/desired. If the priority is ASAP, this is the date the patient is placed on the Wait List(Sch/PCMM). If the priority is Future, the user enters the date that the  patient/provider needs an appointment scheduled. The field title contains 'CID/PREFERRED DATE', where 'CID' stands for  Clinically Indicated Date. This is an alternate name for the field name  used for reports and to pres",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPEN;C:CLOSED;",
+      "helpText": "If the Wait List(Sch/PCMM) entry is dispositioned the status = CLOSED, otherwise the Wait List(Sch/PCMM) entry status = OPEN ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "AUDIT POINTER",
+      "dataType": "SUBFILE",
+      "rawType": "409.324",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 409.324,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "Free Text field to enter information related to the  appointment that needs to be made. example: see progress note date 5/01/02 this would direct the scheduling clerk to a note that may contain lab,xray orders that need to be completed prior to the appointment. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PACKAGE ORIGINATING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SD:SCHEDULING;PCMM:PCMM;",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EWL ENROLLEE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:ESTABLISHED;P:PRIOR;U:UNDETERMINED;",
+      "helpText": "A set of code that is determined by a formula looking at date patient  last seen (file #391.91 and enrollment date from file #27.11) ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 27.1,
+      "fieldName": "EWL ENROLLEE DATE USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the actual date used to calculate the number of days  between the current date and the last treatment or enrollment date.  ",
+      "fieldNumber_": 27.1
+    },
+    {
+      "fieldNumber": 27.2,
+      "fieldName": "EWL ENROLLEE DATABASE FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:TREATING FACILITY;2:PATIENT ENROLLMENT;3:OUTPATIENT ENCOUNTER;4:KLF DOWNLOAD;",
+      "helpText": "This field is used to track the file used to obtain either the last  treatment date (TREATING FACILITY file #391.52) or the enrollment date  (PATIENT ENROLLMENT file #27.11). It is used internally only for audit  purposes. ",
+      "fieldNumber_": 27.2
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "EDITING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "REOPEN REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CC:INACTIVATED CLINIC;CA:CANCELED APPOINTMENT;DE:DATE OF DEATH ERROR;O:OTHER;",
+      "helpText": "The reason why the closed EWL entry was open. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "REOPEN COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The comment used optionally with the Reopen Reason if applicable, ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "REJECTION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REJECTED;",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SCHEDULING REMINDER FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:TICKLER FLAG;",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "INTRA TRANSFER FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INTRA TRANSFER FLAG;",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "120 DAYS FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO APPOINTMENT;2:WITH APPOINTMENT;",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "CHANGED CLINIC PARENT POINTER",
+      "dataType": "POINTER",
+      "rawType": "P409.3'",
+      "required": false,
+      "pointerTo": 409.3,
+      "helpText": "When an EWL entry is closed with a disposition code of CL: CLINIC CHANGE, the process involves the creation of a new EWL entry with details copied from the parent. This is a pointer back to that parent entry. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "MULTI TEAM FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MULTI TEAM LOCATION;0:SINGL TEAM LOCATION;",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "120 DAY APPT CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:APPT CREATED;",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PATIENT CONTACT",
+      "dataType": "DATE",
+      "rawType": "409.344D",
+      "required": false,
+      "helpText": "This multiple records the patient contact events. ",
+      "isMultiple": true,
+      "subFileNumber": 409.344,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "VS AUDIT",
+      "dataType": "DATE",
+      "rawType": "409.345DA",
+      "required": false,
+      "helpText": "This multiple is used as an audit trail of specific fields for VistA  Scheduling GUI. ",
+      "isMultiple": true,
+      "subFileNumber": 409.345,
+      "fieldNumber_": 45
+    }
+  ],
+  "fieldCount": 56,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "ETOO", "field": },
+    {"name": "SC", "field": },
+    {"name": "SCC", "field": },
+    {"name": "SP", "field": },
+    {"name": "SS", "field": },
+    {"name": "ST", "field": },
+    {"name": "409.3", "field": .01, "type": "regular"},
+    {"name": "409.3", "field": 1, "type": "regular"},
+    {"name": "409.3", "field": 2, "type": "regular"},
+    {"name": "409.3", "field": 5, "type": "regular"},
+    {"name": "409.3", "field": 5, "type": "regular"},
+    {"name": "409.3", "field": 6, "type": "regular"},
+    {"name": "409.3", "field": 7, "type": "regular"},
+    {"name": "409.3", "field": 8, "type": "regular"},
+    {"name": "409.3", "field": 8, "type": "regular"},
+    {"name": "409.3", "field": 8.5, "type": "regular"},
+    {"name": "409.3", "field": 23, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 4, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(409.3,4,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 23, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(409.3,23,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,17)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

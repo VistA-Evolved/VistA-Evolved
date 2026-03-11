@@ -1,0 +1,117 @@
+{
+  "fileNumber": 100.23,
+  "fileName": "OE/RR PRINT FORMATS",
+  "globalRoot": "100.23",
+  "globalReference": "^ORD(100.23,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Internal number of the format. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of rows on the screen/form that this format will occupy. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the total number of columns that this format will occupy. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ORDER TEXT LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is specifically used in formats that use the Order Text field for displaying the order text within a format.  The value in this field is the length that the order text will use, and is the same value that is put in the FORMAT field for the Order Text field definition.  The exported value is 36.  This value is necessary to correctly calculate the number of lines available for printing an order.  If you create a customized version of this format, and you change the value of the FORMAT f",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SINGLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to identify formats that are not used with a Header or Footer format.  Labels are a good example.  This field is used by the OE/RR print utility to keep special formats properly aligned. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELDS",
+      "dataType": "POINTER",
+      "rawType": "100.231PI",
+      "required": false,
+      "helpText": "Each format includes one or more fields that are compiled here. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPILED CODE",
+      "dataType": "SUBFILE",
+      "rawType": "100.232",
+      "required": false,
+      "helpText": "This is the MUMPS code that is compiled when using the PRINT FORMATS utility in OE/RR to build print formats.  This field should not be edited. ",
+      "isMultiple": true,
+      "subFileNumber": 100.232,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is used to screen out the printing of a format for special circumstances. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SILENT CODE",
+      "dataType": "SUBFILE",
+      "rawType": "100.234",
+      "required": false,
+      "helpText": "This field contains M code that gets executed by 'Silent API's' to produce formatted text arrays for use in GUI or other applications. ",
+      "isMultiple": true,
+      "subFileNumber": 100.234,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 791810.6,
+  "fileName": "ORDER DELAY REASONS",
+  "globalRoot": "791810.6",
+  "globalReference": "^RMPF(791810.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the reason that a Hearing Aid Order was delayed beyond the standard established by Audiology and Speech Pathology Service in VACO. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791810.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

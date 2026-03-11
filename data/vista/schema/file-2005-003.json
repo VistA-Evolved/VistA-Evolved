@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2005.003,
+  "fileName": "IMAGING STUDY ANNOTATION",
+  "globalRoot": "2005.003",
+  "globalReference": "^MAG(2005.003,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STUDY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the study being annotated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ANNOTATION GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "2005.0031A",
+      "required": false,
+      "helpText": "These fields store user annotations to the study.. ",
+      "isMultiple": true,
+      "subFileNumber": 2005.0031,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.003", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

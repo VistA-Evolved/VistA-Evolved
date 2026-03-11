@@ -1,0 +1,78 @@
+{
+  "fileNumber": 727.831,
+  "fileName": "DSS TREATING SPECIALTY TRANSLATION",
+  "globalRoot": "727.831",
+  "globalReference": "^ECX(727.831,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "RP42.4'",
+      "required": true,
+      "pointerTo": 42.4,
+      "helpText": "The treating specialty location.  This field points to the TREATING SPECIALTY file (#42.4).  This field is DINUMed.  This file is maintained by the DSS package and should not be altered in any way. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DOM/PRRTP/SARRTP CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CWT/TR;",
+      "helpText": "This field contains the DOM/PRRTP/SARRTP code the patient is admitted to at time of service. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IN/OUT CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Old inpatient/outpatient code, used by the PAI extract only at this time. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OBSERVATION PAT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains the observation patient indicator which is based on the treating specialty and inpat/outpat code values of the record. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INPAT/OUTPAT CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This field contains the inpatient/outpatient status which is based on the treating specialty value of the record.  It replaces the IN/OUT CODE field (#3) of this file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OBSERVATION STOP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the observation stop code which is based on the treating specialty value of the record. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "727.831", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

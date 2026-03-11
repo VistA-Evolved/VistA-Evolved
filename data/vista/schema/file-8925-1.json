@@ -1,0 +1,570 @@
+{
+  "fileNumber": 8925.1,
+  "fileName": "TIU DOCUMENT DEFINITION",
+  "globalRoot": "8925.1",
+  "globalReference": "^TIU(8925.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of a Document Definition entry (.01 field) must be between 3 and 60 characters long and may not begin with a punctuation character. Although names can be entered in any case, they are transformed to upper case before being stored.   It functions as the Technical Name of the entry.  Some sites have put KWIC cross references on it to get, say, all Titles from a given Service.   Name can be used when entering documents as the name of the Title being entered.  Print Name and Abbreviation wi",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Abbreviation can be entered at the Title: prompt when entering a document. Since all Titles with that abbreviation will then be listed, Abbreviation can serve to group Titles.  BASIC Field.  For Objects, see NAME. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Print Name is the name used in lists of documents.  For entries of Type Title, Print Name is used as the document Title in the Patient Chart. BASIC field.  For Objects, see NAME. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "CL:CLASS;DC:DOCUMENT CLASS;DOC:TITLE;CO:COMPONENT;O:OBJECT;",
+      "helpText": "Type determines the nature of the entry and what sort of items the entry may have. There are 5 possible types:   CL CLASS:  Classes group documents.   Example: \"Progress Notes\" is a class with many kinds of progress notes under it.   Classes may themselves be subdivided into items of Type Class or may have items of Type Document Class if no further Class subdivisions are desired.   If a hierarchy deeper than Class-Document Class-Title is desired, Class is the place to insert another level into t",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PERSONAL OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Document Definition Ownership has nothing to do with who can USE the entry to enter a document.  It determines responsibilty for the Document Definition itself.   An entry can be EDITED by its owner. (The Manager menu permits override of ownership so that Ownership can be assigned to a clinician who can then fill in boilerplate text with the Clinician menu, while the Manager can still edit the entry, since there are many fields the clinician does not have access to.)  Exception: the Manager menu",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLASS OWNER",
+      "dataType": "POINTER",
+      "rawType": "P8930'X",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "Document Definition Ownership has nothing to do with who can USE the entry to enter a document.  It determines responsibility for the Document Definition itself.   An entry can be EDITED by its owner.  (The Manager menu permits override of ownership so that ownership can be assigned to a clinician (person with Clinician Menu) who can then fill in boilerplate text, while the manager can still edit the entry, since there are many fields the clinician does not have access to.)  Exception: the Manag",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P8925.6'X",
+      "required": false,
+      "pointerTo": 8925.6,
+      "helpText": "Status provides a way of making Document Definitions 'Offline' to documents.  Document Definitions need to be 'Offline' if they are new and not ready for use, if they are being edited, or if they are retired from further use.   Status is limited to those Statuses in the Status File which apply to Document Definitions: Inactive, Test, and Active. The Document Definition Utility TIUF further limits Statuses to those appropriate for the entry Type (see below), limits the Status of entries with Inac",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "IN USE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "IN USE applies to all entries except those of Type Object.  It cannot be edited since it gets its value automatically.   IN USE may have values 'Yes', 'No', or '?'.   A Document Definition of Type Title or Component is In Use (Yes) if there are entries IN THE TIU DOCUMENT file which store it as their Document Definition.  If not, it is NOT used (No).    NOTE: It is possible for Document Definitions to be used by documents in files other than the TIU Document file and still be NOT In Use since In",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SHARED",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Applies to entries of Type Component only.   Document Definitions of Type Component may be designated SHARED by Owners who have the Manager menu. This means the Component can be an item under multiple parents, and any user who owns a Title can add it as an item.   Shared Components are the ONLY members of the Document Definition hierarchy which can appear in more than one place in the hierarchy. (Objects can be used in multiple entries, but are not members of the hierarchy.)   Shared Components ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ORPHAN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Orphan applies to Document Definitions of all Types except Objects and Shared Components.   Orphan is not editable since it gets its value automatically.   Document Definitions are Orphans if they do not belong to the Clinical Documents Hierarchy, i.e., they cannot trace their ancestry all the way back to the Class Clinical Documents.  If an Orphan is not In Use, it may be \"dead wood\" which should be deleted from the file.  Orphans not In Use which SHOULD NOT BE DELETED include those being kept ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "HAS BOILTXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "Applies to Types Title and Component only.  Cannot be edited since value is automatic.  A Document Definition Has Boiltxt if it or its descendant Components have Boilerplate Text (Field 3).  BASIC field. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "NATIONAL STANDARD",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Some Document Definitions, for example, CWAD's, are developed nationally and sent out as standardized entries across the nation.  TIU and other packages depend on their standard definition, and they must not be edited by sites but only by the persons who are nationally responsible for them.   Such entries are marked NATIONAL STANDARD (field has value 1 for YES), which generally prevents sites from editing the entry.   In two cases, sites are permitted to edit National Standard entries.  The firs",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "POSTING INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:crisis note;W:warning;A:allergy/ADR;D:directive;E:ineligible;",
+      "helpText": "This field is used to help identify indicators of the Patient Posting Type to which the Document Definition should be ascribed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRF FLAG",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "PRF FLAG applies only to PRF titles. The PRF FLAG of a PRF title is the name of the Patient Record Flag associated with the title.  (Notes cannot be written using a PRF title unless the title is associated with a flag  and that flag is assigned to the given patient.)   If the title is not associated with a flag or the associated flag cannot be found, the field has value \"?\".  If the Document Definition is not a title under Document Class PATIENT RECORD FLAG CAT I or PATIENT RECORD FLAG CAT II, t",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "UPLOAD DELIMITED ASCII HEADER",
+      "dataType": "SUBFILE",
+      "rawType": "8925.11I",
+      "required": false,
+      "helpText": "This multiple contains the upload record header format of the Document Definition, to be used by the upload/router/filer when the preferred header format is Delimited string (as opposed to captioned).   Delimited string is useful only if the site has a way of automating creation of upload record headers.  If they are being created by a human transcriber, use Captioned Record Headers instead. ",
+      "isMultiple": true,
+      "subFileNumber": 8925.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "UPLOAD TARGET FILE",
+      "dataType": "POINTER",
+      "rawType": "*P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "                           ------------- NOTE ON UPLOAD: Upload fields (Upload Target File, Laygo Allowed, Target Text Field Subscript, Upload Look-Up Method, Upload Post-Filing Code, Upload Filing Error Code, and multiple fields Upload Delimited ASCII Header and Upload Captioned ASCII Header) apply to Document Definitions of Type Class, Document Class, and Title.  Multiple fields Upload Delimited ASCII Header and Upload Captioned ASCII Header are heritable AS A GROUP.  Do NOT set partial inform",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "LAYGO ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a new entry can be created in the TARGET FILE for documents defined by this Document Definition. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "TARGET TEXT FIELD SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the subscript of the word-processing field in the TARGET FILE, in which the body of the narrative report will be stored. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "BOILERPLATE ON UPLOAD ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines whether the filer will attempt to execute boilerplate logic for uploaded documents.  Not used in version 1. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UPLOAD CAPTIONED ASCII HEADER",
+      "dataType": "SUBFILE",
+      "rawType": "8925.12A",
+      "required": false,
+      "helpText": "This multiple contains the upload record header format of the Document Definition, to be used by the upload/router/filer when the preferred header format is captioned (as opposed to delimited string).   Under captioned header format, header items are distinguished from each other by captions such as SSN which are entered by the transcriber, followed by the data.   Use the captioned header format if documents are transcribed by a human transcriber.  Delimited format is useful only if the site has",
+      "isMultiple": true,
+      "subFileNumber": 8925.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BOILERPLATE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8925.13",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8925.13,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "OK TO DISTRIBUTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Presently applies only to National Programmers; does not appear on Manager or Clinician Menus.   If field is 1 for YES, then entry should be included for export.  If field has no value or has value 0, entry should not be included for export.   Since TIU is hierarchical, the entry's behavior depends on entries above it in the hierarchy.  It is the responsibility of the exporter to make sure all ancestors which are necessary for the proper behavior of an exported entry are also exported with it (o",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "SUPPRESS VISIT SELECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Applies to entries of Type Class, Document Class, and Title.   For most documents it is very important that the user entering a document select the appropriate visit to link the document with.  However,  certain administrative documents for outpatients have no particular visit that they should be linked with.  For example, a clinician could have a chance encounter with a patient in the corridor and want to document the discussion, or a clinician could simply want to remind him/herself of somethi",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UPLOAD LOOK-UP METHOD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Sometimes when an entry is uploaded into the target file, a new entry is created for it.  However, in other cases such as for Operative Reports, or for an addendum, the file entry already exists and must be looked-up and edited.   Look-Up Method is the MUMPS code invoked to perform such a look-up on the target file.  If a look-up is necessary and this field is blank, a regular DIC lookup is performed.  If the regular DIC lookup is not sufficient to locate the appropriate entry, this field should",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "COMMIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed when the TIU document is \"committed\" to the database (i.e., when the document is saved, and prior to release, verification, or signature).  Heritable. TECHNICAL field. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "RELEASE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed upon Release of the document.  Heritable. TECHNICAL field. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "VERIFICATION ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed upon Verification of the document.  Heritable. TECHNICAL field. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "DELETE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed upon Deletion of the document.  Heritable. TECHNICAL field. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.45,
+      "fieldName": "PACKAGE REASSIGNMENT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed when a document with a link to a client application is Reassigned.  Heritable.  TECHNICAL field. ",
+      "fieldNumber_": 4.45
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "UPLOAD POST-FILING CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field specifies code to be executed following the successful filing of an uploaded record. It may be used to send bulletins or alerts, evaluate expected signers/cosigners, trigger events, update statuses, or whatever the designer of the application deems appropriate. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "This M-Code is executed during the Entry/Editing of a document, after selection of the Title, and prior to selection of the Patient. It may be used to set up environmental variables, etc.  Heritable.  TECHNICAL field. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "This M-Code is executed just prior to Exit from the entry/edit process for a document.  It may be used to send alerts or bulletins, clean up temporary global variables, etc.  Heritable.  TECHNICAL field. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "UPLOAD FILING ERROR CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This MUMPS-type field specifies the code to be executed when the user attempts to resolve a filing error.  Filing Errors may be resolved either by responding to a Filing Error Alert or through the option to Review Upload Events.  Typically, the code will offer the user an opportunity to look up online information necessary to resolve the error (e.g., demographic, or case-related information). ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "POST-SIGNATURE CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This M-Code is executed following Signature (or Cosignature) of a TIU document.  Heritable.  TECHNICAL field. ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EDIT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Applies to Classes, Document Classes, Titles.  This is the Input Template for Entering/Editing documents defined by this entry.  Template includes fixed field information such as Patient, etc.  Enter Edit Template in Format [TEMPLATE NAME], or as a \"field-string\" (e.g., .01;1;3;5).  Heritable.  TECHNICAL field.   NOTE on editing heritable fields:   When editing heritable fields, the user is presented with the EFFECTIVE value of the field as the default (e.g. NO//).  This is the same as the value",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRINT METHOD",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "Applies to Types Class, Document Class, Title.  This M-Code is executed when a document is Printed from the TIU List Manager screen (as opposed to a separate print option which may have its own code.) Heritable. TECHNICAL field.  For more information on editing heritable fields, see Technical field Edit Template. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "PRINT FORM HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For basic information on Print Form Header see Technical field Allow Custom Form Headers.   The Print Form Header is the official medical record title of the document which has been approved by the Medical Record Committee based on national guidelines.    Examples:  Progress Notes, Physical Examination, History - Part 1, etc.   This field is heritable with lower level values overriding higher ones AS LONG AS the field is applicable.  See Allow Custom Form Headers.  Print Form Header is a TECHNIC",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.12,
+      "fieldName": "PRINT FORM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For basic information on Print Form Number see Technical field Allow Custom Form Headers.   The Print Form Number is the official medical record form number of the document which has been approved by the Medical Record Committee based on national guidelines.   Example:  Progress Note - Vice SF 509, Consult - SF 513, Physicial Examination - SF 506.   Field is heritable with lower level values overriding higher ones AS LONG AS the field is applicable.  See field Allow Custom Form Headers.  Print F",
+      "fieldNumber_": 6.12
+    },
+    {
+      "fieldNumber": 6.13,
+      "fieldName": "PRINT GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "For basic information on Print Group see Technical field Allow Custom Form Headers.   Print Group is an integer number which serves to group by print form headers/numbers related documents that share a common print method; e.g., Progress Notes, H&P's, and other documents may share a common print method, but have differing form headers/numbers and should each print in their own, separate collation.  Specifying a common print group for documents with the same headers/numbers (for example, Progress",
+      "fieldNumber_": 6.13
+    },
+    {
+      "fieldNumber": 6.14,
+      "fieldName": "ALLOW CUSTOM FORM HEADERS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Allow Custom Form Headers may be set for entries of Type Class or Document Class and affects DESCENDANTS of the entry for which it is set.   Information on Form Headers, Form Numbers, Print Group, and Allow Custom Form Headers:   Some clinical documents use Forms with Form Headers and Form Numbers, for example, Progress Note Forms have Header 'Progress Notes' and Number 'Vice SF 509.'   The Owner of a Document Definition must decide whether all documents descending from the entry will have the S",
+      "fieldNumber_": 6.14
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "ON BROWSE EVENT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code which is invoked on browsing a document to fetch data from the Requesting Package that will be included in the display. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.51,
+      "fieldName": "ON RETRACT EVENT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code which is invoked on retraction of a document to perform any processing task that the Requesting Package may require. ",
+      "fieldNumber_": 6.51
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VISIT LINKAGE METHOD",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "Applies to Types Class, Document Class, Title.  This M-Code is executed to establish Visit Linkage, usually displaying appropriate visits and prompting the user to select the correct one.   Heritable.  TECHNICAL Field.  For information on editing heritable fields, see Technical Field Edit Template. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VALIDATION METHOD",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "Applies to Types Class, Document Class, Title.  This is the M-Code to be invoked when Validating the visit and other fixed field information on a record during entry/edit.  User is asked to OK or to correct the information.   Heritable.  TECHNICAL field.  For information on editing heritable fields, see Technical field Edit Template. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "OBJECT METHOD",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "Applies to Objects.  This M-Code is invoked when a document is entered whose boilerplate text contains the object.  Extracted data are inserted into document text.  Author then edits/adds to text.  TECHNICAL field. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "8925.14P",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STAT AUTO PRINT EVENT",
+      "dataType": "SET",
+      "rawType": "8925.111SA",
+      "required": false,
+      "helpText": "This parameter applies only to stat documents.   This parameter determines at what stage(s) a document should be automatically printed for chart, either singly when document is ready, or in batch mode.   Some documents will need to be printed for chart only when they are complete, ie have obtained all expected signatures and cosignatures. Others should perhaps be printed for chart at an earlier stage, allowing earlier chart access, and then be reprinted when complete. Documents may also need to ",
+      "isMultiple": true,
+      "subFileNumber": 8925.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ROUTINE AUTO PRINT EVENT",
+      "dataType": "SET",
+      "rawType": "8925.112SA",
+      "required": false,
+      "helpText": "This parameter applies to routine (non-stat) documents only. Documents whose Document Definitions do not allow stat documents are considered routine.   See parameter STAT AUTO PRINT EVENT for description. ",
+      "isMultiple": true,
+      "subFileNumber": 8925.112,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PROCESSING STEPS",
+      "dataType": "POINTER",
+      "rawType": "8925.113P",
+      "required": false,
+      "helpText": "This sub-file contains the optional and required steps for processing any  document, along with the states (e.g., unverified -> unsigned) that a given step (e.g., verification) moves the document between. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DIALOG",
+      "dataType": "SUBFILE",
+      "rawType": "8925.114",
+      "required": false,
+      "helpText": "This sub-file contains the data necessary to handle server-based definition  for fixed-field data capture in TIU. ",
+      "isMultiple": true,
+      "subFileNumber": 8925.114,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "VHA ENTERPRISE STANDARD TITLE",
+      "dataType": "POINTER",
+      "rawType": "*P8926.1'",
+      "required": false,
+      "pointerTo": 8926.1,
+      "helpText": "This reference to the VHA ENTERPRISE STANDARD TITLE FILE provides for the mapping of local titles to the Enterprise Standard Titles. ",
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "MAP ATTEMPTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time at which the user attempted to map the Local Title  to a VHA Enterprise Title. ",
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "MAP ATTEMPTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who attempted to map the Local Title to a VHA  Enterprise Title. ",
+      "fieldNumber_": 1503
+    }
+  ],
+  "fieldCount": 54,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACL", "field": },
+    {"name": "ACL02", "field": },
+    {"name": "ACL03", "field": },
+    {"name": "ACL07", "field": },
+    {"name": "ACL1001", "field": },
+    {"name": "AD", "field": },
+    {"name": "ALOINC", "field": },
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "AMM", "field": },
+    {"name": "AMM2", "field": },
+    {"name": "AMM3", "field": },
+    {"name": "AMM4", "field": },
+    {"name": "AP", "field": },
+    {"name": "APOST", "field": },
+    {"name": "AS", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "8925.1", "field": .01, "type": "regular"},
+    {"name": "8925.1", "field": .01, "type": "regular"},
+    {"name": "8925.1", "field": .01, "type": "regular"},
+    {"name": "8925.1", "field": .02, "type": "regular"},
+    {"name": "8925.1", "field": .02, "type": "regular"},
+    {"name": "8925.1", "field": .03, "type": "regular"},
+    {"name": "8925.1", "field": .03, "type": "regular"},
+    {"name": "8925.1", "field": .03, "type": "regular"},
+    {"name": "8925.1", "field": .04, "type": "regular"},
+    {"name": "8925.1", "field": .05, "type": "regular"},
+    {"name": "8925.1", "field": .06, "type": "regular"},
+    {"name": "8925.1", "field": .07, "type": "regular"},
+    {"name": "8925.1", "field": .07, "type": "regular"},
+    {"name": "8925.1", "field": .14, "type": "regular"},
+    {"name": "8925.1", "field": 99, "type": "regular"},
+    {"name": "8925.1", "field": 1501, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(8925.1,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": W.1501, "value": "S %I=Y,Y=$S('$D(^(15)):\"\",$D(^TIU(8926.1,+$P(^(15),U,1),0))#2:$P(^(0),U,1),1:\"\") N DIERR S:$L(Y) Y=$$EXTERNAL^DILFD(8926.1,.01,\"\",Y,\"DIERR\") D:$L(Y) EN^DDIOL(\"Std Title: \"_Y,\"\",\"!?6\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "fileNumber": 801.9,
+  "fileName": "REMINDER RESOLUTION STATUS",
+  "globalRoot": "801.9",
+  "globalReference": "^PXRMD(801.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a name that can be used to group reminder resolutions.  Local resolution status names need to be mapped to a national resolution status. The Health Factor findings are the findings that may be mapped to the resolution statuses. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated name for the resolution status. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REPORT COLUMN HEADING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the print column heading for use in reminder reports. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This flag should be set if the resolution status should no longer be used in reminder dialogs. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who created the resolution status. Applies only to local statuses. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RESTRICTED EDITING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RESTRICTED;",
+      "helpText": "Nationally distributed statuses are released with this field set to restrict editing. The national statuses may not be deleted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.901",
+      "required": false,
+      "helpText": "This is a brief description of the resolution status. ",
+      "isMultiple": true,
+      "subFileNumber": 801.901,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUB-STATUS",
+      "dataType": "POINTER",
+      "rawType": "801.9001P",
+      "required": false,
+      "helpText": "Locally created resolution statuses must be a sub-status of a nationally released resolution status. This field contains the local statuses that belong to the national status. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "801.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

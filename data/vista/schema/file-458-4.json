@@ -1,0 +1,83 @@
+{
+  "fileNumber": 458.4,
+  "fileName": "PT PHYSICIAN EXTENDED ABSENCE",
+  "globalRoot": "458.4",
+  "globalReference": "^PRST(458.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FROM DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The beginning date of a period of extended absence when the Part Time Physician will not be performing any duty for the VA. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TO DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The ending date of a period of extended absence when the Part Time Physician will not be performing any duty for the VA. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "P450'",
+      "required": false,
+      "pointerTo": 450,
+      "helpText": "A pointer to the PAID EMPLOYEE file (#450) which identifies the employee who is creating the Extended Absence entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the Extended Absence was originally entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the Extended Absence was last updated. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;X:CANCELLED;",
+      "helpText": "The status of the Extended Absence.  Possible values: Active or Cancelled. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains optional remarks that can be entered by the employee. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "458.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

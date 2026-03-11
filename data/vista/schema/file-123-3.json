@@ -1,0 +1,188 @@
+{
+  "fileNumber": 123.3,
+  "fileName": "GMRC PROCEDURE",
+  "globalRoot": "123.3",
+  "globalReference": "^GMR(123.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the procedure that will be requested within CPRS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The INACTIVE field, if set to YES causes a procedure to no longer be selectable when ordering within CPRS.  Existing requests for this procedure may be processed to completion even if the procedure is inactive. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLINICAL PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "*P702.01'",
+      "required": false,
+      "pointerTo": 702.01,
+      "helpText": "This field provides a mapping between the CP DEFINITIONS (#702.01) file and the GMRC PROCEDURES file.   Orders placed for a procedure having a valid entry in this field will be processed and resulted via the Clinical Procedures package. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TYPE OF PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "*P697.2'",
+      "required": false,
+      "pointerTo": 697.2,
+      "helpText": "This field indicates which type of medicine procedure and thus which result file in the Medicine Package will hold results for this procedure.   Coordination may be necessary with the Medicine Adpac to determine the correct procedure mapping.   If this field is not entered, the procedure may still be resulted using a TIU document, but Medicine results may not be linked to requests for this procedure.   This field invokes IA# 616. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field serves as a placeholder for a conversion value. The field  contains the pointer value of the PROTOCOL that represented this  procedure before conversion. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVISIONAL DX PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPTIONAL;R:REQUIRED;S:SUPPRESS;",
+      "helpText": "This field will be used by CPRS to determine how to prompt for the provisional diagnosis when ordering this procedure. If this field is  set to OPTIONAL, the user will be prompted for the provisional  diagnosis but may bypass answering the prompt. If the field is set to SUPPRESS, the user will not be presented with the provisional diagnosis prompt. If set to REQUIRED, the user must answer the prompt to continue placing the order. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PROVISIONAL DX INPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FREE TEXT;L:LEXICON;",
+      "helpText": "This field will determine the method that CPRS will use to prompt the  user for input of the provisional diagnosis when ordering. If set to  FREE TEXT, the user may type any text from 2-80 characters in length.  If set to LEXICON, the user will be required to select a coded  diagnosis from the Clinical Lexicon. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RESTRICT DEFAULT REASON EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNRESTRICTED;1:ASK ON EDIT ONLY;2:NO EDITING;",
+      "helpText": "If a DEFAULT REASON FOR REQUEST exists for this procedure this field affects the ordering person's ability to edit the default reason while placing an order.           0 - UNRESTRICTED             User will be able to edit the default text at any time.           1 - ASK ON EDIT ONLY             User will only be allowed to edit the default reason if the             order is edited before releasing to the service.           2 - NO EDITING             User will not be allowed to edit the default r",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "123.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 123.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RELATED SERVICES",
+      "dataType": "POINTER",
+      "rawType": "123.32P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INTERNAL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a name that can be used for internal name-spacing.  This name will not be viewable to users when selecting a procedure.  This name may be used to look up entries in the file via VA  Fileman and the Setup Procedures option. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DEFAULT REASON FOR REQUEST",
+      "dataType": "SUBFILE",
+      "rawType": "123.3124A",
+      "required": false,
+      "helpText": "This field will allow a boilerplate of text to be imported into the reason for request when placing orders for this procedure. If the user places an order using a quick order having boilerplate text, that text will supersede any default text stored in this field.   This field may contain any text including TIU objects. TIU Objects must be enclosed in vertical bars (e.g. |PATIENT NAME| ). ",
+      "isMultiple": true,
+      "subFileNumber": 123.3124,
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "PREREQUISITE",
+      "dataType": "SUBFILE",
+      "rawType": "123.3125",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 123.3125,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "IFC ROUTING SITE",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains the VA facility that will perform this procedure  when requested. When a request for this procedure is ordered, it will automatically be routed to the VA facility in this field. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "IFC REMOTE PROC NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the PROCEDURE that will be requested  at the VAMC defined in the IFC ROUTING SITE field.   Enter the name of the procedure exactly as it is named at the remote facility. If this name does not match the name of the procedure at  the routing site, the request will fail to be filed at the remote site. This will delay or prohibit the performance and processing of this request. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "IFC SENDING FACILITY",
+      "dataType": "POINTER",
+      "rawType": "123.3128P",
+      "required": false,
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "IFC COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person entered in this field will have expanded abilities to correct  IFC records that require manual intervention to remain updated.   The full capabilities of this field are not yet defined. ",
+      "fieldNumber_": 129
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "123.3", "field": .01, "type": "regular"},
+    {"name": "123.3", "field": .04, "type": "regular"},
+    {"name": "123.3", "field": .06, "type": "regular"},
+    {"name": "123.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

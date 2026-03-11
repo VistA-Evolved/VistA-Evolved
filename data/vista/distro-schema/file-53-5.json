@@ -1,0 +1,191 @@
+{
+  "fileNumber": 53.5,
+  "fileName": "PICK LIST",
+  "globalRoot": "53.5",
+  "globalReference": "^PS(53.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PICK LIST #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "PICK LIST NUMBER This is the IEN of the pick list, and is printed on the pick list for identification purposes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "WARD GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP57.5'",
+      "required": true,
+      "pointerTo": 57.5,
+      "helpText": "This is the pharmacy ward group for which the pick list was run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the start date/time of the period of coverage for the pick list. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STOP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the stop date/time for the period of coverage for which the pick list was run. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FILED AWAY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT YET FLAGGED TO BE FILED AWAY;1:FLAGGED TO BE FILED AWAY;2:FILED AWAY;",
+      "helpText": "This is an internal flag set when the pick list is filed away. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ROOM-BED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SORT BY ROOM-BED;1:SORT BY BED-ROOM;",
+      "helpText": "This is an internal flag set when the pick list is to sort by bed-room instead of room-bed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WARD SORT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SORTED BY ROOM-BED;1:NOT SORTED BY ROOM-BED;",
+      "helpText": "This is an internal flag set when the pick list is NOT to sort by the patient's ward. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ROOM-BED SORT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SORT BY ROOM-BED;1:NOT SORTED BY ROOM-BED;",
+      "helpText": "This is an internal flag set when the pick list is NOT to sort by the patient's room-bed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RUN COMPLETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is a flag that is set when the original run of the pick list has completed. It is a date and time to allow the package to know when the run completed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "UPDATE COMPLETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is a flag that is set when an update for the pick list has started and reset when the update is completed. This is set to 1 when the update is started and to a date and time when the update has completed to allow  the package to know when the update finished. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RUN START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is a flag that is set when the original run of the pick list is s to allow the package to know the date and time the run was started. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE/TIME LAST SENT TO THE ATC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the pick list was last sent to ATC. If the site is running KERNEL version 6.5 or greater, this is automatically entered each time the pick list is sent. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PRINT NON-ACTIVE ORDERS FIRST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "For each patient, a pick list will print active orders and any orders that have expired or have been discontinued within 24 hours of the start date of the pick list. Normally, for each patient, the patient's active orders are printed first. This will allow pick lists run for this ward group to print each patient's expired and dc'ed orders first. This does not affect pick lists that have already been run. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "53.51PA",
+      "required": false,
+      "helpText": "This multiple contains the patient specific data for each patient on the  pick list. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "A1", "field": },
+    {"name": "A2", "field": },
+    {"name": "AB1", "field": },
+    {"name": "AB2", "field": },
+    {"name": "AB3", "field": },
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AC3", "field": },
+    {"name": "AC4", "field": },
+    {"name": "AC5", "field": },
+    {"name": "AC6", "field": },
+    {"name": "AC7", "field": },
+    {"name": "AC8", "field": },
+    {"name": "AF", "field": },
+    {"name": "AO1", "field": },
+    {"name": "AO2", "field": },
+    {"name": "AO3", "field": },
+    {"name": "AU", "field": },
+    {"name": "AU1", "field": },
+    {"name": "AU2", "field": },
+    {"name": "AU3", "field": },
+    {"name": "AU4", "field": },
+    {"name": "AU5", "field": },
+    {"name": "AU6", "field": },
+    {"name": "AU7", "field": },
+    {"name": "AU8", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "53.5", "field": .01, "type": "regular"},
+    {"name": "53.5", "field": .01, "type": "regular"},
+    {"name": "53.5", "field": .01, "type": "regular"},
+    {"name": "53.5", "field": .01, "type": "regular"},
+    {"name": "53.5", "field": .01, "type": "regular"},
+    {"name": "53.5", "field": .02, "type": "regular"},
+    {"name": "53.5", "field": .02, "type": "regular"},
+    {"name": "53.5", "field": .02, "type": "regular"},
+    {"name": "53.5", "field": .03, "type": "regular"},
+    {"name": "53.5", "field": .03, "type": "regular"},
+    {"name": "53.5", "field": .05, "type": "regular"},
+    {"name": "53.5", "field": .05, "type": "regular"},
+    {"name": "53.5", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

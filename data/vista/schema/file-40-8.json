@@ -1,0 +1,415 @@
+{
+  "fileNumber": 40.8,
+  "fileName": "MEDICAL CENTER DIVISION",
+  "globalRoot": "40.8I",
+  "globalReference": "^DG(40.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the division as determined by VA FileMan. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter in this field the name of a division at your facility.  It may be the main building, a satelite clinic, a domiciliary, or a nursing home. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INSTITUTION FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "R*P4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Enter the entry in the institution file that corresponds to this division. It is IMPERATIVE that you respond to this prompt properly as this affects transmission of data to Austin as well as many other statistical reports. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRINT WRISTBANDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether the patient's wristbands are printed at this division. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the number of the facility that this division is affiliated with. This should be the 3 digit facility number the site is assigned by Central Office officials.  It may also include a suffix. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EMPLOYEE HEALTH COUNTS",
+      "dataType": "DATE",
+      "rawType": "40.801DA",
+      "required": false,
+      "helpText": "This multiple contains the number of employee health visits to this division broken down by month/year. ",
+      "isMultiple": true,
+      "subFileNumber": 40.801,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OUTPATIENT ONLY",
+      "dataType": "SET",
+      "rawType": "SXa",
+      "required": false,
+      "setOfCodes": "1:OUTPATIENT ONLY;",
+      "helpText": "Enter yes if this division has only outpatient medical services (no inpatient wards). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRINT 'AA'<96' ON G&L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter YES to display AA<96 (pass) transfers on the gains and losses sheet. Respond NO if these transfers should not be listed.  The counts will be included on the bed status report regardless of your response here. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRINT 'AA' ON G&L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter YES if you would like authorized absence transfers of more than 96 hours to appear on the gains and losses sheet.  Answer NO otherwise. Regardless of the response here, these figures will be calculated into the bed status report. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NHCU/DOM/HOSP G&L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:COMBINED;1:SEPARATE;",
+      "helpText": "Respond YES if the gains and losses sheet should combine the movements which occur in the nursing home, hospital, and dom on a single sheet for this division.  Answer no if movements for these three types of care should be on different sheets. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEFAULT 1010 PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the printer which the 1010, 1010I, and 1010F outputs will display on if no other printer is selected.  The reports will only print to this printer for registrations at this division. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DEFAULT DRUG PROFILE PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the printer on which the pharmacy drug profile will display if no other printer is selected.  The drug profile will only display to this printer for registrations entered at this division. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEFAULT ROUTING SLIP PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the printer on which the routing slip will appear if no other printer is selected.  The routing slip will only display to this printer for registrations entered at this division. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "DIVISION PTF PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the printer on which you want all PTF messages to appear for this division.  It overrides the printer defined in the DEFAULT PTF MESSAGE PRINTER prompt located in the ADT PARAMETER file. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CENSUS DATE",
+      "dataType": "DATE",
+      "rawType": "40.802ID",
+      "required": false,
+      "helpText": "This multiple field contains data on inpatient census as broken  down by date.  This data is compiled when the gains and losses  and bed status reports are run. ",
+      "isMultiple": true,
+      "subFileNumber": 40.802,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 26.01,
+      "fieldName": "PRF ASSIGNMENT OWNERSHIP",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:ENABLED;0:DISABLED;",
+      "helpText": "This field contains the indicator of whether or not this medical center  division has been designated as a patient record flag assignment owner. Data in this field should not be added or edited except through the use of the Patient Record Flags software that is part of Registration. ",
+      "fieldNumber_": 26.01
+    },
+    {
+      "fieldNumber": 26.02,
+      "fieldName": "PRF OWNERSHIP EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used as part of the audit trail for the enabling/disabling of medical center divisions as patient record flag assignment owners.  This field will contain the date/time that the PRF ASSIGNMENT OWNERSHIP indicator was edited. Data in this field should not be added or edited except through the use of the Patient Record Flags software that is part of Registration. ",
+      "fieldNumber_": 26.02
+    },
+    {
+      "fieldNumber": 26.03,
+      "fieldName": "PRF OWNERSHIP EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used as part of the audit trail for the enabling/disabling of medical center divisions as patient record flag assignment owners.  This field will contain the user responsible for editing the PRF ASSIGNMENT OWNERSHIP indicator. Data in this field should not be added or edited except through the use of the Patient Record Flags software that is part of Registration. ",
+      "fieldNumber_": 26.03
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "ADDRESS LOCATION ON LETTERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BOTTOM;0:TOP;",
+      "helpText": "Enter the location (top or bottom) where the address should appear for letters generated for appointments or other activities at this division. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "OP LAB TEST START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the time in the morning at which lab tests begin.  This is used by the auto-rebook functionality to prevent lab test being scheduled too early.  For example, if a patient has an appointment at 2pm with lab at 11pm and the appointment is cancelled and autorebooked for 8am, the lab would have been scheduled for 5am.  This will prevent this from occurring. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "OP EKG START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the time in the morning at which ekg tests begin.  This is used by the auto-rebook functionality to prevent ekg test being scheduled too early.  For example, if a patient has an appointment at 2pm with ekg at 11pm and the appointment is cancelled and auto-rebooked for 8am, the ekg would have been scheduled for 5am.  This will prevent this from occurring. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 30.04,
+      "fieldName": "OP X-RAY START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the time in the morning at which x-ray tests begin.  This is used by the auto-rebook functionality to prevent x-ray test being scheduled too early.  For example, if a patient has an appointment at 2pm with x-ray at 11pm and the appointment is cancelled and auto-rebooked for 8am, the x-ray would have been scheduled for 5am.  This will prevent this from occurring. ",
+      "fieldNumber_": 30.04
+    },
+    {
+      "fieldNumber": 35.01,
+      "fieldName": "DISPLAY MEANS TEST REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether a Means Test Required message is displayed on patient lookups at this division ",
+      "fieldNumber_": 35.01
+    },
+    {
+      "fieldNumber": 35.02,
+      "fieldName": "MEANS TEST TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If you have answered 'Yes' to the Means Test Required prompt, you can enter text here to be displayed upon patient lookup, such as where to report to complete the Means Test, etc.  ",
+      "fieldNumber_": 35.02
+    },
+    {
+      "fieldNumber": 35.03,
+      "fieldName": "DISPLAY MEANS TEST REQ IF GUI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether a Means Test Required message is displayed on patient GUI lookups ",
+      "fieldNumber_": 35.03
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "OP VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "40.808D",
+      "required": false,
+      "helpText": "This field is a multiple containing the OP visit date, planned OP visits (CUM) and actual OP visits (CUM).   ",
+      "isMultiple": true,
+      "subFileNumber": 40.808,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "40.806P",
+      "required": false,
+      "helpText": "This multiple contains data as it is used in the Treating Specialty Report. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "TRACK INCOMPLETE SUMMARIES?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is this division using the MAS summary tracking package? ",
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 100.02,
+      "fieldName": "DEFAULT PRIMARY PHYSICIAN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY CARE PHYSICIAN;A:ATTENDING PHYSICIAN;",
+      "helpText": "Enter 'P' if the PRIMARY CARE PHYSICIAN is responsible for this summary or op report or 'A' if the ATTENDING PHYSICIAN is responsible. If, for example, you choose ATTENDING PHYSICIAN, the ATTENDING PHYSICIAN of record in bed control, when the summary or OP report is created, will be the default. You may, however, edit the PHYSICIAN RESPONSIBLE at any time. ",
+      "fieldNumber_": 100.02
+    },
+    {
+      "fieldNumber": 100.03,
+      "fieldName": "ARE REPORTS REVIEWED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this division requires a second physician to review the summary, respond YES, otherwise respond NO. ",
+      "fieldNumber_": 100.03
+    },
+    {
+      "fieldNumber": 100.04,
+      "fieldName": "DEFAULT REVIEWING PHYSICIAN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY CARE PHYSICIAN;A:ATTENDING PHYSICIAN;",
+      "helpText": "If summaries require review, enter the PRIMARY or ATTENDING physician responsible.  If, for example, you choose ATTENDING PHYSICIAN, the ATTENDING PHYSICIAN of record in bed control, when the summary or OP report is created, will be the default. ",
+      "fieldNumber_": 100.04
+    },
+    {
+      "fieldNumber": 100.05,
+      "fieldName": "TRACK OUTPATIENT OP REPORTS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If you want to track outpatient op reports at this division, respond YES. Otherwise, respond NO. ",
+      "fieldNumber_": 100.05
+    },
+    {
+      "fieldNumber": 100.06,
+      "fieldName": "DAYS FOR DICTATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Enter the number of days the physician has to dictate a summary before it is considered incomplete. ",
+      "fieldNumber_": 100.06
+    },
+    {
+      "fieldNumber": 100.07,
+      "fieldName": "DAYS FOR SIGNATURE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Enter the number of days from the date of transcription the physician has in order to sign the summary or op report. ",
+      "fieldNumber_": 100.07
+    },
+    {
+      "fieldNumber": 100.08,
+      "fieldName": "DAYS FOR REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of days the reviewing physician has to review the report once it has been signed. ",
+      "fieldNumber_": 100.08
+    },
+    {
+      "fieldNumber": 100.09,
+      "fieldName": "INCOMPLETE SUMMARIES MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the message that the facility wants displayed at the end of each page for each type of report. ",
+      "fieldNumber_": 100.09
+    },
+    {
+      "fieldNumber": 100.1,
+      "fieldName": "DEFAULT PHYS. FOR SIGNATURE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY CARE PHYSICIAN;A:ATTENDING PHYSICIAN;",
+      "helpText": "This is a new field in file 40.8 the MEDICAL CENTER DIVISION file.  This field will be asked in the Set Up IRT Parameters option and will be used to store the default of the physician who will be responsible for the signature of a deficiency.  It will be either the Primary or the Attending physician. ",
+      "fieldNumber_": 100.1
+    },
+    {
+      "fieldNumber": 100.2,
+      "fieldName": "STD. DEFIC. FOR SHORT FORMS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:N;",
+      "helpText": "By entering yes in this field,  the IRT Backgroud Job will create standard deficiencies for short form discharges ( discharged less than 48 hours after admission).  If you enter no in this field the standard deficiencies will not be created for short forms in the IRT Background Job. ",
+      "fieldNumber_": 100.2
+    },
+    {
+      "fieldNumber": 100.3,
+      "fieldName": "DEFAULT MEDICAL RECORD TYPE",
+      "dataType": "POINTER",
+      "rawType": "P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "Incomplete Records Tracking will use this entry as the default Medical record type for Division when pulling patient information.  If blank, MEDICAL RECORD will be default value. ",
+      "fieldNumber_": 100.3
+    },
+    {
+      "fieldNumber": 900.01,
+      "fieldName": "RAI SUBSCRIPTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P774'",
+      "required": false,
+      "pointerTo": 774,
+      "helpText": "This field points to the subscribing RAI/MDS COTS system subscription registry for patient updates.  This subscription control number is  specific to this division.  Do not change the control number once set up as this will prevent the COTS system from being updated by VistA. Use only documented API calls to create or retrieve the subscription control number. ",
+      "fieldNumber_": 900.01
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "ADV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "40.8", "field": .01, "type": "regular"},
+    {"name": "40.8", "field": .07, "type": "regular"},
+    {"name": "40.8", "field": .07, "type": "regular"},
+    {"name": "40.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

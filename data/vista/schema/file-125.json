@@ -1,0 +1,66 @@
+{
+  "fileNumber": 125,
+  "fileName": "PROBLEM SELECTION LIST",
+  "globalRoot": "125I",
+  "globalReference": "^GMPL(125,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ65",
+      "length": 65,
+      "required": true,
+      "helpText": "This is a free text name for the list; it must be unique. National lists  are prefixed with a \"VA-\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date[/time] this list was last changed in any way; this value is stuffed in by the Problem List pkg utilities that manage this file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic to be associated with this list.  This should be the primary clinic in which this list will be used to populate patient problem lists; when adding new problems for a patient from this clinic, this list will automatically be presented to select problems from.   **NOTE**: This field will no longer be utilized with GMPL*2.0*49 and will  be replaced with the ORQQPL SELECTION LIST parameter settings. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "R*SX",
+      "required": true,
+      "setOfCodes": "N:National;V:VISN;L:Local;",
+      "helpText": "This is the Class of the selection list. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National lists cannot be edited by sites. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "125.01P",
+      "required": false,
+      "helpText": "These are the problem categories that are associated with this list. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "125", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(125,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,866 @@
+{
+  "fileNumber": 8989.3,
+  "fileName": "KERNEL SYSTEM PARAMETERS",
+  "globalRoot": "",
+  "globalReference": "^XTV(8989.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Used to have VA fileman only have one entry in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'Xa",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is the name of this installation of the kernel, as it is known to the rest of the network. It must appear in the DOMAIN file. This name applies to all CPUs or Volume sets which access this ^XMB global. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IRM MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the name of the Mail Group that should get messages or  bulletns about problems on the system. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AFTER HOURS MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the name of a mail group that should get messages and  bulletins after hours or on weekends and holidays. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MIXED OS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:VMS/Linux;",
+      "helpText": "This field tells Kernel that this is a MIXED OS environment. This is only supported on a Cache ECP client/server setup. The PRIMARY OS is VMS and the SECONDARY OS is non-VMS. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LOCAL TMP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Set this field to Yes if ^TMP, ^UTILITY, and ^XUTL(\"XQ\") are local to  each node in a multi-node system as in Cache. Set it to No if everything is clustered together.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AGENCY CODE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "V:VA;AF:AIR FORCE;I:IHS;ARMY:ARMY;N:NAVY;O:OTHER;E:EHR;USCG:COAST GUARD;",
+      "helpText": "This field defines what agency uses this computer.  It sets a flag which may be accessed by application programs which need to know this information. For example, a scheduling program may operate one way in an Air Force environment, and another in a VA environment. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.8,
+      "fieldName": "ROUTINE MONITORING",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "n:No;a:All;s:Selected;",
+      "helpText": "This field controls how the routine monitoring program behaves. Weather to look at all routines or just selected name spaces. ",
+      "fieldNumber_": 9.8
+    },
+    {
+      "fieldNumber": 9.81,
+      "fieldName": "ROUTINE N-SPACE TO MONITOR",
+      "dataType": "SUBFILE",
+      "rawType": "8989.309",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8989.309,
+      "fieldNumber_": 9.81
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "AUTO-GENERATE ACCESS CODES",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "If this field is set to YES, then the user will not be allowed to  choose their ACCESS CODE - it will be assigned for them. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "AUTO-GENERATE VERIFY CODES",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "n:No;y:Yes;",
+      "helpText": "During the C&A review of VistA the current practice of leaving the VERIFY CODE blank until the user signed on the first time was found to not comply with VA DIRECTIVE 6504.    This field will be used when someone other than the user goes to enter a  verify code.  The system will select a strong verify code and tell the  operator what the new code is. ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "USER CHARACTERISTICS TEMPLATE",
+      "dataType": "POINTER",
+      "rawType": "*P.402'",
+      "required": false,
+      "pointerTo": .402,
+      "helpText": "This field contains the name of the input template to be used for the EDIT USER CHARACTERISTIC option. If there is a ScreenMan form with the same name it will be used, terminal type permitting. If it is left blank, the XUEDIT CHARACTERISTICS template will be used.  You may want to define different fields. The TERMINAL TYPE question is asked before the template is called. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ACADEMIC AFFILIATION WAIVER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The VA Handbook 6500 page 60 requires: 6. POLICY AND PROCEDURES, c. Technical Controls,  (2) Logical Access Controls.    d. Accounts are automatically disabled if inactive for 30 days.   The Office of Academic Affiliation requested a waiver to the 30 day disabling of inactive accounts asking it be 90 days and this waiver was  approved.   This field controls if the VA Handbook 6500 30 day limit is used or the site has an Academic Affiliation and the 90 day limit is to be used.   There is a copy o",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "OPTION AUDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO AUDIT;a:ALL OPTIONS AUDITED;s:SPECIFIC OPTIONS AUDITED;u:USERS AUDITED;",
+      "helpText": "This field indicates what should be audited  between the 'Initiate Audit'  date and 'Terminate Audit' date fields.  The 'Option to Audit' Subfile  along with the 'Namespace to Audit' Subfile hold the lists of specific  options that would be audited (choosing \"s\").  The 'User to Audit' ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "OPTION TO AUDIT",
+      "dataType": "POINTER",
+      "rawType": "8989.36P",
+      "required": false,
+      "helpText": "This subfile holds a list of options to audit. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "NAMESPACE TO AUDIT",
+      "dataType": "SUBFILE",
+      "rawType": "8989.35",
+      "required": false,
+      "helpText": "This subfile holds a list of namespaces to audit. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.35,
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 19.3,
+      "fieldName": "USER TO AUDIT",
+      "dataType": "POINTER",
+      "rawType": "8989.34P",
+      "required": false,
+      "helpText": "This subfile holds a list of users to audit. ",
+      "fieldNumber_": 19.3
+    },
+    {
+      "fieldNumber": 19.4,
+      "fieldName": "INITIATE AUDIT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date when an audit will begin.  The 'Option 'Audit' Field defines the nature of the audit that will be performed. Auditing will only be done if there is both a 'Initiate Audit' and 'Terminate Audit' data. ",
+      "fieldNumber_": 19.4
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "TERMINATE AUDIT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the audit will end.  The start date is set in the 'Initiate Audit' Field. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "NEW PERSON IDENTIFIERS",
+      "dataType": "MUMPS",
+      "rawType": "Ka",
+      "required": false,
+      "helpText": "This field holds MUMPS code to set the variable DR to the string of fields (Not a template) to be used as Identifiers when adding entries to the NEW PERSON file.    #9 (SSN) is required if the user does not hold the XUSPF200 key.   These fields can be added to by the application. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30.1,
+      "fieldName": "CCOW TOKEN TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds the value for how long a CCOW token is good for in seconds. When the current time is greater that the CCOW token create time plus the timeout seconds, the CCOW token will no longer be valid. If this value is too small (short) users will be frustrated that the SSO part doesn't work.  If the value is too large (Long) there is a chance that it could be used to break into the system.  A default value of 5400 (1.5 hours) will be used. ",
+      "fieldNumber_": 30.1
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "MAX SPOOL LINES PER USER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0a",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the MAX number of lines of spooled output any user may spool. If the user has more that this number then they will not be allowed to spool any more until some of their spooled documents are deleted.  This only controls the granting of new spool documents and doesn't terminate a the number of lines that will be transfered into the spool data file. Recommended value 9999. ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.2,
+      "fieldName": "MAX SPOOL DOCUMENTS PER USER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "This field limits the number of spooled documents that any user may have on the system. Recommended value 10-100. ",
+      "fieldNumber_": 31.2
+    },
+    {
+      "fieldNumber": 31.3,
+      "fieldName": "MAX SPOOL DOCUMENT LIFE-SPAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "This field controls the number of days that a spooled document will be allowed to remain in the spooler before deletion by the XU-SPL-PURGE option that needs to be setup to run in the background. ",
+      "fieldNumber_": 31.3
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ALPHA/BETA TEST PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "8989.332P",
+      "required": false,
+      "helpText": "This multiple field is used to identify any packages which are currently in alpha or beta test at the site. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "ALPHA,BETA TEST OPTION",
+      "dataType": "POINTER",
+      "rawType": "8989.333P",
+      "required": false,
+      "helpText": "This is a multiple field which is used to keep a log of usage of the options associated with an alpha or beta test of a package based on the namespace(s) indicated for the alpha or beta test package. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "VOLUME SET",
+      "dataType": "SUBFILE",
+      "rawType": "8989.304",
+      "required": false,
+      "helpText": "This is the set of all CPU names in this domain. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.304,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DNS IP",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field holds the IP addresses of the DNS(s) that XLFNSLK will use. Data must be in the form of nnn.nnn.nnn.nnn To list more that one separate them with commas (,). ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 53.1,
+      "fieldName": "PKI Server",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds one to three IP addresses for the PKI servers for this site.  Each IP address is separated by comas. Example: 10.6.21.12,PKI.fo-oakland.med.va.gov ",
+      "fieldNumber_": 53.1
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PATH TO MWAPI BITMAPS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 200.1,
+      "fieldName": "SECURITY TOKEN SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When using brokered authentication with a security token issued by a  Security Token Service (STS), this field will contain the identification  of the issuer of the token. The STS is trusted by both the client and the  service to provide interoperable security tokens.   Security Assertion Markup Language (SAML) tokens are standards-based XML  tokens that are used to exchange security information, including  attribute statements, authentication decision statements, and  authorization decision sta",
+      "fieldNumber_": 200.1
+    },
+    {
+      "fieldNumber": 200.2,
+      "fieldName": "ORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identity and Access Management ORGANIZATION field used to identify the  Organization of this VistA instance. For internally authenticated users,  this field will match the SUBJECT ORGANIZATION field (#205.2) of the user  identified in the NEW PERSON file (#200). For the VA, this field should  always contain the value: \"Department Of Veterans Affairs\" ",
+      "fieldNumber_": 200.2
+    },
+    {
+      "fieldNumber": 200.3,
+      "fieldName": "ORGANIZATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identity and Access Management ORGANIZATION ID field used to uniquely  identify the Organization of this VistA instance. For internally  authenticated users, this field will match the SUBJECT ORGANIZATION ID  field (#205.3) of the user identified in the NEW PERSON file (#200). For  the VA, this field should always contain the value:  \"urn:oid:2.16.840.1.113883.4.349\" ",
+      "fieldNumber_": 200.3
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "DEFAULT # OF ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0a",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the default number of attempts that a user may try to sign-on before the device is locked. This field is overridden by a similar field in the DEVICE File. This means that during sign-on the checks against the device file for OUT OF SERVICE, SECURITY, and PROHIBITED TIMES FOR SIGN-ON will be skipped.   The maximum value (5) is set by the VA INFORMATION SYSTEM ACCOUNT AND PASSWORD MANAGEMENT POLICY. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "DEFAULT LOCK-OUT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0a",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the default time in seconds that a locked device must be idle before another sign-on attempt will be allowed. This time is overridden by a similar field in the DEVICE File. This means that during sign-on the checks against the device file for OUT OF SERVICE, SECURITY, and PROHIBITED TIMES FOR SIGN-ON will be skipped. The minimum value is set by the VA INFORMATION SYSTEM ACCOUNT AND PASSWORD MANAGEMENT POLICY. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "DEFAULT MULTIPLE SIGN-ON",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:Only one IP;",
+      "helpText": "This is the default value for whether users may sign-on at more than one terminal at a time. It is overridden by similar fields in the DEVICE and NEW PERSON Files. If you select \"Only one IP\" be sure to put a value into the \"MULTIPLE SIGN-ON LIMIT\" field so users can sign-on at least once. Current Values 0 = Multiple signon not allowed. 1 = Multiple signon Allowed. 2 = Multiple sign only allowed from one IP address. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "ASK DEVICE TYPE AT SIGN-ON",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the default for whether a user/terminal should be asked for their terminal type at sign-on. This is overridden by a similar field in the DEVICE and NEW PERSON Files.   terminals DEVICE ATTRIBUTES message, if it is a know one then the terminal type is set to this. Otherwise the user is prompted.   If set to NO then the one from the Last Sign-on field or device subtype will will be used. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "DEFAULT AUTO-MENU",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the default for whether auto-menu is turned ON or OFF. It is overridden by similar fields in the DEVICE and NEW PERSON Files. ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "DEFAULT LANGUAGE",
+      "dataType": "POINTER",
+      "rawType": "P.85'a",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "This field points to the default language that is used by the site.  The value can be replaced by a language field in the New Person file (200.07). ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "DEFAULT TYPE-AHEAD",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This is the default as to whether or not Type-Ahead is allowed. It is overridden by similar fields in the DEVICE and NEW PERSON Files. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "DEFAULT TIMED-READ (SECONDS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the default time-out for all READs and is overridden by similar fields in the DEVICE and NEW PERSON Files. ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "BYPASS DEVICE LOCK-OUT",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this field to YES will cause all device lock-out checking to be bypassed.  This means that during sign-on the checks against the device file for OUT OF SERVICE, SECURITY, and PROHIBITED TIMES FOR SIGN-ON will be skipped.  Can be overridden by the PERFORM DEVICE CHECKING field in the ",
+      "fieldNumber_": 211
+    },
+    {
+      "fieldNumber": 212,
+      "fieldName": "RESERVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "*** This field is NO longer used. *** ",
+      "fieldNumber_": 212
+    },
+    {
+      "fieldNumber": 212.1,
+      "fieldName": "DEVICE TO AUDIT",
+      "dataType": "POINTER",
+      "rawType": "8989.33P",
+      "required": false,
+      "helpText": "If device auditing is activated, This holds a list of devises that are to be audited. ",
+      "fieldNumber_": 212.1
+    },
+    {
+      "fieldNumber": 212.5,
+      "fieldName": "FAILED ACCESS ATTEMPT AUDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALL DEVICES/NO TEXT RECORDED;D:SPECIFIED DEVICES/NO TEXT RECORDED;AR:ALL DEVICES/TEXT RECORDED;DR:SPECIFIED DEVICES/TEXT RECORDED;N:NO AUDIT;",
+      "helpText": "This field indicates whether an audit log is to be generated for failed access attempts.  Audits can be done for all devices or specified devices  only.  Recording of what is entered is optional. ",
+      "fieldNumber_": 212.5
+    },
+    {
+      "fieldNumber": 213,
+      "fieldName": "RESERVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is reserved for future use.     ",
+      "fieldNumber_": 213
+    },
+    {
+      "fieldNumber": 214,
+      "fieldName": "LIFETIME OF VERIFY CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0a",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the number of days that a VERIFY code remains valid. After this time the user must choose a new VERIFY code. ",
+      "fieldNumber_": 214
+    },
+    {
+      "fieldNumber": 216,
+      "fieldName": "INTERACTIVE USER'S PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field will change the priority of interactive users on the system at sign-on time.  There is a danger that using this field will cause the users to have poor response time from the computer. ",
+      "fieldNumber_": 216
+    },
+    {
+      "fieldNumber": 217,
+      "fieldName": "DEFAULT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4a",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is used to define a default institution that will be assigned as the user's institution (DUZ(2)) for any user that doesn't have one.   Other Developers are allowed to get this data directly from the ",
+      "fieldNumber_": 217
+    },
+    {
+      "fieldNumber": 218,
+      "fieldName": "DEFAULT AUTO SIGN-ON",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;d:Disabled;",
+      "helpText": "This field will control the Auto Sign-on (Single Sign-on) feature.   To completely turn off this feature for all users: set to DISABLED. To allow only selected users: set to No. To allow ALL but selected users: set to Yes.   The Yes and No values can be over ridden by the AUTO SIGN-ON field in the New Person file. Use of this feature impacts user connecting via Telnet and the Broker. ",
+      "fieldNumber_": 218
+    },
+    {
+      "fieldNumber": 219,
+      "fieldName": "DEFAULT MULTIPLE SIGN-ON LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets an upper limit on the number of concurrent sessions that  one user can have from one IP address when the Multiple Sign-on field  (#204) is set to \"One IP\" ",
+      "fieldNumber_": 219
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "STRICT TOKEN VALIDATION",
+      "dataType": "SET",
+      "rawType": "St11a",
+      "required": false,
+      "helpText": "This field is used to apply strict credential token validation by Kernel during sign-on. Default is NO strict token validation.   WARNING: use of STRICT token validation may cause problems with users signing on to VistA if the required infrastructure is not properly setup. ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "SIGN-ON LOG RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field entry determines the number of days to retain data in the SIGN-ON LOG. The purging scheduling option should run and should protect  sign-on log entries for at least the number of days provided here. The  minimum value is 365 days and the maximum value is 9999 days. Note that larger values will consume more disk space.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "BROKER ACTIVITY TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "helpText": "This field controls how long the Broker server waits (in seconds) for some activity from the client. Its value is passed to client applications compiled with version 1.1*6 and above of the Broker. The client application will contact (\"poll\") the server at an interval based on this field's value to let the server know it is still there. If a client stops polling the server, the server knows that the client process has terminated. The \"ghost\" server job is therefore stopped, enabling locks and oth",
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 231,
+      "fieldName": "GUI POST SIGN-ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Don't Send/Show;1:Send/Show;",
+      "helpText": "This field will control if the POST SIGN-ON message is sent to the GUI  client.  If it is sent then the GUI client should display the message  before allowing the user to continue. ",
+      "fieldNumber_": 231
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "INTRO MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "8989.324",
+      "required": false,
+      "helpText": "This field holds the text that is initially displayed at signon, before the prompt for access code or other checking. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.324,
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 245,
+      "fieldName": "POST SIGN-IN MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "8989.3245",
+      "required": false,
+      "helpText": "This field holds the text that is displayed after the user has successfully passed the signon. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.3245,
+      "fieldNumber_": 245
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "PEER SYSTEMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a list of IP addresses that the GETPEER function will  not pass back from the API.  It is set to 127.0.0.1 by default. ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "LOG RESOURCE USAGE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "  This Yes/No field is used to indicate whether resource usage data such as CPU seconds, DIO, BIO, etc. will be collected in ^XUCP(.  If this field is set to \"YES\", every time a user goes in and out of an option and each time recorded. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 320,
+      "fieldName": "PRIMARY HFS DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field holds a Primary (default) directory path to be used whenever a HOST file is referenced and a Directory is not included. Example: Cache/VMS might have USER$:[TEMP]          Cache/NT might have T:\\TEMP\\          Cache/Linux might have /var/tmp/ If this field is left blank then HOST files that don't have an explicit  directory path will go to the current processes working directory. ",
+      "fieldNumber_": 320
+    },
+    {
+      "fieldNumber": 320.2,
+      "fieldName": "SECONDARY HFS DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field holds the secondary HFS directory path. ",
+      "fieldNumber_": 320.2
+    },
+    {
+      "fieldNumber": 321.01,
+      "fieldName": "FACILITY ISO",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds a pointer to the facility Information Security Officer in the NEW PERSON file (#200). ",
+      "fieldNumber_": 321.01
+    },
+    {
+      "fieldNumber": 321.02,
+      "fieldName": "FACILITY CIO",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds a pointer to the facility CIO in the NEW PERSON file  (#200) ",
+      "fieldNumber_": 321.02
+    },
+    {
+      "fieldNumber": 405.1,
+      "fieldName": "IP SECURITY ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:No;y:Yes;",
+      "helpText": "This field turns on or off the IP security \"Three strikes and you are  out\" code. ",
+      "fieldNumber_": 405.1
+    },
+    {
+      "fieldNumber": 405.12,
+      "fieldName": "FAILED ATTEMPTS LIMIT - IRM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the value of how many Failed Attempts must be counted by  the XUSFACHK routine before a message is sent to the IRM during normal business hours (8:00 am to 4:30 pm).  This can be change by the value in  the TOTAL COUNT INCREASE field. ",
+      "fieldNumber_": 405.12
+    },
+    {
+      "fieldNumber": 405.13,
+      "fieldName": "FAILED ATTEMPTS LIMIT - AOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the value of how many Failed Attempts must be counted by  the XUSFACHK routine before a message is sent to the AOD during after hours (4:30 pm to 8:00 am).  This can be changed by the value in the  TOTAL COUNT INCREASE field. ",
+      "fieldNumber_": 405.13
+    },
+    {
+      "fieldNumber": 405.14,
+      "fieldName": "USER LOCKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:No;y:Yes;",
+      "helpText": "This field controls if Users are locked out of the system because of exceeding the limit on bad attempts. The ACCESS code must be correct so we can identify the user, and it is just the VERIFY code that is being entered wrong. ",
+      "fieldNumber_": 405.14
+    },
+    {
+      "fieldNumber": 405.15,
+      "fieldName": "LAST RUN FAILED ATTEMPTS CHECK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date time of the last run of the FAILED ATTEMPTS  checking routine (XUSFACHK). This field is filled in by the routine and doesn't need user entry. ",
+      "fieldNumber_": 405.15
+    },
+    {
+      "fieldNumber": 405.16,
+      "fieldName": "DEFAULT TS SLACK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field holds a default value for how many times in 10 minutes a Terminal Server can have a sign-on failure (entries in the FAILED ACCESS ATTEMPTS LOG) before it is locked.  A default value is 2 is used if no  value is entered. ",
+      "fieldNumber_": 405.16
+    },
+    {
+      "fieldNumber": 405.17,
+      "fieldName": "KEEP THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the number of Failed Access Attempts in the current  sample period that will cause the count to be saved for the next sample  period.  This is used by the routine XUSFACHK and the value will need to  be smaller for a more frequent running and larger for less frequent  running.  A starting value could be 10 if XUSFACHK is scheduled to run every 30  minutes. ",
+      "fieldNumber_": 405.17
+    },
+    {
+      "fieldNumber": 405.18,
+      "fieldName": "TOTAL COUNT INCREASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the value to be added to the IRM or AOD limits. If the total number of Failed Access Attempts in the sample period is greater than the IRM (or AOD) limit plus the TOTAL COUNT INCREASE  then it will trigger the sending of the failed attempts message. ",
+      "fieldNumber_": 405.18
+    },
+    {
+      "fieldNumber": 405.2,
+      "fieldName": "TERMINAL SERVER IP",
+      "dataType": "SUBFILE",
+      "rawType": "8989.305",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8989.305,
+      "fieldNumber_": 405.2
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "PRODUCTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field holds a flag to indicate if this is a Production account. It is a Yes/No flag with internal values of 1 = Yes, 0 = No. It is set by the system after comparing the System ID with the current System ID, at some point in the future will be checked against a master system. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "System ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the SYSTEM ID, if this is a production system. This value is compared with the current system value and at some point  in the future will be checked against a master system. ",
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "SID LAST CHECKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date/time that the SID was last checked. If the SID has not been compared with the stored one today a full check  will be done, otherwise the PROD api will just return the current value. ",
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "LOGICAL DISK NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a logical disk name that is stored in the cache cpf file for client system in a ECP client-server setup. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "PHYSICAL DISK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field hold the Physical disk name that Cache VMS converts the logical name(#504) in to. ",
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 520.1,
+      "fieldName": "ERROR LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the maximum number of a particular error to be recorded on one day. The count will continue in the ERROR SUMMARY file (#3.077) field FREQUENCY (#4) even though the error is not recorded in the error trap.  It is used in the $$SCREEN^%ZTER logic to tell the error trap to skip recording the error. ",
+      "fieldNumber_": 520.1
+    },
+    {
+      "fieldNumber": 520.2,
+      "fieldName": "SEND ERROR SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field controls if the error summary routine sends a record to a  consolidating facility when it has finished running. The mail message is sent to the mail group XTER SUMMARY LOAD. In the VA this will include the remote entry  G.XTER SUMMARY LOAD@FORUM.VA.GOV. ",
+      "fieldNumber_": 520.2
+    },
+    {
+      "fieldNumber": 520.3,
+      "fieldName": "KEEP ERROR TRAP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds the number of days to keep the entries in the Detail Error Trap. Defaults to 7 if left blank. ",
+      "fieldNumber_": 520.3
+    },
+    {
+      "fieldNumber": 520.4,
+      "fieldName": "KEEP ERROR SUMMARY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds the number of days to keep the entries in the Error Trap Summary since they were last seen. Defaults to 90 if left blank. ",
+      "fieldNumber_": 520.4
+    },
+    {
+      "fieldNumber": 666,
+      "fieldName": "LOG MODIFIED SAML TOKENS",
+      "dataType": "SET",
+      "rawType": "St11a",
+      "required": false,
+      "helpText": "The LOG MODIFIED SAML TOKENS field is a configuration flag that  allows the logging of modified SAML tokens to be enabled or disabled. By  default, no value means logging is enabled. A value of 0 means logging is  disabled and a value of 1 means logging is enabled.   Log entries will appear in the KERNEL PKI LOGS file. ",
+      "fieldNumber_": 666
+    },
+    {
+      "fieldNumber": 875,
+      "fieldName": "NEW PERSON FIELD MONITOR PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The NEW PERSON FIELD MONITOR PURGE field contains the number of days that  records in the NEW PERSON FIELD MONITOR (#8933.1) file should be  maintained before they are purged/deleted. ",
+      "fieldNumber_": 875
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "New Person Enumeration Started",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will note when the New Person File (#200) began the VPID  Enumeration Process. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 901,
+      "fieldName": "PAID Enumeration Started",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will note when the PAID EMPLOYEE (#450) file began the VPID  Enumeration Process. ",
+      "fieldNumber_": 901
+    },
+    {
+      "fieldNumber": 902,
+      "fieldName": "New Person Enumeration Finish",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will note when the New Person (#200) file completed the VPID Enumeration Process. ",
+      "fieldNumber_": 902
+    },
+    {
+      "fieldNumber": 903,
+      "fieldName": "PAID Enumeration Finish",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will note when the PAID EMPLOYEE (#450) file completed the VPID Enumeration Process. ",
+      "fieldNumber_": 903
+    }
+  ],
+  "fieldCount": 87,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AZTCP", "field": },
+    {"name": "AZTM", "field": },
+    {"name": "B", "field": },
+    {"name": "8989.3", "field": .01, "type": "regular"},
+    {"name": "8989.3", "field": 217, "type": "regular"},
+    {"name": "8989.3", "field": 300, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

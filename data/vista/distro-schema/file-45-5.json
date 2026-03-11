@@ -1,0 +1,80 @@
+{
+  "fileNumber": 45.5,
+  "fileName": "PTF MESSAGE",
+  "globalRoot": "45.5I",
+  "globalReference": "^DGM(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the message number. The message number corresponds to the entry number in the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the patient, in the Ptaient File (#2), for whom the message is for. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENTRY CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the New Person File (#200) indicating which clerk logged this message into the system. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time this message was entered into the system. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRINT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time this message was first printed in MAS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "45.51",
+      "required": false,
+      "helpText": "This field contains the PTF Message for the patient. Messages are created for the patient by DHCP and can be entered through the  'Enter PTF Message' option. ",
+      "isMultiple": true,
+      "subFileNumber": 45.51,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "PT", "field": },
+    {"name": "45.5", "field": .01, "type": "regular"},
+    {"name": "45.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$S($D(^DPT(+$P(^(\"0\"),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 3, "value": "S L=$P(^(0),U,4)_\"00000\" W ?50,$E(L,4,5)_\"-\"_$E(L,6,7)_\"-\"_$E(L,2,3),\" @ \",$E(L,9,10),\":\",$E(L,11,12)"}
+  ]
+}

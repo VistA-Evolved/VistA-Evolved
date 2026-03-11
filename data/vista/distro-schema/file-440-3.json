@@ -1,0 +1,837 @@
+{
+  "fileNumber": 440.3,
+  "fileName": "VENDOR EDIT",
+  "globalRoot": "440.3OIs",
+  "globalReference": "^PRC(440.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the vendor number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the vendor name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUPPLY WHSE. INDICATOR",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "S:SUPPLY WAREHOUSE;",
+      "helpText": "This is the set of codes for supply warehouse indicator. Only one source can be designated as the supply warehouse. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FEDERAL SOURCE",
+      "dataType": "POINTER",
+      "rawType": "*P420.8'",
+      "required": false,
+      "pointerTo": 420.8,
+      "helpText": "This is the federal source. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "EDI VENDOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "     This field identifies those vendors who are prepared to receive purchase orders electronically through the EDI system in AUSTIN. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "VENDOR ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "     This field uniquely identifies a vendor to the EDI system. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDERING ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the vendor ordering address 1. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDERING ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor ordering address 2. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORDERING ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor ordering address 3. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORDERING ADDRESS4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor ordering address 4. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "ORDERING CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the vendor ordering address. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "ORDERING STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the vendor ordering address. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "ORDERING ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the zip code of the ordering address. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the appropriate county for the given state of the vendor ordering address. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "PROCUREMENT CONTACT PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the procurement contact person. ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VA P&C contact phone number",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the procurement contact person. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ACCOUNT NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor account number. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "GUARANTEED DELIVERY VENDOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter YES if there is a guaranteed delivery agreement for this vendor. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CONTRACT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "440.33I",
+      "required": false,
+      "helpText": "This is the vendor contract number. ",
+      "isMultiple": true,
+      "subFileNumber": 440.33,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LABOR SURPLUS AREA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates whether or not the vendor is located in a labor surplus. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "BUSINESS TYPE (FPDS-88)",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:SMALL;2:LARGE;3:STATE/LOCAL/ED./NON-PROFIT;4:OUTSIDE U.S.;5:FEDERAL GOVT. SOURCE;",
+      "helpText": "This is the type of business for FY88 FPDS reporting purposes. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "BUSINESS TYPE (FPDS)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SMALL;2:LARGE;3:OUTSIDE U.S.;4:STATE/LOC/ED/NPF;",
+      "helpText": "This is the type of business for FY89 FPDS reporting purposes. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TYPE OF OWNERSHIP (FY88)",
+      "dataType": "POINTER",
+      "rawType": "440.31PA",
+      "required": false,
+      "helpText": "This is the type of ownership for FY88 FPDS reporting purposes. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SOCIOECONOMIC GROUP (FPDS)",
+      "dataType": "POINTER",
+      "rawType": "440.35P",
+      "required": false,
+      "helpText": "This is the socioeconomic group of the vendor for the current year. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SPECIAL FACTORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are the special factors to be considered when ordering from this vendor. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12.4,
+      "fieldName": "AUSTIN DELETED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates whether or not the vendor has been deleted from the Austin DPC vendor file. ",
+      "fieldNumber_": 12.4
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "FEE VENDOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates whether or not this vendor is a  fee basis vendor. ",
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "IS A SF129 ON FILE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NA:NOT APPLICABLE;",
+      "helpText": "This indicates whether or not a Standard Form 129 is on file. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE OF SF129",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of the Standard Form 129. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REPLACEMENT VENDOR",
+      "dataType": "POINTER",
+      "rawType": "*P440.3'",
+      "required": false,
+      "pointerTo": 440.3,
+      "helpText": "This is the replacement vendor. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SERVICE/RETURN ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the service/return address 1. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "SERVICE/RETURN ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the service/return address 2. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 16.2,
+      "fieldName": "SERVICE/RETURN ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the service/return address 3. ",
+      "fieldNumber_": 16.2
+    },
+    {
+      "fieldNumber": 16.3,
+      "fieldName": "SERVICE/RETURN ADDRESS4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the service/return address 4 ",
+      "fieldNumber_": 16.3
+    },
+    {
+      "fieldNumber": 16.4,
+      "fieldName": "SERVICE/RETURN CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the service/return address. ",
+      "fieldNumber_": 16.4
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "SERVICE/RETURN STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the service/return address. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.6,
+      "fieldName": "SERVICE/RETURN ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the zip code of the service/return address. ",
+      "fieldNumber_": 16.6
+    },
+    {
+      "fieldNumber": 16.7,
+      "fieldName": "SERVICE CONTACT PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the service contact person. ",
+      "fieldNumber_": 16.7
+    },
+    {
+      "fieldNumber": 16.8,
+      "fieldName": "SERVICE PHONE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number for the service/return contact person. ",
+      "fieldNumber_": 16.8
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PAYMENT CONTACT PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payment contact person. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.2,
+      "fieldName": "PAYMENT PHONE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number for the payment contact person. ",
+      "fieldNumber_": 17.2
+    },
+    {
+      "fieldNumber": 17.3,
+      "fieldName": "PAYMENT ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payment address 1. ",
+      "fieldNumber_": 17.3
+    },
+    {
+      "fieldNumber": 17.4,
+      "fieldName": "PAYMENT ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payment address 2. ",
+      "fieldNumber_": 17.4
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "PAYMENT ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payment address 3. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 17.6,
+      "fieldName": "PAYMENT ADDRESS4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payment address 4. ",
+      "fieldNumber_": 17.6
+    },
+    {
+      "fieldNumber": 17.7,
+      "fieldName": "PAYMENT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of payment address. ",
+      "fieldNumber_": 17.7
+    },
+    {
+      "fieldNumber": 17.8,
+      "fieldName": "PAYMENT STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the payment address. ",
+      "fieldNumber_": 17.8
+    },
+    {
+      "fieldNumber": 17.9,
+      "fieldName": "PAYMENT ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the zip code for the payment address. ",
+      "fieldNumber_": 17.9
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CALM ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the CALM identification number. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 18.2,
+      "fieldName": "CALM STUB NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CALM stub name. ",
+      "fieldNumber_": 18.2
+    },
+    {
+      "fieldNumber": 18.3,
+      "fieldName": "DUN & BRADSTREET #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the vendor's Dun & Bradstreet number, if applicable. ",
+      "fieldNumber_": 18.3
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "440.32",
+      "required": false,
+      "helpText": "This is a synonym for the vendor. ",
+      "isMultiple": true,
+      "subFileNumber": 440.32,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "440.34",
+      "required": false,
+      "helpText": "These are remarks about the vendor. ",
+      "isMultiple": true,
+      "subFileNumber": 440.34,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22.1,
+      "fieldName": "BILLING ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing address 1. ",
+      "fieldNumber_": 22.1
+    },
+    {
+      "fieldNumber": 22.2,
+      "fieldName": "BILLING ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing address 2. ",
+      "fieldNumber_": 22.2
+    },
+    {
+      "fieldNumber": 22.3,
+      "fieldName": "BILLING ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing address 3. ",
+      "fieldNumber_": 22.3
+    },
+    {
+      "fieldNumber": 22.4,
+      "fieldName": "BILLING CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the billing address. ",
+      "fieldNumber_": 22.4
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "BILLING STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the billing address. ",
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 22.6,
+      "fieldName": "BILLING ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code of the billing address. ",
+      "fieldNumber_": 22.6
+    },
+    {
+      "fieldNumber": 22.7,
+      "fieldName": "BILLING PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the phone number of the billing address. ",
+      "fieldNumber_": 22.7
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DATE VENDOR CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the vendor was created, or the date the vendor name changed. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the vendor. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "INACTIVATED VENDOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVATED;",
+      "helpText": "This field is set automatically by the option used to inactivate a vendor. ",
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the vendor was made inactive. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "INACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who made the vendor inactive. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "FMS VENDOR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This is the code that FMS uses to identify a vendor.  It comes from the SSN/TAX ID NUMBER field in this file. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ALT-ADDR-IND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows one VENDOR to have many payment addresses. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "NON-RECURRING VENDOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NON-RECURRING VENDOR;",
+      "helpText": "This field having a 'N' will represent that this vendor will be used only one time. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TAX ID/SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will send FMS information that will be used as the FMS VENDOR CODE.  FMS might use a different FMS VENDOR CODE but that is normally not done. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "SSN/TAX ID INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SOCIAL SECURITY NUMBER;T:TAX IDENTIFICATION NUMBER;",
+      "helpText": "This field identifies what the TAX ID/SSN field is. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PAYMENT HOLD INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;C:CORRESPONDENCE;",
+      "helpText": "Is payment for this vendor placed on hold?  Do we pay this vendor or  don't we? ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "1099 VENDOR INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "Is a 1099 form filled out for this vendor? ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PENDING FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING APPROVAL;C:CONFIRMATION OF APPROVAL;",
+      "helpText": "Internal IFCAP flag used to state what is being done with this vendor and FMS.  When a vendor request is sent to FMS other requests should wait until there is a FMS VENDOR UPDATE.  Actually no other requests can be created until the update comes back. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CENTRAL REMIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Should all payments for this vendor be sent to one place? ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "VENDOR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AGENT CASHIER;C:COMMERCIAL;E:EMPLOYEE;F:FEDERAL GOVERNMENT;G:GSA;I:INDIVIDUALS-OTHER;O:OTHER COUNTRIES;R:COMMERCIAL-RECURRING PMTS;U:UTILITY COMPANIES;",
+      "helpText": "This is a list of different kinds of vendors. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "MTI ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADD;F:ADD IFCAP ONLY;C:CHANGE;D:DELETE;",
+      "helpText": "This is a set of conditions telling IFCAP what to do with the FMS VENDOR UPDATE.  This field is never changed by IFCAP users. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "FAX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the vendor's FAX phone number. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADD;2:CHANGE;",
+      "helpText": "This field is the parameter from PRCHE1 that decides whether to create a NEW or UPDATE a VENDOR REQUEST.       In addition the TRIGGER will add one (1) to the VRQ COUNT field when this field is entered. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "VENDOR RECORD",
+      "dataType": "POINTER",
+      "rawType": "P440.3'",
+      "required": false,
+      "pointerTo": 440.3,
+      "helpText": "This field has the internal entry number for the VENDOR file entry that may be used to create a VRQ to Austin.  Actually the field should be the same as the IEN of the entry being edited. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to create the VRQ to Austin. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "FLAG AR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADD;2:CHANGE;",
+      "helpText": "This field will be filled in when Accounts Receivable chooses a vendor that is not vendorized. This vendor needs to be edited before the VRQ can be sent. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "VENDOR RECORD - AR",
+      "dataType": "POINTER",
+      "rawType": "P440.3'",
+      "required": false,
+      "pointerTo": 440.3,
+      "helpText": "This field has the internal entry number for the VENDOR file entry that needs to be edited.  This record needs to be edited because Accounts Receivable is having a record in the DEBTOR file pointing to this record. Presently this record is not vendorized and is missing some data to be able to become a VRQ.  This record needs to be edited by SUPPLY and maybe FISCAL before it is able to create a VRQ.  This field's data should equal the IEN for this record. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "SITE AR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to edit this record in preparation to entering a VRQ for this record. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "OK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "OK:OK;GOOD:GOOD;",
+      "helpText": "This field, when filled in, will signify that this record has all the required fields to create a VRQ.     This field is entered in EDIT^PRCOVL. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SENT:SENT;",
+      "helpText": "When SENT is set the record will have sent a VRQ to Austin or to FISCAL for review.  This will be set by programming in VRQ^PRCOVL1. ",
+      "fieldNumber_": 54
+    }
+  ],
+  "fieldCount": 85,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "440.3", "field": .01, "type": "regular"},
+    {"name": "440.3", "field": 48, "type": "regular"},
+    {"name": "440.3", "field": 49, "type": "regular"},
+    {"name": "440.3", "field": 51, "type": "regular"},
+    {"name": "440.3", "field": 52, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Z0, "value": "I $D(^(3)),$P(^(3),U,2)=\"Y\" W \"   EDI VENDOR\""},
+    {"field": Z1, "value": "S Z9=$S('$D(^(10)):1,'$P(^(10),U,5):1,1:0) I 'Z9 W *7,\"   **** THIS VENDOR IS INACTIVE, USE VENDOR NUMBER \"_$S($D(^(9)):+^(9),1:\"\")_\" ****\""},
+    {"field": Z2, "value": "I '$D(PRCFD(\"PAY\")),Z9 W:$D(^(0)) \"   \",$P(^(0),U,10)"},
+    {"field": Z3, "value": "I Z9 W:$D(Y) \"NO. \",Y W:$D(^(3))&('$D(PRCFD(\"PAY\"))) !?10,\"SPECIAL FACTORS: \",$P(^(3),U,1)"},
+    {"field": Z4, "value": "I '$D(PRCFD(\"PAY\")),Z9 S Z8=$S($D(^(0)):^(0),1:\"\") W !?10,\"ORDERING ADDRESS: \",$P(Z8,U,2),!?26,\"  \",$P(Z8,U,6),\", \",$S($D(^DIC(5,+$P(Z8,U,7),0)):$P(^(0),U,2),1:\"\"),\" \",$P(^PRC(440.3,Y,0),U,8)"},
+    {"field": Z5, "value": "I '$D(PRCFD(\"PAY\")),Z9 W !,$S($P(^(0),U,11)]\"\":\"\",'$D(^(2)):\"Business Type is undefined\",$P(^(2),U,2):\"\",$P(^(2),U,3)']\"\":\"Business Type is undefined\",1:\"\")"},
+    {"field": Z7, "value": "I $D(PRCFD(\"PAY\")),Z9 S Z8=$S($D(^(7)):^(7),1:\"\") I Z8]\"\" D ADD^PRCFDADD"},
+    {"field": Z8, "value": "K Z8,Z9 W $E(^PRC(440.3,Y,0),0)"}
+  ]
+}

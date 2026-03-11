@@ -1,0 +1,89 @@
+{
+  "fileNumber": 396.2,
+  "fileName": "AMIE REPORT",
+  "globalRoot": "396.2IP",
+  "globalReference": "^DVB(396.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Name of the Patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "7132 ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date of admission for a veteran.  It is used when printing Notices of Discharge. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "7132 ADMISSION POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Pointer to the Patient Movement file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "7132 STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINTED;R:READY TO PRINT;",
+      "helpText": "The print status of the Notice of Discharge Record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "7132 ROUTING LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Holds the Patient File Claim Folder Location from which a Notice of  Discharge was generated for the patient. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE 7132 PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the Notice of Discharge was originally printed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "7132 PRINTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Indicates the name of the person who originally printed the Notice of Discharge. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "396.2", "field": .01, "type": "regular"},
+    {"name": "396.2", "field": 1, "type": "regular"},
+    {"name": "396.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

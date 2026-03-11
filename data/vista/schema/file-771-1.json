@@ -1,0 +1,169 @@
+{
+  "fileNumber": 771.1,
+  "fileName": "HL7 FIELD",
+  "globalRoot": "771.1I",
+  "globalReference": "^HL(771.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the HL7 field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "RP771.3'",
+      "required": true,
+      "pointerTo": 771.3,
+      "helpText": "The three character HL7 segment name (e.g., MSH). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DHCP FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The HL7 sequence number associated witht the HL7 field (e.g., 7). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The maximum length of the HL7 field (e.g., 8). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATA TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "The HL7 data type associated with the HL7 field (e.g., DATE). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:REQUIRED;0:NOT REQUIRED;",
+      "helpText": "This field specifies whether the HL7 field is required. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REPETITION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of times the HL7 field can repeat within an HL7 segment.  If the field cannot repeat, leave this field blank. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TABLE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Only fields that have an HL7 data type of ID (Coded Value) have a table number. The ID data type is equivalent to a Set of Codes or Pointer data type in VA FileMan.  For locally defined fields, the table number should begin with the 2-4 character DHCP package namespace. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ITEM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The HL7 item number associated with the HL7 field (e.g., 00043). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P771.1'",
+      "required": false,
+      "pointerTo": 771.1,
+      "helpText": "MUMPS code that is used to validate values in this field.  This code is applicable across all DHCP applications. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "771.113P",
+      "required": false,
+      "helpText": "This multiple valued field contains information realted to use of this HL7 filed by a specific application. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "771.12P",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SAMPLE DHCP VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "SAMPLE HL7 VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "771.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 771.11,
+      "fieldNumber_": 150
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "771.1", "field": .01, "type": "regular"},
+    {"name": "771.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HL(771.3,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(771.3,.01,0),U,2) D Y^DIQ:Y]\"\" W ?40,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

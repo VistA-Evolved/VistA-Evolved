@@ -1,0 +1,58 @@
+{
+  "fileNumber": 106,
+  "fileName": "MICOM CONTENTION DEVICES",
+  "globalRoot": "106P",
+  "globalReference": "^%ZIS(\"Z\",106,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Device",
+      "dataType": "POINTER",
+      "rawType": "RP3.5'",
+      "required": true,
+      "pointerTo": 3.5,
+      "helpText": "The DZ DEVICE NUMBER is used for disconnecting the port connected to the DZ through a software disconnect.   It is also used for printer contention.  It should contain the alpha- numeric name of the printer with the 'Micom line or shelf/channel' field entered and an entry for the DZ device and the associated 'Micom port or shelf/channel' field entered.  The DZ device should be the same as $I found in the DEVICE file for the printer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Micom port or shelf/channel",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Micom Port that the DZ Device connects to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "Micom line or shelf/channel",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Micom Line that the contention printer connects to. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Enable Auto Disconnect",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Enable;0:Disable;",
+      "helpText": "Used to control whether a software disconnect should be performed on this device. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "106", "field": .01, "type": "regular"},
+    {"name": "106", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

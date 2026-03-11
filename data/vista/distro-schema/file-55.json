@@ -1,0 +1,562 @@
+{
+  "fileNumber": 55,
+  "fileName": "PHARMACY PATIENT",
+  "globalRoot": "55P",
+  "globalReference": "^PS(55,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "  This allows users to select entries by the internal number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "  This is the name of a patient that has some type of pharmacy order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CAP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NON-SAFETY;0:SAFETY;",
+      "helpText": "This field is used to indicate if safety caps are to be issued to patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAIL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR MAIL;1:CERTIFIED MAIL;2:DO NOT MAIL;3:LOCAL - REGULAR MAIL;4:LOCAL - CERTIFIED MAIL;",
+      "helpText": "This field is used to: A) Determine whether this patient's Rx's are to be sent to the CMOP, or retained for local distribution. If 2-4 are selected, none of this patient's Rx's will be transmitted to the CMOP. B) Select what the mail priority is.  The CMOP choices are limited to (0) REGULAR and (1) CERTIFIED. Local mail may be designated (3) LOCAL - REGULAR or (4) LOCAL - CERTIFIED. The 'DO NOT MAIL' code (2) may be used to ensure that the patient's Rx's are not mailed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DIALYSIS PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to indicate if the patient is in dialysis. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAIL STATUS EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field places a time limit on the 'Do Not Mail', 'Local - Regular Mail' and 'Local - Certified Mail' conditions in the 'MAIL' field. If a date is placed in this field and the software detects that the date the Rx is processed is greater than the date in the field (past the expired date) a default value of 'Regular Mail' will be assumed for the 'MAIL' field.   NOTE: The actual value of the 'MAIL' field will not be changed by the software, but can only be modified by a user editing the 'MAIL' ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FIRST SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the login date of the first order for pharmacy services. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ACTUAL/HISTORICAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTUAL;H:HISTORICAL;",
+      "helpText": "The purpose of this field is to indicate whether the FIRST SERVICE DATE  field was populated with actual or historical data.  Actual indicates the  field was populated when the first pharmacy service was filed.   Historical indicates the field was populated by the conversion routine. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is notable information about the patient that pertains to pharmacy. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P53'",
+      "required": false,
+      "pointerTo": 53,
+      "helpText": "This field is used to indicate a default patient status. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "COMMUNITY NURSING HOME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if the patient resides within a community nursing home. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 40.1,
+      "fieldName": "NURSING HOME CONTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if the patient has a nursing home contract. ",
+      "fieldNumber_": 40.1
+    },
+    {
+      "fieldNumber": 40.2,
+      "fieldName": "LAST DATE OF CONTRACT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the last date of the nursing home contract. ",
+      "fieldNumber_": 40.2
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "RESPITE PATIENT START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the start date of respite care. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 41.1,
+      "fieldName": "RESPITE PATIENT END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the end date of respite care. ",
+      "fieldNumber_": 41.1
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ACTIVE SCRIPTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to indicate active prescriptions. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PRESCRIPTION PROFILE",
+      "dataType": "POINTER",
+      "rawType": "55.03P",
+      "required": false,
+      "helpText": "This sub-file is used to indicate prescription history for this patient. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 52.1,
+      "fieldName": "RX UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Nothing updated;1:Data movement complete;2:Backfill complete;",
+      "helpText": "This field is used to indicate if the patient's medications have been updated in the CPRS orders file. If the field is 0, nothing has been updated, 1 indicates the initial data movement is complete, and 2 indicates the Backfill to CPRS is complete. ",
+      "fieldNumber_": 52.1
+    },
+    {
+      "fieldNumber": 52.2,
+      "fieldName": "NON-VA MEDS",
+      "dataType": "POINTER",
+      "rawType": "55.05P",
+      "required": false,
+      "helpText": "This is the Non-VA Meds order multiple. It will be used to store the  Non-VA Med orders entered through the CPRS application. ",
+      "fieldNumber_": 52.2
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "CLOZAPINE REGISTRATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the patient's authorization number assigned by national data base. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "CLOZAPINE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRE-TREATMENT;A:ACTIVE TREATMENT;H:TREATMENT ON HOLD;D:DISCONTINUED;",
+      "helpText": "This is the patient's clozapine treatment status. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "DATE OF LAST CLOZAPINE RX",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the patient's last clozapine prescription. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "DEMOGRAPHICS SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether patient demographic data has been sent to the national database. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "RESPONSIBLE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the physician responsible for the patient's clozaril treatment. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "REGISTRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to enter the date of registration. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "UNIT DOSE",
+      "dataType": "SUBFILE",
+      "rawType": "55.06IA",
+      "required": false,
+      "helpText": "  This represents the 'top' of the UNIT DOSE SUB-FILE, where all of a patient's active (and expired & dc'd) UNIT DOSE orders are kept. Although orders are initially entered into ^PS(53.1), the order is transferred into this sub-file (^PSGOT) upon verification. ",
+      "isMultiple": true,
+      "subFileNumber": 55.06,
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 62.01,
+      "fieldName": "UD DEFAULT STOP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This is date used as a default value for the STOP DATE/TIME of Unit Dose orders during the order entry and renewal processes, if the corresponding site parameter is turned on.  The order entry and renewal processes will sometimes change this date. ",
+      "fieldNumber_": 62.01
+    },
+    {
+      "fieldNumber": 62.02,
+      "fieldName": "UD PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the latest provider for this patient, used as a default value in order entry. ",
+      "fieldNumber_": 62.02
+    },
+    {
+      "fieldNumber": 62.03,
+      "fieldName": "UD LAST ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This is the last admission date for this patient. ",
+      "fieldNumber_": 62.03
+    },
+    {
+      "fieldNumber": 62.04,
+      "fieldName": "UD LAST TRANSFER DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This is the last transfer date for this patient. ",
+      "fieldNumber_": 62.04
+    },
+    {
+      "fieldNumber": 62.05,
+      "fieldName": "UD LAST DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This is the last discharge date for this patient. ",
+      "fieldNumber_": 62.05
+    },
+    {
+      "fieldNumber": 62.06,
+      "fieldName": "UD EXP UP-DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is a date used to update expired orders.  (Internal) ",
+      "fieldNumber_": 62.06
+    },
+    {
+      "fieldNumber": 62.07,
+      "fieldName": "UD HOLD FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ORDERS NOT ON HOLD;1:ORDERS ON HOLD;2:ORDERS AUTOMATICALLY PLACED ON HOLD;",
+      "helpText": "  This is an internal flag set when all of the patient's orders have been placed on hold. If '2', all of a patient's Unit Dose AND IV orders were placed on hold automatically by the package. ",
+      "fieldNumber_": 62.07
+    },
+    {
+      "fieldNumber": 62.08,
+      "fieldName": "UD DISCHARGE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PATIENT HAS BEEN DISCHARGED;",
+      "helpText": "  This is an internal flag set when a patient is first found to have been discharged.  It is set so that Inpatient Meds does not try to cancel the patient's orders every time the patient is accessed while discharged. ",
+      "fieldNumber_": 62.08
+    },
+    {
+      "fieldNumber": 62.1,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "55.061",
+      "required": false,
+      "helpText": "  This is used for temporary storage of data by the Unit Dose package. The data is deleted before and after each use! ",
+      "isMultiple": true,
+      "subFileNumber": 55.061,
+      "fieldNumber_": 62.1
+    },
+    {
+      "fieldNumber": 62.11,
+      "fieldName": "HOLD REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is an explanation of why this patient's orders are being placed on hold.  This explanation will show on the patient's Unit Dose profile. ",
+      "fieldNumber_": 62.11
+    },
+    {
+      "fieldNumber": 62.16,
+      "fieldName": "*LAST UD ORDER CONVERTED TO V4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the last Unit Dose order converted for use with version 4 of the Inpatient Medications package. THIS SHOULD NOT BE EDITED.  Editing could result in corrupted data and possibly medication administration errors. ",
+      "fieldNumber_": 62.16
+    },
+    {
+      "fieldNumber": 62.2,
+      "fieldName": "INPATIENT NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the Inpatient pharmacy narrative for the patient. ",
+      "fieldNumber_": 62.2
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "*UD STOP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used by the UNIT DOSE PHARMACY package.  It is NOT to be entered into anywhere else! ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "PATIENT COMMENT",
+      "dataType": "DATE",
+      "rawType": "55.17DA",
+      "required": false,
+      "helpText": "This sub-file allows patient billing comments to be stored for this  patient. ",
+      "isMultiple": true,
+      "subFileNumber": 55.17,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "*NO. OF IV ORDERS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "IV",
+      "dataType": "SUBFILE",
+      "rawType": "55.01",
+      "required": false,
+      "helpText": "This subfile contains IV order information for any given patient. A separate IV order file does not exist. This isn't the same design as  outpatient pharmacy -- which does contain a separate file for prescriptions. ",
+      "isMultiple": true,
+      "subFileNumber": 55.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ARCHIVE DATE",
+      "dataType": "DATE",
+      "rawType": "55.13DA",
+      "required": false,
+      "helpText": "This sub file is used to indicate archived prescriptions. ",
+      "isMultiple": true,
+      "subFileNumber": 55.13,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "*LAST ADMISSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field is updated by the IV PACKAGE every time action is taken on this particular patient.  This piece will have two pieces of information on it.  The first piece ('-' is the delimiter) is the current admissions number, and the second piece is the discharge date for this admissions number.  This field is used for determining whether or not to DC IV ORDERS due to ADMISSIONS or DISCHARGE. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 102.1,
+      "fieldName": "*LAST SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;P:PSYCHIATRY;NH:NHCU;NE:NEUROLOGY;I:INTERMIDIATE MED;R:REHAB MEDICINE;SCI:SPINAL CORD INJURY;D:DOMICILLARY;B:BLIND REHAB;",
+      "helpText": "  This piece is updated by the IV PACKAGE every time this particular patient has any 'IV ACTION'.  This piece represents the service of the last ward that this patient was in.  It is a set of codes that was taken from the ADT package.  This field is used to determine whether or not to DC IV ORDERS due to SERVICE transfer. ",
+      "fieldNumber_": 102.1
+    },
+    {
+      "fieldNumber": 102.2,
+      "fieldName": "*LAST INTERWARD TRANSFER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This field is updated by the IV PACKAGE every time this particular patient has any 'IV ACTION'.  This field represents the last INTERWARD TRANSFER NUMBER for the LAST ADMISSION NUMBER.  This field is used to determine whether or not to DC IV ORDERS due to WARD TRANSFER. ORDERS due to SERVICE transfer. ",
+      "fieldNumber_": 102.2
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "*LAST IV ORDER CONVERTED (4.0)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  This is the last IV order for a patient that had it's data converted to the New Person file (200). ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": " CONVERSION COMPLETED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VERSION 5;2:POE;3:IV VERIFIED;",
+      "helpText": "This field contains a 1 if the conversion to the patient's orders for version 5.0 has  completed.  It contains a 2 if the conversion to the patient's orders for Pharmacy Ordering Enhancement (POE) has completed.   It contains a 3 if the patient's IV orders existed prior to BCMA V.2.0  has updated the Verifying Pharmacist field. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "BCMA ID",
+      "dataType": "SUBFILE",
+      "rawType": "55.0105A",
+      "required": false,
+      "helpText": "This is the unique barcode ID in the format DFN_\"V\"_ID# ex: 740V1. ",
+      "isMultiple": true,
+      "subFileNumber": 55.0105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "OTHER LANGUAGE PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to identify patients who have another language preference for printing medication instructions on bottle labels.   ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 106.1,
+      "fieldName": "PMI LANGUAGE PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENGLISH;2:SPANISH;",
+      "helpText": "This field will be used to determine the default language preference for printing the PMI sheets at the CMOPs. ",
+      "fieldNumber_": 106.1
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "SCRIPTALK ENROLLMENT ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "55.0108DA",
+      "required": false,
+      "helpText": "This multiple contains the history log information for ScripTalk  enrollment activities for a patient. ",
+      "isMultiple": true,
+      "subFileNumber": 55.0108,
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "CLINICAL ALERT",
+      "dataType": "DATE",
+      "rawType": "55.0109ID",
+      "required": false,
+      "helpText": "The CLINICAL ALERTS (multiple) allows Pharmacy staff to document clinical  information that is not covered anywhere else in the VistA packages,   e.g. when a patient is part of a research study. ",
+      "isMultiple": true,
+      "subFileNumber": 55.0109,
+      "fieldNumber_": 109
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "ADC", "field": },
+    {"name": "ADCDT", "field": },
+    {"name": "ADIA", "field": },
+    {"name": "AIT", "field": },
+    {"name": "AIV", "field": },
+    {"name": "AIVS", "field": },
+    {"name": "ALCNVRT", "field": },
+    {"name": "ANIV", "field": },
+    {"name": "ANV", "field": },
+    {"name": "ANV2", "field": },
+    {"name": "ANVO", "field": },
+    {"name": "APIV", "field": },
+    {"name": "APV", "field": },
+    {"name": "APV2", "field": },
+    {"name": "AQ", "field": },
+    {"name": "ASAND", "field": },
+    {"name": "ASAND1", "field": },
+    {"name": "AUD", "field": },
+    {"name": "AUDAPM", "field": },
+    {"name": "AUDDD", "field": },
+    {"name": "AUDS", "field": },
+    {"name": "AUE", "field": },
+    {"name": "B", "field": },
+    {"name": "55", "field": .01, "type": "regular"},
+    {"name": "55", "field": .01, "type": "regular"},
+    {"name": "55", "field": .01, "type": "regular"},
+    {"name": "55", "field": .01, "type": "regular"},
+    {"name": "55", "field": .04, "type": "regular"},
+    {"name": "55", "field": 53, "type": "regular"},
+    {"name": "55", "field": 53, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

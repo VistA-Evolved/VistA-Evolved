@@ -1,0 +1,130 @@
+{
+  "fileNumber": 601.82,
+  "fileName": "MH RULES",
+  "globalRoot": "601.82",
+  "globalReference": "^YTT(601.82,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the unique index for this record. It is the IEN. Numbers under  100,000 are reserved for the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IndexQuestion",
+      "dataType": "POINTER",
+      "rawType": "P601.72'",
+      "required": false,
+      "pointerTo": 601.72,
+      "helpText": "Pointer to the QUESTION NUMBER Field (#.01) of the MH QUESTIONS file  (#601.72) on which to run the rule. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IndexValue",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value of the index. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IndexValueDataType",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Data type of the index value (viz. string, number, date, or VistA IEN). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IndexOperator",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Logical operator to use with index value. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BoolOperator",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Logical operator like 'equals' to match the target response. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TargetQuestion",
+      "dataType": "POINTER",
+      "rawType": "P601.72'",
+      "required": false,
+      "pointerTo": 601.72,
+      "helpText": "Pointer to the QUESTION NUMBER field ((#.01) of the MH QUESTIONS file (#601.72). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TargetValue",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Often the Correct answer, this is the value against which to measure the  response. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TargetValueDataType",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Data type of the target value (viz. string, number, date, or VistA IEN). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TargetOperator",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Logical operator to use in comparisons. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MessageText",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Message given to the user when the rule is met. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IsConsistencyCheck",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Boolean specifying the type of rule to be a consistency check. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.82", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

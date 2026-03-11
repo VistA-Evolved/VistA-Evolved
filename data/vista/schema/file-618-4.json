@@ -1,0 +1,285 @@
+{
+  "fileNumber": 618.4,
+  "fileName": "MENTAL HEALTH INPT",
+  "globalRoot": "618.4ID",
+  "globalReference": "^YSG(\"INP\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is a unique file entry date to allow a flat file structure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to patient file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UNIT ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of entry on to the psychiatry service for the current admission.  This is set automatically by the system but can be edited. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEAM",
+      "dataType": "POINTER",
+      "rawType": "R*P618.2'",
+      "required": true,
+      "pointerTo": 618.2,
+      "helpText": "This is the clinical and/or nursing team to which the patient is assigned. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STAFF",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary staff member assigned responsibility for patient care or charting.  Local definition of this title is allowed for in the package. Examples of this are: Case manager , Primary Therapist, and coordinator. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary physician providing care to this patient. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RESIDENT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the resident assigned (if any) to provide care to this patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LEGAL STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "v:VOLUNTARY;i:INVOLUNTARY;",
+      "helpText": "Set of codes: 'v' for Voluntary, 'i' for Involuntary. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OPEN/CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "o:OPEN;c:CLOSED;",
+      "helpText": "This indicates whether the patient is on a security area. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is a field locally definable to assign treatment or privilege status.  It is only meaningful within local definitions. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MASTER TX PLAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the Master Treatment Plan was enterd in the chart. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TX PLAN UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the treatment plan was updated in the patient's chart. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "HAIR COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For quick identification purposes.  Especially needed for patient searches. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "EYE COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For quick identification.  Especially useful in patient searches. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "HEIGHT (INCHES)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For quick identification.  Especially useful in patient searches. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.2,
+      "fieldName": "WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "For quick identification.  Especially useful in patient searches. ",
+      "fieldNumber_": 14.2
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PHYSICAL DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short physical description of patient. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MEDICAL ALERT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any medical alert associated with the patient. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SPECIAL DIET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient's specical diet requirement. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "INPATIENT COMMENTS",
+      "dataType": "DATE",
+      "rawType": "618.418D",
+      "required": false,
+      "helpText": "Patient comments, multiple valued field with subfield. ",
+      "isMultiple": true,
+      "subFileNumber": 618.418,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PAST TEAMS",
+      "dataType": "POINTER",
+      "rawType": "618.419PA",
+      "required": false,
+      "helpText": "This data is automatically set by the package.  It keeps track of team changes within a psychiatric ward. This is a multiple field with subfields. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "RP42'",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "Name of the ward as pointer to the ward location file.  This is set automatically by the package. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DISCHARGE/TRANSFER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date patient is either discharged or transfered out of the current psychiatric ward.  This is not the same as the discharge date as defined by MAS.  It is meaningful only as regards to the current ward. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ADMISSION POINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The ADMISSION POINTER has two parts (PART ONE~PART TWO).  Part one is the ^DGPM file's \"DA\" or pointer to the ADMISSION Patient Movement record.  Part two which follows the \"~\" is the TRANSFER or DISCHARGE pointer to the ^DGPM Patient Movement record or it is the pointer to the  LAST Patient Movement record.  Therefore, when the patient is initially admitted part one and part two are the same.  This piece is set automatically by the package. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CURRENT TEAM",
+      "dataType": "POINTER",
+      "rawType": "P618.2'",
+      "required": false,
+      "pointerTo": 618.2,
+      "helpText": "This is the current team assigned to work with the patient.  When this field is blank this indicates that the patient was been transferred out of the ward or the patient was been discharged.  The CURRENT TEAM field is used to activate the SET and KILL of the following cross-references: \"CP\", \"AC\", \"ACP\", \"ACR\" and \"AWC\". ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 500000,
+      "fieldName": "LAST PHYSICAL EXAM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a computed field (data is NOT stored by calculated). ",
+      "fieldNumber_": 500000
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACP", "field": },
+    {"name": "ACR", "field": },
+    {"name": "AIN", "field": },
+    {"name": "AOUT", "field": },
+    {"name": "AST", "field": },
+    {"name": "AWC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CP", "field": },
+    {"name": "618.4", "field": .01, "type": "regular"},
+    {"name": "618.4", "field": 1, "type": "regular"},
+    {"name": "618.4", "field": 1, "type": "regular"},
+    {"name": "618.4", "field": 2, "type": "regular"},
+    {"name": "618.4", "field": 3, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "618.4", "field": 4, "type": "regular"},
+    {"name": "618.4", "field": 5, "type": "regular"},
+    {"name": "618.4", "field": 6, "type": "regular"},
+    {"name": "618.4", "field": 21, "type": "regular"},
+    {"name": "618.4", "field": 23, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^YSG(\"SUB\",+$P(^(0),U,4),0))#2:$P(^(0),U),1:\"\"),C=$P(^DD(618.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

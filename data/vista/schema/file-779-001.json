@@ -1,0 +1,42 @@
+{
+  "fileNumber": 779.001,
+  "fileName": "HL7 EVENT TYPE CODE",
+  "globalRoot": "779.001I",
+  "globalReference": "^HL(779.001,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "779.0101P",
+      "required": false,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

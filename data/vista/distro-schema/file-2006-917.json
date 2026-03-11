@@ -1,0 +1,77 @@
+{
+  "fileNumber": 2006.917,
+  "fileName": "STORAGE PROVIDER",
+  "globalRoot": "2006.917",
+  "globalReference": "^MAGV(2006.917,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STORAGE PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This is a Place. Links the storage provider to its home place. The Storage Place value is used to look up the current write location for the  device in the IMAGING SITE PARAMETER file (#2006.1). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STORAGE PROVIDER TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Type of storage provider. Examples of types could include:  RAID  Jukebox  Centera  Bycast  Etc. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Since many data records may be linked to a storage provider, it is not safe to delete them. However, the storage provider  can be deactivated (logically deleted) by setting this flag to false (\"0\"), so that it won't be available to map to retention policies, etc. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ARCHIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether the storage provider can act as an archive (true: \"1\").  This flag is NOT mutually exclusive with PRIMARY STORAGE field (#2006.917,5). A   single storage provider (such as a grid system) could act as both a RAID-like   primary storage provider and an archive. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIMARY STORAGE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether the storage provider can act as RAID-like primary storage (true: \"1\").  This flag is NOT mutually exclusive with ARCHIVE field (#2006.917,4). A single   storage provider (such as a grid system) could act as both a RAID-like primary   storage provider and an archive. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WRITABLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "If a storage provider is still available for read operations, but should  not be written to, this flag can be set to false (\"0\"). Note that this sits at a level higher than a specific share.  Existing mechanisms to take a particular share offline, while leaving the  others available for write, will still work. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.917", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

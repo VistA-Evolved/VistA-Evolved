@@ -73,7 +73,7 @@ const EMPTY_ENCOUNTER = {
 };
 
 const EMPTY_PROCEDURE = { cpt: '', description: '', modifiers: '', quantity: 1 };
-const EMPTY_DIAGNOSIS = { icd10: '', description: '', rank: 'primary' as const };
+const EMPTY_DIAGNOSIS: { icd10: string; description: string; rank: 'primary' | 'secondary' } = { icd10: '', description: '', rank: 'primary' };
 const EMPTY_IMMUNIZATION = {
   vaccine: '', cvxCode: '', site: 'Left Deltoid', route: 'Intramuscular',
   lot: '', manufacturer: '', series: '',

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 167.7,
+  "fileName": "ONCO HPV STATUS",
+  "globalRoot": "167.7",
+  "globalReference": "^ONCO(167.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field stores the HPV Status codes needed for the SEER Site Specific Fact 1. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80",
+      "length": 80,
+      "required": true,
+      "helpText": "This is the Description of the HPV Status code. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "167.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

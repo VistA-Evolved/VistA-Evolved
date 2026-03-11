@@ -1,0 +1,39 @@
+{
+  "fileNumber": 601.73,
+  "fileName": "MH INTRODUCTIONS",
+  "globalRoot": "601.73",
+  "globalReference": "^YTT(601.73,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INTRODUCTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the unique identifier for this Introduction. It is the IEN. All  numbers below 100,000 are in the national database and should not be  edited locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INTRODUCTION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "601.731",
+      "required": false,
+      "helpText": "Actual text of the introduction. ",
+      "isMultiple": true,
+      "subFileNumber": 601.731,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.73", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

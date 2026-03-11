@@ -1,0 +1,37 @@
+{
+  "fileNumber": 133.4,
+  "fileName": "MONITORS",
+  "globalRoot": "133.4",
+  "globalReference": "^SRO(133.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the monitor.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to inactivate this file entry and to prevent its selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "133.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

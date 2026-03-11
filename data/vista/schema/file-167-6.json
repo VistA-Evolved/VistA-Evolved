@@ -1,0 +1,49 @@
+{
+  "fileNumber": 167.6,
+  "fileName": "ONCO NEOADJUVANT THERAPY TREATMENT EFFECT",
+  "globalRoot": "167.6",
+  "globalReference": "^ONCO(167.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is the name of the Neoadjuvant Therapy Treatment Effect schema group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITE SPECIFIC CODES",
+      "dataType": "SUBFILE",
+      "rawType": "167.61",
+      "required": false,
+      "helpText": "This multiple contains the neoadjuvant codes specific to this schema. ",
+      "isMultiple": true,
+      "subFileNumber": 167.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCHEMAS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ99",
+      "length": 99,
+      "required": true,
+      "helpText": "This is the extended title for the schemas that the neoadjuvant codes apply to. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "167.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

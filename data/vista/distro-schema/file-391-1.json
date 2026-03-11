@@ -1,0 +1,65 @@
+{
+  "fileNumber": 391.1,
+  "fileName": "AMIS SEGMENT",
+  "globalRoot": "391.1",
+  "globalReference": "^DG(391.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is for storing the internal reference number of the AMIS Segment as it is created. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the name of the AMIS Segment added to the file, e.g. 100% SC VETERANS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field entry indicates whether or not the specified AMIS Segment has been inactivated.  It is a set of codes where '0' stands for NO and '1' stands for YES. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date/time on which the AMIS Segment is inactivated. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "391.11P",
+      "required": false,
+      "helpText": "This multiple contains information entered for each AMIS Segment, including the Division and REPORT MONTH/YEAR multiple.   These fields should not be enter/edited via FM without ISC guidance. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "391.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

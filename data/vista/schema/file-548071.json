@@ -1,0 +1,186 @@
+{
+  "fileNumber": 548071,
+  "fileName": "MODIFICATIONS TO NATIONAL PACKAGES (NEW)",
+  "globalRoot": "548071I",
+  "globalReference": "^AXA(548071,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD#",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "Enter the name of the package that is associated with this modification. It should be the package name which may not be the same as the KIDS Build name. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the namespace for the package (e.g., XU for Kernel).  It will be stuffed by a trigger cross-reference on the package field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the version number of the package for the item being modified. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "Enter the file for the item that is being modified.  For example, if you modified a routine, you would enter ROUTINE (9.8).  Modified an option, then enter OPTION. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILE NAME (PseudoPointer)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the internal entry value of the item being modified in the file entered in the FILE field.  The Input and Output transforms on this field have be modified to emulate a pointer type field. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ITEM NAME (FreeTextName)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the free text name of the thing being modified.  Enter here the name of the routine, option, print template, etc.  There is a Mumps xref on field 6 (File Name) that will stuff this value. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If you modified a Fileman Data Dictionary element, then enter the data here.  It should be in the format File/Subfile#,Field#.  For example, if you had modified the SERVICE field of the NEW PERSON file, then you would enter 200,29.  This value will be used as an indirection argument.  You can optionally enter the entire DD reference without the leading ^ (e.g., DD(200,29) ).  The input transform will add DD( if the value does not start with those characters.  It will append a ) if the last chara",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CHANGES",
+      "dataType": "SUBFILE",
+      "rawType": "548071.09",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 548071.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who first entered this modification entry. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this entry was created ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.4,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 11.4
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "LAST UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE RETIRED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter a date when this modification is no longer needed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RETIRED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REASON RETIRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "548071", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "548071", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "548071", "field": 3, "type": "regular"},
+    {"name": "548071", "field": 5, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"},
+    {"name": "548071", "field": 7, "type": "regular"},
+    {"name": "548071", "field": 7, "type": "regular"},
+    {"name": "548071", "field": 7, "type": "regular"},
+    {"name": "548071", "field": 8, "type": "regular"},
+    {"name": "", "field": 11.4, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": AXA, "value": "N AX S AX=$P(^(0),U,3,4)_\"~\"_$P(^(0),U,7,8) S:$P(^(0),U,11) AX=AX_\"   RETIRED\" D EN^DDIOL(AX,\"\",\"?10\")"}
+  ]
+}

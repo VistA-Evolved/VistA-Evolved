@@ -1,0 +1,47 @@
+{
+  "fileNumber": 392.5,
+  "fileName": "BENEFICIARY TRAVEL DASHBOARD CONFIG",
+  "globalRoot": "392.5",
+  "globalReference": "^DGBT(392.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the configuration.  There should only be 1 entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VA INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "392.52P",
+      "required": false,
+      "helpText": "The VA institutions to track in the Beneficiary Travel Dashboard. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NON-VA INSTITUTION",
+      "dataType": "SUBFILE",
+      "rawType": "392.53",
+      "required": false,
+      "helpText": "A list of institutions to track that are not in the Institution file. ",
+      "isMultiple": true,
+      "subFileNumber": 392.53,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "fileNumber": 7107.4,
+  "fileName": "NOIS CONDITION",
+  "globalRoot": "7107.4I",
+  "globalReference": "^FSC(\"COND\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the NOIS condition.  This condition depends on the previously selected NOIS field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is text used by the NOIS software to apply this condition to a field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7107.42",
+      "required": false,
+      "helpText": "These are synonyms for the conditions. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.42,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This entry is used by the NOIS software to describe the fields that allow this condition. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to display the query definition. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "7107.4", "field": .01, "type": "regular"},
+    {"name": "7107.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""}
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "fileNumber": 8925.91,
+  "fileName": "TIU EXTERNAL DATA LINK",
+  "globalRoot": "8925.91",
+  "globalReference": "^TIU(8925.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOCUMENT",
+      "dataType": "POINTER",
+      "rawType": "RP8925'",
+      "required": true,
+      "pointerTo": 8925,
+      "helpText": "This is the Document for which the linkage is being made. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "This is the pointer to the image file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LINKED DATA OBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external data object to be linked to the selected document. You may specify a path to a fileserver, and a filename for the object (e.g., VA1$:[IMAGES]JR042696.BMP, or i:\\images\\jr042696.bmp, etc. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ADI", "field": },
+    {"name": "ADI02", "field": },
+    {"name": "AID", "field": },
+    {"name": "AID02", "field": },
+    {"name": "B", "field": },
+    {"name": "8925.91", "field": .01, "type": "regular"},
+    {"name": "8925.91", "field": .01, "type": "regular"},
+    {"name": "8925.91", "field": .01, "type": "regular"},
+    {"name": "8925.91", "field": .02, "type": "regular"},
+    {"name": "8925.91", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

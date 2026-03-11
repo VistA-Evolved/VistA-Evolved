@@ -1,0 +1,56 @@
+{
+  "fileNumber": 800000.1,
+  "fileName": "HMP PATIENT OBJECT",
+  "globalRoot": "800000.1",
+  "globalReference": "^HMP(800000.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The fully specified Universal ID string for this object. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Patient file #2 ien ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COLLECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the type or kind of data this object belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA",
+      "dataType": "SUBFILE",
+      "rawType": "800000.101",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 800000.101,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "800000.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

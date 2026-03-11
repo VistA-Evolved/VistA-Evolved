@@ -1,0 +1,155 @@
+{
+  "fileNumber": 790.4,
+  "fileName": "WV NOTIFICATION",
+  "globalRoot": "790.4",
+  "globalReference": "^WV(790.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP790'",
+      "required": true,
+      "pointerTo": 790,
+      "helpText": "This field stores the name of the patient associated with the notification record. Points to the WV Patient (#790) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE NOTIFICATION OPENED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field stores the date that the notification was entered into database.  It may be today's date or a date in the past.  A future date cannot be associated with this record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE OF NOTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P790.403'",
+      "required": false,
+      "pointerTo": 790.403,
+      "helpText": "This field stores the method used to notify the patient from the choices available in the WV Notification Type (#790.403) file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PURPOSE OF NOTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "*P790.404'",
+      "required": false,
+      "pointerTo": 790.404,
+      "helpText": "This field contains the reason for the notification, (e.g., the results of a test, reminder to schedule a procedure).  The information is required to autoqueue normal PAP and mammogram letters when the appropriate fields (.03, .04, .07 and .08) in the WV Site Parameter (#790.02) file are completed.  Pointer to the WV Notification Purpose (#790.404) file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OUTCOME",
+      "dataType": "POINTER",
+      "rawType": "*P790.405'",
+      "required": false,
+      "pointerTo": 790.405,
+      "helpText": "This field stores the results or outcome, which may be a goal or an event, associated with this patient's notification.  Data used to populate this field is obtained from the Notification Outcome (#790.405) file that can be edited through the Add/Edit Notification Outcomes option by the ADPAC. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACCESSION#",
+      "dataType": "POINTER",
+      "rawType": "*P790.1'",
+      "required": false,
+      "pointerTo": 790.1,
+      "helpText": "This field stores the accession number of the procedure associated with this patient's notification.  Pointer to the WV Procedure (#790.1) file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains the name of the health care facility that initiated and printed the letter or notification.  Pointer to the Institution (#4) file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE NOTIFICATION CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that an outcome for this notification was entered and marked 'Closed'. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PT EDUCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "This field documents, through a set of codes (Y = Yes, N = No), that patient education was provided at the time of the visit. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE LETTER PRINTED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date on which the notification letter was printed. The date the letter is printed automatically displays through the Add a New Notification and Edit a Notification options.  Data cannot be manually entered by the user through the above options. This field is also used in generating the Program Snapshot and Browse Notifications reports. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date on which this letter should be queued or printed by the Print Queued Letters option.  The letter will print out on the specified date or later depending on when the Print Queued Letters option is run.  When a default date displays in this field, it is based on whether this letter is a 'reminder' or 'results' letter.  A reminder letter's default date is based on the due date of the treatment need associated with the purpose for notification.  The default date for the re",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "COMPLETE BY (DATE)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that this notification will be considered delinquent or past due if it does not have a status of closed.  The value of this field is used to generate the information on the Browse Notifications and Program Snapshot reports. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "o:OPEN;c:CLOSED;",
+      "helpText": "This field stores the status (set of codes: O = Open, C = Closed) for this notification.  The value of this field is used in generating the Program Snapshot and Browse Notifications reports. ",
+      "fieldNumber_": .14
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AOPEN", "field": },
+    {"name": "AOPENS", "field": },
+    {"name": "APRT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "790.4", "field": .01, "type": "regular"},
+    {"name": "790.4", "field": .02, "type": "regular"},
+    {"name": "790.4", "field": .02, "type": "regular"},
+    {"name": "790.4", "field": .06, "type": "regular"},
+    {"name": "790.4", "field": .11, "type": "regular"},
+    {"name": "790.4", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790.404,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790.404,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790.1,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

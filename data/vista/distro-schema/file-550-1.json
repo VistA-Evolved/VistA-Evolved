@@ -1,0 +1,105 @@
+{
+  "fileNumber": 550.1,
+  "fileName": "CMOP RX QUEUE",
+  "globalRoot": "550.1",
+  "globalReference": "^PSX(550.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,0X",
+      "length": 13,
+      "required": true,
+      "helpText": "This is the message number for this order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:QUEUED TO SEND;2:TRANSMITTED;3:IN TRANSITION;4:ACKNOWLEDGED;5:UPDATED;",
+      "helpText": "This field indicates the current status of this patient order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUED DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This represents the date/time the order was created. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMISSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the transmission this order was in when transmitted to the CMOP. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMITTED DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This represents the date/time the order was transmitted to the CMOP. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECEIVED DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This represents the date/time this order was received by the CMOP. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "TRANSMISSION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "550.11A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 550.11,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "RX NUMBER",
+      "dataType": "POINTER",
+      "rawType": "550.1101PA",
+      "required": false,
+      "helpText": "This is a pointer to the Prescription File (#52) and is used to update the prescription entry when the medical center has received notification from the Consolidated Mail Outpatient Pharmacy host system that the  prescription has been received. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AB", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "550.1", "field": .01, "type": "regular"},
+    {"name": "550.1", "field": 1, "type": "regular"},
+    {"name": "550.1", "field": 1, "type": "regular"},
+    {"name": "550.1", "field": 1, "type": "regular"},
+    {"name": "550.1", "field": 1, "type": "regular"},
+    {"name": "550.1", "field": 1, "type": "regular"},
+    {"name": "550.1", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

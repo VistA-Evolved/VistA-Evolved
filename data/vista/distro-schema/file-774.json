@@ -1,0 +1,56 @@
+{
+  "fileNumber": 774,
+  "fileName": "SUBSCRIPTION CONTROL",
+  "globalRoot": "774",
+  "globalReference": "^HLS(774,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "A new entry in this file is created by making a call to $$ACT^HLSUB. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the application or package responsible for creating this subscription. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESTINATION",
+      "dataType": "SUBFILE",
+      "rawType": "774.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 774.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "774", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

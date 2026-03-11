@@ -1,0 +1,89 @@
+{
+  "fileNumber": 2005.021,
+  "fileName": "IMAGE FILE TYPES",
+  "globalRoot": "2005.021",
+  "globalReference": "^MAG(2005.021,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the image filename extension, i.e., tga. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the description of the filename extension.  For  example a filename extension of 'doc' is for Microsoft Word document. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VIEWER",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Flag, Imaging provides a viewer for files with this extension Y/N ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Bitmap for Abstract",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "If Imaging does not create abstracts for this type, this Bitmap will be used for the Abstract. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Abstract Created",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The Capture workstation and Background Processor will create abstracts for  image files with this extension only if this field is Yes ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFAULT OBJECT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P2005.02'I",
+      "required": false,
+      "pointerTo": 2005.02,
+      "helpText": "Certain Extensions have a default Object Type defined in this field. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FORMAT IS SUPPORTED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "No : Means that VistA Imaging does not support images of this format.  Users trying to capture or import images of this format will be shown a message and the capture or import will be canceled.  Yes : Means that VistA Imaging supports Images of this format.  Users can capture and Import Images with this format. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2005.021", "field": .01, "type": "regular"},
+    {"name": "2005.021", "field": 1, "type": "regular"},
+    {"name": "2005.021", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

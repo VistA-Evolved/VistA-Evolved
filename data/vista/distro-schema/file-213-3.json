@@ -1,0 +1,186 @@
+{
+  "fileNumber": 213.3,
+  "fileName": "NURS AMIS WARD",
+  "globalRoot": "213.3",
+  "globalReference": "^NURSF(213.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BED SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "Name of a nursing AMIS bed section. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviation (3 characters) for this bed section. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WLFACT DAY1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 1 pts./day shift. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "WLFACT DAY2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 2 pts./day shift. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "WLFACT DAY3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 3 pts./ day shift. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "WLFACT DAY4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 4 pts./day shift. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.31,
+      "fieldName": "WLFACT DAY5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 5 pts./day shift. ",
+      "fieldNumber_": 2.31
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "WLFACT EVE1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 1 pts./evening shift. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "WLFACT EVE2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 2 pts./evening shift. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "WLFACT EVE3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 3 pts./evening shift. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "WLFACT EVE4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 4 pts./evening shift. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 2.71,
+      "fieldName": "WLFACT EVE5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 5 pts./evening shift. ",
+      "fieldNumber_": 2.71
+    },
+    {
+      "fieldNumber": 2.8,
+      "fieldName": "WLFACT NGH1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 1 pts./night shift. ",
+      "fieldNumber_": 2.8
+    },
+    {
+      "fieldNumber": 2.9,
+      "fieldName": "WLFACT NGH2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 2 pts./night shift. ",
+      "fieldNumber_": 2.9
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WLFACT NGH3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 3 pts./night shift. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "WLFACT NGH4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 4 pts./night shift. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "WLFACT NGH5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Hours of nursing care/category 5 pts./night shift. ",
+      "fieldNumber_": 3.2
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "213.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

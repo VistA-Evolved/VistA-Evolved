@@ -1,0 +1,151 @@
+{
+  "fileNumber": 3.51,
+  "fileName": "SPOOL DOCUMENT",
+  "globalRoot": "3.51",
+  "globalReference": "^XMB(3.51,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the name of the spool document.  To avoid device handler confusion, the name of the spool document must not look like the name of a terminal type, e.g. C-VT100, since either name might be contained in a response to the device prompt. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPOOL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is a system-assigned identification number for spool documents. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:Active;o:Open;r:Ready;m:Message;p:Printed;",
+      "helpText": "This is an internal flag to indicate the status of the spool document. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE INITIATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when a spool document was created as an entry in this Spool Document File. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds a pointer to the New Person File to indicate the identity of the person creating the spool document. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STARTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when spool device activity began. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the spool document was printed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PAGE ATTRIBUTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the device parameters which were established by the initial device handler call.  These parameters are retained and use when the job is spooled and when the spool document is printed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NUMBER OF LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds a count of the total lines spooled for this spool document.  It is used in conjunction with the limit set in the Kernel Site Parameter File to regulate the amount of spooled text that users may accumulate. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SPOOL DATA",
+      "dataType": "POINTER",
+      "rawType": "*P3.519'I",
+      "required": false,
+      "pointerTo": 3.519,
+      "helpText": "This field holds a pointer to the Spool File indicating the storage location of the spooled document. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INCOMPLETE REPORT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, REPORT IS INCOMPLETE;",
+      "helpText": "This flag is set buy the spooler code to indicate that not all of the report was restored from the system spool space. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DEVICE'S",
+      "dataType": "SUBFILE",
+      "rawType": "3.5121",
+      "required": false,
+      "helpText": "This subfile holds the names of the devices that are being used for despooling (printing). ",
+      "isMultiple": true,
+      "subFileNumber": 3.5121,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "OTHER AUTHORIZED USERS",
+      "dataType": "POINTER",
+      "rawType": "3.5131PA",
+      "required": false,
+      "helpText": "This is a list of other users that my print this spool document. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "ADUZ", "field": },
+    {"name": "AM", "field": },
+    {"name": "AOK", "field": },
+    {"name": "AOK2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "3.51", "field": .01, "type": "regular"},
+    {"name": "3.51", "field": 1, "type": "regular"},
+    {"name": "3.51", "field": 4, "type": "regular"},
+    {"name": "3.51", "field": 4, "type": "regular"},
+    {"name": "3.51", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

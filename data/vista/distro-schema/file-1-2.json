@@ -1,0 +1,65 @@
+{
+  "fileNumber": 1.2,
+  "fileName": "ALTERNATE EDITOR",
+  "globalRoot": "1.2",
+  "globalReference": "^DIST(1.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the alternate editor. It must start with a unique character. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVATION CODE FROM DIWE",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "This field holds the MUMPS code to properly establish the environment that will allow use of this editor to edit any VA FileMan word-processing type field.  Typically this code might move the text into another MUMPS global (like ^UTILITY) or to some other file format for editing. If the editor is written in MUMPS, it should either use variables that do not begin with the letter \"D\", or should NEW all its local variables to avoid problems on return to the FileMan editor.  If the variable DIWE(1) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OK TO RUN TEST",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field holds MUMPS code used to pre-check the environment before allowing the user to enter this editor.  This field should set the $TEST indicator.  If $TEST is true then it is OK for this editor to run at this time.  If $T is false, the user will be returned to the FileMan line editor.  If the field is null, it will be the same as $T=true  An example would be a mixed VAX-PDP site using a VMS editor. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RETURN TO CALLING EDITOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "If the user switched to this editor from the FileMan line editor, then DIWE(1) exists.  This field should contain MUMPS code used to reset the environment needed by the Line Editor. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1.207",
+      "required": false,
+      "helpText": "This is a description of the editor that will be shown to the user if they enter ??? at the Select prompt. Not in use yet. ",
+      "isMultiple": true,
+      "subFileNumber": 1.207,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "fileNumber": 458.2,
+  "fileName": "OT/CT REQUESTS",
+  "globalRoot": "458.2I",
+  "globalReference": "^PRST(458.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "A sequential number that identifies the overtime or compensatory time request. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "RP450'",
+      "required": true,
+      "pointerTo": 450,
+      "helpText": "An employee from the PAID EMPLOYEE file (#450) who will work either overtime or compensatory time/credit hours.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUESTED WORK DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the overtime or comptime/credit hrs. is to be worked.  If the OT/CT/CH request spans two days, enter the starting date.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE SCHEDULED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the overtime or compensatory time/credit hours request was scheduled.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF TIME",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "OT:OVERTIME;CT:COMP TIME/CREDIT HRS.;",
+      "helpText": "Identify request as overtime or (compensatory time/credit hours).  When coding CT, specify credit hours or comp time in the justification field. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HOURS REQUESTED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2X",
+      "length": 5,
+      "required": true,
+      "helpText": "The number of hours--overtime or compensatory time/credit hours--requested. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a justification for scheduling overtime or compensatory time/credit hours.  For Comp/Credit requests, include Comp or Credit in the justification to distinquish between comp and credit.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COST ESTIMATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,2",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains an estimate of the cost of the overtime, e.g., the hours in Field 5 multiplied by 1.5 times the Employee's hourly rate. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:Requested;S:Supr. App.;A:Approved;D:Disapproved;X:Cancelled;",
+      "helpText": "The status of the request to work overtime or compensatory time/credit hours. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "T&L WORKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The time and leave unit where the overtime or compensatory time/credit hours is scheduled to be worked.  ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ENTRY PERSON",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the person entering the request. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time the request was entered. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the supervisor who approved or disapproved the request. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SUPR. ACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the supervisor took action on this request. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SUPR. ES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "The supervisor's electronic siganture code. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SUPR. COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A free text response for any comments the supervisor would like to enter concerning this request. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "APPROVER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which identifies the person who approves the request. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "APPR. DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the request was approved. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "APPR. ES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "The approving official's electronic signature code. ",
+      "fieldNumber_": 23
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "458.2", "field": .01, "type": "regular"},
+    {"name": "458.2", "field": 1, "type": "regular"},
+    {"name": "458.2", "field": 2, "type": "regular"},
+    {"name": "458.2", "field": 10, "type": "regular"},
+    {"name": "458.2", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "S %=$P(^(0),U,3) W \"   \",$E(%,4,5),\"-\",$E(%,6,7),\"-\",$E(%,2,3)"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 634.4,
+  "fileName": "HBHC FORM 6 CORRECTIONS",
+  "globalRoot": "",
+  "globalReference": "^HBHC(634.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CORRECTION TRANSMIT RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents Form 6 (Correction) record awaiting transmission to Austin.  Form 6 record is generated when user requests Form '3' or '5' Transmit Status flag be reset (allowing editing of transmitted record). This record informs Austin to delete the Evaluation/Admission or Discharge record already on file, a corrected replacement record of evaluation/admission or discharge data is forthcoming.  Field allows for 200 character fixed length record of free text.  Field updated by package onl",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

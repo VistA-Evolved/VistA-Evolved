@@ -1,0 +1,262 @@
+{
+  "fileNumber": 815,
+  "fileName": "PCE PARAMETERS",
+  "globalRoot": "815",
+  "globalReference": "^PX(815,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "There is only \"1\" parameter similar to the MAS Parameters File.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SD/PCE SWITCH OVER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that Scheduling stops asking for Providers, Diagnoses, and Procedures and PCE collects them. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HEALTH SUMMARY START DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This date will be used to restrict the view of PCE data for the following Health Summary components:  PCE Immunization, PCE Skin Test, PCE Outpatient Diagnosis, and PCE Outpatient Encounter.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "PATIENT, CLINIC OR WARD",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field definition is used by the PCE Encounter options. The option uses this field with a FileMan Reader call to determine the view to be used in building the display list.  It determines if the list will be of a patient and which one or of a clinic/ward and which one.    No data should be put in this field.  ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "STARTUP VIEW",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "V:VISIT/ENCOUNTER;A:APPOINTMENT;",
+      "helpText": "This is the default view for all users. It sets which list the PCE Encounter Data Entry starts up in.  If it is \"V\" the list is by Visit/Encounter. If it is \"A\" then the list is by Appointments.  ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "BEGINNING PATIENT DATE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the value that determines the starting date for the list by a patient in PCE Encounter Data Entry. The number is added to today to get the starting day. If the value is -30, then the starting day is T-30, or 30 days before today. If the value is 5, then the starting day is T+5, or 5 days after today. If it is 0 then the starting day will be today.  ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "ENDING PATIENT DATE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the value that determines the ending date for the list by a patient in PCE Encounter Data Entry. The number is added to today to get the ending day. If the value is -30, then the ending day is T-30, or 30 days before today. If the value is 5, then the ending day is T+5, or 5 days after today. If it is 0 then the ending day will be today.   ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "BEGINNING HOS LOC DATE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the value that determines the starting date for the list by a Clinic/Ward in PCE Encounter Data Entry. The number is added to today to get the starting day. If the value is -30, then the starting day is T-30, or 30 days before today. If the value is 5, then the starting day is T+5, or 5 days after today. If it is 0 then the starting day will be today.  ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "ENDING HOS LOC DATE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the value that determines the ending date for the list by a Clinic/Ward in PCE Encounter Data Entry. The number is added to today to get the ending day. If the value is -30, then the ending day is T-30, or 30 days before today. If the value is 5, then the ending day is T+5, or 5 days after today. If it is 0 then the ending day will be today.  ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "RETURN WARNINGS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if the Device Interface will return \"WARNING\"s or not if there are no Procedures for this encounter. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "MULTIPLE PRIMARY DIAGNOSES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:RETURN WARNING;1:RETURN ERROR;",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "NO PRIMARY DIAGNOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:RETURN WARNING;1:RETURN ERROR;",
+      "helpText": "This field determines if a WARNING or an ERROR will be returned if  no primary diagnosis exists for this encounter. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "DISPOSITION HOSPITAL LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "815.0401P",
+      "required": false,
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "PXPT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP9999999.06'I",
+      "required": true,
+      "pointerTo": 9999999.06,
+      "helpText": "This is the facility's site name.  It points to the LOCATION file (#9999999.06) which is DINUMed to the INSTITUTION file (#4).   This is the location that patients in the PATIENT/IHS file (#9000001) are associated with. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "PXPT LAST PATIENT LOADED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a field that allows a process to keep track of the last patient that was processed. In case of failure that process can find out where it last completed a process and where to restart at.  If process completed then this field is reset to 0.   Enter the number of name of the last patient processed. ",
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "PATCH 9 LAST VISIT PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 602,
+      "fieldName": "PATCH 27 LAST DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time of the last visit processed by PCE patch 27. This date starts at the last visit at the time the patch is installed and works backward through the visit tell all visit since 10/1/96 have been processed.  If the patch cleanup has finished this will contain the date and time of the first visit of 10/1/96. ",
+      "fieldNumber_": 602
+    },
+    {
+      "fieldNumber": 650,
+      "fieldName": "MANAGEMENT MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Messages relating to the management and maintenance of PCE will be sent to the members of this mail group.  ",
+      "fieldNumber_": 650
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "DEFAULT REMINDER DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "815.0701",
+      "required": false,
+      "helpText": "This reminder disclaimer is distributed nationally.  This disclaimer is printed at the beginning of the Health Summaries' Clinical Maintenance and Clinical Reminder components, unless your site chooses to create your own reminder disclaimer. If the Site Reminder Disclaimer is defined, the Site Reminder Disclaimer will be used by Health Summary, instead of this Default Reminder Disclaimer. ",
+      "isMultiple": true,
+      "subFileNumber": 815.0701,
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 702,
+      "fieldName": "SITE REMINDER DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "815.0702",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 815.0702,
+      "fieldNumber_": 702
+    },
+    {
+      "fieldNumber": 801,
+      "fieldName": "REPORT ER CLINIC NAMES",
+      "dataType": "POINTER",
+      "rawType": "815.0801P",
+      "required": false,
+      "helpText": "This multiple is used to define the laboratory test names from the Laboratory Test file that will be used by the PCE Reporting Module to evaluate patient data for critical values.  These tests are defined by your IRM personnel or Clinical Coordinator. ",
+      "fieldNumber_": 801
+    },
+    {
+      "fieldNumber": 802,
+      "fieldName": "REPORT GLUCOSE NAMES",
+      "dataType": "POINTER",
+      "rawType": "815.0802P",
+      "required": false,
+      "fieldNumber_": 802
+    },
+    {
+      "fieldNumber": 803,
+      "fieldName": "REPORT CHOLESTEROL NAMES",
+      "dataType": "POINTER",
+      "rawType": "815.0803P",
+      "required": false,
+      "fieldNumber_": 803
+    },
+    {
+      "fieldNumber": 804,
+      "fieldName": "REPORT LDL CHOLESTEROL NAMES",
+      "dataType": "POINTER",
+      "rawType": "815.0804P",
+      "required": false,
+      "fieldNumber_": 804
+    },
+    {
+      "fieldNumber": 805,
+      "fieldName": "REPORT HBA1C NAMES",
+      "dataType": "POINTER",
+      "rawType": "815.0805P",
+      "required": false,
+      "fieldNumber_": 805
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "SITE SUPPORT CONTACTS",
+      "dataType": "SUBFILE",
+      "rawType": "815.01",
+      "required": false,
+      "helpText": "This is a list of people who support PCE at a site. DATA2PCE error messages will list these contacts so a user who gets an error will know who to go to. The error messages are structured so that up to three contacts can be listed.  ",
+      "isMultiple": true,
+      "subFileNumber": 815.01,
+      "fieldNumber_": 900
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "815", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

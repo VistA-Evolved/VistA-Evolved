@@ -1,0 +1,108 @@
+{
+  "fileNumber": 503340.1,
+  "fileName": "DONATIONS LETTER RECIPIENT",
+  "globalRoot": "503340.1",
+  "globalReference": "^ABS(503340.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRINTED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "MR/MRS/MS/MISS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "STATE ABBREVIATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503340.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

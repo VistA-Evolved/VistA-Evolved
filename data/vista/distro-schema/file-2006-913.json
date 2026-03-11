@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2006.913,
+  "fileName": "ARTIFACT KEYLIST",
+  "globalRoot": "2006.913",
+  "globalReference": "^MAGV(2006.913,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEPTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Number of levels in the Key List. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "KEY",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9132",
+      "required": false,
+      "helpText": "This field holds the Key List by storing pairs - key value and key level. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9132,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

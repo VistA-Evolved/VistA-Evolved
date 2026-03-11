@@ -1,0 +1,166 @@
+{
+  "fileNumber": 100.2,
+  "fileName": "OE/RR PATIENT EVENT",
+  "globalRoot": "100.2",
+  "globalReference": "^ORE(100.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the patient file and is the patient associated with  this event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "100.25DA",
+      "required": false,
+      "helpText": "This multiple contains a log of actions taken on this event that are relevant to the release or discontinuance of orders. ",
+      "isMultiple": true,
+      "subFileNumber": 100.25,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EVENT",
+      "dataType": "POINTER",
+      "rawType": "P100.5'",
+      "required": false,
+      "pointerTo": 100.5,
+      "helpText": "This field is a pointer to the OE/RR RELEASE EVENTS file, which defines the conditions under which delayed orders are to be released for this patient event, if delayed orders are related to this event. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field is a pointer to the Admission movement for which this event is valid; this will be the current admission if the patient is an  inpatient when delayed orders are written, otherwise the admission  movement will be stuffed in when the patient is admitted and the orders  released.  If the patient is discharged without this event having been processed, it will be retired and any orders still delayed will be lapsed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORDER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field is a pointer to the doctor's order requesting that this event occur for this patient when delayed orders are written. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CREATED ON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the timestamp of when this event was entered into the file for this patient. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the user who entered this event into the file for this patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date and time that this event occurred for this patient; if the event is an MAS movement, this time will be the DATE/TIME from the PATIENT MOVEMENT file which may be slightly different than the actual time that this event was processed by the event driver. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PATIENT MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field is a pointer to the MAS Patient Movement that satisfied this event for this patient; any changes to this movement that alter the conditions of the event will be tracked in the Activity log. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "AUTO-DC RULE",
+      "dataType": "POINTER",
+      "rawType": "P100.6'",
+      "required": false,
+      "pointerTo": 100.6,
+      "helpText": "This field is the Auto-DC Rule from file #100.6 that was used to automatically discontinue active orders when this event occurred.  Those orders that were dc'd are listed in the Discontinued Orders multiple of this file. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SURGERY",
+      "dataType": "POINTER",
+      "rawType": "P130'",
+      "required": false,
+      "pointerTo": 130,
+      "helpText": "This field is a pointer to the Surgery case that satisfied this event for this patient when the TIME PAT OUT OR field was entered (for events prior  to the instllation of patch SR*3*157) or when the TIME PAT IN OR field  was entered (for events after the installation of patch SR*3*157); any  changes to this field will be tracked in the Activity log. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P100.2'",
+      "required": false,
+      "pointerTo": 100.2,
+      "helpText": "This field is a \"parent\" event, allowing multiple Patient Events to be collected together for release at the same time based on the same criteria; the parent event tracks the release criteria, while each \"child\" event defines a particular set of orders to be released on that event. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RELEASED ORDERS",
+      "dataType": "POINTER",
+      "rawType": "100.26PA",
+      "required": false,
+      "helpText": "This multiple field contains the delayed orders that were released based on the release event defined in the OE/RR RELEASE EVENTS file #100.5 when this event occurred. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DISCONTINUED ORDERS",
+      "dataType": "POINTER",
+      "rawType": "100.27PA",
+      "required": false,
+      "helpText": "This multiple contains the orders that were automatically discontinued based on the rules defined in the OE/RR AUTO-DC RULES file #100.6 when this event occurred. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AO", "field": },
+    {"name": "ASR", "field": },
+    {"name": "B", "field": },
+    {"name": "DAD", "field": },
+    {"name": "DC", "field": },
+    {"name": "E", "field": },
+    {"name": "100.2", "field": .01, "type": "regular"},
+    {"name": "100.2", "field": 2, "type": "regular"},
+    {"name": "100.2", "field": 4, "type": "regular"},
+    {"name": "100.2", "field": 13, "type": "regular"},
+    {"name": "100.2", "field": 14, "type": "regular"},
+    {"name": "100.2", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ORD(100.5,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(100.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,1),4,5)_\"-\"_$E($P(^(1),U,1),6,7)_\"-\"_$E($P(^(1),U,1),2,3)"}
+  ]
+}

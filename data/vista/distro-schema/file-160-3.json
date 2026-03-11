@@ -1,0 +1,40 @@
+{
+  "fileNumber": 160.3,
+  "fileName": "PRIMARY PAYER AT DIAGNOSIS",
+  "globalRoot": "160.3",
+  "globalReference": "^ONCO(160.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The patient's primary payor/insurance carrier code at the time of initial diagnosis and/or treatment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The definition of the PRIMARY PAYOR AT DIAGNOSIS code value. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "160.3", "field": .01, "type": "regular"},
+    {"name": "160.3", "field": 1, "type": "regular"},
+    {"name": "160.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "fileNumber": 470.1,
+  "fileName": "PATIENT FUNDS MASTER TRANSACTION",
+  "globalRoot": "470.1",
+  "globalReference": "^PRPF(470.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P470'",
+      "required": false,
+      "pointerTo": 470,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT TRANSACTION #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE TRANSACTION ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "DAYS BETWEEN DATES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEPOSIT/WITHDRAWAL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DEPOSIT;W:WITHDRAWAL;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CASH/CHECK/OTHER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CASH;2:CHECK;3:OTHER;",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "P:PRIVATE SOURCE;G:GRATUITOUS;B:BOTH;",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FORM",
+      "dataType": "POINTER",
+      "rawType": "RP470.2'",
+      "required": true,
+      "pointerTo": 470.2,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRIVATE SOURCE AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0O",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "GRATUITOUS AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0O",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PATIENT FUNDS CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Field contains the validation code for verification of electronic signature. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 13.7,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the version number used to encode the Electronic Signature Code. ",
+      "fieldNumber_": 13.7
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BALANCE CARRIED FORWARD AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PVT SOURCE BAL CARRIED FWD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GRATUITOUS BAL CARRIED FWD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DEFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SIG CONVERSION COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SIGNATURE CODE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "470.1", "field": .01, "type": "regular"},
+    {"name": "470.1", "field": 4, "type": "regular"},
+    {"name": "470.1", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 757.018,
+  "fileName": "SNOMED CT HIERARCHY",
+  "globalRoot": "757.018",
+  "globalReference": "^LEX(757.018,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a SNOMED CT hierarchy (e.g., Disorder,  Procedure, Finding, Organism, Body Structure, Substance, Observable  Entity, Physical Object, Occupation, Specimen, etc.) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a three character unique abbreviation representing the SNOMED CT hierarchy (e.g., DIS, PRC, FND, ORG, BDS, SUB, OBS, OBJ, OCC, etc.) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of SNOMED CT concepts that fall into the hierarchy. This is for internal use only. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUBSET MEMBERSHIP",
+      "dataType": "POINTER",
+      "rawType": "757.181P",
+      "required": false,
+      "helpText": "This is a list of the Lexicon Subsets this hierarchy can belong to. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ABR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "757.018", "field": .01, "type": "regular"},
+    {"name": "757.018", "field": .01, "type": "regular"},
+    {"name": "757.018", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

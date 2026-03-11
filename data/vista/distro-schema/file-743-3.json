@@ -1,0 +1,76 @@
+{
+  "fileNumber": 743.3,
+  "fileName": "CONDITION",
+  "globalRoot": "743.3",
+  "globalReference": "^QA(743.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the condition that the user will see. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTO ENROLL CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether or not this is an auto enroll condition. You should answer Y(es) to this field only if this condition can be auto enrolled. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONDITION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the entry point of a routine that will scan DHCP for the patients who meet the condition and its parameters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARAMETER CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the entry point of a routine that will ask and store the parameters for this condition. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "743.33",
+      "required": false,
+      "helpText": "The description in this field is displayed when the user enters '?CONDITION' at the 'Select CONDITION:' prompt. ",
+      "isMultiple": true,
+      "subFileNumber": 743.33,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "743.34PA",
+      "required": false,
+      "helpText": "This field lists all the data elements that can be captured by this condition. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AELEM", "field": },
+    {"name": "B", "field": },
+    {"name": "743.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

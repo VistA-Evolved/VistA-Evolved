@@ -1,0 +1,36 @@
+{
+  "fileNumber": 634.6,
+  "fileName": "HBHC TRANSMIT HISTORY",
+  "globalRoot": "634.6",
+  "globalReference": "^HBHC(634.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMIT RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "634.6", "field": .01, "type": "regular"},
+    {"name": "634.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

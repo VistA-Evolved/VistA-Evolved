@@ -1,0 +1,209 @@
+{
+  "fileNumber": 404.51,
+  "fileName": "TEAM",
+  "globalRoot": "404.51",
+  "globalReference": "^SCTM(404.51,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TEAM PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number associated with the team. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TEAM PURPOSE",
+      "dataType": "POINTER",
+      "rawType": "RP403.47'",
+      "required": true,
+      "pointerTo": 403.47,
+      "helpText": "This defines the primary role of the team.   Examples:     - Primary Care     - Inpatient Ward     - Mental Health Treatment     - Rapid Response     - Community Care     - Special Treatment Program ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT TEAM PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the default printer for the team. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CAN ACT AS A PC TEAM?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Can this team be the primary care team for a patient?   (Even if the team's principle purpose is not primary care, it still maybe able act as a primary care team for some patients. This attribute indicates if that is possible.) ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SERVICE/DEPARTMENT",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "Entry in the Service/Section file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the entry for the site in the INSTITUTION File. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAX NUMBER OF PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The maximum allowable number of patients for this team.  After this number is exceeded, no more patients should be assigned to this team. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MAX % OF PRIMARY CARE PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the maximum percentage of all patients assigned to primary care teams that this team should be assigned. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CLOSE TO FURTHER ASSIGNMENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates that the team cannot be assigned additional patients.  This  may be used for any reason. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "AUTO-ASSIGN FROM ASSC CLINICS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "By answering 'YES', enrollment into clinics that are associated clinics of active positions will result in the patient being assigned to this team.  If the clinic is associated with more than one team, no assignment will be done. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DISCHARGE FROM ASSOC. CLINICS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "By answering 'YES', changes in enrollment data that leaves a patient discharged from a clinic will result in the patient being automatically discharged from the team.  If the patient has any active or future assignments to team positions, the patient will not be discharged from the team. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "RESTRICT CONSULTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This attribute prevents users from making consult appointments to clinics in which the patient is not enrolled. This parameter in the Patient Team/Position Assignment file overrides this same parameter in the team level.   (Applies to on primary teams only.) ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.525",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 404.525,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "CURRENT # OF PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the number of patients currently assigned to the team. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This indicates if the team is active on the current date. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "CURRENT EFFECTIVE DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the most recent date that the active status was changed. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "CURRENT ACTIVATION DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the activation date of the team based on today's date:   For teams never active - this is the next date where the team is active   For teams that are active now - this is the date it became active   For teams that are currently inactive - this is the last activation date ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "CURRENT INACTIVATION DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the inactivation date as of today.   For an inactive team, this is the most recent day it became inactive   For an active team, this is the date it will become inactive. ",
+      "fieldNumber_": 205
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AINST", "field": },
+    {"name": "ASCTEAM", "field": },
+    {"name": "B", "field": },
+    {"name": "404.51", "field": .01, "type": "regular"},
+    {"name": "404.51", "field": .01, "type": "regular"},
+    {"name": "404.51", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

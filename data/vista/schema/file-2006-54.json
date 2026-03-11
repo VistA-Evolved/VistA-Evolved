@@ -1,0 +1,45 @@
+{
+  "fileNumber": 2006.54,
+  "fileName": "PDU TYPE",
+  "globalRoot": "2006.54",
+  "globalReference": "^MAGDICOM(2006.54,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a (hexadecimal) code for the PDU (Protocol Data Unit) that is defined in this entry.   This code is formatted as a number of hexadecimal digits, followed by a capital letter H. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of the PDU (Protocol Data Unit) that is defined in this entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field identifies the chapter and verse in the DICOM standard where this PDU (Protocol Data Unit) is defined. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.54", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

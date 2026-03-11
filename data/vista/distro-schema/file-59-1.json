@@ -1,0 +1,46 @@
+{
+  "fileNumber": 59.1,
+  "fileName": "OUTPATIENT AMIS DATA",
+  "globalRoot": "59.1OD",
+  "globalReference": "^PS(59.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field is used to indicate the date of the AMIS data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "59.11PA",
+      "required": false,
+      "helpText": "This sub file is used to indicate AMIS sorted by division. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPORT QUEUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if the recompile has been queued to run. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

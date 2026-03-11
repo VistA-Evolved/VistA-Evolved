@@ -1,0 +1,75 @@
+{
+  "fileNumber": 2006.9422,
+  "fileName": "MAGV IMPORT MEDIA LOG",
+  "globalRoot": "2006.9422",
+  "globalReference": "^MAGV(2006.9422,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMPORT TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time the media import event was logged by the Importer II  application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEDIA IMPORTER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User of the Importer II application during this media import event. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WORKSTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Computer name of the workstation used for importing data from this media. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEDIA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DIR:DIRECT IMPORT;STG:STAGED MEDIA;NET:NETWORK IMPORT;DCM:DICOM CORRECT;",
+      "helpText": "Type of media used for this import event. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "VALIDATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:VALID MEDIA;1:INVALID MEDIA;",
+      "helpText": "Importer II DICOM directory validation status (valid or invalid). The DICOMDIR files on the media index the available DICOM objects. This field records the integrity of the DICOMDIR as valid or invalid. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "VALIDATION MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Details of the validation status of this media import event. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.9422", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

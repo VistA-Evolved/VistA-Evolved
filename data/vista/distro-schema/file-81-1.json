@@ -1,0 +1,94 @@
+{
+  "fileNumber": 81.1,
+  "fileName": "CPT CATEGORY",
+  "globalRoot": "81.1",
+  "globalReference": "^DIC(81.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the category name associated with specified CPT Code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "m:MAJOR CATEGORY;s:SUB-CATEGORY;",
+      "helpText": "This field contains the type of category associated with specified CPT code. It is a set of codes where 'm' - Major Category                            's' - Sub-Category ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAJOR CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P81.1'",
+      "required": false,
+      "pointerTo": 81.1,
+      "helpText": "This field contains the Major Category associated with specified CPT Code.  It is a pointer to the CPT Category File. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BEGIN CPT RANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Lowest CPT/HCPCS code to which this category applies. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "END CPT RANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Highest CPT/HCPCS code to which this category applies. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CPT;H:HCPCS;",
+      "helpText": "Category defined by CPT or HCPCS. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "81.11",
+      "required": false,
+      "helpText": "This field contains the full description of the  CPT Category chosen. ",
+      "isMultiple": true,
+      "subFileNumber": 81.11,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "M", "field": },
+    {"name": "R", "field": },
+    {"name": "R2", "field": },
+    {"name": "81.1", "field": .01, "type": "regular"},
+    {"name": "81.1", "field": 3, "type": "regular"},
+    {"name": "81.1", "field": 4, "type": "regular"},
+    {"name": "81.1", "field": 5, "type": "regular"},
+    {"name": "81.1", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

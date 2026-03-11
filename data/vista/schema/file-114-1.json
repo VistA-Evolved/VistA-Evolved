@@ -1,0 +1,60 @@
+{
+  "fileNumber": 114.1,
+  "fileName": "RECIPE CATEGORY",
+  "globalRoot": "114.1",
+  "globalReference": "^FH(114.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a category of recipes (e.g., beverages, condiments, entree meats, etc.) which are used to sort the recipe items on the various meal lists. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field represents a short code for the recipe category. It consists of one to two characters and a number or one to two characters, a number, and an 'X' used when printing tray assembly tickets. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEAL PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This value is used to sort recipes for printing as meals. The value indicates the relative print order, from low to high, of recipes in this recipe category. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will prohibit further selection of this Recipe Category. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "114.1", "field": .01, "type": "regular"},
+    {"name": "114.1", "field": 1, "type": "regular"},
+    {"name": "114.1", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

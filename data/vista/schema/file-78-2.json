@@ -1,0 +1,57 @@
+{
+  "fileNumber": 78.2,
+  "fileName": "LBL/HDR/FTR FORMATS",
+  "globalRoot": "78.2",
+  "globalReference": "^RA(78.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FORMAT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name associated with this format. Format names are assigned by each site and must be 3 to 30 non-numeric characters in length.   Following are the potential uses of the formats you are defining:         1) Flash cards         2) Jacket labels         3) Exam labels         4) Report headers         5) Report footers   This field is pointed to by the corresponding rad/nuc med location parameters of the 'Imaging Locations' file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF ROWS IN FORMAT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the number of rows desired in this format. The total number of rows allowed is limited to 66.   The amount of rows may be set greater than the actual amount of lines necessary for the printing of the format.   For example, if it is desired to have a blank line at the beginning, the first print field can be set to start at row 2 to produce the blank line at the beginning.  Also, blank lines may be added at the end by having the total number of rows greater than the line number",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PRINT FIELDS",
+      "dataType": "POINTER",
+      "rawType": "78.21IP",
+      "required": false,
+      "helpText": "This multiple field contains information about how to set up the fields that will be printed for this format. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "COMPILED LOGIC",
+      "dataType": "SUBFILE",
+      "rawType": "78.22",
+      "required": false,
+      "helpText": "This field contains the mumps source code produced as a result of defining the print fields.  It is executed when this format is used by the rad/nuc med system.   This word processing, multiple field is system generated and never seen by the user. ",
+      "isMultiple": true,
+      "subFileNumber": 78.22,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "78.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

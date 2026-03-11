@@ -1,0 +1,77 @@
+{
+  "fileNumber": 811.6,
+  "fileName": "REMINDER SPONSOR",
+  "globalRoot": "811.6",
+  "globalReference": "^PXRMD(811.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of an organization, group or individual that sponsors reminder components. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTACT INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "811.61",
+      "required": false,
+      "helpText": "This multiple contains a list of sponsor contact information. ",
+      "isMultiple": true,
+      "subFileNumber": 811.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSOCIATED SPONSORS",
+      "dataType": "POINTER",
+      "rawType": "811.62P",
+      "required": false,
+      "helpText": "This is a list of associated sponsors. A sponsor must have an entry in the Reminder Sponsor file before it can be selected as an ASSOCIATED SPONSOR. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL;N:NATIONAL;V:VISN;",
+      "helpText": "This is the CLASS of the sponsor. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National sponsors cannot be edited by sites.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "REVIEW DATE is used to determine when a sponsor should be reviewed to verify that it is current and correct. You can find all sponsors whose review date has passed using the Clinical Reminders Review Date Report.  ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "811.63D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the sponsor.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.63,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "811.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(811.6,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

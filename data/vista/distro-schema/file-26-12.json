@@ -1,0 +1,68 @@
+{
+  "fileNumber": 26.12,
+  "fileName": "PRF LOCAL FLAG HISTORY",
+  "globalRoot": "26.12",
+  "globalReference": "^DGPF(26.12,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0I",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the internal entry number which is assigned to each record of  this file.  This field can be used to help in identifying all History  records for each Enter/Edit/Review to the PRF LOCAL FLAG (#26.11) record. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FLAG NAME",
+      "dataType": "POINTER",
+      "rawType": "RP26.11'I",
+      "required": true,
+      "pointerTo": 26.11,
+      "helpText": "This field contains the record flag name that is associated with the  history record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FLAG EDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the date/time that an entry in the PRF LOCAL FLAG  file was Entered, Edited, or Reviewed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED/EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person making the Enter/Edit/Review to the associated PRF LOCAL FLAG record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EDIT REASON",
+      "dataType": "SUBFILE",
+      "rawType": "26.122",
+      "required": false,
+      "helpText": "This field contains the text of the reason for the Enter/Edit/Review to the associated PRF LOCAL FLAG record. ",
+      "isMultiple": true,
+      "subFileNumber": 26.122,
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.12", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,2),6)"}
+  ]
+}

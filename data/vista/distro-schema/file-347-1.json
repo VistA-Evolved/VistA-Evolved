@@ -1,0 +1,36 @@
+{
+  "fileNumber": 347.1,
+  "fileName": "AR FMS DOCUMENT TYPE",
+  "globalRoot": "347.1",
+  "globalReference": "^RC(347.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Defines the AR FMS DOCUMENT type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Used to identify FMS document type. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "347.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 704.103,
+  "fileName": "TERM_QUALIFIER_PAIR",
+  "globalRoot": "704.103",
+  "globalReference": "^MDC(704.103,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies the primary TERM file (#704.101) entry in the  Clinical Data Model for this pairing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUALIFIER_ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This represents the order that this qualifier will be displayed with the term  as well as the order of interpretation for complex terms. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "QUALIFIER_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies the qualifier term or subcomponent for this  pair. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RANKING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This value will be used in calculations for this pairing as well as  future graphing capabilities for pick-list values. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "fileNumber": 503330,
+  "fileName": "VOLUNTARY MASTER",
+  "globalRoot": "503330I",
+  "globalReference": "^ABS(503330,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VOLUNTEER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the first and last name of the volunteer in the format LASTNAME,FIRSTNAME MI.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "503330.01P",
+      "required": false,
+      "helpText": "The fields of this multiple contains information about the volunteer which is specific to a particular station. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "LOWERCASE PRINTING NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field contains the name of the volunteer, in lowercase, in the format FirstName MI. Lastname.  ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "UPPERCASE PRINTING NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field computes the name of the volunteer in the format Firstname MI. Lastname ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "FIRST CHARACTER OF LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field stores the first character of the volunteers' last name for faster sorting during games prints. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This field contains the Social Security Number of the volunteer without dashes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STREET ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the first line of the Volunteers address.  It is the ONLY address line transmitted to the Austin DPC. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "STREET ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the second line of the Volunteers streed address.  It is NOT transmitted to the Austin DPC. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the city/town of the volunteer. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This field contains the state of the volunteers address. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "STATE ABBREVIATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "  This field computes the correct USPS abbreviation for a state from the State file. (File 5) ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the 5 or 9 digit Zip Code of the volunteers address. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "CITY/STATE/ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "G:Girl under 21;F:Female, 21 and over;M:Male, 21 and over;B:Boy under 21;",
+      "helpText": "  This field contains the sex of a volunteer as required by the Volunteer Package at the Austin DPC. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "BIRTH DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the complete birth date of the volunteer.  Although Austin does not require entry of day, this package does. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "BIRTH MONTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the birth month of the volunteer. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field dynamically computes the age of the volunteer. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "COMBINATION",
+      "dataType": "SUBFILE",
+      "rawType": "503330.03I",
+      "required": false,
+      "helpText": "This multiple field contains the information necessary to calculate and store the various combinations for the volunteer. ",
+      "isMultiple": true,
+      "subFileNumber": 503330.03,
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 16.9,
+      "fieldName": "TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains a telephone number for the volunteer. ",
+      "fieldNumber_": 16.9
+    },
+    {
+      "fieldNumber": 16.95,
+      "fieldName": "ALTERNATE TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an alternate telephone number for the volunteer. ",
+      "fieldNumber_": 16.95
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NEXT OF KIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the name of the Next of Kin of the volunteer, for use in an emergency. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "NOK RELATIONSHIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the relationship of the person listed as next of kin to the volunteer. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "NOK TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the primary phone number for reaching the next of kin  of the volunteer in an emergency. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NOK ALTERNATE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains an alternate telephone number for reaching the next of  kin of the volunteer in an emergency. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains a two character transaction type code from the Austin DPC. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PSEUDO INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 'P' when the social security number of the volunteer is unknown and a Pseudo number has been assigned for identification purposes. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field contains the first character of the volunteers last name followed by the last 4 numbers of the SSN. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "NICKNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a nickname often used by the volunteer. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PREFERRED LANGUAGE FOR LOG-IN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENGLISH;2:SPANISH;",
+      "helpText": "This field contains the individual volunteers selection for display interaction in the Auto Log-in routines. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "GAMES SHIRT SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is intended for use for volunteer participants in veterans games events. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "GAMES RIDE STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "GAMES RIDE STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "GAMES HOUSING CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "5 DIGIT ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 34
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "503330", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "503330", "field": .7, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "503330", "field": 1, "type": "regular"},
+    {"name": "503330", "field": 6, "type": "regular"},
+    {"name": "503330", "field": 7, "type": "regular"},
+    {"name": "503330", "field": 27, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""}
+  ]
+}

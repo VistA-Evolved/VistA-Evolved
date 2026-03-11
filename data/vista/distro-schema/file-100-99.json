@@ -1,0 +1,583 @@
+{
+  "fileNumber": 100.99,
+  "fileName": "ORDER PARAMETERS",
+  "globalRoot": "100.99",
+  "globalReference": "^ORD(100.99,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0I",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the internal number of this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is an arbitrary name for the single entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CURRENT ORDER #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0I",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current order # on the system. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYSTEM PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "100.992",
+      "required": false,
+      "helpText": "This is the name of the system as found in the global node ^%ZOSF(\"VOL\").  An entry should be made here for each CPU system that generates orders. ",
+      "isMultiple": true,
+      "subFileNumber": 100.992,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ASK;1:ASK;",
+      "helpText": "This is a site parameter which controls the prompt for TREATING SPECIALTY when defining patient demographics.  If set to NOT ASK, the prompt will not be displayed; and TREATING SPECIALTY will only be defined for the order if it can be found. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "OR3 CONVERSION COMPLETE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is maintained by the Order Entry/Results Reporting version 3.0 conversion of orders.  It will be initialized to 0 at the start of the conversion and updated to 1 when the conversion is complete.  It is important that this field not be edited. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "OR3 INPATIENT CONVERSION START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will be maintained by the OE/RR version 3 conversion.  It will be set to the time the conversion of orders for inpatients started. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "OR3 INPATIENT CONVERSION STOP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will be maintained by the OE/RR version 3 order conversion.  It will contain the time the conversion of orders for inpatients completed. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "OR3 INPATIENT LOCATION UP TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the name of the location the conversion is currently up to if still converting orders for current inpatients.  If that step is complete, this field will be blank. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "OR3 INPATIENT DFN UP TO",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "If the OE/RR version 3.0 order conversion is converting orders for inpatients, this field will contain the patient the conversion is currently up to.  If the inpatient order conversion is complete, this field will be null. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "OR3 BACKGROUND JOB START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is maintained by the OE/RR version 3 orders conversion.  If the conversion is up to phase 2 (which converts orders for recently seen patients and those scheduled to be seen in the near future), this field will contain the date phase 2 of the conversion started. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "OR3 BACKGROUND JOB STOP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is maintained by the OE/RR version 3 orders conversion.  If the conversion has completed phase 2 (which converts orders for recently seen patients and those scheduled to be seen in the near future), this field will contain the date phase 2 of the conversion completed. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "OR3 BACKGROUND JOB STAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is maintained by the OE/RR version 3 conversion.  If the conversion is in the background job, this will keep track of the stage of the background process it is on.  Once the background job is complete, this field will be deleted.  The stages are:     0.  Populate multiple of patient orders to convert    1.  Current inpatients.   2.  Patients with future scheduled admissions   3.  patients on waiting list   4.  patients with discharges in the last 4 weeks   5.  patients with appointmen",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "OR3 BACKGROUND JOB UP TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is maintained by the OE/RR orders conversion.  If the background job process is running, this will keep track of the last value processed for the current stage.  If the background job stops and needs to be restarted, this field will allow restart from where the process left off. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "OR3 BACKGROUND JOB TASK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is maintained by the OE/RR orders conversion.  If the conversion is in the background job portion, this field will contain the task number (ZTSK) of the background process job.  This will assist in providing the status of the job and allowing restart should the job stop. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.11,
+      "fieldName": "OR3 BACKGROUND JOB STOP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Should you wish to stop the background job process for any reason during the OE/RR version 3.0 orders conversion, you can call STOP^OR3CONV and this field will be set to yes.  The conversion will check for this field and when it finds it set, it will allow the conversion to make a clean stop.  RESTART^OR3CONV may be used to restart the task. ",
+      "fieldNumber_": 3.11
+    },
+    {
+      "fieldNumber": 3.12,
+      "fieldName": "OR3 PATIENTS CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field will be maintained by the Order Entry/Results Reporting version 3.0 orders conversion.  It will keep a counter of the number of patients that have been converted. ",
+      "fieldNumber_": 3.12
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADD MENU DEFAULT",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is the default menu used to add orders.  If this field has no entry, then the ORADD menu will be used as the default.  This field is for sites that wish to customize the ORADD menu by creating another menu in a local namespace (ORZADD) so that local changes won't be overwritten when new versions of OE/RR are installed.  When a customized menu structure has been created for local use of OE/RR, it should be put in this field.   Starting with Version II of OE/RR, menus can be set up in f",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PACKAGE PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "100.995P",
+      "required": false,
+      "helpText": "This field allows each package to define its own set of parameters. The entries in this multiple field are exported much the same as entries in the PACKAGE File are exported when a package is initialized. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SHOW STATUS DESCRIPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the description associated with a status to be displayed with the current status of an order when a detailed display is requested. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SHOW PATIENT NAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the patient name to be displayed each time an order action is executed after the subheader during ADD NEW ORDERS option. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVE ORDERS CONTEXT HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field defines the number of hours that orders remain in the \"Current Orders\" context after they have been completed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REVIEW ON PATIENT MVMT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows orders to be reviewed when a patient is transferred or discharged, and when a clinic appointment is made or cancelled. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SINGLE USER/SUSPEND FILER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a parameter that can be set for single user systems (PC's) that do not allow multiple jobs to run simultaneously.  This is needed since OE/RR uses a background filer.  If this field is set to YES then tasks that normally are run in the background will run in real time.  For demo/training purposes, not to be used in a production environment.   This field is also used to shut down or suspend the background filer. The filer needs to be suspended when the ^ORYX global is being moved or a new",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INITIALS ON SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field allows the initials of the person who entered the order to be displayed on the OE/RR summary reports.  The initials take up an additional line on the display and are shown just below the Ord'd date time. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DEFAULT PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the attending physician to be prompted as a default when adding new orders. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LAST PURGE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date that the OE/RR purge utility was last started. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LAST ORDER PURGED",
+      "dataType": "POINTER",
+      "rawType": "P100'I",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains the last order number purged by the OE/RR purge utility. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ERROR DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field tells OE/RR how long to keep the record of failed tasks in the OE/RR ERROR file. If no entry is put in this field then errors are kept for 2 days. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DEBUG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is used by package developers to help debug transaction failures with their package and OE/RR.  If this field is turned ON, then transactions are not processed thru the background filer and a message is displayed when a transaction fails.  This field should be turned OFF at all other times. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "INSTALLATION FLAG",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used during installation to disable OE/RR protocols. There should only be an entry here during OE/RR installation.  The entry is provided by the OE/RR installation process. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CONFIRM PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES (Default NO);2:YES (Exclude ORES);3:YES (Default YES);",
+      "helpText": "This field will allow an additional prompt to confirm the provider selection when adding new orders. Entering 2 in this field will exclude holders of the ORES key (providers) from this check. Notice that these parameters also control the default presented to the user: 'Are you sure? <no -or- yes>' ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SHOW LAB #",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls the listing of lab orders for holders of the ORES key, after the electronic signature has been entered when entering new orders.  If Physicians want to see the lab order # with the order after entering and signing the orders, this parameter must be set to YES.  The Lab Order # is not displayed on the new orders screen. Only after the order is released to Lab service is the number assigned.  All other users get the listing regardless of what this parameter is set to. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PACKAGE SITE PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "100.9901P",
+      "required": false,
+      "helpText": "Here are the package specific parameters that can be modified by the installation site. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ELECTRONIC SIGNATURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows electronic signature functionality to be used. Use of this functionality requires some initial setup before it can be turned on.  Users have to be assigned keys that allow them to perform verification steps in the order entry process.  They also have to be given an electronic signature code.  This also has an  effect on who can be selected as the person requesting the order. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ELECTRONIC RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:YES (ALLOW S.O.C.);3:YES (ALLOW S.O.C & WRITTEN);4:YES (Exempt Service Entered);",
+      "helpText": "A site can use this field to select 1 of 4 modes for Electronic Signature: 0>No change from current Electronic Signature functionality. 1>Yes  All orders must be signed online. Signature on chart is not allowed All orders are filed initially with a signature status of Unsigned and a notification for electronic signature is sent to the ordering provider. 2>Yes (Allow S.O.C)  All orders are signed online, but for those cases where an order is written and signed on the paper chart, you can so speci",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "UNSIGNED ORDERS SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:All;1:Select;",
+      "helpText": "This field controls the type of review screen that is used for new/unsigned orders.  Without this parameter, the user has to sign all orders when entering  new orders or presented with new /unsigned orders when leaving the review screen.  Setting this parameter to 1 (Select) will force the use of the standard review screen of unsigned orders.  This 'new' screen allow the user to select the order sign by number, range of numbers or all orders by entering the keyword \"all\"    If a site sets the UN",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "NEW ORDERS DEFAULT - PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACCEPT ORDERS;1:SIGN & RELEASE;",
+      "helpText": "This parameter determines the default prompt for providers when the UNSIGNED ORDERS SCREEN parameter is set to SELECT. The default is ACCEPT ORDERS. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "HOSPITAL SITE",
+      "dataType": "POINTER",
+      "rawType": "100.9925P",
+      "required": false,
+      "helpText": "This field allows parameters to be set up for each location in the  hospital that uses OE/RR. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CHART COPY FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P100.23'",
+      "required": false,
+      "pointerTo": 100.23,
+      "helpText": "This is the format used when printing chart copies of the orders for the hospital. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CHART COPY HEADER",
+      "dataType": "POINTER",
+      "rawType": "P100.23'",
+      "required": false,
+      "pointerTo": 100.23,
+      "helpText": "This is the format used to print the header of the chart copies of orders for the hospital. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CHART COPY FOOTER",
+      "dataType": "POINTER",
+      "rawType": "P100.23'",
+      "required": false,
+      "pointerTo": 100.23,
+      "helpText": "This is the format used to print the footer of the chart copies of orders for the hospital. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "EXPAND CONTINUOUS ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EXPAND ON CHART;0:DON'T EXPAND ON CHART;",
+      "helpText": "This is a site parameter to enable continuous orders (i.e., orders with a continuous schedule, e.g., QD or Q4H) to be expanded or not on the chart copy.  If set to 1 (EXPAND ON CHART) an order for GLUCOSE BLOOD SERUM with the schedule QD would appear on the chart as:   05/17 11:04  GLUCOSE BLOOD SERUM                            Marcus Welby, MD               LB #805    WC   ROUTINE   05/18 11:04  GLUCOSE BLOOD SERUM                            Marcus Welby, MD               LB #806    WC   ROUTIN",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "STOP DATES FOR GENERIC ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be checked to decide whether stop dates should be prompted for when generic text orders are entered through OE/RR. An entry of YES will cause users to be prompted. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DEFAULT GENERIC STOP DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field will accept the number of days in the future that will determine the default stop date presented to users when placing generic orders.     Example: An entry of 5 will cause the stop date presented to users to be 5 days from today. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "NOTIFICATION TO PHYSICIAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ALL;1:INPAT ATTENDING;",
+      "helpText": "This field controls the sending of notifications to attending and primary physicians.  Set this field to 0 to have both the attending an primary physicians receive alerts for both inpatients and outpatients.  Set this field to 1 to have only the attending physician receive alerts for only inpatients.  The default is to have both attending and primary physician receive all alerts (0).   In any case the ordering provider will always get the alert. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LAST LAB CLEAN-UP #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,1",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the last order number that was processed as part of the Lab order cleanup option. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ALLOW DC REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the user to enter a reason for entering a DC order.  If the reason is DUPLICATE ORDER, then the order is simply DC'ed and no chart copies are printed or notifications sent.  If the reason is CHANGE IN THERAPY, then chart copies and notifications are sent.  DC's resulting from a CHANGE IN THERAPY are so noted in the text of the DC order.  The order DC'ed will show the name & title of the user that DC'ed the order.   There are 2 cases where the DC Reason prompt does not apply. DC",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ALLOW DC REASON BACKDOOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the same functionality as the parameter: ALLOW DC REASON for orders DC'ed from the ancillary packages (backdoor).     ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DC OF GENERIC ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:WARD TRANSFER;1:SPECIALTY TRANSFER;",
+      "helpText": "This field controls the DC'ing of Generic orders.  If this field is set to 1, then Generic orders are DC'ed only when a patient's Treating Specialty changes.  If set to 0, then the Generic orders are DC'ed when the patient's Ward Location changes.     The automatic DC'ing of orders only happens when one of the protocols OR GUA DC GEN ORD ON TRANS* are placed on the DGPM MOVEMENT EVENTS protocol. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "LAPSE DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The Lab Order clean-up utility on the ORE MGR menu looks at this field to decide when to put pending lab orders with old start dates in a lapsed state.  Orders with a Lapsed status (l) are no longer shown in the current orders context. This is used as a default for order clean-up.  A new menu of clean-up utilities (ORE MGR) is being exported with items ORE XREF and ORE LAB ORDER CLEANUP.  The ORE XREF (Clean-up OE/RR Cross References) option will check cross references in file 100 for accuracy. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "RESTRICT REQUESTOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES (ORELSE);2:YES (ORELSE & OREMAS);",
+      "helpText": "This field allows a site to restrict the selection of providers when adding new orders at the 'Requesting CLINICIAN: ' prompt for holders of the ORELSE and OREMAS key.  The restriction being that they cannot select themselves as the requestor even though they may also hold the PROVIDER key.     1 YES (ORELSE)          -restricts only holders of the ORELSE key.   2 YES (ORELSE & OREMAS) -restricts holders of either key. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "AUTO UNFLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This parameter, when set to YES, will automatically cancel the Flag Orders Notification and unflag all orders for a patient when a user process a Flagged Orders Notification. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CONVERTED PROTOCOLS",
+      "dataType": "POINTER",
+      "rawType": "100.99101P",
+      "required": false,
+      "helpText": "This is a list of the protocols for which corresponding entries have been created in the Order Dialog file. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 101.41,
+      "fieldName": "UNSUCCESSFUL DIALOGS",
+      "dataType": "POINTER",
+      "rawType": "100.99141P",
+      "required": false,
+      "helpText": "This is a list of the protocols for which corresponding entries were not successfully created in the Order Dialog file. ",
+      "fieldNumber_": 101.41
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "LAST USER PREFERENCE CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the last entry processed in the New Person file #200 when converting Add Orders menus in the post-init of CPRS. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "CONVERSION COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is a flag to determine if the conversion of the Add Orders menus from the Protocol file to the Order Dialog file is completed. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "OR3 PATIENTS TO CONVERT",
+      "dataType": "POINTER",
+      "rawType": "100.9903PA",
+      "required": false,
+      "helpText": "This multiple will store patients that have not yet been converted by the OE/RR version 3.0 (CPRS) orders conversion.  It is maintained by the conversion and should not be edited or updated. ",
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 58,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

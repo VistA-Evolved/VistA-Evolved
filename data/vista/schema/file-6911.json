@@ -1,0 +1,70 @@
+{
+  "fileNumber": 6911,
+  "fileName": "EQUIPMENT CATEGORY",
+  "globalRoot": "6911",
+  "globalReference": "^ENG(6911,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A category of devices that receive the same frequencies and types of preventive maintenance inspections. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "6911.02",
+      "required": false,
+      "helpText": "A multiple field intended to allow for selection of Equipment Categories in more than one way. For example: the Equipment Category of 'ELECTROCARDIOGRAPH' would probably have 'EKG' and 'ECG' as synonyms. A MNEMONIC cross-reference of the entire Equipment Category File by this SYNONYM field will insure that SYNONYM's are found along with NAME's during any look-up. ",
+      "isMultiple": true,
+      "subFileNumber": 6911.02,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESPONSIBLE SHOP",
+      "dataType": "POINTER",
+      "rawType": "6911.01PA",
+      "required": false,
+      "helpText": " Any shop having maintenance responsibility for this item should be entered here. The principal use of this field is in generating preventive maintenance worklists. If there is no RESPONSIBLE SHOP, the item will be ignored by the PM module. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCKOUT REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "OSHA requires employers to have energy control procedures in place to ensure that employees do not attempt to service a piece of equipment for which unintended energization, start up, or release of stored energy is possible and could cause injury until the equipment is isolated and rendered inoperative.   If this field in the Equipment Category File is set to YES, ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "JCAHO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Joint Commission on the Accreditation of Healthcare Organizations (JCAHO) standards require that a \"separable inventory\" be maintained of devices that are of interest to the JCAHO. If this flag in the Equipment Category File is set to 'YES' then all equipment added under that category will have its individual JCAHO field set to 'YES'. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6911", "field": .01, "type": "regular"},
+    {"name": "6911", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

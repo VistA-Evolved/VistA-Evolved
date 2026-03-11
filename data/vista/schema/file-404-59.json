@@ -1,0 +1,64 @@
+{
+  "fileNumber": 404.59,
+  "fileName": "TEAM POSITION HISTORY",
+  "globalRoot": "404.59",
+  "globalReference": "^SCTM(404.59,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEAM POSITION",
+      "dataType": "POINTER",
+      "rawType": "RP404.57'",
+      "required": true,
+      "pointerTo": 404.57,
+      "helpText": "This is the position on the team that is either being activated or  inactivated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the team position's status changed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This indicates if the team position is active or inactive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS REASON",
+      "dataType": "POINTER",
+      "rawType": "R*P403.44'",
+      "required": true,
+      "pointerTo": 403.44,
+      "helpText": "This is the reason that the activation/inactivation status changed. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AIDT", "field": },
+    {"name": "AIDT1", "field": },
+    {"name": "AIDT2", "field": },
+    {"name": "B", "field": },
+    {"name": "404.59", "field": .01, "type": "regular"},
+    {"name": "404.59", "field": .01, "type": "regular"},
+    {"name": "404.59", "field": .02, "type": "regular"},
+    {"name": "404.59", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(404.59,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

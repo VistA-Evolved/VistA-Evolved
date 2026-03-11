@@ -1,0 +1,460 @@
+{
+  "fileNumber": 9000010,
+  "fileName": "VISIT",
+  "globalRoot": "9000010sID",
+  "globalReference": "^AUPNVSIT(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VISIT/ADMIT DATE&TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "VISIT/ADMIT DATE & TIME must be between the patient's date of birth and today.  In the VA this reflects the visit appointment and or event date time.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE VISIT CREATED",
+      "dataType": "DATE",
+      "rawType": "RDXI",
+      "required": true,
+      "helpText": "The date and time when a new visit is added. It is generated automatically and set to NOW.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:IHS;C:CONTRACT;T:TRIBAL;O:OTHER;6:638 PROGRAM;V:VA;AF:AIR FORCE;N:NAVY;E:EHR;ARMY:ARMY;USCG:COAST GUARD;",
+      "helpText": "The type of visit. The purpose is to differentiate between various categories of visits, such as a visit provided by contract care funds versus a regular VA visit. This field is set automatically.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "Pointer to the Patient file.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LOC. OF ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P9999999.06'",
+      "required": false,
+      "pointerTo": 9999999.06,
+      "helpText": "Pointer to the Location file, location where the visit took place. In the VA, the Location file entries will be based on the current entries in the Institution file, so this field represents the institution.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SERVICE CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:AMBULATORY;H:HOSPITALIZATION;I:IN HOSPITAL;C:CHART REVIEW;T:TELECOMMUNICATIONS;N:NOT FOUND;S:DAY SURGERY;O:OBSERVATION;E:EVENT (HISTORICAL);R:NURSING HOME;D:DAILY HOSPITALIZATION DATA;X:ANCILLARY PACKAGE DAILY DATA;",
+      "helpText": "Service Category represents what kind of service was provided.  The population of this field is dependent upon entries provided by applications as well as default values and calculated codes.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DSS ID",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This is a pointer to the Clinic Stop file. It is the clinic in which this visit took place.  ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DEPENDENT ENTRY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a count of how many \"V\" file entries are pointing to this visit. If the count is zero, the visit should be deleted. This field is updated by a cross-reference in each \"V\" file that calls routine ADD^AUPNVSIT or SUB^AUPNVSIT. This field should never be edited by hand.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DELETE FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:DELETED;",
+      "helpText": "Flag set to signify that the visit has been deleted.  ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PARENT VISIT LINK",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "The Parent Visit Link field points back to the Visit file.  ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date and time when the visit was last modified. Any time a field in the visit file or a V-File is added or deleted, this field is automatically updated with the current date and time. This field is set automatically.  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "CHECK OUT DATE&TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date and time the patient checked out for this visit.  ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "*P8'X",
+      "required": false,
+      "pointerTo": 8,
+      "helpText": "Defines the patient's eligibility for this visit. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "The hospital location where this visit occurred. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "CREATED BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the USER passed in by the application calling the PCE API ($$DATA2PCE^PXAPI) to create or update the visit. If USER is not defined DUZ will be used.  If something other than $$DATA2PCE^PXAPI is used to create or update the entry then DUZ will be used.  ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "OPTION USED TO CREATE",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "If known, the option under which this visit was created.  ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P101'",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "This is the protocol which was used to create this visit. This field is set automatically.  ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P375'",
+      "required": false,
+      "pointerTo": 375,
+      "helpText": "The number by which all VistA applications will reference an external medical billing system account number for purposes of attaching charges for 1st or 3rd party billing. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": 2101,
+      "fieldName": "OUTSIDE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text location of service. ",
+      "fieldNumber_": 2101
+    },
+    {
+      "fieldNumber": 15001,
+      "fieldName": "VISIT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the unique visit ID, it is set by Visit Tracking and cannot be changed.  ",
+      "fieldNumber_": 15001
+    },
+    {
+      "fieldNumber": 15002,
+      "fieldName": "PATIENT STATUS IN/OUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:IN;0:OUT;",
+      "helpText": "This is an indicator of the patient's status at the time of the visit. It is set automatically using the API $$IP^VSITCK1.  ",
+      "fieldNumber_": 15002
+    },
+    {
+      "fieldNumber": 15003,
+      "fieldName": "ENCOUNTER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRIMARY;O:OCCASION OF SERVICE;S:STOP CODE;A:ANCILLARY;C:CREDIT STOP;",
+      "helpText": "This field notes the encounter type.  ",
+      "fieldNumber_": 15003
+    },
+    {
+      "fieldNumber": 80001,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if this visit was for treating a  VA patient based on a service connected problem. ",
+      "fieldNumber_": 80001
+    },
+    {
+      "fieldNumber": 80002,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that this visit represents treatment of a VA patient for a problem that is related to Agent Orange Exposure. ",
+      "fieldNumber_": 80002
+    },
+    {
+      "fieldNumber": 80003,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that this visit represents treatment of a VA patient for a problem that is related to Ionizing Radiation Exposure.  ",
+      "fieldNumber_": 80003
+    },
+    {
+      "fieldNumber": 80004,
+      "fieldName": "SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that this visit represents treatment of a VA patient for a problem that is related to Southwest Asia Conditions  Exposure. ",
+      "fieldNumber_": 80004
+    },
+    {
+      "fieldNumber": 80005,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient's visit was related to Military Sexual Trauma.  ",
+      "fieldNumber_": 80005
+    },
+    {
+      "fieldNumber": 80006,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that the visit represents treatment of a VA patient for a problem that is related to Head and/or Neck Cancer. ",
+      "fieldNumber_": 80006
+    },
+    {
+      "fieldNumber": 80007,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that the visit represents treatment of a VA patient for a problem that is related to combat.  ",
+      "fieldNumber_": 80007
+    },
+    {
+      "fieldNumber": 80008,
+      "fieldName": "PROJ 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Project 112/SHAD was the name of the overall program for both shipboard and land-based biological and chemical testing that was conducted by the United States (U.S.) military between 1962 and 1973. Project SHAD (Shipboard Hazard and Defense) was the shipboard portion of these tests. ",
+      "fieldNumber_": 80008
+    },
+    {
+      "fieldNumber": 80011,
+      "fieldName": "SERVICE CONNECTION EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Service Connection Classification for the Visit can be edited by the user.  ",
+      "fieldNumber_": 80011
+    },
+    {
+      "fieldNumber": 80012,
+      "fieldName": "AGENT ORANGE EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Agent Orange Classification for the Visit can be edited by the user.  ",
+      "fieldNumber_": 80012
+    },
+    {
+      "fieldNumber": 80013,
+      "fieldName": "IONIZING RADIATION EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Ionizing Radiation classification for the Visit can be edited by the user.  ",
+      "fieldNumber_": 80013
+    },
+    {
+      "fieldNumber": 80014,
+      "fieldName": "SW ASIA CONDITIONS EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Southwest Asia Conditions classification for the Visit can be edited by the user.  ",
+      "fieldNumber_": 80014
+    },
+    {
+      "fieldNumber": 80015,
+      "fieldName": "MST EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Military Sexual Trauma classification for the Visit can be edited by the user.  ",
+      "fieldNumber_": 80015
+    },
+    {
+      "fieldNumber": 80016,
+      "fieldName": "HEAD AND NECK CANCER EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Head and/or Neck Cancer classification can be edited by the user.  ",
+      "fieldNumber_": 80016
+    },
+    {
+      "fieldNumber": 80017,
+      "fieldName": "COMBAT VETERAN EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the Combat Veteran classification can be  edited by the user.  ",
+      "fieldNumber_": 80017
+    },
+    {
+      "fieldNumber": 80018,
+      "fieldName": "PROJ 112/SHAD EDIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDITABLE;1:NOT EDITABLE;",
+      "helpText": "This field is used to determine if the PROJ 112/SHAD classification can be edited by the user.  ",
+      "fieldNumber_": 80018
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "A field to add comments as they pertain to a visit.  ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is a pointer to the Package that wanted the visit created.  ",
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "helpText": "This is a pointer to the PCE Data Source file and is the source that wanted the visit created.  ",
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 41,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AA-TOO", "field": },
+    {"name": "AAH", "field": },
+    {"name": "AAHTOO", "field": },
+    {"name": "AAHTOO2", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "ADEL2", "field": },
+    {"name": "AET", "field": },
+    {"name": "AET1", "field": },
+    {"name": "AET2", "field": },
+    {"name": "AET3", "field": },
+    {"name": "AHL", "field": },
+    {"name": "AHL2", "field": },
+    {"name": "APV", "field": },
+    {"name": "AVAA2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "VID", "field": },
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .01, "type": "regular"},
+    {"name": "9000010", "field": .05, "type": "regular"},
+    {"name": "9000010", "field": .05, "type": "regular"},
+    {"name": "9000010", "field": .05, "type": "regular"},
+    {"name": "9000010", "field": .05, "type": "regular"},
+    {"name": "9000010", "field": .07, "type": "regular"},
+    {"name": "9000010", "field": .09, "type": "regular"},
+    {"name": "9000010", "field": .12, "type": "regular"},
+    {"name": "9000010", "field": .12, "type": "regular"},
+    {"name": "9000010", "field": .21, "type": "regular"},
+    {"name": "9000010", "field": .22, "type": "regular"},
+    {"name": "9000010", "field": .22, "type": "regular"},
+    {"name": "9000010", "field": 15001, "type": "regular"},
+    {"name": "9000010", "field": 15003, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .22, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,22),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 15001, "value": "W:$D(^(150)) \"   \",$P(^(150),U,1)"}
+  ]
+}

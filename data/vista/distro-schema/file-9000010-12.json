@@ -1,0 +1,318 @@
+{
+  "fileNumber": 9000010.12,
+  "fileName": "V SKIN TEST",
+  "globalRoot": "9000010.12IP",
+  "globalReference": "^AUPNVSK(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SKIN TEST",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.28'a",
+      "required": true,
+      "pointerTo": 9999999.28,
+      "helpText": "This is the type of skin test that was given to the patient at the encounter.    ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'Ia",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient who received the skin test.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "R*P9000010'Ia",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "This is the encounter defined in the Visit file that represents when and where the skin test was done. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RESULTS",
+      "dataType": "SET",
+      "rawType": "SXa",
+      "required": false,
+      "setOfCodes": "P:POSITIVE;N:NEGATIVE;D:DOUBTFUL;O:NO TAKE;",
+      "helpText": "This is the interpretation of skin test results. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "READING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0Xa",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the induration in millimeters (mm). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE READ",
+      "dataType": "DATE",
+      "rawType": "DXa",
+      "required": false,
+      "helpText": "This is the date and time of the reading of the skin test. Time entry is optional and imprecise date is allowed for historical skin tests. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "READER",
+      "dataType": "POINTER",
+      "rawType": "P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who read and interpreted the results of  the skin test. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 801,
+      "fieldName": "PRIMARY DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 801
+    },
+    {
+      "fieldNumber": 802,
+      "fieldName": "DIAGNOSIS 2",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 802
+    },
+    {
+      "fieldNumber": 803,
+      "fieldName": "DIAGNOSIS 3",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 803
+    },
+    {
+      "fieldNumber": 804,
+      "fieldName": "DIAGNOSIS 4",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 804
+    },
+    {
+      "fieldNumber": 805,
+      "fieldName": "DIAGNOSIS 5",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 805
+    },
+    {
+      "fieldNumber": 806,
+      "fieldName": "DIAGNOSIS 6",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 806
+    },
+    {
+      "fieldNumber": 807,
+      "fieldName": "DIAGNOSIS 7",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 807
+    },
+    {
+      "fieldNumber": 808,
+      "fieldName": "DIAGNOSIS 8",
+      "dataType": "POINTER",
+      "rawType": "*P80'a",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis from the ICD Diagnosis file associated with the  skin test performed. ",
+      "fieldNumber_": 808
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "DXa",
+      "required": false,
+      "helpText": "This is the date and time the skin test was placed. This date and time  may be different from the visit date and time. For example, for clinic appointment visits, the visit date and time is the date and time of the appointment, not the time the provider performed the clinical event.   The date may be an imprecise date such as for an historical skin test.   Date and time may be before or after the visit date, with the restriction the date cannot be a future date.  ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field can be used to document the provider who ordered the skin test. ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who placed the skin test. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 1211,
+      "fieldName": "SKIN TEST PLACEMENT RECORDED",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This timestamp field is the date and time of documentation of placement  of the skin test. This field is set automatically when the EVENT DATE AND TIME is entered. ",
+      "fieldNumber_": 1211
+    },
+    {
+      "fieldNumber": 1212,
+      "fieldName": "ANATOMIC LOCATION OF PLACEMENT",
+      "dataType": "POINTER",
+      "rawType": "*P920.3'a",
+      "required": false,
+      "pointerTo": 920.3,
+      "helpText": "This is the area of the patient's body where the skin test was placed.  ",
+      "fieldNumber_": 1212
+    },
+    {
+      "fieldNumber": 1214,
+      "fieldName": "HOURS READ POST-PLACEMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0Ia",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of hours between the placement of the skin test and  the reading of the skin test.  ",
+      "fieldNumber_": 1214
+    },
+    {
+      "fieldNumber": 1220,
+      "fieldName": "SKIN TEST READING RECORDED",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This timestamp field is the date and time of documentation of reading  of the skin test. This field is set automatically when the Date Read is  entered.  ",
+      "fieldNumber_": 1220
+    },
+    {
+      "fieldNumber": 1301,
+      "fieldName": "READING COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is a comment related to the reading of the patient's skin test.  The provider may enter this manually via the PCE User Interface. ",
+      "fieldNumber_": 1301
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any original skin test data is being edited. ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field is populated automatically be the PCE filing logic. The  format of the field is as follows: Pointer to PCE data source file_\"-\"_A for Add or E for Edit_\" \"_DUZ of the person who entered the data_\";\"...  ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "PLACEMENT COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is a comment related to the placement of the patient's skin test. The provider may enter this manually via the PCE User Interface.  ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SIa",
+      "required": false,
+      "setOfCodes": "1:ELECTRONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "helpText": "This is used to note how the event was verified and is automatically entered by the software.  ",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'Ia",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the VistA package from which this skin test record  originated through PCE.   This is automatically entered by the software and uneditable by users. ",
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'Ia",
+      "required": false,
+      "pointerTo": 839.7,
+      "helpText": "This is the data source for this skin test, automatically entered  through the PCE software and uneditable by users.  ",
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AATOO", "field": },
+    {"name": "AATOO2", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9000010.12", "field": .01, "type": "regular"},
+    {"name": "9000010.12", "field": .01, "type": "regular"},
+    {"name": "9000010.12", "field": .02, "type": "regular"},
+    {"name": "9000010.12", "field": .02, "type": "regular"},
+    {"name": "9000010.12", "field": .03, "type": "regular"},
+    {"name": "9000010.12", "field": .03, "type": "regular"},
+    {"name": "9000010.12", "field": .03, "type": "regular"},
+    {"name": "9000010.12", "field": .05, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "", "field": 1201, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

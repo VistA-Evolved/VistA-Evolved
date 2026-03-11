@@ -1,0 +1,69 @@
+{
+  "fileNumber": 801.47,
+  "fileName": "REMINDER DIALOG FUNCTION FILE",
+  "globalRoot": "801.47",
+  "globalReference": "^PXRMD(801.47,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the function. The name should try to describe what  the function is doing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the line tag in the routine, defined in the ROUTINE Field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the M routine that the function will call to process the function. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.473",
+      "required": false,
+      "helpText": "This field describe what the function should do and how the function should be used. ",
+      "isMultiple": true,
+      "subFileNumber": 801.473,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADDITIONAL ARGUMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "801.474",
+      "required": false,
+      "helpText": "This multiple is used to define any additional arguments to be used by  the function. The function by default will receive the following  arguments, PATIENT DFN, the NEW PROMPT VALUE, the ORIGINAL PROMPT VALUE,  and an INPUTS array. The INPUTS array contains the additional arguments defined in this multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 801.474,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "801.47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

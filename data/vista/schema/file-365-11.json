@@ -1,0 +1,94 @@
+{
+  "fileNumber": 365.11,
+  "fileName": "IIV AUTO MATCH",
+  "globalRoot": "365.11",
+  "globalReference": "^IBCN(365.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTO MATCH VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the entered name for the insurance company.  This value holds the 'incorrect' insurance company name which needs to get corrected and replaced with the valid insurance company name.  Typical values in this field will include common  spelling mistakes and incorrect insurance company names.  Also allowed here is the \"*\" wildcard character.  Any entry with a  wildcard character must also contain at least 4 non-wildcard characters.  Multiple asterisks are allowed here. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSURANCE COMPANY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of a valid insurance company from the Insurance Company file (file# 36).  The insurance company name entered here must be a currently valid company name meaning that the entry must be active and not scheduled for deletion. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the auto match value was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who created the auto match value. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the auto match value was last edited. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who last edited the auto match value. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ORIGINAL ENTERED VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the original value of the 'entered by' field.  The first time an entry is created, this value will get set and then no further updates to this field will be made.  This will provide the original value to this entry. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ORIGINAL INSURANCE COMPANY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the original, valid, correct insurance company name  at the time this entry was first created.  This is for auditing and historical tracking purposes only.  This field isn't  updated after the original data entry. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "365.11", "field": .01, "type": "regular"},
+    {"name": "365.11", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

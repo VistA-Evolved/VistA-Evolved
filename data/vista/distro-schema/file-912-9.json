@@ -1,0 +1,60 @@
+{
+  "fileNumber": 912.9,
+  "fileName": "ESP CRIME SUB-TYPES",
+  "globalRoot": "912.9",
+  "globalReference": "^ESP(912.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUB-TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the sub-type of crime.  Crime sub-types have been designated by Security and Law Enforcement program directors.  Local sites are NOT to add additional sub-types. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "P912.8'",
+      "required": false,
+      "pointerTo": 912.8,
+      "helpText": "Enter the Crime Type under which this sub-type is listed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P912.7'",
+      "required": false,
+      "pointerTo": 912.7,
+      "helpText": "Enter the Crime Category under which this sub-type is listed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date on which this subtype record becomes inactive; i.e., the record can no longer be selected. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "912.9", "field": .01, "type": "regular"},
+    {"name": "912.9", "field": .02, "type": "regular"},
+    {"name": "912.9", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

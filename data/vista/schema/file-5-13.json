@@ -1,0 +1,75 @@
+{
+  "fileNumber": 5.13,
+  "fileName": "COUNTY CODE",
+  "globalRoot": "5.13",
+  "globalReference": "^XIP(5.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIPS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a 5-digit number representing the Federal Information  Processing Standard for a state and county.  The first 2 digits represent  the state, and the last 3 digits represent the county. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COUNTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the name associated with this county. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field holds the state that this county is within. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the 5-digit FIPS became inactive. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LATITUDE (EST)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field the estimated Latitude in <degrees>:<minutes>N or <degrees>:<minutes>S of the County as given by the United States Geological Survey (USGS).    N is North of the Equator.  S is South of the Equator. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LONGITUDE (EST)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the estimated Longitude in <degrees:<minutes>E or  <degrees>:<minutes>W of the County as given by the United States Geological Survey (USGS).    E is East of the Prime Meridian.  W is West of the Prime Meridian. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "5.13", "field": .01, "type": "regular"},
+    {"name": "5.13", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

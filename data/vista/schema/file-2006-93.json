@@ -1,0 +1,76 @@
+{
+  "fileNumber": 2006.93,
+  "fileName": "IMAGING EVENT AUDIT LOG",
+  "globalRoot": "2006.93",
+  "globalReference": "^MAGV(2006.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time the event was recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTION",
+      "dataType": "POINTER",
+      "rawType": "P2006.931'",
+      "required": false,
+      "pointerTo": 2006.931,
+      "helpText": "This is the action performed by the application. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOSTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the hostname of the host related to the audit event. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P2006.9193",
+      "required": false,
+      "pointerTo": 2006.9193,
+      "helpText": "This is the application related to the audit event. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message related to the audit event. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ATTRIBUTE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.935A",
+      "required": false,
+      "helpText": "This stores attributes associated with the audit event. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.935,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

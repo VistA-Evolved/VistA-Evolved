@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2005.4,
+  "fileName": "IMAGE HISTOLOGICAL STAIN",
+  "globalRoot": "2005.4",
+  "globalReference": "^MAG(2005.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Histological stain used in Anatomic Pathology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for other names that the Pathologists might use to specify a stain, and is available as a lookup name. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BB", "field": },
+    {"name": "2005.4", "field": .01, "type": "regular"},
+    {"name": "2005.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

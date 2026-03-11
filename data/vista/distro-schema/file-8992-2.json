@@ -1,0 +1,27 @@
+{
+  "fileNumber": 8992.2,
+  "fileName": "ALERT RECIPIENT TYPE",
+  "globalRoot": "8992.2",
+  "globalReference": "^XTV(8992.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file is used to maintain a list of recipient types for alerts.  It  is used in tracking for what reason a user was sent an alert. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8992.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "fileNumber": 704.202,
+  "fileName": "HEMODIALYSIS STUDY",
+  "globalRoot": "704.202",
+  "globalReference": "^MDK(704.202,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "POINTER",
+      "rawType": "RP702",
+      "required": true,
+      "pointerTo": 702,
+      "helpText": "This field displays the name of the patient whose CP study corresponds to this dialysis treatment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field displays the name of the patient whose dialysis treatment is stored. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STUDY_DATETIME",
+      "dataType": "DATE",
+      "rawType": "CD",
+      "required": false,
+      "helpText": "Computed field used to allow automated XML creation with appropriate  tag/value pairs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STUDY_LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed field used to allow automated XML creation with appropriate tag/value pairs. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who accessed the Hemodialysis study. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME ACCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field displays the date/time when the hemodialysis study was accessed by the user. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WORKSTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the workstation that was used by the user to access the hemodialysis study. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLOSED;1:ACTIVE;2:DISABLED;",
+      "helpText": "This field contains the status of this procedure. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "STUDY DATA",
+      "dataType": "SUBFILE",
+      "rawType": "704.2021",
+      "required": false,
+      "helpText": "This field contains the study data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2021,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "SUMMARY",
+      "dataType": "SUBFILE",
+      "rawType": "704.2022",
+      "required": false,
+      "helpText": "This field contains the summary data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2022,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "FLOWSHEET",
+      "dataType": "SUBFILE",
+      "rawType": "704.2023",
+      "required": false,
+      "helpText": "This field contains the flowsheet data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2023,
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "MED LOG",
+      "dataType": "SUBFILE",
+      "rawType": "704.2024",
+      "required": false,
+      "helpText": "This field contains the med log data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2024,
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "NOTE LIST",
+      "dataType": "SUBFILE",
+      "rawType": "704.2025",
+      "required": false,
+      "helpText": "This field contains the Note List data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2025,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "EVENT LOG",
+      "dataType": "SUBFILE",
+      "rawType": "704.2026",
+      "required": false,
+      "helpText": "This field contains the Event Log data XML document in UUEncoded format. ",
+      "isMultiple": true,
+      "subFileNumber": 704.2026,
+      "fieldNumber_": .6
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "704.202", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "704.202", "field": .02, "type": "regular"},
+    {"name": "704.202", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

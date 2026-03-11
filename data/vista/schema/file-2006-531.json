@@ -1,0 +1,45 @@
+{
+  "fileNumber": 2006.531,
+  "fileName": "EXTENDED SOP NEGOTIATION",
+  "globalRoot": "2006.531",
+  "globalReference": "^MAGDICOM(2006.531,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UIDNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of a SOP-class for which 'Extended SOP Negotiation' is supported.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "READCODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the name of the entry-point that will be called as a subroutine when information is to be read for this SOP-class.   In the value of this field, the caret that would normally separate the label from the routine-name is replaced by a dot. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WRITECODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the name of the entry-point that will be called as a subroutine when information is to be written for this SOP-class.   In the value of this field, the caret that would normally separate the label from the routine-name is replaced by a dot. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.531", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

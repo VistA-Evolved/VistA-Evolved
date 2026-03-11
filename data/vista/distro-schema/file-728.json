@@ -1,0 +1,688 @@
+{
+  "fileNumber": 728,
+  "fileName": "DSS EXTRACTS",
+  "globalRoot": "728",
+  "globalReference": "^ECX(728,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field contains a pointer to the corresponding location (station number) entry in the INSTITUTION file (#4). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "LAB LMIP",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a flag that indicates whether a facility is ready to send  LMIP codes for the LAB Extract. To answer \"YES\" to this question, the  site must be able to answer \"YES\" to BOTH of the following questions:   1. They are in DSS Implementation Round 5 or higher, OR they are in IR1     through IR4 and are extracting data for FY97 or beyond. 2. All Lab CO directives for LMIP have been completed at their facility.    This means that their Lab Service has matched all entries in the     LABORAT",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LAST DATE LAB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Laboratory information was extracted to the DSS software. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LAST DATE OP PHARMACY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Outpatient Pharmacy information was extracted to the DSS software. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST DATE EC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Event Capture information was extracted to the DSS software. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LAST DATE ADT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that MAS admission/discharge/transfer information was extracted to the DSS software. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LAST DATE SURGERY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Surgery information was extracted to the DSS software. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LAST DATE RADIOLOGY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Radiology information was extracted to the DSS software. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LAST DATE NURSING",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Nursing information was extracted  to the DSS software. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LAST DATE UD MEDS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Pharmacy Unit Dose information was extracted to the DSS software. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LAST DATE DENTAL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Dental information was extracted to the DSS software. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "LAST DATE IFCAP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that IFCAP/DSS Unit information was extracted to the DSS software. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LAST DATE CLINIC VISITS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Clinic Visits information was extracted to the DSS software. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LAST DATE WARD STOCK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Ward Stock information was extracted to the DSS software. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LAST DATE ADMISSIONS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Patient Admissions information was extracted to the DSS software. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LAST DATE MOVEMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Patient Movement information was extracted to the DSS software. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LAST DATE NO SHOWS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Clinic No-Shows information was extracted to the DSS software. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Laboratory extract is currently running. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "OP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This fields contains data if the Outpatient Pharmacy extract is currently running. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "EC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Event Capture extract is currently running. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SURGERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Surgery extract is currently running. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "RADIOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Radiology extract is currently running. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "NURSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Nursing extract is currently running. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "UD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Pharmacy Unit Dose extract is currently running. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ADT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the MAS Admission/Discharge/Transfer extract is currently running. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DENTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Dental extract is currently running. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "IFCAP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the IFCAP/DSS Unit extract is currently running. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CLINIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Clinic Visit extract is currently running. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "WARD STOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Ward Stock extract is currently running. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ADMISSIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Patient Admissions extract is currently running. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MOVES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Patient Movements extract is currently running. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "NO SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Clinic No-Show extract is currently running. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "LAST DATE IVS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Pharmacy IV information was extracted to the DSS software. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "IVS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Pharmacy IV extract is currently running. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "LAST DATE TREATING SPECIALTY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Treating Specialty Change information was extracted to the DSS software. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "TREATING SPEC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Treating Specialty Change extract is currently running. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LAST DATE IFCAP SUMMARY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that IFCAP Summary information was extracted to the DSS software. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "IFCAP SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field comntains data if the IFCAP Summary extract is currently running. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "LAST DATE IV DETAIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Pharmacy IV Detail information was extracted to the DSS software. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "IV DETAIL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Pharmacy IV Detail extract is currently running. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "SETUP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Setup information was extracted to the DSS software. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "SETUP RUNNING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Setup extract is running. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "LAST DATE PAI",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the PAI information was extracted to the DSS software. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PAI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the PAI extract is currently running. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "AUSTIN QUEUE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the queue in Austin to which DSS data will be sent.  This should be of the two characters DM followed by a single upper case letter. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LAST DATE LAB RESULTS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Laboratory Results information was extracted to the DSS software. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LAB RESULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the Laboratory Results extract is currently running. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "RECIPIENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Recipient information was extracted to the Rational Meds software. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PROVIDER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Provider information was extracted to the Rational Meds software. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PHARMACY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the last date that Hospital Claim information was extracted. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "HOSPITAL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that the Hospital Claim information was extracted to the Rational Meds software. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "IV CLAIM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date for which the Rational Meds IV claim was extracted. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "LAST DATE QUASAR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that Audiology and Speech Pathology information was extracted to the DSS software. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "QUASAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the QUASAR extract is currently running. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "LAST DATE PROSTHETICS",
+      "dataType": "POINTER",
+      "rawType": "728.059P",
+      "required": false,
+      "helpText": "This sub-file/field contains DSS Prosthetics divisions and their respective LAST DATE(s) extracted. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PROSTHETICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "This field contains data if the PROSTHETICS extract is currently running. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "LAST DATE MENTAL HEALTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date for which Mental Health data was extracted. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "MENTAL HEALTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "If the Mental Health extract is running or queued to run, that is indicated here. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LAST DATE CLINIC I",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date for which Clinic Visit data was extracted. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "CLINIC I",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "If the Clinic Visit extract is running or queued to run, that will be indicated here. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "LAST DATE CLINIC II",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Last date for which Clinic Visit data was extracted. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "CLINIC II",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "If the Clinic Visit extract is running or queued to run, it will be indicated here. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "AUSTIN TEST QUEUE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the test queue in Austin to which DSS data will be sent.  This should be 3 upper case letters and can not be the same value as AUSTIN QUEUE NAME (field #49). ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "CBOC REPORT VIEWED INDICATOR",
+      "dataType": "SUBFILE",
+      "rawType": "728.068A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 728.068,
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "LAST DATE LBB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that blood bank data was extracted to the DSS software. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "LBB STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "Used to inform the user that the extract is presently running.   ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "LAST DATE NUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date that nutrition data was extracted to the DSS software. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "NUT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "helpText": "Used to inform the user that the extract is presently running. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "FY VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the site as a test site for a DSS Fiscal Year Conversion patch. Only such a test site may allow users to perform testing extracts via menu option ECX FISCAL YEAR EXTRACT.      When a new version of a DSS Fiscal Year Conversion patch is  installed at the site, this field will be automatically updated as long as the patch install calls TESTON^ECXTREX as part of  the post-installation process.    When the nationally released version of the DSS Fiscal Year  Conversion patch is ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "BCM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RUNNING;",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "LAST DATE BCM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 75
+    }
+  ],
+  "fieldCount": 71,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "728", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "fileNumber": 391,
+  "fileName": "TYPE OF PATIENT",
+  "globalRoot": "391",
+  "globalReference": "^DG(391,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the names of the various types of patients seen at VA facilities.  This file should not be added to or altered or it could affect daily operations of the MAS software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IGNORE VETERAN CHECKS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this particular type of patient is non-veteran, but the patient can respond to questions meant for veterans, respond yes.  An example would be MILITARY RETIREE.  These patients are seen as non-veterans, but may have veteran periods of service, prisoner of war dates, etc. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*INFO TO ASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is no longer used by the MAS package.  It will be removed in a future release. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAKE RECORD SENSITIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If it is desirable to automatically make a record sensitive if the patient has this patient type, answer yes here.  An example would be EMPLOYEE.  Any record for a patient added to your system with a patient type of EMPLOYEE will automatically be recorded as sensitive in the security system. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VETERAN?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter YES (or 1) at this prompt if patients of this patient type are veterans.  Respond NO otherwise.  This information is necessary to determine whether certain screens may be turned off.  If this is a non-veteran patient type, but patients with this patient type COULD be veterans, respond YES to the IGNORE VETERAN CHECKS? prompt (field .02). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SHOW CONTACT SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answer yes if you would like to have the contact screen displayed for any patient of this patient type.  This screen contains names and addresses of next of kin, emergency contacts, and designees. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*SHOW EMPLOYMENT SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used by the MAS package.  Due to the increased need for employment data due to billing, the employment screen can no longer be turned off.  This field will be removed in a future release of the MAS package. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*SHOW INSURANCE SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used by the MAS package (the insurance screen is now displayed for ALL patients).  It will be removed in a future release. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SHOW SERVICE SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answer yes if you would like the service screen to display for all patients added to your system with this patient type.  The service record screen contains data about service history, prisoner of war status, combat, Vietnam service, agent orange and ionizing radiation exposure, military retirement/disability, and service dental history.  For non-veterans, you may choose not to display this screen. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*SHOW MONETARY SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used by the MAS package.  It will be removed in a future version of MAS. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SHOW FAMILY INFO SCREEN",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "To display the family demographic screen during registration (screen 8), respond yes here.  You must answer yes for NSC patients as income screening is required for all non-service connected veterans.  You may chose to show this screen for service connected patients or non-veterans.   The family demographic screen holds the name, SSN, date of birth, and sex for all dependents of the patient. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "ID FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P8.2'",
+      "required": false,
+      "pointerTo": 8.2,
+      "helpText": "This field contains a pointer to the IDENTIFICATION FORMAT file (#8.2). This field will contain the default ID format for all patients with this patient type.  For most VA purposes, this will be the SSN. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SHOW INCOME SCREENING SCREEN",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if the income screening screen should be displayed for this type of patient.  Answer no otherwise.  You will be unable to edit this question if the VETERAN? prompt (field .05) is answered yes.  This data must be collected for all veterans seen.  This screen will contain information on a patient's income for the previous calendar year.  It will also contain information on the patient's spouse and dependents.  This data will, in turn, be used for IRS matching. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SHOW INELIGIBLE SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you wish the ineligible data screen to show for all patients of this patient type.  This screen contains information on the a patient's ineligibility for care and data on missing patients. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SHOW VERIFICATION SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you wish the service verification screen to show for all patients of this patient type.  This screen contains information on the verification of eligility and service record data.  It also contains data on VA rated disabilities. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "*EDIT APPLICANT EMPLOYER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Respond yes if you want users to be able to edit the employer data for the applicant (veteran).  If you say no, this information will appear on the screen display, but will not be editable. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "*EDIT SPOUSE'S EMPLOYER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Respond yes if you want users to be able to edit the spouse's employer information for this type of patient.  If you say no, this information will appear on the screen display, but will not be editable. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "*EDIT SERVICE HISTORY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you wish to allow users to edit the service history data for this type of patient.  If you say no, this information will appear on the screen display, but will not be editable. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "*EDIT PRISONER OF WAR DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you wish to allow users to edit the prisoner of war data (from/to dates, where imprisoned, etc.) for this type of patient.  If you say no, this information will appear on the screen display, but will not be editable. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "*EDIT COMBAT DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want the users to be able to edit combat data for patients of this type.  This data includes combat from/to dates as well as where the combat occurred.  If you respond no, this data will appear on the screen, but will not be editable. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "*EDIT VIETNAM SERVICE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want users to be able to edit Vietnam service data for patients of this type.  This data includes the dates from and to which the veteran served in Vietnam.  If you respond no, this data will appear on the screen, but will be uneditable. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "*EDIT AGENT ORANGE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want users to be able to edit agent orange exposure data for patients of this type.  This data includes the dates of test for AO exposure.  If you respond no, this data will appear on the screen, but will be uneditable. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "*EDIT RADIATION EXPOSURE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want to be able to edit radiation exposure data for patients with this patient type.  This data includes dates of test for radiation.  If you respond no, this data will appear on the screen, but will be uneditable. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "*EDIT MILITARY DISABILITY DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want the users to be able to edit data relating to military disability for patients of this type.  If you respond no, the data element will appear on the screen, but will not be editable. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "*EDIT DENTAL HISTORY DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter yes if you want users to be able to edit data relating to dental history in service if the patient is of this type.  If you respond no, the data element will appear on the screen, but will not be editable. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "*EDIT VA MONETARY BENEFITS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used by the MAS package and will be removed in a future version. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "*EDIT OTHER MONETARY BENEFITS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is no longer used by the MAS package and will be removed in a future version. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "EDIT SC CONDITIONS PER PT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the user should be allowed to edit SC conditions as stated by the applicant for patients of this patient type, answer yes here.  Otherwise respond no.  This data appears on registration screen 7 (Eligibility Status Data). ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "*EDIT SC CONDITIONS PER PT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Respond yes if you want to give users the ability to edit service conditions as stated by the patient for patients of this patient type.  If you respond no, the question will appear on the screen, but it will not be editable.     Note:  Due to a change in screen numbering, this field is being *'d for        deletion and will no longer be used (affective with installation        of this version).  A new field 73 has been added which is the        same prompt.  This is in keeping with the present ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "*EDIT INELIGIBLE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want users to be allowed to edit data about a patients eligibility for patients of this patient type.  If you respond no, the question will appear on the screen, but it will not be editable. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "*EDIT MISSING DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter yes if you want the user to be allowed to edit data on missing veterans for patients of this patient type.  If you respond no, the question will appear on the screen, but will not be editable. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "EDIT INELIGIBLE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If, when editing data for patients of this type, you want users to be able edit data about a patient's ineligibility for care, respond yes here. If you respond no, the data will display on the screen, but will not be editable by the users. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "EDIT MISSING DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If, for patients of the specified patient type, you want users to be able to edit data about missing veterans, answer yes.  If you respond no, the user will see the screen, but will not be able to edit the missing data. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "NEW PATIENT INPUT DR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains a line of code which sets the variable DR for use in a filemanager enter/edit (DIE) call.  In order to add to this field or edit what is in it, you must have programmer mode.   This DR string should contain a listing of the fields you wish to ask whenever a patient of this patient type is added to the system.  These fields would be in addition to the prompts normally given for NAME, SSN, DOB, VET?, etc.  If blank, only the standard questions will be asked. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "391", "field": .01, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

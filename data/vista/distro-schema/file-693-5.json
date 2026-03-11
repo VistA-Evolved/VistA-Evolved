@@ -1,0 +1,37 @@
+{
+  "fileNumber": 693.5,
+  "fileName": "RECORDING SITE",
+  "globalRoot": "693.5",
+  "globalReference": "^MCAR(693.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the list of possible placement sites for heart catheters.  It is used by the Atrial and Ventricular study files. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TOPOGRAPHY",
+      "dataType": "POINTER",
+      "rawType": "P61'",
+      "required": false,
+      "pointerTo": 61,
+      "helpText": "This field identifies a link to the Laboratory Topography file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "693.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": 1.71,
+  "fileName": "WORLD TIMEZONES",
+  "globalRoot": "1.71",
+  "globalReference": "^DIT(1.71,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ40",
+      "length": 40,
+      "required": true,
+      "helpText": "This is the name of the timezone. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TIMEFRAME",
+      "dataType": "SET",
+      "rawType": "1.711S",
+      "required": false,
+      "helpText": "This multiple contains all the occurrences of timeframe that may exist for the given time zone. ",
+      "isMultiple": true,
+      "subFileNumber": 1.711,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "1.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

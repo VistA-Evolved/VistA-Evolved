@@ -1,0 +1,457 @@
+{
+  "fileNumber": 161.4,
+  "fileName": "FEE BASIS SITE PARAMETERS",
+  "globalRoot": "161.4",
+  "globalReference": "^FBAA(161.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is used to prevent the addition of more than one entry into the site parameter file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION OF JURISDICTION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of this Clinic of Jurisdiction for which these site parameters are defined. There can be only 1 entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Street address line 1 of this COJ. This data will be printed on the Authorization form 7079. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street address line 2 of this COJ. This address line will also print on the Authorization form 7079. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The city in which the COJ receives it's mail. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "The state in which the COJ's mailing address resides. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Zip code for the COJ. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "MAIL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Mail Code will appear in the upper right corner of Unauthorized Claim letters immediately after the medical center division. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATION TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The telephone number where Fee inquiries should be directed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "APPROVING OFFICIAL FOR 7079",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the approving official authorizing fee services. This name  will be printed on the authorization form 7079. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TITLE OF APPROVING OFFICIAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The title of the approving official which will also be printed on the authorization form 7079. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MEDICAID DISPENSING FEE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "The medicaid dispensing fee for this COJ. Dispensing fees vary from  COJ to COJ. Medicaid approves dispensing fee's. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NEXT BATCH NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0IX",
+      "length": 5,
+      "required": true,
+      "helpText": "The next batch number which will be assigned by the system. This cannot be edited or changed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NEXT INVOICE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0I",
+      "length": 7,
+      "required": true,
+      "helpText": "The next invoice number which will automatically be assigned by the system. This number cannot be edited or deleted. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MEDICAL PAYMENT VENDOR DISPLAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This parameter is used to indicate whether the vendor's demographic data will be displayed and made editable during the entering of a medical payment. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PHARMACY PAYMNT VENDOR DISPLAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "If there is a 'Y' in this field, the Vendor Demographics will be displayed during the Enter Pharmacy Invoice option. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DEFAULT AUTH. TIME RANGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of days that is the usual long term authorization. The data entered here will be added to the Authorization From date and that date will become the default 'To Date' for the authorization. For example, if the normal long term authorization is one year, 364 would be entered in this parameter. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ASK VENDOR DURING AUTH.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "A 'yes' results in asking for Vendor in Enter Authorization. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STATION ADDRESS LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line 3 of the COJ's street address. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MAX # PAYMENT LINE ITEMS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The maximum number of payment line items that will be allowed in a batch. Any number between 1 and 85 is acceptable. This value is checked during the enter payment options and will warn the clerks when they are within 20 of the maximum. It will prevent the clerks from exceeding this number. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "MAX # CH PAYMENT LINES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The maximum number of payment line items that will be allowed in a contract hospital batch. This value is checked during the enter payment options and will warn the clerks when they are within 5 of the maximum. It will prevent the clerks from exceeding this number. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 17.2,
+      "fieldName": "MAX # CNH PAYMENT LINES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The maximum number of payment line items that will be allowed in a community nursing home batch. This value is checked during the enter payment options and will warn the clerks when they are within 5 of the maximum. It will prevent the clerks from exceeding this number. ",
+      "fieldNumber_": 17.2
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "*EDIT AUTH. DURING PAYMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is obsolete with patch FB*3.5*154 and no longer has any impact  on the behavior of the payment options. This field may be deleted by a  future patch.  The prior field description follows:   This field is used to indicate that editing of the Authorization Remarks field and the 3 DX fields is allowable during the Enter Payment options. Normally used for six months immediately after installing Fee system. This is because the Remarks and DX data was not available for downloading from Cent",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "*ASK PROGRAM SPECIFIC AUTH.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "A yes answer to this site parameter will show only those authorizations that are program specific. An example would be the display for selection of only Community Nursing Home authorizations when entering CNH payments. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "APPROVING OFFICIAL FOR 7078",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The default approving official for 7078s. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TITLE 7078 APPROVING OFFICIAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The title of the default approving official for 7078s. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COPIES OF 7078 TO BE PRINTED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "Indicates the default number of copies to be printed for each 7078 generated. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PSA DEFAULT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The station number for the transmission of data to Austin is determined using this field. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "7078 DEFAULT AUTH SERVICE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "161.428",
+      "required": false,
+      "helpText": "If data exists in this field it will be used as the default for the 'Authorized Services' field on the 7078 for CONTRACT HOSPITAL. ",
+      "isMultiple": true,
+      "subFileNumber": 161.428,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DATE BATCH PURGE LAST RUN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the date the last batch purge was run on the system. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "OUTPATIENT MONTHLY LIMITATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This field should contain the monthly Outpatient Medical dollar limitation set by the program office. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "TRANSMISSION HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Transmission Header field is used as part of the header information for transmissions sent to Austin.  Header names change alternately to FEE or FEN in FEE releases which contain changes to transmission data/Austin record layouts.  Austin uses the Transmission Header to  distinguish the record layout to be used. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "TRACK INCOMPLETE UNAUTH CLAIM?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicate whether or not incomplete unauthorized claims should be tracked. Yes is to track incomplete claims, otherwise can only track complete claims. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.5,
+      "fieldName": "'INITIAL ENTRY' STATUS FOR U/C",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVATE;",
+      "helpText": "If this field is filled in, then minimum data is required for entering in an unauthorized claim.  This is designed for sites who have streamlined their workload, where only one user enters in the unauthorized claims received, and another reviews the claim for completeness and makes the  necessary requests, etc.    ",
+      "fieldNumber_": 32.5
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "UNAUTHORIZED CLAIM PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Field should contain the name of a printer device to which unauthorized claim letters will print, if filled in.  Entry in this field is optional. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "UNAUTHORIZED CLAIM LETTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUTOMATIC PRINT;B:BATCH PRINT;",
+      "helpText": "Indicate how you wish your unauthorized claim letters to print.  Enter a 'A' if the Unauthorized Claim Printer is dedicated and you always wish a letter to print when it has been changed to the apppropriate status.  Enter a 'B' if the Unauthorized Claim Printer is not dedicated, or you wish to batch print letters of claims which have changed to the appropriate status.  Do not enter anything if you will be manually generating your own form letter. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "NUMBER OF COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The number of copies of a letter to be printed. Maximum number of copies allowed is five. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 35.5,
+      "fieldName": "PRINT U/C ON LETTERHEAD?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;",
+      "helpText": "Answer 'Yes' if you will be printing Unauthorized Claims' letters on VHA letterhead. ",
+      "fieldNumber_": 35.5
+    },
+    {
+      "fieldNumber": 35.6,
+      "fieldName": "STATION NAME (EDITABLE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "First line of return address.  Data pulled from .01; but is editable. ",
+      "fieldNumber_": 35.6
+    },
+    {
+      "fieldNumber": 35.7,
+      "fieldName": "UC LETTER LINES AFTER CC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Number of blank lines after the carbon copy address on a disposition letter. This value may be changed to adjust the spacing from the bottom of the page. If a number is not specified here then 0 is used as the default value. ",
+      "fieldNumber_": 35.7
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "FPPS TRANSMIT START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the start date and time for the beginning of the FB FPPS TRANSMIT  menu option. This value will be auto-populated by the menu option to help  track when the last time a batch was started. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "FPPS TRANSMIT END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the finish date and time for the FB FPPS TRANSMIT menu option. This  value will be auto-populated by the menu option to help track when the  last time a batch finished. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PROJECT ARCH REMINDER DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days to delay the Project ARCH Clinical Reminder from  becoming due once the patient has either declined the services offered,  or rejected the services offered due to travel distance to a non-VA  contracted provider being further than the closest VA facility. The acceptable values are 1 day to 180 days with 1 day being the default  if no value is entered. This field is only used by the Project ARCH National Clinical Reminder. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "UNIQUE CLAIM IDENTIFIER SEQ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The sequence number for the UNIQUE CLAIM IDENTIFER that is used to  identify individual claims. The UNIQUE CLAIM IDENTIFIER field is present in the FEE BASIS PAYMENT (#162) file, field #81 and in the FEE  BASIS INVOICE (#162.5) file, field #85. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ALLOW FB PAID TO IB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows the site to turn on the FB to IB Provider automation.   The scheduled option, Fee Basis Payment to IB [FB PAID TO IB] also needs  to be scheduled to run each night.  The background process will check  this parameter to determine if FB providers in Fee Invoice and Payment  entries should be created and/or updated in the IB NON/OTHER VA BILLING  PROVIDER (#355.93) file. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "LAST IPAC NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the last number used to create the ID# field in the IPAC VENDOR AGREEMENT file (#161.95).  This number is automatically incremented for  each new IPAC vendor agreement that is created. ",
+      "fieldNumber_": 80
+    }
+  ],
+  "fieldCount": 46,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

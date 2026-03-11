@@ -1,0 +1,1011 @@
+{
+  "fileNumber": 58.81,
+  "fileName": "DRUG ACCOUNTABILITY TRANSACTION",
+  "globalRoot": "58.81",
+  "globalReference": "^PSD(58.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The internal entry number for this transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "P58.84'",
+      "required": false,
+      "pointerTo": 58.84,
+      "helpText": "A pointer to the name of this type transaction. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PHARMACY LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "This field contains a pointer to the Pharmacy location in the DRUG ACCOUNTABILITY STATS file (#58.8).  The Controlled Substances module will recognize this location as the Narcotic Area of Use (NAOU), usually the pharmacy dispensing site (vault). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time of this transaction.    For Controlled Substances dispensing transactions, this is the date/time the pharmacist verified this transaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "*P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "A pointer to the drug for this transaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "The transaction quantity for this drug.    If the transaction type is BALANCE ADJUSTMENT, this quantity may be a negative number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSACTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the person initiating this transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CONTROL POINT ACTIVITY",
+      "dataType": "POINTER",
+      "rawType": "P410'",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "Posted (Warehouse) Issue activity that created this transaction. This field is a pointer to the CONTROL POINT ACTIVITY file (#410) and will be used mainly for receipt transactions. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PURCHASE ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "The Unposted (Non-Warehouse) Purchase Order from which this transaction was created.  This field is a pointer to the PROCUREMENT & ACCOUNTING TRANSACTION file (#442) and will be used mainly for receipt transactions. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BALANCE FORWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "The pharmacy dispensing site (vault) inventory balance forward for this drug.  This balance is used in listing pharmacy's \"Daily Activity Log\". ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ORDER STATUS",
+      "dataType": "POINTER",
+      "rawType": "P58.82'",
+      "required": false,
+      "pointerTo": 58.82,
+      "helpText": "The processing status for the Controlled Substances order being updated in this transaction.  This field is a pointer to the CS ORDER STATUS file (#58.82). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMPLETION STATUS",
+      "dataType": "POINTER",
+      "rawType": "P58.83'",
+      "required": false,
+      "pointerTo": 58.83,
+      "helpText": "The completion status for this Controlled Substances order being updated by this transaction.  This field is a pointer to the CS COMPLETION STATUS file (#58.83). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The current manufacturer of this drug. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LOT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The current lot # of this drug. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The current expiration date for this drug. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reason for creating this transaction. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PHARMACY DISPENSING #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The pharmacy control number to identify and track this Controlled Substances transaction.  This number may be manually entered in pharmacy or auto-generated by the CS software. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NAOU",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "The NAOU ordering this Controlled Substances drug. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DISPENSED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist dispensing this drug. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PROCESSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date/time this transaction was processed. For Controlled Substances dispensing transactions, this is the date/time a pharmacy technician processed this transaction. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ORDER RECEIVED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the person receiving this Controlled Substances drug into the ordering Narcotic Area of Use. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RECEIPT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this drug was received into the ordering Narcotic Area of Use. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "COMPLETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Controlled Substances Green Sheet (VA FORM 10-2638) was reviewed as complete by pharmacy. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FILLED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacy technician processing this Controlled Substances transaction. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the Controlled Substances order request was generated. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the person requesting this Controlled Substances drug. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.5,
+      "fieldName": "ORDERED BY PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacy employee requesting the Controlled Substances order for nursing. ",
+      "fieldNumber_": 25.5
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "58.8126",
+      "required": false,
+      "helpText": "Comments concerning this transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 58.8126,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "QUANTITY RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The actual quantity of the drug received by the ordering NAOU. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DISCREPANCY UNRESOLVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the actual quantity of the drug received is different from the actual quantity pharmacy dispensed, then this field is set to \"1\" or \"YES\". ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "COMPLETED BY NURSE",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the nurse returning the Green Sheet (VA FORM 10-2638) to pharmacy. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 29.5,
+      "fieldName": "COMP BY NURSE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Green Sheet was completed by nursing and ready for pharmacy pickup. ",
+      "fieldNumber_": 29.5
+    },
+    {
+      "fieldNumber": 29.6,
+      "fieldName": "D/T PLACED ON INSP HOLD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Green Sheet was placed on hold for review by the Controlled Substances Inspector. ",
+      "fieldNumber_": 29.6
+    },
+    {
+      "fieldNumber": 29.7,
+      "fieldName": "D/T INSP HOLD REMOVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Green Sheet was removed from hold by the Controlled Substances inspector. ",
+      "fieldNumber_": 29.7
+    },
+    {
+      "fieldNumber": 29.8,
+      "fieldName": "HOLD REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains information concerning the Green Sheet being held for CS inspector's review. ",
+      "fieldNumber_": 29.8
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RECEIVED BY TECH",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacy technician receiving this Controlled Substances drug into the NAOU. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PICK UP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time pharmacy picked up the Green Sheet (VA FORM 10-2638) from the NAOU. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PICKED UP BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacy technician picking up the Green Sheet (VA FORM 10-2638) from the NAOU. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "COMPLETED BY PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist or pharmacy technician completing the Green Sheet (VA FORM 10-2638). ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DATE/TIME RET TO STOCK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this drug is being returned to stock. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "QUANTITY RET TO STOCK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The actual quantity of this drug being returned to stock. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "REASON RETURNED TO STOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason this drug is being returned to stock. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "DATE/TIME TURN IN DESTROY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this drug is being turned in for destruction. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "QUANTITY TURN IN FOR DESTROY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "The actual quantity of this drug being turned in for destruction. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "REASON TURN IN FOR DESTROY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason this drug is being turned in for destruction. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "REQUEST #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The order request number from the ordering NAOU. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "BALANCE FWD RET/STK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "The inventory balance forward for this drug being returned to stock. This balance is used in listing pharmacy's \"Daily Activity Log\". ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DEST HOLDING #",
+      "dataType": "POINTER",
+      "rawType": "P58.86'",
+      "required": false,
+      "pointerTo": 58.86,
+      "helpText": "A pointer to the destruction number for this drug being held for destruction. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "EDIT VERIFIED ORDER DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this verified order is being edited. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "PHARMACIST EDITING",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to name of the pharmacist editing this verified order. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "NEW QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The actual quantity of this drug being dispensed, if quantity is being edited. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ADJUSTED BY QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The difference in the original quantity dispensed and the edited quantity dispensed.  The inventory balance will be adjusted by this amount.  This quantity may be a negative number. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "EDIT MFG/LOT/EXP.DATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;0:N;",
+      "helpText": "This field is set to \"1\" or \"YES\" if  the manufacturer, lot #, or expiration date is being edited on this verified order. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "REASON EDITED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason this verified order is being edited. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "BAL FWD EDIT VERIFIED ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The inventory balance forward for this drug at the time this verified order is being edited.  This balance is used in listing pharmacy's \"Daily Activity Log\". ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "CANCEL VERIFIED ORD DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this verified order is being cancelled. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PHARMACIST CANCELLING",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist cancelling this verified order. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ADJUSTMENT QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The actual quantity of the drug for this cancelled order.  The drug inventory balance will be increased by this adjustment quantity. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "REASON CANCELLED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason this verified order is being cancelled. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "BAL FWD CANCEL VERIFIED ORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The inventory balance forward for this drug at the time this verified order is being cancelled.  This balance is used in listing pharmacy's \"Daily Activity Log\". ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "RX #",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "A pointer to the outpatient prescription number. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "REFILL #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this prescription is a refill, this field will contain the refill number. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "PRESCRIPTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The fill date for this prescription. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "PARTIAL #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this prescription is a partial, this field contains the partial number. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 63.5,
+      "fieldName": "OUTPATIENT RX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external form of the Outpatient prescription number. ",
+      "fieldNumber_": 63.5
+    },
+    {
+      "fieldNumber": 63.6,
+      "fieldName": "RELEASING PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the pharmacist responsible for the release of an Outpatient prescription in case it is a different person than the transactor. ",
+      "fieldNumber_": 63.6
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "TRANSFER FROM NAOU DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the Controlled Substances drug was transferred from this NAOU to another NAOU. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "TRANSFER FROM NAOU NURSE",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the nurse or pharmacist transferring the Controlled Substances drug from this NAOU to another NAOU. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "TRANSFER TO NAOU",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "The NAOU receiving this Controlled Substances drug from another NAOU. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "TRANSFER TO NAOU DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the Controlled Substances drug was transferred to this NAOU from another NAOU. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "TRANSFER TO NAOU NURSE",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the nurse receiving this transferred Controlled Substances drug from another NAOU. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "PREVIOUS TRANSACTION #",
+      "dataType": "POINTER",
+      "rawType": "*P58.81'",
+      "required": false,
+      "pointerTo": 58.81,
+      "helpText": "The transaction number of the transferred from NAOU Controlled Substances drug.  This is the previous transaction number for this drug. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "QUANTITY TRANSFERRED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "The quantity of this Controlled Substances drug being transferred from an NAOU to another NAOU. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "PRIME VENDOR INVOICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "To allow the entering of a Prime Vendor Invoice number for a receipt. The Integrated Funds Distribution, Control Point Activity, Accounting and Procurement (IFCAP) Purchase Order number may be used all month and there may not be a corresponding IFCAP transaction number for each Prime Vendor receipt. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "REFERRED REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When a completed Green Sheet has been referred to a pharmacy supervisor for review, this field may contain comments about the reason. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the name of the patient receiving this Controlled Substances medication. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 73.5,
+      "fieldName": "FROM PATIENT ID LIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be \"YES\" when the patient ID was picked up from the patient ID list. ",
+      "fieldNumber_": 73.5
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "NURSE ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the nurse dispensing this Controlled Substances medication. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "ORIGINAL COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the original count or balance of this drug when loaded into the TRAKKER for medication dispensing on the NAOU. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "WASTED QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the quantity of this Controlled Substances drug that was wasted during dispensing at the NAOU. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "LIQUID AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the liquid quantity of the drug dispensed at the NAOU. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "SECOND NURSE ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the nurse witnessing this Controlled Substances transaction. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "CORRECT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the correct count or balance for a Controlled Substances drug on an NAOU. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "PHARMACIST ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to name of the pharmacist inventorying this Controlled Substances drug. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "SECOND PHARMACIST ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the pharmacist witnessing this Controlled Substances transaction. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "ACTUAL DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the actual date/time this transaction was performed using the barcode TRAKKER. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "CS INSPECTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This option contains a pointer to the name of the Controlled Substances inspector inventorying this CS drug. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "SECOND CS INSPECTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the Controlled Substances inspector witnessing the inventory of this CS drug. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "EMERGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A \"YES\" entry in this field will cause an order to print on the pharmacy emergency order printer and allow for expedited processing. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CS TRANSACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be set to \"1\" or \"YES\" if this is a Controlled Substances package transaction.  This CS flag will be used when purging data within this file. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PRINTED 2320",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to \"1\" or \"YES\" when this transaction is printed on pharmacy's VA FORM 10-2320 for this drug. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PRINTED 2321",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is set to \"1\" or \"YES\" when this transaction is printed on the dispensing/receiving report (in lieu of VA FORM 10-2321). This flag is used in printing this transaction only once on the dispensing/receiving report.  A reprint option is provided in the Controlled Substances module for additional copies to be printed. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "PRINTED 2638",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to \"1\" or \"YES\" when a Green Sheet (VA FORM 10- 2638) is printed for this Controlled Substances order.  This flag is used in printing this transaction only once.  A reprint option is provided in the Controlled Substances module for additional copies to be printed. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "PRINTED LABEL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is set to the date/time when the label for this transaction is printed.  This flag is used in printing labels only once for this transaction.  A reprint label option is provided in the Controlled Substances module for additional labels to be printed. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P42.4'",
+      "required": false,
+      "pointerTo": 42.4,
+      "helpText": "For CDR reporting the specialty for the patient is stored at the time each dose is dispensed. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "PRIME VENDOR ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PRIME VENDOR ORDER NUMBER field contains the order number on which the drugs were purchased if the drug is not marked as a controlled substance. ",
+      "fieldNumber_": 106
+    }
+  ],
+  "fieldCount": 96,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACT", "field": },
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "ACT4", "field": },
+    {"name": "ACT5", "field": },
+    {"name": "ACT6", "field": },
+    {"name": "ACT7", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AE", "field": },
+    {"name": "AEM", "field": },
+    {"name": "AEM1", "field": },
+    {"name": "AEM2", "field": },
+    {"name": "AEM3", "field": },
+    {"name": "AF", "field": },
+    {"name": "AF1", "field": },
+    {"name": "AF2", "field": },
+    {"name": "AG", "field": },
+    {"name": "AG1", "field": },
+    {"name": "AH", "field": },
+    {"name": "AK", "field": },
+    {"name": "AK1", "field": },
+    {"name": "AL", "field": },
+    {"name": "AOP", "field": },
+    {"name": "ATRN", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "PV", "field": },
+    {"name": "58.81", "field": .01, "type": "regular"},
+    {"name": "58.81", "field": 1, "type": "regular"},
+    {"name": "58.81", "field": 1, "type": "regular"},
+    {"name": "58.81", "field": 2, "type": "regular"},
+    {"name": "58.81", "field": 2, "type": "regular"},
+    {"name": "58.81", "field": 2, "type": "regular"},
+    {"name": "58.81", "field": 3, "type": "regular"},
+    {"name": "58.81", "field": 3, "type": "regular"},
+    {"name": "58.81", "field": 3, "type": "regular"},
+    {"name": "58.81", "field": 4, "type": "regular"},
+    {"name": "58.81", "field": 4, "type": "regular"},
+    {"name": "58.81", "field": 4, "type": "regular"},
+    {"name": "58.81", "field": 7, "type": "regular"},
+    {"name": "58.81", "field": 8, "type": "regular"},
+    {"name": "58.81", "field": 10, "type": "regular"},
+    {"name": "58.81", "field": 11, "type": "regular"},
+    {"name": "58.81", "field": 16, "type": "regular"},
+    {"name": "58.81", "field": 17, "type": "regular"},
+    {"name": "58.81", "field": 17, "type": "regular"},
+    {"name": "58.81", "field": 17, "type": "regular"},
+    {"name": "58.81", "field": 21, "type": "regular"},
+    {"name": "58.81", "field": 34, "type": "regular"},
+    {"name": "58.81", "field": 37, "type": "regular"},
+    {"name": "58.81", "field": 48, "type": "regular"},
+    {"name": "58.81", "field": 55, "type": "regular"},
+    {"name": "58.81", "field": 60, "type": "regular"},
+    {"name": "58.81", "field": 64, "type": "regular"},
+    {"name": "58.81", "field": 69, "type": "regular"},
+    {"name": "58.81", "field": 71, "type": "regular"},
+    {"name": "58.81", "field": 85, "type": "regular"},
+    {"name": "58.81", "field": 102, "type": "regular"},
+    {"name": "58.81", "field": 103, "type": "regular"},
+    {"name": "58.81", "field": 104, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSDRUG(+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 17, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSD(58.8,+$P(^(0),U,18),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(58.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

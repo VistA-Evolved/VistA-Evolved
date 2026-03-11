@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2101.5,
+  "fileName": "GENERIC CODE SHEET COUNTER",
+  "globalRoot": "2101.5",
+  "globalReference": "^GECS(2101.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This file is used to keep track of the counters for creating code sheets and batch numbers.  The entry into this field is in the form 'station number'-'code sheet system identifier (3 characters)'-'fiscal year'. For example 460-VOL-89 indicates station number 460, code sheet system identifier VOL, and fiscal year 89. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Stores the actual counter number.  Increments by one for each code sheet or batch number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2101.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

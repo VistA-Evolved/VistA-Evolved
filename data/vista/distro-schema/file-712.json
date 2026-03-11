@@ -1,0 +1,361 @@
+{
+  "fileNumber": 712,
+  "fileName": "1010EZ HOLDING",
+  "globalRoot": "712",
+  "globalReference": "^EAS(712,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "A unique sequential identifier assigned by the 1010EZ module to each Application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "WEB SUBMISSION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique identifier assigned by the On-Line 10-10EZ software to each submitted Application. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "RELATED MESSAGE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the internal entry number of the VistA MailMan message that contains the 10-10EZ Application.  The message was processed by the EAS EZ SERVER into this file. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICANT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Applicant's name as entered in the On-Line 10-10EZ. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPLICANT SSN&DOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field contains the Applicant's social security number and date of birth as entered in the On-Line 10-10EZ.   Format is: nnn-nn-nnnn_&_mm/dd/yyyy ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the incoming 10-10EZ Application was received and entered into this holding file record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) responsible for entering the 10-10EZ Application into this holding file.   By default, this field will contain the IEN for the VistA POSTMASTER (i.e., .5). ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "W:WEB;V:VISTA;",
+      "helpText": "The data in this field indicates the source of the 10-10EZ Application.  By default, all Applications have a source of \"Web\". ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "VETERAN TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SC 50-100%;2:SC <50%;3:SC 0%;4:POW;5:PURPLE HEART;6:MIL. RETIREE;7:NSC;",
+      "helpText": "This field contains the Veteran Type indicator as supplied by the Applicant to the On-Line 10-10EZ.  The available indicators are:   SC 50-100% SC <50% SC 0% POW PURPLE HEART MIL. RETIREE NSC ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "LINK TO FILE #2",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the internal entry number of the record in the PATIENT file (#2), which has been linked with the Applicant identified in this 10-10EZ.   The linkage is established by the user through the \"Link to Patient File (LZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "NEW PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEW PATIENT;",
+      "helpText": "If the user created a new record in the PATIENT file (#2) when  \"Link to Patient File (LZ)\" action was performed, then this field will contain a \"1\".  Otherwise, it is null. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "VERSION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The version number of the On-Line 10-10EZ software which transmitted the 10-10EZ to VistA. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "EXPECT COPY FROM VET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When completing the On-Line 10-10EZ, the Applicant must indicate whether or not he will print the 10-10EZ from the web application in order to sign and send to the VHA site.   If this field holds a \"YES\", then the site should expect a signed copy of the 10-10EZ via surface mail from the Applicant.   If this fields holds a \"NO\", then site personnel should begin processing of the 10-10EZ, generate a print-out and send it to the Applicant for signature. ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 3.8,
+      "fieldName": "FINANCIAL DISCLOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Applicant's with certain Veteran Type indicators such as \"NSC\", must indicate during the On-Line 10-10EZ process whether or not they intend to disclose financial information.     The \"YES\" or \"NO\" in this field indicates whether the Applicant has agreed to provide financial information. ",
+      "fieldNumber_": 3.8
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE SIGNED BY APPLICANT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date the user verified receipt of a signed 10-10EZ from the Applicant.   Data is entered into this field when the user takes the \"Verify Signature (VZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "VERIFY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date the user verified receipt of a signed 10-10EZ from the Applicant.      Data is entered into this field when the user takes the \"Verify Signature (VZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) who verified the Applicant's signature on  the printed 10-10EZ form.  This is the user that executed the \"Verify Signature (VZ)\" action. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "APPLICANT E-MAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the internet e-mail address supplied by the Applicant in the On-Line 10-10EZ. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "APPOINTMENT REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not the Applicant wishes to  request an appointment at the medical center. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "APPLYING TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Station Number for the facility to which the Applicant has directed the Application.    This would indicate the Preferred Facility for Enrollment. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date the user linked the Applicant to the site's Patient database.      Data is entered into this field when the user takes the \"Link to Patient File (LZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) who linked the Applicant with the site's  Patient database.  This is the user that executed the \"Link to Patient File (LZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date that the user first printed this 10-10EZ Application.  Data is entered into this field when the user  takes the \"Print 1010EZ (PZ)\" action within the EAS EZ 1010EZ PROCESSING  option.     The Application may be printed any number of times, but only the first print data is recorded. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "PRINTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) who first printed this 10-10EZ Application.  This is the user who first executed the \"Print 1001EZ (PZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "FILING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date the user filed the Application data to the site's Patient database.    Data is entered into this field when the user takes the \"File 1010EZ (FZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "FILED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) who filed the Application data into the site's  Patient database.  This is the user that executed the \"File 1010EZ (FZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "UPDATE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date that the user first updated (i.e., directly edited) any 10-10EZ Application data.  Data is entered into this field the first time the user takes the \"Update Field (UF)\"  action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the  NEW PERSON file (#200) who first updated any data in this 10-10EZ  Application. This is the user who first executed the \"Update Field (UF)\"  action within the EAS EZ 1010EZ PROCESSING option for this Application. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "CLOSE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date the user inactivated this 10-10EZ Application.    Data is entered into this field when the user takes the \"Inactivate 1010EZ (IZ)\" action within the EAS EZ 1010EZ PROCESSING option. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the internal entry number of the person in the NEW PERSON file (#200) who inactivated this 10-10EZ Application. This is the user that executed the \"Inactivate 1010EZ (IZ)\" action within the EAS EZ 1010EZ PROCESSING option for this Application. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "FILING TASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the identity of the background task which will file the data from the 10-10EZ Holding file to other VistA files.   This is set from the ZTSK variable returned by the call to ^%ZTLOAD. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATA ELEMENTS",
+      "dataType": "POINTER",
+      "rawType": "712.01PA",
+      "required": false,
+      "helpText": "This multiple field holds a subrecord for each data element provided by the Applicant in the On-Line 10-10EZ. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SERVICES REQUESTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field holds whatever the Applicant entered in the On-Line 10-10EZ to indicate the VA services in which he is interested. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "712.013",
+      "required": false,
+      "helpText": "This word-processing field holds whatever the Applicant entered in the On-Line 10-10EZ in the Comments section of the Application. ",
+      "isMultiple": true,
+      "subFileNumber": 712.013,
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CLS", "field": },
+    {"name": "D", "field": },
+    {"name": "FIL", "field": },
+    {"name": "NEW", "field": },
+    {"name": "PRT", "field": },
+    {"name": "REV", "field": },
+    {"name": "SIG", "field": },
+    {"name": "W", "field": },
+    {"name": "712", "field": .01, "type": "regular"},
+    {"name": "712", "field": .1, "type": "regular"},
+    {"name": "712", "field": 1, "type": "regular"},
+    {"name": "712", "field": 2, "type": "regular"},
+    {"name": "712", "field": 3, "type": "regular"},
+    {"name": "712", "field": 3.4, "type": "regular"},
+    {"name": "712", "field": 4, "type": "regular"},
+    {"name": "712", "field": 5.1, "type": "regular"},
+    {"name": "712", "field": 6.1, "type": "regular"},
+    {"name": "712", "field": 7.1, "type": "regular"},
+    {"name": "712", "field": 9.1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

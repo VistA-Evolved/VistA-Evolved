@@ -1,0 +1,48 @@
+{
+  "fileNumber": 411.4,
+  "fileName": "IFCAP CONVERSION ERROR",
+  "globalRoot": "411.4I",
+  "globalReference": "^PRC(411.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the ERROR CODE for the IFCAP CONVERSION DISCREPANCY file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "411.41",
+      "required": false,
+      "helpText": "This is the text which describes the error in full. ",
+      "isMultiple": true,
+      "subFileNumber": 411.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the short name or title for this conversion error. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "411.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": X, "value": "W ?10,$P(^(0),U,2)"}
+  ]
+}

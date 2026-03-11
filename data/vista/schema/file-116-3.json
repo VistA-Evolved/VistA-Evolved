@@ -1,0 +1,66 @@
+{
+  "fileNumber": 116.3,
+  "fileName": "HOLIDAY MEALS",
+  "globalRoot": "116.3",
+  "globalReference": "^FH(116.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of a holiday. A holiday, for purposes of this program, is a date upon which one or more of the normal cycle meals are suspended and other special meals substituted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HOLIDAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents the name of the holiday. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BREAKFAST MEAL",
+      "dataType": "POINTER",
+      "rawType": "P116.1'",
+      "required": false,
+      "pointerTo": 116.1,
+      "helpText": "This field, if present, contains the meal which will override the normal cycle breakfast meal. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NOON MEAL",
+      "dataType": "POINTER",
+      "rawType": "P116.1'",
+      "required": false,
+      "pointerTo": 116.1,
+      "helpText": "This field, if present, contains the meal which will override the normal cycle noon meal. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EVENING MEAL",
+      "dataType": "POINTER",
+      "rawType": "P116.1'",
+      "required": false,
+      "pointerTo": 116.1,
+      "helpText": "This field, if present, contains the meal which will override the normal cycle evening meal. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "116.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

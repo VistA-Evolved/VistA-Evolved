@@ -1,0 +1,49 @@
+{
+  "fileNumber": 160.16,
+  "fileName": "ONCOLOGY DATA EXTRACT FORMAT",
+  "globalRoot": "160.16",
+  "globalReference": "^ONCO(160.16,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the name of the extract. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD",
+      "dataType": "SUBFILE",
+      "rawType": "160.161I",
+      "required": false,
+      "helpText": "List of all the extracted fields. ",
+      "isMultiple": true,
+      "subFileNumber": 160.161,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RULES",
+      "dataType": "SUBFILE",
+      "rawType": "160.162",
+      "required": false,
+      "helpText": "This field is a set of rules based in MUMPS code that the extract must follow for each entry.  Values that must be set are:        VALID = 1 means that the extract is valid              = 0 means that the extract has is not valid and will not                extract         JUMP = 0 means process all the field in the extract              = X^Y means to skip all the fields from position X to                position Y in the extract. ",
+      "isMultiple": true,
+      "subFileNumber": 160.162,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "160.16", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

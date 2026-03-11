@@ -1,0 +1,620 @@
+{
+  "fileNumber": 470,
+  "fileName": "PATIENT FUNDS",
+  "globalRoot": "470PI",
+  "globalReference": "^PRPF(470,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "IRP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACCOUNT STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LIMITED UNRESTRICTED;R:RESTRICTED;U:UNRESTRICTED;X:UNKNOWN;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADJUDGED INCOMPETENT;R:RATED INCOMPETENT;C:COMPETENT;N:NOT RATED;X:UNKNOWN;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INDIGENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "APPORTIONEE $",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "GUARDIAN $",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INSTITUTIONAL AWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REGIONAL OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "OTHER ASSETS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE OF LAST TRANSACTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "DATE OF CURRENT RESTRICTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 10.7,
+      "fieldName": "PROVIDER AUTH RESTRICT",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 10.7
+    },
+    {
+      "fieldNumber": 10.9,
+      "fieldName": "PROVIDER CONVERTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field contains a flag indicating that the Provider Authorizing Restriction field has been converted from pointing to file 6 to pointing to file 200. ",
+      "fieldNumber_": 10.9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BALANCE CARRIED FORWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PVT SOURCE CARRIED FORWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "GRATUITOUS CARRIED FORWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "STORED BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "COMPUTED BALANCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STORED PRIVATE SOURCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.5,
+      "fieldName": "COMPUTED PRIVATE SOURCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 15.5
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STORED GRATUITOUS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "COMPUTED GRATUITOUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "AMOUNT RESTRICTED PER MONTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "AMOUNT RESTRICTED PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "RESTRICTION MONTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RESTRICTION WEEK #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MONTHLY RESTRICTION BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "WEEKLY RESTRICTION BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MINIMUM BALANCE #1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "MAXIMUM BALANCE #1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MINIMUM BALANCE #2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "MAXIMUM BALANCE #2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PATIENT TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "470.01P",
+      "required": false,
+      "helpText": "This field stores the current master transactions affecting a patient account.  As archiving becomes available, the data contained in this field will only be a subset of all the master transactions affecting a specific veteran. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 30.5,
+      "fieldName": "DEFERRED BALANCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 30.5
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DEFERRED CREDIT REF #",
+      "dataType": "SUBFILE",
+      "rawType": "470.02A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.02,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SUSPENSE DATE",
+      "dataType": "DATE",
+      "rawType": "470.03D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.03,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "INCOME SOURCE",
+      "dataType": "SUBFILE",
+      "rawType": "470.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.05,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "GENERAL INFORMATION/REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "470.06",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.06,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "SPECIAL REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "470.035",
+      "required": false,
+      "helpText": "This field is designed to store those remarks which are to be viewed by Patient Funds Personnel ONLY. ",
+      "isMultiple": true,
+      "subFileNumber": 470.035,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "WARD",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15X",
+      "length": 15X,
+      "required": false,
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "CLAIM NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ35",
+      "length": 35,
+      "required": false,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "STREET ADDRESS 3",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "CITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CARD TO BE PRINTED?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ON DORMANT ACCOUNT LIST",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "ON MIN/MAX1 LIST",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ON MIN/MAX2 LIST",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ACCOUNT OUT OF BALANCE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "ON SUSPENSE DISPLAY LIST",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "ON ACTIVE ACCOUNT LIST",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PRINT ON OVERDUE LIST?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "RECORD LOCKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "RECORD LOCKED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "RECORD LOCKED TERMINAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "FUTURE MONTH",
+      "dataType": "DATE",
+      "rawType": "470.071DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.071,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "FUTURE WEEK",
+      "dataType": "SUBFILE",
+      "rawType": "470.072A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 470.072,
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field will be used to store the primary Station Name that a patient is officially assigned to. ",
+      "fieldNumber_": 73
+    }
+  ],
+  "fieldCount": 64,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "470", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "470", "field": 1, "type": "regular"},
+    {"name": "470", "field": 60, "type": "regular"},
+    {"name": "470", "field": 61, "type": "regular"},
+    {"name": "470", "field": 62, "type": "regular"},
+    {"name": "470", "field": 63, "type": "regular"},
+    {"name": "470", "field": 64, "type": "regular"},
+    {"name": "470", "field": 65, "type": "regular"},
+    {"name": "470", "field": 66, "type": "regular"},
+    {"name": "470", "field": 67, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 73, "value": "S %I=Y,Y=$S('$D(^(12)):\"\",$D(^DIC(4,+$P(^(12),U,1),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": DEAD, "value": "I $D(^DPT(+Y,.35)),$P(^(.35),U)]\"\" W \"   PATIENT HAS EXPIRED\",*7"}
+  ]
+}

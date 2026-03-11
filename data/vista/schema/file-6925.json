@@ -1,0 +1,3983 @@
+{
+  "fileNumber": 6925,
+  "fileName": "CONSTRUCTION PROJECT",
+  "globalRoot": "6925I",
+  "globalReference": "^ENG(\"PROJ\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROJECT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The principal identifier of entries in the CONSTRUCTION PROJECT file.  Format should be either 'SSS-NNN' or 'SSS-YY-NNN'; where SSS is the facility number and NNN is a sequential project number. YY is usually the fiscal year for which an NRM, Station Level, or Lease request is being submitted. An optional single uppercase letter can follow the sequential project number.  Note that the facility number need not always be the number of the VAMC. For example, if you are reporting on a National Cemet",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FMS #",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This field computes the FMS # of Major or Minor program projects. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORTING PERIOD (Month/Year)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current reporting period.  Used by Regional Offices for tracking project milestones over time.   Enter MONTH and YEAR only. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROJECT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Official title of project. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "MONTHLY UPDATES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether or not a project will be included when Progress Reports of 'all projects' are requested. This field is examined when 10-0051's are transmitted electronically as well as when paper records are produced. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MEDICAL CENTER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Facility where the work is being performed. May indicate a division or other functional element (National Cemetery, Regional Office, satellite clinic, etc.) if appropriate. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.45,
+      "fieldName": "FUNDING YEAR  - A/E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the fiscal year for which A/E is funded or proposed. ",
+      "fieldNumber_": 3.45
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "FUNDING YEAR - CONST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Fiscal year for which construction is funded or proposed. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "*APPROVAL LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CA:CASCA;RD:RDAP;CO:COAP;OT:OTHER;",
+      "helpText": "Identifies the source of funding for approved projects. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPROVED CONSTRUCTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount (in whole dollars) authorized for construction at the time project is approved. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "APPROVED A/E FUNDING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount (in whole dollars) authorized for A/E at the time project is  approved. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "TOTAL FUNDS APPROVED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the computed total of A/E and Construction Funds authorized at the time the project is approved. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P6925.2'",
+      "required": true,
+      "pointerTo": 6925.2,
+      "helpText": "Present status of the project. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DESIGN METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:A/E;2:SBA 8(a);3:VAMC;",
+      "helpText": "Indicates the design method. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CONSTR. METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CONTRACT;2:P&H;3:STATION LABOR;4:SBA 8(a);5:DESIGN/BUILD;6:LEASE;",
+      "helpText": "Indicates the construction method. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "GROSS SQUARE FEET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Approximate gross square footage directly affected by this project. Include both new space and renovated space in this estimate. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "% SCHEMATICS COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Current estimate of work done on schematics. Expressed as a percentage of completion. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "% CONST DOCS. COMPL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Current estimate of the status of construction documents. Expressed as a percentage of completion. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "% CONSTRUCTION COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Current estimate of construction work actually performed. Expressed as a percentage of completion. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "% DESIGN DEV. COMPL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Current estimate of how much work has been done on project design development. Expressed as percentage of completion. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "% DESIGN PROGRAM COMPL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Completion percentage of design program (if applicable). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OLD REPORTING PERIOD",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.1,
+      "fieldName": "OLD PROJECT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.1
+    },
+    {
+      "fieldNumber": 15.2,
+      "fieldName": "OLD MONTHLY UPDATE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.2
+    },
+    {
+      "fieldNumber": 15.3,
+      "fieldName": "OLD MEDICAL CENTER",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.3
+    },
+    {
+      "fieldNumber": 15.4,
+      "fieldName": "OLD FUNDING YEAR (A/E)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.4
+    },
+    {
+      "fieldNumber": 15.5,
+      "fieldName": "OLD FUNDING YEAR CONST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.5
+    },
+    {
+      "fieldNumber": 15.6,
+      "fieldName": "OLD APPROVED CONST. FUNDING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0I",
+      "length": 8,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.6
+    },
+    {
+      "fieldNumber": 15.7,
+      "fieldName": "OLD APPROVED A/E FUNDING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0I",
+      "length": 8,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.7
+    },
+    {
+      "fieldNumber": 15.8,
+      "fieldName": "OLD STATUS",
+      "dataType": "POINTER",
+      "rawType": "P6925.2'I",
+      "required": false,
+      "pointerTo": 6925.2,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.8
+    },
+    {
+      "fieldNumber": 15.9,
+      "fieldName": "OLD DESIGN METHOD",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:A/E;2:SBA 8(a);3:VAMC;",
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 15.9
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "OLD CONSTRUCTION METHOD",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:CONTRACT;2:P&H;3:STATION LABOR;4:SBA 8(a);5:DESIGN/BUILD;6:LEASE;",
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "OLD GROSS SQUARE FEET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 16.2,
+      "fieldName": "OLD % SCHEMATICS COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.2
+    },
+    {
+      "fieldNumber": 16.3,
+      "fieldName": "OLD % CD COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.3
+    },
+    {
+      "fieldNumber": 16.4,
+      "fieldName": "OLD % CONSTRUCTION COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.4
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "OLD % DD COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.6,
+      "fieldName": "OLD % DESIGN PROGRAM COMPLETE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 16.6
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DESIGN PROGRAM START (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned start of design program. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "DESIGN PROGRAM COMP. (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned completion of design program. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 20.3,
+      "fieldName": "ADVERTISE FOR A/E (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned date for A/E advertisement. ",
+      "fieldNumber_": 20.3
+    },
+    {
+      "fieldNumber": 20.4,
+      "fieldName": "SELECT A/E (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned selection date for A/E. ",
+      "fieldNumber_": 20.4
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "A/E AWARD (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned A/E award date. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "START SCHEMATICS (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned date for the start of schematic plans. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "COMPLETE SCHEMATICS (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for completion of preliminary plans. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "START DESIGN DEV. (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned (approved) start of design development. ",
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 22.6,
+      "fieldName": "COMPL. DESIGN DEV. (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Planned (approved) completion of design development. ",
+      "fieldNumber_": 22.6
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "START/AWARD CD (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) date for start of construction documents. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "COMPL. CONST. DOCS. (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for completion of construction documents. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 24.4,
+      "fieldName": "START L/T REVIEW (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for start of the Legal/Technical Review. ",
+      "fieldNumber_": 24.4
+    },
+    {
+      "fieldNumber": 24.6,
+      "fieldName": "START AUDIT REVIEW (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for start of audit review. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 24.6
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ISSUE IFB/SBA (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for issuance of Invitation For Bids. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.4,
+      "fieldName": "COMPL. L/T REVIEW (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for completion of Legal/Technical review. ",
+      "fieldNumber_": 25.4
+    },
+    {
+      "fieldNumber": 25.6,
+      "fieldName": "COMPL. AUDIT REVIEW (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for completion of audit review. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 25.6
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "BID OPEN/NEGOTIATION (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for bid openings. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CONSTRUCTION AWARD (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for award of construction contract(s). ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CONSTRUCTION START (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for start of construction. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "CONST. COMPLETE (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date by which construction is to be substantially complete. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ACTIVATION (PLANNED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Original (approved) target date for project activation. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "OLD DESIGN PROGRAM START (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "OLD DESIGN PROGRAM COMP. (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.3,
+      "fieldName": "OLD ADVERTISE FOR A/E (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.3
+    },
+    {
+      "fieldNumber": 32.4,
+      "fieldName": "OLD SELECT A/E (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.4
+    },
+    {
+      "fieldNumber": 32.5,
+      "fieldName": "OLD A/E AWARD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.5
+    },
+    {
+      "fieldNumber": 32.6,
+      "fieldName": "OLD START SCHEMATICS (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.6
+    },
+    {
+      "fieldNumber": 32.7,
+      "fieldName": "OLD COMPLETE SCHEMATICS (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.7
+    },
+    {
+      "fieldNumber": 32.8,
+      "fieldName": "OLD START DD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.8
+    },
+    {
+      "fieldNumber": 32.9,
+      "fieldName": "OLD COMPLETE DD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 32.9
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OLD START CD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.1,
+      "fieldName": "OLD COMPLETE CD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.1
+    },
+    {
+      "fieldNumber": 33.14,
+      "fieldName": "OLD START L/T REVIEW (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.14
+    },
+    {
+      "fieldNumber": 33.16,
+      "fieldName": "OLD START AUDIT REVIEW (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.16
+    },
+    {
+      "fieldNumber": 33.2,
+      "fieldName": "OLD ISSUE IFB (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.2
+    },
+    {
+      "fieldNumber": 33.24,
+      "fieldName": "OLD COMPL. L/T REVIEW (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value  ",
+      "fieldNumber_": 33.24
+    },
+    {
+      "fieldNumber": 33.26,
+      "fieldName": "OLD COMPL. AUDIT REVIEW (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.26
+    },
+    {
+      "fieldNumber": 33.3,
+      "fieldName": "OLD BID OPEN (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.3
+    },
+    {
+      "fieldNumber": 33.4,
+      "fieldName": "OLD CONSTRUCTION AWARD (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.4
+    },
+    {
+      "fieldNumber": 33.5,
+      "fieldName": "OLD CONSTRUCTION START (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.5
+    },
+    {
+      "fieldNumber": 33.6,
+      "fieldName": "OLD CONST. COMPLETE (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.6
+    },
+    {
+      "fieldNumber": 33.7,
+      "fieldName": "OLD ACTIVATION (PL)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 33.7
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DESIGN PROGRAM START (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised design program start date. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.1,
+      "fieldName": "DESIGN PROGRAM COMP. (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised design program completion date. ",
+      "fieldNumber_": 34.1
+    },
+    {
+      "fieldNumber": 34.3,
+      "fieldName": "ADVERTISE FOR A/E (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for A/E advertisement. ",
+      "fieldNumber_": 34.3
+    },
+    {
+      "fieldNumber": 34.4,
+      "fieldName": "SELECT A/E (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for selection of A/E. ",
+      "fieldNumber_": 34.4
+    },
+    {
+      "fieldNumber": 34.5,
+      "fieldName": "A/E AWARD (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for A/E award. ",
+      "fieldNumber_": 34.5
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "START SCHEMATICS (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of starting date for development of schematics. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "COMPLETE SCHEMATICS (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate as to when schematics will be complete. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 36.1,
+      "fieldName": "START DESIGN DEV. (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for start of design development. ",
+      "fieldNumber_": 36.1
+    },
+    {
+      "fieldNumber": 36.2,
+      "fieldName": "COMPL. DESIGN DEV. (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for completion of design development. ",
+      "fieldNumber_": 36.2
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "START/AWARD CD (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the starting date for development of construction documents. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "COMPL. CONST. DOCS. (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for completion of construction documents. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 38.4,
+      "fieldName": "START L/T REVIEW (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for start of the Legal Technical review. ",
+      "fieldNumber_": 38.4
+    },
+    {
+      "fieldNumber": 38.6,
+      "fieldName": "START AUDIT REVIEW (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for start of the audit review. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 38.6
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ISSUE IFB/SBA (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for issuance of the Invitation For Bids. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 39.4,
+      "fieldName": "COMPL. L/T REVIEW (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for completion of the Legal/Technical review. ",
+      "fieldNumber_": 39.4
+    },
+    {
+      "fieldNumber": 39.6,
+      "fieldName": "COMPL. AUDIT REVIEW (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for completion of the audit review. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 39.6
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "BID OPEN/NEGOTIATION (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for bid openings. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CONSTRUCTION AWARD (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for award of the construction contract(s). ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "CONSTRUCTION START (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) estimate of the target date for the start of construction. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CONST. COMPLETE (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Current (revised) target date by which it is expected that construction will be substantially complete. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "ACTIVATION (REVISED)",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Revised date for project activation. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "OLD DESIGN PROGRAM START (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 46.1,
+      "fieldName": "OLD DESIGN PROGRAM COMP. (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.1
+    },
+    {
+      "fieldNumber": 46.2,
+      "fieldName": "OLD AUTHR. LTR. REC'D. (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.2
+    },
+    {
+      "fieldNumber": 46.3,
+      "fieldName": "OLD ADVERTISE FOR A/E (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.3
+    },
+    {
+      "fieldNumber": 46.4,
+      "fieldName": "OLD SELECT A/E (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.4
+    },
+    {
+      "fieldNumber": 46.5,
+      "fieldName": "OLD A/E AWARD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.5
+    },
+    {
+      "fieldNumber": 46.6,
+      "fieldName": "OLD START SCHEMATICS (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.6
+    },
+    {
+      "fieldNumber": 46.7,
+      "fieldName": "OLD COMPLETE SCHEMATICS (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.7
+    },
+    {
+      "fieldNumber": 46.8,
+      "fieldName": "OLD START DD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.8
+    },
+    {
+      "fieldNumber": 46.9,
+      "fieldName": "OLD COMPLETE DD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 46.9
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "OLD START CD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 47.1,
+      "fieldName": "OLD COMPLETE CD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.1
+    },
+    {
+      "fieldNumber": 47.14,
+      "fieldName": "OLD START L/T REVIEW (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.14
+    },
+    {
+      "fieldNumber": 47.16,
+      "fieldName": "OLD START AUDIT REVIEW (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.16
+    },
+    {
+      "fieldNumber": 47.2,
+      "fieldName": "OLD ISSUE IFB (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.2
+    },
+    {
+      "fieldNumber": 47.24,
+      "fieldName": "OLD COMPL. L/T REVIEW (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.24
+    },
+    {
+      "fieldNumber": 47.26,
+      "fieldName": "OLD COMPL. AUDIT REVIEW (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.26
+    },
+    {
+      "fieldNumber": 47.3,
+      "fieldName": "OLD BID OPEN (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.3
+    },
+    {
+      "fieldNumber": 47.4,
+      "fieldName": "OLD CONSTRUCTION AWARD (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.4
+    },
+    {
+      "fieldNumber": 47.5,
+      "fieldName": "OLD CONSTRUCTION START (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.5
+    },
+    {
+      "fieldNumber": 47.6,
+      "fieldName": "OLD CONSTRUCTION COMP. (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.6
+    },
+    {
+      "fieldNumber": 47.7,
+      "fieldName": "OLD ACTIVATION (REV)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 47.7
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "DESIGN PROGRAM START (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of design program start. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 49.1,
+      "fieldName": "DESIGN PROGRAM COMPL. (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of design program completion. ",
+      "fieldNumber_": 49.1
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AUTHORIZED (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date the project was authorized by the VISN or other controlling authority as appropriate. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ADVERTISE FOR A/E (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of advertisement for Architect/Engineer. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "SELECT A/E (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of selection of Architect/Engineer. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "A/E AWARD (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of contract award to Architect/Engineer. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "START SCHEMATICS (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which schematic plans were begun. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "COMPLETE SCHEMATICS (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which schematic plans were actually completed. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 55.5,
+      "fieldName": "START DESIGN DEV. (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual start of design development. ",
+      "fieldNumber_": 55.5
+    },
+    {
+      "fieldNumber": 55.6,
+      "fieldName": "COMPL. DESIGN DEV. (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual completion date for design development. ",
+      "fieldNumber_": 55.6
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "START/AWARD CD (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which construction documents were begun. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "COMPL. CONST. DOCS. (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which construction documents were completed. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 57.4,
+      "fieldName": "START L/T REVIEW (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which the Legal/Technical review was started. ",
+      "fieldNumber_": 57.4
+    },
+    {
+      "fieldNumber": 57.6,
+      "fieldName": "START AUDIT REVIEW (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which the audit review was started. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 57.6
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "ISSUE IFB/SBA (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of issuance of Invitation For Bids. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 58.4,
+      "fieldName": "COMPL. L/T REVIEW (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which the Legal/Technical review was completed. ",
+      "fieldNumber_": 58.4
+    },
+    {
+      "fieldNumber": 58.6,
+      "fieldName": "COMPL. AUDIT REVIEW (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which the audit review was completed. Examples of audit reviews include DCAA, DOE, and DOD reviews. ",
+      "fieldNumber_": 58.6
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "BID OPEN/NEGOTIATION (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of bid opening. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CONSTRUCTION AWARD (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of award of construction contract. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CONSTRUCTION START (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which construction actually began. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "CONST. COMPLETE (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date on which construction was judged to be substantially complete. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ACTIVATION (ACTUAL)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Actual date of project activation. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "OLD DESIGN PROGRAM START (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 65.1,
+      "fieldName": "OLD DESIGN PROGRAM COMP. (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.1
+    },
+    {
+      "fieldNumber": 65.2,
+      "fieldName": "OLD AUTHORIZED (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.2
+    },
+    {
+      "fieldNumber": 65.3,
+      "fieldName": "OLD ADVERTISE FOR A/E (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.3
+    },
+    {
+      "fieldNumber": 65.4,
+      "fieldName": "OLD SELECT A/E (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.4
+    },
+    {
+      "fieldNumber": 65.5,
+      "fieldName": "OLD A/E AWARD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.5
+    },
+    {
+      "fieldNumber": 65.6,
+      "fieldName": "OLD START SCHEMATICS (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.6
+    },
+    {
+      "fieldNumber": 65.7,
+      "fieldName": "OLD COMPL. SCHEMATICS (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.7
+    },
+    {
+      "fieldNumber": 65.8,
+      "fieldName": "OLD START CD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.8
+    },
+    {
+      "fieldNumber": 65.9,
+      "fieldName": "OLD COMPLETE CD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.9
+    },
+    {
+      "fieldNumber": 65.94,
+      "fieldName": "OLD START L/T REVIEW (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.94
+    },
+    {
+      "fieldNumber": 65.96,
+      "fieldName": "OLD START AUDIT REVIEW (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 65.96
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "OLD ISSUE IFB (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 66.04,
+      "fieldName": "OLD COMPL. L/T REVIEW (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.04
+    },
+    {
+      "fieldNumber": 66.06,
+      "fieldName": "OLD COMPL. AUDIT REVIEW (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.06
+    },
+    {
+      "fieldNumber": 66.1,
+      "fieldName": "OLD BID OPEN (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.1
+    },
+    {
+      "fieldNumber": 66.2,
+      "fieldName": "OLD CONSTRUCTION AWARD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.2
+    },
+    {
+      "fieldNumber": 66.3,
+      "fieldName": "OLD CONSTRUCTION START (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.3
+    },
+    {
+      "fieldNumber": 66.4,
+      "fieldName": "OLD CONST. COMPLETE (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.4
+    },
+    {
+      "fieldNumber": 66.5,
+      "fieldName": "OLD ACTIVATION (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.5
+    },
+    {
+      "fieldNumber": 66.6,
+      "fieldName": "OLD START DD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.6
+    },
+    {
+      "fieldNumber": 66.7,
+      "fieldName": "OLD COMPLETE DD (ACT)",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 66.7
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "A/E CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Official identifier of contract with Architect/Engineer for project design and related services. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "A/E FUND. AVAIL.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount approved for disbursement to Architect/Engineer for project design and related services over the life of the contract. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 71.5,
+      "fieldName": "A/E FUND CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fund control point (IFCAP) for design obligations. ",
+      "fieldNumber_": 71.5
+    },
+    {
+      "fieldNumber": 71.6,
+      "fieldName": "A/E AWARD AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Original A/E award obligation. ",
+      "fieldNumber_": 71.6
+    },
+    {
+      "fieldNumber": 71.7,
+      "fieldName": "A/E STUDY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to A/E for performance of a formal study. ",
+      "fieldNumber_": 71.7
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "A/E SCHEMATICS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated for Architect/Engineer services in development of schematics. Round to nearest whole dollar. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 72.3,
+      "fieldName": "A/E SITE SURVEY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to Architect/Engineer for services in making site surveys and other related activities. Round to nearest whole dollar. ",
+      "fieldNumber_": 72.3
+    },
+    {
+      "fieldNumber": 72.5,
+      "fieldName": "A/E DESIGN DEVELOPMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to A/E for design development. Round to nearest whole dollar. ",
+      "fieldNumber_": 72.5
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "A/E CONST DOCUMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated for Architect/Engineer services in development of working drawings and specifications. Round to nearest whole dollar. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "A/E SITE VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to Architect/Engineer for services in making site visits and related activities. Round to nearest whole dollar. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "A/E CONST PER SERVCS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to Architect/Engineer for services to the medical center during the course of the actual construction period. Round to nearest whole dollar. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 75.5,
+      "fieldName": "A/E OTHER SERVICES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Amount obligated to A/E for services not otherwise classified. ",
+      "fieldNumber_": 75.5
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "A/E SUBTOTAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Total amount obligated to Architect/Engineer for design and design-related services. Computed field, not subject to direct edit. Should never exceed the A/E AWARD AMOUNT. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "A/E SA ADDITIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of A/E supplemental agreements that add to the cost of design. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "A/E SA ADDITIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total cost of A/E supplemental agreements that increase design costs. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "A/E SA DEDUCTIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of A/E supplemental agreements that reduce design cost. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "A/E SA DEDUCTIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total dollar value of all A/E supplemental agreements that decrease design cost. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "A/E SA NET ($)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Net cost of A/E supplemental agreements. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "A/E OBLIGATED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Total A/E obligation (to date). ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "A/E NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Name of Architect/Engineer firm retained for this project. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "A/E ADDR1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "First line of Architect/Engineer address. May be up to 35 characters long and should generally contain the street address or post office box (or equivalent). ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "A/E ADDR2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Second (and final) line of Architect/Engineer address. May be up to 35 characters long and should generally contain the city, state, and zip code. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "OLD A/E CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 90.2,
+      "fieldName": "OLD FCP (A/E)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.2
+    },
+    {
+      "fieldNumber": 90.25,
+      "fieldName": "OLD A/E AWARD AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported on electronic 10-0051. ",
+      "fieldNumber_": 90.25
+    },
+    {
+      "fieldNumber": 90.3,
+      "fieldName": "OLD A/E OBLIG. (STUDY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.3
+    },
+    {
+      "fieldNumber": 90.4,
+      "fieldName": "OLD A/E OBLIG. (SCHEMATICS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.4
+    },
+    {
+      "fieldNumber": 90.45,
+      "fieldName": "OLD A/E OBLIG. (SITE SURVEY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.45
+    },
+    {
+      "fieldNumber": 90.5,
+      "fieldName": "OLD A/E OBLIG. (DD)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.5
+    },
+    {
+      "fieldNumber": 90.6,
+      "fieldName": "OLD A/E OBLIG. (CD)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.6
+    },
+    {
+      "fieldNumber": 90.7,
+      "fieldName": "OLD A/E OBLIG. (SITE VISIT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.7
+    },
+    {
+      "fieldNumber": 90.8,
+      "fieldName": "OLD A/E OBLIG (CONST PER SRVC)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.8
+    },
+    {
+      "fieldNumber": 90.9,
+      "fieldName": "OLD A/E OBLIG. (OTHER)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 90.9
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "OLD A/E SA ADDITIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 91.1,
+      "fieldName": "OLD A/E SA ADDITIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 91.1
+    },
+    {
+      "fieldNumber": 91.2,
+      "fieldName": "OLD A/E SA DEDUCTIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 91.2
+    },
+    {
+      "fieldNumber": 91.3,
+      "fieldName": "OLD A/E SA DEDUCTIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 91.3
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "*INIT. NOTIFICATION - SBA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of initial notification of the Small Business Administration of the existence of a viable project that could be a candidate for 8A set-aside. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "*WD & SPECIFICATIONS - SBA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which working drawings and specifications were furnished to the Small Business Administration. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "*CONTR INIT PROP - SBA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of contractor's initial proposal (through the Small Business Administration). ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "*REQ FOR PRE-AWARD - SBA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which a pre-award audit was requested (through the Small Business Administration). ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "*COMPL OF PRE-AWARD - SBA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of completion of pre-award audit (through the Small Business Administration). ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "CONST. CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Unique identifier (contract number) of contract with a construction firm for the actual construction portion of this project. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 105.5,
+      "fieldName": "CONST FUND CONTROL PT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fund control point (IFCAP) for construction obligations. ",
+      "fieldNumber_": 105.5
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "CONSTRUCTION AWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount of original construction award.  Should not include P&H (purchase and hire) or supplemental agreements (if any). of supplemental agreements or the equivalent. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "P&H LABOR TO DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total expenditure on purchase and hire labor to date. in order to award the contract without exceeding available funding. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "P&H MATERIALS TO DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total expenditure on purchase and hire materials to date. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "TOTAL P&H",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Total cost of purchase and hire. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "OLD CONST. CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 110.2,
+      "fieldName": "OLD FCP (CONST.)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 110.2
+    },
+    {
+      "fieldNumber": 110.3,
+      "fieldName": "OLD ORIG. CONSTRUCTION AWARD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0I",
+      "length": 8,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 110.3
+    },
+    {
+      "fieldNumber": 110.4,
+      "fieldName": "OLD P&H LABOR TO DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 110.4
+    },
+    {
+      "fieldNumber": 110.5,
+      "fieldName": "OLD P&H MATERIAL TO DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 110.5
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "CONTR. NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Name of the firm chosen as the prime (or sole) contractor for the construction portion of this project. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "CONTR. ADDR1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "First line of the construction contractor's two-line mailing address. Should generally contain the street address or post office box (or equivalent). ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "CONTR. ADDR2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Second (and last) line of the construction contractor's mailing address. Should generally contain the city, state, and zip code. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "CONST SA ADDITIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Total number of supplemental agreements that added to the construction cost. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "CONST SA ADDITIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The sum of the dollar value (rounded to the nearest dollar) of all supplemental agreements that increase the cost of the project. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "CONST SA DEDUCTIONS (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Total number of supplemental agreements that decreased the construction cost. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "CONST SA DEDUCTIONS ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The sum (to the nearest whole dollar) of all supplemental agreements that decreased the cost of construction on an approved project. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 128.2,
+      "fieldName": "CONST SUPPL (NET $)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Cost of ADDITIONAL supplemental agreements minus savings from DEDUCT supplemental agreements. ",
+      "fieldNumber_": 128.2
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "TOTAL CONST OBLIGATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Total amount obligated to date for construction activity on an approved project. Computed as the CONSTRUCTION CONTRACT AMOUNT (the original bottom line figure) plus the net cost (or savings) resulting from supplemental agreements plus P&H (if any). Not directly editable. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 129.1,
+      "fieldName": "TIME EXTENSION (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Time extension granted contractor, usually as a result of supplemental agreements. ",
+      "fieldNumber_": 129.1
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "TOTAL PROJ OBLIGATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Total dollars obligated on project (design and construction). ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "OLD CONST. ADD. (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. reporting period. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 135.1,
+      "fieldName": "OLD CONST. ADD. ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 135.1
+    },
+    {
+      "fieldNumber": 135.2,
+      "fieldName": "OLD CONST. DED. (#)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 135.2
+    },
+    {
+      "fieldNumber": 135.3,
+      "fieldName": "OLD CONST. DED. ($)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 135.3
+    },
+    {
+      "fieldNumber": 135.4,
+      "fieldName": "OLD TIME EXTENSION (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 135.4
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "MAN-HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Total man-hours worked on' Purchase and Hire' jobs during the reporting period. ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "WAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total wages paid under 'Purchase and Hire' provisions during the reporting period, to the nearest whole dollar. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "6925.01A",
+      "required": false,
+      "helpText": " Any comments that are germane to this project.    Whenever an electronic 10-0051 is transmitted, the PROGRESS NOTE is automatically added to the REMARKS.  If the 'Electronic Transmission of 10-0051' option is utilized, then the PROGRESS NOTES field will appear in the 'Remarks' block. In this case, this field (REMARKS) may be used to store information of local interest only since it will not appear on either electronic or hard-copy 10-0051's. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.01,
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "PROGRESS NOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Entries in this field will be transmitted as part of the electronic 10-0051. Each time a transmission is made, the text in this field will be automatically transferred to REMARKS, leaving the field free for next month's PROGRESS NOTE. ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 146.1,
+      "fieldName": "OLD PROGRESS NOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Previously reported PROGRESS NOTE.  Also filed under REMARKS. ",
+      "fieldNumber_": 146.1
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "DATE OF LAST ELECT. 10-0051",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date on which 10-0051 was last sent on this project via Network MailMan. This field is automatically filled in by AEMS/MERS software whenever a message containing the 10-0051 is created and sent. Only the most recent date of transmission is stored. Previous dates are over-written. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "LAST REPORTING PERIOD",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Previous reporting period. Overwritten each reporting period. ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "*SCOPE REDUCED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "No longer used. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "*CURRENT A/E ESTIMATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "PROGRAM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "MA:MAJOR;MI:MINOR;MM:MINOR MISC.;NR:NRM;OT:OTHER;LE:LEASE;SL:STATION LEVEL;",
+      "helpText": "This field is a set of codes used to classify program type. The category within which project is approved or considered. Cost is the principal criterion. ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "APPROVAL LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CA:CASCA;RD:RDAP;CO:COAP;OT:OTHER;",
+      "helpText": "No longer used. ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157.5,
+      "fieldName": "*AVG. WORK FORCE (P&H)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 157.5
+    },
+    {
+      "fieldNumber": 157.6,
+      "fieldName": "*MAN HOURS (P&H)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 157.6
+    },
+    {
+      "fieldNumber": 157.7,
+      "fieldName": "WAGES (P&H)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 157.7
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "FACILITY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "VHA:VETERANS HEALTH ADMIN;VBA:VETERANS BENEFITS ADMIN;NCS:NATIONAL CEMETERY SERVICE;",
+      "helpText": "This field is important to enable restriction of Project Functional and Budget Categories and to enable reporting by Facility Type.  Note: The cross reference was added to 2 reasons: a)  Facilitate reporting by facility type.  b)  Force the filing by DIE so that the selection screens /filters work properly for Functional and Budget Categories. ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 158.1,
+      "fieldName": "PROJECT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "R*P7336.8'",
+      "required": true,
+      "pointerTo": 7336.8,
+      "helpText": "This field is a pointer to the OFM Project Category File (#7336.8). The field designates the project functional category, and determines prioritization points for NRM, Minor, and Minor Misc. programs. ",
+      "fieldNumber_": 158.1
+    },
+    {
+      "fieldNumber": 158.2,
+      "fieldName": "BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "R*P7336.9'",
+      "required": true,
+      "pointerTo": 7336.9,
+      "helpText": "This field is a pointer to the OFM Budget Category File (#7336.9). The field designates the project budget category.  Choices are screened based on program type. ",
+      "fieldNumber_": 158.2
+    },
+    {
+      "fieldNumber": 158.3,
+      "fieldName": "NHCU BEDS (NEW)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of nursing home beds to be created via project. ",
+      "fieldNumber_": 158.3
+    },
+    {
+      "fieldNumber": 158.4,
+      "fieldName": "NHCU BEDS (RENOVATED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Net (+/-) nursing home care beds impacted by this project. ",
+      "fieldNumber_": 158.4
+    },
+    {
+      "fieldNumber": 158.5,
+      "fieldName": "NHCU BEDS (CONVERTED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of beds to be converted into nursing home beds via this project. ",
+      "fieldNumber_": 158.5
+    },
+    {
+      "fieldNumber": 158.6,
+      "fieldName": "EPA REPORTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if a NRM project meets the criteria of an environmental project which should be reported to the Environmental Protection Agency on the A-106 report. The criteria can be found in the NRM Call Letter for project applications. If this field is YES, an EPA Reporting Category must also be specified. ",
+      "fieldNumber_": 158.6
+    },
+    {
+      "fieldNumber": 158.7,
+      "fieldName": "EPA REPORTING CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P6925.3'",
+      "required": false,
+      "pointerTo": 6925.3,
+      "helpText": "This field is required for environmental NRM projects. It is used to generate the A-106 report required by the Environmental Protection Agency. ",
+      "fieldNumber_": 158.7
+    },
+    {
+      "fieldNumber": 158.8,
+      "fieldName": "BONUS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.8'",
+      "required": false,
+      "pointerTo": 7336.8,
+      "helpText": "This field designates the bonus category which involves 50% or more of the project scope and determines prioritization points for NRM projects. 'Not Applicable' should be selected if none of the other choices meet the 50% scope requirement. ",
+      "fieldNumber_": 158.8
+    },
+    {
+      "fieldNumber": 158.9,
+      "fieldName": "AMBULATORY CARE PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the project scope percentage for ambulatory care. ",
+      "fieldNumber_": 158.9
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "OLD PROGRAM",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "MA:MAJOR;MI:MINOR;MM:MINOR MISC;NR:NRM;OT:OTHER;",
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 159.1,
+      "fieldName": "OLD FACILITY TYPE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "VHA:VET HEALTH ADMIN;VBA:VET BENEFITS ADMIN;NCS:NATIONAL CEMETERY SERVICE;",
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.1
+    },
+    {
+      "fieldNumber": 159.15,
+      "fieldName": "OLD DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P6910.3'",
+      "required": false,
+      "pointerTo": 6910.3,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.15
+    },
+    {
+      "fieldNumber": 159.2,
+      "fieldName": "OLD PROJECT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P7336.8'I",
+      "required": false,
+      "pointerTo": 7336.8,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.2
+    },
+    {
+      "fieldNumber": 159.3,
+      "fieldName": "OLD BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P7336.9'I",
+      "required": false,
+      "pointerTo": 7336.9,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.3
+    },
+    {
+      "fieldNumber": 159.4,
+      "fieldName": "OLD NHCU BEDS (NEW)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.4
+    },
+    {
+      "fieldNumber": 159.5,
+      "fieldName": "OLD NHCU BEDS (RENOVATED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.5
+    },
+    {
+      "fieldNumber": 159.6,
+      "fieldName": "OLD NHCU BEDS (CONVERTED)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.6
+    },
+    {
+      "fieldNumber": 159.7,
+      "fieldName": "OLD EPA REPORTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Value previously reported on electronic 10-0051. ",
+      "fieldNumber_": 159.7
+    },
+    {
+      "fieldNumber": 159.8,
+      "fieldName": "OLD EPA REPORTING CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P6925.3'",
+      "required": false,
+      "pointerTo": 6925.3,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.8
+    },
+    {
+      "fieldNumber": 159.9,
+      "fieldName": "OLD BONUS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P7336.8'I",
+      "required": false,
+      "pointerTo": 7336.8,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 159.9
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "EMERGENCY/INTERIM APPLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EMERGENCY;I:INTERIM;",
+      "helpText": "This field is used to identify project applications that are emergency or interim. Minor Appeals are considered Interim.  ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "EQPMT OVER $250K APPLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to identify projects that have equipment costing more than $250K.  ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "CAPITAL LEASE PROGRAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to identify Capital Lease programs. ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "CITATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0164",
+      "required": false,
+      "helpText": "Multiple field used to enter citations. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.0164,
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "PROJ CATEGORY >75% SCOPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) to determine if project category is greater than 75% of the project scope.  The field is used to determine if Category Bonus Prioritization points for Minor and Minor Miscellaneous projects can be taken. Category Bonus points will not be given if credit was taken for Space. ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 165.1,
+      "fieldName": "NHCU AUTHORIZED BEDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Total number of nursing home care unit beds authorized for the facility. ",
+      "fieldNumber_": 165.1
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "NHCU CONVERSION",
+      "dataType": "SET",
+      "rawType": "6925.0166S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6925.0166,
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 176,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P6910.3'",
+      "required": false,
+      "pointerTo": 6910.3,
+      "helpText": "This field is used to identify the division of a multi-divisional facility. It can be used to generate a division specific report when printing the Five Year Facility Plan. ",
+      "fieldNumber_": 176
+    },
+    {
+      "fieldNumber": 177,
+      "fieldName": "BUILDING NUMBER",
+      "dataType": "POINTER",
+      "rawType": "6925.0177P",
+      "required": false,
+      "helpText": "Multiple field used to identify buildings affected by project. ",
+      "fieldNumber_": 177
+    },
+    {
+      "fieldNumber": 178,
+      "fieldName": "BLDG DISPLAY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This field concatenates the building numbers for display on the 1193. ",
+      "fieldNumber_": 178
+    },
+    {
+      "fieldNumber": 179,
+      "fieldName": "BLDG OCCUPANCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PATIENT;2:ADMINISTRATIVE;3:QUARTERS;4:AMBULATORY CARE;5:OTHER;",
+      "helpText": "This field is used to identify occupancy of buildings affected. (VAF 10- 1193, Block 10) ",
+      "fieldNumber_": 179
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "H089",
+      "dataType": "POINTER",
+      "rawType": "6925.03P",
+      "required": false,
+      "helpText": "Multiply entered pointer to the OFM H089 Chapters file (7336.6) for entry  of H089 chapter codes.  ",
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 181,
+      "fieldName": "5 YR FACILITY PLAN FY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the fiscal year the project is planned for on the approved 5-Year facility plan. ",
+      "fieldNumber_": 181
+    },
+    {
+      "fieldNumber": 181.1,
+      "fieldName": "FIVE YR PLAN STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT EVALUATED;1:RETURNED TO SITE;2:DISAPPROVED;3:REGION APPROVED;",
+      "helpText": "Set of codes for regional approval status of 5-Year plan. ",
+      "fieldNumber_": 181.1
+    },
+    {
+      "fieldNumber": 181.2,
+      "fieldName": "5 YR PLAN STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the 5-Yr plan status was updated. ",
+      "fieldNumber_": 181.2
+    },
+    {
+      "fieldNumber": 182,
+      "fieldName": "PLANNED CONSTRUCTION METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CONTRACT;2:P&H;3:STATION LABOR;4:SBA 8(a);5:DESIGN/BUILD;6:LEASE;",
+      "helpText": "Set of codes for the planned construction method of the project. ",
+      "fieldNumber_": 182
+    },
+    {
+      "fieldNumber": 185.1,
+      "fieldName": "OLD NHCU AUTHORIZED BEDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Value previously reported via electronic 10-0051. ",
+      "fieldNumber_": 185.1
+    },
+    {
+      "fieldNumber": 186,
+      "fieldName": "OLD NHCU CONVERSION",
+      "dataType": "SET",
+      "rawType": "6925.0186S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6925.0186,
+      "fieldNumber_": 186
+    },
+    {
+      "fieldNumber": 187,
+      "fieldName": "ENVIRONMENTAL ASSESSMENT REQD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes used to identify projects requiring an environmental assessment. (VAF 10-1193a, Block 4) ",
+      "fieldNumber_": 187
+    },
+    {
+      "fieldNumber": 187.5,
+      "fieldName": "ACTIVATION RESOURCES REQ IN FY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the fiscal year activation resources are required. ",
+      "fieldNumber_": 187.5
+    },
+    {
+      "fieldNumber": 188,
+      "fieldName": "RECURRING ALL OTHER $",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0X",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the total Recurring All Other Funds required to support the project. ",
+      "fieldNumber_": 188
+    },
+    {
+      "fieldNumber": 189,
+      "fieldName": "ADDITIONAL FTEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the total Additional FTEE number as documented in the detailed activation documentation. ",
+      "fieldNumber_": 189
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "RECURRING PS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0X",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Recurring Personnel Service (PS) funds in  accordance with the Additional FTEE. ",
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 190.2,
+      "fieldName": "EQUIPMENT $",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0X",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total activation equipment funds required to support the project with the following exception. For NRM projects, any equipment items (or systems) that cost over $250,000 should NOT be included in this figure since such high cost equipment must be applied for separately under the High Cost Equipment Program. For Leases and Minor, Minor Misc and Major projects, any equipment items (or systems) that cost $250,000 should be included in this figure since such high cost equipme",
+      "fieldNumber_": 190.2
+    },
+    {
+      "fieldNumber": 190.3,
+      "fieldName": "NONRECURRING ALL OTHER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0X",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Non-Recurring All Other funds required to support the project.  ",
+      "fieldNumber_": 190.3
+    },
+    {
+      "fieldNumber": 190.4,
+      "fieldName": "TRAVEL .007",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the total Travel .007 funds required to support the project.  ",
+      "fieldNumber_": 190.4
+    },
+    {
+      "fieldNumber": 190.6,
+      "fieldName": "EQUIPMENT OVER $250K",
+      "dataType": "SUBFILE",
+      "rawType": "6925.04",
+      "required": false,
+      "helpText": "Multiply entered field for equipment over $250,000.   ",
+      "isMultiple": true,
+      "subFileNumber": 6925.04,
+      "fieldNumber_": 190.6
+    },
+    {
+      "fieldNumber": 191,
+      "fieldName": "NET BED CHANGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the net change in authorized beds. ",
+      "fieldNumber_": 191
+    },
+    {
+      "fieldNumber": 192,
+      "fieldName": "PROJECT DESCRIPTION (SHORT)",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0192",
+      "required": false,
+      "helpText": "This field is for a description of up to 3 lines. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.0192,
+      "fieldNumber_": 192
+    },
+    {
+      "fieldNumber": 192.3,
+      "fieldName": "JUSTIFICATION (SHORT)",
+      "dataType": "SUBFILE",
+      "rawType": "6925.05",
+      "required": false,
+      "helpText": "This field is for a justification of up to 3 lines. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.05,
+      "fieldNumber_": 192.3
+    },
+    {
+      "fieldNumber": 192.6,
+      "fieldName": "WORKLOAD",
+      "dataType": "SUBFILE",
+      "rawType": "6925.06",
+      "required": false,
+      "helpText": "This field contains a brief declaration of workload data (i.e., Is the Workload approved?, What is the approval date?, What Workload Model Version was used?, etc) that justifies the project, if applicable (required for Majors). ",
+      "isMultiple": true,
+      "subFileNumber": 6925.06,
+      "fieldNumber_": 192.6
+    },
+    {
+      "fieldNumber": 193,
+      "fieldName": "ENVIRONMENT IMPACT STMT REQD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating the need for an environmental impact statement by the facility. (VAF 10-1193a, Block 5) ",
+      "fieldNumber_": 193
+    },
+    {
+      "fieldNumber": 194,
+      "fieldName": "ADDITIONAL DOCUMENTATION REQD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating the need for additional documentation by the facility. (VAF 10-1193a, Block 6) ",
+      "fieldNumber_": 194
+    },
+    {
+      "fieldNumber": 194.5,
+      "fieldName": "FURTHER REQD ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains specification of further action required by the facility. (VAF 10-1193a, Block 7) ",
+      "fieldNumber_": 194.5
+    },
+    {
+      "fieldNumber": 194.6,
+      "fieldName": "EVALUATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the name of the evaluator. (VAF 10-1193a, Block 8) ",
+      "fieldNumber_": 194.6
+    },
+    {
+      "fieldNumber": 194.7,
+      "fieldName": "DATE OF EVALUATION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date of environmental evaluation. (VAF 10-1193a, Block 8) ",
+      "fieldNumber_": 194.7
+    },
+    {
+      "fieldNumber": 195,
+      "fieldName": "ACQUIRES OR DISPOSES LAND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project acquires or disposes of land. (VAF 10-1193a, Block A1) ",
+      "fieldNumber_": 195
+    },
+    {
+      "fieldNumber": 195.1,
+      "fieldName": "A1 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for ACQUIRES OR DISPOSES LAND. (VAF 10-1193a, Block A1) ",
+      "fieldNumber_": 195.1
+    },
+    {
+      "fieldNumber": 196,
+      "fieldName": "AFFECTS WETLANDS/FLOOD PLAINS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project involves land located in a wetland or floodplain. (VAF 10- 1193a, Block A2) ",
+      "fieldNumber_": 196
+    },
+    {
+      "fieldNumber": 196.1,
+      "fieldName": "A2 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for AFFECTS WETLANDS/FLOOD PLAINS. (VAF 10-1193a, Block A2)  ",
+      "fieldNumber_": 196.1
+    },
+    {
+      "fieldNumber": 197,
+      "fieldName": "INVOLVES STORM WATER RUNOFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project involves storm water run-off and retainage. (VAF 10-1193a, Block A3) ",
+      "fieldNumber_": 197
+    },
+    {
+      "fieldNumber": 197.1,
+      "fieldName": "A3 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for INVOLVES STORM WATER RUNOFF. (VAF 10-1193a, Block A3) ",
+      "fieldNumber_": 197.1
+    },
+    {
+      "fieldNumber": 198,
+      "fieldName": "CONFLICTS W LOCAL ZONING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project conflicts with local zoning and planning regulations. (VAF 10-1193a, Block A4) ",
+      "fieldNumber_": 198
+    },
+    {
+      "fieldNumber": 198.1,
+      "fieldName": "A4 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for CONFLICTS W LOCAL ZONING. (VAF 10-1193a, Block A4) ",
+      "fieldNumber_": 198.1
+    },
+    {
+      "fieldNumber": 199,
+      "fieldName": "DISLOCATES PEOPLE/RESIDENCES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project dislocates persons, residences, or causes a major  population shift. (VAF 10-1193a, Block A5) ",
+      "fieldNumber_": 199
+    },
+    {
+      "fieldNumber": 199.1,
+      "fieldName": "A5 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for DISLOCATES PEOPLE/RESIDENCES. ",
+      "fieldNumber_": 199.1
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "AFFECTS PROTECTED FAUNA/FLORA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project affects protected wildlife or vegetation. (VAF 10-1193a, Block A6) ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 200.1,
+      "fieldName": "A6 LAND USE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for AFFECTS PROTECTED FAUNA/FLORA. (VAF 10-1193a, Block A6) ",
+      "fieldNumber_": 200.1
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "OUTSIDE CONST GT 10000 SQ FT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project involves 'outside' construction of more than 10,000 sq. ft. (VAF 10-1193a, Block B1) ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 201.1,
+      "fieldName": "B1 CONSTRUCTION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for OUTSIDE CONST GT 10000 SQ FT. (VAF 10-1193a, Block B1) ",
+      "fieldNumber_": 201.1
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "INCREASE OFF SITE TRAFFIC >10%",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project increases off-site traffic flow by more than 10%. (VAF 10- 1193a, Block B2) ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 202.1,
+      "fieldName": "B2 CONSTRUCTION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for INCREASE OFF SITE TRAFFIC >10%. (VAF 10-1193a, Block B2) ",
+      "fieldNumber_": 202.1
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "SIGNIF ALTER OFF SITE TRAFFIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project significantly alters off-site traffic flow. (VAF 10-1193a, Block B3) ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 203.1,
+      "fieldName": "B3 CONSTRUCTION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for SIGNIF ALTER OFF SITE TRAFFIC. (VAF 10-1193a, Block B3) ",
+      "fieldNumber_": 203.1
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "INVOLVE HISTORIC AREA/BLDGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project involves a historically designated building or area. (VAF 1193a, Block B4) ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 204.1,
+      "fieldName": "B4 CONSTRUCTION TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for INVOLVE HISTORIC AREA/BLDGS. (VAF 10-1193a, Block B4) ",
+      "fieldNumber_": 204.1
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "EMISSION/WATER QUALITY PROBLEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project conflicts with local, state, or federal standards regarding emissions, water quality, or toxic substances. (VAF 10-1193a, Block C1) ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 205.1,
+      "fieldName": "C1 EMISSION/TOXINS TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for EMISSION/WATER QUALITY PROBLEM. (VAF 10-1193a, Block C1) ",
+      "fieldNumber_": 205.1
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "PUBLIC CONTROVERSY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project have a known potential for public controversy. (VAF 10- 1193a, Block D1) ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 206.1,
+      "fieldName": "D1 PUBLIC CONTROVERSY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for PUBLIC CONTROVERSY. (VAF 10-1193a, Block D1) ",
+      "fieldNumber_": 206.1
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "CONFLICT LOCAL/STATE REGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project conflict with local or state  regulations. (VAF 10-1193a, Block D2) ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 207.1,
+      "fieldName": "D2 PUBLIC CONTROVERSY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for CONFLICT LOCAL/STATE REGS. (VAF 10-1193a, Block D2) ",
+      "fieldNumber_": 207.1
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "OVERLOAD UTILITY SYS CAPACITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is a set of codes (Yes or No) indicating whether or not the proposed project overload the available utility system capacity. (VAF 10- 1193a, Block D3) ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 208.1,
+      "fieldName": "D3 UTLITY OVERLOAD TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specification of standards used and project elements analyzed for OVERLOAD UTILITY SYS CAPACITY. ",
+      "fieldNumber_": 208.1
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "VAMC PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the priority # assigned to the project by the facility. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 209.1,
+      "fieldName": "MCPS SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This fields contains the total facility score based on the Major Construction Priority Scoring Methodology.  This can obtained from the VACO or the Region. ",
+      "fieldNumber_": 209.1
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "REGIONAL PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the priority assigned by the Region ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 212,
+      "fieldName": "ESTIMATED COST FOR 5 YR PLAN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 212
+    },
+    {
+      "fieldNumber": 212.1,
+      "fieldName": "ESTIMATED A/E COST (FYFP)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0X",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the estimated A/E cost of the project for the Five Year Facility Plan (FYFP). It will be used on the FYFP in the project's Funding Year - A/E. The total estimated cost of the project is the sum of this field and the ESTIMATED CONST COST (FYFP) field. ",
+      "fieldNumber_": 212.1
+    },
+    {
+      "fieldNumber": 212.2,
+      "fieldName": "ESTIMATED CONST COST (FYFP)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0X",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the estimated construction cost of the project for the Five Year Facility Plan (FYFP). It will be used on the FYFP in the project's Funding Year - Const. The total estimated cost of the project is the sum of this field and the ESTIMATED A/E COST (FYFP) field. ",
+      "fieldNumber_": 212.2
+    },
+    {
+      "fieldNumber": 213,
+      "fieldName": "TOTAL M AND R COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Maintenance & Repair costs as listed on VAF 10-6238.  ",
+      "fieldNumber_": 213
+    },
+    {
+      "fieldNumber": 214,
+      "fieldName": "TOTAL BSEA COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Building Service Equipment Additional (BSEA) costs as listed on VAF 10-6238.  BSEA labor costs should be included in MI.  ",
+      "fieldNumber_": 214
+    },
+    {
+      "fieldNumber": 215,
+      "fieldName": "TOTAL BSER COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Building Service Equipment Replacement (BSER) costs as listed on VAF 10-6238.  ",
+      "fieldNumber_": 215
+    },
+    {
+      "fieldNumber": 216,
+      "fieldName": "TOTAL MI COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the total Minor Improvement (MI) costs as listed on VAF 10-6238.  ",
+      "fieldNumber_": 216
+    },
+    {
+      "fieldNumber": 217,
+      "fieldName": "NRM TOTAL COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the total anticipated (Low Bid) NRM Construction Costs as listed on VAF 10-6238.  ",
+      "fieldNumber_": 217
+    },
+    {
+      "fieldNumber": 218,
+      "fieldName": "*CONTINGENCY PCT MI/MA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Major, Minor and Minor Misc Construction Contingency Percentage. (5% for new construction or 7.5% for renovated construction) A contingency of 7.5% is used if there is any H089 renovated gross sq ft. A contingency of 5% is used if there is not any H089 renovated gross sq ft, but there is some H089 new gross sq ft. A contingency of 7.5% is used when there is not any H089 new or renovated gross sq ft. ",
+      "fieldNumber_": 218
+    },
+    {
+      "fieldNumber": 218.1,
+      "fieldName": "CONTINGENCY DOLLARS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the computed total Construction Contingency amount the percentages used depend on project program type.  ",
+      "fieldNumber_": 218.1
+    },
+    {
+      "fieldNumber": 218.2,
+      "fieldName": "NRM CONTINGENCY PCT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the NRM program Construction Contingency's Percentage. ",
+      "fieldNumber_": 218.2
+    },
+    {
+      "fieldNumber": 218.3,
+      "fieldName": "MI/MA CONTINGENCY PCT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the MAJOR/MINOR program Construction Contingency's Percentage. ",
+      "fieldNumber_": 218.3
+    },
+    {
+      "fieldNumber": 219,
+      "fieldName": "IMPACT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the Total Impact costs as listed on the VAF 10-6238. ",
+      "fieldNumber_": 219
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "TECHNICAL SERVICES PCT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the calculated percent of Technical Services dollars to Total Construction Low Bid amount. ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 220.1,
+      "fieldName": "TECHNICAL SERVICES $",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the total Technical Services dollars as listed on VAF 10-6238. ",
+      "fieldNumber_": 220.1
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "MINOR/MAJOR CONST COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the total anticipated (Low Bid) Construction Cost for Major, Minor or Minor Misc programs as listed on VAF 10-6238.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "TOTAL PROJECT COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the total Project Cost as listed on VAF 10-6238. ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "NET PARKING CHANGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the change (if any) in the number of parking stalls available. ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 225,
+      "fieldName": "DOMINOS",
+      "dataType": "POINTER",
+      "rawType": "6925.0225P",
+      "required": false,
+      "helpText": "This multiple field points to projects, in the Construction Project File (#6925) that must be started prior to the current project, due to a domino relationship. ",
+      "fieldNumber_": 225
+    },
+    {
+      "fieldNumber": 231,
+      "fieldName": "FDP UPDATE COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains a set of codes (Yes or No) indicating the current status of the facility's FDP.  ",
+      "fieldNumber_": 231
+    },
+    {
+      "fieldNumber": 233,
+      "fieldName": "VAMC MINOR/MINOR MISC SCORE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the total Facility Score based on the Minor/Minor Misc. Prioritization Scoring Methodology.  ",
+      "fieldNumber_": 233
+    },
+    {
+      "fieldNumber": 233.1,
+      "fieldName": "MI/MM CITATION POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 233.1
+    },
+    {
+      "fieldNumber": 233.2,
+      "fieldName": "MI/MM SPACE POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 233.2
+    },
+    {
+      "fieldNumber": 233.3,
+      "fieldName": "MI/MM ENERGY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 233.3
+    },
+    {
+      "fieldNumber": 233.4,
+      "fieldName": "MI/MM CATEGORY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 233.4
+    },
+    {
+      "fieldNumber": 233.5,
+      "fieldName": "MI/MM VAMC PRIORITY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 233.5
+    },
+    {
+      "fieldNumber": 234,
+      "fieldName": "REGION SCORE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the total Region Score based on the Prioritization Scoring Methodology. The field will be completed by region staff.  ",
+      "fieldNumber_": 234
+    },
+    {
+      "fieldNumber": 235,
+      "fieldName": "TOTAL PROJECT SCORE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This computed field contains the total project score. The field will be completed by region staff.  ",
+      "fieldNumber_": 235
+    },
+    {
+      "fieldNumber": 236,
+      "fieldName": "SIR RATING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains Savings-to-investment ratio for Energy Projects. The field is used to determine prioritization points if any that can be taken for NRM, Minor, and Minor Miscellaneous programs. ",
+      "fieldNumber_": 236
+    },
+    {
+      "fieldNumber": 236.1,
+      "fieldName": "ENERGY CONSERVATION PROJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This set of codes (Yes or No) is to determine if Energy Conservation is at least 25% of the project scope. This field is no longer used to determine the number of prioritization points (if any) that will be awarded. ",
+      "fieldNumber_": 236.1
+    },
+    {
+      "fieldNumber": 236.2,
+      "fieldName": "APPROVED IN 5YR ENERGY PLAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This set of codes (Yes or No) indicated whether or not a program is listed on the facility's approved 5 Year Energy Conservation Plan. The field is used to determine project eligibility for Energy points on the NRM prioritization score. ",
+      "fieldNumber_": 236.2
+    },
+    {
+      "fieldNumber": 237,
+      "fieldName": "SITE ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of the site and any effect on the project.  ",
+      "fieldNumber_": 237
+    },
+    {
+      "fieldNumber": 238,
+      "fieldName": "HISTORICAL ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"Historical\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 238
+    },
+    {
+      "fieldNumber": 238.5,
+      "fieldName": "ENVIRONMENTAL ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"Environmental\" issues in and around the project and any resulting effect on the project. Reference form VAF 10-1193a \"EMIS Construction Program Environmental Analysis\".  ",
+      "fieldNumber_": 238.5
+    },
+    {
+      "fieldNumber": 239,
+      "fieldName": "SEISMIC ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"Seismic\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 239
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "HAZARDOUS MATERIALS ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"Asbestos or other hazardous materials\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 241,
+      "fieldName": "TRANSPORT ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"vertical or horizontal transportation systems\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 241
+    },
+    {
+      "fieldNumber": 242,
+      "fieldName": "PARKING ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short (1-90 character) statement on the status of \"Parking and/or Roads\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 242
+    },
+    {
+      "fieldNumber": 243,
+      "fieldName": "*IMPACT ISSUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not used after installation of EN*7*23. New word processing field (IMPACT JUSTIFICATION) contains this data. This field contained a short (1-90 character) statement on the status of \"Impact (temporary resources)\" issues in and around the project and any resulting effect on the project.  ",
+      "fieldNumber_": 243
+    },
+    {
+      "fieldNumber": 244,
+      "fieldName": "CHIEF ENGINEER APPROVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains a set of codes (Yes or No) indicating that the proposal has been prepared and submitted in accordance with instructions, all supporting data that is required is forwarded, and is practical from an engineering viewpoint. The field triggers fields 245, CHIEF ENGINEER NAME, and 246, CHIEF ENG SIGN DATE. ",
+      "fieldNumber_": 244
+    },
+    {
+      "fieldNumber": 245,
+      "fieldName": "CHIEF ENGINEER NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is triggered by field 244, CHIEF ENGINEER APPROVED. The field  contains a pointer to the NEW PERSON FILE (#200).  ",
+      "fieldNumber_": 245
+    },
+    {
+      "fieldNumber": 246,
+      "fieldName": "CHIEF ENG SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is triggered by field 244, CHIEF ENGINEER APPROVED. The field contains the date and time of the Chief, Engineering Service approval. ",
+      "fieldNumber_": 246
+    },
+    {
+      "fieldNumber": 247,
+      "fieldName": "VAMC DIRECTOR APPROVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains a set of codes (Yes or No) indicating that the proposal has been prepared and submitted in accordance with instructions, all supporting data that is required is forwarded, and is practical from a facility viewpoint. The field triggers fields 248, VAMC DIRECTOR/ DESIGNEE NAME, and 249, VAMC DIRECTOR SIGN DATE. ",
+      "fieldNumber_": 247
+    },
+    {
+      "fieldNumber": 248,
+      "fieldName": "VAMC DIRECTOR/DESIGNEE NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is triggered by field 247, VAMC DIRECTOR APPROVED. The field contains a pointer to the NEW PERSON FILE (#200).  ",
+      "fieldNumber_": 248
+    },
+    {
+      "fieldNumber": 249,
+      "fieldName": "VAMC DIRECTOR SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is triggered by field 247, VAMC DIRECTOR APPROVED. The field contains the date and time of the VAMC Director's approval. ",
+      "fieldNumber_": 249
+    },
+    {
+      "fieldNumber": 251,
+      "fieldName": "PROJ APPLICATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT EVALUATED;1:RETURNED TO SITE;3:REGION APPROVED;4:VIABLE;5:NON-VIABLE;6:AUTHORIZED;",
+      "helpText": "Set of codes for regional status of project application. Updated by project planning bi-directional communication software. ",
+      "fieldNumber_": 251
+    },
+    {
+      "fieldNumber": 261,
+      "fieldName": "TOTAL FACTORED SQUARE FOOTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the Total Factored Square Footage as derived from the National Survey of Building Square Footage for NRM Funding Distribution. The field is used to determine the factored square footage prioritization  points for NRM project applications. ",
+      "fieldNumber_": 261
+    },
+    {
+      "fieldNumber": 262.1,
+      "fieldName": "NRM FACILITY PRIORITY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on the assigned facility priority. 30 points assigned to the number one priority, 28 to the number two priority, etc., in decreasing increments of 2 points. ",
+      "fieldNumber_": 262.1
+    },
+    {
+      "fieldNumber": 262.2,
+      "fieldName": "NRM FACTORED SQ FOOTAGE POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on the Total Factored Square Footage (field #262). Total Square Footage > 2,000,000: 8 pts., 1,000,000-2,000,000:6 pts., 500,000-999,999:4 pts., and <500,000: 2 pts. ",
+      "fieldNumber_": 262.2
+    },
+    {
+      "fieldNumber": 262.3,
+      "fieldName": "NRM CATEGORY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on the project category. ",
+      "fieldNumber_": 262.3
+    },
+    {
+      "fieldNumber": 262.4,
+      "fieldName": "NRM CITATION POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on Citations. 12 points will be assigned to projects that correct one or more citations given by JCAHO, RSFPE, CAP, AALAC, OSHA, EPA, State, or other citing authorities. Citation must be within last 6 years and correction of citation must be greater than 50% of project scope. Citations must be documented, and attached to take credit. Information to be provided as documentation includes: Type of citation (F&S, AALAC, etc); Date of Citatio",
+      "fieldNumber_": 262.4
+    },
+    {
+      "fieldNumber": 262.5,
+      "fieldName": "NRM ENERGY POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on Energy. 5 points will be assigned to projects that appear on an approved 5-Year Energy Conservation Plan and have a Savings-to-Investment Rating (SIR) greater than 1.0. The SIR rating (VAF Form 10-5561) must be provided to take credit. ",
+      "fieldNumber_": 262.5
+    },
+    {
+      "fieldNumber": 262.6,
+      "fieldName": "NRM CONSTRUCTION COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This computed field contains the Total NRM Construction Costs (Total Project Cost - Technical Services Costs). ",
+      "fieldNumber_": 262.6
+    },
+    {
+      "fieldNumber": 262.7,
+      "fieldName": "NRM BONUS POINTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This computed field contains the NRM priority points based on the bonus category. ",
+      "fieldNumber_": 262.7
+    },
+    {
+      "fieldNumber": 263,
+      "fieldName": "NRM VAMC SCORE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This computed field contains the Total NRM Facility Prioritization Score.  ",
+      "fieldNumber_": 263
+    },
+    {
+      "fieldNumber": 264,
+      "fieldName": "SPACE USE FOR PRIORITIZATION",
+      "dataType": "POINTER",
+      "rawType": "*P7336.3'",
+      "required": false,
+      "pointerTo": 7336.3,
+      "helpText": "This field is a pointer to the OFM Space Classification File (#7336.3) The field designates space classification which determines prioritization points for Minor and Minor Misc. programs. Choices are screened based on program type. ",
+      "fieldNumber_": 264
+    },
+    {
+      "fieldNumber": 265,
+      "fieldName": "SEISMIC AREA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CAT I;2:CAT II;3:CAT III;",
+      "helpText": "This field is set of codes (1,2,or 3) for Seismic Category. The field is used to determine prioritization points for NRM and Minor/Minor Misc. submissions. ",
+      "fieldNumber_": 265
+    },
+    {
+      "fieldNumber": 277,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0277",
+      "required": false,
+      "helpText": "This field is for a lengthy project description (more than 3 lines). The field will be printed at the end of the project application. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.0277,
+      "fieldNumber_": 277
+    },
+    {
+      "fieldNumber": 278,
+      "fieldName": "LONG JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0278",
+      "required": false,
+      "helpText": "This field is for a lengthy project justification(more than 3 lines) The field will be printed at the end of the project application. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.0278,
+      "fieldNumber_": 278
+    },
+    {
+      "fieldNumber": 279,
+      "fieldName": "DATE TRANSMIT IN 5YR PLAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "During the set up of the MailMan message, the date is set into this field. The value should not be edited. ",
+      "fieldNumber_": 279
+    },
+    {
+      "fieldNumber": 279.1,
+      "fieldName": "TRANSMITTER 5YR PLAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "During the set up of the MailMan message, the user's DUZ value is set into this field.  The value should not be edited. ",
+      "fieldNumber_": 279.1
+    },
+    {
+      "fieldNumber": 279.2,
+      "fieldName": "DATE TRANSMIT PROJ APPLICATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "During the set up of the MailMan message, the date is set into this field. The value should not be edited. ",
+      "fieldNumber_": 279.2
+    },
+    {
+      "fieldNumber": 279.3,
+      "fieldName": "TRANSMITTER PROJ APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "During the set up of the MailMan message, the user's DUZ is set into this field.  The value should not be edited. ",
+      "fieldNumber_": 279.3
+    },
+    {
+      "fieldNumber": 282,
+      "fieldName": "IMPACT JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0282",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6925.0282,
+      "fieldNumber_": 282
+    },
+    {
+      "fieldNumber": 285,
+      "fieldName": "LEASE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NN:NEW LEASE/NEW PRESENCE;NE:NEW LEASE/EXISTING PRESENCE;SU:SUCCEEDING;EX:EXPEDITED;EU:ENHANCED USE;",
+      "helpText": "This field contains the type of lease. New Lease/New Presence is a first time lease where no presence exists and there is no existing lease. New Lease/Existing Presence is a lease where there is a change in location, increase or decrease in space, or some change other than a re-negotiation of cost and all renewal options have expired. A Succeeding lease is a lease where there is no change other than cost and all lease renewal options have expired. An Expedited lease is a lease, fully funded by t",
+      "fieldNumber_": 285
+    },
+    {
+      "fieldNumber": 286,
+      "fieldName": "FY AWARD LEASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the fiscal year the lease cost and/or build-out funds are obligated against the lease contract. ",
+      "fieldNumber_": 286
+    },
+    {
+      "fieldNumber": 287,
+      "fieldName": "FY RENT STARTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the fiscal year that monthly lease payments commence. This may differ from the award date due to build-out or a negotiated delay of occupancy. ",
+      "fieldNumber_": 287
+    },
+    {
+      "fieldNumber": 288,
+      "fieldName": "ESTIMATED LUMP SUM COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the estimated lump sum cost paid up-front for build-out or modifications to the property made at the request of and paid for by the VA. ",
+      "fieldNumber_": 288
+    },
+    {
+      "fieldNumber": 289,
+      "fieldName": "ESTIMATED ANNUAL RENT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the total of the annual lease costs based on the 12 month period from the start of the lease. ",
+      "fieldNumber_": 289
+    },
+    {
+      "fieldNumber": 290,
+      "fieldName": "PROPOSED LEASE TERM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the term of the lease in years, including all renewal options. ",
+      "fieldNumber_": 290
+    },
+    {
+      "fieldNumber": 291,
+      "fieldName": "RENTABLE SQ FT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the total net square feet to be used by the VA occupants. Include any waiting space or common areas. If waiting space is shared by tenants other than the VA, estimate and apportion the space. Do not include corridors, equipment rooms, telephone closets, etc. in the rentable square feet. ",
+      "fieldNumber_": 291
+    },
+    {
+      "fieldNumber": 292,
+      "fieldName": "EXISTING SPACE ANNUAL RENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the total annual lease costs based on the last 12 month period of the lease for the existing presence of a Succeeding or New Lease/Existing Presence type lease. ",
+      "fieldNumber_": 292
+    },
+    {
+      "fieldNumber": 293,
+      "fieldName": "EXISTING SPACE RENTABLE SQ FT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the rentable square feet for the existing presence of a Succeeding or New Lease/Existing Presence type lease. Rentable square feet is the total net square footage used by VA occupants, including any waiting space or common areas. If waiting space is shared by tenants other than the VA, estimate and apportion the space. Do not include corridors, equipment rooms, telephone closets, etc. in the rentable square feet. ",
+      "fieldNumber_": 293
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "COMMUNICATION LOG",
+      "dataType": "SUBFILE",
+      "rawType": "6925.0301",
+      "required": false,
+      "helpText": "This field should not be edited by a user. It contains bi-directional communication activity information for a project. Information will be appended to this word-processing field when projects are transmitted to higher approval authorities or when electronic communications from higher approval authorities are received for a project. ",
+      "isMultiple": true,
+      "subFileNumber": 6925.0301,
+      "fieldNumber_": 301
+    }
+  ],
+  "fieldCount": 412,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "L", "field": },
+    {"name": "6925", "field": .01, "type": "regular"},
+    {"name": "6925", "field": 2, "type": "regular"},
+    {"name": "6925", "field": 3.45, "type": "regular"},
+    {"name": "6925", "field": 3.5, "type": "regular"},
+    {"name": "", "field": 49, "type": "regular"},
+    {"name": "", "field": 49.1, "type": "regular"},
+    {"name": "", "field": 50, "type": "regular"},
+    {"name": "", "field": 52, "type": "regular"},
+    {"name": "", "field": 54, "type": "regular"},
+    {"name": "", "field": 55, "type": "regular"},
+    {"name": "", "field": 55.5, "type": "regular"},
+    {"name": "", "field": 55.6, "type": "regular"},
+    {"name": "", "field": 56, "type": "regular"},
+    {"name": "", "field": 57, "type": "regular"},
+    {"name": "", "field": 58, "type": "regular"},
+    {"name": "", "field": 59, "type": "regular"},
+    {"name": "", "field": 60, "type": "regular"},
+    {"name": "", "field": 61, "type": "regular"},
+    {"name": "", "field": 62, "type": "regular"},
+    {"name": "", "field": 63, "type": "regular"},
+    {"name": "6925", "field": 158, "type": "regular"},
+    {"name": "", "field": 181.1, "type": "regular"},
+    {"name": "", "field": 244, "type": "regular"},
+    {"name": "", "field": 244, "type": "regular"},
+    {"name": "", "field": 247, "type": "regular"},
+    {"name": "", "field": 247, "type": "regular"},
+    {"name": "6925", "field": 287, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

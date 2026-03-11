@@ -1,0 +1,57 @@
+{
+  "fileNumber": 394.83,
+  "fileName": "VAQ - OUTGOING GROUP",
+  "globalRoot": "394.83",
+  "globalReference": "^VAT(394.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Group Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Name of group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Created By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of person who created this group. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Date Created",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the group was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Remote Facility",
+      "dataType": "POINTER",
+      "rawType": "394.831P",
+      "required": false,
+      "helpText": "Multiple containing the facilities and their associated domains. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.83", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

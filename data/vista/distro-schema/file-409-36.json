@@ -1,0 +1,295 @@
+{
+  "fileNumber": 409.36,
+  "fileName": "SDWL TRANSFER ACCEPT",
+  "globalRoot": "409.36",
+  "globalReference": "^SDWL(409.36,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the patient's name in 'LAST,FIRST MIDDLE SUFFIX' format. This value must be 3-30 characters in length and may contain only uppercase alpha characters, spaces, apostrophes, hyphens and one comma.   All other characters and parenthetical text will be removed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Enter 'M' if this applicant is a male, or 'F' if female. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the applicant's date of birth between December 31, 1870 and today's  date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the applicants social security number as nine digits, i.e.,  123456789.  If the social security number is unknown and you need to  assign a pseudo SSN follow it with a 'P', i.e., 123456789P.  Simply enter  a 'P' if you wish the system to determine the proper pseudo SSN. Pseudo  SSN's are determined as follows:        1.  Based on the following table assign the first three numbers        of the pseudo SSN based on the patient's three initials in        first-middle-last initial order.  For ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REQUESTING STATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the Station Number of the requesting facility. When  acknowledgement messages are returned, the domain to which they are to be  sent can be derived from this value. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the first line of this applicant's residence street address [3-35  characters]. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the second line of this applicant's residence street address [3-30  characters] if the space provided in 'street address' was not sufficient. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the third line of this applicant's residence street address [3-30  characters] if the space provided in 'street address' and 'street address  2' was not sufficient. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which this applicant resides [2-15 characters]. If the  space provided is not sufficient please abbreviate the city to the best  of your ability. ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "From the available listing choose the state in which this applicant  resides. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "ZIP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter the zip code [5 numerics] for the city in which this applicant  resides. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "COUNTY",
+      "dataType": "POINTER",
+      "rawType": "P5.1'",
+      "required": false,
+      "pointerTo": 5.1,
+      "helpText": "If a state of residence is entered select from the available listing the  county in which this applicant resides.  If no state (or a non-state) is  entered no selection is possible. ",
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .1217,
+      "fieldName": "TEMPORARY ADDRESS START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the WANT TO ENTER A TEMPORARY ADDRESS prompt is answered YES enter the  date on which the applicant will commence being contacted at the  temporary address indicated, otherwise nothing may be entered.  This  field may not be deleted as long as the need for a temporary address is  indicated. ",
+      "fieldNumber_": .1217
+    },
+    {
+      "fieldNumber": .1218,
+      "fieldName": "TEMPORARY ADDRESS END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the WANT TO ENTER A TEMPORARY ADDRESS prompt is answered YES enter the  date as of which the applicant will no longer be contacted at that  temporary address, otherwise nothing may be entered.  This field may not  be deleted as long as the need for a temporary address is indicated. ",
+      "fieldNumber_": .1218
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number [4-20 characters] to this applicant's place of  residence. ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time (including seconds) of the moment of transmission. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "COVERSHEET REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This is a flag to indicate if a request has been made to print a  coversheet with the transmitted details of the patient to be transferred.  If the flag has been set to YES, the request can be notified as Accepted. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .301,
+      "fieldName": "SERVICE CONNECTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter 'Y' if this applicant is service connected, 'N' if not. Applicants  identified as being non-veterans cannot be entered as service connected.   Once eligibility has been verified only users holding the designated  security key may enter/edit this field. ",
+      "fieldNumber_": .301
+    },
+    {
+      "fieldNumber": .302,
+      "fieldName": "SERVICE CONNECTED PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this applicant is service connected (SERVICE CONNECTED prompt must be  answered YES) enter the service connected percentage [a number between  0-100].  Once eligibility has been verified only users who hold the  designated security key may enter/edit this field.  Field may not be  deleted as long as service connection is indicated. ",
+      "fieldNumber_": .302
+    },
+    {
+      "fieldNumber": .361,
+      "fieldName": "PRIMARY ELIGIBILITY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Select from the available listing the appropriate eligibility code for  this applicant.  For non-veteran applicants a wide variety of choices are  available.  For veteran applicants the choices are screened [in the  following order] dependent on the responses to other prompts:     1.  If the SERVICE CONNECTED prompt (field .301) is answered YES     only the following two choices are available:          a.  If the SERVICE CONNECTED PERCENTAGE prompt (field .302) entered         is 50% or greater ",
+      "fieldNumber_": .361
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "409.364",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 409.364,
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SENDING FACILITY TRANSFER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifying reference to the transfer file on the transmitting facility  (#409.35). ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING;E:EWL;C:CLOSED;R:REMOVED;T:TRANSFERRED;",
+      "helpText": "The current stage in the transfer process. Possible values are P - PENDING: where a transfer request has been received but no action has  yet been taken E - EWL: the transfer patient has been place on the Electronic Wait List  C - CLOSED: the transfer has been completed  T - TRANSFERRED: the transfer patient has been the subject of request to another facility R - REMOVED: the transfer request has been cancelled T - TRANSFERRED: the transfer patient has been the subject of request to another faci",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FACILITY TRANSFERRED TO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The stop code of the facility if the patient for this transfer has become the subject of a further tranfer elsewhere ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WAIT LIST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PCMM TEAM ASSIGNMENT;2:PCMM POSITION ASSIGNMENT;3:SERVICE/SPECIALTY;4:SPECIFIC CLINIC;",
+      "helpText": "Set of codes as on the WAIT LIST ENTRY file (#409.3) ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WAIT LIST TYPE EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A free text expansion of the attribute associated with the WAIT LIST  TYPE. E.g. A Wait List Type of 3: SERVICE/SPECIALTY would typically hold  the relevant Specialty. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DESIRED DATE OF APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Desired Date of Appointment taken from the Wait List Entry file from the  transmitting facility. The field title contains 'CID/PREFERRED DATE',  where 'CID' stands for Clinically Indicated Date. This is an alternate name for the field name used for reports and to present to users when adding and displaying appointment information in the Scheduling package. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 409.3,
+      "fieldName": "SD WAIT LIST ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P409.3'",
+      "required": false,
+      "pointerTo": 409.3,
+      "helpText": "Pointer to the associated EWL entry ",
+      "fieldNumber_": 409.3
+    },
+    {
+      "fieldNumber": 991.01,
+      "fieldName": "INTEGRATION CONTROL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "Machine to machine identifier for a patient. Included in the hope of making a match with the same patient on the receiving system. ",
+      "fieldNumber_": 991.01
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.36", "field": .01, "type": "regular"},
+    {"name": "409.36", "field": 409.3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

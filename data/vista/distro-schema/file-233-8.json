@@ -1,0 +1,46 @@
+{
+  "fileNumber": 233.8,
+  "fileName": "NHAMCS REASON FOR VISIT",
+  "globalRoot": "233.8",
+  "globalReference": "^EDPB(233.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT CODE",
+      "dataType": "POINTER",
+      "rawType": "P233.8'",
+      "required": false,
+      "pointerTo": 233.8,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "233.8", "field": .01, "type": "regular"},
+    {"name": "233.8", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^EDPB(233.8,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(233.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

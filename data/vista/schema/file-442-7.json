@@ -1,0 +1,50 @@
+{
+  "fileNumber": 442.7,
+  "fileName": "ADMINISTRATIVE CERTIFICATIONS",
+  "globalRoot": "442.7I",
+  "globalReference": "^PRC(442.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the number of the administrative certification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the type of the administrative certification. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "442.701",
+      "required": false,
+      "helpText": "This is the text of the administrative certification. ",
+      "isMultiple": true,
+      "subFileNumber": 442.701,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "442.7", "field": .01, "type": "regular"},
+    {"name": "442.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

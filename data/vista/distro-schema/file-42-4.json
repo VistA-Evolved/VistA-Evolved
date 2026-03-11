@@ -1,0 +1,107 @@
+{
+  "fileNumber": 42.4,
+  "fileName": "SPECIALTY",
+  "globalRoot": "42.4",
+  "globalReference": "^DIC(42.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the IFN of the SPECIALTY record. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This field contains the name of the specialties allowable for selection through PTF.  All  FACILITY TREATING SPECIALTIES must relate to one of the entries in this file.  This file is maintained by the MAS package and should not be altered in any way. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain an abbreviated name of this specialty.  This print name will be printed on outputs where the full name of the specialty would not fit. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;P:PSYCHIATRY;NH:NHCU;NE:NEUROLOGY;I:INTERMEDIATE MED;R:REHAB MEDICINE;SCI:SPINAL CORD INJURY;D:DOMICILIARY;B:BLIND REHAB;RE:RESPITE CARE;",
+      "helpText": "This field contains the name of the service that this specialty is related to.  Choose from the available choices. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASK PSYCHIATRIC QUESTIONS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be checked in PTF to determine if psychiatric axis questions will be asked for this treating specialty. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BILLING RATE BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "*P399.1'X",
+      "required": false,
+      "pointerTo": 399.1,
+      "helpText": "Enter the bedsection representing the rate at which a patient in this bedsection would be billed at. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MPCR ACCOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the Monthly Program Cost Account number that is associated with the treating specialty assigned to any given ward. The  MPCR account number is used for workload purposes. | ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PTF CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the PTF code for this entry.  It is created by the MAS module and VA Fileman.  Editing of data in this file or additions/deletions to this file will have negative impact on the operations of the PTF software module. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "42.41D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 42.41,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "42.4", "field": .01, "type": "regular"},
+    {"name": "42.4", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

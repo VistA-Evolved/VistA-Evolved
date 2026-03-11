@@ -1,0 +1,53 @@
+{
+  "fileNumber": 8930.2,
+  "fileName": "USR ROLE",
+  "globalRoot": "8930.2",
+  "globalReference": "^USR(8930.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER ROLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is role which the user occupies with respect to a given record (e.g.,  author (dictator), transcriber, expected signer, expected cosigner,  attending physician, etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8930.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8930.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8930.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

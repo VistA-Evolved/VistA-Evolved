@@ -1,0 +1,27 @@
+{
+  "fileNumber": 212.6,
+  "fileName": "NURS PRIVILEGE",
+  "globalRoot": "212.6",
+  "globalReference": "^NURSF(212.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the clinical privilege. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "212.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

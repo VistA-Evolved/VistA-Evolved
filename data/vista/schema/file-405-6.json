@@ -1,0 +1,27 @@
+{
+  "fileNumber": 405.6,
+  "fileName": "ROOM-BED DESCRIPTION",
+  "globalRoot": "405.6",
+  "globalReference": "^DG(405.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file/field contains the descriptions of beds available at your facility.  Examples include PRIVATE ROOM, MALES ONLY, etc. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "405.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

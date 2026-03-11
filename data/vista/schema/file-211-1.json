@@ -1,0 +1,39 @@
+{
+  "fileNumber": 211.1,
+  "fileName": "NURS PAY SCALE",
+  "globalRoot": "211.1I",
+  "globalReference": "^NURSF(211.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GRADE/STEP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Indicates the employee's 'service category', grade, and step level. Example: R/S/5; registered nurse/senior grade/step 5. 'Service category' abbreviations are: C = clerical, R = registered nurse, L = licensed practical nurse/licensed vocational nurse, N = nursing assistant, O = other category(i.e., trainee, etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*GRADE/STEP",
+      "dataType": "POINTER",
+      "rawType": "RP211.2'",
+      "required": true,
+      "pointerTo": 211.2,
+      "helpText": "Name of the grade/step associated with the above 'grade/step code'. Pointer to NURS GRADE/STEP FILE (211.2). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "211.1", "field": .01, "type": "regular"},
+    {"name": "211.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "fileNumber": 162.94,
+  "fileName": "FEE BASIS UNAUTHORIZED DISAPPROVAL REASONS",
+  "globalRoot": "",
+  "globalReference": "^FB(162.94,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the disapproval reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates if the disapproval reason is active. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.941",
+      "required": false,
+      "helpText": "This field contains a detailed description of the disapproval reason. The description may appear as part of the text in a letter when an unauthorized claim is dispositioned.  It will appear only if REASON FOR DISAPPROVAL has data. ",
+      "isMultiple": true,
+      "subFileNumber": 162.941,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "162.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

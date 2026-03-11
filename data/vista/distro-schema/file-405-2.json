@@ -1,0 +1,136 @@
+{
+  "fileNumber": 405.2,
+  "fileName": "MAS MOVEMENT TYPE",
+  "globalRoot": "405.2I",
+  "globalReference": "^DG(405.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number as created by VA FileMan and maintained by the MAS package.  This number is used widely throughout many DHCP packages including MAS, dietetics, and pharmacy to determine programming flow.  Adding, editing, or removing entries in this file will have severe negative impacts on software operation at your facility.  You MUST NOT edit this data! ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the movement type as distributed by the MAS package under the direction of MAS VACO and the MAS SIUG.  Entries in this file must not be edited locally, and will be maintained via frequent MAS software upgrades.  Changes to this file could severely impact operations at your site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP405.3'I",
+      "required": true,
+      "pointerTo": 405.3,
+      "helpText": "This field contains a pointer to the MAS MOVEMENT TRANSACTION TYPE file containing the allowable types of bed control movements (admissions, discharges, transfers, lodger movements, etc.).  This data is distributed by the MAS package under the direction of MAS VACO and the MAS SIUG. Altering of this data in any way will have severe and negative impacts on operations at your site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASK SPECIALTY AT MOVEMENT?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will contain a yes if, when entering a movement of this type, the user should also be asked if they would like to enter a specialty transfer.  This would only be true in the case of admissions and some transfers.  This data is distributed with the MAS package under the direction of the MAS SIUG and MAS VACO.  Altering of this data in any way will have severe and negative impacts on operations at your site. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ASK FACILITY ON MOVEMENT?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will contain a yes if, when entering a movement of this type, the user should also be asked for a 'TRANSFER FACILITY'.  This would be true for movements such as TRANSFER IN, TRANSFER OUT, CONTINUED ASIH (OTHER FACILITY), etc. where it is necessary to prompt for the facility where the patient is trasferring from or to.  This data is distributed by the MAS package as directed by MAS VACO and the MAS SIUG.  Altering of this data in any way will have severe and negative impacts on operati",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MODULE GENERATED/SELECTABLE?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:MODULE GENERATED;1:SELECTABLE;",
+      "helpText": "Due to the ASIH (absent sick in hospital) functionality, there are certain movements (a TO ASIH admission) which are entered automatically by the system and are not selectable.  In this case, MODULE GENERATED would be entered in this field.  For movements which the user can choose at standard TYPE OF MOVEMENT prompts, this field will be SELECTABLE.  This data is distributed by the MAS package as directed by the MAS SIUG and MAS VACO. Altering of this data in any way will have severe and negative",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PTF DISCHARGE CODE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:REGULAR;2:NBC OR WHILE ASIH;3:EXPIRATION 6 MONTH LIMIT;4:IRREGULAR;5:TRANSFER;6:DEATH WITH AUTOPSY;7:DEATH WITHOUT AUTOPSY;",
+      "helpText": "This field is filled in only for discharges and contains the code for the discharge that is transmitted with the PTF record.  This data is distributed by the MAS packge under the direction of the MAS SIUG and MAS VACO.  Altering of this data in any way will have severe and negative impacts on the operations of MAS and other DHCP software packages. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CAN ONLY FOLLOW MOVEMENT(S)",
+      "dataType": "POINTER",
+      "rawType": "405.21P",
+      "required": false,
+      "helpText": "This multiple contains all other types of movements which this entry is allowed to follow.  For admissions, this multiple will be blank as they can not follow any other movements.  This is also true for check-in lodger movements.  This multiple will never contain discharges or check-out lodger movements as nothing can follow them.  The 'can only follow' syntax holds only for a single episode:  either a lodger episode or an admission episode.   This data is distributed by the MAS software package",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will contain a brief description of the movement type.  This description is distributed by the MAS package and should not be altered. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 50.01,
+      "fieldName": "ABSENCE MOVEMENT?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has this movement type as his most recent movement and at the time of the movement the patient is currently not in-house, this field should contain a yes.  This data is distributed by the MAS package and it is utilized by MAS as well as many other DHCP software packages. Altering of this data in any way will have very negative impacts on the operations at your site.  DO NOT EDIT THIS DATA! ",
+      "fieldNumber_": 50.01
+    },
+    {
+      "fieldNumber": 50.02,
+      "fieldName": "CAN MOVEMENT FOLLOW ADMISSION?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this movement type can follow an admission, this field will be YES.  This data is distributed by the MAS package and it is utilized by MAS as well as many other DHCP packages.  Altering of this data in any way will have very negative impacts on the operations at your site.  DO NOT EDIT THIS DATA! ",
+      "fieldNumber_": 50.02
+    },
+    {
+      "fieldNumber": 50.03,
+      "fieldName": "ASIH MOVEMENT?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this movement is an absent sick in hospital movement, this field will be YES.  This data is distributed by the MAS package and it is utilized by MAS as well as many other DHCP packages.  Altering of this data in any way will have very negative impacts on the operations at your site.  DO NOT EDIT THIS DATA! ",
+      "fieldNumber_": 50.03
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "405.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$D(^(0)) \"   \",\"\" S %=$C(59)_$S($D(^DD(405.2,.02,0)):$P(^(0),U,3),1:\"\") W @(\"$E(\"_DIC_\"Y,0),0)\"),$P($P(%,$C(59)_$P(^(0),U,2)_\":\",2),$C(59),1)"}
+  ]
+}

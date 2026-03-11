@@ -1,0 +1,40 @@
+{
+  "fileNumber": 164.83,
+  "fileName": "ONCO RADIATION TO DRAINING LN",
+  "globalRoot": "164.83",
+  "globalReference": "^ONCO(164.83,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the code for the Radiation to Draining Lymph Node data item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ90",
+      "length": 90,
+      "required": true,
+      "helpText": "This is the description or definition of the code for the Radiation to Draining Lymph Node data item. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.83", "field": .01, "type": "regular"},
+    {"name": "164.83", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

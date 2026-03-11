@@ -1,0 +1,200 @@
+{
+  "fileNumber": 357.09,
+  "fileName": "ENCOUNTER FORM PARAMETERS",
+  "globalRoot": "357.09",
+  "globalReference": "^IBD(357.09,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "There is only one number in this ENCOUNTER FORM PARAMETERS file, and that is the number 'one' denoting there is only one Encounter Form Parameter.  The labels are subfields of this one parameter. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name field.  There should only be one entry in this field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RECORDS TO PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:COMPLETED;2:ALL;",
+      "helpText": "Enter whether you want the background purge option to purge all records from form tracking older that the number of days specified in the field FORM TRACKING RETENTION DAYS, or completed records, or no records.     After purging records from form tracking, the purge utility will check to see if all forms for inactive form definitions have been received. If so, then the form definition and Form Specification for that form may be deleted.  Purging ALL Form Tracking entries will cause the form defi",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FORM TRACKING RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the number of days to retain form tracking information after it is no longer used.  The AICS purge utility will delete entries in the Encounter Form Definition file (357.95), the Encounter Form Tracking file (357.96), and the Form Specification file the number of days  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT DATA ENTRY FORM",
+      "dataType": "POINTER",
+      "rawType": "P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "This is the form definition that will be used during manual data entry if no form for a clinic is defined.  If this is not filled in then the PRIMARY CARE SAMPLE (2.1) form in the tool kit will be used as the default form.  If that form has been deleted then provider, procedure      and diagnosis will be asked but no quick entry features will be available. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRINT FORMS FOR INPATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter 'Yes' if you want encounter forms printed for Inpatients or 'No' if no enounter forms for inpatients should be printed.  If this field is null, it will be treated as a 'Yes' and encounter forms for inpatients will be printed.   This parameter affects all options that print forms for appointments for a clinic, it does not affect printing individual forms. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAKE APPOINTMENT IN DATA ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter 'Yes' if you wish for users at your site to be able to make a follow up appointment during data entry of an encounter form or enter 'No' if you do not wish to see that prompt. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PASS DATA TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:BACKGROUND;1:BACKGROUND/W VALIDATION;2:FOREGROUND/NO DISPLAY;3:FOREGROUND/WITH DISPLAY;",
+      "helpText": "Choose how data captured in the AICS EF Data Entry Options should be passed to PCE.  The data entry options use the same mechanism to update PCE (and scheduling) as the scanning software.  Background refers to sending data to PCE by using TaskMan to create a separate process so the user may continue working.  Foreground refers to sending the data to PCE in real time.  The choices for data entry are:        Background - This is the fastest method for the user.  No validation         of the data i",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FILL % FOR BUBBLES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter a number between 0 and 99 that represents the percentage of fill required for a bubble to be considered as checked.  Entering a zero will leave the determination up to Paper Keyboard.  If this field is left blank AICS will use 20% as the amount of fill required.   This field corresponds to the Threshold % field in the Metric dialog box in Paper Keyboard.  Modifying this field will only affect new forms. Existing form specification files will not be affected.  To modify an  existing form sp",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "BACKGROUND % FOR BUBBLES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter a number between 0 and 99 that represents the percentage of  background fill in a bubble that can exist before Paper Keyboard will consider any markings in the bubble.  If this field is left blank then AICS will use 5%.  Entering a zero leaves the determination up to Paper Keyboard.   This field corresponds to the Background % field in the Metric dialog box. Entering a small value prevents small dots on the page from appearing as check marks.  The value of this field should always be less ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DAYS TO PRINT 1010F",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If you have chosen to print a 1010F with your encounter forms, this is the number of days between the expiration of a means test and the appointment  date before that you want to print 1010F's for.  For example, if this field is set to 30, then 1010F's will print for means tests that are due to  expire within 30 days of the appointment.  1010F's will also print if they are in a required status. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DAYS TO RETAIN PENDING PAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the number of days that entries in Form Tracking will be retained in a Pending Pages status.  The automatic encounter form job will check this value each night and attempt to pass forms in this status to PCE after they have been in this status for the specified number of days past the encounter date. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "REDUCE HANDPRINT RECOGNITION SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "When scanning, some sites have problems with the outline of hand print fields not being removed completely.  This results in \"phantom\" entries being detected by Paper Keyboard and user validation during recognition.  This problem is caused by the interaction of 3 different features, the darkness of the print, the size of the recognition area, and the light intensity of the scanner.  This field allows you to reduce the size of the recognition area which may assist in moving the \"phantom\" outside ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DARKNESS OF DOTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "When scanning, some sites have problems with the outline of hand print fields not being removed completely.  This results in \"phantom\" entries being detected by Paper Keyboard and user validation during recognition.  This problem is caused by the interaction of 3 different features, the    darkness of the print, the size of the recognition area, and the light intensity of the scanner.  This field allows sites to determine the Pen  Width value of the dots of handprint fields and bubbles when prin",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CLOSENESS OF DOTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "When scanning, some sites have problems with the outline of hand print fields not being removed completely.  This results in \"phantom\" entries being detected by Paper Keyboard and user validation during recognition.  This problem is caused by the interaction of 3 different features, the    darkness of the print, the size of the recognition area, and the light intensity of the scanner.  This field allows sites to determine the  percentage of fill (closeness of dots) that is used to print handprin",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PURGE NOTIFICATION MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Enter the name of the mail group that should receive the automatic notification of purge results.  Purge results are sent every time the AICS purge runs, regardless of whether or not the auto purge or manual purge is run.   If no group is entered then no message will be sent.  Results are always stored in the AICS PURGE LOG file (357.08) and can be reviewed at any time. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "STOP DEFAULTING C/O DATE/TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If checkout date/time is not present on the Encounter Form, the software will automatically default a checkout date/time to that of the scan date/ time.  If you do not wish to default the checkout date/time, you should enter 'YES' in this field to stop the automatic default. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRINT MGR'S QUEUING PARAM NAME",
+      "dataType": "SUBFILE",
+      "rawType": "357.091A",
+      "required": false,
+      "helpText": "This field is a multiple.  This is the name of the parameter group  for the printing of encounter forms.  The encounter form background print job will loop through all of the parameter groups and print the forms for the clinics that are under this parameter the print job. ",
+      "isMultiple": true,
+      "subFileNumber": 357.091,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "ACG", "field": },
+    {"name": "B", "field": },
+    {"name": "SEQ", "field": },
+    {"name": "357.09", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "fileNumber": 344.6,
+  "fileName": "RCDPE AUTO-PAY EXCLUSION",
+  "globalRoot": "344.6",
+  "globalReference": "^RCY(344.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the payer name whose settings are defined by this entry. This  field is programmatically generated and should never be updated by a user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PAYER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PAYER ID contained here along with the PAYER NAME provide a unique  identifier for this entry. This field is programmatically updated. It  should never be edited by a user. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the payer first sent an ERA into the system. This field  date will be programmatically updated. It should never be modified by a  user. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the last user to modify this record.  If the value is POSTMASTER, then the last modification was performed by the nightly batch job, or by post-installation processing when the file was initially populated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date this record was last updated or created. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXCLUDE MED CLAIMS POSTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-posting of medical claims  for a specified payer. When set to Yes (1) auto-posting is disabled. When  No (0) auto-posting is enabled. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EXCLUDE MED CLAIMS DECREASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-decreasing of medical claims  for a specified payer. When set to Yes (1) auto-decreasing is disabled.   When No (0) auto-decreasing is enabled. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXCLUDE RX CLAIM POSTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-posting for Pharmacy claims  for a specified payer.  When set to Yes (1), auto-posting is disabled.   When No (0), auto-posting is enabled. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PHARMACY PAYER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field is used to flag a specified payer as a pharmacy payer. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TRICARE PAYER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field is used to flag a specified payer as a Tricare payer. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PAYER ADDED FROM EFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "EXCLUDE PHARM CLAIMS DECREASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-decreasing of pharmacy claims for a specified payer. When set to Yes (1) auto-decreasing is disabled. When No (0) auto-decreasing is enabled. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EXCLUDE TRICARE CLAIM POSTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-posting of TRICARE claims for a specified payer.  When set to Yes (1), auto-posting is disabled. When No (0), auto-posting is enabled. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "EXCLUDE TRICARE CLAIM DECREASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used to enable or disable auto-decreasing of TRICARE claims for a specified payer. When set to Yes (1) auto-decreasing is disabled. When No (0) auto-decreasing is enabled. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "CHAMPVA PAYER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field is used to flag a specified payer as a CHAMPVA payer. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AUTO-POST COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Required comment when payer is excluded from auto-posting. This is  cleared when the auto-post exclusion is reset. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTO-DECREASE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Required comment when payer is excluded from auto-decreasing. This is  cleared when the auto-decreasing exclusion is reset. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PHARMACY AUTO-POST COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Required comment when payer is excluded from auto-posting.  This is  cleared when the auto-post exclusion is reset. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PHARMACY AUTO-DECREASE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ72",
+      "length": 72,
+      "required": false,
+      "helpText": "Required comment when payer is excluded from pharmacy auto-decrease. This comment is cleared when the auto-post exclusion is reset. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRICARE AUTO-POST COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ72",
+      "length": 72,
+      "required": false,
+      "helpText": "Required comment when payer is excluded from auto-posting. This is   cleared when the auto-post exclusion is reset. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRICARE AUTO-DECREASE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ72",
+      "length": 72,
+      "required": false,
+      "helpText": "Required comment when payer is excluded from auto-decrease. This is   cleared when the auto-decrease exclusion is reset. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "ACH", "field": },
+    {"name": "ARX", "field": },
+    {"name": "ATR", "field": },
+    {"name": "EXMDDECR", "field": },
+    {"name": "EXMDPOST", "field": },
+    {"name": "EXRXDECR", "field": },
+    {"name": "EXRXPOST", "field": },
+    {"name": "EXTRDECR", "field": },
+    {"name": "EXTRPOST", "field": },
+    {"name": "344.6", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "344.6", "field": .07, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "344.6", "field": .08, "type": "regular"},
+    {"name": "344.6", "field": .09, "type": "regular"},
+    {"name": "344.6", "field": .1, "type": "regular"},
+    {"name": "344.6", "field": .12, "type": "regular"},
+    {"name": "", "field": .12, "type": "regular"},
+    {"name": "", "field": .12, "type": "regular"},
+    {"name": "344.6", "field": .13, "type": "regular"},
+    {"name": "", "field": .13, "type": "regular"},
+    {"name": "", "field": .13, "type": "regular"},
+    {"name": "344.6", "field": .14, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"},
+    {"name": "344.6", "field": .15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

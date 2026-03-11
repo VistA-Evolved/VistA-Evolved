@@ -1,0 +1,50 @@
+{
+  "fileNumber": 742.5,
+  "fileName": "QA INCIDENT LOCATION",
+  "globalRoot": "742.5",
+  "globalReference": "^QA(742.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "INCIDENT LOCATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Incident Location Number links a unique number with a particular incident. All local incident locations must have numbers of 200 or greater.  This number may or may not have two decimal places. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "INCIDENT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Location where the incident has taken place. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LOCATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;",
+      "helpText": "Indicates whether a location is currently active on the system. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BSTAT", "field": },
+    {"name": "BUPPER", "field": },
+    {"name": "742.5", "field": .01, "type": "regular"},
+    {"name": "742.5", "field": .01, "type": "regular"},
+    {"name": "742.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

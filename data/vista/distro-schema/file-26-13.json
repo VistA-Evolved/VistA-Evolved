@@ -1,0 +1,108 @@
+{
+  "fileNumber": 26.13,
+  "fileName": "PRF ASSIGNMENT",
+  "globalRoot": "26.13",
+  "globalReference": "^DGPF(26.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0I",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the internal entry number which is assigned to each record of this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient that has been assigned the PATIENT RECORD FLAG. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FLAG NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RVI",
+      "required": true,
+      "helpText": "This field contains the Patient Record Flag Name that is assigned to a  patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This field indicates if the patient record flag assignment is Active or Inactive for this patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OWNER SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'I",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field contains the current site that owns this patient flag assignment. Patient assignments may only be edited by the owner site. The owner site normally corresponds to the site providing primary care to the patient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ORIGINATING SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'I",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field contains the site that initially assigned the patient  record flag to this patient.  The site that assigns the flag is not  required to be the owner of the assignment. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field will contain the date that the flag assignment is due for  review to determine continuing appropriateness. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ASSIGNMENT NARRATIVE",
+      "dataType": "SUBFILE",
+      "rawType": "26.132",
+      "required": false,
+      "helpText": "This word processing field contains the patient record flag assignment narrative text. The assignment narrative text is a description of the incident or reason that generated the need for this patient record flag assignment.  The description is followed by recommended actions that should be performed by a person working with this specific patient. ",
+      "isMultiple": true,
+      "subFileNumber": 26.132,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DBRS NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "26.131",
+      "required": false,
+      "helpText": "This multiple will allow the documentation of the identifiers recorded in  the Disruptive Behavior Record System (DBRS). One can also associate a  brief description for each DBRS number. ",
+      "isMultiple": true,
+      "subFileNumber": 26.131,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,2),1:\"\") D NAME^DICM2 W \"   \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

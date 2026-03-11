@@ -1,0 +1,469 @@
+{
+  "fileNumber": 62.4,
+  "fileName": "AUTO INSTRUMENT",
+  "globalRoot": "62.4",
+  "globalReference": "^LAB(62.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The internal number for this auto instrument.  It ties the routines running on a line or data concentrator to this particular file for the rest of the information within the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the instrument. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VENDOR CARD ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " The vendor card address should be stored in this field for Lab HL7  message downloads using Lab Universal Interface software. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SHORT ACCESSION # LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field should be used to pad accession numbers based on the fixed length entered for this instrument. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "WKLD METHOD",
+      "dataType": "POINTER",
+      "rawType": "P64.2'",
+      "required": false,
+      "pointerTo": 64.2,
+      "helpText": "Indicate what method the system should use as a default value for workload identification purposes. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "WKLD CODE METHOD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field is automatically filled in when a selection of wkld code method name is made. I represents an eye readable name of the code selected. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "WKLD CODE SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " Indicate what suffix should be used as a default value for this instrument. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ECHO DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the port name under ZIS which would echo the information from the  automated instrument which has gone through the data concentrating device  to the main computer back to the laboratory to indicate that all the data  lines are intact, and that the values are actually getting all the way  back to the computer. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROGRAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the processing program for this instrument. The program name must be unique for each entry in this file. The program that monitors the data coming from the instruments is designated LAB.  It is run by the task manager and runs continuously. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOAD/WORK LIST",
+      "dataType": "POINTER",
+      "rawType": "RP68.2'",
+      "required": true,
+      "pointerTo": 68.2,
+      "helpText": "This points to the single worklist where processed data from the LA global is to be directed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ENTRY for LAGEN ROUTINE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "LOG:Accession cross-reference;LLIST:Tray-cup or sequence x-ref;IDENT:Invoice number cross-reference;SEQN:Run order;",
+      "helpText": "This is a line label in the LAGEN routine designating the entry point. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CROSS LINKED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The variable internal to the the Program (field 2), contains the value used in the Entry for LAGEN Routine (field 5). This entry is generally supplied when the program is written for the instrument.  Also see documentation on LAPX routine in technical manual. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MESSAGE CONFIGURATION",
+      "dataType": "POINTER",
+      "rawType": "P62.48'",
+      "required": false,
+      "pointerTo": 62.48,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*ECHO ALL INPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set, then all input strings to the LA routine will be echoed to the echo device.  That is, all raw data from the instrument will be echoed before any cross-referencing is done. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the method or instrument used. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFAULT ACCESSION AREA",
+      "dataType": "POINTER",
+      "rawType": "*P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "This field contains the default accession list name for this instrument. Points to FILE #68. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OVERLAY DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this field to YES will cause a rerun of instrument data to overlay existing data. NOTE: Recommended setting for Microbiology instruments is \"YES\".  This causes susceptibility results to be filed with the corresponding organism(s) into the ^LAH global during HL7 processing. Otherwise, instrument susceptibility results cannot be accepted and verified. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "STORE REMARKS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls if comments that are associated with an accession or specimen are stored with the results. The default is NO.   There is a similar companion field at the test level which controls comments associated with tests results. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NEW DATA",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "This is a string of executable code which is used whenever a new string of data starts to come from the automated instrument. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "RESTART",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "This is a string of executable code which restarts everything for this particular instrument if there has been a power failure, or if the routines have become totally lost.  If error conditions have occurred, it can restart itself. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "HANDSHAKE RESPONSE",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "If the instrument requires a handshake response, this field contains the executable MUMPS code to set the response into the variable OUT. eg.  S OUT=$C(6) (OUT contains the ASCII character 6 \"ACK\") ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ACK TRIGGER VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": " This field contains the sequence used to acknowledge an auto instrument. Not all instruments utilize this field. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ACK RESPONSE VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": " If this instrument setup instructions indicate a standard ack value is required by the instrument, enter the $C(X) for the acknowledgment.  Not all instruments make use of this field.   Where X= the ascii number of the ACK character. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DIRECT DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field is used when bypassing the LSI.  It is the name of the device that is used to communicate with a direct connect instrument. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "LABORATORY TESTS",
+      "dataType": "POINTER",
+      "rawType": "62.41P",
+      "required": false,
+      "helpText": "This is a multiple field that keeps track of tests being done in the instrument  It allows one to be exclusive of tests which the instrument  passes, as well as inclusive of the tests the machine passes which had  not been ordered from the test panel for the patient.  It means, for  example, if the order was glucose, sodium, and a number of other tests,  but not the entire ASTRA panel, but the laboratory chooses to run on the  ASTRA, all the tests can be included in the verified data.  To exclud",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LOAD CHEM TESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TC ARRAY;U:TMP GLOBAL;N:NOTHING DONE;",
+      "helpText": "This field is used by the LASET routine to determine what to do with the chem test sub-file.    T or blank moves the data into the TC array.    U moves the data into the ^UTILITY(\"LA\",$J, global.    N don't move at all.   The value will be returned in LALCT. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ALARM TERMINAL",
+      "dataType": "SUBFILE",
+      "rawType": "62.42A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains the names/numbers of devices which will report the status of the interface.   This field is inactive for V 4.16 ",
+      "isMultiple": true,
+      "subFileNumber": 62.42,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "MICRO CARD TYPE",
+      "dataType": "SUBFILE",
+      "rawType": "62.43",
+      "required": false,
+      "helpText": "This entire sub-field is at present devoted to supporting BI-DIRECTIONAL interfacing of Microbiology instrumentation.    If you are not attempting to interface one these types of instruments, you may ignore this entire sub-field.    If you are attempting to interface such an instrument, there are examples available for various instruments.  Check FORUM for a current listing of instruments which are interfacable. ",
+      "isMultiple": true,
+      "subFileNumber": 62.43,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "INTERFACE NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "62.45",
+      "required": false,
+      "helpText": "Notes on how to setup the instrument to run with the lab package, and other useful information on interfacing this instrument. ",
+      "isMultiple": true,
+      "subFileNumber": 62.45,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "DOWNLOAD ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "   Enter the line tag of the routine used to down load data to the instrument. DO NOT USE '^' ON THIS LINE TAG. IT WILL BE HANDLED BY THE PROCESSING ROUTINE. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "DOWNLOAD PROTOCOL ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "    Enter the name of the routine used to down load data to the instrument. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "FILE BUILD ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "    If it is necessary to build down load files for the instrument, enter the line Tag of the routine that builds the fields. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "FILE BUILD ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the routine used to build the down load files for  this instrument. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "SEND TRAY/CUP LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:no;Y:yes;",
+      "helpText": "   This field will contain the default answer to the question, Send Tray/Cup location, used by some Bi-Directional routines.  ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "QUEUE BUILD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:no;Y:yes;",
+      "helpText": "    This field contains the Default answer to Queue to build Question. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "MICRO INTERPRETATION CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:CHECK ANTIMICROBIAL FILE INTERPRETATION ONLY;I:CHECK INSTRUMENT INTERPRETATION ONLY;B:CHECK BOTH FILE AND INSTRUMENT INTERPRETATION OVERWRITE WITH FILE;",
+      "helpText": " This field specifies how the data being processed should be handled. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "AUTO DOWNLOAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "AUTO RELEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:AUTO VERIFY ONLY;3:USER RELEASE ONLY;",
+      "helpText": "If results received via this auto instrument entry can be associated with  an external auto or user verification system then enable this field.   This field will be checked in conjunction with the auto release master  switch parameter LA7UI AUTO RELEASE MASTER and the specific HL7 message  containing the results to determine if the lab results should be processed by the Laboratory Auto Release process.   It can be configured at several levels of granularity.    0 - no auto release for this auto ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "METH NAME",
+      "dataType": "POINTER",
+      "rawType": "P62.4'",
+      "required": false,
+      "pointerTo": 62.4,
+      "helpText": "This is a statistical method name to be used by this instrument.  Example:  Bull Algorithm.  See for example the MANUAL BULL ALGOR. entry.  The entry usually would point to itself.   Example:  Bull Algorithm. See for example the MANUAL BULL ALGOR. entry.  The entry usually would point to itself. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MEAN DATA VALUE 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "Expected mean value for Bull's algorithm for first of three results. E.g., MCV on a blood count determination. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "MEAN DATA VALUE 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "Expected mean value for Bull's algorithm for second of three results. E.g., MCH on a blood count determination. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "MEAN DATA VALUE 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "Expected mean value for Bull's algorithm for third of three results. E.g., MCHC on a blood count determination. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "MICRO AUTO APPROVAL METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RE:Results Entry;VT:Verification by Tech;VS:Verification by Supervisor;",
+      "helpText": "Select the method to be used with this instrument during verification. This entry will allow RPT DATE APPROVAL prompt during verification.  The default is VS [Verify Supervisor] If one wants the reports to released and verified, enter VS. Other wise a supervisor must release the reports before being verified and printed to the cumulative.     Note. This field is associated with the field MICRO APPROVAL  METHOD in Lab Reports file. Make sure they agree and are appropriate for your site.   THIS FI",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DEFAULT AUTO MICRO TEST",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": " This is the default laboratory test name to be used to record workload for each organism when using the automated Micro instrument to verify test. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "SITE NOTES DATE",
+      "dataType": "DATE",
+      "rawType": "62.4107D",
+      "required": false,
+      "helpText": " Date of the note. ",
+      "isMultiple": true,
+      "subFileNumber": 62.4107,
+      "fieldNumber_": 107
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "62.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"},
+    {"name": "62.4", "field": 2, "type": "regular"},
+    {"name": "62.4", "field": 3, "type": "regular"},
+    {"name": "62.4", "field": 5, "type": "regular"},
+    {"name": "62.4", "field": 10, "type": "regular"},
+    {"name": "62.4", "field": 98, "type": "regular"},
+    {"name": "62.4", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

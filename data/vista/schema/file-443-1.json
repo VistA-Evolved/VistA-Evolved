@@ -1,0 +1,50 @@
+{
+  "fileNumber": 443.1,
+  "fileName": "IFCAP PURGEMASTER WORKLIST",
+  "globalRoot": "443.1I",
+  "globalReference": "^PRC(443.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROUTINE ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VARIABLE STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

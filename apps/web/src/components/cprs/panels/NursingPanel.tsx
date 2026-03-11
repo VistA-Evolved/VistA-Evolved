@@ -390,7 +390,7 @@ function MARTab({ dfn }: { dfn: string }) {
   const [error, setError] = useState('');
   const [schedule, setSchedule] = useState<EmarScheduleItem[]>([]);
   const [history, setHistory] = useState<EmarHistoryItem[]>([]);
-  const [pendingTargets, setPendingTargets] = useState<PendingTarget[]>([]);
+  const [, setPendingTargets] = useState<PendingTarget[]>([]);
   const [scheduleNote, setScheduleNote] = useState('');
   const [historyNote, setHistoryNote] = useState('');
   const [selectedMed, setSelectedMed] = useState<EmarScheduleItem | null>(null);

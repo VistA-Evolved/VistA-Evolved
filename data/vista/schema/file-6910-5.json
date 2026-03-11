@@ -1,0 +1,84 @@
+{
+  "fileNumber": 6910.5,
+  "fileName": "ENG SYSTEM SOFTWARE CHANGES",
+  "globalRoot": "6910.5DI",
+  "globalReference": "^ENG(\"DOC\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PATCH #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "PROBLEM(SHORT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "IMPLEMENTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROBLEM",
+      "dataType": "SUBFILE",
+      "rawType": "6910.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6910.51,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOLUTION",
+      "dataType": "SUBFILE",
+      "rawType": "6910.52",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6910.52,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6910.5", "field": .01, "type": "regular"},
+    {"name": "6910.5", "field": 1, "type": "regular"},
+    {"name": "6910.5", "field": 1.5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": 1.5, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

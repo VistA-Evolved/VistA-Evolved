@@ -1,0 +1,207 @@
+{
+  "fileNumber": 409.73,
+  "fileName": "TRANSMITTED OUTPATIENT ENCOUNTER",
+  "globalRoot": "409.73",
+  "globalReference": "^SD(409.73,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0",
+      "length": 15,
+      "required": true,
+      "helpText": "Number to uniquely identify entries in the file.   This number is automatically generated if a value of '+' is entered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.68'",
+      "required": false,
+      "pointerTo": 409.68,
+      "helpText": "Entry in Outpatient Encounter file that requires transmission. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DELETED OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.74'",
+      "required": false,
+      "pointerTo": 409.74,
+      "helpText": "Entry in Deleted Outpatient Encounter file that requires transmssion. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMISSION REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag denoting if transmission of [Deleted] Outpatient Encounter is required. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMISSION EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:RETRANSMIT;1:ADD;2:EDIT;3:DELETE;",
+      "helpText": "Code denoting action taken on [Deleted] Outpatient Encounter.   Event relates to why the encounter is being transmitted to the National Patient Care Database (NPCDB).          ADD - Check out complete; add entry to NPCDB       EDIT - Encounter was editted; edit existing entry in NPCDB     DELETE - Encounter was deleted; delete entry from NPCDB RETRANSMIT - Encounter being retransmitted               * Encounter data not acknowledged by NPCDB within                 two days is automatically marke",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and [required] time specified action was taken on the [Deleted] Outpatient Encounter. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "USER CAUSING EVENT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User causing the event to occur.  If the event was caused by the nightly ACRP transmission job, the POSTMASTER (DUZ=.5) will be stored as the user. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE/TIME OF XMIT TO NPCDB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and [optional] time the [Deleted] Outpatient Encounter was last transmitted to the National Patient Care Database. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MESSAGE ID OF XMIT TO NPCDB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Message control ID of last transmission to National Patient Care Database. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "BATCH ID OF XMIT TO NPCDB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Batch control ID of last transmission to National Patient Care Database. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE/TIME OF ACK FROM NPCDB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and [optional] time acknowledgement for last transmission to National Patient Care Database was received. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ACK CODE FOR ACK FROM NPCDB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;R:REJECTED;E:ERROR;",
+      "helpText": "Code denoting type of acknowledgement received for last transmission to National Patient Care Database. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "PATIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "ENCOUNTER DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ18",
+      "length": 18,
+      "required": false,
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "PATIENT SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "ENCOUNTER DIVISION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ35",
+      "length": 35,
+      "required": false,
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "ENCOUNTER DIVISION (INTERNAL)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 20.06
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AACBID", "field": },
+    {"name": "AACLST", "field": },
+    {"name": "AACMID", "field": },
+    {"name": "AACNA1", "field": },
+    {"name": "AACNA2", "field": },
+    {"name": "AACXMIT1", "field": },
+    {"name": "AACXMIT2", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "AENC", "field": },
+    {"name": "B", "field": },
+    {"name": "409.73", "field": .01, "type": "regular"},
+    {"name": "409.73", "field": .02, "type": "regular"},
+    {"name": "409.73", "field": .03, "type": "regular"},
+    {"name": "409.73", "field": .04, "type": "regular"},
+    {"name": "409.73", "field": .06, "type": "regular"},
+    {"name": "409.73", "field": 11, "type": "regular"},
+    {"name": "409.73", "field": 11, "type": "regular"},
+    {"name": "409.73", "field": 12, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "409.73", "field": 13, "type": "regular"},
+    {"name": "409.73", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

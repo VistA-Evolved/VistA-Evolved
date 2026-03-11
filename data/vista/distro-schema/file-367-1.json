@@ -1,0 +1,163 @@
+{
+  "fileNumber": 367.1,
+  "fileName": "HPID/OEID TRANSMISSION QUEUE",
+  "globalRoot": "367.1",
+  "globalReference": "^IBCNH(367.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is a sequential number used to uniquely identify a record when creating an entry in this file.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This field is a pointer to the Insurance Company file (file #36). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the transmission record was created. Records are created when certain fields in an Insurance Company entry are edited, so that the NIF is notified of new Insurance Company entries at the site or changes in key fields. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AWAITING RESPONSE;R:RESPONSE PROCESSED;X:EXCEPTION REPORT;EL:ERROR WITH LEGACY IDS;ED:ERROR WITH DATA;EXR:ERROR - EXCEPTION REPORT REJECT;",
+      "helpText": "This is the status of the transmission.  It lets us know if the message was sent (A), if the NIF processed the response (R), and if they  placed it on the NIF exception report(X).  There are also error statuses of: EL - Error w/ Legacy IDs, ED - Error w/Data & EXR - Exception Report Reject.  If the status is R or EXR, the purge date field will be set allowing this completed transmission to be purged. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the TRANSMISSION STATUS field was updated. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P367",
+      "required": false,
+      "pointerTo": 367,
+      "helpText": "When an HL7 message is created, a corresponding \"stub\" response message will  be created at the same time.  This is a pointer to that \"stub\" message. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IDENTIFIERS",
+      "dataType": "POINTER",
+      "rawType": "367.12PA",
+      "required": false,
+      "helpText": "This is a record of all INSURANCE COMPANY IDs sent to the NIF (National Insurance File).  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of this company's street address in   the INSURANCE COMPANY file that was sent to the NIF (National Insurance File). ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of this Insurance Company's street address in  the INSURANCE COMPANY file that was sent to the NIF (National Insurance File). It can not be the same as Line 1 and only contains data if the  Street Address is longer than one line. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The city of the mailing address for this insurance carrier. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state of the mailing address for this insurance carrier. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "The zip code of the mailing address for this insurance carrier.  User may enter the 5 or 9 digit zip code, with or without the hyphen. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "BILLING COMPANY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the insurance carrier's billing company. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "TYPE OF COVERAGE",
+      "dataType": "POINTER",
+      "rawType": "P355.2'",
+      "required": false,
+      "pointerTo": 355.2,
+      "helpText": "If this insurance carrier provides only one type of coverage then select the entry that best describes this carriers type of coverage.  If this carrier provides more than one type of coverage then select HEALTH INSURANCE.   ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The phone number at which this insurance carrier can be reached.   Examples:  800-555-1212 or 303-555-1212 ext 123 or 18665551212 x123 ",
+      "fieldNumber_": 2.08
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "INS", "field": },
+    {"name": "367.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "367.1", "field": .02, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

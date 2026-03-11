@@ -1,0 +1,76 @@
+{
+  "fileNumber": 8933.1,
+  "fileName": "NEW PERSON FIELD MONITOR",
+  "globalRoot": "8933.1",
+  "globalReference": "^XTV(8933.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The MODIFICATION DATE is the date when changes were recorded for an  individual in the NEW PERSON (#200) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "USER identifies a specific individual in the NEW PERSON (#200) file that  has had one or more fields modified on this date. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REQUIRES TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The REQUIRES TRANSMISSION value indicates if the data for this individual  needs to be transmitted to the Person Service Identity Management (PSIM)  system. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LAST TRANSMITTED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The LAST TRANSMITTED DATE/TIME value indicates when the data for this  individual was last transmitted to the Person Service Identity Management  (PSIM) system. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "LAST EDITED BY identifies the individual in the NEW PERSON (#200) file  who was the last person to modify/edit the USER (#.02) record. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD(S) MODIFIED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ250",
+      "length": 250,
+      "required": true,
+      "helpText": "A ';' delimited list of NEW PERSON (#200) field numbers that have been  modified on a specific date for an individual's record.  ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8933.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

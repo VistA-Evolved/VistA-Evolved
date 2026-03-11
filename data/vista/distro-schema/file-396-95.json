@@ -1,0 +1,118 @@
+{
+  "fileNumber": 396.95,
+  "fileName": "AMIE C&P EXAM TRACKING",
+  "globalRoot": "396.95ID",
+  "globalReference": "^DVB(396.95,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INITIAL APPT DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the initial appointment date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ORIGINAL APPT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the original appointment date. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CURRENT APPT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the current appointment date for the examination. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VETERAN CANCELLATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains a code indicating if the appointment has been cancelled at the request of the veteran. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VETERAN REQ APPT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date to which the veteran last requested the appointment be rescheduled. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "2507 REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP396.3'",
+      "required": true,
+      "pointerTo": 396.3,
+      "helpText": "This field contains a pointer to the 2507 request record this appointment is scheduled for. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "APPOINTMENT STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:CANCELLED;",
+      "helpText": "This field contains a code indicating the status of the appointment. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE APPT CANCELLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the appointment this link is associated with was last cancelled. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AB2", "field": },
+    {"name": "AR", "field": },
+    {"name": "ARO", "field": },
+    {"name": "ARO1", "field": },
+    {"name": "ARVC", "field": },
+    {"name": "ARVO", "field": },
+    {"name": "AVC2", "field": },
+    {"name": "AVC3", "field": },
+    {"name": "AVO2", "field": },
+    {"name": "AVO3", "field": },
+    {"name": "B", "field": },
+    {"name": "CD", "field": },
+    {"name": "396.95", "field": .01, "type": "regular"},
+    {"name": "396.95", "field": .02, "type": "regular"},
+    {"name": "396.95", "field": .02, "type": "regular"},
+    {"name": "396.95", "field": .03, "type": "regular"},
+    {"name": "396.95", "field": .03, "type": "regular"},
+    {"name": "396.95", "field": .03, "type": "regular"},
+    {"name": "396.95", "field": .04, "type": "regular"},
+    {"name": "396.95", "field": .04, "type": "regular"},
+    {"name": "396.95", "field": .06, "type": "regular"},
+    {"name": "396.95", "field": .06, "type": "regular"},
+    {"name": "396.95", "field": .06, "type": "regular"},
+    {"name": "396.95", "field": .06, "type": "regular"},
+    {"name": "396.95", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DVB(396.3,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(396.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

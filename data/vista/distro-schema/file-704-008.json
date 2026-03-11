@@ -1,0 +1,92 @@
+{
+  "fileNumber": 704.008,
+  "fileName": "CP_SCHEDULE",
+  "globalRoot": "704.008",
+  "globalReference": "^MDC(704.008,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the schedule identifier. A sample ID could be \"{E24290F6-31F4-C6F6-B310-E37C563FBD64}\" . ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the NAME of the schedule.  A sample could be \"TID/MEALS\" . ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SCHEDULE_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Continuous;1:PRN;2:One-Time;3:Stat;",
+      "helpText": "This is the type of schedule indicator. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field is the schedule INTERVAL in minutes. An example is \"120\" to present a schedule INTERVAL of 2 hours. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the text displayed within Clinical Flowsheets for the  schedule.   A sample DISPLAY NAME could be \"3 times daily with meals\" . ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines whether the schedule entry is active or not. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a COMMENT about the schedule. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CUSTOM_SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains actual times a scheduled event is to occur.  This  data is to be utilized when the schedule intervals are not equal. A sample CUSTOM SCHEDULE could be \"0600,1100,1700\" for schedule events  to occur at 6 AM, 11 AM, and 5 PM. ",
+      "fieldNumber_": .2
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

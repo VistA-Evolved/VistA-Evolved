@@ -1,0 +1,50 @@
+{
+  "fileNumber": 757.001,
+  "fileName": "CONCEPT USAGE",
+  "globalRoot": "757.001",
+  "globalReference": "^LEX(757.001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAJOR CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "RP757'",
+      "required": true,
+      "pointerTo": 757,
+      "helpText": "This is a pointer to the Major Concept (file #757) and used to link the concept frequency of use back to the Major Concept. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORIGINATING VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "It was necessary to \"seed\" this file prior to export.  This field represents the original (exported) value of the frequency of use (Usage, field #2).  To obtain the actual frequency of use, this value must be subtracted from the  Frequency field (#2). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This value is incremented each time the user selects a concept from the Lexicon using the Special Lookup Routines supplied with the Lexicon Utility.  Over time, it will show the frequency of use of each of the concepts contained in the Lexicon.  Additionally, it is used to order the selection list in the Special Lookup Routines, placing the most frequently used concepts at the top of the list. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "757.001", "field": .01, "type": "regular"},
+    {"name": "757.001", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

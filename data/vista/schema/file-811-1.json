@@ -1,0 +1,70 @@
+{
+  "fileNumber": 811.1,
+  "fileName": "PCE CODE MAPPING",
+  "globalRoot": "811.1IV",
+  "globalReference": "^PXD(811.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE ENTRY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This field is a variable pointer which allows coded system entries to be mapped to an entry in PCE's supporting files.  For example, a CPT code for Pneumovax, 90732 would be the value entered here, and the Related Supporting entry field would be PNEUMO-VAC in the Immunization file. DO NOT use any general code such as 'OTHER SKIN TESTS' or 'OTHER PROCEDURE'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATED SUPPORTING FILE ENTRY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "A pointer to the second file encolved in this mapping. DO NOT point this field to anything that is general in nature such as 'OTHER SKIN TESTS' or 'OTHER IMMUNIZATION'. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FROM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The 2 or 3 letter mnemonic that stands for the file that the data came from or that is also being populated at this time. IMM = V IMMUNIZATIONS, CPT=V CPT ,and SK=V SKIN TESTS ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The 2 or 3 letter mnemonic that stands of the file that the data is going also be put into. IMM=VIMMUNIZATIONS, CPT=V CPT, and SK=VSKIN TESTS ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ON/OFF FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "A switch that tells us that this mapping is valid, and the mapping and storing of the data is allowed to occur. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "B", "field": },
+    {"name": "811.1", "field": .01, "type": "regular"},
+    {"name": "811.1", "field": .01, "type": "regular"},
+    {"name": "811.1", "field": .03, "type": "regular"},
+    {"name": "811.1", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

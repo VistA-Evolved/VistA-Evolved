@@ -1,0 +1,95 @@
+{
+  "fileNumber": 347.4,
+  "fileName": "AR/FMS DOCUMENTS",
+  "globalRoot": "347.4I",
+  "globalReference": "^PRCA(347.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANS TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the trans code sent to FMS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DOCUMENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BILLING DOCUMENT (DETAIL);2:CASH RECEIPT (DEATIL);3:CASH RECEIPT (SUMMARY);4:OVER PAYMENT;5:WRITE OFF (DETAIL);6:WRITE OFF (SUMMARY);7:STANDARD VOUCHER (SUMMARY);0:INACTIVE DOCUMENT TYPE;",
+      "helpText": "This field is the document type associated with the trans type ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CR TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field determines whic type of CR trans code is sent to FMS. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "WR TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field determines which type of trans code is sent to FMS for a WRITE OFF document. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BD TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EMPLOYEE/EX-EMPLOYEE;2:VENDOR;3:ALL;",
+      "helpText": "This field is used as a screen to limit selection of document type based on category of bill. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TR TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The 2 digit FMS Code to be sent for TR documents. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field describes the use of the trans code. ",
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "ACR", "field": },
+    {"name": "AWR", "field": },
+    {"name": "B", "field": },
+    {"name": "347.4", "field": .01, "type": "regular"},
+    {"name": "347.4", "field": .03, "type": "regular"},
+    {"name": "347.4", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.01, "value": "W:$D(^(1)) \"   \",$P(^(1),U,1)"}
+  ]
+}

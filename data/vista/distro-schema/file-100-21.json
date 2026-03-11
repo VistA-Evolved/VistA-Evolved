@@ -1,0 +1,134 @@
+{
+  "fileNumber": 100.21,
+  "fileName": "OE/RR LIST",
+  "globalRoot": "100.21",
+  "globalReference": "^OR(100.21,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the list being defined. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "UPPER CASE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the list in upper case.  Used for look-up. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PERSONAL PATIENT;TA:TEAM PATIENT AUTOLINKED;TM:TEAM PATIENT MANUAL;MRAL:MANUAL REMOVAL/AUTOLINK ADDITION;",
+      "helpText": "This is the type of list being defined.  List type currently includes team and personal. o  Team lists      o  TM - Manually maintained (addition and removal)      o  TA - Maintained by Autolinks for addition and removal of patients.      o  MRAL - Manual removal of patients from the list with Autolink         addition of patients to the list.   o  Personal lists      o  P - Manually maintained (addition and removal)     ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Device from the DEVICE file linked to the list. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the IEN of the user who creates the Team List. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.65,
+      "fieldName": "CREATION D/T",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date of creation of the list. ",
+      "fieldNumber_": 1.65
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "SUBSCRIBE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores either a Y or N (for YES or NO) entry and is used in CPRS to determine whether or not individual users will be allowed to add or remove themselves as members of the team list if it is of autolink or manual type. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "100.212PA",
+      "required": false,
+      "helpText": "These are the user(s) that belong to the list.  If the list is of type TEAM PATIENT or PERSONAL PATIENT, users on the list may receive clinical  notifications for patients also on the list. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUTOLINK",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "100.213IAV",
+      "required": false,
+      "helpText": "This field is used to link the list with WARDs, ROOM-BEDs, PROVIDERs, TREATING SPECIALTYs, or CLINICs.  This field   points to the entry in the file where the link is to  occur.  When ADT movement occur for patients, they are added to the appropriate OE/RR lists as identified by the AUTOLINK field (via \"AC\" cross-ref). Lists with autolink providers are updated (patient added) when the PROVIDER link matches the entry at the PRIMARY CARE PHYSICIAN or ATTENDING PHYSICIAN prompts. ",
+      "isMultiple": true,
+      "subFileNumber": 100.213,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MEMBER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "100.2101AV",
+      "required": false,
+      "helpText": "The list member is an item on the list.  The member for personal and team  patient lists is a patient (if list type is P or T, this field points to the patient file.) ",
+      "isMultiple": true,
+      "subFileNumber": 100.2101,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "VISIBILITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:OWNER;1:ALLUSERS;",
+      "helpText": "This field is used as a means to control who can see this list and the  patients that are contained within it.  If it is set to 0, then only the  owner can see it.  If it is set to 1, then everybody can see it. The  default is owner only. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "100.21", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "100.21", "field": .1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

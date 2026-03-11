@@ -1,0 +1,342 @@
+{
+  "fileNumber": 59.5,
+  "fileName": "IV ROOM",
+  "globalRoot": "59.5",
+  "globalReference": "^PS(59.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Each IV order belongs to the IV room that input the order.  An IV room may process ONLY those orders that belong to that IV room. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field contains the pointer to the MEDICAL CENTER DIVISION file (#40.8). The division should be the one where the IV Room is located. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .101,
+      "fieldName": "LENGTH OF LABEL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The labels that you use may vary in height from 12 to 66 lines. Measure the height of your label and multiply that height by the number of lines per inch that your printer is configured for. NOTE: If all lines of print cannot fit within the length that       is defined here, they will continue to the next label. EXAMPLE:     The average piggyback label is 3 inches high.  If you print     6 lines per inch, you should enter an '18' as the answer to     this parameter. ",
+      "fieldNumber_": .101
+    },
+    {
+      "fieldNumber": .102,
+      "fieldName": "USE SUSPENSE FUNCTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If you want the 'SUSPEND LABELS' as a valid choice at the 'ACTION:' prompt after order entry, answer '1'.  If you do not want any labels suspended after order entry, but rather have them printed, answer '0'. ",
+      "fieldNumber_": .102
+    },
+    {
+      "fieldNumber": .103,
+      "fieldName": "DOSE DUE LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO DOSE DUE LINE;1:IVPB'S ONLY;2:LVP'S ONLY;3:BOTH IVPB'S AND LVP'S;",
+      "helpText": "This parameter affects the printing of the dose due line on the IV LABEL. If a '0' is entered, the time the dose is due will not be printed on the IV LABEL at all.  The dose due line will be printed on: IVPB's only if you select '1', LVP's if you select '2', and both IVPB's and LVP's if you choose '3'.  NOTE: LVP's include HYPERAL type orders. ",
+      "fieldNumber_": .103
+    },
+    {
+      "fieldNumber": .104,
+      "fieldName": "LVP'S GOOD FOR HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This number is used when the stop date of a new order is computed. In other words, if Large Volume IV's are good for 14 days and a new  order is input with a start date of today, the stop date will be 'T+14'.   ",
+      "fieldNumber_": .104
+    },
+    {
+      "fieldNumber": .105,
+      "fieldName": "EXPIRE ALL ORDERS ON SAME DAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter a '1' to stop all IV orders automatically on the same day. The day the orders are stopped will be the 'STOP DATE' of the FIRST ACTIVE IV order found in the file.  The stop/date that is found will be shown as a default for the stop/date of the IV ORDER.     ",
+      "fieldNumber_": .105
+    },
+    {
+      "fieldNumber": .106,
+      "fieldName": "*DC ORDERS ON WARD TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This only affects orders of patients transferring BETWEEN WARDS, and NOT transferring BETWEEN SERVICES.  Enter a '1' if you want this feature. ** This is effective only for ward transfers not for transfers across    services ! ",
+      "fieldNumber_": .106
+    },
+    {
+      "fieldNumber": .107,
+      "fieldName": "HEADER LABEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to \"YES\", an extra label is generated to record lot #'s and  provide a record for new orders entered since the last printing of the  active order list. This extra label, together with the active order list  provides a paper backup system in the event that the computer system  becomes \"unavailable\" to the user. ",
+      "fieldNumber_": .107
+    },
+    {
+      "fieldNumber": .108,
+      "fieldName": "ACTIVITY RULER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The 'ACTIVITY RULER' provides a visual representation of the relationship between coverage times, doses due and order start times.  The intent is to provide the 'on-the-floor' user with a means of 'tracking' activity in the IV room and determining when to call for doses before the normal delivery. ",
+      "fieldNumber_": .108
+    },
+    {
+      "fieldNumber": .109,
+      "fieldName": "SHOW BED LOCATION ON LABEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The patient's 'WARD LOCATION' is ALWAYS printed on the IV label. If the 'BED LOCATION' is available, and if it is desired to have this ADDITIONAL information on the IV label, respond with a 'Y' or a '1' at this 'IV ROOM' parameter prompt. ",
+      "fieldNumber_": .109
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "*SHOW UNIT NEEDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this parameter is turned on, a visual 'time scale' will be shown. This time scale will show what the orders' unit needs will be for 14 24-hour periods. EXAMPLE:    If an order was given with an infusion rate of 220 ml/hr and a total    volume of 1000 ML, the unit needs would be: DAY  :  1   2   3   4   5   6   7   8   9  10  11  12  13  14 UNIT :  5   5   5   6   5   5   6   5   5   5   6   5   5   6 ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "HYPERAL GOOD FOR HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This number is used when the stop date of a new order is  computed. In other words, if a hyperal order is good for 14 days and a new order is entered today, the default stop date will be 14 days from today. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "PB'S GOOD FOR HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This number is used when the stop date of a new order is computed. In other words, if a piggyback order is good for 14 days and a new order is entered today, the default stop date will be 14 days from now. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "START OF COVERAGE",
+      "dataType": "SUBFILE",
+      "rawType": "59.51I",
+      "required": false,
+      "helpText": "An 'IV ROOM' may have one or more 'MANUFACTURING QUEUES'.  A queue will contain all IV orders of a SPECIFIED TYPE, that require distribution to the wards during a SPECIFIED TIME INTERVAL. EACH 'MANUFACTURING QUEUE' IS DEFINED FOR ONE TYPE AND ONE TYPE ONLY! Enter midnight as 2400. ",
+      "isMultiple": true,
+      "subFileNumber": 59.51,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DELIVERY TIME",
+      "dataType": "SUBFILE",
+      "rawType": "59.52",
+      "required": false,
+      "helpText": "These are the times which IV orders are to be prepared for delivery to the wards. ",
+      "isMultiple": true,
+      "subFileNumber": 59.52,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PIGGYBACK WARD LIST RUN FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This flag gets set when the ward list has been run.   THIS IS NO LONGER USED BY THE PACKAGE, AND WILL BE DELETED. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADMIXTURES WARD LIST RUN FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This flag gets set when the ward list has been run.   THIS IS NO LONGER USED BY THE PACKAGE, AND WILL BE DELETED. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HYPERAL WARD LIST RUN FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This flag gets set when the ward list is run.   THIS IS NO LONGER USED BY THE PACKAGE, AND WILL BE DELETED. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*FILLED/CHECKED BY LABEL LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "To have the 'Filled by: ____ Checked by: ____\" line printed on every label, answer 'YES' to this field. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TOTAL VOL. ON HYPERAL LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "To have the total volume of solutions and additives printed on all hyperal labels, answer 'YES' to this site parameter. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WIDTH OF LABEL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  Enter the maximum allowable width of your label in number of characters. If you do not enter data into this field, the system will use '30' as the default.  If a line of print cannot fit within the width you define  here, it will continue on the next line of the label. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STOP TIME FOR ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "  Enter the TIME of the day that orders should end.  For example if IV's are good for 14 days and an order's start date/time is  MAY 01 1985@1200 and 2200 is entered at this prompt, then the default stop date/time will be MAY 14 1985@22:00. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*DC ORDERS ON SERVICE TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If you want all IV ORDERS to be dc'd automatically when a patient transfers between SERVICE, enter a '1' or 'YES'.  If a '0' or 'NO' is entered in this site parameter, no orders will be automatically dc'd due to service transfer. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LINE FEEDS BETWEEN LABELS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  Type the number of line feeds between each IV label.  Ex. If you type '1', there will be one line feed between each IV label. This parameter makes it possible to have a top and bottom margin on your IV LABELS. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LABEL DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Enter the name of the device that will be used most frequently as the LABEL device for this IV ROOM.  This field will be shown as the default for the 'Printer label device: ' prompt when signing into the IV PACKAGE. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REPORT DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " Enter the PROFILE device number or name that will be used most frequently by this IV ROOM.  This field will be shown as the default for the 'Printer profile device: ' prompt when signing into the IV PACKAGE.   ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "END OF LABEL TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Enter any END OF LABEL TEXT, separated by '^', that you wish to print at the bottom of every IV LABEL.  For example:   To have 'RETURN TO IV ROOM IN 24-HOURS'           'FILLED BY: ____  CHECKED BY: ____' printed at the bottom of your IV LABELS, enter:   'RETURN TO IV ROOM IN 24-HOURS^FILLED BY: ____  CHECKED BY: ____' in this field. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SYRN'S GOOD FOR HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to determine the stop date for the Syringes order.   ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CHEMO'S GOOD FOR HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to determined the stop date for the Chemo order.   ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is used to place an IV Room out of service. An IV Room should  NEVER be deleted as some IV orders may still be using it. Once the inactivation date entered is reached, the IV Room will no longer be selectable in IV order entry options. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DAYS TO RETAIN IV STATS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is used to allow the site to specify the number of days to keep data in the IV STATS file (50.8). Information may be retained in the IV STATS file for 100 to 2000 days. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DC'D IV ORDERS HOURS FILTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "This field provides a filter for the D/C'd orders report.  Discontinued IV orders older than the entered number of hours will not be included in the report.   Entering a zero in this field will turn this feature off.  DC'd or edited IV orders for this IV room will no longer be stored and previously stored orders will be removed. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "fileNumber": 363.33,
+  "fileName": "BILLING REVENUE CODE LINKS",
+  "globalRoot": "363.33",
+  "globalReference": "^IBE(363.33,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REVENUE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P399.2'",
+      "required": true,
+      "pointerTo": 399.2,
+      "helpText": "This is a Revenue Code that is required to be used when billing a certain type of care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P363.32'",
+      "required": true,
+      "pointerTo": 363.32,
+      "helpText": "This group defines which Billing Rates the revenue code link should be  applied to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROCEDURE 1",
+      "dataType": "POINTER",
+      "rawType": "R*P81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "This is a procedure that requires a specific revenue code on a certain type  of bill.  If there is a range of procedures for a particular revenue code  then enter the first procedure in the range. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROCEDURE 2",
+      "dataType": "POINTER",
+      "rawType": "*P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This is the last procedure in a range of procedures that require a specific  revenue code when billed. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AGP", "field": },
+    {"name": "AGP1", "field": },
+    {"name": "AGPE", "field": },
+    {"name": "AGPE1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "363.33", "field": .01, "type": "regular"},
+    {"name": "363.33", "field": .02, "type": "regular"},
+    {"name": "363.33", "field": .02, "type": "regular"},
+    {"name": "363.33", "field": .02, "type": "regular"},
+    {"name": "363.33", "field": .03, "type": "regular"},
+    {"name": "363.33", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(363.32,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(363.32,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(81,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICPT(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(81,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

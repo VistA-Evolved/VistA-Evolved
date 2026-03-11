@@ -1,0 +1,40 @@
+{
+  "fileNumber": 160.12,
+  "fileName": "TYPE OF RECURRENCE",
+  "globalRoot": "160.12",
+  "globalReference": "^ONCO(160.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The type of recurrence.  The term \"recurrence\" defines the return or reappearance of the cancer after a disease-free intermission or remission.   If the patient has been disease-free since treatment, code 00. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " The TYPE OF FIRST RECURRENCE and OTHER TYPE OF FIRST RECURRENCE code definitions.  ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "160.12", "field": .01, "type": "regular"},
+    {"name": "160.12", "field": 1, "type": "regular"},
+    {"name": "160.12", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

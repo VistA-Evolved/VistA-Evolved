@@ -1,0 +1,138 @@
+{
+  "fileNumber": 214.6,
+  "fileName": "NURS CLASSIFICATION",
+  "globalRoot": "214.6I",
+  "globalReference": "^NURSA(214.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLASSIFICATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field indicates the date and time of a patient's classification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Name of the patient being classified.  Pointer to the Patient File (#2). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CATEGORY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "The patient's current nursing AMIS classification or acuity rating.  Entered as a whole number between 1 and 5. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FACTORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The factors (elements) selected by an RN in classifying the patient. (1-9 characters in length) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTERED BY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:COMPUTER;U:USER;",
+      "helpText": "This field identifies how the classification was finally determined, (i.e., by the computer or RN user).  Identified by a set of codes. C=Computer  U=User. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CLASSIFIER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The person entered the classification.  Points to the NEW PERSON file (#200). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The circumstances or factors for altering the computer's classification of the patient. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NURS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP211.4'",
+      "required": true,
+      "pointerTo": 211.4,
+      "helpText": "Ward on which the patient is classified.  Points to the NURS LOCATION  (#211.4) file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NURSING BED SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP213.3'",
+      "required": true,
+      "pointerTo": 213.3,
+      "helpText": "Nursing bed section associated with the patient's classification.  Points to the NURS AMIS WARD (213.3) file. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COUNT",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "H:HEMODIALYSIS;R:RECOVERY ROOM;",
+      "helpText": "This field indicates whether this data is an actual patient classification or a hemodialysis or recovery room count.  If this field is left blank then it indicates that this record is a normal classification.  If this field has an \"H\" then it indicates that this is part of the daily hemodialysis count, and an \"R\" indicates that it is part of the daily recovery room count. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ROOM-BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's room-bed at time of classification, if appropriate. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AZ1", "field": },
+    {"name": "AZ2", "field": },
+    {"name": "AZ3", "field": },
+    {"name": "AZ4", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "214.6", "field": .01, "type": "regular"},
+    {"name": "214.6", "field": .01, "type": "regular"},
+    {"name": "214.6", "field": .01, "type": "regular"},
+    {"name": "214.6", "field": .02, "type": "regular"},
+    {"name": "214.6", "field": .02, "type": "regular"},
+    {"name": "214.6", "field": 6, "type": "regular"},
+    {"name": "214.6", "field": 6, "type": "regular"},
+    {"name": "214.6", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,812 @@
+{
+  "fileNumber": 45.9,
+  "fileName": "PAF",
+  "globalRoot": "45.9IP",
+  "globalReference": "^DG(45.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains an internal entry number as created by VA FileMan. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the long-term care patient for which this assessment was completed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSESSMENT DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "  Enter the month,day and year the assessment is completed. The date must be after the date of admission/transfer in.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the patient's SSN.  This data is added automatically when the patient assessment is created either through a RUG background job or through the 'Create a PAI' option. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "This field contains the patient's sex.  This data is added automatically when the patient assessment record is created either through a RUG background job or the 'Create a PAI' option. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "YEAR OF BIRTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the year in which this patient was born.  This data is added automatically when the patient's assessment record is created either through a RUG background job or the 'Create a PAI' menu option. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ASSESSMENT PURPOSE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:ADMISSION/TRANSFER;2:SEMI-ANNUAL CENSUS;3:CONTRACT NURSING HOME;",
+      "helpText": "  Enter \"1\" if the assessment is being completed within approximately one week after admission/transfer into the intermediate medicine or nursing home care unit. Enter \"2\" if the assessment is completed on patients in bed as of a semi-annual survey date. If semi-annual assessment date coincides with the day on which an admission/transfer assessment would have been done, record \"2\" as the purpose. Enter \"3\" if the assessment is for a Contract Nursing Home patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE OF ADMISSION/TRANSFER IN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date/time this patient was either admitted to or transferred to a ward whose service is either intermediate care (I) or nursing home care (NHCU).  This date must be selected from the choices given under the 'Create a PAI' option.  It may also be created automatically by one of the RUG background jobs (the nightly job or the semi-annual job). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MEDICAL CENTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the facility's number (3 digit number) and is transmitted to Austin to indicate which facility transmitted the data. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BED SECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INTERMEDIATE MEDICINE;N:NHCU;",
+      "helpText": "This field contains the bedsection under which this patient was treated. Only patients residing on wards with a service of Intermediate care or Nursing home care are eligible to have a PAF form completed. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRACHEOSTOMY CARE/SUCTIONING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------      DEFINITION                          SPECIFIC                                          FREQUENCY       EXCLUSIONS --------------------------------------------------------------------------- Care for a tracheostomy, including       Daily           Self-care patients suctioning. Exclude any self-care patients who do not need daily staff help.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SUCTIONING-GENERAL(DAILY)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------         DEFINITION                       SPECIFIC                                          FREQUENCY         EXCLUSIONS --------------------------------------------------------------------------- Nasal or oral techniques for clearing    Daily          Any tracheostomy away fluid or secretions. May be for                    suctioning a respiratory problem.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OXYGEN(DAILY)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------       DEFINITION                        SPECIFIC                                                   FREQUENCY         EXCLUSIONS --------------------------------------------------------------------------- Administration of oxygen by nasal       Daily          Inhalators,oxygen in catheter,mask (nasal or oronasal),                     room,but not in use funnel/cone or oxygen tent for conditions resulting from oxygen defic",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RESPIRATORY CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------         DEFINITION                               SPECIFIC                                                  FREQUENCY      EXCLUSIONS --------------------------------------------------------------------------- Care for any portion of the respiratory           Daily         Suctioning tract,especially the lungs. This care may include one or more of the following: percussion or cupping,postural drainage, positive pressure m",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TUBE FEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------        DEFINITION                         SPECIFIC                                           FREQUENCY        EXCLUSIONS --------------------------------------------------------------------------- Primary food intake by means of a tube    None             None.Includes specifically, nasogastric, nasoduodenal,                   gastrostomy nasojejunal, esophagostomy, jejunostomy, or gastrostomy.   ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PARENTERAL FEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------          DEFINITION                         SPECIFIC                                             FREQUENCY      EXCLUSIONS --------------------------------------------------------------------------- Intravenous or subcutaneous route for       None           None.Gastrostomy the administration of fluids used to                       not applicable. maintain fluid,nutritional intake, electrolyte balance.   ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WOUND CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------          DEFINITION                    SPECIFIC                                        FREQUENCY             EXCLUSIONS --------------------------------------------------------------------------- Subcutaneous lesion(s) resulting       Care must be          Decubiti from surgery,trauma or open            needed for at         Stasis ulcers cancerous ulcers.                      least 3 consecutive   Skin tears            ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "CHEMOTHERAPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------       DEFINITION                          SPECIFIC                                           FREQUENCY          EXCLUSIONS --------------------------------------------------------------------------- Treatment of carcinoma through IV         None               None and/or oral chemical agents,as  ordered by a physician.   ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "TRANSFUSIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------         DEFINITION                            SPECIFIC                                               FREQUENCY          EXCLUSIONS --------------------------------------------------------------------------- Introduction of whole blood or blood components directly into the blood stream.     None                None   ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DIALYSIS/APHORESIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------           DEFINITION                         SPECIFIC                                              FREQUENCY         EXCLUSIONS --------------------------------------------------------------------------- The process of removing impurities from      None               None the blood of persons who have renal  disease. Include within this definition patients receiving aphoresis,that is, any of the processes used to separat",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RADIATION THERAPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "---------------------------------------------------------------------------            DEFINITION                    SPECIFIC                                          FREQUENCY             EXCLUSIONS -------------------------------------------------------------------------- Treatment of carcinoma by means of       None                  None ionizing radiation.   ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TUBE FEEDING ROUTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> N/A - NOT TUBE FED;2:2> NASOGASTRIC;3:3> NASODUODENAL;4:4> NASOJEJUNAL;5:5> ESOPHAGOSTOMY;6:6> JEJUNOSTOMY;7:7> GASTROSTOMY;",
+      "helpText": "Definition:     Tube Feeding Routes - Nasogastric   - Transnasal route ending in the stomach. Nasoduodenal  - Transnasal route ending in the duodenum (the first part of                 the small intestine). Nasojejunal   - Transnasal route ending in the jejunum (the second part of                 the small intestine). Esophagostomy - The feeding tube is passed through a surgically-created                 opening in the lower neck region ending in the stomach. Jejunostomy   - The feeding tube pas",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RESERVED1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field is reserved for future use.  It is left blank to mimic the actual Long Term Care Patient Assessment Instrument (VA form 10-0064a). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DECUBITUS LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO REDDENED SKIN;1:REDDENED SKIN,POTENTIAL BREAKDOWN;2:SUPERFICIAL LAYER OF BROKEN OR BLISTERED SKIN;3:SUBCUTANEOUS SKIN BROKEN DOWN;4:NECROTIC BREAKDOWN;5:AT LEVEL 4,DOES NOT FULFILL QUALIFIERS;",
+      "helpText": "For a patient to be coded as level 4, documentation by a licensed clinician (e.g.,physician,podiatrist,R.N.) must exist which describes the following three components:    1. a description of the patient's decubitus    2. the active treatment plan    3. circumstances or medical condition which led to the decubitus. (An       exception to this documentation can be made for newly admitted       patients whose decubitus developed before admission and involved       unknown causes or circumstances.) ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "COMATOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field contains a yes/no response whether or not the patient is comatose.  This data should be obtained from a nurse on the ward where this patient resides. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DEHYDRATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "If this patient suffers from dehydration, enter a YES in this field. Otherwise, respond NO.  This data should be obtained from a nurse on the ward where this patient resides. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "INTERNAL BLEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "If this patient suffers from internal bleeding, enter a YES in this field. Otherwise, respond NO.  This data should be obtained from a nurse on the ward where this patient resides (or resided). ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "STASIS ULCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "Open lesion, usually in lower extremities, caused by decreased blood flow from chronic venous insufficiency. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "TERMINALLY ILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "RESERVE2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RESERVE3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "RESERVE4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "QUADRIPLEGIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "Includes both complete and incomplete paralysis of all limbs. (ICD-9-CM 344.0) Does not include paraplegia or any other forms of paralysis.   ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "MULTIPLE SCLEROSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "(ICD-9-CM 340) Does not include any other diseases of the central nervous system.   ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "URINARY TRACT INFECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "Site of infection does not have to be specified. (ICD-9-CM 599.0)   ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "HEMIPLEGIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "Includes both complete and incomplete paralysis of one side of the body regardless of cause. (ICD-9-CM 342.9)   ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "RESERVE5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "RESERVE6",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "RESERVE7",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "RESERVE8",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "This field has been left unused to follow numbering guidelines on the RUG-II PAF form.  Should VACO MAS or another RUG contact require that fields be added to the form, this field may be used. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "EATING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> FEEDS SELF;2:2> INTERMITTENT SUPERVISION;3:3> CONTINUED HELP;4:4> HAND FED;5:5> TUBE FED;",
+      "helpText": "Enter the code which best represents the method under which this patient receives nutritional intake. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "MOBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> WALKS,NO SUPERVISION;2:2> WALKS,INTERMITTENT SUPERVISION;3:3> WALKS,CONSTANT SUPERVISION;4:4> WHEELS,NO SUPERVISION;5:5> WHEELED;",
+      "helpText": "Enter the code which best represents the method under which this patient is transported (or transports himself) from place to place. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> NO SUPERVISION;2:2> INTERMITTENT SUPERVISION;3:3> ASSISTANCE OF 1 PERSON;4:4> ASSISTANCE OF 2 PEOPLE;5:5> CANNOT GET OUT OF BED;",
+      "helpText": "Enter the code which best represents how this patient is moved. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "TOILETING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> NO SUPERVISION;2:2> INTERMITTENT SUPERVISION;3:3> CONTINENT,REQUIRES SUPERVISION;4:4> INCONTINENT,NOT TAKEN TO TOILET;5:5> INCONTINENT,TAKEN TO TOILET;",
+      "helpText": "Enter the code which best represents the manner in which this patient transported to and from the toilet. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "VERBAL DISRUPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> NONE IN PAST 4 WEEKS;2:2> 1-3 TIMES IN PAST 4 WEEKS;3:3> SHORT LIVED AT LEAST ONCE A WEEK;4:4> UNPREDICTABLE;5:5> AT LEVEL 4,DOES NOT FULFILL QUALIFIERS;",
+      "helpText": "Choose from the available choices, the item that best describes this patient's verbal disruption.  Verbal disruption is considered yelling, baiting, threatening, etc. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "PHYSICAL AGGRESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> NONE IN PAST 4 WEEKS;2:2> UNPREDICTABLE IN PAST 4 WEEKS;3:3> PREDICTABLE DURING SPECIFIC ROUTINES;4:4> UNPREDICTABLE,AT LEAST ONCE A WEEK;5:5> AT LEVEL 4,DOES NOT FULFILL QUALIFIERS;",
+      "helpText": "Enter from the available choices, the item that best describes the amount of physical agression behavior this patient exibits.  Physical agression is described as assertive or combative behavior to self or others with the possibiltity of injury.  Examples include hits self, throws objects, punches, and makes dangerous maneuvers with a wheelchair. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "DISRUPTIVE BEHAVIOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> NONE IN PAST 4 WEEKS;2:2> NOT DISRUPTIVE TO OTHERS;3:3> DISRUPTIVE IN PAST 4 WEEKS;4:4> AT LEAST ONCE A WEEK;5:5> AT LEVEL 4,DOES NOT FULFILL QUALIFIERS;",
+      "helpText": "Enter from the available choices, the item that best describes the amount of disruptive behavior this patient exibits.  This would include disruptive, infantile, or socially inappropriate behavior and can be described as childish, repetitive or antisocial physical behavior which creates disruption with others.  Examples include constantly undressing self, stealing, smearing feces, and sexually displaying oneself to others. Exclude verbal actions and read choices for other exclusions. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "HALLUCINATIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;2:YES;3:YES,BUT DOES NOT FULFILL THE QUALIFIERS;",
+      "helpText": "Enter from the available choices the item that best describes the patient's hallucinations (or lack thereof).  Hallucinations are described as visual, auditory, or tactile perceptions that have no basis in external reality. In order to be recorded her, the hallucinations must be experienced at least once per week during the past four weeks. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "PHYSICAL THERAPY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> DOES NOT RECEIVE;2:2> MAINTENANCE PROGRAM;3:3> RESTORATIVE PROGRAM;4:4> NON-QUALIFYING PROGRAM;",
+      "helpText": "Enter the appropriate code denoting the level of physical therapy that this patient receives.  The following are the choices available:    DOES NOT RECEIVE:  patient does not receive physical therapy  MAINTENANCE PROGRAM:  patient requires and is currently receiving                        physical therapy to help stabilize or slow                        functional deteriorization.  RESTORATIVE PROGRAM:  patient requires and is currently receiving                        physical therapy for four ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "PT DAYS PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of days a week (0-7) that this patient receives physical therapy.  Enter 0 if this patient does not receive physical therapy (pysical theraphy level was listed as 1). ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 49.5,
+      "fieldName": "PT HOURS/MINUTES PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter a number 0 through 5059 in the format HHMM.  For example, if the  patient has received 3 hours and 30 minutes of therapy per week, enter 330. Enter 30 if the patient received only 30 minutes per week.  Leading zeros  should be left off. ",
+      "fieldNumber_": 49.5
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "OCCUPATIONAL THERAPY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> DOES NOT RECEIVE;2:2> MAINTENANCE PROGRAM;3:3> RESTORATIVE PROGRAM;4:4> NON-QUALIFYING PROGRAM;",
+      "helpText": "Enter the appropriate code denoting the level of occupational therapy that this patient receives.  The following are the choices available:    DOES NOT RECEIVE:  patient does not receive occupational therapy.  MAINTENANCE PROGRAM:  patient requires and is currently receiving                        occupational therapy to help stabilize or slow                        functional deteriorization.  RESTORATIVE PROGRAM:  patient requires and is currently receiving                        occupational ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "OT DAYS PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of days a week (0-7) this patient receives occupational therapy.  Enter 0 if this patient does not receive occupational therapy (occupational therapy level was listed as 1). ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 51.5,
+      "fieldName": "OT HOURS/MINUTES PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter a number 0 through 5059 in the format HHMM.  For example, if the  patient has received 3 hours and 30 minutes of therapy per week, enter 330. Enter 30 if the patient received only 30 minutes per week.  Leading zeros should be left off. ",
+      "fieldNumber_": 51.5
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "CORRECTIVE THERAPY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> DOES NOT RECEIVE;2:2> MAINTENANCE PROGRAM;3:3> RESTORATIVE PROGRAM;4:4> NON-QUALIFYING PROGRAM;",
+      "helpText": "Enter the appropriate code denoting the level of corrective therapy that this patient receives.  The following are the choices available:    DOES NOT RECEIVE:  patient does not receive corrective therapy.  MAINTENANCE PROGRAM:  patient requires and is currently receiving                        corrective therapy to help stabilize or slow                        functional deteriorization.  RESTORATIVE PROGRAM:  patient requires and is currently receiving                        corrective therapy ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "CT DAYS PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of days a week (0-7) that this patient receives corrective therapy.  Enter 0 if this patient does not receive corrective therapy (corrective therapy level was listed as 1). ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.5,
+      "fieldName": "CT HOURS/MINUTES PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter a number 0 through 5059 in the format HHMM.  For example, if the  patient has received 3 hours and 30 minutes of therapy per week, enter 330. Enter 30 if the patient received only 30 minutes per week.  Leading zeros should be left off. ",
+      "fieldNumber_": 53.5
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "MANUAL ARTS THERAPY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> DOES NOT RECEIVE;2:2> MAINTENANCE PROGRAM;3:3> RESTORATIVE PROGRAM;4:4> NON-QUALIFYING PROGRAM;",
+      "helpText": "Enter the appropriate code denoting the level of manual arts therapy that this patient receives.  The following are the choices available:    DOES NOT RECEIVE:  patient does not receive manual arts therapy.  MAINTENANCE PROGRAM:  patient requires and is currently receiving                        manual arts therapy to help stabilize or slow                        functional deteriorization.  RESTORATIVE PROGRAM:  patient requires and is currently receiving                        manual arts ther",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "MAT DAYS PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of days a week (0-7) that this patient receives manual arts therapy.  Enter 0 if this patient does not receive manual arts therapy (manual arts therapy level was listed as 1). ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 55.5,
+      "fieldName": "MAT HOURS/MINUTES PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter a number 0 through 5059 in the format HHMM.  For example, if the patient has received 3 hours and 30 minutes of therapy per week, enter 330. Enter 30 if the patient received only 30 minutes per week.  Leading zeros should be left off. ",
+      "fieldNumber_": 55.5
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "EDUCATIONAL THERAPY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> DOES NOT RECEIVE;2:2> MAINTENANCE PROGRAM;3:3> RESTORATIVE PROGRAM;4:4> NON-QUALIFYING PROGRAM;",
+      "helpText": "Enter the appropriate code denoting the level of educational therapy that this patient receives.  The following are the choices available:    DOES NOT RECEIVE:  patient does not receive educational therapy.  MAINTENANCE PROGRAM:  patient requires and is currently receiving                        educational therapy to help stabilize or slow                        functional deteriorization.  RESTORATIVE PROGRAM:  patient requires and is currently receiving                        educational ther",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ET DAYS PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number of days a week (0-7) that this patient receives educational therapy.  Enter 0 if this patient does not receive educational therapy (educational therapy level was listed as 1). ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 57.5,
+      "fieldName": "ET HOURS/MINUTES PER WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter a number 0 through 5059 in the format HHMM.  For example, if the  patient has received 3 hours and 30 minutes of therapy per week, enter 330. Enter 30 if the patient received only 30 minutes per week.  Leading zeros  should be left off. ",
+      "fieldNumber_": 57.5
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "CHRONIC VENTILATOR DEP. (CVD)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:YES;1:NO;",
+      "helpText": "Definition:  Chronic ventilator dependent - Patient is, or in the past six months has been, dependent upon mechanical respiratory support to sustain life.  The definition of 'mechanical' includes either negative or positive pressure ventilators, rocking beds, or pneumobelts.   Specific Frequency:  Patients who are currently being supported by a  mechanical respirator must have been supported for at least 6 hours a day  for each of the past 30 days.  This question should also be answered 'yes' fo",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "TIME SINCE BECOMING CVD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> N/A - NOT CVD;2:2> LESS THAN 2 MONTHS;3:3> 2 TO 6 MONTHS;4:4> 6 TO 36 MONTHS;5:5> MORE THAN 36 MONTHS;",
+      "helpText": "Enter a number 1 through 5 specifying the length of time since the  patient has become CVD. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "WEANING ATTEMPT FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> N/A - NOT CVD;2:2> NO ATTEMPTS IN THE PAST SIX MONTHS;3:3> DAILY ATTEMPTS;4:4> WEEKLY ATTEMPTS;5:5> MONTHLY ATTEMPTS;",
+      "helpText": "Enter a number 1 through 5 corresponding to the frequency of weaning  attempts for this patient. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "IS PNP>-20CM AND VC>15ML",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> N/A - NOT CVD;2:2> NO;3:3> YES;4:4> NOT MEASURED IN THE LAST 2 MONTHS;",
+      "helpText": "Is peak negative pressure more than -20 cm H2O and vital capacity greater than 15 ml/kg based on the most recent measurement? ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "CAUSE FOR RESPIRATORY FAILURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:1> N/A - NOT CVD;2:2> COPD;3:3> AMYOTROPHIC LATERAL SCLEROSIS;4:4> STROKE/HEAD INJURY;5:5> SPINAL CORD INJURY;6:6> KYPHOSCOLIOSIS;7:7> 2 OR MORE OF THE ABOVE;8:8> NONE OF THE ABOVE;9:9> UNKNOWN;",
+      "helpText": "Enter primary cause (diagnosis) for the respiratory failure. Note:  COPD is chronic obstructive pulmonary disease. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "LOCATION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "Enter the location where this patient was when this patient assessment  instrument was completed.  If a ward is selected, it must have a service or either Intermediate medicine or nursing home care.  If a CNH is  selected, it must be an active CNH vendor. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "RUG-II GROUP",
+      "dataType": "POINTER",
+      "rawType": "P45.91'",
+      "required": false,
+      "pointerTo": 45.91,
+      "helpText": "Enter the RUG-II group (1-17) that this patient was categorized into. This field is completed by the RUG-II software based on the responses to all of the assessment questions.  It should not be altered in any way.  Any changes should be made through the appropriate RUG-II menu options. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ADL SUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The ADL sum is the sum of the numeric codes given for the eating, toileting, and transfer questions.  This sum is computed automatically by the RUG-II software and should not be altered.  Any changes should be made through the appropriate RUG-II menu option.  The ADL sum, along with responses to various questions in the patient assessment instrument, is used to compute the RUG-II group under which this patient will be placed. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "DATE EDITED",
+      "dataType": "DATE",
+      "rawType": "45.9001DA",
+      "required": false,
+      "helpText": "This multiple stores the user and dates on which this patient assessment instrument was edited. ",
+      "isMultiple": true,
+      "subFileNumber": 45.9001,
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HEAVY REHABILITATION;2:SPECIAL CARE;3:CLINICAL COMPLEX;4:BEHAVIORAL;5:PHYSICAL;",
+      "helpText": "This field stores the category under which this patient assessment instrument has been grouped.  The category is determined automatically by the RUG-II module based on responses to various questions on the assessment form.  This field should NOT be altered in any way. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "RECORD STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:COMPLETED;2:CLOSED;3:RELEASE;4:TRANSMITTED;0:OPEN;5:INCOMPLETE;",
+      "helpText": "Enter the code that best respresents the status of this record.  Statuses are updated automatically by the RUG-II module and should not be altered except through options on the RUG-II menu.  Altering this data could have negative impacts on the performance of the RUG software including rejections of records transmitted to Austin. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "CLOSE OUT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date this record was closed.  This is the date on which the user chose to close the record after all assessment questions were answered correctly.  This field is updated automatically by the RUG-II software and should not be altered. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "CLOSED OUT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the name of the person who chose to complete this assessment once all questions on the patient assessment instrument were answered appropriately.  This field is updated automatically by the RUG-II software and should not be altered. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this patient assessment instrument has been transmitted, this field will indicate the date this record was transmitted to Austin.  The transmission software will automatically update this field. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "REOPENED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If this record required reopening after it was closed, this field will contain the name of the individual that reopened the record.  Records which have already been transmitted and need changing may also be reopened. ",
+      "fieldNumber_": 84
+    }
+  ],
+  "fieldCount": 78,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AP", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "T", "field": },
+    {"name": "45.9", "field": .01, "type": "regular"},
+    {"name": "45.9", "field": 2, "type": "regular"},
+    {"name": "45.9", "field": 2, "type": "regular"},
+    {"name": "45.9", "field": 2, "type": "regular"},
+    {"name": "45.9", "field": 7, "type": "regular"},
+    {"name": "45.9", "field": 7, "type": "regular"},
+    {"name": "45.9", "field": 71, "type": "regular"},
+    {"name": "45.9", "field": 80, "type": "regular"},
+    {"name": "", "field": 80, "type": "regular"},
+    {"name": "45.9", "field": 83, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""},
+    {"field": 6, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(45.9,6,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,6)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": WR, "value": "D WR^DGRUGC"}
+  ]
+}

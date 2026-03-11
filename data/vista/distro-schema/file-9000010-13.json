@@ -1,0 +1,177 @@
+{
+  "fileNumber": 9000010.13,
+  "fileName": "V EXAM",
+  "globalRoot": "9000010.13IP",
+  "globalReference": "^AUPNVXAM(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXAM",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.15'",
+      "required": true,
+      "pointerTo": 9999999.15,
+      "helpText": "This is the entry in the Exam file that represents what type of exam was done at the encounter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient who received the exam. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "R*P9000010'I",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "This is the encounter in the Visit file that represents when and where the exam was done. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ABNORMAL;N:NORMAL;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MAGNITUDE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement has been recorded for an entry in this file, this is the magnitude of the measurement.  ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement has been recorded for an entry in this file, this is the unit of the measurement.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the exam was given by the provider. This date and time may be different from the Visit Date and Time. For example, for clinic appointment visits, the Visit Date and Time is the date and time of the appointment, not the time the provider performed the clinical event.                                     The date may be an imprecise date but cannot be a future date.  ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field can be used to document the provider who ordered the exam. ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who gave the exam. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any original exam data is being edited. ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is populated automatically by the PCE filing logic.  The format of the field is as follows:  Pointer to PCE data source file_\"-\"_A for Add or E for Edit_\" \"_DUZ of the person who entered the data_\";\"... ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a comment related to the patient's exam.  The provider may enter this manually via the PCE User Interface. ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ELECTRONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "helpText": "This is used to note how the event was verified and is automatically entered by the software.  ",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the VistA package from which this exam record originated through PCE.                                     This is automatically entered by the software and uneditable by users.   ",
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "helpText": "This is the data source for this exam. It is set automatically by the PCE software and uneditable by users.  ",
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AATOO", "field": },
+    {"name": "AATOO2", "field": },
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9000010.13", "field": .01, "type": "regular"},
+    {"name": "9000010.13", "field": .01, "type": "regular"},
+    {"name": "9000010.13", "field": .02, "type": "regular"},
+    {"name": "9000010.13", "field": .02, "type": "regular"},
+    {"name": "9000010.13", "field": .03, "type": "regular"},
+    {"name": "9000010.13", "field": .03, "type": "regular"},
+    {"name": "9000010.13", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

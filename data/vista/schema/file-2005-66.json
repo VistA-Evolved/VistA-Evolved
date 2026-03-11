@@ -1,0 +1,85 @@
+{
+  "fileNumber": 2005.66,
+  "fileName": "IMAGING DUPLICATE UID LOG",
+  "globalRoot": "2005.66",
+  "globalReference": "^MAGV(2005.66,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORIGINAL UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the duplicate original UID.   DICOM Tag:  Study Instance UID (0020,000D), Series Instance UID (0020,000E), SOP Instance UID (0008,0018). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NEW UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the new assigned UID.   DICOM Tag:  Study Instance UID (0020,000D), Series Instance UID (0020,000E), SOP Instance UID (0008,0018). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the accession number associated with the UID. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient associated with the UID. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STUDY INSTANCE UID;2:SERIES INSTANCE UID;3:SOP INSTANCE UID;",
+      "helpText": "This field contains the original UID type (ex. SOP). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STUDY UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will store the STUDY UID related to this record.   DICOM Tag: Study Instance UID (0020,000D). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SERIES UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will store the SERIES UID related to this record.   DICOM Tag: Series Instance UID (0020,000E). ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.66", "field": .01, "type": "regular"},
+    {"name": "2005.66", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

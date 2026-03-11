@@ -1,0 +1,73 @@
+{
+  "fileNumber": 3.4,
+  "fileName": "COMMUNICATIONS PROTOCOL",
+  "globalRoot": "3.4",
+  "globalReference": "^DIC(3.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name assigned to this particular communications protocol. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEND",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The executable MUMPS code that will send the data in the variable XMSG. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECEIVE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The executable MUMPS code which will receive data and store it in the variable XMRG. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OPEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The executable MUMPS code which will open the communication channel, setting the variable IO to the proper value.   There are a couple of variables that can be set in this area to control  the connection:   XMNO220=1 will stop MailMan from issuing its second (and mandatory when talking to another MailMan system, but fatal when talking to non-MailMan SMTP messaging systems) 220 'ready' when the receiver is indicating it is on the line and ready to receive.   XMD=\"D\" causes MailMan to echo on the ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CLOSE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The executable MUMPS code which will close the communication channel. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "3.41",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 3.41,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

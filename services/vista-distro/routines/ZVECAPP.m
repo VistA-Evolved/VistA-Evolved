@@ -1,0 +1,122 @@
+ZVECAPP ;VE;Clinical App Setup Admin RPCs;2026-03-09
+ ;
+ ; Clinical application setup RPCs for admin dashboard.
+ ; File #100.98 (ORDER SET), File #101.41 (ORDER MENU),
+ ; File #123.5 (REQUEST/CONSULTATION SERVICES),
+ ; File #8925.1 (TIU DOCUMENT DEFINITION), File #8926 (TIU TEMPLATE),
+ ; File #115 (HEALTH SUMMARY TYPE)
+ ;
+ORDSETS(RESULT,SEARCH) ;List order sets from File #100.98 and #101.41
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=200,SEARCH=$G(SEARCH)
+ ; File #100.98 ORDER SET
+ I $D(^ORD(100.98)) D
+ . I SEARCH'="" D  Q
+ . . S NM=SEARCH
+ . . F  S NM=$O(^ORD(100.98,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . . . S IEN=$O(^ORD(100.98,"B",NM,""))
+ . . . Q:'IEN
+ . . . S I=I+1
+ . . . S RESULT(I)=IEN_U_NM_U_"ORDER_SET"_U_$P($G(^ORD(100.98,IEN,0)),U,2)
+ . S IEN=0
+ . F  S IEN=$O(^ORD(100.98,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . . S NM=$P($G(^ORD(100.98,IEN,0)),U,1)
+ . . Q:NM=""
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_"ORDER_SET"_U_$P($G(^ORD(100.98,IEN,0)),U,2)
+ ; File #101.41 ORDER MENU
+ I $D(^ORD(101.41)) D
+ . N IEN2 S IEN2=0
+ . I SEARCH'="" D  Q
+ . . S NM=SEARCH
+ . . F  S NM=$O(^ORD(101.41,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . . . S IEN2=$O(^ORD(101.41,"B",NM,""))
+ . . . Q:'IEN2
+ . . . S I=I+1
+ . . . S RESULT(I)=IEN2_U_NM_U_"ORDER_MENU"_U_$P($G(^ORD(101.41,IEN2,0)),U,2)
+ . F  S IEN2=$O(^ORD(101.41,IEN2)) Q:'IEN2  Q:I>=MAXCT  D
+ . . S NM=$P($G(^ORD(101.41,IEN2,0)),U,1)
+ . . Q:NM=""
+ . . S I=I+1
+ . . S RESULT(I)=IEN2_U_NM_U_"ORDER_MENU"_U_$P($G(^ORD(101.41,IEN2,0)),U,2)
+ S RESULT(0)=I
+ Q
+ ;
+CSLTSVCS(RESULT) ;List consult services from File #123.5
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=500,IEN=0
+ I '$D(^GMR(123.5)) S RESULT(0)=0 Q
+ F  S IEN=$O(^GMR(123.5,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . S NM=$P($G(^GMR(123.5,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^GMR(123.5,IEN,0)),U,2)_U_$P($G(^GMR(123.5,IEN,0)),U,4)
+ S RESULT(0)=I
+ Q
+ ;
+TIUDEF(RESULT,SEARCH) ;List TIU document definitions from File #8925.1
+ N IEN,NM,I,U,MAXCT,TYPE
+ S U="^",I=0,MAXCT=200,SEARCH=$G(SEARCH)
+ I '$D(^TIU(8925.1)) S RESULT(0)=0 Q
+ I SEARCH'="" D  Q
+ . S NM=SEARCH
+ . F  S NM=$O(^TIU(8925.1,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . . S IEN=$O(^TIU(8925.1,"B",NM,""))
+ . . Q:'IEN
+ . . S TYPE=$P($G(^TIU(8925.1,IEN,0)),U,4)
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_TYPE_U_$P($G(^TIU(8925.1,IEN,0)),U,2)
+ . S RESULT(0)=I
+ S IEN=0
+ F  S IEN=$O(^TIU(8925.1,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . S NM=$P($G(^TIU(8925.1,IEN,0)),U,1)
+ . Q:NM=""
+ . S TYPE=$P($G(^TIU(8925.1,IEN,0)),U,4)
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_TYPE_U_$P($G(^TIU(8925.1,IEN,0)),U,2)
+ S RESULT(0)=I
+ Q
+ ;
+TIUTEMP(RESULT,SEARCH) ;List TIU templates from File #8926
+ N IEN,NM,I,U,MAXCT,OWNER
+ S U="^",I=0,MAXCT=200,SEARCH=$G(SEARCH)
+ I '$D(^TIU(8926)) S RESULT(0)=0 Q
+ I SEARCH'="" D  Q
+ . S NM=SEARCH
+ . F  S NM=$O(^TIU(8926,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . . S IEN=$O(^TIU(8926,"B",NM,""))
+ . . Q:'IEN
+ . . S OWNER=$P($G(^TIU(8926,IEN,0)),U,2)
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_OWNER_U_$P($G(^TIU(8926,IEN,0)),U,3)
+ . S RESULT(0)=I
+ S IEN=0
+ F  S IEN=$O(^TIU(8926,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . S NM=$P($G(^TIU(8926,IEN,0)),U,1)
+ . Q:NM=""
+ . S OWNER=$P($G(^TIU(8926,IEN,0)),U,2)
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_OWNER_U_$P($G(^TIU(8926,IEN,0)),U,3)
+ S RESULT(0)=I
+ Q
+ ;
+HSUMTYPE(RESULT) ;List health summary types from File #115
+ N IEN,NM,I,U
+ S U="^",I=0,IEN=0
+ I '$D(^GMT(142)) S RESULT(0)=0 Q
+ F  S IEN=$O(^GMT(142,IEN)) Q:'IEN  D
+ . S NM=$P($G(^GMT(142,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^GMT(142,IEN,0)),U,2)_U_$P($G(^GMT(142,IEN,0)),U,3)
+ S RESULT(0)=I
+ Q
+ ;
+INSTALL ;Register RPCs in File #8994
+ D REG^ZVEUSER("VE ORDER SETS","ORDSETS","ZVECAPP")
+ D REG^ZVEUSER("VE CONSULT SERVICES","CSLTSVCS","ZVECAPP")
+ D REG^ZVEUSER("VE TIU DEFINITIONS","TIUDEF","ZVECAPP")
+ D REG^ZVEUSER("VE TIU TEMPLATES","TIUTEMP","ZVECAPP")
+ D REG^ZVEUSER("VE HEALTH SUMMARY TYPES","HSUMTYPE","ZVECAPP")
+ W "ZVECAPP RPCs registered",!
+ Q

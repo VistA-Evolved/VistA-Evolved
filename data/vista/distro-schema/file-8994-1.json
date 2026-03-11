@@ -1,0 +1,48 @@
+{
+  "fileNumber": 8994.1,
+  "fileName": "RPC BROKER SITE PARAMETERS",
+  "globalRoot": "8994.1",
+  "globalReference": "^XWB(8994.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'X",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is the name of this installation of the RPC Broker, as it is known to the rest of the network. It must appear in the DOMAIN file. This name applies to all CPUs or Volume sets which access this ^XWB global. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAIL GROUP FOR ALERTS",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field points to the Mail Group file ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LISTENER",
+      "dataType": "POINTER",
+      "rawType": "8994.17P",
+      "required": false,
+      "helpText": "This field contains all the information that the Broker needs to run a background process, which accepts incoming connection requests.  The listener doesn't execute the client's RPCs.  The listener starts up other processes as handlers, which run RPCs. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8994.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

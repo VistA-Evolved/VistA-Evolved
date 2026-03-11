@@ -1,0 +1,82 @@
+{
+  "fileNumber": 13,
+  "fileName": "RELIGION",
+  "globalRoot": "13I",
+  "globalReference": "^DIC(13,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the religion as it will appear to users at the time of selection in the registration module.  This name will appear in various reports and options throughout DHCP.  This field should not be altered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this religion.  This abbreviation will appear on outputs or displays where there in insufficient room for the full name of the religion.  This field should not be altered at the site level. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CATHOLIC;2:PROTESTANT;3:JEWISH;4:ORTHODOX;5:OTHER;",
+      "helpText": "This field should contain the classification of the religion (whether it be Catholic, Protestant, Jewish, Orthodox, or something other than what is listed.  This field is distributed by the MAS module and should not be altered in any way. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the numeric code for this particular religion.  This code is transmitted to Austin with various DHCP packages.  It must NOT be altered in any way as this could cause severe negative impacts on  various DHCP modules and could cause rejected records to be returned from Austin. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "MASTER RELIGION",
+      "dataType": "POINTER",
+      "rawType": "*P13.99'a",
+      "required": false,
+      "pointerTo": 13.99,
+      "helpText": "This is the external Standards Development Organization (SDO) Religion associated with this VHA Religion. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "13.01",
+      "required": false,
+      "helpText": "This multiple contains all of the alternative names by which this religion may be selected by the user. ",
+      "isMultiple": true,
+      "subFileNumber": 13.01,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "ACMF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "13", "field": .01, "type": "regular"},
+    {"name": "13", "field": .01, "type": "regular"},
+    {"name": "13", "field": 3, "type": "regular"},
+    {"name": "13", "field": 90, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(\"0\")) ?30,$P(^(\"0\"),U,4)"}
+  ]
+}

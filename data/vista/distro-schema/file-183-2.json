@@ -1,0 +1,38 @@
+{
+  "fileNumber": 183.2,
+  "fileName": "CRHD TEMPORARY DATA",
+  "globalRoot": "183.2",
+  "globalReference": "^CRHD(183.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "183.21P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "183.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

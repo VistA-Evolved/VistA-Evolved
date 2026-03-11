@@ -1,0 +1,39 @@
+{
+  "fileNumber": 410.7,
+  "fileName": "SORT GROUP",
+  "globalRoot": "410.7",
+  "globalReference": "^PRCS(410.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the sub-control point. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTROL POINT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of the Fund Control Point. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "410.7", "field": .01, "type": "regular"},
+    {"name": "410.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

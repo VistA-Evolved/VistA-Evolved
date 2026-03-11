@@ -1,0 +1,191 @@
+{
+  "fileNumber": 195.4,
+  "fileName": "RECORD TRACKING SYSTEM PARAMETERS",
+  "globalRoot": "195.4",
+  "globalReference": "^DIC(195.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This defines parameters that are used through out the system and applications. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUE THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This number is the number of records that can be charged-out or check-in at one time before the system queue's the job to process in the  backround. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NULL QUEUING DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This defines a non-sharable device in the device file which limits the number of requests that are processed simultaneously by the task manager. to 'other cpu' cause processing to be transferred to that cpu. Use mailbox devices like dsm's 20-30 or an unused port. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPERATING CONDITIONS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "n:NORMAL;e:EMERGENCY(NORMAL COMPUTER DOWN);",
+      "helpText": "This field contains the hardware conditions parameter that tells the system the type of operating conditions that are in effect.  The available conditions are: 'N' for normal and 'E' for emergency.   Under NORMAL conditions, the system uses the parameters set up in the files 195.1, 195.2, 195.9 to determine which input and printer devices to use.  Under EMERGENCY conditions, the system ignores all the location parameters set up and the user is prompted for this information. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BATCH RECORD,XRAY REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "No means Appointments for clinics which require records, and/or xrays cause Requests for Records to be processed immediately through the taskmanager, null queuing device, in the background.   YES means clinic Requests for Records are not made until the clinic requests option is run at night. the RT SM-CLINIC REQUESTS option is scheduled.  It must be scheduled through the Taskmanager to run dailey after hours.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BATCH REQUESTS CUTOFF (days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This defines the number of days in the future that the clinic request option should look for clinic requests for records and/or xrays. for records, and/or xrays as required by clinic's.  Set this parameter to a value so that the time span will cover the lead time when the File rooms pull records for clinic's. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OK TO PURGE REQUESTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "YES means the purge option will purge requests. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OK TO PURGE PULL LISTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "YES means the purge option will purge pull lists. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OK TO PURGE MOVEMENT LOGS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "YES means the purge option will purge movements. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LABEL PRINTER COOLER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This defines the number of minutes the program will hang every 100  records when printing barcodes to allow the printer to relax.  It is dynamic. size of the printer and the output buffer of the system. This value can be changed as labels are being printed. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INSTITUTION/STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field should contain the Station Number of the site. It is usually the same as the ^DD(\"SITE\") ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MAS INTERFACE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DOWN;1:UP;",
+      "helpText": "UP means clinic requests for records will be processed. DOWN means clinic requests for records will be ignored. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MAS TRACKING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P195.1'",
+      "required": false,
+      "pointerTo": 195.1,
+      "helpText": "This defines the application which is called by clinic requests. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "RECORD TYPE FOR MEDICAL FOLDER",
+      "dataType": "POINTER",
+      "rawType": "P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "This defines the record type for the medical record. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "RADIOLOGY INTERFACE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DOWN;1:UP;",
+      "helpText": "UP means clinic requests for xrays are processed. DOWN means clinic requests for xrays are ignored. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "RADIOLOGY TRACKING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P195.1'",
+      "required": false,
+      "pointerTo": 195.1,
+      "helpText": "This defines the application which is called by radiology scheduling. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "RECORD TYPE FOR MASTER JACKET",
+      "dataType": "POINTER",
+      "rawType": "P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "This defines the record type for the radiology application. ",
+      "fieldNumber_": 202
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "MAS", "field": },
+    {"name": "RAD", "field": },
+    {"name": "195.4", "field": .01, "type": "regular"},
+    {"name": "195.4", "field": 101, "type": "regular"},
+    {"name": "", "field": 102, "type": "regular"},
+    {"name": "195.4", "field": 201, "type": "regular"},
+    {"name": "", "field": 202, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

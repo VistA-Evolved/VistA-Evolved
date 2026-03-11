@@ -1,0 +1,100 @@
+{
+  "fileNumber": 409.86,
+  "fileName": "SDEC CONTACT",
+  "globalRoot": "409.86",
+  "globalReference": "^SDEC(409.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Patient for this contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the Clinic for this contact. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This is the Service for this contact. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREFERRED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Preferred Date of Appointment for this contact. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:APPOINTMENT;C:CONSULT;R:RECALL;V:VETERAN;M:MOBILE;P:PROCEDURE;E:EWL;W:W2VA;RTC:RETURN TO CLINIC;",
+      "helpText": "This is the Request Type of this contact. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "MAIN SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Main Sequence field keeps track of the number of contacts. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "SDEC REQUEST POINTER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is a variable pointer entry to one of the following files: SDEC APPT REQUEST (#409.85), CONSULT (#123) or RECALL REMINDERS (#403.5). ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME of CONTACT",
+      "dataType": "DATE",
+      "rawType": "409.863D",
+      "required": false,
+      "helpText": "This is the DATE/TIME multiple of the contact. ",
+      "isMultiple": true,
+      "subFileNumber": 409.863,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.86", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2.1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(409.86,2.1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": W1.1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(40.7,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.7,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": W2, "value": "W \"   \",$$NAKED^DIUTL(\"$$DATE^DIUTL($P(^(0),U,3))\")"}
+  ]
+}

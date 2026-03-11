@@ -1,0 +1,57 @@
+{
+  "fileNumber": 46.4,
+  "fileName": "DG VAS EXPORT",
+  "globalRoot": "46.4",
+  "globalReference": "^DGAUDIT1(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUDITED FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This is the file for which the action being audited occurred.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST RECORD EXPORTED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0",
+      "length": 15,
+      "required": true,
+      "helpText": "This field contains the record most recently to the VistA Audit Solution  (VAS) external archive. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA VALUE OF LAST RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This field contains values associated with the last record exported to  the VistA Audit Solution (VAS) external archive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE VAS STARTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is designed to track the date and time that the VistA Audit  Solution (VAS) background sending process is set to send data to the  external archive. This value should only be set from the VistA Audit  Solution (VAS) options menu. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "46.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "fileNumber": 135.1,
+  "fileName": "SKIN PREP AGENTS",
+  "globalRoot": "135.1I",
+  "globalReference": "^SRO(135.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the agent used to prepare the skin prior to the operative procedure.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the code corresponding to the skin preparation agent name.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to make this entry inactive and to prevent its selection and use by users of the Surgery Package. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "135.1", "field": .01, "type": "regular"},
+    {"name": "135.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

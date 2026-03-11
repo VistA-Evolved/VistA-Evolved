@@ -1,0 +1,150 @@
+{
+  "fileNumber": 910.7,
+  "fileName": "ESP SELECTABLES",
+  "globalRoot": "910.7I",
+  "globalReference": "^ESP(910.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the selectable being entered into the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COLOR;M:MAKE;",
+      "helpText": "Enter the type of the selectable being entered. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a code or synonym for the item.  This code may be use to speed up selection of the item. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "HAIR COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of hair. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "EYE COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of eyes. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "VEHICLE COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of a vehicle. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "BICYCLE COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of a bicycle. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "PET COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of a pet. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "SKIN COLOR(Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of skin. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "DECAL COLOR (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether the color can be used as a color of a decal. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "VEHICLE MAKE (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether a make designator can be used as a vehicle make. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "BICYCLE MAKE (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0 :NO;1:YES;",
+      "helpText": "This field controls whether a make designator can be used as a bicycle make. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "WEAPON MAKE (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether a make designator can be used as a weapon make. ",
+      "fieldNumber_": 2.03
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "910.7", "field": .01, "type": "regular"},
+    {"name": "910.7", "field": .02, "type": "regular"},
+    {"name": "910.7", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

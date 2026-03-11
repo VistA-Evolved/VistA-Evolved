@@ -1,0 +1,220 @@
+{
+  "fileNumber": 2006.8,
+  "fileName": "BP SERVERS",
+  "globalRoot": "2006.8",
+  "globalReference": "^MAG(2006.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name that is given to a particular BP Server. This identifying name remains with the system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This field identifies the Imaging site platform that pertains to this BP server.  The Site Parameter entry defines all of the attributes of VistA Imaging local area network and application  site parameters for DICOM Gateway(s), VistARad, TeleReader,  Clinical capture and Clinical display applications.   The Imaging site is determined by the end-users default division. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PURGE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value designates this BP Server for the task of running  the Auto-purge and Scheduled Purge tasks.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SCHEDULED VERIFY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value designates this workstation for the task of running  the Scheduled-verifier function. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BACKGROUND PROCESSOR",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field designates a BACKGROUND PROCESSOR server. Only entries defined as a BACKGROUND PROCESSOR may be  assigned tasks to process.     This field is not user editable but maintained by the  BP Queue Processor client software ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ABSTRACT",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server  assigned to this entry executes ABSTRACT queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the Abstract assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "JUKEBOX",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes JUKEBOX queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the JUKEBOX assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "JBTOHD",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes JBTOHD queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the JBTOHD assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PREFET",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes PREFET queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the PREFET assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "IMPORT",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes IMPORT queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the IMPORT assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "GCC",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes GCC queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the GCC assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DELETE",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This value indicates whether the Background Processor Server assigned to this entry executes DELETE queues.   Only one Background Processor Server may be assigned this task at a time.  Retire the DELETE assignment from its current  assignee, and then reassign. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "EVALUATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field indicates whether or not a background processor evaluates routing rules. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SEND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field indicates whether or not a background processor processes 'SEND' actions. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "NETWORK_LOG_ARCHIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the location where this BP Server stores the activity logs. An example of a share path is: \\\\iswxxximg1\\share1...,  where xxx is the site code. This share should be scheduled for backups. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "BP SERVER NETWORK NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the computer name defined on the BP Server for network operation (i.e. the Network computer name). ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "BP CLIENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the BP software version installed on this BP Server.   This field is maintained by the BP Queue Processor, Verifier,  and Purge applications for this Server. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "BP CLIENT DISTRIBUTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Windows date modified for the MAGQBTM executable. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "BP SERVER OS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the operating system for the BP Server.  This field is maintained by the BP Queue Processor, Verifier, and Purge  applications for this Server. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "LOGSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This value determines the size in megabytes of the archived html log files generated by the BP application that are  executed on the BP server assigned to this entry. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "LAST EXECUTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is updated by the Background Processor and identifies the date when the Background Processor was last executed.  ",
+      "fieldNumber_": 55
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

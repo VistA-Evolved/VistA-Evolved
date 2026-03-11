@@ -1,0 +1,86 @@
+{
+  "fileNumber": 352.1,
+  "fileName": "BILLABLE APPOINTMENT TYPE",
+  "globalRoot": "352.1I",
+  "globalReference": "^IBE(352.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is a unique number for each entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP409.1'",
+      "required": true,
+      "pointerTo": 409.1,
+      "helpText": "This is the MAS Appointment type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "Every Appointment type has certain billing characteristics that may change over time.  For example, an appointment type may not be billable for Category C Means Test billing one year but may the next depending on legislation.   It is only necessary to add a new effective date for an appointment type if the characteristics need to be time sensitive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "IGNORE MEANS TEST",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set this field to 'YES' if this appointment type should NOT be billed for Category C means test billing. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRINT ON INSURANCE REPORT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set this field to 'YES' if you would like this appointment type to show up on the list of Veterans with insurance and outpatient visits. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISPLAY ON INPUT SCREEN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set this field to 'YES' if you would like this appointment type to be displayed as a potential billable visit on the outpatient visit screen when creating a third party bill. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "352.1", "field": .01, "type": "regular"},
+    {"name": "352.1", "field": .02, "type": "regular"},
+    {"name": "352.1", "field": .02, "type": "regular"},
+    {"name": "352.1", "field": .03, "type": "regular"},
+    {"name": "352.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SD(409.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(409.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

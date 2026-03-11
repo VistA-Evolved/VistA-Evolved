@@ -1,0 +1,48 @@
+{
+  "fileNumber": 18.13,
+  "fileName": "WEB SERVER LOOKUP KEY",
+  "globalRoot": "18.13",
+  "globalReference": "^XOB(18.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KEY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the lookup key value.   This value is often entered by an application during the post-init process using the SKEYADD^XOBWLIB() API.   At run-time, the application will use the SNAME4KY^XOBWLIB(<key>) API to retrieve the name of the server the site has associated with the key.   The value must be unique compared to the KEY NAME field value of the other entries in this file.   The value will be forced to all uppercase if it is not already all uppercase when entered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a brief description that explains the purpose of the lookup key.   This description is displayed in various screens and reports related to lookup keys. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ASSOCIATED WEB SERVER",
+      "dataType": "POINTER",
+      "rawType": "P18.12'",
+      "required": false,
+      "pointerTo": 18.12,
+      "helpText": "This field contains the WEB SERVER (#18.12) file entry associated with this lookup key.   The SNAME4KY^XOBWLIB(<key>) API will return the NAME (#.01) field of this WEB SERVER entry. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "WS", "field": },
+    {"name": "18.13", "field": .01, "type": "regular"},
+    {"name": "18.13", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

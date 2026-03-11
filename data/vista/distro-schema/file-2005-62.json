@@ -1,0 +1,208 @@
+{
+  "fileNumber": 2005.62,
+  "fileName": "IMAGE STUDY",
+  "globalRoot": "2005.62",
+  "globalReference": "^MAGV(2005.62,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STUDY INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Study Record ID - Primary Identifier. DICOM Tag: Study Instance UID  (0020,000D). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the accession number related to the study. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORIGINAL STUDY INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the old study record ID. DICOM Tag: (0020,000D). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STUDY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the short case number Study ID given by the ordering application.  DICOM Tag: Study ID  (0020,0010). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODALITIES IN STUDY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the list of modalities within a Study separated by \"\\\". e.g. CR\\RF = Computed Radiography and Radio Fluoroscopy. DICOM Tag: Modalities in Study   (0008,0061). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STUDY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when a study acquisition was started by a modality device. DICOM Tag: Study Date-Time   (0008,0020) + (0008,0030). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST UPDATE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time of the last record update. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORIGIN INDEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "V:VA;D:DOD;F:FEE;N:NON-VA;I:IHS;",
+      "helpText": "This field indicates where the image originated from. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NUMBER OF SERIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of Series attached to the Study. DICOM Tag: Number of Study related Series   (0020,1206). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROCEDURE REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.61'",
+      "required": false,
+      "pointerTo": 2005.61,
+      "helpText": "This field points to the parent node in the Procedure Reference file. Parent IEN is used on all levels of the hierarchy  (Patient/Procedure/Study/Series/SOP Instance) to indicate the  immediate higher level in the hierarchy. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ARTIFACT ON FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ON FILE;1:AOF;",
+      "helpText": "This field is a flag that records whether an artifact is on file or not. Artifact On File (AOF) means that at least one Object is already stored on disk. An Object can be an image, an abstract or a text file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PATIENT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.6",
+      "required": false,
+      "pointerTo": 2005.6,
+      "helpText": "This is the patient associated with the study. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the description of the study.  DICOM Tag: Study Description  (0008,1030). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REASON FOR STUDY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reason for the requested study. DICOM Tag: Reason for the Requested Procedure    (0040,1002). ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ACQUISITION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACQUIRING;C:COMPLETE;",
+      "helpText": "This field denotes the event of study acquisition completion.   Acquiring means Still in the Process of active acquiring.   Complete means complete acquisition of a complete study. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This field indicates whether the study is ACCESSIBLE or INACCESSIBLE.   ACCESSIBLE means that the study can be retrieved by Imaging database methods.   INACCESSIBLE means that the study will not be retrieved by Imaging database methods. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LAST ACCESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when a Study was last accessed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NUMBER OF SOP INSTANCES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field indicates the number of associated SOP Instances. DICOM Tag: Number of Study related  Instances   (0020,1208). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT;H:HIGH;R:ROUTINE;L:LOW;",
+      "helpText": "This field denotes the requested procedure priority.   STAT means Life Threatening condition; Do immediately even if one has to drop others with High Priority.  DICOM Tag: Requested Procedure Priority  (0040,1003). ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "G", "field": },
+    {"name": "L", "field": },
+    {"name": "2005.62", "field": .01, "type": "regular"},
+    {"name": "2005.62", "field": .02, "type": "regular"},
+    {"name": "2005.62", "field": 1, "type": "regular"},
+    {"name": "2005.62", "field": 4, "type": "regular"},
+    {"name": "2005.62", "field": 11, "type": "regular"},
+    {"name": "2005.62", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

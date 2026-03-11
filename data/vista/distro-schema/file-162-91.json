@@ -1,0 +1,89 @@
+{
+  "fileNumber": 162.91,
+  "fileName": "FEE BASIS UNAUTHORIZED CLAIMS DISPOSITIONS",
+  "globalRoot": "162.91",
+  "globalReference": "^FB(162.91,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPOSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter the dispositon. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates if dispostion is active. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code used to identify dispositioned status in outputs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.911",
+      "required": false,
+      "helpText": "This field contains a detailed description of the disposition. This description is used in the letter which prints when a claim is dispositioned. ",
+      "isMultiple": true,
+      "subFileNumber": 162.911,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "1725 DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.912",
+      "required": false,
+      "helpText": "This field contains a detailed description of the disposition for claims considered under Millennium Act 38 U.S.C. 1725. This description is used in the letter which prints when that type of claim is dispositioned. ",
+      "isMultiple": true,
+      "subFileNumber": 162.912,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADDITIONAL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.913",
+      "required": false,
+      "helpText": "This optional field contains any additional text associated with the disposition.  This text is used in the letter which prints when a claim is dispositioned.  If the disposition is a disapproval, this field will be printed after the list of disapproval reasons. ",
+      "isMultiple": true,
+      "subFileNumber": 162.913,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "162.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,313 @@
+ZVEPCE ;VE;PCE/Encounter/Immunization RPCs;2026-03-10
+ ;
+ ; PURPOSE: Patient Care Encounter (PCE) RPCs for immunizations,
+ ; procedures, diagnoses, and encounter documentation. Uses
+ ; PX SAVE DATA / PXRPC SAVE2 when available, with FileMan
+ ; fallback for direct writes.
+ ;
+ ; VistA PCE Architecture:
+ ;   File 9000010    = VISIT (^AUPNVSIT) -- encounter/visit tracking
+ ;   File 9000010.11 = V IMMUNIZATION (^AUPNVIMM) -- immunization records
+ ;   File 9000010.07 = V CPT (^AUPNVCPT) -- procedures
+ ;   File 9000010.07 = V POV (^AUPNVPOV) -- purposes of visit (dx)
+ ;   File 9000010.06 = V PROVIDER (^AUPNVPRV) -- visit providers
+ ;   File 9999999.14 = IMMUNIZATION (^AUTTIMM) -- immunization master
+ ;
+ ; Entry Points / RPCs:
+ ;   IMMGIVE^ZVEPCE  -> VE PCE IMM GIVE    -- Record immunization
+ ;   IMMHIST^ZVEPCE  -> VE PCE IMM HIST    -- Immunization history
+ ;   ENCNEW^ZVEPCE   -> VE PCE ENCOUNTER   -- Create encounter/visit
+ ;   PROCADD^ZVEPCE  -> VE PCE PROCEDURE   -- Record procedure
+ ;   DXADD^ZVEPCE    -> VE PCE DIAGNOSIS   -- Record diagnosis
+ ;   VITHIST^ZVEPCE  -> VE PCE VISIT HIST  -- Visit history
+ ;
+ Q
+ ;
+ERRTRAP ;
+ S $ECODE=""
+ S RESULT(0)="-1^ERROR^"_$$ERRMSG()
+ Q
+ ;
+ERRMSG() ;
+ N MSG S MSG=$ZERROR
+ I MSG="" S MSG="Unknown M error"
+ I $L(MSG)>200 S MSG=$E(MSG,1,200)
+ Q MSG
+ ;
+IMMGIVE(RESULT,DFN,IMMIEN,DOSE,LOT,SITE,ROUTE,ADMIN) ;
+ ; Record an immunization administration.
+ ; IMMIEN = IEN from File 9999999.14 (IMMUNIZATION master)
+ ; DOSE = dose number (1, 2, 3, etc.)
+ ; LOT = lot number
+ ; SITE = injection site (e.g., LEFT DELTOID)
+ ; ROUTE = administration route (e.g., IM, SC, PO)
+ ; ADMIN = administering person (defaults to DUZ)
+ ;
+ N U,NOW,VISITIEN,IMMRECIEN
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ S IMMIEN=$G(IMMIEN)
+ I IMMIEN="" S RESULT(0)="-1^Immunization IEN required (File 9999999.14)" Q
+ S DOSE=$G(DOSE) I DOSE="" S DOSE=1
+ S LOT=$G(LOT)
+ S SITE=$G(SITE) I SITE="" S SITE="LEFT DELTOID"
+ S ROUTE=$G(ROUTE) I ROUTE="" S ROUTE="IM"
+ S ADMIN=$G(ADMIN) I ADMIN="" S ADMIN=DUZ
+ S NOW=$$NOW^XLFDT
+ ;
+ ; Validate immunization exists in master file
+ I IMMIEN?1N.N,'$D(^AUTTIMM(+IMMIEN,0)) D
+ . S RESULT(0)="-1^Immunization IEN "_IMMIEN_" not found in File #9999999.14"
+ I $G(RESULT(0))["-1" Q
+ ;
+ N IMMNAME S IMMNAME=""
+ I IMMIEN?1N.N S IMMNAME=$P($G(^AUTTIMM(+IMMIEN,0)),U,1)
+ ;
+ ; Step 1: Create or find today's visit in File 9000010
+ S VISITIEN=$$GETVISIT(DFN,NOW)
+ ;
+ ; Step 2: Create immunization record in File 9000010.11
+ ; Try PX SAVE DATA first
+ N PXSAVED S PXSAVED=0
+ I $T(^PXAPI)'="" D
+ . ; PX SAVE DATA is available
+ . ; Build PCE data array per PX SAVE DATA format
+ . N PCELIST
+ . S PCELIST(1)="HDR^SUCCESS^0^^^"_VISITIEN
+ . S PCELIST(2)="IMM+"_IMMIEN_"^"_IMMNAME_"^"_NOW_"^"_DOSE_"^^"_LOT_"^"_SITE_"^"_ROUTE_"^"_ADMIN
+ . N PXRESULT
+ . D SAVE2^PXRPC(.PXRESULT,.PCELIST,"VE EVOLVED","VE-API",$G(VISITIEN))
+ . I $P($G(PXRESULT(0)),U,1)>0 S PXSAVED=1,IMMRECIEN=$P($G(PXRESULT(0)),U,2)
+ ;
+ ; Fallback: Direct FileMan write to V IMMUNIZATION
+ I 'PXSAVED D
+ . I $D(^AUPNVIMM(0)) D
+ . . N FDA,IENS,ERR,NEWIEN
+ . . S IENS="+1,"
+ . . S FDA(9000010.11,IENS,.01)=+IMMIEN
+ . . S FDA(9000010.11,IENS,.02)=DFN
+ . . S FDA(9000010.11,IENS,.03)=VISITIEN
+ . . S FDA(9000010.11,IENS,1201)=+ADMIN
+ . . S FDA(9000010.11,IENS,.01)=+IMMIEN
+ . . D UPDATE^DIE("","FDA","NEWIEN","ERR")
+ . . I '$D(ERR) S IMMRECIEN=$G(NEWIEN(1))
+ . E  D
+ . . ; Neither PX API nor FileMan available -- use XTMP
+ . . S ^XTMP("VEPCE",0)=$$FMADD^XLFDT(NOW,365)_U_NOW_U_"VE PCE Data"
+ . . N SEQ S SEQ=$O(^XTMP("VEPCE","IMM",DFN,""),-1)+1
+ . . S ^XTMP("VEPCE","IMM",DFN,SEQ)=NOW_U_IMMIEN_U_IMMNAME_U_DOSE_U_LOT_U_SITE_U_ROUTE_U_ADMIN_U_DUZ
+ . . S IMMRECIEN="XTMP-"_SEQ
+ ;
+ S RESULT(0)="1^OK"
+ S RESULT(1)="DFN^"_DFN
+ S RESULT(2)="IMMUNIZATION^"_IMMNAME
+ S RESULT(3)="DOSE^"_DOSE
+ S RESULT(4)="LOT^"_LOT
+ S RESULT(5)="SITE^"_SITE
+ S RESULT(6)="ROUTE^"_ROUTE
+ S RESULT(7)="VISIT_IEN^"_VISITIEN
+ S RESULT(8)="IMM_RECORD_IEN^"_$G(IMMRECIEN)
+ S RESULT(9)="PROVIDER^"_ADMIN
+ I PXSAVED S RESULT(10)="METHOD^PX_SAVE_DATA"
+ E  I $G(IMMRECIEN)?1N.N S RESULT(10)="METHOD^FILEMAN_DIRECT"
+ E  S RESULT(10)="METHOD^XTMP_FALLBACK"
+ S RESULT(11)="SOURCE^ZVEPCE"
+ Q
+ ;
+GETVISIT(DFN,VDATE) ;Find or create today's visit
+ ; Returns visit IEN from File 9000010
+ N VISITIEN,VIEN
+ S VISITIEN=""
+ ;
+ ; Search for existing visit today
+ I $D(^AUPNVSIT("AA",DFN)) D
+ . N DT S DT=+VDATE
+ . S VIEN=0
+ . F  S VIEN=$O(^AUPNVSIT("AA",DFN,DT,VIEN)) Q:'VIEN  D  Q:VISITIEN'=""
+ . . S VISITIEN=VIEN
+ ;
+ ; Create new visit if none found
+ I VISITIEN="" D
+ . I $D(^AUPNVSIT(0)) D
+ . . N FDA,IENS,ERR,NEWIEN
+ . . S IENS="+1,"
+ . . S FDA(9000010,IENS,.01)=VDATE
+ . . S FDA(9000010,IENS,.02)=DFN
+ . . S FDA(9000010,IENS,.03)="A"  ; ambulatory
+ . . S FDA(9000010,IENS,.12)=DUZ
+ . . D UPDATE^DIE("","FDA","NEWIEN","ERR")
+ . . I '$D(ERR) S VISITIEN=$G(NEWIEN(1))
+ ;
+ I VISITIEN="" S VISITIEN=0
+ Q VISITIEN
+ ;
+IMMHIST(RESULT,DFN) ;Immunization history
+ N U,I,IEN,NODE,IMMIEN2,IMMNAME,VDATE,ADMIN2
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ ;
+ S I=0
+ ; Search V IMMUNIZATION by patient cross-ref
+ I $D(^AUPNVIMM("C",DFN)) D
+ . S IEN=0
+ . F  S IEN=$O(^AUPNVIMM("C",DFN,IEN)) Q:'IEN  Q:I>200  D
+ . . S NODE=$G(^AUPNVIMM(IEN,0))
+ . . S IMMIEN2=$P(NODE,U,1)
+ . . S IMMNAME="" I IMMIEN2>0 S IMMNAME=$P($G(^AUTTIMM(IMMIEN2,0)),U,1)
+ . . ; Get visit date
+ . . N VSITIEN S VSITIEN=$P(NODE,U,3)
+ . . S VDATE="" I VSITIEN>0 S VDATE=$P($G(^AUPNVSIT(VSITIEN,0)),U,1)
+ . . S ADMIN2=$P($G(^AUPNVIMM(IEN,12)),U,1)
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_IMMNAME_U_VDATE_U_ADMIN2_U_"FILE_9000010.11"
+ ;
+ ; Also check XTMP fallback
+ I $D(^XTMP("VEPCE","IMM",DFN)) D
+ . N SEQ S SEQ=0
+ . F  S SEQ=$O(^XTMP("VEPCE","IMM",DFN,SEQ)) Q:'SEQ  Q:I>200  D
+ . . N DATA S DATA=$G(^XTMP("VEPCE","IMM",DFN,SEQ))
+ . . S I=I+1
+ . . S RESULT(I)="XTMP-"_SEQ_U_$P(DATA,U,3)_U_$P(DATA,U,1)_U_$P(DATA,U,8)_U_"XTMP_FALLBACK"
+ ;
+ S RESULT(0)=I
+ Q
+ ;
+ENCNEW(RESULT,DFN,VDATE,LOCIEN,SERVCAT) ;Create encounter/visit
+ ; VDATE = visit date (FM format)
+ ; LOCIEN = hospital location IEN (File 44)
+ ; SERVCAT = service category: A=ambulatory, H=hospitalization, T=telehealth
+ ;
+ N U,VISITIEN
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ S VDATE=$G(VDATE) I VDATE="" S VDATE=$$NOW^XLFDT
+ S LOCIEN=$G(LOCIEN)
+ S SERVCAT=$G(SERVCAT) I SERVCAT="" S SERVCAT="A"
+ ;
+ I '$D(^AUPNVSIT(0)) S RESULT(0)="-1^Visit file not available" Q
+ ;
+ N FDA,IENS,ERR,NEWIEN
+ S IENS="+1,"
+ S FDA(9000010,IENS,.01)=VDATE
+ S FDA(9000010,IENS,.02)=DFN
+ S FDA(9000010,IENS,.03)=SERVCAT
+ S FDA(9000010,IENS,.12)=DUZ
+ I LOCIEN'="" S FDA(9000010,IENS,.22)=+LOCIEN
+ D UPDATE^DIE("","FDA","NEWIEN","ERR")
+ I $D(ERR) S RESULT(0)="-1^Visit creation failed: "_$G(ERR("DIERR",1,"TEXT",1)) Q
+ ;
+ S VISITIEN=$G(NEWIEN(1))
+ S RESULT(0)="1^OK"
+ S RESULT(1)="VISIT_IEN^"_VISITIEN
+ S RESULT(2)="DATE^"_VDATE
+ S RESULT(3)="SERVICE_CAT^"_SERVCAT
+ S RESULT(4)="SOURCE^FILE_9000010"
+ Q
+ ;
+PROCADD(RESULT,DFN,VISITIEN,CPTCODE,MODIFIERS,PROVDUZ) ;Record procedure
+ N U,NOW
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ S VISITIEN=+$G(VISITIEN)
+ I 'VISITIEN S RESULT(0)="-1^Visit IEN required" Q
+ S CPTCODE=$G(CPTCODE)
+ I CPTCODE="" S RESULT(0)="-1^CPT code required" Q
+ S MODIFIERS=$G(MODIFIERS)
+ S PROVDUZ=$G(PROVDUZ) I PROVDUZ="" S PROVDUZ=DUZ
+ S NOW=$$NOW^XLFDT
+ ;
+ ; Write to V CPT (File 9000010.07)
+ I $D(^AUPNVCPT(0)) D
+ . N FDA,IENS,ERR,NEWIEN
+ . S IENS="+1,"
+ . S FDA(9000010.07,IENS,.01)=CPTCODE
+ . S FDA(9000010.07,IENS,.02)=DFN
+ . S FDA(9000010.07,IENS,.03)=VISITIEN
+ . S FDA(9000010.07,IENS,1204)=+PROVDUZ
+ . D UPDATE^DIE("","FDA","NEWIEN","ERR")
+ . I $D(ERR) S RESULT(0)="-1^Procedure add failed: "_$G(ERR("DIERR",1,"TEXT",1)) Q
+ . S RESULT(0)="1^OK"
+ . S RESULT(1)="CPT_IEN^"_$G(NEWIEN(1))
+ . S RESULT(2)="CPT^"_CPTCODE
+ . S RESULT(3)="VISIT^"_VISITIEN
+ . S RESULT(4)="SOURCE^FILE_9000010.07"
+ E  D
+ . S RESULT(0)="-1^V CPT file not available"
+ Q
+ ;
+DXADD(RESULT,DFN,VISITIEN,ICDCODE,PRIMARY,PROVDUZ) ;Record diagnosis
+ N U,NOW
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ S VISITIEN=+$G(VISITIEN)
+ I 'VISITIEN S RESULT(0)="-1^Visit IEN required" Q
+ S ICDCODE=$G(ICDCODE)
+ I ICDCODE="" S RESULT(0)="-1^ICD code required" Q
+ S PRIMARY=$G(PRIMARY) I PRIMARY="" S PRIMARY="P"
+ S PROVDUZ=$G(PROVDUZ) I PROVDUZ="" S PROVDUZ=DUZ
+ S NOW=$$NOW^XLFDT
+ ;
+ ; Write to V POV (File 9000010.07 POV subfile)
+ I $D(^AUPNVPOV(0)) D
+ . N FDA,IENS,ERR,NEWIEN
+ . S IENS="+1,"
+ . S FDA(9000010.07,IENS,.01)=ICDCODE
+ . S FDA(9000010.07,IENS,.02)=DFN
+ . S FDA(9000010.07,IENS,.03)=VISITIEN
+ . S FDA(9000010.07,IENS,.12)=PRIMARY
+ . S FDA(9000010.07,IENS,1204)=+PROVDUZ
+ . D UPDATE^DIE("","FDA","NEWIEN","ERR")
+ . I $D(ERR) S RESULT(0)="-1^Diagnosis add failed: "_$G(ERR("DIERR",1,"TEXT",1)) Q
+ . S RESULT(0)="1^OK"
+ . S RESULT(1)="DX_IEN^"_$G(NEWIEN(1))
+ . S RESULT(2)="ICD^"_ICDCODE
+ . S RESULT(3)="PRIMARY^"_PRIMARY
+ . S RESULT(4)="SOURCE^FILE_9000010.07"
+ E  D
+ . S RESULT(0)="-1^V POV file not available"
+ Q
+ ;
+VITHIST(RESULT,DFN) ;Visit history
+ N U,I,IEN,NODE,VDATE,SERVCAT,LOC
+ S U="^"
+ N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEPCE Q"
+ S DFN=+$G(DFN)
+ I 'DFN S RESULT(0)="-1^Patient DFN required" Q
+ ;
+ S I=0
+ I $D(^AUPNVSIT("AA",DFN)) D
+ . N DT S DT=""
+ . F  S DT=$O(^AUPNVSIT("AA",DFN,DT),-1) Q:DT=""  Q:I>200  D
+ . . S IEN=0
+ . . F  S IEN=$O(^AUPNVSIT("AA",DFN,DT,IEN)) Q:'IEN  D
+ . . . S NODE=$G(^AUPNVSIT(IEN,0))
+ . . . S VDATE=$P(NODE,U,1)
+ . . . S SERVCAT=$P(NODE,U,3)
+ . . . N LOCIEN S LOCIEN=$P(NODE,U,22)
+ . . . S LOC="" I LOCIEN>0 S LOC=$P($G(^SC(LOCIEN,0)),U,1)
+ . . . S I=I+1
+ . . . S RESULT(I)=IEN_U_VDATE_U_SERVCAT_U_LOC_U_"FILE_9000010"
+ ;
+ S RESULT(0)=I
+ Q
+ ;
+INSTALL ;Register RPCs in File #8994
+ W !,"=== ZVEPCE RPC Installer ==="
+ D REG^ZVEUSER("VE PCE IMM GIVE","IMMGIVE","ZVEPCE")
+ D REG^ZVEUSER("VE PCE IMM HIST","IMMHIST","ZVEPCE")
+ D REG^ZVEUSER("VE PCE ENCOUNTER","ENCNEW","ZVEPCE")
+ D REG^ZVEUSER("VE PCE PROCEDURE","PROCADD","ZVEPCE")
+ D REG^ZVEUSER("VE PCE DIAGNOSIS","DXADD","ZVEPCE")
+ D REG^ZVEUSER("VE PCE VISIT HIST","VITHIST","ZVEPCE")
+ W "ZVEPCE RPCs registered (6 RPCs)",!
+ Q

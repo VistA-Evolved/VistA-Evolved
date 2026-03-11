@@ -1,0 +1,107 @@
+{
+  "fileNumber": 2006.5831,
+  "fileName": "CLINICAL SPECIALTY DICOM & HL7",
+  "globalRoot": "2006.5831",
+  "globalReference": "^MAG(2006.5831,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP123.5'",
+      "required": true,
+      "pointerTo": 123.5,
+      "helpText": "The name of the Consult or Procedure request service or specialty to be added to the DICOM Modality Worklist and the HL7 Subscriber List. Example:  Hematology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "P123.3'",
+      "required": false,
+      "pointerTo": 123.3,
+      "helpText": "A specific clinical specialty procedure associated with a given service. Example: Bone Marrow Biopsy. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPECIALTY INDEX",
+      "dataType": "POINTER",
+      "rawType": "RP2005.84'",
+      "required": true,
+      "pointerTo": 2005.84,
+      "helpText": "Specialty/Subspecialty for the request. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROCEDURE INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.85'",
+      "required": false,
+      "pointerTo": 2005.85,
+      "helpText": "Procedure/event for the request, if applicable. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACQUISITION SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "VistA institution that acquires the images that are associated with a consult or procedure request. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "The CPT CODE for the consult or procedure request. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HL7 HLO SUBSCRIBER LIST",
+      "dataType": "POINTER",
+      "rawType": "P779.4'",
+      "required": false,
+      "pointerTo": 779.4,
+      "helpText": "The HLO Subscriber List defines the receivers of the HL7 message that is generated for the consult or procedure request. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "QUERY/RETRIEVE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30I",
+      "length": 30I,
+      "required": false,
+      "helpText": "DICOM Query and Query/Retrieve services for clinical specialties require the service provider (SCP) to be identified.  This must be the same name as the service provider in SCU_LIST.DIC on the DICOM Gateway. The field is set using the \"ECS - Edit CLINICAL SPECIALTY DICOM & HL7 file\" option on the DICOM Menu.   To reduce the possibility of typographical errors, this field may not be manually edited. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "2006.58311P",
+      "required": false,
+      "helpText": "These are the clinics where the patient may be seen. These had been used to associate a consult or procedure request with an appointment, but this has been superseded by the enhancement Scheduling Patch SD*5.3*478. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5831", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^GMR(123.3,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(123.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

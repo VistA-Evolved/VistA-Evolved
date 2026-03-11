@@ -1,0 +1,244 @@
+{
+  "fileNumber": 9999999.64,
+  "fileName": "HEALTH FACTORS",
+  "globalRoot": "9999999.64I",
+  "globalReference": "^AUTTHF(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ64",
+      "length": 64,
+      "required": true,
+      "helpText": "This is the name of the health factor (e.g., Current Smoker, Non-Tobacco User)  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.64'",
+      "required": true,
+      "pointerTo": 9999999.64,
+      "helpText": " This is the Health Factor that categorizes several factors into one group. For instance, NON-SMOKER and FREQUENT-SMOKER would have the category of TOBACCO.   Enter the name of the Health Factor Category.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "(Optional) This is a 'short name' for this health factor. If defined, it will be used on the Health Factors Component of the Health Summary   Enter a 2-10 character short name for this health factor. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USE ONLY WITH SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "(Optional) This is the sex that this health factor is used for.   Enter an \"F\" for female or an \"M\" for male. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LOWER AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "(Optional) This is the lower age limit that might apply to this health factor.   Enter an age between 0 and 999.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "UPPER AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "(Optional) This is the upper age limit that applies to this health factor.    Enter a number between 0 and 999.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DISPLAY ON HEALTH SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "(Optional) This allows the health factor to be displayed on Health Summaries.   Enter a yes to display or a no to not display. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "(Optional) This this the synonym for this health factor.   Enter a 3 to 30-character synonym for this health factor.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ENTRY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CATEGORY;F:FACTOR;",
+      "helpText": "This is the type of health factor, (e.g., \"F\" for factor or \"C\" for category).   Enter an \"F\" for factor or a \"C\" for category.  ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate a health factor type. If this field contains a \"1\" then the health factor is inactive.  Inactive health factors cannot be selected in the manual data entry process.  Health factor entries should be made inactive when they are no longer used.  Do not delete the entry or change the meaning of the health factor entry.   To make an inactive health factor active, enter the \"@\" symbol to delete the \"1\" from the field. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the health factor. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National health factors cannot be edited by sites.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'X",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this health factor.  ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CHANGE LOG",
+      "dataType": "DATE",
+      "rawType": "9999999.65DA",
+      "required": false,
+      "helpText": "This multiple is used to record a log of changes made to the health factor.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.65,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the health factor that will be used for display purposes.  ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.64201",
+      "required": false,
+      "helpText": "This field contains a description of the health factor. It is used to document its purpose and intended usage.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.64201,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.66A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard codes the health factor is mapped to. Each mapping entry is defined by a coding system code pair.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.66,
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MINIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with a Health Factor, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "MAXIMUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ24,9",
+      "length": 24,
+      "required": false,
+      "helpText": "If a measurement is to be associated with a Health Factor, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "MAXIMUM DECIMALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the maximum number of decimal digits that can be entered for the measurement.  ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "UCUM CODE",
+      "dataType": "POINTER",
+      "rawType": "P757.5'",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "If a measurement is to be associated with a Health Factor, the Minimum Value and Maximum Value sets the allowable range for the magnitude and the unit is selected from the Universal Code for Units of Measurement (UCUM) file.  ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "DELETED CODE MAPPINGS",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.67A",
+      "required": false,
+      "helpText": "This multiple contains a list of standard code mappings that have been deleted. When a code mapping is deleted it is automatically moved to this multiple.  ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.67,
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 1101,
+      "fieldName": "NOT USED WITH",
+      "dataType": "POINTER",
+      "rawType": "9999999.641101P",
+      "required": false,
+      "helpText": "Some health factors are not used with others. This is the group of health factors that this factor is not used with. ",
+      "fieldNumber_": 1101
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "D", "field": },
+    {"name": "9999999.64", "field": .03, "type": "regular"},
+    {"name": "9999999.64", "field": .09, "type": "regular"},
+    {"name": "9999999.64", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W \"\""},
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(9999999.64,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

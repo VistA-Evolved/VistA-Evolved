@@ -1,0 +1,28 @@
+{
+  "fileNumber": 19625.2,
+  "fileName": "DSIV EXCEPTION LOCATIONS",
+  "globalRoot": "19625.2",
+  "globalReference": "^DSI(19625.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field contains Clinic locations that are excluded from the Exception  List processing.  This includes the reports and the nightly process. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19625.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

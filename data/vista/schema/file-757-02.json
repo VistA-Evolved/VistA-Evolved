@@ -1,0 +1,118 @@
+{
+  "fileNumber": 757.02,
+  "fileName": "CODES",
+  "globalRoot": "757.02IP",
+  "globalReference": "^LEX(757.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXPRESSION",
+      "dataType": "POINTER",
+      "rawType": "RP757.01'I",
+      "required": true,
+      "pointerTo": 757.01,
+      "helpText": "Pointer to the expression in the Expression file #757.01 to which a classification code (i.e., ICD, CPT, DSM code) has been assigned.  This  pointer links the code to an expression.  This expression can be a Major  Concept, a Synonym or a Lexical Variant of either the Major Concept or the Synonym. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Classification Code as described by a controlled vocabulary (i.e., ICD,  CPT, etc.) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLASSIFICATION SOURCE",
+      "dataType": "POINTER",
+      "rawType": "RP757.03'",
+      "required": true,
+      "pointerTo": 757.03,
+      "helpText": "Pointer to the classification system (ICD/CPT/DSM etc.) described in the Coding Systems file (#757.03) from which the code (field 1) is derived. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAJOR CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "RP757'I",
+      "required": true,
+      "pointerTo": 757,
+      "helpText": "Pointer the Major Concept in the Major Concept Map file #757 to which a classification code (i.e., ICD, CPT, DSM code) has been assigned.  This pointer links the code to the Major Concept of the expression defined in the .01 field (Expression). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PREFERENCE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PREFERRED TERM;0:OTHER THAN PREFERRED TERM;",
+      "helpText": "Some codes within a coding system are linked to multiple terms.  This flag indicates the preferred term of a code (within a classification system), providing a one-to-one relationship between codes and terms.  This field is  only populated when a code is linked to multiple terms. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRIMARY FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:SUPPLEMENTAL CODE;1:PRIMARY CODE;",
+      "helpText": "If an expression has multiple codes from the same classification system (i.e., ICD, CPT, etc.) then one will be flagged as the primary code and the others will be flagged as supplemental.  If there is only one code of a specific classification system then it will be flagged as the primary code. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVATION STATUS",
+      "dataType": "DATE",
+      "rawType": "757.28DA",
+      "required": false,
+      "helpText": "This is a listing of the activation history for a code. ",
+      "isMultiple": true,
+      "subFileNumber": 757.28,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LEGACY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores a code that under a different version of the coding  system represents the same concept as the code in the current coding  system. E.g. SNOMED CT (the current SNOMED code system) code 123456789  might have a SNOMED 2 (legacy code system) legacy code of F-12345. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "A10", "field": },
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "AMC", "field": },
+    {"name": "APCODE1", "field": },
+    {"name": "APCODE2", "field": },
+    {"name": "ASRC", "field": },
+    {"name": "AUPD", "field": },
+    {"name": "AVA", "field": },
+    {"name": "B", "field": },
+    {"name": "CODE", "field": },
+    {"name": "757.02", "field": .01, "type": "regular"},
+    {"name": "757.02", "field": 1, "type": "regular"},
+    {"name": "757.02", "field": 1, "type": "regular"},
+    {"name": "757.02", "field": 1, "type": "regular"},
+    {"name": "757.02", "field": 2, "type": "regular"},
+    {"name": "757.02", "field": 2, "type": "regular"},
+    {"name": "757.02", "field": 3, "type": "regular"},
+    {"name": "757.02", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^LEX(757.03,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(757.03,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 4, "value": "W:$P($G(^LEX(757.02,+Y,0)),\"^\",5)>0 \" Preferred\""},
+    {"field": 6, "value": "W:$P($G(^LEX(757.02,+Y,0)),\"^\",7)>0 \" Primary\""}
+  ]
+}

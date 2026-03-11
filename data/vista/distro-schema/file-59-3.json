@@ -1,0 +1,175 @@
+{
+  "fileNumber": 59.3,
+  "fileName": "GROUP DISPLAY",
+  "globalRoot": "59.3",
+  "globalReference": "^PS(59.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used to store the names of designated display groups for the Bingo Board Display. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME/TICKET",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NAME;T:TICKET;",
+      "helpText": "N indicates that patients' names will be displayed.  T indicates that ticket numbers will be displayed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the primary bingo board device. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RUNNING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "NOT USED ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STOP",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:Y;",
+      "helpText": "This field is used as a flag to indicate the status of the Bingo Board Display. If set to 1 then the Board is STOPPED! ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "59.30002",
+      "required": false,
+      "helpText": "This field is used to display a msg on the Bingo  Board alternately with the Patient Notification data. ",
+      "isMultiple": true,
+      "subFileNumber": 59.30002,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DURATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "NOT USED, RESERVED FOR FUTURE EXPANSION ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISPLAY SETUP HELP TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines whether or not help text about setting up the dedicated device is displayed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AUTO-START DISPLAY DEVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a Set of Codes field (1=Yes; 0=No) to determine if the display group will be scheduled to automatically start and/or stop each day. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the start time for the bingo board monitor. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STOP TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This fields contains the stop time for the bingo board monitor. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TWO COLUMN DISPLAY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if names/ticket #'s will be displayed in one or two columns. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DISPLAY WAIT TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is a flag used to determine if the average or normal waiting times are displayed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NORMAL WAIT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field represents the normal length of time in minutes. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SITE #",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "This field is a pointer to the Outpatient Site file. It's required to schedule the bingo board for auto-start by Taskman. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TASK #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the task number of the job running the bingo board monitor. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

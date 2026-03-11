@@ -1,0 +1,570 @@
+{
+  "fileNumber": 6915.2,
+  "fileName": "FA DOCUMENT LOG",
+  "globalRoot": "6915.2P",
+  "globalReference": "^ENG(6915.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EQUIPMENT RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP6914'",
+      "required": true,
+      "pointerTo": 6914,
+      "helpText": "This field holds the internal entry number from file 6914 for the piece of capitalized NX equipment that an FA document was sent for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the FA document was prepared. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SENDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the FA document using the Equipment Entry option. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEGMENT 1 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Segment 1 ID for the FA document, usually it will be CTL. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOURCE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the source system for the FA document, ususally AMM. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESTINATION SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the system where the FA document is going, usually FMS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUBMITTING STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the station number of the site that is submitting this FA document. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSACTION CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the class of document being sent to FMS.  It is usually DOC, to represent a document transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This tells FMS what kind of document is being sent.  FA for an FA document. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SEC1 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Security 1 code of the submitting Administration/Staff office. VHA=10, VBA=20, and NCS=40. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the batch number of the FA document being sent.  Currently set to six spaces. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction number for this FA document.  It consists of the station number_the last digit of the fiscal year_N_the 4 digit sequential number. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the date the FA document was created in YYYYMMDD format. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSACTION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the time the FA document was created in HHMMSS format. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction part sequence number.  Should always be 001. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SEQUENCE TOTAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the total number of transaction parts.  Should always be 001. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the AMES/MERS-FMS interface version.  Should always be 001. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SEGMENT 2 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment identifier for segment 2.  Should always be DOC. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SEGMENT 3 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment identifier for the the FA1 segmemnt.  Should always be FA1. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TRANS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Trans code for the FA1 segment.  Should always be FA. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TRANS DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Security 1 code.  VHA=10, VBA=20, NCS=40. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TRANS NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction number for this FA document.  It consists of the station number_the last digit of the fiscal year_N_the 4 digit sequential number. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "FIXED ASSET NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The fixed asset number consists of the submitting station_the 2 digit satelite station number (or 2 spaces if no satellite)_the internal entry number of the asset from file 6914. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FIXED ASSET TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the FA TYPE field from the NX SGL file for this particular Standard General Ledger account. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "FA GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The group is derived from the Category Stock Number.  It is generally the first 2 digits of the CSN concatenated with 00, except for CSNs in the 7nnn range, which send as 7000, except for 7020, 7021, 7025, 7035, 7040, & 7050, which transmit as themselves. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The location is derived from the first 2 digits of the CMR.  All are valid except 67, 73, 74, 79-85, and 87-98. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "BEG BUDGET FY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the beginning budget fiscal year. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the fund code under which the asset was procured. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "XDIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Administrative/Office code for the asset.  VAH=10, VBA=20, NCS=40. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "XORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the accounting station for this asset. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "XPROGRAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This the Fund Control Point Project Code. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "BUDGET OBJECT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Budget Object Code accounting classification. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is really the category Stock Number. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ACQUISITION YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the year the item was acquired. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ACQUISITION MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the month the item was acquired. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "ACQUISITION DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the day the asset was acquired. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ACQUISITION METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is how the item was acquired; constructed, purchased, etc. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 38.1,
+      "fieldName": "XAREA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the equipment's CMR value (external) sent on the FA Document to populate the XAREA data element on the Fixed Assets/FMS system. Derived from the CMR (#19) field of the EQUIPMENT INV (#6914) file when the FA Document is created. ",
+      "fieldNumber_": 38.1
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "FUNDING SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the year_the fund which acquired the asset_the CFO code. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "REPLACEMENT YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the year the item will be replaced. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "REPLACEMENT MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the month the item will be replaced. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "REPLACEMENT DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the day the item will be replaced. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "USEFUL LIFE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the useful life expectancy in years for this item. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "SALVAGE VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the expected salvage value upon disposing of the item.  Should be 0 for depreciable items. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DEPRECIATION METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is how the item will be depreciated.  Always SL (straight line) for NX equipment. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "SUMMARY ASSET VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the total value of the asset. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "COST ORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the cost center the item belongs to. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 47.1,
+      "fieldName": "COST SUB ORG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For future use. ",
+      "fieldNumber_": 47.1
+    },
+    {
+      "fieldNumber": 47.2,
+      "fieldName": "SUB ORG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Satellite Station designator. ",
+      "fieldNumber_": 47.2
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "SEGMENT 4 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the segment ID for the FA2 segment.  Should always be FA2. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "SEGMENT 5 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the segment ID for the FA3 segment.  Should always be FA3. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SEGMENT 6 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment ID for the LIN section.  Should always be LIN. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "SEGMENT 7 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment ID for the FAA segment.  Should always be FAA. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "EQUITY ACCOUNT 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the General Ledger account in which the asset resides. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "ASSET VALUE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the value of the asset. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "ADJUSTED ASSET VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the current SUMMARY ASSET VALUE of the FA Document. It is initially populated with the original SUMMARY ASSET VALUE of the FA Document and then automatically adjusted whenever FC Documents are processed against this FA Document. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "A.V. DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date/time when an Adjustment Voucher was created. If blank, then an Adjustment Voucher has not yet been created for the FA Document. An Adjustment Voucher is used to notify Fiscal about a selected FAP Document. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "A.V. CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User that created adjustment voucher. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "A.V. REASON",
+      "dataType": "POINTER",
+      "rawType": "*P6915.11'",
+      "required": false,
+      "pointerTo": 6915.11,
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "A.V. COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "6915.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6915.21,
+      "fieldNumber_": 310
+    }
+  ],
+  "fieldCount": 60,
+  "crossReferences": [
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6915.2", "field": .01, "type": "regular"},
+    {"name": "6915.2", "field": 1, "type": "regular"},
+    {"name": "6915.2", "field": 23, "type": "regular"},
+    {"name": "", "field": 301, "type": "regular"},
+    {"name": "6915.2", "field": 301, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 23, "value": "W:$D(^(3)) \"   \",$P(^(3),U,4)"}
+  ]
+}

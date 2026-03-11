@@ -1,0 +1,110 @@
+{
+  "fileNumber": 162.92,
+  "fileName": "FEE BASIS UNAUTHORIZED CLAIMS STATUS",
+  "globalRoot": "162.92",
+  "globalReference": "^FB(162.92,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the status of an unauthorized claim. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates if the status is active. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DAYS PRIOR EXPIRATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If filled in, allowable number of days a claim has before proceeding to the next status. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "A whole number which represents the sequential order of the status.  Entry must be unique.  Software controls status, based on this value. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P161.3'",
+      "required": false,
+      "pointerTo": 161.3,
+      "helpText": "This field is a pointer to file 161.3, Fee Basis Letter.  A letter will be printed if there is an entry in this field.  Only unauthorized claim type letters are selectable. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "1725 LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P161.3'",
+      "required": false,
+      "pointerTo": 161.3,
+      "helpText": "This field is a pointer to file 161.3, Fee Basis Letter.  A letter for a claim being considered under 38 U.S.C. 1725 will be printed if there is an entry in this field.  Only unauthorized claim type letters are selectable. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DAYS PRIOR 1725 EXPIRATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If filled in, allowable number of days a Mill Bill (38 U.S.C. 1725) claim has before proceeding to the next status. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.921",
+      "required": false,
+      "helpText": "This field contains the detailed description of the status. ",
+      "isMultiple": true,
+      "subFileNumber": 162.921,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AO", "field": },
+    {"name": "B", "field": },
+    {"name": "162.92", "field": .01, "type": "regular"},
+    {"name": "162.92", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

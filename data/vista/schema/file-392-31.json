@@ -1,0 +1,162 @@
+{
+  "fileNumber": 392.31,
+  "fileName": "LOCAL VENDOR",
+  "globalRoot": "392.31",
+  "globalReference": "^DGBT(392.31,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VENDOR NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TAX ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AREA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FAX AREA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "LAST UPDATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Added or updated by Core Financial Logistics System (coreFLS) through the VisA package (Library, Beneficiary Travel, Incomplete Records Tracking). ",
+      "fieldNumber_": 3.02
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Z, "value": "G START^DGBTID"}
+  ]
+}

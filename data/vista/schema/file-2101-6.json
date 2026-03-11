@@ -1,0 +1,46 @@
+{
+  "fileNumber": 2101.6,
+  "fileName": "GENERIC CODE SHEET LOCK",
+  "globalRoot": "2101.6",
+  "globalReference": "^GECS(2101.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file/field is used to display to the user information regarding the reason batching or transmission of code sheets is locked.   The syntax of the field entry is 'station number'- 'code sheet system identifier (3 character)'- (either BATCH or TRANSMIT). code sheets. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCKED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the user which currently has the batching or transmission locked. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME LOCKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date and time the batching or transmission was locked. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2101.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

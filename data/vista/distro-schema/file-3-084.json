@@ -1,0 +1,45 @@
+{
+  "fileNumber": 3.084,
+  "fileName": "FAILED SIGNON ATTEMPTS",
+  "globalRoot": "3.084",
+  "globalReference": "^XUSEC(4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IP or DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ATTEMPT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field keeps track of the count of failed signon attempts from a given device or IP address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HOROLOG OF LAST UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the $H value of the last time this record was updated so  we can know when to clear it out. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.084", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "fileNumber": 444.2,
+  "fileName": "SIC CODE",
+  "globalRoot": "444.2",
+  "globalReference": "^PRC(444.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Standard Industrial Classification Code and Name, which are used to classify organizations by economic activity. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P444.21'",
+      "required": false,
+      "pointerTo": 444.21,
+      "helpText": "This is the free-text short description. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "444.2", "field": .01, "type": "regular"},
+    {"name": "444.2", "field": .01, "type": "regular"},
+    {"name": "444.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

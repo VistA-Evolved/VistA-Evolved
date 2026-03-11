@@ -1,0 +1,211 @@
+{
+  "fileNumber": 742.6,
+  "fileName": "QA INCIDENT SUMMARY",
+  "globalRoot": "742.6PI",
+  "globalReference": "^QA(742.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEDICAL CENTER",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the Medical Center where the incident occurred.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Holds the Date of the Quarterly Report. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;N:NHCU;D:DOMICILIARY;",
+      "helpText": "Indicates the Patient Type. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INCIDENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP742.1'",
+      "required": true,
+      "pointerTo": 742.1,
+      "helpText": "Indicates the Type of Incident. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TOTAL NON-INVESTIGATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of NON investigated incidents for a given quarter. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TOTAL INVESTIGATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total number of Investigated incidents over a given quarter. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TOTAL NON-INVESTIGATED 0",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total of Non-Investigated incidents with a Severity Level of 0. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TOTAL NON-INVESTIGATED 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total of Non-Investigated incidents with a Severity Level of 1. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TOTAL NON-INVESTIGATED 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Non-Investigated incidents with a Severity Level of 2. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TOTAL NON-INVESTIGATED 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Non-Investigated incidents with a Severity Level of 3. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TOTAL INVESTIGATED 0",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Investigated incidents with a Severity Level of 0. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TOTAL INVESTIGATED 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Investigated incidents with a Severity Level of 1. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "TOTAL INVESTIGATED 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Investigated incidents with a Severity Level of 2. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TOTAL INVESTIGATED 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Holds the Total Number of Investigated incidents with a Severity Level of 3. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Holds the Date the data was rolled up into the database. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "ALLEGED/PROVEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROVEN;0:ALLEGED;",
+      "helpText": "Defines whether the incident was alleged or proven. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "TRANSMITTED TO REGION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Defines whether the data has been sent to the region. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTANCE OF DEATH",
+      "dataType": "POINTER",
+      "rawType": "742.61PA",
+      "required": false,
+      "helpText": "Contains the totals for investigated and non-investigated types of  deaths. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "AA4", "field": },
+    {"name": "B", "field": },
+    {"name": "BINC", "field": },
+    {"name": "BTYPE", "field": },
+    {"name": "QDATE", "field": },
+    {"name": "742.6", "field": .01, "type": "regular"},
+    {"name": "742.6", "field": .01, "type": "regular"},
+    {"name": "742.6", "field": .02, "type": "regular"},
+    {"name": "742.6", "field": .02, "type": "regular"},
+    {"name": "742.6", "field": .03, "type": "regular"},
+    {"name": "742.6", "field": .03, "type": "regular"},
+    {"name": "742.6", "field": .04, "type": "regular"},
+    {"name": "742.6", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(742.6,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(742.1,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(742.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

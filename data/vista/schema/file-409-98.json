@@ -1,0 +1,98 @@
+{
+  "fileNumber": 409.98,
+  "fileName": "SDEC SETTINGS",
+  "globalRoot": "409.98",
+  "globalReference": "^SDEC(409.98,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "There are two records in the SDEC Settings file - VS GUI NATIONAL and VS  GUI LOCAL. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HELP LINK TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "409.981",
+      "required": false,
+      "helpText": "This multiple stores the URL and display name for help links displayed in  the HELP pane of VS GUI. ",
+      "isMultiple": true,
+      "subFileNumber": 409.981,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CURRENT GUI VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field stores the version number of the GUI (e.g., 2.1.0 R12) that  has been nationally released. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GUI VERSION EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date in this field is the date that the current GUI version was  installed at the site. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPT REQUEST COMMENT LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the maximum length of an appointment request comment. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAX RECS ACCUMULATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the MAX number of ACCUMULATED Records allowed to be  returned. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VVC APP URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "This field stores the URL where the VVC Web app is hosted. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VVC STOP CODE",
+      "dataType": "SUBFILE",
+      "rawType": "409.987",
+      "required": false,
+      "helpText": "This field stores the stop codes associated with VVC clinics. ",
+      "isMultiple": true,
+      "subFileNumber": 409.987,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

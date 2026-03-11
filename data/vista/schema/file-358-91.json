@@ -1,0 +1,56 @@
+{
+  "fileNumber": 358.91,
+  "fileName": "IMP/EXP MARKING AREA",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name should describe the appearance of the marking area on the form. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The text that should be displayed in the MARKING AREA. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TOOL KIT MEMBER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Used to prevent local sites from editing MARKING AREAS that are part of the tool kit. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REQUIRES SPECIAL PROCEDURE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "No means that the Marking Area is just text that can be printed.  YES  means that a special procedure must be called to print the Marking Area. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "358.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

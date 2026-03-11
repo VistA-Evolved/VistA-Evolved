@@ -1,0 +1,29 @@
+{
+  "fileNumber": 699.88,
+  "fileName": "NON-ENDOSCOPIC PROCEDURE",
+  "globalRoot": "699.88",
+  "globalReference": "^MCAR(699.88,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains a list of GI non-Endoscopic procedures. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.88", "field": .01, "type": "regular"},
+    {"name": "699.88", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

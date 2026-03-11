@@ -1,0 +1,239 @@
+{
+  "fileNumber": 359.3,
+  "fileName": "AICS ERROR AND WARNING LOG",
+  "globalRoot": "359.3",
+  "globalReference": "^IBD(359.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Enter the date and time that the error occured.  Normally errors are filed automatically by the computer when the error occurs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient that was being processed when the error  occured. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENCOUNTER DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time of the encounter that was being processed when the error occured. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Enter the Form Definition file entry that was being processed when the error occured. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FORM TRACKING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Enter the Form Tracking File number from the encounter form that was being processed when the error occured. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATA INTERNAL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the array number of the data element that was being processed when the error occured.  This number is normally added by the system when an error occured.  It can be used to debug the cause of the error when rescanning an encounter form. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATA VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the value of the data that was being processed when the error occured.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ERROR SOURCE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:AICS;2:PANDAS;99:PCE;",
+      "helpText": "This is the source of the data that caused the error, or may also be a listing of errors returned from PCE. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FORM NAME",
+      "dataType": "POINTER",
+      "rawType": "P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "This is the name of the Encounter form that was being processed when the error occured. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PACKAGE INTERFACE",
+      "dataType": "POINTER",
+      "rawType": "P357.6'",
+      "required": false,
+      "pointerTo": 357.6,
+      "helpText": "This is the name of the package interface for the data that was being processed when the error occured. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the data qualifer, if any, that was being processed when the error occured. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATA TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text associated with the data value that was being processed  when the error occured. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the user that was logged on when the error occured. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DIALOG NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,3",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the number of the dialog that was used to record this error. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the page of the form being scanned when the error occured. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "WORKSTATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID from the AICS workstation.  This is used to identify which workstation the error occured on.  ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the free text name of the option that was being used when the error occured. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DATE ERROR CORRECTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "USER CORRECTING DATA",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the user who corrected the data. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ERROR REVIEWED OR CORRECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter whether or not this error has been reviewed or corrected. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CLINIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is a computed field that can be used on outputs via VA FileManager for use by VA Medical Centers. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "359.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 359.31,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "359.3", "field": .01, "type": "regular"},
+    {"name": "359.3", "field": .01, "type": "regular"},
+    {"name": "359.3", "field": .02, "type": "regular"},
+    {"name": "359.3", "field": .05, "type": "regular"},
+    {"name": "359.3", "field": .13, "type": "regular"},
+    {"name": "", "field": 1.04, "type": "regular"},
+    {"name": "", "field": 1.04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBD(357.96,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(357.96,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .08, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(359.3,.08,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,8)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

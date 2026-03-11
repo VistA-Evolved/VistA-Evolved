@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2006.5843,
+  "fileName": "TELEREADER READER",
+  "globalRoot": "2006.5843",
+  "globalReference": "^MAG(2006.5843,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "READER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "A user with permission to run the TeleReader application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACQUISITION SITE",
+      "dataType": "POINTER",
+      "rawType": "2006.58431PA",
+      "required": false,
+      "helpText": "The Site (Institution) where the images are acquired. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5843", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

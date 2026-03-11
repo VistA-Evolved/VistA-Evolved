@@ -1,0 +1,57 @@
+{
+  "fileNumber": 9999999.27,
+  "fileName": "PROVIDER NARRATIVE",
+  "globalRoot": "9999999.27A",
+  "globalReference": "^AUTNPOV(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ245",
+      "length": 245,
+      "required": true,
+      "helpText": "This is the Narrative that the provider has written out that is his description of what he treated the patient for.   Enter a 2 to 80-character description.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 8801,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a mnemonic that stands for this provider narrative.   Enter a 1-2 character mnemonic. Enter a 1-2 character mnemonic. ",
+      "fieldNumber_": 8801
+    },
+    {
+      "fieldNumber": 75701,
+      "fieldName": "CLINICAL LEXICON",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This is the clinical expression related to the provider narrative. ",
+      "fieldNumber_": 75701
+    },
+    {
+      "fieldNumber": 75702,
+      "fieldName": "ORIGINATING FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used in the VA to identify what file pointing to the provider narrative file created the entry in the Provider Narrative File.  This may be useful as more packages create pointers to the Provider Narrative File to store the local capture of provider terminology.    The Problem List package puts its free text file number in this field when it adds provider narratives to the Provider Narrative File. ",
+      "fieldNumber_": 75702
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9999999.27", "field": .01, "type": "regular"},
+    {"name": "9999999.27", "field": 8801, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

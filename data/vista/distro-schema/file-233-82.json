@@ -1,0 +1,55 @@
+{
+  "fileNumber": 233.82,
+  "fileName": "ED COMPLAINT",
+  "globalRoot": "233.82",
+  "globalReference": "^EDPB(233.82,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NHAMCS CODE",
+      "dataType": "POINTER",
+      "rawType": "P233.81'",
+      "required": false,
+      "pointerTo": 233.81,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ATTRIBUTE",
+      "dataType": "SUBFILE",
+      "rawType": "233.821A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 233.821,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ASSOCIATED SYMPTOM",
+      "dataType": "SUBFILE",
+      "rawType": "233.822A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 233.822,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "233.82", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

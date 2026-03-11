@@ -1,0 +1,47 @@
+{
+  "fileNumber": 726,
+  "fileName": "EVENT CAPTURE CATEGORY",
+  "globalRoot": "726",
+  "globalReference": "^EC(726,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the category. This is a locally defined name. Each site should create their categories using the Event Capture Management Menu options within the software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DT CREATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date the category was created. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DT INACTIVE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date this category was inactivated. The category may be reactivated by entering an \"@\" at the date prompt thus deleting the inactive date. An Activate/ Inactivate Local Category option is provided on the Event Capture Management Menu to update this field. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "726", "field": .01, "type": "regular"},
+    {"name": "726", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 52.53,
+  "fileName": "PHARMACY AUTOMATED DISPENSING DEVICES",
+  "globalRoot": "52.53",
+  "globalReference": "^PS(52.53,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the automated dispensing device. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DNS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DNS name or IP address of the automated dispensing device. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the port associated with this automated dispensing device. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on or after which the automated dispensing device will  be inactive, and cannot be selected through the Outpatient Pharmacy options. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.53", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "D EN^DDIOL($P(^(0),U,2),\"\",\"?25\")"},
+    {"field": 2, "value": "D EN^DDIOL($P(^(0),U,3),\"\",\"?50\")"},
+    {"field": 3, "value": "I $P(^(0),U,4)'=\"\" D EN^DDIOL(\"Inactive: \"_$$FMTE^DILIBF($P(^(0),U,4),6),\"\",\"?60\")"}
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "fileNumber": 8925.97,
+  "fileName": "TIU CONVERSIONS",
+  "globalRoot": "8925.97",
+  "globalReference": "^TIU(8925.97,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATA CONVERTED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "PN:PROGRESS NOTES;DS:DISCHARGE SUMMARY;",
+      "helpText": "Field contains name of data converted ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time conversion is first started.  A record of restarts is kept in a subfile. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COMPLETED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time conversion completed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STARTING IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "When the conversion is begun the internal entry number (IEN) of the first record is stored in this field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROCESSING IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The internal file number of the last actual record processed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RECORDS PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains a running total of records successfully converted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ERROR COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field maintains a running total of the number of records not converted.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STOPPING IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "If a site wants to control a conversion, they may enter the IEN of the record at which they want the conversion to stop. In the case of progress notes, this allows for a controlled conversion of ^GMR(121 into TIU.  While the conversion is running, users can continue to use Generic Progress Notes. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROLLBACK - START",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "If a rollback of data is required, this is the IEN within ^TIU (8925 at which to start. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "ROLLBACK - STOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This IEN can help to control a rollback of data if necessary. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "HALT CONVERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be monitored by the conversion to determine if the conversion should be halted before completion. ",
+      "fieldNumber_": 2.5
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.97", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

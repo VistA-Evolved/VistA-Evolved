@@ -1,0 +1,284 @@
+{
+  "fileNumber": 220,
+  "fileName": "DENTAL PATIENT",
+  "globalRoot": "220P",
+  "globalReference": "^DENT(220,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "ENTER PATIENT'S NAME IN THIS ORDER: LAST, FIRST ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P220.5'",
+      "required": false,
+      "pointerTo": 220.5,
+      "helpText": "This field contains the Primary provider for this dental patient.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SECONDARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P220.5'",
+      "required": false,
+      "pointerTo": 220.5,
+      "helpText": "This field contains the Secondary provider for this dental patient. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PRIMARY FEE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the Primary Provider for the Patient is a Fee Basis provider, then  this field will be set to the name of the Fee provider. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SECONDARY FEE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the Secondary Provider for the Patient is a Fee Basis provider, then this field will be set to the name of the Fee provider. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICATION FOR CARE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW PATIENT;R:READMISSION/REAPPLICATION;",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EMERGENCY;2:COMPELLING MEDICAL NEED;3:EXTENDED CARE;4:NURSING HOME CARE;5:DOMICILIARY;6:SPECIAL PROVISION;7:PRIORITY 2;8:PRIORITY 3;",
+      "helpText": "ENTER CODE CHOOSE FROM: 01 = EMERGENCY 02 = COMPELLING MEDICAL NEED 03 = EXTENDED CARE 04 = NURSING HOME CARE 05 = DOMICILIARY 06 = SPECIAL PROVISION 07 = PRIORITY 2 08 = PRIORITY 3 ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FLUORIDE CODE 1",
+      "dataType": "POINTER",
+      "rawType": "P228.2'",
+      "required": false,
+      "pointerTo": 228.2,
+      "helpText": "This field contains the first of two restoration codes that flagged the  fluoride monitor. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FLUORIDE CODE 2",
+      "dataType": "POINTER",
+      "rawType": "P228.2'",
+      "required": false,
+      "pointerTo": 228.2,
+      "helpText": "This field contains the second of two restoration codes that flagged the fluoride monitor. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FLUORIDE MONITOR RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date (only) that the Fluoride Monitor was run for  this patient.  Because the monitor runs in the background when a user  brings up a patient and may potentially process many transactions, it  will only run once per day for a patient and then store the results so  that the next user will not have to wait. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FLUORIDE RX DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that a Fluoride prescription was given (written, or  prescribed) to the patient that meets the Fluoride Monitor criteria. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FLUORIDE MONITOR FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MONITOR IS PROCESSING;1:MONITOR IS MET (NO FLAG);2:ALERT PROVIDER (FLAG);",
+      "helpText": "This field contains the flag for the Fluoride Monitor.  A value of 0  (zero) means the monitor is currently running in the background for the  patient and the system/application should continue to poll for results.   A value of 1 means that there is no flag (either no restorative codes, or  fluoride was prescribed or treatment was given).  A value of 2 means the  provider should be flagged that restorative intervention is needed for  this patient. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ORAL MALIGNANCY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PERIAPICAL RADIOGRAPH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "BITE WING RADIOGRAPH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PANOGRAPHIC RADIOGRAPH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OTHER RADIOGRAPH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "EDENTULOUS NO DENTURES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "U:UPPER;L:LOWER;B:BOTH;",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "EDENTULOUS WITH DENTURES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "U:UPPER;L:LOWER;B:BOTH;",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "OTHER FINDINGS/REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "220.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 220.01,
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "TREATMENT PLAN PREPARED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "TREATMENT PLAN",
+      "dataType": "POINTER",
+      "rawType": "220.02P",
+      "required": false,
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "MEDICAL REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "TREATMENT PLAN #",
+      "dataType": "SUBFILE",
+      "rawType": "220.03I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 220.03,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DENTAL ALERTS",
+      "dataType": "SUBFILE",
+      "rawType": "220.04",
+      "required": false,
+      "helpText": "Contains the dental alerts for the patient - e.g. Antibiotic Premed, Sedation Premed, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 220.04,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70.01,
+      "fieldName": "LAST CLASSIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P220.2'",
+      "required": false,
+      "pointerTo": 220.2,
+      "helpText": "This is computer generated.  It is the last classification for this  patient based upon data filed in file 228.1 for which a transaction was  marked as completed or terminated.   This valued is stuffed from a cross reference on the dental transaction  file, 228.2. ",
+      "fieldNumber_": 70.01
+    },
+    {
+      "fieldNumber": 70.02,
+      "fieldName": "LAST CLASSIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is computed generated from data entered into file 228.2.  This is  date of the last classification. ",
+      "fieldNumber_": 70.02
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "TP CHART NUM",
+      "dataType": "SUBFILE",
+      "rawType": "220.071",
+      "required": false,
+      "helpText": "This multiple contains data used by the Discus Treatment Planning  software.  That software sequences transactions by patient per day.   Completed transactions have a chart number of 60 or greater.  Chart  numbers 0-59 indicate treatment plans.  The Discus software allows only  one completed chart number per day per patient.   To sequence the data within a chart number, the Discus software uses the  TIME COUNTER field.  For each transaction TIME COUNTER must be unique per  patient per day.   The",
+      "isMultiple": true,
+      "subFileNumber": 220.071,
+      "fieldNumber_": 71
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AP", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "220", "field": .01, "type": "regular"},
+    {"name": "220", "field": .09, "type": "regular"},
+    {"name": "220", "field": .1, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"},
+    {"name": "", "field": 7, "type": "regular"},
+    {"name": "220", "field": 50, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

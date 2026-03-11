@@ -1,0 +1,37 @@
+{
+  "fileNumber": 695.1,
+  "fileName": "REGIONAL WALL MOTION",
+  "globalRoot": "695.1",
+  "globalReference": "^MCAR(695.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a list of various Regional Wall Motions used by the Echo procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CURRENT ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CURRENTLY USED ENTRY.;",
+      "helpText": "This field is used as a screen to differentiate the current list of wall motions from past lists without removing the data to insure backwards compatibility on the Echo report. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "695.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

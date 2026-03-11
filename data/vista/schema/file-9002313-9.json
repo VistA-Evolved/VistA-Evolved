@@ -1,0 +1,50 @@
+{
+  "fileNumber": 9002313.9,
+  "fileName": "BPS NCPDP SEGMENTS",
+  "globalRoot": "9002313.9",
+  "globalReference": "^BPSF(9002313.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This is the name of an NCPDP segment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VISTA SEGMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Within VistA, each NCPDP segment has a number associated with it.  Within  the software, segments are referred to by this number.  Examples include:   100 = Transaction Header Segment   110 = Patient Segment   120 = Insurance Segment etc. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLAIM;R:RESPONSE;B:BOTH;",
+      "helpText": "Each NCPDP segment is a part of one or more types of transactions. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.9", "field": .01, "type": "regular"},
+    {"name": "9002313.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

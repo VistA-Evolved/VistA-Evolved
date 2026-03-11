@@ -1,0 +1,179 @@
+{
+  "fileNumber": 409.831,
+  "fileName": "SDEC RESOURCE",
+  "globalRoot": "409.831",
+  "globalReference": "^SDEC(409.831,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RESOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name for this resource. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation given to the Resource. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .012,
+      "fieldName": "RESOURCE TYPE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "VO",
+      "required": false,
+      "helpText": "This is a variable pointer field that can point to HOSPITAL LOCATION file  44, NEW PERSON file 200, or SDEC ADDITIONAL RESOURCE file 409.834. ",
+      "fieldNumber_": .012
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and time that this Resource was added. ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .016,
+      "fieldName": "ENTERED BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that defined this resource. ",
+      "fieldNumber_": .016
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field displays the inactive status of this resource. NO means this resource is not inactive (is active). YES means this resource inactive. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .021,
+      "fieldName": "INACTIVATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that this resource was inactivated. ",
+      "fieldNumber_": .021
+    },
+    {
+      "fieldNumber": .022,
+      "fieldName": "INACTIVATED BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that inactivated this resource. ",
+      "fieldNumber_": .022
+    },
+    {
+      "fieldNumber": .025,
+      "fieldName": "REACTIVATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time this resource was re-activated. ",
+      "fieldNumber_": .025
+    },
+    {
+      "fieldNumber": .026,
+      "fieldName": "REACTIVATED BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that re-activated this resource. ",
+      "fieldNumber_": .026
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TIME SCALE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "5:5;10:10;15:15;20:20;30:30;60:60;",
+      "helpText": "This is where the Time Scale is defined for this resource. The time scale is in Minutes and can be 5, 10, 15, 20, 30, or 60 minutes. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is where a HOSPITAL LOCATION (or Clinic) is linked to this Resource. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LETTER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "409.8311",
+      "required": false,
+      "helpText": "This is where the LETTER TEXT for a Resource is defined. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8311,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "NO SHOW LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "409.8311201",
+      "required": false,
+      "helpText": "This is where the NO SHOW LETTER is defined for this Resource. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8311201,
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1301,
+      "fieldName": "CLINIC CANCELLATION LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "409.8311301",
+      "required": false,
+      "helpText": "This is where the CLINIC CANCELLATION LETTER is defined for this Resource. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8311301,
+      "fieldNumber_": 1301
+    },
+    {
+      "fieldNumber": 2001,
+      "fieldName": "ASSOCIATED VISTA CLINICS",
+      "dataType": "POINTER",
+      "rawType": "409.8312001P",
+      "required": false,
+      "helpText": "Additional HOSPITAL LOCATIONs (or Clinics) can be listed here for this  Resource. ",
+      "fieldNumber_": 2001
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "ALOC", "field": },
+    {"name": "ASSOC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.831", "field": .01, "type": "regular"},
+    {"name": "409.831", "field": .011, "type": "regular"},
+    {"name": "409.831", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

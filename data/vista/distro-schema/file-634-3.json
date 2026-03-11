@@ -1,0 +1,83 @@
+{
+  "fileNumber": 634.3,
+  "fileName": "HBHC DISCHARGE ERROR(S)",
+  "globalRoot": "634.3P",
+  "globalReference": "^HBHC(634.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient name in Patient (2) file.  The discharge record in HBHC Patient (631) file is missing data or contains data inconsistencies.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HBHC DISCHARGE",
+      "dataType": "POINTER",
+      "rawType": "P631'",
+      "required": false,
+      "pointerTo": 631,
+      "helpText": "This field represents discharge record in HBHC Patient (631) file. Field updated by package only, no user input. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELDS 39:48 DR STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string supplied for DIE call) of discharge data fields 39-48, in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FIELDS 49:51 DR STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string supplied for DIE call) of discharge data fields 49-51, in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FIELDS 52:55 DR STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string for DIE call) of discharge data fields 52-55, in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FIELDS 56:59 DR STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string for DIE call) of discharge data fields 56-59, in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FIELDS 60:64 DR STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string for DIE call) of discharge data fields 60-64, in HBHC Patient (631) file. Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

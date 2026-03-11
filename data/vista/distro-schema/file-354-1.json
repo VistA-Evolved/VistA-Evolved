@@ -1,0 +1,210 @@
+{
+  "fileNumber": 354.1,
+  "fileName": "BILLING EXEMPTIONS",
+  "globalRoot": "354.1ID",
+  "globalReference": "^IBA(354.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "Enter the effective date of the exemption.     Patients will be given 1 year of exemption from the Medication Copayment requirement from this effective date.  For patients who's exemption is based on income data, every effort will be made to keep this effective date consistent with the Means Test Date of Test or the Copayment Income Test Date of Test. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP354'I",
+      "required": true,
+      "pointerTo": 354,
+      "helpText": "This is the patient that this Billing Exemption Entry is for.   The Patient must be in the Billing Patient File.  The Current Status for an exemption will be automatically stored in the Billing Patient file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:COPAY INCOME EXEMPTION;",
+      "helpText": "This is the type of exemption that this entry is for.  Each type of  exemption will have its own record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:EXEMPT;0:NON-EXEMPT;",
+      "helpText": "This is the Exemption Status of this record.  Enter whether the patient is exempt or not exempt from the TYPE of billing of this record.  Generally this data element will be entered by the system. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXEMPTION REASON",
+      "dataType": "POINTER",
+      "rawType": "RP354.2'I",
+      "required": true,
+      "pointerTo": 354.2,
+      "helpText": "Enter the reason that the patient is exempt or not exempt from this type of billing.  Entry of this field will automatically update the STATUS of this exemption record to the STATUS of the Exemption Reason.   For exmple, an exemption reason of \"In Receipt of Pension\" will automatically trigger a STATUS of Exempt for the Pharmacy Copay Income Exemption. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "HOW ADDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SYSTEM;2:MANUAL;",
+      "helpText": "This field indicates whether this record was automatically added by the system or manually entered by a user.   This field will always be entered by the system. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who was responsible for adding this entry.  If the  entry was SYSTEM added then the user would be the signed  on user when the exemption was created.  This may be a user who edited the patient record or who entered a prescription or a user who corrected an exemption.  All changes except Hardship exemptions will be considered SYSTEM added. If the entry was Manually added then this is the user who entered the Hardship exemption. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE/TIME ADDED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This is the date and time this entry was added.   The date time added will be different from the effective date in many cases, where the entry is based on actual income data and where there are changes to an exemption status.  When the exemption is based upon the fact that the patient is recieving pension, etc. the effective date and the date added may be the same. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ALERT",
+      "dataType": "POINTER",
+      "rawType": "P354.4'",
+      "required": false,
+      "pointerTo": 354.4,
+      "helpText": "Future use. An alert or mail message may be posted in association with the creation or editing of an exemption record.  If Alerts are used, then this field will store the pointer to the alert entry.  Once an alert has been resolved it will be deleted. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "Only 1 record for an effective date can be active at a time.  When it is necessary to change a patient's exemption status the user will be asked if this is the currently active record.  If yes, then all  other records for the effective date will be inactivated automatically. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Enter your Electronic Signature.  This field will be required whenever a user trys to create an exemption that is different from the exemption computed by the system.  This would be required in order to create a hardship exemption. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SECOND ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A second electronic signature for hardship exemptions will be implemented in a future release. | ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "RETRO CANCEL BILLS START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this exemption requires retroactively canceling prior charges, this is the beginning date for the retroactive cancellation.  This must be  tracked to prevent duplicate retroactive cancellations of the same charges. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RETRO CANCEL BILLS END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this exemption requires retroactively canceling prior charges, this is the ending date for the retroactive cancellation.  This must be    tracked to prevent duplicate retroactive cancellations of the same       charges. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRIOR YEAR THRESHOLDS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date of the threshold used to calculate exemptions based on income only if the date of the threshold was over 1 year in the past.  This will be used by the add threshold  option to list and recompute these exemptions when new thresholds are entered. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REMINDER LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the date on which the income test reminder letter was printed, based on this exemption.  This field is updated during the nightly background job which prints the letters.  If this exemption is encountered after a letter has already been printed (based on this exemption) another letter will not be printed. ",
+      "fieldNumber_": .16
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "ACAN", "field": },
+    {"name": "ACAN1", "field": },
+    {"name": "ACY", "field": },
+    {"name": "ACY2", "field": },
+    {"name": "ACY3", "field": },
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT2", "field": },
+    {"name": "AIVDT3", "field": },
+    {"name": "ALERT", "field": },
+    {"name": "AP", "field": },
+    {"name": "APIDT", "field": },
+    {"name": "APIDT1", "field": },
+    {"name": "APIDT2", "field": },
+    {"name": "APRIOR", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "354.1", "field": .01, "type": "regular"},
+    {"name": "354.1", "field": .01, "type": "regular"},
+    {"name": "354.1", "field": .01, "type": "regular"},
+    {"name": "354.1", "field": .01, "type": "regular"},
+    {"name": "354.1", "field": .02, "type": "regular"},
+    {"name": "354.1", "field": .02, "type": "regular"},
+    {"name": "354.1", "field": .02, "type": "regular"},
+    {"name": "354.1", "field": .02, "type": "regular"},
+    {"name": "354.1", "field": .02, "type": "regular"},
+    {"name": "354.1", "field": .03, "type": "regular"},
+    {"name": "354.1", "field": .03, "type": "regular"},
+    {"name": "354.1", "field": .03, "type": "regular"},
+    {"name": "354.1", "field": .04, "type": "regular"},
+    {"name": "354.1", "field": .05, "type": "regular"},
+    {"name": "354.1", "field": .09, "type": "regular"},
+    {"name": "354.1", "field": .1, "type": "regular"},
+    {"name": "354.1", "field": .1, "type": "regular"},
+    {"name": "354.1", "field": .1, "type": "regular"},
+    {"name": "354.1", "field": .14, "type": "regular"},
+    {"name": "354.1", "field": .15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBA(354,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(354,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.1,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.1,.1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,10)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

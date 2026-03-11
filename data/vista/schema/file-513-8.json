@@ -1,0 +1,54 @@
+{
+  "fileNumber": 513.8,
+  "fileName": "UTILIZATION REVIEW",
+  "globalRoot": "513.8PI",
+  "globalReference": "^PRMQ(513.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to 'PATIENT' file. New entries are created by routine ^PRMQS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ADMISSION OR TRANSFER DATE",
+      "dataType": "DATE",
+      "rawType": "513.801ID",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 513.801,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS (PATIENT)",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;2:INACTIVE;",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AST", "field": },
+    {"name": "ATF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ISD", "field": },
+    {"name": "SD", "field": },
+    {"name": "ST", "field": },
+    {"name": "513.8", "field": .01, "type": "regular"},
+    {"name": "513.8", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .01, "value": "W \"\""}
+  ]
+}

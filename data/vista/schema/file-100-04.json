@@ -1,0 +1,55 @@
+{
+  "fileNumber": 100.04,
+  "fileName": "ORDER CHECK OVERRIDE REASONS",
+  "globalRoot": "100.04",
+  "globalReference": "^ORD(100.04,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the pre-determine allergy/order check reason.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Shorten characters synonym for order check. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ALLERGY;O:ORDER CHECK;B:BOTH;R:REMOTE COMMENT;",
+      "helpText": "Indicates the type of Order Check. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RSt11",
+      "required": true,
+      "helpText": "Field used to determine if entry is currently active. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

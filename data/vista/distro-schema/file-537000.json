@@ -1,0 +1,130 @@
+{
+  "fileNumber": 537000,
+  "fileName": "VAMC NETWORK HEALTH EXCHANGE",
+  "globalRoot": "537000I",
+  "globalReference": "^AFJ(537000,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the message number from the requesting facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE REQUEST WAS MADE. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TYPE OF REQUEST:  TOTAL (ALL)   OR    PHARMACY  DATA AND ALSO BRIEF DISPLAY OF DATA ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "PATIENT'S SSN.  MUST BE IN YOUR PATIENT FILE ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUESTOR DUZ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DUZ OF REQUESTOR ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUESTOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NAME OF REQUESTOR ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQUESTING PLACE",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "FACILITY REQUESTING DATA ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PATIENT DATA FOUND?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "WAS THIS DATA FOUND SUCESSFULLY.  AUDITED ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SENSITIVE PATIENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "IS THIS A SENSITIVE PATIENT?  IF SO, SENDS BULLETIN TO SECURITY OFFICER. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OUTGOING REQUEST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE/TIME COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "537000", "field": .01, "type": "regular"},
+    {"name": "537000", "field": 1, "type": "regular"},
+    {"name": "537000", "field": 3, "type": "regular"},
+    {"name": "537000", "field": 7, "type": "regular"},
+    {"name": "537000", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "N AX S AX=$P(^(0),U,2) D EN^DDIOL($E(AX,4,5)_\"-\"_$E(AX,6,7)_\"-\"_$E(AX,2,3),\"\",\"?0\")"},
+    {"field": W3, "value": "D EN^DDIOL($P(^(0),U,4),\"\",\"?0\")"},
+    {"field": W7, "value": "D EN^DDIOL($P(^(0),U,8),\"\",\"?0\")"},
+    {"field": W8, "value": "D EN^DDIOL($$GET1^DIQ(537000,Y_\",\",8),\"\",\"?0\")"}
+  ]
+}

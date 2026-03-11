@@ -1,0 +1,40 @@
+{
+  "fileNumber": 2101.7,
+  "fileName": "GENERIC CODE SHEET SITE",
+  "globalRoot": "2101.7P",
+  "globalReference": "^GECS(2101.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is used to store the name of the site from the INSTITUTION file which will be using the Generic Code Sheet Package to create and transmit code sheets. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIMARY SITE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field (if set to Yes) indicates whether the site is a primary (defaulted) site for the Generic Code Sheet Package. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "2101.7", "field": .01, "type": "regular"},
+    {"name": "2101.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

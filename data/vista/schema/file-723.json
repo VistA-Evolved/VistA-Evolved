@@ -1,0 +1,27 @@
+{
+  "fileNumber": 723,
+  "fileName": "MEDICAL SPECIALTY",
+  "globalRoot": "723",
+  "globalReference": "^ECC(723,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the medical specialty. This information will be used when entering procedures within the Event Capture software. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "723", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

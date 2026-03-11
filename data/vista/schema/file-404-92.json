@@ -1,0 +1,79 @@
+{
+  "fileNumber": 404.92,
+  "fileName": "SCHEDULING REPORT DEFINITION",
+  "globalRoot": "404.92",
+  "globalReference": "^SD(404.92,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of scheduling report.  The name is presented to the user in the combo-box as part of the Query Template Utility functionality on the client workstation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT GROUP",
+      "dataType": "POINTER",
+      "rawType": "P404.94'",
+      "required": false,
+      "pointerTo": 404.94,
+      "helpText": "This field indicates the report group associated with the report definition. The grouping will be used in future releases to help screen reports available to the user during report selection. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.9201",
+      "required": false,
+      "helpText": "This field contains a description of the report's purpose and output. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9201,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SORTS",
+      "dataType": "SUBFILE",
+      "rawType": "404.9202",
+      "required": false,
+      "helpText": "This multiple field contains the list of possible ways this report can be sorted.  If this list contains more then one entry, then the user must select a sort as part of the report criteria. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9202,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FIELDS",
+      "dataType": "POINTER",
+      "rawType": "404.9203P",
+      "required": false,
+      "helpText": "This multiple contains the list of fields used by this report definition. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "FILES",
+      "dataType": "POINTER",
+      "rawType": "404.9204PI",
+      "required": false,
+      "helpText": "This multiple contains the list of files that the user usually must select entries for as part of the report criteria.  Most reports require at least the selection of one entry from each file in the multiple. However, there is at least one report where only one selection is allowed for the file. Also, there is at least one report that does not require any selection to be made if the user desires the report to search for null values.  The 'NUMBER OF SELECTIONS REQUIRED' (#.02) field indicates how",
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.92", "field": .01, "type": "regular"},
+    {"name": "404.92", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

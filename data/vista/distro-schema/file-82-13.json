@@ -1,0 +1,36 @@
+{
+  "fileNumber": 82.13,
+  "fileName": "DRG CC EXCLUSIONS",
+  "globalRoot": "82.13",
+  "globalReference": "^ICDCCEX(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXCLUSION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a code which identifies a group of primary Diagnosis  Codes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PDX",
+      "dataType": "POINTER",
+      "rawType": "82.131PA",
+      "required": false,
+      "helpText": "This multiple field contains a list of Diagnosis Codes. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "82.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

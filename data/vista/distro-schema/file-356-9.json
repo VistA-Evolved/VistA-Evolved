@@ -1,0 +1,91 @@
+{
+  "fileNumber": 356.9,
+  "fileName": "INPATIENT DIAGNOSIS",
+  "globalRoot": "356.9IP",
+  "globalReference": "^IBT(356.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "R*P80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis for this patient for this episode of care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADMISSION MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "*P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field should point to the admission movement of the inpatient episode that this diagnosis is for.  For ASIH movements it should point to the admission in the acute setting. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ONSET DATE THIS VISIT",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date of the onset of this diagnosis for this episode of care. If the diagnosis is for an admission then the date of onset should be within the dates of admission and discharge.  If the diagnosis is for an outpatient visit then the date of onset should be the visit date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:ADMITTING;",
+      "helpText": "Enter 'PRIMARY' if this is the primary diagnosis for this date, enter 'SECONDARY' if this is not the primary diagnosis for this date. Enter \"ADMITTING\" if this is the admitting diagnosis. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "POA INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Insufficient Documentation;W:Clinically Undetermined;",
+      "helpText": "The Present On Admission (POA) for the Inpatient Diagnosis indicates if  this condition was present at the time the patient was admitted.   One of the following values should be assigned in accordance with the  official coding guidelines:   Y = Present at the time of inpatient admission N = Not present at the time of inpatient admission U = Documentation is insufficient to determine if condition is present      on admission W = Provider is unable to clinically determine whether condition was    ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ADG", "field": },
+    {"name": "ADG1", "field": },
+    {"name": "ADG2", "field": },
+    {"name": "ADGPM", "field": },
+    {"name": "ADGPM1", "field": },
+    {"name": "APD", "field": },
+    {"name": "APD1", "field": },
+    {"name": "ATP", "field": },
+    {"name": "ATP1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "356.9", "field": .01, "type": "regular"},
+    {"name": "356.9", "field": .01, "type": "regular"},
+    {"name": "356.9", "field": .01, "type": "regular"},
+    {"name": "356.9", "field": .02, "type": "regular"},
+    {"name": "356.9", "field": .02, "type": "regular"},
+    {"name": "356.9", "field": .02, "type": "regular"},
+    {"name": "356.9", "field": .02, "type": "regular"},
+    {"name": "356.9", "field": .02, "type": "regular"},
+    {"name": "356.9", "field": .03, "type": "regular"},
+    {"name": "356.9", "field": .03, "type": "regular"},
+    {"name": "356.9", "field": .04, "type": "regular"},
+    {"name": "356.9", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(356.9,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": WRITE, "value": "N Y S Y=$G(^(0)) W \"   \",$P($G(^DPT(+$P($G(^DGPM(+$P(Y,U,2),0)),U,3),0)),U)"}
+  ]
+}

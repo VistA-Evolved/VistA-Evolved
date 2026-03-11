@@ -1,0 +1,66 @@
+{
+  "fileNumber": 2006.921,
+  "fileName": "ARTIFACT RETENTION POLICY",
+  "globalRoot": "2006.921",
+  "globalReference": "^MAGV(2006.921,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARTIFACT",
+      "dataType": "POINTER",
+      "rawType": "RP2006.916'",
+      "required": true,
+      "pointerTo": 2006.916,
+      "helpText": "This is the related Artifact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RETENTION POLICY",
+      "dataType": "POINTER",
+      "rawType": "RP2006.914'",
+      "required": true,
+      "pointerTo": 2006.914,
+      "helpText": "This is the related Retention Policy. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time that the record was created. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether or not the artifact retention policy record is  still active. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SATISFIED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that the artifact retention policy was satisfied. If this field is not set the artifact retention policy has not been satisfied. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.921", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

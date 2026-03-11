@@ -1,0 +1,38 @@
+{
+  "fileNumber": 18.03,
+  "fileName": "VISTALINK LISTENER CONFIGURATION",
+  "globalRoot": "18.03",
+  "globalReference": "^XOB(18.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the default VistALink configuration used  with the associated BOX-VOLUME PAIR specified in the FOUNDATIONS SITE PARAMETERS file (#18.01). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "LISTENER PORTS",
+      "dataType": "SUBFILE",
+      "rawType": "18.031",
+      "required": false,
+      "helpText": "This multiple field contains Listener port information associated with a  specific VistALink configuration entry.   Each Listener port entry holds the port number to be used by the VistALink Listener along with an indicator which will specify whether the Listener should be automatically tasked to start on system startup. ",
+      "isMultiple": true,
+      "subFileNumber": 18.031,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "18.03", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

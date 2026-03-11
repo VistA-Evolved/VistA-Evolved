@@ -1,0 +1,66 @@
+{
+  "fileNumber": 7118.22,
+  "fileName": "HDIS FACILITY TERM/CONCEPT ASSOCIATION",
+  "globalRoot": "7118.22",
+  "globalReference": "^HDISF(7118.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP7118.21'",
+      "required": true,
+      "pointerTo": 7118.21,
+      "helpText": "The system that sent the record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE/FIELD",
+      "dataType": "POINTER",
+      "rawType": "RP7115.6'I",
+      "required": true,
+      "pointerTo": 7115.6,
+      "helpText": "The File/Field associated with the record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INTERNAL REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The Internal Reference at the VAMC tht sent the record.  Could be an Internal Entry Numbers (IENS) or the internal value for a set of codes. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TERM/CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "RP7118.11'I",
+      "required": true,
+      "pointerTo": 7118.11,
+      "helpText": "A Term is any string.  A Concept is an abstract expression of a meaning.  A concept may have multiple expressions.  For instance, the concept of blood pressure can be expressed as hypertension or high blood pressure. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME ASSOCIATED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "The date and time the record is assigned to the Term/Concept. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7118.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

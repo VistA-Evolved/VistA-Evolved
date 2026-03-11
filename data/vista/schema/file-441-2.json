@@ -1,0 +1,82 @@
+{
+  "fileNumber": 441.2,
+  "fileName": "FEDERAL SUPPLY CLASSIFICATION",
+  "globalRoot": "441.2I",
+  "globalReference": "^PRC(441.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ4",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the 4-character long Federal Supply Classification (FSC) code or  Product Service Code (PSC). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATED DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an abbreviated Federal Supply Classification description. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "441.21",
+      "required": false,
+      "helpText": "This is a description of the classification. ",
+      "isMultiple": true,
+      "subFileNumber": 441.21,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P441.3'",
+      "required": false,
+      "pointerTo": 441.3,
+      "helpText": "This is a pointer to the file of FSC group categories. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMMODITY CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Drugs;2:Other Medical;3:General;6:Fuel;8:Subsistence;9:Unposted Building Supplies;D:Deleted Code;",
+      "helpText": "This is the FSC commodity code. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DLA ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "R*P423.9'",
+      "required": true,
+      "pointerTo": 423.9,
+      "helpText": "This field restricts the selection to DLA addresses only. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "441.2", "field": .01, "type": "regular"},
+    {"name": "441.2", "field": 1, "type": "regular"},
+    {"name": "441.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "fileNumber": 232.1,
+  "fileName": "EDP REPORT TEMPLATE",
+  "globalRoot": "232.1",
+  "globalReference": "^EDPB(232.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the report template. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:true;0:false;",
+      "helpText": "This field controls whether or not the template is inactive. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EDITABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:true;0:false;",
+      "helpText": "This field controls whether or not the template is editable. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY ELEMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "232.12",
+      "required": false,
+      "helpText": "This multiple holds each data element associated with a report template. ",
+      "isMultiple": true,
+      "subFileNumber": 232.12,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROLES",
+      "dataType": "POINTER",
+      "rawType": "232.13P",
+      "required": false,
+      "helpText": "This field holds the roles that can utilize this particular report  template. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "232.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "fileNumber": 810.1,
+  "fileName": "REMINDER REPORT TEMPLATE",
+  "globalRoot": "810.1",
+  "globalReference": "^PXRMPT(810.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The template name is displayed on the report criteria page of the reminder report and is used when selecting templates.  When editing an existing template, this field should ONLY be amended if you wish to RENAME the template. To make a COPY of a template under a new name (leaving the original intact), leave this field unchanged and enter a new name at the prompt 'STORE REPORT LOGIC IN TEMPLATE NAME:'. To DELETE a template, enter @ at template name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "TEMPLATE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Reminders Satisfied PXRMY;X:Reminders Due PXRMX;",
+      "helpText": "Templates are specific to the type of reminder report being run and are not interchangeable since the parameter set required for different reports varies.  ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PATIENT SAMPLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:Location;O:OE/RR team;P:Provider;T:PCMM team;I:Individual Patient;R:Reminder Patient List;",
+      "helpText": "The patient sample defines the patient cohort. Listed below are the parameters relevant to each sample type.   (I)ndividual Patients - A list of patients may be entered. (L)ocations - Hospital Locations, Clinic Stops or Clinic Groups may be               entered. Patients with encounters or appointments at these               locations are selected for reporting. (P)roviders - PCMM providers may be entered. Patients for these providers               are selected for reporting. Either Primary/Car",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "PRIMARY CARE ONLY OR ALL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:Primary care patients only;A:All patients;",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "REPORT TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "D:Detailed Report;S:Summary Report;",
+      "helpText": "The summary report displays the TOTAL number of patients with reminders APPLICABLE or DUE from the patient sample selected.   The detailed report lists DUE patients by name and SSN. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "LOCATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HA:All Outpatient Locations;HAI:All Inpatient Locations;HS:Selected Hospital Locations;CA:All Clinic Stops;CS:Selected Clinic Stops;GS:Selected Clinic Groups;",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "TYPE OF ENCOUNTER",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "F:Future Appointments;P:Prior Visits;A:Admissions;C:Current Inpatients;",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "LOCATIONS WITHOUT PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be used to determine if the list of locations without patients will print at the end of the report.   ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "DISPLAY PERCENTAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine if the Applicable, Due, and Done percentages values will be display with the report output.  ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "REPORT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A detailed report title may be defined when a template is created. This should be a detailed description of the report and is displayed both on the report criteria page and at template selection. ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REMINDER",
+      "dataType": "POINTER",
+      "rawType": "810.12PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "810.13PA",
+      "required": false,
+      "helpText": "This multiple stores a list of facilities to run the report against. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "810.14PA",
+      "required": false,
+      "helpText": "This multiple stores a list of users to run the report against. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RUN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the report was last run on. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "810.16PA",
+      "required": false,
+      "helpText": "This multiple stores a list of patients to run the report against. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OERR TEAM",
+      "dataType": "POINTER",
+      "rawType": "810.17PA",
+      "required": false,
+      "helpText": "This multiple stores a list of OERR teams to run the report against. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PCMM TEAM",
+      "dataType": "POINTER",
+      "rawType": "810.18PA",
+      "required": false,
+      "helpText": "This multiple stores a list of PCMM teams to run the report against. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SERVICE CATEGORY LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a comma separated list of service categories. It is used to screen visits while building a list of patients based on visits. If the service category of the visit is not on the list the visit will be excluded.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "810.11PA",
+      "required": false,
+      "helpText": "This multiple stores a list of Hospital locations to run the report  against. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "810.111PA",
+      "required": false,
+      "helpText": "This multiple stores a list of Clinic Stop Codes to run the report against. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CLINIC GROUP",
+      "dataType": "POINTER",
+      "rawType": "810.112PA",
+      "required": false,
+      "helpText": "This multiple stores a list of Clinic Groups to run the report against. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REMINDER CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "810.113P",
+      "required": false,
+      "helpText": "This multiple stores a list of Reminder Categories to use for Reminder  Evaluation done within the report and the display order. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PATIENT LIST",
+      "dataType": "POINTER",
+      "rawType": "810.114P",
+      "required": false,
+      "helpText": "This multiple stores a list of Reminder Patient Lists used by the report  to save the due patients to. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records who created the template. A template can be edited only by the person who created it or a user who holds the PXRM MANANGER key.  ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "810.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.9, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

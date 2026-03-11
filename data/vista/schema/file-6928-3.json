@@ -1,0 +1,344 @@
+{
+  "fileNumber": 6928.3,
+  "fileName": "ENG BUILDING",
+  "globalRoot": "6928.3",
+  "globalReference": "^ENG(6928.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": " Building identifier. Used for data validation when entries are made in the Space File. Building NAME should consist of either one or two pieces, separated by the hyphen (\"-\"). The rule is this:    1. Sites where building designations are unique in and    of themselves should have one-piece entries in this file.    Building NAME's should not contain any hyphens.    2. Sites where building designations are not necessarily    unique (multi-division sites and perhaps sites that support    remote cl",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DIVISION (broadly defined) in which this BUILDING is located. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "OWNERSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VAMC;L:LEASED;P:PLANNED;VBA:VET BENEFITS ADM;NCS:NAT CEMETERY SERV;O:OTHER;",
+      "helpText": "Denotes whether or not space is being leased, owned by a VA department, or entered for project planning purposes. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the individual, corporation, or government agency that owns the building.  Especially important in the case of leased space. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OWNER ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street address of the building's owner (line 1). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OWNER ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street address of building's owner (line 2). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OWNER CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to the building's owner. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OWNER STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Pertains to building's owner. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "OWNER ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to building's owner. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "PROPERTY ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to address of the property ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "PROPERTY ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to address of property ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "PROPERTY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to address of property ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "PROPERTY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Pertains to State in which property resides ",
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "PROPERTY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pertains to address of property ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contract under which building is leased. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LEASE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CAPITAL;O:OPERATING;OTHER:OTHER;",
+      "helpText": "Type of leasing agreement. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "LEASE CONTACT PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of person (Lessor) to contact for information on this lease ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "CONTACT PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Phone number of lessor contact person ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "LEASE PROPERTY/SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text name of Property/Building. Common name of site to be used as a more descriptive field than the Building Number field. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BASE TERM (MONTHS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Term of lease. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RENEWAL TERM (MONTHS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Period for which lease may be renewed once the BASE TERM has expired. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date on which current leasing documents were signed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Starting date of current lease. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ENDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Expiration date of current lease. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NET USABLE SQUARE FEET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Net Usable area in square feet. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "GROSS SQUARE FEET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Gross square feet of building. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TOTAL RENT (INCLUDE UTILITIES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Annual rent paid for use of this building.  Should include all utilities (estimate if necessary). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ACTIVATION COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Cost of activating this building for VA use. Total Dollars recieved for activation. Future software releases may provide a more detailed breakdown of activation costs. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SPEC. PURPOSE ALTERATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Cost of making this space usable for a special purpose. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PERSONNEL ASSIGNED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,1",
+      "length": 6,
+      "required": false,
+      "helpText": "Engineering FTEE assigned to work in this building. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ANCILARY COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Cost of ancilary services, equipment, maintenance contracts, etc. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "FUNDING SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "VACO:VACO REAL ESTATE;VAMC:MEDICAL CENTER;REG:REGION;OTHER:OTHER;",
+      "helpText": "Funding source for this lease or project. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PROJECT NO.",
+      "dataType": "POINTER",
+      "rawType": "P6925'",
+      "required": false,
+      "pointerTo": 6925,
+      "helpText": "A space plan (IMFP) can be entered room by room under a proposed real Building Number or a fabricated Building Number. Each Room in the Space file for this project MUST referance this building number for sorting and planning purposes. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "6928.321",
+      "required": false,
+      "helpText": "General comments pertinent to this building. ",
+      "isMultiple": true,
+      "subFileNumber": 6928.321,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "6928.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "6928.3", "field": .2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

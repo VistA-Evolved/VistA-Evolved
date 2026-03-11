@@ -1,0 +1,36 @@
+{
+  "fileNumber": 58.17,
+  "fileName": "AOU ITEM LOCATION",
+  "globalRoot": "58.17I",
+  "globalReference": "^PSI(58.17,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM ADDRESS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains a code that represents a portion of an item's location  address in an Area of Use.  This code is associated with an expansion  for clarity. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "CODE EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This text is used to clarify the meaning of the associated code.  Its primary purpose is for report information. ",
+      "fieldNumber_": .5
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.17", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

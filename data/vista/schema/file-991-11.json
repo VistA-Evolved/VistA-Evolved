@@ -1,0 +1,99 @@
+{
+  "fileNumber": 991.11,
+  "fileName": "CIRN HL7 EXCEPTION TYPE",
+  "globalRoot": "991.11",
+  "globalReference": "^RGHL7(991.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the index number of this exception. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEVERITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INFORMATIONAL;1:MINOR;2:SEVERE;",
+      "helpText": "This is the severity level of this exception, '0' for Informational, '1' for Minor or '2' for Severe. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MAIL;2:ALERT;3:MPI EXCEPTION HANDLER;",
+      "helpText": "This is the action to be taken upon logging this exception, '0' for None, '1' for Mail, '2' for Alert, or '3' for MPI Exception Handler. Exceptions whose action is MPI Exception Handler go to the exception handler located at the Austin MPI. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0X",
+      "length": 12,
+      "required": false,
+      "helpText": "This is a count of all exceptions logged of this type. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is a pointer to the MAIL GROUP file (#3.8), indicating which mail group a notification will be sent to for alert and mail action types. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field (up to 100 characters) which holds the message for this exception. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SECURITY KEY",
+      "dataType": "POINTER",
+      "rawType": "991.112P",
+      "required": false,
+      "helpText": "This is used to control access to a particular exception type.  A user must possess at least one of the listed security keys to  access the associated exception.  If no security keys are listed,  access is unrestricted. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "991.1199",
+      "required": false,
+      "helpText": "This is a word-processing field used for storing the detailed explanation of this exception type. ",
+      "isMultiple": true,
+      "subFileNumber": 991.1199,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "991.11", "field": .01, "type": "regular"},
+    {"name": "991.11", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 10, "value": "W:$D(^(10)) \"   \",$E(^(10),1,100)"}
+  ]
+}

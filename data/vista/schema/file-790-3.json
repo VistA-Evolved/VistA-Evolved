@@ -1,0 +1,69 @@
+{
+  "fileNumber": 790.3,
+  "fileName": "WV REFUSALS",
+  "globalRoot": "790.3",
+  "globalReference": "^WV(790.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFUSAL DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date the patient refused the procedure, test or examination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP790'",
+      "required": true,
+      "pointerTo": 790,
+      "helpText": "This field identifies the patient who refused health care (e.g., procedure, exam, tests).  Pointer to the WV Patient (#790) file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "RP790.2'",
+      "required": true,
+      "pointerTo": 790.2,
+      "helpText": "This field identifies the procedure or type of health care the patient refused.  Pointer to the WV Procedure Type (#790.2) file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TREATED ELSEWHERE;2:NO REASON;3:OTHER;",
+      "helpText": "This field indicates a general reason for why the patient refused treatment, i.e., (1) treatment was provided elsewhere, (2) no reason was given by the patient, or (3) an other reason was provided by the patient. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains comments related to this refusal.   ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "790.3", "field": .01, "type": "regular"},
+    {"name": "790.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

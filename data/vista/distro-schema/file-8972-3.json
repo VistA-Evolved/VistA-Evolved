@@ -1,0 +1,65 @@
+{
+  "fileNumber": 8972.3,
+  "fileName": "CP DATA ELEMENTS",
+  "globalRoot": "8972.3",
+  "globalReference": "^KMPD(8972.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if the DATA ELEMENT is selectable.  DATA ELEMENTS  should not be deleted, but will be made INACTIVE if they are no longer in  use. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA LOCATION (PIECE)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The DATA ELEMENTS are seperated by an up-arrow (^) in a data string.  This entry determines which piece represents this data.  DO NOT ALTER!!! ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A more 'readable' form of the DATA ELEMENT name used for prompts and  printouts. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY ON CODE EVALUATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Not all DATA ELEMENTS are appropriate for the CODE EVALUATOR.  This field  restricts which DATA ELEMENTS are displayed. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8972.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 728.506,
+  "fileName": "DSS DRUG PRODUCT CODE",
+  "globalRoot": "728.506",
+  "globalReference": "^ECX(728.506,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DSS DRUG PRODUCT CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XI",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the product code as determined by the DSS pharmaceutical task force.  The DESCRIPTION field (#1) indicates how this code is determined by a combination of VA drug classification, route of administration, and (in some cases) by specific generic name of a particular item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "VA classification description. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IDENTIFIER",
+      "dataType": "SUBFILE",
+      "rawType": "728.5061A",
+      "required": false,
+      "helpText": "Drug identifier composed of two numbers, separated by the letter \"A\", that represents drug and dose form from the NATIONAL DRUG file (#50.6). ",
+      "isMultiple": true,
+      "subFileNumber": 728.5061,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "728.506", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

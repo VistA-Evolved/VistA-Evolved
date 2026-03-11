@@ -1,0 +1,419 @@
+{
+  "fileNumber": 727.808,
+  "fileName": "PHYSICAL MOVEMENT EXTRACT",
+  "globalRoot": "",
+  "globalReference": "^ECX(727.808,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the facility/division where the extract was performed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ASIH (OTHER FACILITY);",
+      "helpText": "Indicates the patient's status for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character numeric string represents the date of the physical movement. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRODUCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The product or feeder key for this extract as defined by the DSS  Program Office. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8O",
+      "length": 8O,
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the admission associated with this physical movement occurred. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8O",
+      "length": 8O,
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the Discharge occurred for discharge-type movements. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PLACEHOLD TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:TRANSFER;3:DISCHARGE;",
+      "helpText": "This field, previously known as TYPE, is no longer needed.  The name has been changed to PLACEHOLD TYPE and its value will be set to null. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LOSING WARD",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Indicates the ward the patient is moving from. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The PTF CODE of the treating specialty associated with this extract record. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "LOSING WARD LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Length of stay on losing ward. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PLACEHOLDER1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A placeholder. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MOVEMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P405.2'",
+      "required": false,
+      "pointerTo": 405.2,
+      "helpText": "THE MAS movement type for this movement. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "MOV TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Time when this patient moved from the losing ward to the gaining ward. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "GAINING WARD",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Indicates the ward the patient moved to. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ADMISSION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6O",
+      "length": 6O,
+      "required": false,
+      "helpText": "The time of day at which the patient admission occurred. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PLACEHOLDER2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A placeholder. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PLACEHOLDER3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "To be used for future development; currently set to null. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PLACEHOLD MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as MASTER PATIENT INDEX, is no longer needed. The name has been changed to PLACEHOLD MPI and its value will be set to null. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as DSS DEPT., is no longer needed. The name  has been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CET/TR;",
+      "helpText": "Indicates if the patient is admitted to either a RRTP, PRRTP, or SARRTP  at the time care is provided. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "Indicate if patient is considered to be an observation patient. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique number assigned for DSS. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DISCHARGE PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient's primary care provider from the losing ward. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DISCHARGE PC TEAM",
+      "dataType": "POINTER",
+      "rawType": "P404.51'",
+      "required": false,
+      "pointerTo": 404.51,
+      "helpText": "Patient's primary care team from the losing ward. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DISCHARGE ASSOC PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the associate primary care provider at the time of discharge. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the division/facility where the patient is located. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DISCHARGE PC PROV PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the patient's primary care provider from the losing ward. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DISCH ASSOC PC PROVIDER PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Code of the Person Class of the associate primary care provider associated with this record. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DISCH ASSOC PC PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the patient's associate primary  care provider from the losing ward.  This field has a length of fifteen  characters. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DISCHARGE PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the patient's primary care  provider from the losing ward. This field has a length of fifteen  characters. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PATIENT DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is the Station Number of the gaining ward (for transfers) or  the losing ward (for discharges). ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PLACEHOLD CERNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ194",
+      "length": 194,
+      "required": false,
+      "helpText": "Placeholder for Cerner fields. Reserved for EHRM conversion. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "NEW MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "A national VA system identifier which uniquely identifies a patient.   Commonly called \"Patient ICN\" or \"Patient IEN\"; not to be confused with  the IEN from the VistA PATIENT file. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "*SELF IDENTIFIED GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Male;F:Female;TM:Transgender Male;TF:Transgender Female;O:Other;N:Does not wish to disclose;B:Non-Binary;",
+      "helpText": "The SELF IDENTIFIED GENDER value indicates the patient's personal sense  of their gender identity (if they choose to provide it).    Self-identified gender may be the same or different as the sex assigned  at birth.   This field has been deprecated as of patch ECX*3*196 and should no longer  be used. ",
+      "fieldNumber_": 41
+    }
+  ],
+  "fieldCount": 42,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.808", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

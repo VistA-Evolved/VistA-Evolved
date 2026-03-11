@@ -1,0 +1,38 @@
+{
+  "fileNumber": 409.824,
+  "fileName": "SDEC ACCESS GROUP TYPE",
+  "globalRoot": "409.824",
+  "globalReference": "^SDEC(409.824,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESS GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP409.822",
+      "required": true,
+      "pointerTo": 409.822,
+      "helpText": "The access group that is to be linked to an access type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACCESS TYPE",
+      "dataType": "POINTER",
+      "rawType": "P409.823'",
+      "required": false,
+      "pointerTo": 409.823,
+      "helpText": "The access type that is to be linked to an access group. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.824", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

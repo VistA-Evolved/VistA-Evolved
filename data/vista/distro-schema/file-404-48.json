@@ -1,0 +1,88 @@
+{
+  "fileNumber": 404.48,
+  "fileName": "PCMM HL7 EVENT",
+  "globalRoot": "404.48",
+  "globalReference": "^SCPT(404.48,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSMISSION REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TEAM POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The TEAM POSITION value needs to be preserved so deletions can be processed.   File 404.43    Save piece 2 (TP - Team Position IEN).    Use TP to get all providers with $$PRTPC^SCAPMC.    Get IEN from VARPTR and attach it to ID.    Send down a delete.   File 404.52    Save piece 1 (TP - Team Position IEN).    Get IEN from VARPTR.    Find every Primary Care 404.43 entry for this TP.    Create ID with 404.43 IEN-IEN-0-AP/PCP.    Send down a delete.   File 404.53    Save piece 1 (TP1) & piece 6 (TP",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EVENT POINTER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is used to enable PCMM to delete a future event from this Event file when a future assignment is deleted from either the PATIENT TEAM ASSIGNMENT or PATIENT TEAM POSITION ASSIGNMENT files. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "WORKLOAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WORKLOAD;",
+      "helpText": "This field is used to designate that the HL7 message is Workload and based on  Primary Care provider and position workload. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AACXMIT1", "field": },
+    {"name": "AACXMIT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.48", "field": .01, "type": "regular"},
+    {"name": "404.48", "field": .02, "type": "regular"},
+    {"name": "404.48", "field": .03, "type": "regular"},
+    {"name": "404.48", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": A1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": A2, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,7),1:\"\") W \"   \",DIY"}
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "fileNumber": 700.2,
+  "fileName": "PFT FORMULA",
+  "globalRoot": "700.2I",
+  "globalReference": "^MCAR(700.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PFT FORMULA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the actual formula used for the calculation of PFT predicted values ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to indicate which elements of the PFT the formula applies to.  For example, a TLC in this field would indicate that this formula is used for Total Lung Capacity predicted values.  This field is used as a screen when the formula set is edited. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the person developing the formula and the year in which it was developed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEX TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "This field indicates whether the formula applies to male or female patients. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "RACE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLACK;O:ORIENTAL;",
+      "helpText": "This field is used for doing race corrections on certain PFT elements.  It indicates whether the formula for race correction applies to Black or Oriental patients. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CI",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This field identifies the confidence interval.  It is subtracted from the predicted value to give a 95% confidence interval.  Not all elements will have confidence intervals. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the standard error equivalent, ie the amount of variance in the formula. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the method by which the formula was calculated. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEMOGRAPHICS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the type of demographics on which the study was done which resulted in the formula: ie, Black Males, White Females, etc. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SMOKERS INCLUDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies whether or not smokers were included in the study that resulted in the formula. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ALTITUDE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the altitude at which the study that resulted in the formula was done. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "700.2", "field": .01, "type": "regular"},
+    {"name": "700.2", "field": 1, "type": "regular"},
+    {"name": "700.2", "field": 2, "type": "regular"},
+    {"name": "700.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(700.2,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

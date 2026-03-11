@@ -1,0 +1,37 @@
+{
+  "fileNumber": 408.42,
+  "fileName": "MEANS TEST CHANGES TYPE",
+  "globalRoot": "408.42",
+  "globalReference": "^DG(408.42,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the type of change made to a means test. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field determines whether or not an entry is selectable.  All active change types are selectable. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "408.42", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

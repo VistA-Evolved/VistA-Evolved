@@ -1,0 +1,80 @@
+{
+  "fileNumber": 136.5,
+  "fileName": "PERIOPERATIVE OCCURRENCE CATEGORY",
+  "globalRoot": "136.5I",
+  "globalReference": "^SRO(136.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OCCURRENCE CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the perioperative occurrence category to be used when categorizing surgical and anesthesia perioperative occurrences. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this perioperative occurrence category is no longer used, enter YES to flag this category as INACTIVE. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "136.52",
+      "required": false,
+      "helpText": "This is a description used to further define the perioperative occurrence type. ",
+      "isMultiple": true,
+      "subFileNumber": 136.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "136.53",
+      "required": false,
+      "helpText": "This is another name for this perioperative occurrence category. ",
+      "isMultiple": true,
+      "subFileNumber": 136.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INTRAOPERATIVE ALLOWED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this occurrence category may be associated with an intraoperative occurrence, enter YES. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CARDIAC ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If this occurrence category may be associated with a cardiac assessed case only, enter YES. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "136.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "D DESC^SROCMPS"}
+  ]
+}

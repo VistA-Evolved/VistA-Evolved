@@ -1,0 +1,36 @@
+{
+  "fileNumber": 771.8,
+  "fileName": "HL7 STANDARD",
+  "globalRoot": "771.8",
+  "globalReference": "^HL(771.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "771.82",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 771.82,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

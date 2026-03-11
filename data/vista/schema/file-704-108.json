@@ -1,0 +1,100 @@
+{
+  "fileNumber": 704.108,
+  "fileName": "TERM_MAPPING_TABLE",
+  "globalRoot": "704.108",
+  "globalReference": "^MDC(704.108,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the Global Unique IDentifier (GUID) that identifies the  mapping table. A sample ID could be \"{4E41823C-CB5B-499F-BAAC-13626A6CD0D2}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the NAME of the mapping table. A sample could be \"DeviceX ServiceZ\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HL7_SENDING_APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the application sending the HL7 message.  This will be used  for matching purposes. A sample HL7 SENDING APPLICATION could be \"ServiceZ\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this mapping-table is ACTIVE or not. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a comment about the mapping-table. A sample COMMENT could be \"Default DeviceX ServiceZ mapping table\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "SOURCE_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the source of the HL7 message. A sample SOURCE ID could be \"DeviceX\". ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "SOURCE_APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the application regarded as the source of the HL7 message. A sample SOURCE APPLICATION could be \"ServiceZ\". ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "SOURCE_VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the version of the source of the HL7 message. A sample SOURCE VERSION could be \"VerN-ReleaseN.NN\". ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "SOURCE_TRUSTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether data processed via this source/mapping-table  is \"trusted\" or not.  Only verified data will be filed.   Verification may be done with user intervention or it may be  automatic.  Trusted mapping-tables will have their data filed as \"verified\" without user intervention.   ",
+      "fieldNumber_": .24
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W:$D(^(.1)) \"   \",$P(^(.1),U,1)"}
+  ]
+}

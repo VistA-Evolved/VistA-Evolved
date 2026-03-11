@@ -1,0 +1,36 @@
+{
+  "fileNumber": 50.608,
+  "fileName": "PACKAGE TYPE",
+  "globalRoot": "50.608",
+  "globalReference": "^PS(50.608,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the package type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when this package type was made inactive. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.608", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

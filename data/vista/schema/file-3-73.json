@@ -1,0 +1,54 @@
+{
+  "fileNumber": 3.73,
+  "fileName": "MESSAGES TO BE NEW AT A LATER DATE",
+  "globalRoot": "3.73ID",
+  "globalReference": "^XMB(3.73,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE MESSAGE WILL BE NEW",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field should be in FileMan format.  The file will be X-referenced by it and the background filer will process it on that date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user for whom the message will be later'd. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "R*P3.9'",
+      "required": true,
+      "pointerTo": 3.9,
+      "helpText": "This field indicates which message is to appear NEW at a later date. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AB1", "field": },
+    {"name": "AC", "field": },
+    {"name": "C", "field": },
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "3.73", "field": .01, "type": "regular"},
+    {"name": "3.73", "field": 1, "type": "regular"},
+    {"name": "3.73", "field": 2, "type": "regular"},
+    {"name": "3.73", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^XMB(3.9,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(3.9,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

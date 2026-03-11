@@ -1,0 +1,68 @@
+{
+  "fileNumber": 601.87,
+  "fileName": "MH SCALES",
+  "globalRoot": "601.87",
+  "globalReference": "^YTT(601.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCALE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the unique record number for MH SCALES file (#601.87). It is the IEN. Numbers  under 100,000 belong to the national database and should not be edited  locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCALEGROUP ID",
+      "dataType": "POINTER",
+      "rawType": "P601.86'",
+      "required": false,
+      "pointerTo": 601.86,
+      "helpText": "This associates a ScaleGroup with this scale. It is a pointer to the  SCALEGROUP ID field (#.01) of the MH SCALEGROUP file (#601.86). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCALE SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This specifies the order the scale is displayed within the ScaleGroup. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCALE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Print Name for the scale, eg. Anxiety, Depression Score, Total. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "XLABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used in graphing, this is the label for a data point on the graph's x axis. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "601.87", "field": .01, "type": "regular"},
+    {"name": "601.87", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

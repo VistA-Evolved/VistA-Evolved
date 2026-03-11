@@ -1,0 +1,40 @@
+{
+  "fileNumber": 168,
+  "fileName": "TYPE OF REPORTING SOURCE",
+  "globalRoot": "168",
+  "globalReference": "^ONCO(168,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Records TYPE OF REPORTING SOURCE codes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Records the TYPE OF REPORTING SOURCE code definitions. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "168", "field": .01, "type": "regular"},
+    {"name": "168", "field": 1, "type": "regular"},
+    {"name": "168", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

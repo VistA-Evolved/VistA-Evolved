@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2005.41,
+  "fileName": "MICROSCOPIC OBJECTIVE",
+  "globalRoot": "2005.41",
+  "globalReference": "^MAG(2005.41,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "POWER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the microscopic power used in the Anatomic Pathology laboratory. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

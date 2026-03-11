@@ -1,0 +1,27 @@
+{
+  "fileNumber": 693.6,
+  "fileName": "EP INTERVENTION",
+  "globalRoot": "693.6",
+  "globalReference": "^MCAR(693.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a list of EP interventions for use by the Atrial and Ventricular study files.  This list is locally entered through the Cardiology Management menu. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "693.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

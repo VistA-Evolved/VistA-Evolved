@@ -1,0 +1,56 @@
+{
+  "fileNumber": 728.441,
+  "fileName": "NATIONAL CLINIC",
+  "globalRoot": "728.441",
+  "globalReference": "^ECX(728.441,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The national standard four character code for the clinic. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The short description for the type of clinic represented by this national code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "728.4412",
+      "required": false,
+      "helpText": "The long description for the type of clinic represented by this code. This description may be used to provide guidance in assigning national codes to clinics. ",
+      "isMultiple": true,
+      "subFileNumber": 728.4412,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date when the NATIONAL CLINIC code was inactivated. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "728.441", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

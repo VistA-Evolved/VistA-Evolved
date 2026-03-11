@@ -1,0 +1,78 @@
+{
+  "fileNumber": 58.19,
+  "fileName": "PHARMACY AOU INVENTORY",
+  "globalRoot": "58.19DI",
+  "globalReference": "^PSI(58.19,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This contains a number that uniquely identifies this inventory. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME FOR INVENTORY",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This contains the date that the AOU inventory takes place for Automatic  Replenishment.  Primary inventory information is stored here. Inventory entries in File 58.1 - the Pharmacy AOU Stock File point to  this value when processing an inventory. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "AREA OF USE",
+      "dataType": "POINTER",
+      "rawType": "58.24PA",
+      "required": false,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PERSON DOING INVENTORY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This points to File 200 - the New Person File, identifying the person who creates the inventory. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DAY OF WEEK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MON:MONDAY;TUE:TUESDAY;WED:WEDNESDAY;THU:THURSDAY;FRI:FRIDAY;SAT:SATURDAY;SUN:SUNDAY;",
+      "helpText": "This contains the day of the week when the inventory was done. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INVENTORY GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This points to File 58.2 - AOU Inventory Group File.  It contains the inventory group - cluster of AOUs which are inventoried together. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "58.19", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$S($D(^VA(200,+$P(^(\"0\"),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": WRITE, "value": "S GRP=$P(^PSI(58.19,Y,0),U,4) W !,?6 F LP=2:1:($L(GRP,\",\")-1) S PC=$P(GRP,\",\",LP) W $S($D(^PSI(58.2,PC,0)):$P(^(0),U),1:\"\") W:LP<($L(GRP,\",\")-1) \", \""}
+  ]
+}

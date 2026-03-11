@@ -1,0 +1,172 @@
+{
+  "fileNumber": 357.1,
+  "fileName": "ENCOUNTER FORM BLOCK",
+  "globalRoot": "357.1I",
+  "globalReference": "^IBE(357.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "    The name of the block. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FORM",
+      "dataType": "POINTER",
+      "rawType": "RP357'",
+      "required": true,
+      "pointerTo": 357,
+      "helpText": "  The form the block appears on. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BLOCK'S STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The row  on the encounter form that the block starts on. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BLOCK'S STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The column on the encounter form that the block starts on. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WIDTH IN CHARACTERS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The width of the block, measured in the number of characters across. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "HEIGHT IN LINES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The height of the block, measured by the number of lines it takes up. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "OUTLINE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SOLID LINE;2:INVISIBLE;",
+      "helpText": "  How the block is outlined on the form. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BLOCK HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The text appearing at the top of the block. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "HEADER APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This field determines the appearance of the block's header. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  A brief description of the contents or use of the block. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TOOLKIT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "A number>0 in this field means that the block is part of the toolkit. The value determines the order that the block will be listed to the screen that displays the toolkit blocks. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMPILED STRINGS",
+      "dataType": "SUBFILE",
+      "rawType": "357.11A",
+      "required": false,
+      "helpText": "Contains a compiled list of the calls, along with the arguments, that should be made to the routine that prints strings to the form. Before printing, the block offset is added to the string position. ",
+      "isMultiple": true,
+      "subFileNumber": 357.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPILED VERTICAL LINES",
+      "dataType": "SUBFILE",
+      "rawType": "357.12A",
+      "required": false,
+      "helpText": "A compiled list of the vertical lines that are needed to print the block. The arguments to the routine that prints the line are included. The block's offset is must be added to the line's position. ",
+      "isMultiple": true,
+      "subFileNumber": 357.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPILED BUBBLES",
+      "dataType": "SUBFILE",
+      "rawType": "357.13",
+      "required": false,
+      "helpText": "A compiled list of the bubbles appearing in the block. The arguments to the  routine that prints the bubble are included. The block's offset must be added to the bubbles position. ",
+      "isMultiple": true,
+      "subFileNumber": 357.13,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMPILED HAND PRINT FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "357.14",
+      "required": false,
+      "helpText": "A compiled list of the hand print fields appearing in the block. The arguments to the routine that prints the hand print fields are included. The block's offset must be added to the hand print field's position. ",
+      "isMultiple": true,
+      "subFileNumber": 357.14,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "357.1", "field": .01, "type": "regular"},
+    {"name": "357.1", "field": .02, "type": "regular"},
+    {"name": "357.1", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""}
+  ]
+}

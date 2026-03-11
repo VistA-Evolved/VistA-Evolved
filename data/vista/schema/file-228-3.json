@@ -1,0 +1,47 @@
+{
+  "fileNumber": 228.3,
+  "fileName": "TREATMENT PLAN CONSTANT DATA",
+  "globalRoot": "228.3",
+  "globalReference": "^DENT(228.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is name of the constant data variable used in the PC Treatment plan  software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AREA;2:ASPECT;3:CHART_TYPE;4:CONDITION;5:MATERIAL;6:SOFT_TISSUE_SIZE;7:TRAN_STATUS",
+      "helpText": "Enter the type of this constant data element. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter the numeric value for this constant.   This will be the internal  value used in the Discus Treatment plan software. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "228.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

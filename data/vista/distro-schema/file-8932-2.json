@@ -1,0 +1,26 @@
+{
+  "fileNumber": 8932.2,
+  "fileName": "PROGRAM OF STUDY",
+  "globalRoot": "8932.2",
+  "globalReference": "^USC(8932.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the program of study. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

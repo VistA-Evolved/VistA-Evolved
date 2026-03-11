@@ -1,0 +1,404 @@
+{
+  "fileNumber": 65.5,
+  "fileName": "BLOOD DONOR",
+  "globalRoot": "65.5I",
+  "globalReference": "^LRE(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "IDENTIFICATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is a unique number assigned to the blood donor.  An existing  number cannot be assigned to a new donor. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Name of blood donor ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "This is the sex of the blood donor. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the age of the donor.  (Must be 17 years or older.) ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the computed age of the donor. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "APHERESIS CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;1:yes;2:no;",
+      "helpText": "If donor is willing donate plasma, platelets, or leukocytes  enter 'YES' ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ABO GROUP",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "A:A;B:B;O:O;AB:AB;",
+      "helpText": "The ABO group of the donor is entered here ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RH TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "POS:POSITIVE;NEG:NEGATIVE;",
+      "helpText": "The RH type of the donor is entered here ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CUMULATIVE DONATIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Total number of donation credits based on values assigned  to each type of donation. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TOTAL AWARDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of awards given based on 1 award for each gallon  or equivalent (8 donation credits) donated ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .085,
+      "fieldName": "GIVE NEW AWARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "To acknowledge giving award delete entry by entering '@' ",
+      "fieldNumber_": .085
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DEMOG ENT/EDIT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person entering or editing donor demographic data ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PERMANENT DEFERRAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Donor should be permanently deferred as a homologous blood  donor based on donor history or test results. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DATE REGISTERED/EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the donor was registered into this file. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DEFERRAL ENTER/EDIT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person entering or editing permanent deferral of donor. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": " This field contains the social security number of the donor. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "MILITARY RANK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  If this collection is being performed by a DOD site, the rank of the donor is entered in this field. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PERMANENT DEFERRAL DATE CHANGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": " If the deferral date is adjusted, the date is entered in this field. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First line of donor address ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second line of donor address (if necessary) ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "ADDRESS LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Third line of donor address (if necessary) ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City of donor ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "State of donor residence.. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Zip code of donor ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "HOME PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Home phone of donor ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "WORK PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Phone where donor works so that the donor may be reached  during working hours if necessary ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP AFFILIATION",
+      "dataType": "POINTER",
+      "rawType": "65.51PA",
+      "required": false,
+      "helpText": "These are groups with which the donor may be associated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DONOR SCHEDULING/RECALL",
+      "dataType": "SET",
+      "rawType": "65.53SA",
+      "required": false,
+      "helpText": "These are donors placed on a specific recall list for recruitment purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 65.53,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DONATION OR DEFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "65.54DA",
+      "required": false,
+      "helpText": "These are the dates of donation or referral. ",
+      "isMultiple": true,
+      "subFileNumber": 65.54,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "RBC ANTIGEN PRESENT",
+      "dataType": "POINTER",
+      "rawType": "65.56PA",
+      "required": false,
+      "helpText": "Antigens identified as present on the red blood cells  of the donor.  SNOMED codes can be entered as well as  the name of the antigen.  Synonyms can also be used  if they are in the function field file (#61.3) ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "RBC ANTIGEN ABSENT",
+      "dataType": "POINTER",
+      "rawType": "65.57PA",
+      "required": false,
+      "helpText": "Multiple for RBC Antigen absent ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "HLA ANTIGEN PRESENT",
+      "dataType": "POINTER",
+      "rawType": "65.58PA",
+      "required": false,
+      "helpText": "Multiple for HLA antigen present ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "HLA ANTIGEN ABSENT",
+      "dataType": "POINTER",
+      "rawType": "65.59PA",
+      "required": false,
+      "helpText": "Multiple for HLA antigen absent ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "CMV ANTIBODY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEG;1:POS;",
+      "helpText": "A negative or positive result for the Cytomegalovirus antibody ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BLOOD DONOR COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "65.52",
+      "required": false,
+      "helpText": " This field contains comments about the donor not found elsewhere. ",
+      "isMultiple": true,
+      "subFileNumber": 65.52,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "This field is a pointer to the lab data stored in the lab data file (#63) ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "PERMANENT DEFERRAL REASON",
+      "dataType": "SUBFILE",
+      "rawType": "65.99",
+      "required": false,
+      "helpText": "Reason(s) why donor is permanently deferred ",
+      "isMultiple": true,
+      "subFileNumber": 65.99,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 37,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "G4", "field": },
+    {"name": "G40", "field": },
+    {"name": "65.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "65.5", "field": .01, "type": "regular"},
+    {"name": "65.5", "field": .01, "type": "regular"},
+    {"name": "65.5", "field": .03, "type": "regular"},
+    {"name": "", "field": .085, "type": "regular"},
+    {"name": "65.5", "field": .13, "type": "regular"},
+    {"name": "65.5", "field": .13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": .03, "value": "W:$D(^(\"0\")) \"   \",$E($P(^(\"0\"),U,3),4,5)_\"-\"_$E($P(^(\"0\"),U,3),6,7)_\"-\"_$E($P(^(\"0\"),U,3),2,3)"},
+    {"field": 1.4, "value": "W:$D(^(\"1\")) \"   \",$P(^(\"1\"),U,4)"}
+  ]
+}

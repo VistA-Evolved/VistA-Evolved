@@ -1,0 +1,76 @@
+{
+  "fileNumber": 2006.598,
+  "fileName": "DICOM ERROR MESSAGE QUEUE",
+  "globalRoot": "2006.598",
+  "globalReference": "^MAGDICOM(2006.598,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that is used as the header for the error message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies a MUMPS routine. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IGNORE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Create error log;1:Ignore error log;",
+      "helpText": "The value of this field is a flag that indicates whether or not an error log is to be produced. When the value of this field is false, an error log is created, otherwise the creation of the error log is ignored. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CRITICAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Not critical;1:Critical;",
+      "helpText": "The value of this field is a flag that indicates whether or not the current error is a \"critical\" one. When an error is \"critical\", a e-mail message will be transmitted to the Imaging Team in Silver Spring. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5985",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5985,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ERROR REPORT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5986A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5986,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.598", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

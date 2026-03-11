@@ -1,0 +1,2951 @@
+{
+  "id": "user-security",
+  "name": "User & Security Management",
+  "description": "User accounts, access codes, security keys, menu assignments",
+  "vdlManual": "kernel-technical-manual.pdf",
+  "generatedAt": "2026-03-11T04:21:11.824Z",
+  "files": {
+    "count": 6,
+    "items": [
+      {
+        "fileNumber": 200,
+        "fileName": "File #200",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 3.1,
+        "fileName": "File #3.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 19,
+        "fileName": "File #19",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 19.1,
+        "fileName": "File #19.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 8989.3,
+        "fileName": "File #8989.3",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 8989.5,
+        "fileName": "File #8989.5",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 82,
+    "items": [
+      {
+        "name": "XUS SIGNON SETUP",
+        "tag": "SETUP",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "XWBUSRNM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ASOSKIP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "D20",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #1632 - API ICR #4054 Establishes the environment necessary for VistA sign-on. "
+      },
+      {
+        "name": "XUS SEND KEYS",
+        "tag": "SENDKEYS",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns an array of strings that are used in the hashing algorithm. The strings that are returned are picked up from Z^XUSRB. "
+      },
+      {
+        "name": "XUS AV CODE",
+        "tag": "VALIDAV",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "AVCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API checks if a ACCESS/VERIFY code pair is valid. It returns an array of values   R(0)=DUZ if sign-on was OK, zero if not OK. R(1)=(0=OK, 1,2...=Can't sign-on for some reason). R(2)=verify needs changing. R(3)=Message. R(4)=0 R(5)=count of the number of lines of text, zero if none. R(5+n)=messa"
+      },
+      {
+        "name": "XUS INTRO MSG",
+        "tag": "INTRO",
+        "routine": "XUSRB",
+        "returnType": "WORD PROCESSING",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns the INTRO message from the KERNEL SYSTEM PARAMETERS file. "
+      },
+      {
+        "name": "XUS KEY CHECK",
+        "tag": "OWNSKEY",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "KEY",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6286 - API ICR #3277 This RPC will check if the user (DUZ) holds a security key or an array of keys. If a single security KEY is sent the result is returned in R(0). If an array is sent down then the return array has the same order as the calling array. "
+      },
+      {
+        "name": "XUS CVC",
+        "tag": "CVC",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XU1",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6296 - API ICR #none This RPC is used as part of Kernel to allow the user to change their verify code. "
+      },
+      {
+        "name": "XUS AV HELP",
+        "tag": "AVHELP",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns instructions on entering new access/verify codes. "
+      },
+      {
+        "name": "XUS DIVISION SET",
+        "tag": "DIVSET",
+        "routine": "XUSRB2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to set the user's selected Division in DUZ(2) during sign-on. "
+      },
+      {
+        "name": "XUS GET USER INFO",
+        "tag": "USERINFO",
+        "routine": "XUSRB2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns information about a user after logon.  "
+      },
+      {
+        "name": "XUS DIVISION GET",
+        "tag": "DIVGET",
+        "routine": "XUSRB2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return a list of divisions of a user. "
+      },
+      {
+        "name": "XUS KAAJEE GET USER VIA PROXY",
+        "tag": "USERINFO",
+        "routine": "XUSKAAJ1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "CLIENT-IP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SERVER-NM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CCOWTOK",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a variety of information needed for KAAJEE logon based on the  ccow token "
+      },
+      {
+        "name": "XUS KAAJEE GET CCOW TOKEN",
+        "tag": "CCOWIP",
+        "routine": "XUSKAAJ1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IP-ADDRESS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC gets a token to save in the CCOW context to aid in sign-on "
+      },
+      {
+        "name": "XUS GET TOKEN",
+        "tag": "ASH",
+        "routine": "XUSRB4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "XUS CCOW VAULT PARAM",
+        "tag": "CCOWPC",
+        "routine": "XUSRB4",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns a value for use with the CCOW vault. "
+      },
+      {
+        "name": "XUS GET CCOW TOKEN",
+        "tag": "CCOW",
+        "routine": "XUSRB4",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC gets a token to save in the CCOW context to aid in sign-on. "
+      },
+      {
+        "name": "XUS ALLKEYS",
+        "tag": "ALLKEYS",
+        "routine": "XUSRB",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6287 - API ICR #3277 This RPC will return all the KEYS that a user holds. If the FLAG is set to some value the list of KEYS will be screened to only be those for J2EE use. The RPC was designed for FATKAAT and KAAJEE (VistALink clients) but  may be used by other applications. "
+      },
+      {
+        "name": "XUS SET VISITOR",
+        "tag": "SETVISIT",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This controlled-subscription RPC is used by the Broker Security Enhancement on an authenticating VistA system to obtain a BSE TOKEN for an authenticated active user. The TOKEN is used to identify and authenticate a visiting user on a remote VistA system, which calls back to the authenticating system"
+      },
+      {
+        "name": "XUS GET VISITOR",
+        "tag": "GETVISIT",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TOKEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This controlled-subscription RPC is used by the Broker Security  Enhancement to check a user's credentials based on a BSE TOKEN that was passed to identify and authenticate a visiting user. The remote VistA system calls this RPC on the authenticating VistA system to validate if the visiting user is "
+      },
+      {
+        "name": "XUS KAAJEE GET USER INFO",
+        "tag": "USERINFO",
+        "routine": "XUSKAAJ",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLIENT-IP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SERVER-NM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a variety of information needed for the KAAJEE logon. "
+      },
+      {
+        "name": "XUS KAAJEE LOGOUT",
+        "tag": "SIGNOFF",
+        "routine": "XUSKAAJ",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SIGNON-LOG-DA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC calls the LOUT^XUSCLEAN tag to mark a KAAJEE-signed-on user's entry in the sign-on log as signed off. "
+      },
+      {
+        "name": "XUS PKI GET UPN",
+        "tag": "GETUPN",
+        "routine": "XUSER2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC gets the SUBJECT ALTERNATIVE NAME field from the New Person (#200) file field 501.2.  It is used to check that the correct PIV card has been put into the reader. "
+      },
+      {
+        "name": "XUS PKI SET UPN",
+        "tag": "SETUPN",
+        "routine": "XUSER2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "UPN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to set the SUBJECT ALTERNATIVE NAME in the New Person #(200) file field 501.2.  "
+      },
+      {
+        "name": "XUS IAM ADD USER",
+        "tag": "IAMAU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 8,
+        "params": [
+          {
+            "name": "NAME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EMAIL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DOB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6290 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to add a user to the VistA NEW PERSON file (#200).   The XUSPF200 Security Key is required to add a user without an SSN (file #200 special privileges). "
+      },
+      {
+        "name": "XUS IAM EDIT USER",
+        "tag": "IAMEU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "INARRY",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6291 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to edit an existing user in the VistA NEW PERSON file (#200).   The XUSHOWSSN Security Key is required to edit Personally Identifiable Information (PII) such as"
+      },
+      {
+        "name": "XUS IAM FIND USER",
+        "tag": "IAMFU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "NAME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DOB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6288 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to find a list of users that  satisfy a collection of input criteria.   One or more of the input array values must be set by the calling  application. The XUSHO"
+      },
+      {
+        "name": "XUS IAM DISPLAY USER",
+        "tag": "IAMDU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DISPDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICE #6289 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to display a VistA user.   The XUSHOWSSN Security Key is required to display Personally Identifiable Information (PII) such as Social Security Number (SSN) or D"
+      },
+      {
+        "name": "XUS ESSO VALIDATE",
+        "tag": "ESSO",
+        "routine": "XUESSO4",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DOC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6295 - API ICR #none This API/RPC uses the VA Identity and Access Management (IAM) SAML token definition version 1.2 attributes from a SAML token for user sign-on. "
+      },
+      {
+        "name": "XUS IAM BIND USER",
+        "tag": "IAMBU",
+        "routine": "XUESSO4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6294 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Binding application to set the Security ID (SecID) and  Active Directory UPN (ADUPN) in the VistA NEW PERSON file (#200) for Single Sign-On Internal (SSOi). "
+      },
+      {
+        "name": "XUS IAM TERMINATE USER",
+        "tag": "IAMTU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TERMDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TERMRESN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to terminate an existing user  in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS IAM REACTIVATE USER",
+        "tag": "IAMRU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6293 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to reactivate an existing user  in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS BSE TOKEN",
+        "tag": "BSETOKEN",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XPHRASE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "  RPC ICR #6695 - API ICR #none   This API/RPC returns a string from the current user authentication that  can be used to authenticate the user on a visited system. The application is identified by a security phrase that, when hashed, matches the stored hash of an authorized application in the REMOT"
+      },
+      {
+        "name": "XUS MVI NEW PERSON GET",
+        "tag": "GET",
+        "routine": "XUMVINPU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NPI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to retrieve data (by DUZ, SECID, NPI or SSN) from the VistA NEW PERSON  file (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON UPDATE",
+        "tag": "UPDATE",
+        "routine": "XUMVINPU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XUARR",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to update an entry (by DUZ) in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON DATA",
+        "tag": "EP",
+        "routine": "XUMVIDTA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SEL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ACTSEL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return calculated data analysis from NEW PERSON file (#200)  at VistA for user's selection criteria for active and non active NEW  PERSON entries.   Active New Person aggregated data for one or all below elements: SECID AUDPN (Email) NT USERNAME "
+      },
+      {
+        "name": "XUS MVI ENRICH NEW PERSON",
+        "tag": "UPDATE",
+        "routine": "XUMVIENU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to update enriched data in the VistA New Person File (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON BULK GET",
+        "tag": "BULKGET",
+        "routine": "XUMVINPB",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "XUDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUTYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI) to retrieve data in bulk from the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS IS USER ACTIVE",
+        "tag": "ACTIVE",
+        "routine": "XUESSO4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XUIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API/RPC is used to check if a user is active, as defined in the  routine APIs $$ACTIVE^XUSER. "
+      },
+      {
+        "name": "XUS MVI NEW PERSON RMTE AUDIT",
+        "tag": "AUDIT",
+        "routine": "XURNPAUD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI) to return audit data from the AUDIT (#1.1) file at a facility for a  specific user's record in the NEW PERSON (#200) file. "
+      },
+      {
+        "name": "XUS SIGNON SETUP",
+        "tag": "SETUP",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "XWBUSRNM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ASOSKIP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "D20",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #1632 - API ICR #4054 Establishes the environment necessary for VistA sign-on. "
+      },
+      {
+        "name": "XUS SEND KEYS",
+        "tag": "SENDKEYS",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns an array of strings that are used in the hashing algorithm. The strings that are returned are picked up from Z^XUSRB. "
+      },
+      {
+        "name": "XUS AV CODE",
+        "tag": "VALIDAV",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "AVCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API checks if a ACCESS/VERIFY code pair is valid. It returns an array of values   R(0)=DUZ if sign-on was OK, zero if not OK. R(1)=(0=OK, 1,2...=Can't sign-on for some reason). R(2)=verify needs changing. R(3)=Message. R(4)=0 R(5)=count of the number of lines of text, zero if none. R(5+n)=messa"
+      },
+      {
+        "name": "XUS INTRO MSG",
+        "tag": "INTRO",
+        "routine": "XUSRB",
+        "returnType": "WORD PROCESSING",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns the INTRO message from the KERNEL SYSTEM PARAMETERS file. "
+      },
+      {
+        "name": "XUS KEY CHECK",
+        "tag": "OWNSKEY",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "KEY",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6286 - API ICR #3277 This RPC will check if the user (DUZ) holds a security key or an array of keys. If a single security KEY is sent the result is returned in R(0). If an array is sent down then the return array has the same order as the calling array. "
+      },
+      {
+        "name": "XUS CVC",
+        "tag": "CVC",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XU1",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6296 - API ICR #none This RPC is used as part of Kernel to allow the user to change their verify code. "
+      },
+      {
+        "name": "XUS AV HELP",
+        "tag": "AVHELP",
+        "routine": "XUSRB",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns instructions on entering new access/verify codes. "
+      },
+      {
+        "name": "XUS DIVISION SET",
+        "tag": "DIVSET",
+        "routine": "XUSRB2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to set the user's selected Division in DUZ(2) during sign-on. "
+      },
+      {
+        "name": "XUS GET USER INFO",
+        "tag": "USERINFO",
+        "routine": "XUSRB2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns information about a user after logon.  "
+      },
+      {
+        "name": "XUS DIVISION GET",
+        "tag": "DIVGET",
+        "routine": "XUSRB2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return a list of divisions of a user. "
+      },
+      {
+        "name": "XUS KAAJEE GET USER VIA PROXY",
+        "tag": "USERINFO",
+        "routine": "XUSKAAJ1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "CLIENT-IP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SERVER-NM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CCOWTOK",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a variety of information needed for KAAJEE logon based on the  ccow token "
+      },
+      {
+        "name": "XUS KAAJEE GET CCOW TOKEN",
+        "tag": "CCOWIP",
+        "routine": "XUSKAAJ1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IP-ADDRESS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC gets a token to save in the CCOW context to aid in sign-on "
+      },
+      {
+        "name": "XUS GET TOKEN",
+        "tag": "ASH",
+        "routine": "XUSRB4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "XUS CCOW VAULT PARAM",
+        "tag": "CCOWPC",
+        "routine": "XUSRB4",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns a value for use with the CCOW vault. "
+      },
+      {
+        "name": "XUS GET CCOW TOKEN",
+        "tag": "CCOW",
+        "routine": "XUSRB4",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC gets a token to save in the CCOW context to aid in sign-on. "
+      },
+      {
+        "name": "XUS ALLKEYS",
+        "tag": "ALLKEYS",
+        "routine": "XUSRB",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6287 - API ICR #3277 This RPC will return all the KEYS that a user holds. If the FLAG is set to some value the list of KEYS will be screened to only be those for J2EE use. The RPC was designed for FATKAAT and KAAJEE (VistALink clients) but  may be used by other applications. "
+      },
+      {
+        "name": "XUPS PERSONQUERY",
+        "tag": "EN1",
+        "routine": "XUPSQRY",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 8,
+        "params": [
+          {
+            "name": "XUPSLNAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSFNAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSSSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSPROV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSSTN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSMNM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUPSVPID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "XUS SET VISITOR",
+        "tag": "SETVISIT",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This controlled-subscription RPC is used by the Broker Security Enhancement on an authenticating VistA system to obtain a BSE TOKEN for an authenticated active user. The TOKEN is used to identify and authenticate a visiting user on a remote VistA system, which calls back to the authenticating system"
+      },
+      {
+        "name": "XUS GET VISITOR",
+        "tag": "GETVISIT",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TOKEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This controlled-subscription RPC is used by the Broker Security  Enhancement to check a user's credentials based on a BSE TOKEN that was passed to identify and authenticate a visiting user. The remote VistA system calls this RPC on the authenticating VistA system to validate if the visiting user is "
+      },
+      {
+        "name": "XUS KAAJEE GET USER INFO",
+        "tag": "USERINFO",
+        "routine": "XUSKAAJ",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLIENT-IP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SERVER-NM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a variety of information needed for the KAAJEE logon. "
+      },
+      {
+        "name": "XUS KAAJEE LOGOUT",
+        "tag": "SIGNOFF",
+        "routine": "XUSKAAJ",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SIGNON-LOG-DA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC calls the LOUT^XUSCLEAN tag to mark a KAAJEE-signed-on user's entry in the sign-on log as signed off. "
+      },
+      {
+        "name": "XU REBUILD MENU TREE",
+        "tag": "REBUILD",
+        "routine": "XQ84",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This API rebuilds the menu trees and display nodes for a single user  (DUZ). It returns 0 if unsuccessful, 1 if successful. "
+      },
+      {
+        "name": "XUS PKI GET UPN",
+        "tag": "GETUPN",
+        "routine": "XUSER2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC gets the SUBJECT ALTERNATIVE NAME field from the New Person (#200) file field 501.2.  It is used to check that the correct PIV card has been put into the reader. "
+      },
+      {
+        "name": "XUS PKI SET UPN",
+        "tag": "SETUPN",
+        "routine": "XUSER2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "UPN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to set the SUBJECT ALTERNATIVE NAME in the New Person #(200) file field 501.2.  "
+      },
+      {
+        "name": "XU EPCS EDIT",
+        "tag": "ENTRY",
+        "routine": "XUEPCSED",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure stores information on editing changes in file 200 related to the electronic prescribing of controlled substances. "
+      },
+      {
+        "name": "XUS IAM ADD USER",
+        "tag": "IAMAU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 8,
+        "params": [
+          {
+            "name": "NAME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EMAIL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DOB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6290 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to add a user to the VistA NEW PERSON file (#200).   The XUSPF200 Security Key is required to add a user without an SSN (file #200 special privileges). "
+      },
+      {
+        "name": "XUS IAM EDIT USER",
+        "tag": "IAMEU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "INARRY",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6291 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to edit an existing user in the VistA NEW PERSON file (#200).   The XUSHOWSSN Security Key is required to edit Personally Identifiable Information (PII) such as"
+      },
+      {
+        "name": "XUS IAM FIND USER",
+        "tag": "IAMFU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "NAME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DOB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6288 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to find a list of users that  satisfy a collection of input criteria.   One or more of the input array values must be set by the calling  application. The XUSHO"
+      },
+      {
+        "name": "XUS IAM DISPLAY USER",
+        "tag": "IAMDU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DISPDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICE #6289 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to display a VistA user.   The XUSHOWSSN Security Key is required to display Personally Identifiable Information (PII) such as Social Security Number (SSN) or D"
+      },
+      {
+        "name": "XUS ESSO VALIDATE",
+        "tag": "ESSO",
+        "routine": "XUESSO4",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DOC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6295 - API ICR #none This API/RPC uses the VA Identity and Access Management (IAM) SAML token definition version 1.2 attributes from a SAML token for user sign-on. "
+      },
+      {
+        "name": "XUS IAM BIND USER",
+        "tag": "IAMBU",
+        "routine": "XUESSO4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADUPN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6294 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Binding application to set the Security ID (SecID) and  Active Directory UPN (ADUPN) in the VistA NEW PERSON file (#200) for Single Sign-On Internal (SSOi). "
+      },
+      {
+        "name": "XUS IAM TERMINATE USER",
+        "tag": "IAMTU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TERMDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TERMRESN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to terminate an existing user  in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS IAM REACTIVATE USER",
+        "tag": "IAMRU",
+        "routine": "XUESSO3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "AUTHCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC ICR #6293 - API ICR #none This restricted RPC is used exclusively by the Identity and Access  Management (IAM) Provisioning application to reactivate an existing user  in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS BSE TOKEN",
+        "tag": "BSETOKEN",
+        "routine": "XUSBSE1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XPHRASE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "  RPC ICR #6695 - API ICR #none   This API/RPC returns a string from the current user authentication that  can be used to authenticate the user on a visited system. The application is identified by a security phrase that, when hashed, matches the stored hash of an authorized application in the REMOT"
+      },
+      {
+        "name": "MPI VISTA HWS CONFIG",
+        "tag": "CHANGE",
+        "routine": "XUMVIWSC",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PASS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SWITCH",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SERVER",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSL PORT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSL CONFIGURATION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will be used to update the following fields for the 'MPI_NEW_PSIM EXECUTE' entry in the WEB SERVER (#18.12) file in VistA:         - USERNAME      - PASSWORD      - SERVER      - SSL PORT      - SSL CONFIGURATION   In addition, the HTTPS parameter can be updated in t"
+      },
+      {
+        "name": "XUS MVI NEW PERSON GET",
+        "tag": "GET",
+        "routine": "XUMVINPU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NPI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SSN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to retrieve data (by DUZ, SECID, NPI or SSN) from the VistA NEW PERSON  file (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON UPDATE",
+        "tag": "UPDATE",
+        "routine": "XUMVINPU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XUARR",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to update an entry (by DUZ) in the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON DATA",
+        "tag": "EP",
+        "routine": "XUMVIDTA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SEL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ACTSEL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return calculated data analysis from NEW PERSON file (#200)  at VistA for user's selection criteria for active and non active NEW  PERSON entries.   Active New Person aggregated data for one or all below elements: SECID AUDPN (Email) NT USERNAME "
+      },
+      {
+        "name": "XUS MVI ENRICH NEW PERSON",
+        "tag": "UPDATE",
+        "routine": "XUMVIENU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI)  to update enriched data in the VistA New Person File (#200). "
+      },
+      {
+        "name": "XUS MVI NEW PERSON BULK GET",
+        "tag": "BULKGET",
+        "routine": "XUMVINPB",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "XUDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XUTYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI) to retrieve data in bulk from the VistA NEW PERSON file (#200). "
+      },
+      {
+        "name": "XULM GET LOCK TABLE",
+        "tag": "LOCKS",
+        "routine": "XULMRPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "LOCKGBL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RESULT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used by the Lock Manager to obtain the lock table on a specific node.  The lock table is returned in a global. "
+      },
+      {
+        "name": "XULM KILL PROCESS",
+        "tag": "KILLPROC",
+        "routine": "XULMRPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RETURN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used by the Kernel Lock Manager to terminate a process. "
+      },
+      {
+        "name": "XUS IS USER ACTIVE",
+        "tag": "ACTIVE",
+        "routine": "XUESSO4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XUIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API/RPC is used to check if a user is active, as defined in the  routine APIs $$ACTIVE^XUSER. "
+      },
+      {
+        "name": "XUS MVI NEW PERSON RMTE AUDIT",
+        "tag": "AUDIT",
+        "routine": "XURNPAUD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This restricted RPC is used exclusively by the Master Veteran Index (MVI) to return audit data from the AUDIT (#1.1) file at a facility for a  specific user's record in the NEW PERSON (#200) file. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 38,
+    "items": [
+      {
+        "name": "XU BLOCK COUNT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU FIRST LINE PRINT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU FINDUSER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SEC OFCR",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU OPTION QUEUE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU OPTION START",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU DA EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU USER SIGN-ON",
+        "type": "extended-action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU USER TERMINATE",
+        "type": "extended-action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SWITCH UCI",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU USER ADD",
+        "type": "extended-action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU USER CHANGE",
+        "type": "extended-action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU PROC CNT CLUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SID STARTUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SID ASK",
+        "type": "run-routine",
+        "securityKey": "XUMGR",
+        "displayText": ""
+      },
+      {
+        "name": "XU IP RELEASE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SITE LOCKOUT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU CHECKSUM REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU CHECKSUM LOAD",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU NOP MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU SID EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU USER START-UP",
+        "type": "extended-action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU PURGE PRINT QUEUE HFS FILES",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS EDIT DATA",
+        "type": "broker",
+        "securityKey": "XUEPCSEDIT",
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS EXP DATE",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS PSDRPH",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS SET PARMS",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS PRIVS",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS LOGICAL ACCESS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XU EPCS PSDRPH KEY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER SEC OFCR",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER FILE MGR",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER KEY RE-INDEX",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER PC BUILD",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER PC BUILD EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER DIV CHG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XUSER REMOTE",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 143,
+    "items": [
+      {
+        "prompt": "XWBUSRNM:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "XWBUSRNM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ASOSKIP:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "ASOSKIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "D20:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "D20",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AVCODE:",
+        "rpcName": "XUS AV CODE",
+        "paramName": "AVCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "KEY:",
+        "rpcName": "XUS KEY CHECK",
+        "paramName": "KEY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS KEY CHECK",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XU1:",
+        "rpcName": "XUS CVC",
+        "paramName": "XU1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIV:",
+        "rpcName": "XUS DIVISION SET",
+        "paramName": "DIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS DIVISION GET",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIENT-IP:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "CLIENT-IP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SERVER-NM:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "SERVER-NM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CCOWTOK:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "CCOWTOK",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IP-ADDRESS:",
+        "rpcName": "XUS KAAJEE GET CCOW TOKEN",
+        "paramName": "IP-ADDRESS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS ALLKEYS",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "XUS ALLKEYS",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TOKEN:",
+        "rpcName": "XUS GET VISITOR",
+        "paramName": "TOKEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIENT-IP:",
+        "rpcName": "XUS KAAJEE GET USER INFO",
+        "paramName": "CLIENT-IP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SERVER-NM:",
+        "rpcName": "XUS KAAJEE GET USER INFO",
+        "paramName": "SERVER-NM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SIGNON-LOG-DA:",
+        "rpcName": "XUS KAAJEE LOGOUT",
+        "paramName": "SIGNON-LOG-DA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "UPN:",
+        "rpcName": "XUS PKI SET UPN",
+        "paramName": "UPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NAME:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "NAME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EMAIL:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "EMAIL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOB:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "DOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATION:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "STATION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INARRY:",
+        "rpcName": "XUS IAM EDIT USER",
+        "paramName": "INARRY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM EDIT USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NAME:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "NAME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOB:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "DOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DISPDUZ:",
+        "rpcName": "XUS IAM DISPLAY USER",
+        "paramName": "DISPDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM DISPLAY USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOC:",
+        "rpcName": "XUS ESSO VALIDATE",
+        "paramName": "DOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TERMDATE:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "TERMDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TERMRESN:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "TERMRESN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM REACTIVATE USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM REACTIVATE USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XPHRASE:",
+        "rpcName": "XUS BSE TOKEN",
+        "paramName": "XPHRASE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPI:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "NPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUARR:",
+        "rpcName": "XUS MVI NEW PERSON UPDATE",
+        "paramName": "XUARR",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEL:",
+        "rpcName": "XUS MVI NEW PERSON DATA",
+        "paramName": "SEL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ACTSEL:",
+        "rpcName": "XUS MVI NEW PERSON DATA",
+        "paramName": "ACTSEL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "XUS MVI ENRICH NEW PERSON",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "XUS MVI ENRICH NEW PERSON",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUDUZ:",
+        "rpcName": "XUS MVI NEW PERSON BULK GET",
+        "paramName": "XUDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUTYPE:",
+        "rpcName": "XUS MVI NEW PERSON BULK GET",
+        "paramName": "XUTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUIEN:",
+        "rpcName": "XUS IS USER ACTIVE",
+        "paramName": "XUIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "XUS MVI NEW PERSON RMTE AUDIT",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XWBUSRNM:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "XWBUSRNM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ASOSKIP:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "ASOSKIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "D20:",
+        "rpcName": "XUS SIGNON SETUP",
+        "paramName": "D20",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AVCODE:",
+        "rpcName": "XUS AV CODE",
+        "paramName": "AVCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "KEY:",
+        "rpcName": "XUS KEY CHECK",
+        "paramName": "KEY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS KEY CHECK",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XU1:",
+        "rpcName": "XUS CVC",
+        "paramName": "XU1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIV:",
+        "rpcName": "XUS DIVISION SET",
+        "paramName": "DIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS DIVISION GET",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIENT-IP:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "CLIENT-IP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SERVER-NM:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "SERVER-NM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CCOWTOK:",
+        "rpcName": "XUS KAAJEE GET USER VIA PROXY",
+        "paramName": "CCOWTOK",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IP-ADDRESS:",
+        "rpcName": "XUS KAAJEE GET CCOW TOKEN",
+        "paramName": "IP-ADDRESS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "XUS ALLKEYS",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "XUS ALLKEYS",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSLNAM:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSLNAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSFNAM:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSFNAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSSSN:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSSSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSPROV:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSPROV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSSTN:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSSTN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSMNM:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSMNM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSDATE:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUPSVPID:",
+        "rpcName": "XUPS PERSONQUERY",
+        "paramName": "XUPSVPID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TOKEN:",
+        "rpcName": "XUS GET VISITOR",
+        "paramName": "TOKEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIENT-IP:",
+        "rpcName": "XUS KAAJEE GET USER INFO",
+        "paramName": "CLIENT-IP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SERVER-NM:",
+        "rpcName": "XUS KAAJEE GET USER INFO",
+        "paramName": "SERVER-NM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SIGNON-LOG-DA:",
+        "rpcName": "XUS KAAJEE LOGOUT",
+        "paramName": "SIGNON-LOG-DA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "UPN:",
+        "rpcName": "XUS PKI SET UPN",
+        "paramName": "UPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "XU EPCS EDIT",
+        "paramName": "DATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NAME:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "NAME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EMAIL:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "EMAIL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOB:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "DOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATION:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "STATION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM ADD USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INARRY:",
+        "rpcName": "XUS IAM EDIT USER",
+        "paramName": "INARRY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM EDIT USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NAME:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "NAME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOB:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "DOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM FIND USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DISPDUZ:",
+        "rpcName": "XUS IAM DISPLAY USER",
+        "paramName": "DISPDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM DISPLAY USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DOC:",
+        "rpcName": "XUS ESSO VALIDATE",
+        "paramName": "DOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADUPN:",
+        "rpcName": "XUS IAM BIND USER",
+        "paramName": "ADUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TERMDATE:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "TERMDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TERMRESN:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "TERMRESN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM TERMINATE USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS IAM REACTIVATE USER",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AUTHCODE:",
+        "rpcName": "XUS IAM REACTIVATE USER",
+        "paramName": "AUTHCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XPHRASE:",
+        "rpcName": "XUS BSE TOKEN",
+        "paramName": "XPHRASE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PASS:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "PASS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SWITCH:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "SWITCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SERVER:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "SERVER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSL PORT:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "SSL PORT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSL CONFIGURATION:",
+        "rpcName": "MPI VISTA HWS CONFIG",
+        "paramName": "SSL CONFIGURATION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPI:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "NPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SSN:",
+        "rpcName": "XUS MVI NEW PERSON GET",
+        "paramName": "SSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUARR:",
+        "rpcName": "XUS MVI NEW PERSON UPDATE",
+        "paramName": "XUARR",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEL:",
+        "rpcName": "XUS MVI NEW PERSON DATA",
+        "paramName": "SEL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ACTSEL:",
+        "rpcName": "XUS MVI NEW PERSON DATA",
+        "paramName": "ACTSEL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "XUS MVI ENRICH NEW PERSON",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "XUS MVI ENRICH NEW PERSON",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUDUZ:",
+        "rpcName": "XUS MVI NEW PERSON BULK GET",
+        "paramName": "XUDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUTYPE:",
+        "rpcName": "XUS MVI NEW PERSON BULK GET",
+        "paramName": "XUTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LOCKGBL:",
+        "rpcName": "XULM GET LOCK TABLE",
+        "paramName": "LOCKGBL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RESULT:",
+        "rpcName": "XULM GET LOCK TABLE",
+        "paramName": "RESULT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PID:",
+        "rpcName": "XULM KILL PROCESS",
+        "paramName": "PID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RETURN:",
+        "rpcName": "XULM KILL PROCESS",
+        "paramName": "RETURN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XUIEN:",
+        "rpcName": "XUS IS USER ACTIVE",
+        "paramName": "XUIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "XUS MVI NEW PERSON RMTE AUDIT",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

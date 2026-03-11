@@ -1,0 +1,49 @@
+{
+  "fileNumber": 351.3,
+  "fileName": "MEANS TEST BILLING CLOCK VERIFY",
+  "globalRoot": "351.3",
+  "globalReference": "^IBE(351.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEANS TEST BILLING CLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP351'",
+      "required": true,
+      "pointerTo": 351,
+      "helpText": "This is a pointer to the MEANS TEST BILLING CLOCK (#351) file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field points to the PATIENT file (#2) and is the patient that is associated with this query. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUERY REFERENCE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "351.31",
+      "required": false,
+      "helpText": "This multiple will contain the individual query responses that were  aggregated together to make the current MEANS TEST BILLING CLOCK (#351) ",
+      "isMultiple": true,
+      "subFileNumber": 351.31,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

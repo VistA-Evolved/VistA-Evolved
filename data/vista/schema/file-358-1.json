@@ -1,0 +1,139 @@
+{
+  "fileNumber": 358.1,
+  "fileName": "IMP/EXP ENCOUNTER FORM BLOCK",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name of the block. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FORM",
+      "dataType": "POINTER",
+      "rawType": "RP358'",
+      "required": true,
+      "pointerTo": 358,
+      "helpText": "  The form the block appears on. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BLOCK'S STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The row  on the encounter form that the block starts on. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BLOCK'S STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "The column on the encounter form that the block starts on. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "WIDTH IN CHARACTERS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The width of the block, measured in the number of characters across. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "HEIGHT IN LINES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The height of the block, measured by the number of lines it takes up. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "OUTLINE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SOLID LINE;2:INVISIBLE;",
+      "helpText": "  How the block is outlined on the form. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BLOCK HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The text appearing at the top of the block. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "HEADER APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  A description of the block's contents and use. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  A brief description of the contents or use of the block. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TOOL KIT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "  A value greater than 0 means that the block belongs to the tool kit. The value also determines the order that the block will be listed to the screen that displays the tool kit blocks. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPORT NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "358.11",
+      "required": false,
+      "helpText": "Should be give other sites information that will enable them to decide whether or not they want to import the block. Only applies to tool kit blocks. ",
+      "isMultiple": true,
+      "subFileNumber": 358.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "358.1", "field": .01, "type": "regular"},
+    {"name": "358.1", "field": .02, "type": "regular"},
+    {"name": "358.1", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""}
+  ]
+}

@@ -1,0 +1,501 @@
+{
+  "fileNumber": 50.68,
+  "fileName": "VA PRODUCT",
+  "globalRoot": "50.68",
+  "globalReference": "^PSNDF(50.68,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFaX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VA GENERIC NAME",
+      "dataType": "POINTER",
+      "rawType": "*P50.6'a",
+      "required": false,
+      "pointerTo": 50.6,
+      "helpText": "VA GENERIC NAME ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOSAGE FORM",
+      "dataType": "POINTER",
+      "rawType": "P50.606'a",
+      "required": false,
+      "pointerTo": 50.606,
+      "helpText": "This is the dose form. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STRENGTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the strength. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNITS",
+      "dataType": "POINTER",
+      "rawType": "P50.607'a",
+      "required": false,
+      "pointerTo": 50.607,
+      "helpText": "This is the unit of measure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NATIONAL FORMULARY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the National Formulary Name for this product.  In most cases it will be comprised of the VA Generic Name and Dosage Form. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VA PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This is the VA Print Name. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VA PRODUCT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the VA Product Identifier. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSMIT TO CMOP",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag is used for CMOP purposes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VA DISPENSE UNIT",
+      "dataType": "POINTER",
+      "rawType": "P50.64a",
+      "required": false,
+      "pointerTo": 50.64,
+      "helpText": "This is the VA Dispense Unit. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "GCNSEQNO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This contains the GCNSEQNO code, which relates to mapping PMIs and Warning Labels. Entries in this field are accomplished by the NDF Data Manager mapping functions and shall not be edited. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PREVIOUS GCNSEQNO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the PREVIOUS GCNSEQNO code, which relates to mapping to PMIs and Warning Labels. Entries in this field are accomplished by the NDF Data Manager mapping functions and shall not be edited. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NDC LINK TO GCNSEQNO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the NDC used to link to GCNSEQNO. Entries in this field are accomplished by the NDF Data Manager mapping functions and shall not be edited. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ACTIVE INGREDIENTS",
+      "dataType": "POINTER",
+      "rawType": "50.6814P",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRIMARY VA DRUG CLASS",
+      "dataType": "POINTER",
+      "rawType": "*P50.605'a",
+      "required": false,
+      "pointerTo": 50.605,
+      "helpText": "This is the primary VA classification for this product. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SECONDARY VA DRUG CLASS",
+      "dataType": "POINTER",
+      "rawType": "50.6816P",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NATIONAL FORMULARY INDICATOR",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field denoted whether this product is on the National Formulary. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "NATIONAL FORMULARY RESTRICTION",
+      "dataType": "SUBFILE",
+      "rawType": "50.6818",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6818,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CS FEDERAL SCHEDULE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:Unscheduled;1:Schedule I;2:Schedule II;2n:Schedule II Non-Narcotics;3:Schedule III;3n:Schedule III Non-Narcotics;4:Schedule IV;5:Schedule V;",
+      "helpText": "This is the Federal Schedule for controlled substances. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SINGLE/MULTI SOURCE PRODUCT",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "M:Multisource;S:Single source;",
+      "helpText": "This indicates whether the product is available from a single source or from multiple sources. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This is the date when this product was inactivated. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "EXCLUDE DRG-DRG INTERACTION CK",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field contains a flag which is set to 1 when no Drug-Drug Interactions are to be performed during Order Checking. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MAX SINGLE DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4a",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the maximum amount of the drug to be administered as a single dose. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "MIN SINGLE DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4a",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the minimum amount of the drug to be administered as a single dose. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "MAX DAILY DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4a",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the maximum amount of the drug to be administered daily. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MIN DAILY DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4a",
+      "length": 13,
+      "required": false,
+      "helpText": "This is  the minimum amount of the drug to be administered daily. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "MAX CUMULATIVE DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4a",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the maximum cumulative amount of the drug to be administered. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DSS NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0a",
+      "length": 6,
+      "required": false,
+      "helpText": "Used to identify VA product entries sent to DSS,  This field holds the original VA Product entry number used by DSS. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "OVERRIDE DF DOSE CHK EXCLUSION",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to '1' or 'Yes', any value that is in the EXCLUDE FROM DOSAGE CHECKS (#11) Field of the DOSAGE FORM (#50.606) File shall be overridden. If this field is set to '1' or 'Yes' and the EXCLUDE FROM  DOSAGE CHECKS field is set to '1' or 'Yes' for the dosage form assigned to this VA Product, dosage checks WILL be performed on this VA Product. Any other VA Product with that dosage form WILL NOT have dosage checks performed during order entry. If this field is set to '1' or 'Yes' an",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "MAXIMUM DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the maximum number of days supply allowed for this drug product. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CREATE DEFAULT POSSIBLE DOSAGE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate whether Possible Dosages should be auto-created based on Dosage Form/Dispense Unit (Default) or if you want to control the Possible Dosage auto-creation process for the Dispense Drugs matched/re-matched to this VA Product.      YES - Possible Dosages will be auto-created based upon Dosage          Form/Dispense Unit combination (Default).     NO - Possible Dosages will be auto-created according to the rule set          by the POSSIBLE DOSAGES TO CREATE (#41) and PACKAGE (#42) fields. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "POSSIBLE DOSAGES TO CREATE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:No Possible Dosages;O:1x Possible Dosage;B:1x and 2x Possible Dosages;",
+      "helpText": "Indicate which Possible Dosages or if no Possible Dosages should be auto-created for Dispense Drugs matched/re-matched to this VA Product.        N - No Possible Dosages are auto-created for Dispense Drugs matched         to this VA PRODUCT entry during the match/re-match process.     O - Only 1x Possible Dosage is auto-created for Dispense Drugs matched         to this VA PRODUCT entry during the match/re-match process.     B - Both 1x and 2x Possible Dosages are auto-created for Dispense      ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PACKAGE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "I:Inpatient;O:Outpatient;IO:Both Inpatient and Outpatient;",
+      "helpText": "Indicate the Package(s) use for the Possible Dosage(s) auto-created.      I  - Possible Dosages auto-created for Dispense Drugs         matched/re-matched to this VA PRODUCT entry will be available for         the Inpatient application only.    O  - Possible Dosages auto-created for Dispense Drugs         matched/re-matched to this VA PRODUCT entry will be available for         the Outpatient application only.    IO - Possible Dosages auto-created for Dispense Drugs         matched/re-matched to",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "50.6843",
+      "required": false,
+      "helpText": "This multiple stores the coding system(s) associated with the codes  identifying this VA Product. ",
+      "isMultiple": true,
+      "subFileNumber": 50.6843,
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "COPAY TIER",
+      "dataType": "SUBFILE",
+      "rawType": "50.6845",
+      "required": false,
+      "helpText": "This multiple contains the copayment tier levels with its effective date and end date.  The tier level represents medication copayment classes for Outpatient Pharmacy charges that are dependent on the medication class.  It is used to determine the charge rate for copayments.    ",
+      "isMultiple": true,
+      "subFileNumber": 50.6845,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "50.6899DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 50.6899,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "FDA MED GUIDE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field contains the filename of the FDA Medication Guide associated with this VA Product. This field can only be edited on the National  Drug File Management System. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "HAZARDOUS TO HANDLE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answering yes to this field indicates that the drug  exhibits one or more characteristics that makes it   hazardous to handle (i.e. toxicity, carcinogenicity, etc.)  ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "HAZARDOUS TO DISPOSE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answering yes to this field indicates that the drug  exhibits one or more characteristics that makes it hazardous to dispose (i.e. toxicity, carcinogenicity, etc.) ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "PRIMARY EPA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field contains the Environmental Protection  Agency (EPA) waste code which identifies the drugs hazardous waste characteristics For example: EPA  waste code P001 for Warfarin, & salts, when present at concentrations greater than 0.3%). ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "WASTE SORT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the waste sort code associated with the disposal of this drug. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "DOT SHIPPING CODE",
+      "dataType": "SUBFILE",
+      "rawType": "50.68105",
+      "required": false,
+      "helpText": "This field contains the DOT shipping code associated with  the disposal of this drug. ",
+      "isMultiple": true,
+      "subFileNumber": 50.68105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "CLINICAL EFFECTS OF DRUG",
+      "dataType": "SET",
+      "rawType": "50.68108S",
+      "required": false,
+      "helpText": "This multiple field is used to define a time parameter  that can be set to determine whether expired or recently discontinued drugs should be included or excluded in  order checks. ",
+      "isMultiple": true,
+      "subFileNumber": 50.68108,
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "FORMULARY DESIGNATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This Formulary Designator field is used to classify prior  authorization levels before dispensing.  Prior Authorization is used to ensure that the medication is  appropriate for each individual Veteran. Examples are:    - Prior Authorization-National (PA-N) refers    to medications that are formulary, but     require prior approval at the national    level before dispensing.    - Prior Authorization-VISN (PA-V) refers    to medications that are formulary, require    prior approval at the VISN le",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "FORMULARY DESIGNATOR TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "50.681",
+      "required": false,
+      "helpText": "This field contains a description for the Formulary Designator defined for the product. ",
+      "isMultiple": true,
+      "subFileNumber": 50.681,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 2000,
+      "fieldName": "SERVICE CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0a",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a Charge Description Master (CDM) Change Control board assigned Service Code. The value should be a number between 600001-699999. ",
+      "fieldNumber_": 2000
+    }
+  ],
+  "fieldCount": 48,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AMASTERVUID", "field": },
+    {"name": "ANDC", "field": },
+    {"name": "APRO", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "50.68", "field": .01, "type": "regular"},
+    {"name": "50.68", "field": .01, "type": "regular"},
+    {"name": "50.68", "field": .05, "type": "regular"},
+    {"name": "50.68", "field": .05, "type": "regular"},
+    {"name": "50.68", "field": 6, "type": "regular"},
+    {"name": "50.68", "field": 21, "type": "regular"},
+    {"name": "50.68", "field": 99.98, "type": "regular"},
+    {"name": "50.68", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 21, "value": "W:$D(^(7)) \"   \",$$NAKED^DIUTL(\"$$DATE^DIUTL($P(^(7),U,3))\")"}
+  ]
+}

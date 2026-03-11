@@ -1,0 +1,97 @@
+{
+  "fileNumber": 234,
+  "fileName": "CLINICAL EVENTS",
+  "globalRoot": "234",
+  "globalReference": "^EDP(234,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time the event occurred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the title of the event, that will be displayed on data graphs. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient for whom this event occurred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user responsible for documenting this event. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TREATMENT",
+      "dataType": "POINTER",
+      "rawType": "P101.43'",
+      "required": false,
+      "pointerTo": 101.43,
+      "helpText": "This is the medication, or treatment, the patient was receiving at the time of this event. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAB TEST",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": "This is the lab test used to monitor the efficacy of this treatment, and whose result triggered this event. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VITAL SIGN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BP:BLOOD PRESSURE;",
+      "helpText": "This is the vital sign used to monitor the efficacy of this treatment, and whose result triggered this event. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a description of this event. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "234", "field": .01, "type": "regular"},
+    {"name": "234", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

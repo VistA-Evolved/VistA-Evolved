@@ -1,0 +1,51 @@
+{
+  "fileNumber": 351.52,
+  "fileName": "TRICARE PHARMACY REJECTS",
+  "globalRoot": "351.52",
+  "globalReference": "^IBA(351.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ORIGINAL TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "P351.5'",
+      "required": false,
+      "pointerTo": 351.5,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REJECTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REJECTION ERROR CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.52", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

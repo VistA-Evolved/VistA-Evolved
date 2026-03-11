@@ -1,0 +1,52 @@
+{
+  "fileNumber": 8984.2,
+  "fileName": "LOCAL SHORTCUT",
+  "globalRoot": "8984.2",
+  "globalReference": "^XT(8984.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FREQUENTLY USED NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is a word or phrase which will be used EXCLUSIVELY to find an entry. During a lookup, this file is checked first. If a shortcut matches the user's entry, the corresponding entry will be displayed and no other lookups will be performed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTRY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "  This is a variable pointer to the file and entry with which the shortcut is associated. The entry itself is triggered into the CODE field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the lookup-entry in the associated file. It is triggered by the ENTRY field. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "8984.2", "field": .01, "type": "regular"},
+    {"name": "8984.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "8984.2", "field": .02, "type": "regular"},
+    {"name": "8984.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

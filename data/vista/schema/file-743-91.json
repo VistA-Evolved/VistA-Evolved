@@ -1,0 +1,39 @@
+{
+  "fileNumber": 743.91,
+  "fileName": "RATIONALE",
+  "globalRoot": "743.91",
+  "globalReference": "^QA(743.91,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the rationales for the use of a monitor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUIRES EXPLANATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field should be answered Y(es) for rationales that require an explanation.  When a user selects a rationale that requires an explanation, the user may explain its choice in a word processing field. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "743.91", "field": .01, "type": "regular"},
+    {"name": "743.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "fileNumber": 50.073,
+  "fileName": "DUE QUESTIONNAIRE",
+  "globalRoot": "50.073I",
+  "globalReference": "^PS(50.073,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of a DUE QUESTIONNAIRE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE FOR PROFILES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines whether a DUE ANSWER SHEET prints automatically on Action Profiles. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE STUDY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Allows the user to designate Active and Inactive DUE QUESTIONNAIREs.  Only  active studies are printed on Action Profiles. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCKED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be set to YES when an DUE ANSWER SHEET has been generated for this DUE QUESTIONNAIRE.  Disallows editing of the questions when Locked. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NARRATIVE",
+      "dataType": "SUBFILE",
+      "rawType": "50.07303",
+      "required": false,
+      "helpText": "The Narrative will print on all DUE ANSWER SHEETS generated for this DUE QUESTIONNAIRE. ",
+      "isMultiple": true,
+      "subFileNumber": 50.07303,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DIVISION/SITE",
+      "dataType": "POINTER",
+      "rawType": "50.735P",
+      "required": false,
+      "helpText": "This sub-file is used to indicate which outpatient division(s) are related to this DUE questionnaire. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "50.07301P",
+      "required": false,
+      "helpText": "This sub-file is used to enter drugs associated with the DUE Questionnaire. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "QUESTION",
+      "dataType": "SUBFILE",
+      "rawType": "50.07302IA",
+      "required": false,
+      "helpText": "This sub-file is used to enter text associated with DUE Questionnaire. ",
+      "isMultiple": true,
+      "subFileNumber": 50.07302,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "50.073", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 217.1,
+  "fileName": "NURQ STANDARDS OF CARE/PRACTICE",
+  "globalRoot": "217.1",
+  "globalReference": "^NURQ(217.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME OF STANDARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of standard of care or practice. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF STANDARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "c:CARE;p:PRACTICE;",
+      "helpText": "This field identifies a specific standard as a type of care or practice. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "The service associated with this standard. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "217.1", "field": .01, "type": "regular"},
+    {"name": "217.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

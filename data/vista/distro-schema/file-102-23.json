@@ -1,0 +1,39 @@
+{
+  "fileNumber": 102.23,
+  "fileName": "CPRS QUERY EDIT CONTROL",
+  "globalRoot": "102.23",
+  "globalReference": "^ORD(102.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the integer constant by which the specific editor is identified by the client software. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The is the human-readable name of the editor. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "102.23", "field": .01, "type": "regular"},
+    {"name": "102.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

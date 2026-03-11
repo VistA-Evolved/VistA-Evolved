@@ -1,0 +1,51 @@
+{
+  "fileNumber": 356.5,
+  "fileName": "CLAIMS TRACKING ALOS",
+  "globalRoot": "356.5P",
+  "globalReference": "^IBE(356.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DRG",
+      "dataType": "POINTER",
+      "rawType": "RP80.2'",
+      "required": true,
+      "pointerTo": 80.2,
+      "helpText": "This is the DRG for which you wish to enter an average length of stay that will be reflected on the review screen.  This ALOS is an alos that is used in practice by the insurance industry which is different than the ALOS generally found in DHCP files which are specific to VA care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "YEAR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the year for which you want to enter an average lenght of stay for this DRG.  If any date in a year is entered only the year will be stored. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ALOS FOR INS. PURPOSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the average length of stay (ALOS) that you wish to be used  as a base for insurance purposes.  This ALOS will be displayed on the expanded review screen for associated DRG's.  Generally this information will be from HCFA or the insurance industry. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ADR", "field": },
+    {"name": "ADR1", "field": },
+    {"name": "B", "field": },
+    {"name": "356.5", "field": .01, "type": "regular"},
+    {"name": "356.5", "field": .01, "type": "regular"},
+    {"name": "356.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

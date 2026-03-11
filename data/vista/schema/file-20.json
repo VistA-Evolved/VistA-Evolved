@@ -1,0 +1,120 @@
+{
+  "fileNumber": 20,
+  "fileName": "NAME COMPONENTS",
+  "globalRoot": "20",
+  "globalReference": "^VA(20,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,7I",
+      "length": 20,
+      "required": true,
+      "helpText": "Answer must be the number of the file or subfile that contains the name field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,7I",
+      "length": 20,
+      "required": true,
+      "helpText": "Answer must be the number of the field that contains the name. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IENS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Answer must be the IENS of the entry that contains the name. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FAMILY (LAST) NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Answer with the person's family (last) name. It must begin with an upper-case letter and can contain only upper-case letters, numbers, and punctuation, excluding circumflexes (^) and grave accents (`). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GIVEN (FIRST) NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Answer with the person's given (first) name. It must begin with an upper-case letter and can contain only upper-case letters, numbers, and punctuation, excluding circumflexes (^) and grave accents (`). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Answer with the person's middle name. It must begin with an upper-case letter and can contain only upper-case letters, numbers, and punctuation, excluding circumflexes (^) and grave accents (`). Middle names of NMI and NMN are not accepted. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Answer with the name prefix, such as MR or MS. Answer must begin with an upper-case letter and can contain only upper-case letters, numbers, and punctuation, excluding circumflexes (^) and grave accents (`). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Answer with the name suffix(es), such as JR, SR, II, or III. Answer must begin with an upper-case letter and can contain only upper-case letters, numbers, and punctuation, excluding circumflexes (^) and grave accents (`). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This field holds any academic or professional degree that have been  earned by the user. This would be things like BS, BA, MD, and PHD. Each  degree must be a valid code from the EDUCATION (#20.11) file. The field  can contain multiple degrees delimited by a single blank space up to the 10 character field length. This would be like PHD MD or BA CNA etc. No  leading or trailing spaces. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SOURCE NAME FORMAT FLAGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When the name fields in the Name Components file are edited, the \"ANAME\" cross-reference updates the corresponding name field in the source file. This SOURCE NAME FORMAT FLAGS field can be used to control the format of the name placed in the source name field.   Answer with the flags used in $$NAMEFMT^XLFNAME API. For example,      C  : Return a Comma between the Family (Last) and Given (First)        Names.   L  : Truncate the returned name to the maximum length as specified        by the data ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NOTES ABOUT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores notes about the name.   During the New Person Name Conversion, which is run as part of the post-install routine of Patch XU*8.0*134, if a name in the NEW PERSON file contains text in parentheses (), brackets [], or braces {}, that text is removed from the name, and the original name with the parenthetical text is recorded in this field. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "20", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": NAME, "value": "N XUN S XUN(\"FAMILY\")=$P($G(^(1)),U),XUN(\"GIVEN\")=$P($G(^(1)),U,2),XUN(\"MIDDLE\")=$P($G(^(1)),U,3),XUN(\"SUFFIX\")=$P($G(^(1)),U,5) D EN^DDIOL($$NAMEFMT^XLFNAME(.XUN,\"F\",\"C\"),\"\",\"?0\")"}
+  ]
+}

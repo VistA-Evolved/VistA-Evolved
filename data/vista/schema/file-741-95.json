@@ -1,0 +1,130 @@
+{
+  "fileNumber": 741.95,
+  "fileName": "*QA OCCURRENCE NUMBER CASES SCREENED",
+  "globalRoot": "741.95ID",
+  "globalReference": "^QA(741.95,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "*BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the beginning date for this range of totals. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*ENDING DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the ending date for this range of totals. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*ADMISSIONS TO ACUTE CARE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of admissions to acute care during reporting period. (Used by screens 101, 108, and 109.) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "*AMBULATORY CARE VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of ambulatory care visits during reporting period. (Used by screen 102.) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*AMBULATORY SURGERY PROCEDURES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of ambulatory surgery procedures during reporting period. (Used by screen 103.) ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*DISCHARGES FROM ACUTE TO NHCU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of discharges from acute care to NHCU during reporting period. (Used by screen 104.1.) ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*PATs TREATED IN NHCU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of patients treated in NHCU during reporting period. (Used by screen 104.2.) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "*TRFs FROM ACUTE TO INTERM MED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of transfers from acute care to intermediate medicine during reporting period. (Used by screen 105.1.) ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*PATs TREATED IN INTERM MED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of patients treated in intermediate medicine during reporting period. (Used by screen 105.2.) ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "*TRFs FROM SPECIAL CARE UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of transfers from special care units during reporting period. (Used by screen 106.1.) ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*PATs TREATED IN SURG SERVICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Number of patients treated in surgical service during reporting period. (Used by screens 106.2 and 107.) ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "B", "field": },
+    {"name": "741.95", "field": .01, "type": "regular"},
+    {"name": "741.95", "field": .01, "type": "regular"},
+    {"name": "741.95", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

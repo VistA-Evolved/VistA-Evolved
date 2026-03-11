@@ -1,0 +1,153 @@
+{
+  "fileNumber": 704.113,
+  "fileName": "OBS_TOTAL",
+  "globalRoot": "704.113",
+  "globalReference": "^MDC(704.113,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is a unique IDentifier for this TOTAL. This ID is maintained  nationally so it identifies this TOTAL throughout the enterprise. A sample ID could be \"{217D131C-13C3-4B9E-A401-D1345766182B}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a descriptive NAME for this total (#.01). A sample name could be \"OUTTAKE TOTALS\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a user friendly name.  This is used when displaying this  total via the Clinical Flowsheets application. A sample DISPLAY NAME could be \"New Flowsheet Outtake Total\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT_UNIT",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the measurement-unit to be used with the observation  total (#.01).  The DEFAULT UNIT is an entry in the TERM (#704.101) file. A sample DEFAULT UNIT could identify the term \"lbs\" or \"pounds\".  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DECIMAL_PRECISION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the decimal precision to round the total values to. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not this total (#.01) can be used by the  Clinical Flowsheets application. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a descriptive COMMENT about this total (#.01)entry. A sample COMMENT could be \"New totaling apparatus for OUTTAKE  totals - default lbs \". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .201,
+      "fieldName": "DISPLAY_TOTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not this total (#.01) will display a  total of all observations. ",
+      "fieldNumber_": .201
+    },
+    {
+      "fieldNumber": .202,
+      "fieldName": "DISPLAY_COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not this total (#.01) will  display a count of observations.   ",
+      "fieldNumber_": .202
+    },
+    {
+      "fieldNumber": .203,
+      "fieldName": "DISPLAY_AVERAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not this total (#.01) will display the  average of all observations. ",
+      "fieldNumber_": .203
+    },
+    {
+      "fieldNumber": .204,
+      "fieldName": "DISPLAY_DIFFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "(Future Use.) ",
+      "fieldNumber_": .204
+    },
+    {
+      "fieldNumber": .205,
+      "fieldName": "DISPLAY_RATIO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "(Future Use.) ",
+      "fieldNumber_": .205
+    },
+    {
+      "fieldNumber": .206,
+      "fieldName": "DISPLAY_MINIMUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not this total (#.01) will display the  least value registered of all observations.  ",
+      "fieldNumber_": .206
+    },
+    {
+      "fieldNumber": .207,
+      "fieldName": "DISPLAY_MAXIMUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not this total (#.01) will display the  greatest value registered of all observations. ",
+      "fieldNumber_": .207
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

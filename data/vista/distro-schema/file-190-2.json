@@ -1,0 +1,145 @@
+{
+  "fileNumber": 190.2,
+  "fileName": "MISSING RECORDS",
+  "globalRoot": "190.2P",
+  "globalReference": "^RTV(190.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP190'I",
+      "required": true,
+      "pointerTo": 190,
+      "helpText": "This identifies the record with the entity which it defines. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME ENTERED AS MISSING",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines the date, time when the record was identified as missing. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system who identified the record as missing. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "f:FOUND;m:MISSING;s:FOUND/SUPERVISOR APPROVAL PENDING;",
+      "helpText": "This differentiates the state of the record which is described as missing. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WHERE WAS RECORD FOUND?",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9X",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This identifies the borrower, area with the record when it is located. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME RECORD FOUND",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This identifies the date, time when a record which was previously designated as missing was located. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REASON RECORD WAS MISSING",
+      "dataType": "POINTER",
+      "rawType": "*P195.6'X",
+      "required": false,
+      "pointerTo": 195.6,
+      "helpText": "This allows the system to classify the cause of records being lost as a means of identifying corrective action to prevent future loss. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "USER WHO ENTERED AS FOUND",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system who defined the record as no longer missing. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "APPROVING SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system who confirms the retrieval of a  missing record when the system is set to require such action. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE FINDING APPROVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This identifies the date, time when the approval was made if required by the system. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SUPERVISOR COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "190.21",
+      "required": false,
+      "helpText": "This allows free text comments for expanding the ability of the system to describe the history of the missing record episode. ",
+      "isMultiple": true,
+      "subFileNumber": 190.21,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "USER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "190.22",
+      "required": false,
+      "helpText": "This allow the user who found the record to describe with free text the episode in which the missing record was found. ",
+      "isMultiple": true,
+      "subFileNumber": 190.22,
+      "fieldNumber_": 150
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "ABOR", "field": },
+    {"name": "AC", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "190.2", "field": .01, "type": "regular"},
+    {"name": "190.2", "field": 4, "type": "regular"},
+    {"name": "190.2", "field": 4, "type": "regular"},
+    {"name": "190.2", "field": 5, "type": "regular"},
+    {"name": "190.2", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

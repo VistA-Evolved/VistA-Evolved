@@ -1,0 +1,577 @@
+{
+  "fileNumber": 9002313.77,
+  "fileName": "BPS REQUESTS",
+  "globalRoot": "9002313.77",
+  "globalReference": "^BPS(9002313.77,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KEY1",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,0",
+      "length": 13,
+      "required": true,
+      "helpText": "For claim requests and reversals, this is the prescription IEN that  will be processed.  For Eligibility Verification requests, this is the Patient IEN that will be processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "KEY2",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "For billing requests and reversals, this is the fill number where 0 is the original fill and 1-999 are refills.  For eligibility verification requests, this is the policy number plus 9000.  So, for policy number 4, this would be 9004. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTING COB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "This field indicates for which insurer (in terms of coordination of  benefits) this particular request was created. For example, if the  patient has three insurances then three separate requests can be created  for the same prescription/refill in order to bill patient's Primary,  Secondary and Tertiary insurers. This field indicates for which insurer  this request is for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROCESS FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:SCHEDULED;1:ACTIVATED;2:IN PROCESS;3:COMPLETED;4:CANCELLED;5:INACTIVE;",
+      "helpText": "State of the request.   SCHEDULED - scheduled for the future (for example : the secondary claim is scheduled to be processed after the primary is completed)   ACTIVATED - ready to be processed   IN PROCESS - currently in process   COMPLETED - has been completed   CANCELLED - cancelled   INACTIVE - the system marks the records with \"bad\" data as inactive  instead of removing them - to keep them  for repair or for investigation ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NEXT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P9002313.77'",
+      "required": false,
+      "pointerTo": 9002313.77,
+      "helpText": "To store the pointer to the next request which should be processed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ECME TRANSACTION RECORD",
+      "dataType": "POINTER",
+      "rawType": "P9002313.59'",
+      "required": false,
+      "pointerTo": 9002313.59,
+      "helpText": "This is the BPS Transaction.  It is not initially populated but is populated after the request is activated and the BPS Transaction record is created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WAITING RESOLUTION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag to mark requests with problems. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DONT PROCESS UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The request cannot be processed until the date and time specified in this field. If null then it can be processed at any time (immediately). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "RX ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the action that is being performed on this request. It is either  the BWHERE parameter passed into BPSNCPDP or 'ELIG' for an eligibility  verification request.  The list of BWHERE values are documented at the  top of routine BPSNCPD3. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "OUTPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This is the outpatient site that will be used to generate the NPI number for the Service Provider ID (201-B1) field of a NCPDP request. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLAIM;E:ELIGIBILITY;U:UNCLAIM;",
+      "helpText": "This is the type of transaction that is being processed:    CLAIM - An NCPDP billing request.    UNCLAIM - An NCPDP reversal request.    ELIGIBILITY - An eligibility verification request. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "BILLING DETERMINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT BILLABLE;1:BILLABLE;",
+      "helpText": "Billing determination result ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VETERAN;T:TRICARE;C:CHAMPVA;",
+      "helpText": "The insurance eligibility type of the claim. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "CLAIM STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The status of the transaction as a percentage of completion.  The text  value can be obtained by running $$STATI^BPSOSU(<Status Number>). Note that 99 indicates complete. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "RATE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P399.3'",
+      "required": false,
+      "pointerTo": 399.3,
+      "helpText": "The Rate Type selected by the user for billing. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "PRIMARY PAYER BILL",
+      "dataType": "POINTER",
+      "rawType": "P399'",
+      "required": false,
+      "pointerTo": 399,
+      "helpText": "Primary bill which should be used to create the secondary bill.  This  field is used for secondary billing only. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PRIOR PAYMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Dollar amount paid by the Primary insurer. This field is used for  secondary billing only. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "COB OTHER PAYMENTS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "NCPDP field 337-4C - Coordination of Benefits/Other Payments Count   This value corresponds to the number of multiple entries in the #8  multiple field - COB OTHER PAYERS. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "OTHER COVERAGE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "00:NOT SPECIFIED;01:NO OTH COVERAGE;02:PYMT COLLECT/OTH PAYER;03:CLAIM NOT COVER/OTH PAYER;04:PYMT NOT COLLECT/OTH PAYER;05:ZZPLAN DENIAL;06:ZZNONPART PROV/OTH PAYER;07:ZZOTH COVER NOT EFFECT ON DOS;08:COPAY BILLING;",
+      "helpText": "NCPDP field 308-C8 - code indicating whether or not the patient has other insurance coverage. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "RX NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "For billing requests and reversal, this is the prescription that will be processed for the request.  If an eligibility verification request is  initiated from the ECME User Screen, this field will also be populated  and will be used to get the Prescriber information from the prescription. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "FILL NO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "For billing requests and reversals, this is the fill number to be  processed, where 0 is the original fill and 1-99 are refills.  If an  eligibility verification request is initiated from the ECME User Screen, this field will also be populated and will be used to get the Prescriber information from the prescription. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "For billing requests and reversals, this is the patient associated with  the prescription.  For eligibility verification requests, this is the  patient for which the insurance is being verified. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "POLICY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the policy number of the patient that is being verified in an  eligibility verification request. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of service that will be used to populate the 401-D1  field of the NCPDP request.  It is generally the fill/refill date of the  prescription but may also be the release date. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "REVERSAL REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reversal Reason as a free text. Examples: ECME RESUBMIT, RX EDITED, RX  DISCONTINUED ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "DURREC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Drug Utilization Review (DUR) information passed by Outpatient Pharmacy to ECME. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "OVERRIDE CODE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.511'",
+      "required": false,
+      "pointerTo": 9002313.511,
+      "helpText": "This is used to store overrides entered by the user via the Resubmit with  Edits (RED) option in the ECME User Screen to change certain data  elements sent to the payer during resubmission of the claim. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "CLARIFICATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Submission Clarification Code is entered by the pharmacist and passed by Outpatient Pharmacy to ECME to put into the claim to support/justify the claim request when the payer rejects it. Valid clarification codes are selected from BPS NCPDP CLARIFICATION CODES file (#9002313.25).  These codes justify an earlier fill date to the payer.  For example if a patient needed an early refill due to being on vacation when the prescription  would normally be filled, a VACATION SUPPLY clarification code",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "BILL NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Valid NDC# used in the prescription/refill and which is passed to ECME to be used for billing. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "PRE AUTH TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "PRIOR AUTHORIZATION TYPE CODE - the first piece of the BPSAUTH parameter passed to ECME engine. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PRE AUTH NUM SUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "PRIOR AUTHORIZATION NUM SUB - the second piece of the BPSAUTH parameter passed to ECME engine. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "SC AND EI OVERRIDE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Service Connected and Environmental Indicators override flag. 0 - the system should use the existing answers to SC and EI questions, if  there is no answer then SC/EI determination needed and the RX/refill  cannot be billed.                                      1 - the user chose to override all SC and EI related answers with \"NO\",  which means the RX/refill should be billed. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "DELAY REASON CODE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.29'",
+      "required": false,
+      "pointerTo": 9002313.29,
+      "helpText": "This is the Delay Reason Code that is entered by the user from the IB Back Billing Option of Claims Tracking and passed to ECME.  It will be be put into field 357-NV of the billing request that is created for third-party billing. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "DIAGNOSIS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "ICD-10 Diagnosis Code entered by the user.  NCPDP standard field 424-DO  to be included in the REQUEST CLINICAL SEGMENT. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "PREGNANCY INDICATOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field will be populated if the user entered a pregnancy indicator to be sent on the outgoing claim request.  The value in this field will be used to populate the NCPDP field 335-2C, Pregnancy Indicator. ",
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DUR",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.771A",
+      "required": false,
+      "helpText": "DUR multiple ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.771,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "NCPDP quantity (Billing Quantity) - the amount of medication that was dispensed (stored in PRESCRIPTION file (#52)) multiplied by the NCPDP QUANTITY MULTIPLIER (stored in DRUG file (#50)). The negative  value -1 indicates an invalid drug. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "UNIT PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,6",
+      "length": 14,
+      "required": false,
+      "helpText": "Price per unit of prescription. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NDC number of the drug involved in this transaction. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "REFILL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Refill number. 0-original ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "CERTIFY MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "Certify mode is used for certifying software when required by switches and claims end processors. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "CERTIFICATION IEN",
+      "dataType": "POINTER",
+      "rawType": "P9002313.31'",
+      "required": false,
+      "pointerTo": 9002313.31,
+      "helpText": "This field is used during certification testing, and points to the entry  to use to pull certification data. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "UNIT OF MEASURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Unit of Measure for the drug.  This is usually GR (grams), ML (milliliters), or EA (Each). ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "BILLING QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,3",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the quantity from the prescription and is used to calculate the  ingredient cost.  It may be different than the quantity used in the  actual NCPDP submission. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "BILLING UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing units associated with the billing quantity. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INSURER DATA",
+      "dataType": "SET",
+      "rawType": "9002313.772SA",
+      "required": false,
+      "helpText": "Contains set of IB determination data for all billable payers - primary,  secondary and tertiary. Should contain at least one entry - usually for  the primary payer. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.772,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "REQUEST DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Date and Time when the request record was created. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "USER WHO MADE THE REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who created the request ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "ACTIVATED DATE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time when the request was activated ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "USER WHO ACTIVATED REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who activated the request. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "DATE AND TIME UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time when the request was updated. ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "USER WHO UPDATED THE REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who updated the request. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "CLOSE AFT REV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the claim should be closed after successful  reversal. The ECME engine checks this field when it receives a response  from the payer. If the field is set to YES and the reversal was accepted  by the payer then the claim will be closed automatically. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "CLOSE AFT REV REASON",
+      "dataType": "POINTER",
+      "rawType": "P356.8'",
+      "required": false,
+      "pointerTo": 356.8,
+      "helpText": "The NON-BILLABLE REASON selected by the user to be used in IB CLAIM TRACKING system. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "CLOSE AFT REV COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comment for CLOSE action ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COB OTHER PAYERS",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.778A",
+      "required": false,
+      "helpText": "This multiple structure stores information about each of the other payers  involved in the payment or rejection of the claim.   NCPDP has a maximum of 9 occurrences here with a recommendation of less than or equal to 3 occurrences.  However, VA only stores data for at most  3 insurance policies for any given claim.  So at most there will only be  2 occurrences of this other payer multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.778,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "INACTIVATION REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When a request is inactivated, the reason that it was inactivated will be  stored here so that the cause of the inactivation can be investigated. ",
+      "fieldNumber_": 9.01
+    }
+  ],
+  "fieldCount": 57,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "9002313.77", "field": .01, "type": "regular"},
+    {"name": "9002313.77", "field": .06, "type": "regular"},
+    {"name": "9002313.77", "field": 6.05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

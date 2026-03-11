@@ -1,0 +1,111 @@
+{
+  "fileNumber": 355.92,
+  "fileName": "FACILITY BILLING ID",
+  "globalRoot": "355.92",
+  "globalReference": "^IBA(355.92,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "RP36'",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company that is providing the facility id. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CARE UNITS",
+      "dataType": "POINTER",
+      "rawType": "P355.95'",
+      "required": false,
+      "pointerTo": 355.95,
+      "helpText": "This is the care unit for which this ID is being defined.  Care Units are  only used for Billing Provider Secondary ID #2 . ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TYPE APPLIED TO",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:BOTH UB-04 AND CMS-1500 FORMS;1:UB-04 FORMS ONLY;2:CMS-1500 ONLY;3:PRESCRIPTION ONLY;",
+      "helpText": "This designates whether the id number is to be used for just UB-04 form types, just CMS-1500 form types or both form types. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This designates which division this id number should be used for. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROVIDER ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P355.97'",
+      "required": true,
+      "pointerTo": 355.97,
+      "helpText": "This is the indicator of what type of id is being recorded. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the facility ID that will be reported for the provider id type for the insurance co. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ID TYPE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ELECTRONIC PLAN TYPE;A:ADDITIONAL IDS;LF:VA LAB/FACILITY ID;",
+      "helpText": "This is the flag that enables the code to tell the 3 types of IDs in  this file apart.  ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INDEX VALUE CARE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the value for the care unit or '*N/A*' if no care unit is selected.   This is to assure uniqueness in the records in the file even if the care unit is blank. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INDEX VALUE DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the value for the division or '*N/A*' if no division is selected.  This is to assure uniqueness in the records in the file even if the division is blank. ",
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "355.92", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "355.92", "field": .03, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

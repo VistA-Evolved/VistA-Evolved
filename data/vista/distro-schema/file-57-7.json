@@ -1,0 +1,40 @@
+{
+  "fileNumber": 57.7,
+  "fileName": "MEDICATION ADMINISTERING TEAM",
+  "globalRoot": "57.7P",
+  "globalReference": "^PS(57.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "RP42'X",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "  This is a ward from which the room-beds will be selected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEAM",
+      "dataType": "SUBFILE",
+      "rawType": "57.701",
+      "required": false,
+      "helpText": "  This is the teams for this ward and their associated room-beds. ",
+      "isMultiple": true,
+      "subFileNumber": 57.701,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AWRT", "field": },
+    {"name": "B", "field": },
+    {"name": "57.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

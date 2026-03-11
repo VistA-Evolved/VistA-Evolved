@@ -1,0 +1,164 @@
+{
+  "fileNumber": 52.7,
+  "fileName": "IV SOLUTIONS",
+  "globalRoot": "52.7I",
+  "globalReference": "^PS(52.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This field should contain the print name of the solution.  The name that is entered here will be printed on the IV label, manufacturing list, ward list, etc.  The volume should NOT be part of the print name, since the volume of the IV ORDER will be printed next to the print name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINT NAME {2}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  An additional print name can be added for each primary solution.  This field should only be used when the primary solution is a premix. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GENERIC DRUG",
+      "dataType": "POINTER",
+      "rawType": "R*P50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "  This field will link the IV Solution file (#52.7) to the drug file (#50). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VOLUME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  The number entered here will represent the volume of this solution. When entering an IV order, this volume will be stuffed into the volume field for that IV ORDER. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ELECTROLYTES",
+      "dataType": "POINTER",
+      "rawType": "52.702IP",
+      "required": false,
+      "helpText": "  This contains information on the electrolytes that make up this solution. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "52.703",
+      "required": false,
+      "helpText": "These are other names by which a solution may be identified. ",
+      "isMultiple": true,
+      "subFileNumber": 52.703,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DRUG INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.704",
+      "required": false,
+      "helpText": "  Any data entered here will be shown under the 'DRUG INQUIRY' option of the IV PACKAGE.  This field can be used as a means of communication to other pharmacists or nurses on the wards to inform them about critical IV DRUGS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.704,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AVERAGE DRUG COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,9",
+      "length": 17,
+      "required": false,
+      "helpText": "    This is the average drug cost per ml for this IV solution.     ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This field is used to inactivate a drug.  An IV drug should NEVER be deleted from a file since some IV ORDERS may still be using it.  Enter the date the drug should be inactivated.  Once the date of inactivation arrives, the drug will no longer be a valid choice for IV SOLUTIONS. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PHARMACY ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P50.7XI",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This field is a pointer to the PHARMACY ORDERABLE ITEM (#50.7) File. This field is not editable. It is controlled by the software. Every IV Solution has a Generic Drug pointer to the DRUG (#50) File, and every Drug entry has a pointer to the PHARMACY ORDERABLE ITEM (#50.7) File. The software will automatically keep this field updated with the Pharmacy Orderable Item that the Generic Drug points to. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*PRIMARY DRUG",
+      "dataType": "POINTER",
+      "rawType": "RP50.3'",
+      "required": true,
+      "pointerTo": 50.3,
+      "helpText": "  Links the solution in the IV SOLUTIONS file (52.7) to a primary drug in the PRIMARY DRUG file (50.3). ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "USED IN IV FLUID ORDER ENTRY",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Allows Pharmacy to limit the solutions available in IV Fluid order entry. Solutions having data in the PRINT NAME {2} field are assumed to be  multi-ingredient drugs, and are not selectable. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PREMIX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to identify an IV Solution as a PreMix IV. This  indication will be used to identify which entries will have order checks  performed against them. ",
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AAP", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AOI", "field": },
+    {"name": "APD", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "52.7", "field": .01, "type": "regular"},
+    {"name": "52.7", "field": 1, "type": "regular"},
+    {"name": "52.6", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "52.7", "field": 1, "type": "regular"},
+    {"name": "52.7", "field": 8, "type": "regular"},
+    {"name": "52.7", "field": 9, "type": "regular"},
+    {"name": "52.7", "field": 16, "type": "regular"},
+    {"name": "52.7", "field": 17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 8, "value": "W:$G(^(\"I\")) \"   \",$E($P(^(\"I\"),U,1),4,5)_\"-\"_$E($P(^(\"I\"),U,1),6,7)_\"-\"_$E($P(^(\"I\"),U,1),2,3)"},
+    {"field": WRITE, "value": "I $D(^PSDRUG(+$P(^PS(52.7,+Y,0),\"^\",2),0)) W !?15,$P(^(0),\"^\",10)"}
+  ]
+}

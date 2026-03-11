@@ -1,0 +1,278 @@
+{
+  "fileNumber": 692,
+  "fileName": "VENTRICULAR STUDY",
+  "globalRoot": "692D",
+  "globalReference": "^MCAR(692,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field identifies the date and time the procedure was entered into the database. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "EP RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP691.8IO",
+      "required": true,
+      "pointerTo": 691.8,
+      "helpText": "This field identifies the EP record identifier. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "INTERVENTION",
+      "dataType": "POINTER",
+      "rawType": "P693.6'",
+      "required": false,
+      "pointerTo": 693.6,
+      "helpText": "This field documents intervention necessary for this procedure. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREMEDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field documents the medication given before the procedure. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EKG",
+      "dataType": "DATE",
+      "rawType": "692.02DA",
+      "required": false,
+      "helpText": "This field identifies the EKG which is associated with this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 692.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTRY SITE",
+      "dataType": "POINTER",
+      "rawType": "*P697'X",
+      "required": false,
+      "pointerTo": 697,
+      "helpText": "This field identifies the anatomical location of the catheter entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECORDING SITE",
+      "dataType": "POINTER",
+      "rawType": "P693.5'",
+      "required": false,
+      "pointerTo": 693.5,
+      "helpText": "This field identifies the anatomical location of the recording site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PACING SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RVA:RT VENTRICULAR APEX;RVOT:RT VENTRICULAR OUTFLOW TRACT;LV:LEFT VENTRICLE;",
+      "helpText": "This field identifies the anatomical location of the pacing site. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VENTRICULAR THRESHOLD (mA)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the ventricular threshold in milliamperes. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DRIVE CYCLE LENGTH",
+      "dataType": "SUBFILE",
+      "rawType": "692.07A",
+      "required": false,
+      "helpText": "This field identifies the drive cycle length. ",
+      "isMultiple": true,
+      "subFileNumber": 692.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BURST PACING (#REP. RESPONSES)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the burst pacing (#rep. responses). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SHORTEST BURST CL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the shortest burst CL. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "V.T.?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:SUS. V-T INDUCED;N:NO V-T INDUCED;N-S:NON-SUS. V.T. INDUCED;",
+      "helpText": "This documents the occurrance of ventricular tachycardia. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INITIATION SEQUENCE OF VT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the initiation of VT. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DURATION OF VT/VF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the duration of VT/VF. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "V-T AXIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the V-T axis. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "V-T CYCLE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the V-T cycle length. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "V-T MORPHOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RBBB;L:LBBB;N:NON DESC.;V:VARIABLE;",
+      "helpText": "This field identifies the V-T morphology. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TERM. V-T",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:EXTERNAL CARDIOVERSION;P:PACED OUT;S:SELF TERMINATION;C+P:CARDIOVERSION+PACE OUT;C+S:CARDIOVERSION+SELF TERM;P+S:PACE OUT+SELF TERM;IC:INTERNAL CARDIOVERSION;",
+      "helpText": "This field identifies the term V-T. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PACE OUT CYCLE LENGTH OF V-T",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the pace out cycle length of V-T. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CARDIOVERSION (J)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This documents whether cardioversion was necessary. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "692.019DA",
+      "required": false,
+      "helpText": "This field identifies the discharge date. ",
+      "isMultiple": true,
+      "subFileNumber": 692.019,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "692.01",
+      "required": false,
+      "helpText": "This field identifies the comment field. ",
+      "isMultiple": true,
+      "subFileNumber": 692.01,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CARDIOLOGY STAFF",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the cardiology staff assigned to this case. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "692.03P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "692", "field": .01, "type": "regular"},
+    {"name": "692", "field": .5, "type": "regular"},
+    {"name": "", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

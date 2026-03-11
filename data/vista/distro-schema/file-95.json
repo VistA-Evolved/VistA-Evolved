@@ -1,0 +1,76 @@
+{
+  "fileNumber": 95,
+  "fileName": "LAB JOURNAL",
+  "globalRoot": "95",
+  "globalReference": "^LAB(95,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "JOURNAL ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Please use the standard abbreviation of the medical journal that appears in INDEX MEDICUS ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Full name of the Lab journal entry ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CITY OF PUBLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City where journal was published ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NLM CALL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The National Library of Medicine call number ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NLM TITLE CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The National Library of Medicine title control number ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "95.01",
+      "required": false,
+      "helpText": "Any comment referencing this journal entry ",
+      "isMultiple": true,
+      "subFileNumber": 95.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "95", "field": .01, "type": "regular"},
+    {"name": "95", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

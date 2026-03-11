@@ -1,0 +1,86 @@
+{
+  "fileNumber": 350.5,
+  "fileName": "BASC LOCALITY MODIFIER",
+  "globalRoot": "350.5ID",
+  "globalReference": "^IBE(350.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date on which this entries data becomes effective. The data in this entry will override any other entry for this DIVISION that has a previous EFFECTIVE DATE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "The division that this data applies to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "The status for this DIVISION on/after this EFFECTIVE DATE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "WAGE PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,8",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the percentage of the rate group unit charge that is the wage component to be used in calculating the ambulatory surgery charge. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NON-WAGE PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,8X",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the percentage of the rate group unit charge that is the non-wage  component to be used in calculating the ambulatory surgery charge. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LOCALITY RATE MODIFIER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,8",
+      "length": 11,
+      "required": true,
+      "helpText": "This is the Geographic Wage Index that is used to account for wage differences in different localities when calculating the ambulatory surgery charge. It is multiplied by the wage component to get the final geographic wage component of the charge. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "350.5", "field": .01, "type": "regular"},
+    {"name": "350.5", "field": .01, "type": "regular"},
+    {"name": "350.5", "field": .02, "type": "regular"},
+    {"name": "350.5", "field": .02, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(350.5,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .07, "value": "W \"   \",$P(^(0),U,7)"}
+  ]
+}

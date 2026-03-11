@@ -1,0 +1,193 @@
+{
+  "fileNumber": 360,
+  "fileName": "IB-FB INTERFACE TRACKING",
+  "globalRoot": "360",
+  "globalReference": "^IBFB(360,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the internal entry number to identify the link between  claims/bills and Fee Basis payments and authorizations. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Patient name to link authorizations, payments and claims/bills. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FB AUTHORIZATION ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter an Authorization IEN to link authorizations, payments and  claims/bills.   ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AUTH DELETION DATE/TIME ",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that an Authorization was deleted completely. Used for  tracking purposes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INITIAL TREATMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the initial Non-VA Care treatment was provided. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "CLAIMS TRACKING ENTRY NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P356'",
+      "required": false,
+      "pointerTo": 356,
+      "helpText": "Enter a Claim ID to assist in linking NVC authorizations and payments to claims in file #356. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "BILL/CLAIMS",
+      "dataType": "POINTER",
+      "rawType": "P399'",
+      "required": false,
+      "pointerTo": 399,
+      "helpText": "We use this to link an existing entry in file #399 to an existing fee basis authorization and payment. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "INVOICE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P162.5'",
+      "required": false,
+      "pointerTo": 162.5,
+      "helpText": "This field is a pointer to the Inpatient Payment File and a soft pointer to the Outpatient Payment File. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "INTEGRATED BILLING ACTION",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "Enter a first party copay IEN to link to a FB Auth and payment. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "IV QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "IV:IV QUEUE;XX:REMOVED;",
+      "helpText": "This is the Insurance Verification Precertification Queue ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "UR QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "UR:UR QUEUE;XX:REMOVED;",
+      "helpText": "This is the RUR Precertification Queue ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "FR QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "FR:FR QUEUE;XX:REMOVED;",
+      "helpText": "This is the Facility Revenue Billing Queue ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "SC QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SC:SC QUEUE;XX:REMOVED;",
+      "helpText": "This is the RUR Service Connected Billing Queue ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "BI QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BI:BI QUEUE;XX:REMOVED;",
+      "helpText": "This is the Billing Review Queue ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "NEXT REVIEW DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date of the next RUR precertification review.  If a  date has been entered in this field, the authorization will not display  on the RUR precertification work queue until the date specified. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "1ST OR 3RD PTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field indicates if the bill is for first party copay or third party  insurance. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOG",
+      "dataType": "DATE",
+      "rawType": "360.04DA",
+      "required": false,
+      "helpText": "This is an audit field to track entries and changes made to the file for  auditing purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 360.04,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "360", "field": .01, "type": "regular"},
+    {"name": "360", "field": .02, "type": "regular"},
+    {"name": "360", "field": .04, "type": "regular"},
+    {"name": "360", "field": 1.01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

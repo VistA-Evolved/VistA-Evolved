@@ -1,0 +1,97 @@
+{
+  "fileNumber": 2006.5712,
+  "fileName": "DICOM FIXED QUEUE",
+  "globalRoot": "2006.5712",
+  "globalReference": "^MAGDINPT(2006.5712,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.575'",
+      "required": true,
+      "pointerTo": 2006.575,
+      "helpText": "The value of this field is a pointer to the Image file (#2005). [ ... ] ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STUDY",
+      "dataType": "POINTER",
+      "rawType": "P2006.575'",
+      "required": false,
+      "pointerTo": 2006.575,
+      "helpText": "The value of this field is a pointer to the DICOM Failed Images File (#2005.575).  [...] ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DELETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NONE:Nothing to be deleted;IMAGE:Delete the Image;STUDY:Delete the Study;",
+      "helpText": "The value of this field is a code that indicates whether or not anything is to be deleted for this queue entry.  A value of \"NONE\" indicates that nothing is to be deleted. A value of \"IMAGE\" indicates that the image is to be deleted. A value of \"STUDY\" indicates that the study is to be deleted. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an abbreviation that identifies the instrument that is being described in this entry.   Typical abbreviations are CR1, CT2, US, etcetera. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FROM PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies a file. This value is the original name of the image file (directory path, filename and extension) of the image.  Files of this type are always stored in a directory called xx:\\DICOM\\IMAGE_IN. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STUDY UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NEW PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NEW PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NEW ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

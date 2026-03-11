@@ -1,0 +1,125 @@
+{
+  "fileNumber": 396.18,
+  "fileName": "CAPRI TEMPLATE DEFINITIONS",
+  "globalRoot": "396.18",
+  "globalReference": "^DVB(396.18,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the template as displayed in the CAPRI GUI.   Name is TemplateName~<patnum>   or is TemplateName~<patnum>T<testver>      where:     patnum is the patch number     testver is \"Test Version\" number   Examples:    JOINTS~78T1    SPINE~92   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "396.181",
+      "required": false,
+      "helpText": "The text placed in this field will be displayed in the template selection  dialog in the CAPRI GUI to assist the user in making a selection. ",
+      "isMultiple": true,
+      "subFileNumber": 396.181,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a template is loaded but should not become active until a date in the  future, that date can be set with this field.  If the date entered has  already passed, the template will become active immediately. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DE-ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Placing a date in this field will de-activate the template on the date  specified.  It will often occur that an entry will contain a  de-activation date and another entry in the file that's meant to replace  it will contain the same date but in its activation date field.   Once a  template has de-activated, a user will not be able to create a new  document using that template but can still access old documents  previously created with the template. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FORM DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "396.184",
+      "required": false,
+      "helpText": "This field contains the Windows format screen definition that will  generate the template in the CAPRI GUI.  WARNING:  DO NOT MODIFY THIS  FIELD TO PREVENT CORRUPTION OF THE TEMPLATE. If there is a problem, the field will need to be updated at a national level and re-distributed.  ",
+      "isMultiple": true,
+      "subFileNumber": 396.184,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "FACILITATES THE CUTTING OF BUILDS SINCE A SCREEN CAN CHECK FOR THOSE WHOSE 'LAST UPDATE' IS GREATER THAN THE LAST DISTRIBUTION. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SELECTABLE BY USER?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If set to NO, this template will be accessible by CAPRI for merging  purposes but not selectable by the user in the forms list. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OBJECT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the number of Windows Objects contained within the Template. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RELEASED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;9:TEST;",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CRC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a value used internally by the CAPRI team to verify a template's  version prior to being distributed to the field. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SCRIPT STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PASCAL SCRIPT;2:CPWM SCRIPT;",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "396.18", "field": .01, "type": "regular"},
+    {"name": "396.18", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

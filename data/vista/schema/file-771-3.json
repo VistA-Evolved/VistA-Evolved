@@ -1,0 +1,53 @@
+{
+  "fileNumber": 771.3,
+  "fileName": "HL7 SEGMENT TYPE",
+  "globalRoot": "771.3I",
+  "globalReference": "^HL(771.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREVIATED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The three character HL7 segment abbreviation (e.g., PID). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The full HL7 segment name (e.g., Patient Identification). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "771.33P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROCESSING ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The routine that will be run to process data in the HL7 segment.  Enter a routine name or entry point and routine name (e.g., HL7O or EN1^HL7O). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

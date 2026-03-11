@@ -1,0 +1,78 @@
+{
+  "fileNumber": 69.4,
+  "fileName": "LAB SEARCH/EXTRACT PROTOCOL",
+  "globalRoot": "69.4",
+  "globalReference": "^LAB(69.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "RP101'X",
+      "required": true,
+      "pointerTo": 101,
+      "helpText": "This is the entry in the Protocol file (#101) that will be used to build the HL7 Message. This allows additional parameters to be associated with  the protocol. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Report Mail Group",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group that will receive the verification report. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Message Size",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This determines how big the HL7 message will be before it breaks into another message.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Send Alert",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "When this field is set to '1' or 'YES' an alert is transmitted to the recipients listed in the RECEIVE ALERTS field when a search is run automatically for this protocol. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Title",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will over-ride the default title for the Verification Report. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Receive Alerts",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "69.45V",
+      "required": false,
+      "helpText": "This is the User(s) or Group that will receive alerts stating the extract has run automatically. ",
+      "isMultiple": true,
+      "subFileNumber": 69.45,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "69.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

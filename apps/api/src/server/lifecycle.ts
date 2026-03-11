@@ -687,6 +687,16 @@ export async function runLifecycle(opts: { host: string; port: number }): Promis
   // Initialize Postgres platform DB and wire repos
   await initPostgresLayer();
 
+  // Initialize VistA Documentation Assistant (Phase VII -- 157-module knowledge base)
+  try {
+    const { initDocAssistant } = await import('../ai/vista-doc-assistant.js');
+    const { join } = await import('path');
+    const rootDir = join(import.meta.dirname || '.', '..', '..', '..', '..');
+    initDocAssistant(rootDir);
+  } catch (docErr: any) {
+    log.warn('Doc assistant init failed (non-fatal)', { error: docErr.message });
+  }
+
   // Start background jobs
   await startBackgroundServices();
 }

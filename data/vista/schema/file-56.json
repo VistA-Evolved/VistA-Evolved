@@ -1,0 +1,113 @@
+{
+  "fileNumber": 56,
+  "fileName": "DRUG INTERACTION",
+  "globalRoot": "56OI",
+  "globalReference": "^PS(56,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "This field is used to store the name of the drug interaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INGREDIENT 1",
+      "dataType": "POINTER",
+      "rawType": "R*P50.416'Xa",
+      "required": true,
+      "pointerTo": 50.416,
+      "helpText": "This field is used to stored the first ingredient of adverse drug/drug reactions. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INGREDIENT 2",
+      "dataType": "POINTER",
+      "rawType": "R*P50.416'Xa",
+      "required": true,
+      "pointerTo": 50.416,
+      "helpText": "This field is used to store the name of the second ingredient for drug/drug adverse reaction.  This ingredient cannot be the same as the first ingredient. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEVERITY",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:CRITICAL;2:SIGNIFICANT;",
+      "helpText": "This field is used to indicate the type of reaction from the interaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NATIONALLY ENTERED",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if this data was sent out by the ISC. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TOTAL INDEXES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0XIa",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to store the total number of interaction for an entry into the file.  This data is not entered directly through FM. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCALLY EDITED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is set if the severity of this interaction has been edited locally.  This will allow a site to change the severity of a nationally entered interaction from significant to critical and later change it back.  Nationally entered critical interactions can not be edited. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This is the date when this interaction became inactive. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "AE2", "field": },
+    {"name": "AI1", "field": },
+    {"name": "AI2", "field": },
+    {"name": "APD", "field": },
+    {"name": "APE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "56", "field": .01, "type": "regular"},
+    {"name": "56", "field": .01, "type": "regular"},
+    {"name": "56", "field": 1, "type": "regular"},
+    {"name": "56", "field": 1, "type": "regular"},
+    {"name": "56", "field": 1, "type": "regular"},
+    {"name": "56", "field": 2, "type": "regular"},
+    {"name": "56", "field": 2, "type": "regular"},
+    {"name": "56", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PS(50.416,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50.416,.01,0),U,2) D Y^DIQ:Y]\"\" W !,\"Primary Ingre.: \"_Y S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PS(50.416,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50.416,.01,0),U,2) D Y^DIQ:Y]\"\" W \"and  \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"Severity: \",@(\"$P($P($C(59)_$S($D(^DD(56,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

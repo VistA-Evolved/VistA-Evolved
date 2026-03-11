@@ -1,0 +1,39 @@
+{
+  "fileNumber": 741.2,
+  "fileName": "QA OCCURRENCE REVIEW LEVEL",
+  "globalRoot": "741.2I",
+  "globalReference": "^QA(741.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LEVEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the the names of the different levels of review. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REVIEW LEVEL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0I",
+      "length": 1,
+      "required": true,
+      "helpText": "This field contains the number associated with the different levels of review. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "741.2", "field": .01, "type": "regular"},
+    {"name": "741.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

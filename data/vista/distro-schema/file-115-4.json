@@ -1,0 +1,63 @@
+{
+  "fileNumber": 115.4,
+  "fileName": "NUTRITION STATUS",
+  "globalRoot": "115.4I",
+  "globalReference": "^FH(115.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a nutrition status or risk category. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS TEXT (U/L CASE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the text name (upper/lower case) of a  Nutrition Status or risk category. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "UPPERCASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the status in uppercase text. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "115.4", "field": .01, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "115.4", "field": 1, "type": "regular"},
+    {"name": "115.4", "field": 99, "type": "regular"},
+    {"name": "115.4", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRIT, "value": "D EN^DDIOL($P(^(0),U,2),\"\",\"?3\")"},
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "fileNumber": 1.5215,
+  "fileName": "SQLI_TABLE",
+  "globalRoot": "1.5215",
+  "globalReference": "^DMSQ(\"T\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "T_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Table name must be a valid SQL identifier, unique by schema ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "T_SCHEMA",
+      "dataType": "POINTER",
+      "rawType": "RP1.521",
+      "required": true,
+      "pointerTo": 1.521,
+      "helpText": "IEN in SQLI_SCHEMA of the schema to which this table belongs. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "T_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short description of the table ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "T_MASTER_TABLE",
+      "dataType": "POINTER",
+      "rawType": "P1.5215'",
+      "required": false,
+      "pointerTo": 1.5215,
+      "helpText": "The table of which this table is an index. (Only index tables) ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "T_VERSION_FM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The version number is updated by FileMan when ^DD or ^DIC changes. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "T_ROW_COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field should contain an estimate of the number of rows in the table ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "T_FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ19,9O",
+      "length": 19,
+      "required": true,
+      "helpText": "FileMan file number from which table is derived. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "T_UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date last updated. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "T_GLOBAL",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Global variable name. {K} stands for a subscript E.g.: ^DIC(9.4,{K},3,{K},4,{K}) ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "1.5215", "field": .01, "type": "regular"},
+    {"name": "1.5215", "field": 3, "type": "regular"},
+    {"name": "1.5215", "field": 6, "type": "regular"},
+    {"name": "1.5215", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

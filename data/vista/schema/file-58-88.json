@@ -1,0 +1,38 @@
+{
+  "fileNumber": 58.88,
+  "fileName": "CS IRL PROGRAM",
+  "globalRoot": "58.88",
+  "globalReference": "^PSD(58.88,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of this IRL program. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IRL PROGRAM",
+      "dataType": "SUBFILE",
+      "rawType": "58.881",
+      "required": false,
+      "helpText": "The IRL program for performing a part of the Controlled Substances perpetual inventory functions. ",
+      "isMultiple": true,
+      "subFileNumber": 58.881,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.88", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 7115.1,
+  "fileName": "HDIS DOMAIN",
+  "globalRoot": "7115.1",
+  "globalReference": "^HDIS(7115.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A subset of medicine, a natural grouping of clinical acts (e.g., demographics, vital signs, laboratory, pharmacy). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FILE/FIELD",
+      "dataType": "POINTER",
+      "rawType": "7115.11PA",
+      "required": false,
+      "helpText": "The File/Field associated with the record. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7115.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

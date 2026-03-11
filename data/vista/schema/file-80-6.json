@@ -1,0 +1,58 @@
+{
+  "fileNumber": 80.6,
+  "fileName": "DRG HAC",
+  "globalRoot": "80.6",
+  "globalReference": "^ICDHAC(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HAC CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "Code for Hospital Acquired Condition (HAC) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HAC DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description for this Hospital Acquired Condition code ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIAGNOSIS CODE",
+      "dataType": "POINTER",
+      "rawType": "80.62PA",
+      "required": false,
+      "helpText": "Diagnosis Code pointer to File #80 ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCEDURE CODES",
+      "dataType": "POINTER",
+      "rawType": "80.63P",
+      "required": false,
+      "helpText": "Procedure codes within the HAC category  ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DX", "field": },
+    {"name": "PCS", "field": },
+    {"name": "80.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

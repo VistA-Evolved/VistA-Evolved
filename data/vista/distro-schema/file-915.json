@@ -1,0 +1,81 @@
+{
+  "fileNumber": 915,
+  "fileName": "ESP OFFENSE CODES",
+  "globalRoot": "915I",
+  "globalReference": "^ESP(915,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the commonly known descriptive name for the offense, i.e., 'Burning of An Occupied Dwelling'.  This field will be utilized to assist staff in looking up the exact legal definitions of an offense code was well as facilitating speed of entry throughout the program. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Statute number or title governing this offense, i.e., USC 31, 331 Texas, Center Memorandum #SS-122, etc. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Section number of the referenced Statute, i.e, 32, 21 118A, etc. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .032,
+      "fieldName": "PRINT #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Entering a number in this field controls placement of the offense description on a physical printout.  Refer to the User's Manual for additional directive information. ",
+      "fieldNumber_": .032
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CRIMINAL;P:PARKING;M:MOVING;A:ADMINISTRATIVE;",
+      "helpText": "Enter the general classification of offense type.  Enter 'C' for CRIMINAL; 'P' for PARKING; 'M' for MOVING; or 'A' for ADMINISTRATIVE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "915.01",
+      "required": false,
+      "helpText": "This field is used to record the exact legal wording of any particular criminal statute entered into the ESP Offense Code file. ",
+      "isMultiple": true,
+      "subFileNumber": 915.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "915", "field": .01, "type": "regular"},
+    {"name": "915", "field": .031, "type": "regular"},
+    {"name": "915", "field": .032, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": .031, "value": "W \"   \",$P(^(0),U,5)"}
+  ]
+}

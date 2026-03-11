@@ -1,0 +1,68 @@
+{
+  "fileNumber": 757.071,
+  "fileName": "SUPPLEMENTAL WORDS",
+  "globalRoot": "757.071",
+  "globalReference": "^LEX(757.071,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ40",
+      "length": 40,
+      "required": true,
+      "helpText": "This is a word to be applied to the SUPPLEMENTAL fields in either the Lexicon or ICD files 80/80.1.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The word is to be used from the effective date until the  inactivation date (if one exist). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If an inactivation date exist, and it is in the past, then the word will not be used. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INCLUDES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a semi-colon \";\" delimited string of words and phrases  that must be contained in a term for the word to be applied. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXCLUDES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a semi-colon \";\" delimited string of words and phrases that must NOT be contained in a term for the word to be applied.   ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AD1", "field": },
+    {"name": "AD2", "field": },
+    {"name": "B", "field": },
+    {"name": "757.071", "field": .01, "type": "regular"},
+    {"name": "757.071", "field": .01, "type": "regular"},
+    {"name": "757.071", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "N LEXK,LEXI,LEXT S LEXK=$P($G(^LEX(757.071,+Y,0)),\"^\",1),LEXI=$P($G(^LEX(757.071,+Y,0)),\"^\",4),LEXT=$E(($J(\" \",($S($L(LEXK)'>10:10,1:$L(LEXK))-$L(LEXK)))_LEXI),1,60) D EN^DDIOL((\"  \"_LEXT),\"\",\"?0\")"}
+  ]
+}

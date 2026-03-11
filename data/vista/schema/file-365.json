@@ -1,0 +1,637 @@
+{
+  "fileNumber": 365,
+  "fileName": "IIV RESPONSE",
+  "globalRoot": "365",
+  "globalReference": "^IBCN(365,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the HL7 message control number that is generated at the time the HL7 message is generated and placed in the outgoing HL7 message queue. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This the patient who was identified on the outgoing HL7 message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PAYER",
+      "dataType": "POINTER",
+      "rawType": "P365.12'",
+      "required": false,
+      "pointerTo": 365.12,
+      "helpText": "This is the payer that was selected for either identification or verification. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BUFFER ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P355.33'",
+      "required": false,
+      "pointerTo": 355.33,
+      "helpText": "This field is a pointer to the Insurance Buffer File if a buffer record exists for this insurance inquiry. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMISSION QUEUE",
+      "dataType": "POINTER",
+      "rawType": "P365.1'",
+      "required": false,
+      "pointerTo": 365.1,
+      "helpText": "This is the reference back to the Transmission Queue File.  It provides a link between the inquiry and the response. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "POINTER",
+      "rawType": "P365.14'",
+      "required": false,
+      "pointerTo": 365.14,
+      "helpText": "This is the status of the response record. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the HL7 response was received from the payer via the Eligibility Communicator. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the baseline response record  was created when the outgoing HL7 message was generated. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Trace Number assigned by EC that is used for tracking a message between EC and the vendor. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RESPONSE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:Original;U:Unsolicited;",
+      "helpText": "This field identifies whether a response originated from the Transmission Queue file (Original) or was received Unsolicited from the EC. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DO NOT PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is not to be edited by a user.  If the value is 1, then this record  may not be purged as it is being referenced by a patient's insurance  record. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "INSUR RECORD IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is the IEN of the insurance type record (2.312) which the code has determined is associated with this payer response. The field is used to facilitate various auto-update reporting ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EIV AUTO-UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag that determines whether this response successfully resulted in an auto-update of the patient policy. A value of 1, \"YES\" means  this response did auto-update the policy. A value of 0, \"NO\" indicates that the policy was not  auto-updated by this response.  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "REQUESTED SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that was determined by the system to submit to the Payer as the date that service was performed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "REQUESTED SERVICE TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Service Type code to be sent with eIV insurance inquiry. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "EIV AUTO-LOAD",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This flag indicates whether this response successfully resulted in an auto-load of the patient policy. A value of 1, \"YES\" means this  response did auto-load the policy to the patient file (#2.312). A value  of 0, \"NO\" indicates that the policy was not auto-loaded by this response. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "*NAME OF INSURED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the insured person in LastName,FirstName MI format.  If the patient is the subscriber, this field is the same.  If the patient is a dependent, the subscriber's name is stored here.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "INSURED DOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date of birth of the insured person. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "INSURED SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The social security number of the insured person. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "INSURED SEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The sex of the insured person. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "*SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The subscriber identification of the insured person.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "*GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the group or plan if not an individual policy.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "*GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The number that identifies the group or plan.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "WHOSE INSURANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "v:VETERAN;s:SPOUSE;o:OTHER;",
+      "helpText": "This is a definition of who is the subscriber of the insurance; the veteran, a spouse or someone else. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "PT RELATIONSHIP TO INSURED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:PATIENT;02:SPOUSE;03:NATURAL CHILD;08:EMPLOYEE;09:UNKNOWN;11:ORGAN DONOR;15:INJURED PLAINTIFF;18:PARENT;34:OTHER ADULT;",
+      "helpText": "This is a definition of the patient's relationship to the insured person. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of service returned by the Eligibility Communicator.  It may be different from the one sent in the original inquiry. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the insurance coverage began. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the insurance coverage ends. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "COORDINATION OF BENEFITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "If an insurance payer is identified as a primary, secondary or tertiary in the response. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "ERROR CONDITION",
+      "dataType": "POINTER",
+      "rawType": "P365.017'",
+      "required": false,
+      "pointerTo": 365.017,
+      "helpText": "This is an error value returned from either the payer or the Eligibility Communicator. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "ERROR ACTION",
+      "dataType": "POINTER",
+      "rawType": "P365.018'",
+      "required": false,
+      "pointerTo": 365.018,
+      "helpText": "When an error condition is returned in the response, there may be an action that directs what happens to the response. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the payer indicates that the person that verification was requested for has died. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "CERTIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field may be returned by the payer and is the date that the insurance coverage was certified. ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 1.18,
+      "fieldName": "MEMBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The member identification of the insured person. ",
+      "fieldNumber_": 1.18
+    },
+    {
+      "fieldNumber": 1.19,
+      "fieldName": "PAYER UPDATED POLICY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the payer indicated they had updated their record of  this policy.  This date/time was received by IIV from the Eligibility Communicator. ",
+      "fieldNumber_": 1.19
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "POLICY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may be returned by the payer.  It is the policy number of the  insured person. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ELIGIBILITY/BENEFIT",
+      "dataType": "SUBFILE",
+      "rawType": "365.02",
+      "required": false,
+      "helpText": "This multiple contains all of the eligibility and benefit data for a specific insured person returned from the Payer. ",
+      "isMultiple": true,
+      "subFileNumber": 365.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONTACT PERSON",
+      "dataType": "SUBFILE",
+      "rawType": "365.03",
+      "required": false,
+      "helpText": "This field contains any persons identified by the Payer as a contact name and/or communications number.  There  could be up to 3 different methods of communication. ",
+      "isMultiple": true,
+      "subFileNumber": 365.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains error message text which is sent from the Eligibility Communicator if an error does not fall within one of the standard X.12 error conditions. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "SUBSCRIBER ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, line 1. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "SUBSCRIBER ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, line 2. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "SUBSCRIBER ADDRESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, city. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "SUBSCRIBER ADDRESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Subscriber address, state. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "SUBSCRIBER ADDRESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, zip code. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "SUBSCRIBER ADDRESS COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, country code. ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "SUBSCRIBER ADDRESS SUBDIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, country subdivision code. ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REJECT REASONS",
+      "dataType": "SUBFILE",
+      "rawType": "365.06A",
+      "required": false,
+      "helpText": "This multiple contains reject reason codes. ",
+      "isMultiple": true,
+      "subFileNumber": 365.06,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SUBSCRIBER DATES",
+      "dataType": "SUBFILE",
+      "rawType": "365.07A",
+      "required": false,
+      "helpText": "Subscriber dates multiple. Contains subscriber level dates, as opposed to eligibility/benefit level dates. ",
+      "isMultiple": true,
+      "subFileNumber": 365.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "PT. RELATIONSHIP - HIPAA",
+      "dataType": "POINTER",
+      "rawType": "P365.037",
+      "required": false,
+      "pointerTo": 365.037,
+      "helpText": "This is the HIPAA relationship code that describes the relationship this  patient has to the holder of this insurance policy. If the policy belongs  to the patient enter '18' for SELF. If the policy belongs to the spouse  enter '01' for SPOUSE, etc. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "GROUP REFERENCE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "365.09",
+      "required": false,
+      "helpText": "Subscriber/Dependent additional identification data. ",
+      "isMultiple": true,
+      "subFileNumber": 365.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "GROUP PROVIDER INFO",
+      "dataType": "SUBFILE",
+      "rawType": "365.04",
+      "required": false,
+      "helpText": "Entries in this sub-file identify the characteristics of a provider. ",
+      "isMultiple": true,
+      "subFileNumber": 365.04,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "HEALTH CARE CODE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "365.01",
+      "required": false,
+      "helpText": "To supply information related to the delivery of health care. ",
+      "isMultiple": true,
+      "subFileNumber": 365.01,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "MILITARY INFO STATUS CODE",
+      "dataType": "POINTER",
+      "rawType": "P365.039",
+      "required": false,
+      "pointerTo": 365.039,
+      "helpText": "Code to indicate the status of the military information sent by the  payer.    ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "MILITARY EMPLOYMENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P365.046",
+      "required": false,
+      "pointerTo": 365.046,
+      "helpText": "Code showing the general military employment status of an employee/claimant. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 12.03,
+      "fieldName": "MILITARY GOVT AFFILIATION CODE",
+      "dataType": "POINTER",
+      "rawType": "P365.041",
+      "required": false,
+      "pointerTo": 365.041,
+      "helpText": "Code specifying the military service affiliation. ",
+      "fieldNumber_": 12.03
+    },
+    {
+      "fieldNumber": 12.04,
+      "fieldName": "MILITARY PERSONNEL DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free-form text description that further identifies the exact military unit. ",
+      "fieldNumber_": 12.04
+    },
+    {
+      "fieldNumber": 12.05,
+      "fieldName": "MILITARY SERVICE RANK CODE",
+      "dataType": "POINTER",
+      "rawType": "P365.042",
+      "required": false,
+      "pointerTo": 365.042,
+      "helpText": "Code specifying the military service rank. ",
+      "fieldNumber_": 12.05
+    },
+    {
+      "fieldNumber": 12.06,
+      "fieldName": "DATE TIME PERIOD FORMAT QUAL",
+      "dataType": "POINTER",
+      "rawType": "P365.032",
+      "required": false,
+      "pointerTo": 365.032,
+      "helpText": "Code qualifier indicating the date format, time format, or date and time format respective of the DATE TIME PERIOD field (#12.07). ",
+      "fieldNumber_": 12.06
+    },
+    {
+      "fieldNumber": 12.07,
+      "fieldName": "DATE TIME PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Expression of a date or range of dates that indicates the date span of military service. ",
+      "fieldNumber_": 12.07
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "NAME OF INSURED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name of the insured person in LastName,FirstName MI format.  If the patient is the subscriber, this field is the same. If the patient  is a dependent, the subscriber's name is stored here. ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.02,
+      "fieldName": "SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The subscriber identification of the insured person. ",
+      "fieldNumber_": 13.02
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the group or plan if not an individual policy. ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.02,
+      "fieldName": "GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The number that identifies the group or plan. ",
+      "fieldNumber_": 14.02
+    }
+  ],
+  "fieldCount": 63,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "365", "field": .01, "type": "regular"},
+    {"name": "365", "field": .04, "type": "regular"},
+    {"name": "365", "field": .06, "type": "regular"},
+    {"name": "365", "field": .08, "type": "regular"},
+    {"name": "365", "field": .09, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.05, "type": "regular"},
+    {"name": "", "field": 1.06, "type": "regular"},
+    {"name": "", "field": 1.07, "type": "regular"},
+    {"name": "", "field": 13.01, "type": "regular"},
+    {"name": "", "field": 13.02, "type": "regular"},
+    {"name": "", "field": 14.01, "type": "regular"},
+    {"name": "", "field": 14.02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

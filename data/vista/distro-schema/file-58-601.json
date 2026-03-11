@@ -1,0 +1,86 @@
+{
+  "fileNumber": 58.601,
+  "fileName": "PADE INVENTORY SYSTEM",
+  "globalRoot": "58.601",
+  "globalReference": "^PS(58.601,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PADE INVENTORY SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A PADE Inventory System is a Pharmacy Automated Dispensing  Equipment (PADE) system that sends stock and dispense activity to VistA.    At non-integrated sites, there may only be one PADE Inventory  System per PADE System (outbound). At integrated sites, the PADE  outbound system may represent a central PADE server, and each  PADE Inventory System represents a parent facility within the integrated site. At non-integrated sites, where there is only one parent facility, there may only be one PADE ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPENSING DEVICE",
+      "dataType": "POINTER",
+      "rawType": "58.6011P",
+      "required": false,
+      "helpText": "Dispensing Device represents a physical Pharmacy Automation Dispensing  Equipment (PADE) device used for storage and retrieval of drug items. PADE devices are associated with, and grouped by, a PADE Inbound vendor system, and are linked to VistA ward and clinic locations via the  Division sub-file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PADE VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P58.7'",
+      "required": false,
+      "pointerTo": 58.7,
+      "helpText": " The PADE Outbound System points to the PADE SYSTEM SETUP file and   is used to link a PADE vendor to the inbound HL7 message.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ALTERNATE SYSTEM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains an alternate name that may display during lookups  to help identify the correct PADE Inventory System. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DWO MESSAGE ENTITY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "58.6014V",
+      "required": false,
+      "helpText": "The highest priority Dispensed Without Orders (DWO) Entity associated with a mail group will receive MailMan messages when dispense transactions are received without a corresponding pharmacy order.  ",
+      "isMultiple": true,
+      "subFileNumber": 58.6014,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CONFIG ERRORS MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "58.6015P",
+      "required": false,
+      "helpText": "This multiple contains mail groups that receive alert MailMan messages  when PADE configration problems are encountered. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATA ERRORS MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "58.6016P",
+      "required": false,
+      "helpText": "Mail groups to receive alert MailMan messages when PADE data validation problems are encountered by the PADE HL7 Inbound interface. If multiple  mail groups are entered, the messages will be sent to all mail groups  sequentially; entering several mail groups with overlapping members will result in the same message being sent multiple times to the same  recipients. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "58.601", "field": .01, "type": "regular"},
+    {"name": "58.601", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(4)) \"   \",$P(^(4),U,1)"}
+  ]
+}

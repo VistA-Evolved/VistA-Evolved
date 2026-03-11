@@ -1,0 +1,55 @@
+{
+  "fileNumber": 791811.1,
+  "fileName": "REMOTE PRODUCT GROUP",
+  "globalRoot": "791811.1",
+  "globalReference": "^RMPF(791811.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRODUCT GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the product group.  Commodity line items are associated with a product group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviation for the name of the product group. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAY USE BATTERIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MAY NOT USE BATTERIES;1:MAY USE BATTERIES;",
+      "helpText": "This field indicates whether or not items in this product group may use batteries. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ROES MENUS ALLOWED",
+      "dataType": "POINTER",
+      "rawType": "791811.1101P",
+      "required": false,
+      "helpText": "This multiple contains the names of the menus that allow selection of items from this product group. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791811.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

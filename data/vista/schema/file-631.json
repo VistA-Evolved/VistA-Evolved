@@ -1,0 +1,946 @@
+{
+  "fileNumber": 631,
+  "fileName": "HBHC PATIENT",
+  "globalRoot": "631IP",
+  "globalReference": "^HBHC(631,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient's name in Patient (2) file.  Patient must exist in DPT for HBHC selection, since LAYGO not allowed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EVALUATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field represents date patient was evaluated for HBHC program. Date range allowed is between 1/1/1977 and current date, and must be prior to or same as HBHC Admission Date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATE CODE",
+      "dataType": "POINTER",
+      "rawType": "RP631.8'",
+      "required": true,
+      "pointerTo": 631.8,
+      "helpText": "This field represents 2 digit numeric code, in State (5) file, of location where patient resides. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COUNTY CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents 3 digit numeric code of County, in State (5) file, of location where patient resides.  County codes are checked for validity of State Code entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This fields represents 5 or 9 digit numeric ZIP Code of area where patient resides. resides. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ELIGIBILITY @ EVALUATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:Service Connected 50% or More  (01);02:Aid & Attendance or Housebound  (02);03:Service Connected Less Than 50%  (03);04:Non-Service Connected, Receiving VA Pension  (04);05:Other Non-Service Connected  (05);",
+      "helpText": "This field represents 2 digit numeric code of patient's eligibility at time of evaluation for HBHC program. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BIRTH YEAR",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This field represents 4 digit year of patient's birthdate in Patient (2) file. Patient (2) file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP631.7'O",
+      "required": true,
+      "pointerTo": 631.7,
+      "helpText": "This field represents 2 character code in HBHC Period of Service (631.7) file.  Valid codes are:  '00' thru '05', '07' thru '10', and 'X '.  (Note 'X' code is followed by space character.)  All 1 digit numeric codes must have leading zero. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SEX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field represents patient's Sex in Patient (2) file. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RACE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ31",
+      "length": 31,
+      "required": false,
+      "helpText": "This field is obsolete & contains historical data only  (prior to Race/Ethnicity Information multiple field mandate in Jan 2003).  Race field value set to \"X\" for Austin tranmission purposes after mandate.  Historical Description:  This fields represents patient's Race in Patient (2) file. (9.1) field to convert Race field value to corresponding HBHC Race code.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "RACECOMP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is obsolete & contains historical data only  (prior to Race/Ethnicity Information multiple field mandate in Jan 2003).  Historical Description: This field returns the abbreviation field from the Race file (#10). Used to obtain the field value needed for converting the Patient file (#2), Race field (#.06), Abbreviation field (#1 in DIC(10,) to the corresponding HBHC Race code field value. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MARITAL STATUS @ EVALUATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Married  (1);2:Widowed  (2);3:Separated  (3);4:Divorced  (4);5:Never Married  (5);9:Not Determined  (9);",
+      "helpText": "This fields represents 1 digit numeric code for patient's marital status at time of evaluation for HBHC program. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LIVING ARRANGEMENTS @ EVAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Alone  (1);2:With Spouse  (2);3:With Relatives  (3);4:With Non-Relatives  (4);5:Group Quarters, Not Health Related  (5);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's living  arrangements at time of evaluation for HBHC program. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LAST AGENCY PROVIDING CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VA Provided Care  (1);2:Non VA Care  (2);3:VA Fee Basis/Contract  (3);",
+      "helpText": "This field represents 1 digit numeric code for last agency providing care to patient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TYPE OF LAST CARE AGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:General Hospital  (1);2:Specialty Hospital  (2);3:Nursing Home  (3);4:Residential Care Facility  (4);5:Hospice  (5);6:Community-Based Services  (6);7:Self/Family, No Regular Source  (7);9:Not Determined  (9);",
+      "helpText": "This fields represents 1 digit numeric code for type of agency providing last care to patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ADMIT/REJECT ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Admit to HBHC  (1);2:Reject from HBHC  (2);",
+      "helpText": "This fields represents 1 digit numeric code for whether patient was admitted to or rejected from HBHC program.  This field determines what other data entry fields are prompted for by the package. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REJECT/WITHDRAW REASON",
+      "dataType": "POINTER",
+      "rawType": "P631.1'O",
+      "required": false,
+      "pointerTo": 631.1,
+      "helpText": "This field represents 2 digit numeric code in HBHC Reject/Withdraw Reason (631.1) file, for reason patient was rejected/withdrawn from HBHC program.  This field is only prompted for when Admit/Reject Action field contains 2 (Reject from HBHC). ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "REJECT/WITHDRAW DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Referred Back to Referral Source  (1);2:Disposition Made by HBHC  (2);",
+      "helpText": "This field represents 1 digit numeric code for reject/withdraw disposition. This field is only prompted for when Admit/Reject Action field contains 2 (Reject from HBHC). ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field represents date patient was considered/reviewed for HBPC program.  Date range allowed is between 1/1/1977 and current date.  Date must be prior to or same as discharge date.  discharge date. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PRIMARY DIAGNOSIS @ ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This field represents patient's primary diagnosis at time of admission, referencing ICD Diagnosis (80) file entries. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "VISION @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Normal or Minimal Loss  (1);2:Moderate Loss  (2);3:Severe Loss  (3);4:Total Blindness  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's vision at time of admission. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "HEARING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Normal or Minimal Loss  (1);2:Moderate Loss  (2);3:Severe Loss  (3);4:Total Deafness  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's hearing at time of admission. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "EXPRESSIVE COMMUNICATION @ ADM",
+      "dataType": "POINTER",
+      "rawType": "P631.2'O",
+      "required": false,
+      "pointerTo": 631.2,
+      "helpText": "This field represents 1 digit numeric code for patient's expressive communication at time of admission, referencing HBHC Expressive Communication (631.2) file entries. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RECEPTIVE COMMUNICATION @ ADM",
+      "dataType": "POINTER",
+      "rawType": "P631.3'O",
+      "required": false,
+      "pointerTo": 631.3,
+      "helpText": "This field represents 1 digit numeric code for patient's receptive communication at time of admission, referencing HBHC Receptive Communication (631.3) file entries. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "BATHING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bathing at time of admission. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DRESSING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's dressing at time of admission. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TOILET USAGE @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's toilet usage at time of admission. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TRANSFERRING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's transferring at time of admission. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EATING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's eating at time of admission. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "WALKING @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's walking at time of admission. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "BOWEL CONTINENCE @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Continent or Ostomy/Catheter Self Care  (1);2:Incontinent Occasionally  (2);3:Incontinent or Ostomy/Catheter Not Self Care  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bowel continence at time of admission. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "BLADDER CONTINENCE @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Continent or Ostomy/Catheter Self Care  (1);2:Incontinent Occasionally  (2);3:Incontinent or Ostomy/Catheter Not Self Care  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bladder continence at time of admission. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "MOBILITY @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Goes Outdoors Without Help  (1);2:Goes Outdoors With Help  (2);3:Confined Indoors, Not Bed Disabled  (3);4:Bed Disabled  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's mobility at time of admission. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ADAPTIVE TASKS @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Requires Help  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's adaptive tasks at time of admission. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "BEHAVIOR PROBLEMS @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's behavior problems at time of admission. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DISORIENTATION @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's disorientation at time of admission. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MOOD DISTURBANCE @ ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's mood disturbance at time of admission. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "CAREGIVER LIMITATIONS @ ADM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Minimal or None  (1);2:Moderate  (2);3:Moderately Severe  (3);4:No Caregiver  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's caregiver limitations at time of admission. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PERSON COMPLETING EVL/ADM FORM",
+      "dataType": "POINTER",
+      "rawType": "P631.4'O",
+      "required": false,
+      "pointerTo": 631.4,
+      "helpText": "This field represents name of person completing evaluation/admission form.  This person must exist in HBHC Provider (631.4) file, since LAYGO is not allowed. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "DATE EVAL/ADM FORM COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date evaluation/admission form was completed. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field represents date patient was discharged from HBHC program. Date range allowed is between 1/1/1977 and current date.  Discharge date must follow or be same as admission date. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ELIGIBILITY @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:Service Connected 50% or More  (01);02:Aid & Attendance or Housebound  (02);03:Service Connected Less Than 50%  (03);04:Non-Service Connected, Receiving VA Pension  (04);05:Other Non-Service Connected  (05);",
+      "helpText": "This field represents 2 digit numeric code of patient's eligibility at time of discharge from HBHC program. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "MARITAL STATUS @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Married  (1);2:Widowed  (2);3:Separated  (3);4:Divorced  (4);5:Never Married  (5);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's marital status at time of discharge from HBHC program. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "LIVING ARRANGEMENTS @ D/C",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Alone  (1);2:With Spouse  (2);3:With Relatives  (3);4:With Non-Relatives  (4);5:Group Quarters, Not Health Related  (5);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's living arrangements at time of discharge from HBHC program. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "DISCHARGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Transferred to Other Provider  (1);2:Anticipated Institutionalization  (2);3:Family or Self Care/No Regular Source  (3);4:Died on HBHC  (4);5:Moved Away/Lost to Contact  (5);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's discharge status.  This field determines what other data entry fields are prompted for by the package. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "TRANSFER DESTINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VA Provided Care  (1);2:Non VA Care  (2);3:VA Fee Basis/Contract  (3);",
+      "helpText": "This field represents 1 digit numeric code for patient's transfer  destination.  This field is only prompted for when Discharge Status field  contains either 1 (Transferred to Other Provider) or 2 (Anticipated Institutionalization). ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "TYPE OF DESTINATION AGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:General Hospital  (1);2:Specialty Hospital  (2);3:Nursing Home  (3);4:Residential Care Facility/Domicillary  (4);5:Hospice  (5);6:Community-Based Services  (6);9:Not Determined  (9);",
+      "helpText": "This field represent 1 digit numeric code for patient's type of destination agency.  This field is only prompted for when Discharge Status field contains either 1 (Transferred to Other Provider) or 2 (Anticipated Institutionalization). ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PRIMARY DIAGNOSIS @ DISCHARGE",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This field represents patient's primary diagnosis at time of discharge, referencing ICD Diagnosis (80) file entries. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "VISION @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Normal or Minimal Loss  (1);2:Moderate Loss  (2);3:Severe Loss  (3);4:Total Blindness  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's vision at time of discharge. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "HEARING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Normal or Minimal Loss  (1);2:Moderate Loss  (2);3:Severe Loss  (3);4:Total Deafness  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's hearing at time of discharge. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "EXPRESSIVE COMMUNICATION @ D/C",
+      "dataType": "POINTER",
+      "rawType": "P631.2'",
+      "required": false,
+      "pointerTo": 631.2,
+      "helpText": "This field represents 1 digit numeric code for patient's expressive communication at time of discharge, referencing HBHC Expressive Communication (631.2) file entries. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "RECEPTIVE COMMUNICATION @ D/C",
+      "dataType": "POINTER",
+      "rawType": "P631.3'",
+      "required": false,
+      "pointerTo": 631.3,
+      "helpText": "This field represents 1 digit numeric code for patient's receptive communication at time of discharge, referencing HBHC Receptive Communication (631.3) file entries. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "BATHING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bathing at time of discharge. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "DRESSING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's dressing at time of discharge. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "TOILET USAGE @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's toilet usage at time of discharge. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "TRANSFERRING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's transferring  at time of discharge. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "EATING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's eating at time of discharge. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "WALKING @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Receives Help  (2);3:Not Done or Done Without Patient Participation  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's walking at time of discharge. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "BOWEL CONTINENCE @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Continent or Ostomy/Catheter Self Care  (1);2:Incontinent Occasionally  (2);3:Incontinent or Ostomy/Catheter Not Self Care  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bowel continence at time of discharge. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "BLADDER CONTINENCE @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Continent or Ostomy/Catheter Self Care  (1);2:Incontinent Occasionally  (2);3:Incontinent or Ostomy/Catheter Not Self Care  (3);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's bladder continence at time of discharge. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "MOBILITY @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Goes Outdoors Without Help  (1);2:Goes Outdoors With Help  (2);3:Confined Indoors, Not Bed Disabled  (3);4:Bed Disabled  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's mobility at time of discharge. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "ADAPTIVE TASKS @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Help  (1);2:Requires Help  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's adaptive tasks at time of discharge. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "BEHAVIOR PROBLEMS @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's behavior problems at time of discharge. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DISORIENTATION @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's disorientation at time of discharge. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "MOOD DISTURBANCE @ DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Does Not Exhibit This Characteristic  (1);2:Exhibits This Characteristic  (2);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's mood disturbance at time of discharge. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "CAREGIVER LIMITATIONS @ D/C",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Minimal or None  (1);2:Moderate  (2);3:Moderately Severe  (3);4:No Caregiver  (4);9:Not Determined  (9);",
+      "helpText": "This field represents 1 digit numeric code for patient's caregiver limitations at time of discharge. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PERSON COMPLETING D/C FORM",
+      "dataType": "POINTER",
+      "rawType": "P631.4'O",
+      "required": false,
+      "pointerTo": 631.4,
+      "helpText": "This field represents name of person completing discharge form.  This person must exist in HBHC Provider (631.4) file, since LAYGO is not allowed. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "DATE DISCHARGE FORM COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date discharge form was completed. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "CASE MANAGER",
+      "dataType": "POINTER",
+      "rawType": "P631.4'O",
+      "required": false,
+      "pointerTo": 631.4,
+      "helpText": "This field represents name of person responsible for this case.  This person must exist in HBHC Provider (631.4) file, since LAYGO is not allowed. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "SECONDARY DIAGNOSES @ ADM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents patient's secondary diagnosis at time of admission. Field allows for 1-30 characters of free text. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "CAUSE OF DEATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents patient's cause of death.  This field in only prompted for when Discharge Status field contains 4 (Died on HBHC). Field allows for 1-30 characters of free text. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "SECONDARY DIAGNOSES @ D/C",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents patient's secondary diagnosis at time of discharge. Field allows for 1-30 characters of free text. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "FORM 3 TRANSMIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Record in Transmit File;N:Record Needs Transmitting;T:Record Transmitted;O:Record Omitted, Pre-dates 10/1/96 PCE Usage;",
+      "helpText": "This field represents Form 3 (Evaluation/Admission) Transmit Status. Field will contain either 'F' (Record in Transmit File), 'N' (Record Needs Transmitting), 'T' (Record Transmitted), or 'O' (Record Omitted, Pre-dates 10/1/96 PCE Usage).  Field updated by package only, no user input.  ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "FORM 5 TRANSMIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Record in Transmit File;N:Record Needs Transmitting;T:Record Transmitted;O:Record Omitted, Pre-dates 10/1/96 PCE Usage;",
+      "helpText": "This field represents Form 5 (Discharge) Transmit Status.  Field will contain either 'F' (Record in Transmit File), 'N' (Record Needs Transmitting), 'T' (Record Transmitted), or 'O' (Record Omitted, Pre-dates 10/1/96 PCE Usage).  Field updated by package only, no user input.  ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "FORM 3 FILED IN HBHC(634) DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date/time Form 3 (Evaluation/Admission) record filed in Transmit (634) file. Field transmitted to Austin for unique record identification purposes.  Field updated by package only, no user input. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "FORM 3 BATCH INITIAL MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in Austin transmission batch.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one transmission batch. Field updated by package only, no user input. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "FORM 3 MAIL MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 3 (Evaluation/Admission) record transmission via MailMan to Austin.  Field updated by package only, no  user input. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "FORM 5 FILED IN HBHC(634) DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 5 (Discharge) record filed in Transmit (634) file.  Field updated by package only, no user input. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "FORM 5 BATCH INITIAL MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in Austin transmission batch.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one transmission batch. Field updated by package only, no user input. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "FORM 5 MAIL MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 5 (Discharge) record transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "FORM 3 TRANSMIT FLAG EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 3 (Evaluation/Admission) Transmit Status flag was requested by user to be reset (allowing editing of previously transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "FORM 3 TRANSMIT FLAG EDIT DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field represents DUZ of user requesting Form 3 (Evaluation/ Admission) Transmit Status flag be reset (allowing editing of previously transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "FORM 5 TRANSMIT FLAG EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 5 (Discharge) Transmit Status flag was requested by user to be reset (allowing editing of previously transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "FORM 5 TRANSMIT FLAG EDIT DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field represents DUZ of user requesting Form 5 (Discharge) Transmit Status flag be reset (allowing editing of previously transmitted record). Field updated by package only, no user input. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "FORM 3 RE-TRANS BATCH MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in re-transmission batch to Austin.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one re-transmission batch.  Field updated by package only, no user input. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "FORM 3 RE-TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 3 (Evaluation/Admission) record re-transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "FORM 5 RE-TRANS BATCH MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in re-transmission batch to Austin.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one re-transmission batch.  Field updated by package only, no user input. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "FORM 5 RE-TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 5 (Discharge) record re-transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "REFERRED WHILE INPATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;2:No;",
+      "helpText": "This field represents 1 digit numeric code for whether patient was inpatient at time of referral.  ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "MEDICAL FOSTER HOME PATIENT",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field represents whether Patient is Medical Foster Home (MFH)  Patient. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "MEDICAL FOSTER HOME NAME",
+      "dataType": "POINTER",
+      "rawType": "P633.2'",
+      "required": false,
+      "pointerTo": 633.2,
+      "helpText": "This field represents Name of Medical Foster Home (MFH) that already  exists in HBHC Medical Foster Home file (#633.2). ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "RATE PAID",
+      "dataType": "DATE",
+      "rawType": "631.01D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Rate Paid multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 631.01,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "PARENT SITE",
+      "dataType": "POINTER",
+      "rawType": "*RP40.8'Xa",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "The Parent Site prompt provides selection of the HBPC Program Facility  which has been defined in the local HBHC SITE PARAMETERS (#631.9) file. If only one site has been defined as a parent site, that site will default into this prompt for selection. Otherwise, users will be required to select the HBPC Program Facility associated to the patient's care.   The selected site's code will be used for AITC record transmissions for  this patient.   If you are not locating the appropriate HBPC Program S",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 93,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "B", "field": },
+    {"name": "631", "field": .01, "type": "regular"},
+    {"name": "631", "field": 1, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "631", "field": 17, "type": "regular"},
+    {"name": "631", "field": 39, "type": "regular"},
+    {"name": "631", "field": 71, "type": "regular"},
+    {"name": "631", "field": 72, "type": "regular"},
+    {"name": "631", "field": 75, "type": "regular"},
+    {"name": "631", "field": 78, "type": "regular"},
+    {"name": "631", "field": 88, "type": "regular"},
+    {"name": "631", "field": 89, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 17, "value": "W \"   \",$E($P(^(0),U,18),4,5)_\"-\"_$E($P(^(0),U,18),6,7)_\"-\"_$E($P(^(0),U,18),2,3)"}
+  ]
+}

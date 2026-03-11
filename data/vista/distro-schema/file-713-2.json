@@ -1,0 +1,215 @@
+{
+  "fileNumber": 713.2,
+  "fileName": "EAS MT LETTER STATUS",
+  "globalRoot": "713.2",
+  "globalReference": "^EAS(713.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCESSING DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Initial processing date for the patient's means test anniversary date ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECIPIENT",
+      "dataType": "POINTER",
+      "rawType": "RP713.1'",
+      "required": true,
+      "pointerTo": 713.1,
+      "helpText": "Pointer to the EAS MT LETTERS File, The patietn whose means test is coming due. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MEANS TEST DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The current means test date for the patient (from the ANNUAL MEANS TEST File) ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEANS TEST RETURNED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether a response (10-10EZ form) has been received in response to one of the reminder letters. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE MEANS TEST RETURNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the completed 10-10EZ form was recieved and processed ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WHO ENTERED RETURNED MT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User entering the returned MT letter information ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "713.27",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 713.27,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "60-DAY LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Means Test anniversary date minus 60 days ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "60-DAY FLAG TO PRINT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Flag indicates the letter is ready for printing ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "60-DAY LETTER PRINTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The 60-day letter has been printed ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "60-DAY PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "60-Day print date ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "30-DAY LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Means Test anniversary date minus 30 days ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "30-DAY FLAG TO PRINT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Flag indicates the letter is ready for printing ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "30-DAY LETTER PRINTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The 30-day letter has been printed ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "30-DAY PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the 30-Day letter was printed ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ZERO-DAY LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Means Test anniversary date minus 0 days ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ZERO-DAY FLAG TO PRINT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Flag indicates the letter is ready for printing ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ZERO-DAY LETTER PRINTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The 0-day letter has been printed ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "ZERO-DAY PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "0-day letter print date ",
+      "fieldNumber_": 19.5
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "713.2", "field": .01, "type": "regular"},
+    {"name": "713.2", "field": .01, "type": "regular"},
+    {"name": "713.2", "field": 2, "type": "regular"},
+    {"name": "713.2", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^EAS(713.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(713.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,3),5)"}
+  ]
+}

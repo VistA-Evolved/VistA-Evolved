@@ -1,0 +1,59 @@
+{
+  "fileNumber": 420.136,
+  "fileName": "PRCD SD SUB-REV SOURCE",
+  "globalRoot": "420.136I",
+  "globalReference": "^PRCD(420.136,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the code of administrative office. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the desription of the code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP420.1999'",
+      "required": true,
+      "pointerTo": 420.1999,
+      "helpText": "This field is the status of the entry in file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FIX VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field's value is used by programer for hard coding in programs. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "420.136", "field": .01, "type": "regular"},
+    {"name": "420.136", "field": 1, "type": "regular"},
+    {"name": "420.136", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": D1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

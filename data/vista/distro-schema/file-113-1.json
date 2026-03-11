@@ -1,0 +1,60 @@
+{
+  "fileNumber": 113.1,
+  "fileName": "STORAGE LOCATION",
+  "globalRoot": "113.1",
+  "globalReference": "^FH(113.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a storage location where ingredients are stored (e.g., particular freezers, dry goods rooms, etc.). It is used by the Ingredient file to indicate where the ingredient is stocked. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short abbreviation used on various print-outs in lieu of the longer full name. It should be unique. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "When ingredient pull lists are generated and sorted by storage location, this field contains the print order of the various storage locations. It is numeric and will print from low to high. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "113.1", "field": .01, "type": "regular"},
+    {"name": "113.1", "field": 1, "type": "regular"},
+    {"name": "113.1", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": 2263.5,
+  "fileName": "ASISTS DOL PROVIDER TITLE",
+  "globalRoot": "2263.5",
+  "globalReference": "^OOPS(2263.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This table file contains valid entries for the Physician Title ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the Code that will be sent to DOL for the Physician Title. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2263.5", "field": .01, "type": "regular"},
+    {"name": "2263.5", "field": .01, "type": "regular"},
+    {"name": "2263.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

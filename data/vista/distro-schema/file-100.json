@@ -1,0 +1,708 @@
+{
+  "fileNumber": 100,
+  "fileName": "ORDER",
+  "globalRoot": "100I",
+  "globalReference": "^OR(100,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the internal order number of the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBJECT OF ORDER",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This is the individual object of the order.  Depending on the parent  file entry, this would be the Patient, Control Point, etc. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ORDERABLE ITEMS",
+      "dataType": "POINTER",
+      "rawType": "100.001PA",
+      "required": false,
+      "helpText": "This multiple contains the items being ordered. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .61,
+      "fieldName": "UAP Reviewed?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;C:cont;D:dc;G:chg;N:new;R:renew;",
+      "helpText": "This field is added to record and track if an order has been reviewed  during the patient discharge process. If someone has reviewed an order in CPRS in the Unified Action Profile form the selection they made from the set of codes presented is recorded in this field for a selected order. ",
+      "fieldNumber_": .61
+    },
+    {
+      "fieldNumber": .62,
+      "fieldName": "UAP Last Reviewed",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date Someone last reviewed the order on the screen using the  Unified Action Profile Popup menu option for a selected order ",
+      "fieldNumber_": .62
+    },
+    {
+      "fieldNumber": .63,
+      "fieldName": "UAP Last Reviewed By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the DUZ of the person who last reviewed the order on the screen using the Unified Action Profile Popup menu option for a selected order. ",
+      "fieldNumber_": .63
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "ORDER ACTIONS",
+      "dataType": "DATE",
+      "rawType": "100.008DA",
+      "required": false,
+      "helpText": "These are the actions taken on this order, including the signature and verification required to release to the service. ",
+      "isMultiple": true,
+      "subFileNumber": 100.008,
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "ORDER CHECKS",
+      "dataType": "POINTER",
+      "rawType": "100.09P",
+      "required": false,
+      "helpText": "This is the list of order checks found for this order. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CURRENT AGENT/PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who is responsible for the order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIALOG",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This is the dialog that created this order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WHO ENTERED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the USER who entered the information about the order. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WHEN ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of completion of the initiation of the order. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "RESPONSES",
+      "dataType": "SUBFILE",
+      "rawType": "100.045A",
+      "required": false,
+      "helpText": "This contains the responses to an order dialog. ",
+      "isMultiple": true,
+      "subFileNumber": 100.045,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P100.01'",
+      "required": false,
+      "pointerTo": 100.01,
+      "helpText": "This is the status of the order. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ORDER DIAGNOSES",
+      "dataType": "POINTER",
+      "rawType": "100.051PA",
+      "required": false,
+      "helpText": "These are the the diagnoses associated with this order. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PATIENT LOCATION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the hospital location from which the order originated. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ITEM ORDERED",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the variable pointer to the file and item ordered.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VEILED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VEILED;0:UNVEILED;",
+      "helpText": "This field is set when creating an order to prevent the order from being displayed on the review screen until the order is complete and accepted. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:STANDARD;1:EDIT;2:RENEW;4:HOLD;6:DISCONTINUE;B:BCMA;C:COPY;X:TRANSFER;P:PACKAGE;",
+      "helpText": "This field is used to determine the type of order that is being processed. Different things happen depending on the order type. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REPLACED ORDER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the order number of the order which was replaced by this order, either by editing or renewal. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "REPLACEMENT ORDER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the order number of the order that replaces this one, either by edit or renewal. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PATIENT CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This is the patient's inpatient classification for this order; an inpatient may have some orders performed on an outpatient basis. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "This is the TREATING SPECIALTY associated with this order. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "RP9.4'",
+      "required": true,
+      "pointerTo": 9.4,
+      "helpText": "This is the package creating the order. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the cost of filling this order. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SIGNATURE REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:ORELSE;2:ORES;",
+      "helpText": "This is the OR key required to sign this order.  If set to 2, only users with the ORES key will be allowed to sign this order; if set to 1, users with either the ORELSE or ORES keys will be allowed to sign.  A 0 or \"\" indicates that no signature is required. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EVENT",
+      "dataType": "POINTER",
+      "rawType": "P100.2'",
+      "required": false,
+      "pointerTo": 100.2,
+      "helpText": "This is the event that this order's release is/was delayed till. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PATIENT APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the appointment date/time for outpatients and is only entered  when inpatient medications are ordered for them. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CHILDREN",
+      "dataType": "POINTER",
+      "rawType": "100.002PA",
+      "required": false,
+      "helpText": "This field allows a single order or set of orders to be linked  to a parent order. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the start date/time of the order. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "STOP DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the stop date/time of the order. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TO",
+      "dataType": "POINTER",
+      "rawType": "RP100.98'",
+      "required": true,
+      "pointerTo": 100.98,
+      "helpText": "This is the service to which the order is referred. This is used to determine the display group in which the order appears. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CURRENT ACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the item number of the action in the Order Actions multiple that is currently being carried out on this order; it will be used to build the text for the Current Orders list. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DATE OF LAST ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the order was last updated. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "GRACE DAYS BEFORE PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days to hold an order from the date of last activity. The order in OE/RR may be  purged after this date. The default is 30 days.  If a package needs the order retained for a period longer than 30 days, this can be specified when the order is created by setting the variable ORPURG to the appropriate number of days before calling FILE^ORX. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PACKAGE REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This information allows the package to link the order in OR with its more detailed order information in the individual package. It is the package's responsibility to define and determine the structure of this information. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ALERT ON RESULTS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who requested to be alerted when results for this order become available.  Only lab, radiology, and consult orders will generate results. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the parent of an order that may have a parent/child relationship. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "LAPSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will specify when the order was Lapsed.  Lapsing takes place  in routine ORTSKLPS and is part of the ORMTIME scheduled option. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "SERVICE CONNECTED CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When signing orders, the provider may be asked if this order is for treatment of  a service-connected condition; his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "MST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has been identified as having been treated for Military Sexual Trauma (MST), then the provider may be asked when signing the order if it is for treatment of a condition related to MST and his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has been identified as having been exposed to Agent Orange (AO) during service in Vietnam, then the provider may be asked when signing the order if it is for treatment of a condition related to AO and his/her response to this question will be stored in this field. Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has been identified as having been treated for exposure to ionizing radiation (IR) during military service, then the provider may be asked when signing the order if it is for treatment of a condition related to IR and his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "SOUTHWEST ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has been identified as having been treated for exposure to environmental contaminants (EC) during the Persian Gulf War, then the provider may be asked when signing the order if it is for treatment of a condition related to EC and his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a patient has been identified as having been treated for head or neck cancer due to nose or throat radium treatments while in the military, then the provider may be asked when signing the order if it is for treatment of head or neck cancer and his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When signing orders, the provider may be asked if this order is for treatment of a combat-related condition; his/her response to this question will be stored in this field.  Currently this question is only asked for Outpatient Medications, and the response is passed to that package with the new order. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "SHIPBOARD HAZARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "NATURE OF DC",
+      "dataType": "POINTER",
+      "rawType": "*P100.02'",
+      "required": false,
+      "pointerTo": 100.02,
+      "helpText": "Orders that are DC'ed because they have been duplicated do not create a DC order, nor is a chart copy or electronic signature notification generated.  If this is a CHANGE IN THERAPY, then a DC order is generated that must be signed, and a chart copy of the new DC request is printed. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DC'ed BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who DC'ed this order. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "DC DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the order was DC'ed. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "DC REASON",
+      "dataType": "POINTER",
+      "rawType": "P100.03'",
+      "required": false,
+      "pointerTo": 100.03,
+      "helpText": "This is the reason this order was DC'ed, i.e. \"Patient discharged.\" ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "DC REASON TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the DC reason. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the order was marked as complete. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who marked this order as complete. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "DC EVENT",
+      "dataType": "POINTER",
+      "rawType": "P100.2'",
+      "required": false,
+      "pointerTo": 100.2,
+      "helpText": "This is the event that automatically discontinued this order. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "DC ORIGINAL ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "This field is only accessed by CPRS. This field is set to True if both  the original order and the pending renewal order are discontinued. This  field is set to False if only the pending renewal order is discontinued.  If only the pending renewal order is discontinued, CPRS assigns the  original order's status to the status it received from the pharmacy  package. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "RESULTS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that results became available for this order; only Lab, Radiology, and Consult orders have results. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ABNORMAL RESULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates whether the results for this order were abnormal, or outside of normal ranges. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "FINDINGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the text of any significant findings for the results of this order. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "BA SERVICE CONNECTED CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When signing orders, the provider may be asked if this order is for treatment of a service-connected condition; his/her response to this question will be stored in this field. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "BA MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "BA AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "BA IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "BA SOUTHWEST ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "BA HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "BA COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P375'",
+      "required": false,
+      "pointerTo": 375,
+      "helpText": "The PFSS Account Reference field stores the PFSS Account Reference associated with the order. The field is a pointer to the PFSS Account Reference file (#375). ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "BA SHIPBOARD HAZARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 98
+    }
+  ],
+  "fieldCount": 68,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AOI", "field": },
+    {"name": "AOI1", "field": },
+    {"name": "AOI2", "field": },
+    {"name": "AR", "field": },
+    {"name": "AR1", "field": },
+    {"name": "AS", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "AW", "field": },
+    {"name": "AW1", "field": },
+    {"name": "AW2", "field": },
+    {"name": "AZ", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "100", "field": .01, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .02, "type": "regular"},
+    {"name": "100", "field": .61, "type": "regular"},
+    {"name": "100", "field": 2, "type": "regular"},
+    {"name": "100", "field": 7, "type": "regular"},
+    {"name": "100", "field": 21, "type": "regular"},
+    {"name": "100", "field": 21, "type": "regular"},
+    {"name": "100", "field": 21, "type": "regular"},
+    {"name": "100", "field": 22, "type": "regular"},
+    {"name": "100", "field": 23, "type": "regular"},
+    {"name": "100", "field": 23, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

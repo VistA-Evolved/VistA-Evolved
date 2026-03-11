@@ -1,0 +1,69 @@
+{
+  "fileNumber": 810.7,
+  "fileName": "REMINDER EXTRACT COUNTING RULE",
+  "globalRoot": "810.7",
+  "globalReference": "^PXRM(810.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the Counting Rule. Nationally distributed extract counting  rules are prefixed 'VA-'.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "810.71",
+      "required": false,
+      "helpText": "Description is used to enter a text description of the counting groups defined  in the counting rule.  ",
+      "isMultiple": true,
+      "subFileNumber": 810.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXTRACT COUNTING GROUPS",
+      "dataType": "SUBFILE",
+      "rawType": "810.701I",
+      "required": false,
+      "helpText": "This field contains the associated Extract Counting Group.  ",
+      "isMultiple": true,
+      "subFileNumber": 810.701,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the Extract Counting Rule. National Extract Counting Rules  are not editable.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "810.72D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the Extract  Counting Rule.  ",
+      "isMultiple": true,
+      "subFileNumber": 810.72,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

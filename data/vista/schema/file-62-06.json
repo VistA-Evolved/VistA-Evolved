@@ -1,0 +1,175 @@
+{
+  "fileNumber": 62.06,
+  "fileName": "ANTIMICROBIAL SUSCEPTIBILITY",
+  "globalRoot": "62.06I",
+  "globalReference": "^LAB(62.06,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The internal number associated with the name. This number determines the sequence of display of antibiotics. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the antibiotic. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,3X",
+      "length": 7,
+      "required": true,
+      "helpText": "The print order will determine the order in which the antibiotic will be displayed on reports. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DRUG NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Defines the position of the NAME in the database. The subscript location of the antibiotic in the LAB DATA file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "AFB DRUG NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Defines the position of the NAME in the database. The subscript location of the AFB antibiotic in the LAB DATA file.   ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUSCEPTIBILITY RESULT",
+      "dataType": "SUBFILE",
+      "rawType": "62.061A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains the susceptibility result  and the interpretation. ",
+      "isMultiple": true,
+      "subFileNumber": 62.061,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*PRIMARY DISPLAY",
+      "dataType": "POINTER",
+      "rawType": "62.062PA",
+      "required": false,
+      "helpText": "No longer used.  Will be deleted after 1/89. It is the display template that this antibiotic is to be included on. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISPLAY COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains any relevant comment that is to be displayed with  this antibiotic susceptibility. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INTERNAL NAME",
+      "dataType": "POINTER",
+      "rawType": "*P63'XO",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "The internally used name of the antibiotic, usually a shortened version. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "AFB INTERNAL NAME",
+      "dataType": "POINTER",
+      "rawType": "*P63'XO",
+      "required": false,
+      "pointerTo": 63,
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the three letter abbreviation used in the INFECTION CONTROL and ANTIBIOTIC TREND reports.  An abbreviation must be defined for all antibiotics that need to go on these reports.  The order of the antibiotics on the report is determined by the order number (internal file number) of the antibiotic entry in the file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEFAULT SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALWAYS DISPLAY;N:NEVER DISPLAY;R:RESTRICT DISPLAY;",
+      "helpText": "The DEFAULT SCREEN may be used to specify how the antibiotic results and/or interpretation will be displayed.  'A' will always display the result, 'N' will never display the result (unless the user has the LRLAB key), 'R' restricts the display so that the result is only displayed if the interpretation of all antibiotics that are always displayed is resistant. No entry in this field will default to 'A'.   This screen may be overridden by an ALTERNATE SCREEN (organism and/or specimen specific) or ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ALTERNATE SCREEN",
+      "dataType": "SET",
+      "rawType": "62.08SI",
+      "required": false,
+      "helpText": " If for some reason the screen should be different for certain specimens or organisms, when compared to the normal display, indicate how the system should handle these cases. ",
+      "isMultiple": true,
+      "subFileNumber": 62.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "NATIONAL VA LAB CODE",
+      "dataType": "POINTER",
+      "rawType": "P64'",
+      "required": false,
+      "pointerTo": 64,
+      "helpText": "This field is used to map antimicrobial susceptibilty in file  62.06 to the VA National Labe codes found in file 64. ",
+      "fieldNumber_": 64
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AO", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "62.06", "field": .01, "type": "regular"},
+    {"name": "62.06", "field": .5, "type": "regular"},
+    {"name": "62.06", "field": 1, "type": "regular"},
+    {"name": "62.06", "field": 1, "type": "regular"},
+    {"name": "62.06", "field": 1, "type": "regular"},
+    {"name": "62.06", "field": 1, "type": "regular"},
+    {"name": "62.06", "field": 1, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "62.06", "field": 5, "type": "regular"},
+    {"name": "", "field": 5.1, "type": "regular"},
+    {"name": "62.06", "field": 6, "type": "regular"},
+    {"name": "62.06", "field": 6, "type": "regular"},
+    {"name": "62.06", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 5, "value": "W:$D(^(\"0\")) \"   \",$S($D(^DD(63.3,+$P(^(\"0\"),U,4),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

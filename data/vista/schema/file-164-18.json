@@ -1,0 +1,48 @@
+{
+  "fileNumber": 164.18,
+  "fileName": "CHEMOTHERAPEUTIC DRUGS",
+  "globalRoot": "164.18",
+  "globalReference": "^ONCO(164.18,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GENERIC NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This item describes the generic name of the chemotherapeutic drug.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NSC NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This item contains the NSC (National Service Center) number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "164.182",
+      "required": false,
+      "helpText": "Short Names, Synonyms and Brand or Trade Names ",
+      "isMultiple": true,
+      "subFileNumber": 164.182,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "164.18", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

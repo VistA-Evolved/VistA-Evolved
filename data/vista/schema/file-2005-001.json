@@ -1,0 +1,56 @@
+{
+  "fileNumber": 2005.001,
+  "fileName": "IMAGING STUDY",
+  "globalRoot": "2005.001",
+  "globalReference": "^MAG(2005.001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PARENT GLOBAL ROOT D0",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This node is where Study level data can be stored, e.g. Key Images. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARENT DATA FILE#",
+      "dataType": "POINTER",
+      "rawType": "RP2005.03'",
+      "required": true,
+      "pointerTo": 2005.03,
+      "helpText": "The Parent Report file (or sub-file) number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARENT GLOBAL ROOT D1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INTERPRETATION IMAGES",
+      "dataType": "POINTER",
+      "rawType": "2005.031P",
+      "required": false,
+      "helpText": "This node contains a list of images that were referenced during the Exam Interpretation either by annotations, or by designation as KEY images. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

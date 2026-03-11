@@ -1,0 +1,413 @@
+{
+  "fileNumber": 6915.5,
+  "fileName": "FD DOCUMENT LOG",
+  "globalRoot": "6915.5P",
+  "globalReference": "^ENG(6915.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EQUIPMENT RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP6914'",
+      "required": true,
+      "pointerTo": 6914,
+      "helpText": "This field holds the internal entry number from file 6914 for the piece of capitalized NX equipment that an FD document was sent for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the FD document was prepared. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SENDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the FD document using the Equipment Entry option. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEGMENT 1 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Segment 1 ID for the FD document, usually it will be CTL. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOURCE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the source system for the FD document, ususally AMM. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESTINATION SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the system where the FD document is going, usually FMS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUBMITTING STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the station number of the site that is submitting this FD document. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSACTION CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the class of document being sent to FMS.  It is usually DOC, to represent a document transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This tells FMS what kind of document is being sent.  FD for an FD document. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SEC1 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Security 1 code of the submitting Administration/Staff office. VHA=10, VBA=20, and NCS=40. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the batch number of the FD document being sent.  Currently set to six spaces. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction number for this FD document.  It consists of the station number_the last digit of the fiscal year_N_the 4 digit sequential number. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the date the FD document was created in YYYYMMDD format. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSACTION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the time the FD document was created in HHMMSS format. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction part sequence number.  Should always be 001. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SEQUENCE TOTAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the total number of transaction parts.  Should always be 001. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the AMES/MERS-FMS interface version.  Should always be 001. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SEGMENT 2 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment identifier for segment 2.  Should always be DOC. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SEGMENT 3 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the segment identifier for the the FD1 segment.  Should always be FD1. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TRANS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Trans code for the FD1 segment.  Should always be FD. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TRANS DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Security 1 code.  VHA=10, VBA=20, NCS=40. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TRANS NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the transaction number for this FD document.  It consists of the station number_the last digit of the fiscal year_N_the 4 digit sequential number. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "BEG BUDGET YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the beginning budget fiscal year. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SEGMENT 4 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the segment ID for the LIN section.  Should always be LIN. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SEGMENT 5 ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the segment ID for the FDD segment.  Should always be FDD. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "FIXED ASSET NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The fixed asset number consists of the submitting station_the 2 digit satelite station number (or 2 spaces if no satellite)_the internal entry number of the asset from file 6914. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "FIXED ASSET TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the FA TYPE field from the NX SGL file for this particular Standard General Ledger account. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DISPOSITION METHOD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Method by which asset was finally disposed of. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DISPOSITION YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the year the item was disposed of. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DISPOSITION MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the month the item was disposed of. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DISPOSITION DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the day the item was disposed of. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SELLING PRICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the price received when the item was sold. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DISPOSITION AUTHORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the authority under which the item was disposed of. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "TURN-IN OR DISPOSITION?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "T:TURN-IN;D:FINAL DISPOSITION;",
+      "helpText": "Since FD documents may be used in moving an asset to EXCESS as well as in processing final disposition, we must ask the user which he wants to do. This repsonse tells us whether to update the TURN-IN DATE or the DISPOSITION DATE. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ASSET VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,2",
+      "length": 14,
+      "required": false,
+      "helpText": "Asset value at time of document generation. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DISPOSITION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Disposition date in FAP format is extracted from this field. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DISPOSITION METHOD",
+      "dataType": "POINTER",
+      "rawType": "RP6914.8'",
+      "required": true,
+      "pointerTo": 6914.8,
+      "helpText": "Basis for stuffing the DISPOSITION METHOD CODE field that goes to FAP. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "FAIR MARKET VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "The estimated, realistic dollar value of an asset when categorized as \"VA Excess\" personal property. This value will replace the current TOTAL ASSET VALUE in the Equipment Inv. file. Note that the current TOTAL ASSET VALUE will automatically be saved as the ORIGINAL ASSET VALUE.   VA Accounting Standards require capitalized nonexpendable property to be recorded in the \"Excess\" Standard General Ledger (SGL) 1995 at its \"Expected Net Realizable Value\". ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "A.V. DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date/time when an Adjustment Voucher was created. If blank, then an Adjustment Voucher has not yet been created for the FD Document. An Adjustment Voucher is used to notify Fiscal about a selected FAP Document. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "A.V. CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User that created adjustment voucher. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "A.V. REASON",
+      "dataType": "POINTER",
+      "rawType": "*P6915.11'",
+      "required": false,
+      "pointerTo": 6915.11,
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "A.V. COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "6915.51",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6915.51,
+      "fieldNumber_": 310
+    }
+  ],
+  "fieldCount": 42,
+  "crossReferences": [
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6915.5", "field": .01, "type": "regular"},
+    {"name": "6915.5", "field": 1, "type": "regular"},
+    {"name": "6915.5", "field": 23, "type": "regular"},
+    {"name": "", "field": 301, "type": "regular"},
+    {"name": "6915.5", "field": 301, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 23, "value": "W:$D(^(3)) \"   \",$P(^(3),U,4)"},
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(6915.5,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

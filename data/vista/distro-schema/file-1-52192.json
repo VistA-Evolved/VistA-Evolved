@@ -1,0 +1,73 @@
+{
+  "fileNumber": 1.52192,
+  "fileName": "SQLI_ERROR_LOG",
+  "globalRoot": "1.52192",
+  "globalReference": "^DMSQ(\"EX\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILEMAN_FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,6",
+      "length": 15,
+      "required": true,
+      "helpText": "FileMan source file of error in table build ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILEMAN_FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,6",
+      "length": 15,
+      "required": false,
+      "helpText": "FileMan field number of error source ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR",
+      "dataType": "POINTER",
+      "rawType": "RP1.52191",
+      "required": true,
+      "pointerTo": 1.52191,
+      "helpText": "IEN of error text from SQLI_ERROR_TEXT ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR_DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date of run ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILEMAN_ERROR",
+      "dataType": "POINTER",
+      "rawType": "P.84'",
+      "required": false,
+      "pointerTo": .84,
+      "helpText": "IEN of FileMan error in DIALOG file ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "1.52192", "field": .01, "type": "regular"},
+    {"name": "1.52192", "field": 2, "type": "regular"},
+    {"name": "1.52192", "field": 3, "type": "regular"},
+    {"name": "1.52192", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

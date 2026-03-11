@@ -1,0 +1,39 @@
+{
+  "fileNumber": 45.3,
+  "fileName": "SURGICAL SPECIALTY",
+  "globalRoot": "45.3I",
+  "globalReference": "^DIC(45.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the code for the surgical specialty. The code is a number between 48 and 62, or 78. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contain the description of the surgical specialty. The field contains between 3 and 40 characters. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "45.3", "field": .01, "type": "regular"},
+    {"name": "45.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "fileNumber": 79.7,
+  "fileName": "RAD/NUC MED HL7 APPLICATION EXCEPTION",
+  "globalRoot": "79.7",
+  "globalReference": "^RA(79.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HL7 APPLICATION NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P771'X",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "This field allows the user to select a 'RA' namespaced HL7 APPLICATION  PARAMETER (#771) file record in which exceptions are defined that impact  HL7 message routing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TELERADIOLOGY APPLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The teleradiology portion of the VistA Radiology/Nuclear Medicine  application has different business rules from those of a  non-teleradiology voice recognition interface.   The teleradiology business rules are to be applied if an inbound HL7 message the VistA Radiology/Nuclear Medicine application has a sending application that:   Is a record in the RAD/NUC MED HL7 APPLICATION EXCEPTION (#79.7) file.   The TELERADIOLOGY APPLICATION data attribute value for that record is YES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "TELERADIOLOGIST KEYWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "RELEASE STUDY KEYWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "APPLICATION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "O:Other;S:Speech Recognition;P:PACS;",
+      "helpText": "This field indicates the type of application that the record corresponds to.   Currently, only the 'S:Speech Recognition' value is implemented. It is used to exclude speech recognition/dictation workstations from HL7 transmissions when \"outside\" Radiology cases are marked as examined/complete.  These cases are  read/interpreted outside of VA and should not be added to the work lists on dictation workstations. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "ENABLE LOCK STUDY REPROCESSING",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field enables automatic reprocessing of HL7 result messages for the sending application.  ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "REPROCESS RETURN TO SENDER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field allows a reprocessed HL7 result message to be sent back to the  originating application. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "79.72P",
+      "required": false,
+      "helpText": "This field identifies the HL7 message type. This field is a pointer to HL7 MESSAGE TYPE (#771.2) file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "DEFAULT DX FOR 'R' REPORT",
+      "dataType": "POINTER",
+      "rawType": "*P78.3'",
+      "required": false,
+      "pointerTo": 78.3,
+      "helpText": "This field identifies the diagnostic code associated with a released/not  verified teleradiology report.   A released/not verified teleradiology report indicates that the report is being locked by a teleradiologist at the National Teleradiology Center. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "DEFAULT DX FOR 'F' REPORT",
+      "dataType": "POINTER",
+      "rawType": "*P78.3'",
+      "required": false,
+      "pointerTo": 78.3,
+      "helpText": "This field identifies the diagnostic code associated with a signed or  verified teleradiology report.   A verified teleradiology report indicates that the report was signed by a teleradiologist working for the National Teleradiology Center. ",
+      "fieldNumber_": 2.2
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "79.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

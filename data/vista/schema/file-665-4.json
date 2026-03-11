@@ -1,0 +1,150 @@
+{
+  "fileNumber": 665.4,
+  "fileName": "PROS LETTER TRANSACTION FILE",
+  "globalRoot": "665.4I",
+  "globalReference": "^RMPR(665.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the MAS Patient File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LETTER TO:",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LETTER TYPE",
+      "dataType": "POINTER",
+      "rawType": "P665.2'",
+      "required": false,
+      "pointerTo": 665.2,
+      "helpText": "This field points to file 665.2.  It stores the type of letter for this transaction. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINTED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a letter has been printed, it may not be edited.  This field stores the printed flag. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "665.43",
+      "required": false,
+      "helpText": "This is the actual printed letter sent to the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 665.43,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the employee who created the letter. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DENIAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Field is used to calculate AMIS Denials if set to YES. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field stores the station that generated the letter to the patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "Vendor for FL 10-90 purposes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "665.48",
+      "required": false,
+      "helpText": "This field contains items for which a request for quotation has been made on the ADP FL 10-90 form.  The item is NOT tied to the Item Master file. ",
+      "isMultiple": true,
+      "subFileNumber": 665.48,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SIGNED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SIGNER'S TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NON-AMIS GENERATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AH1", "field": },
+    {"name": "AH2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "665.4", "field": .01, "type": "regular"},
+    {"name": "665.4", "field": 2, "type": "regular"},
+    {"name": "665.4", "field": 2, "type": "regular"},
+    {"name": "665.4", "field": 11, "type": "regular"},
+    {"name": "665.4", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RMPR(665.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(665.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W:$D(^(5)) \"   \",$E($P(^(5),U,1),4,5)_\"-\"_$E($P(^(5),U,1),6,7)_\"-\"_$E($P(^(5),U,1),2,3)"}
+  ]
+}

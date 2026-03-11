@@ -1,0 +1,690 @@
+{
+  "fileNumber": 9002313.02,
+  "fileName": "BPS CLAIMS",
+  "globalRoot": "9002313.02",
+  "globalReference": "^BPSC(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLAIM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "External Claim ID value.  This value is a concatenation of the text 'VA' along with the current year, the pharmacy ID, the VA National Plan ID (without the alpha prefix), and a unique sequence number.  Each of the four pieces is delimited by the equal sign (\"=\"). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ELECTRONIC PAYER",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet used by the claim ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES (BATCH FILE);0:NO;2:YES (POINT OF SALE);",
+      "helpText": "Numerical code to indicate a transmit status.  Current values are 0 for  'No' 1 for 'Yes' Batch and 2 for 'Yes' Point of Sale. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMITTED ON",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "Date on which the data was transmitted. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CREATED ON",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "Date on which this record was created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AUTO REVERSE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:UNRELEASED CLAIM;2:INPATIENT CLAIM;",
+      "helpText": "This flag is marking ECME Claims that were automatically reversed because  the Prescription was not released in time or the claim was an inpatient  claim. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "P9002313.59'",
+      "required": false,
+      "pointerTo": 9002313.59,
+      "helpText": "This is the ECME transaction that generates the claim. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient name extracted from the VA patient file.  This entry is free text  to accommodate the NCPDP formatting requirements. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "GROUP INSURANCE PLAN",
+      "dataType": "POINTER",
+      "rawType": "P355.3'",
+      "required": false,
+      "pointerTo": 355.3,
+      "helpText": "Internal identifier number for the Group Insurance Record ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "BIN NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Card Issuer ID or Bank ID Number used for network routing. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "VERSION RELEASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code identifying the Enrollment Standard format of the file sent or  received. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code to identify the transaction type for this claim. E1=Eligibility Verification B1=Billing B2=Reversal B3=Rebill P1=P.A. Request & Billing P2=P.A. Reversal P3=P.A. Inquiry P4=P.A. Request Only N1=Information Reporting N2=Information Reporting Reversal N3=Information Reporting Rebill C1=Controlled Substance Reporting C2=Controlled Substance Reporting Reversal C3=Controlled Substance Reporting Rebill ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "PROCESSOR CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Number which will uniquely identify the submitter of the claim.  NCPDP  field 104-A4. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "TRANSACTION COUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Count of transactions in the transmission.  NCPDP standard field 109-A9. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "SOFTWARE VENDER CERT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Certification number which Identifies the patient's insurance carrier.   NCPDP standard field 110-AK. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "MEDICAID SUBROGATION ICN/TCN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 114-N4 (Medicaid Subrogation Internal Control Number/Transaction Control Number (ICN/TCN)), which is defined as \"Claim number assigned by the Medicaid Agency.\" ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "MEDICAID ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 115-N5 (Medicaid ID Number), which is defined as \"A unique member identification number assigned by the Medicaid Agency.\" ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "MEDICAID AGENCY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 116-N6 (Medicaid Agency Number), which is defined as \"Number assigned by processor to identify the individual Medicaid Agency or representative.\" ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "SERVICE PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to a pharmacy or provider.  NCPDP standard field 201-B1. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "SERVICE PROVIDER ID QUAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Qualifier indicating which ID number was used.  NCPDP standard field  202-B2. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to the cardholder group or employer group.  NCPDP standard  field 301-C1. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "CARDHOLDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Insurance ID assigned to the cardholder or identification number used by the plan.  NCPDP standard field 302-C2. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "PERSON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code assigned to a specific person within a family.  NCPDP standard field  303-C3. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Date of birth of patient.  NCPDP standard field 304-C4. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "PATIENT GENDER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "One of three codes to indicate the gender of the patient. 0 = Not Specific 1 = Male 2 = Female   NCPDP standard field 305-C5. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "PATIENT RELATIONSHIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Code indicating relationship of patient to cardholder.  NCPDP standard  field 306-C6. ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "PLACE OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code identifying the location of the patient when receiving pharmacy  services.  NCPDP standard field 307-C7.  (was PATIENT LOCATION)   Ø=Not Specified 1=Home 2=Inter-Care 3=Nursing Home 4=Long Term/Extended Care 5=Rest Home 6=Boarding Home 7=Skilled Care Facility 8=Sub-Acute Care Facility 9=Acute Care Facility 1Ø=Outpatient 11=Hospice ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "ELIGIBILITY CLARIFICATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code indicating that the pharmacy is clarifying eligibility based on  receiving a denial.  NCPDP standard field 309-C9. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "PATIENT FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First name of patient receiving the prescription.  NCPDP standard field  310-CA. ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "PATIENT LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last Name of patient receiving the prescription.  NCPDP standard field  311-CB. ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "CARDHOLDER FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First name of the Cardholder/Subscriber.  NCPDP standard field 312-CC. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 313,
+      "fieldName": "CARDHOLDER LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last name of the cardholder/subscriber.  NCPDP standard field 313-CD. ",
+      "fieldNumber_": 313
+    },
+    {
+      "fieldNumber": 314,
+      "fieldName": "HOME PLAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code identifying the Blue Cross or Blue Shield plan ID which indicates  where the member's coverage has been designated. Usually where the member  lives or purchased their coverage.  NCPDP standard field 314-CE. ",
+      "fieldNumber_": 314
+    },
+    {
+      "fieldNumber": 322,
+      "fieldName": "PATIENT STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free-form text for Patient address information.  NCPDP standard field  322-CM. ",
+      "fieldNumber_": 322
+    },
+    {
+      "fieldNumber": 323,
+      "fieldName": "PATIENT CITY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free-form text for city name.  NCPDP standard field 323-CN. ",
+      "fieldNumber_": 323
+    },
+    {
+      "fieldNumber": 324,
+      "fieldName": "PATIENT STATE PROV ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Standard State/Province Code as defined by appropriate government  agency.  NCPDP standard field 324-CO. ",
+      "fieldNumber_": 324
+    },
+    {
+      "fieldNumber": 325,
+      "fieldName": "PATIENT ZIP POSTAL ZONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code defining international postal zone excluding punctuation and blanks  (zip code for US).  NCPDP standard field 325-CP. ",
+      "fieldNumber_": 325
+    },
+    {
+      "fieldNumber": 326,
+      "fieldName": "PATIENT TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ten-digit phone number of patient.  NCPDP standard field 326-CQ. ",
+      "fieldNumber_": 326
+    },
+    {
+      "fieldNumber": 331,
+      "fieldName": "PATIENT ID QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code qualifying the 'Patient ID'(332-CY).  NCPDP standard field 331-CX.   Blank=Not Specified Ø1=Social Security Number Ø2=Driver's License Number Ø3=U.S. Military ID 99=Other ",
+      "fieldNumber_": 331
+    },
+    {
+      "fieldNumber": 332,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to the patient.  NCPDP standard field 332-CY. ",
+      "fieldNumber_": 332
+    },
+    {
+      "fieldNumber": 333,
+      "fieldName": "EMPLOYER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to employer.  NCPDP standard field 333-CZ. ",
+      "fieldNumber_": 333
+    },
+    {
+      "fieldNumber": 334,
+      "fieldName": "SMOKER INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code indicating the patient as a smoker or non-smoker.  NCPDP standard  field 334-1C.   Blank=Not Specified 1=Non-Smoker 2=Smoker ",
+      "fieldNumber_": 334
+    },
+    {
+      "fieldNumber": 335,
+      "fieldName": "PREGNANCY INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code indicating the patient as pregnant or non-pregnant.  NCPDP standard  field 335-2C.   Blank=Not Specified 1=Not pregnant 2=Pregnant ",
+      "fieldNumber_": 335
+    },
+    {
+      "fieldNumber": 336,
+      "fieldName": "FACILITY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to the patient's clinic/host party.  NCPDP standard field  336-8C. ",
+      "fieldNumber_": 336
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "PATIENT E-MAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 350-HN (Patient E-Mail Address), which is defined as \"The E-Mail address of the patient (member).\" ",
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 356,
+      "fieldName": "OTHER PAYER CARDHOLDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 356-NU (Other Payer Cardholder ID), which is defined as \"Cardholder ID for this member that is associated with the Payer noted.\" ",
+      "fieldNumber_": 356
+    },
+    {
+      "fieldNumber": 359,
+      "fieldName": "MEDIGAP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 359-2A (Medigap ID), which is defined as \"Patient's ID assigned by the Medigap Insurer.\" ",
+      "fieldNumber_": 359
+    },
+    {
+      "fieldNumber": 360,
+      "fieldName": "MEDICAID INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 360-2B (Medicaid Indicator), which is defined as \"Two character State Postal Code indicating the state where Medicaid coverage exists.\" ",
+      "fieldNumber_": 360
+    },
+    {
+      "fieldNumber": 361,
+      "fieldName": "PROVIDER ACCEPT ASSGNMT INDCTR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 361-2D (Provider Accept Assignment Indicator), which is defined as \"Code indicating whether the provider accepts assignment.\" ",
+      "fieldNumber_": 361
+    },
+    {
+      "fieldNumber": 384,
+      "fieldName": "PATIENT RESIDENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 384-4X (Patient Residence), which is defined as \"Code identifying the patient's place of residence.\" ",
+      "fieldNumber_": 384
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "TRANSACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.0201A",
+      "required": false,
+      "helpText": "This subfile has the transactions that are included in this request.   There is only one for reversals and eligibility verification request and  up to four for a billing request. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.0201,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Date prescription was dispensed.  NCPDP standard field 401-D1. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 524,
+      "fieldName": "PLAN ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Assigned by the processor to identify a set of parameters, benefit, or  coverage criteria used to adjudicate a claim.  NCPDP standard field  524-FO. ",
+      "fieldNumber_": 524
+    },
+    {
+      "fieldNumber": 901,
+      "fieldName": "CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Specify if the claim has been closed (no longer needed for followup) or  not. ",
+      "fieldNumber_": 901
+    },
+    {
+      "fieldNumber": 902,
+      "fieldName": "DATE CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is automatically populated with the date a claim was closed. ",
+      "fieldNumber_": 902
+    },
+    {
+      "fieldNumber": 903,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is automatically populated with the user who closed the claim. ",
+      "fieldNumber_": 903
+    },
+    {
+      "fieldNumber": 904,
+      "fieldName": "CLOSED REASON",
+      "dataType": "POINTER",
+      "rawType": "*P356.8'",
+      "required": false,
+      "pointerTo": 356.8,
+      "helpText": "The ECME-supported non-billable reason entered by the user or defaulted by the system. ",
+      "fieldNumber_": 904
+    },
+    {
+      "fieldNumber": 905,
+      "fieldName": "DROP TO PAPER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DROP TO PAPER;N:NON-BILLABLE;",
+      "helpText": "If close reason is 90 DAY RX FILL NOT COVERED or  NOT A CONTRACTED PROVIDER then user will be prompted: Treat as (N)on-Billable Episode or (D)rop Bill to Paper?  the answer is stored in this field and sent to IB ",
+      "fieldNumber_": 905
+    },
+    {
+      "fieldNumber": 906,
+      "fieldName": "DATE REOPENED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time when the claim was re-opened. ",
+      "fieldNumber_": 906
+    },
+    {
+      "fieldNumber": 907,
+      "fieldName": "REOPENED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The system user who re-opened the claim. ",
+      "fieldNumber_": 907
+    },
+    {
+      "fieldNumber": 908,
+      "fieldName": "REOPENED COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "User comments for the re-opening of the claim. ",
+      "fieldNumber_": 908
+    },
+    {
+      "fieldNumber": 990,
+      "fieldName": "OTHER PAYER BIN NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 990-MG (Other Payer BIN Number), which is defined as \"The secondary, tertiary, etc. card issuer or bank ID number used for network routing.\" ",
+      "fieldNumber_": 990
+    },
+    {
+      "fieldNumber": 991,
+      "fieldName": "OTHER PAYER PROCESSOR CNTRL NO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 991-MH (Other Payer Processor Control Number), which is defined as \"A number that uniquely identifies the secondary, tertiary, etc. payer to the processor.\" ",
+      "fieldNumber_": 991
+    },
+    {
+      "fieldNumber": 992,
+      "fieldName": "OTHER PAYER GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 992-MJ (Other Payer Group ID), which is defined as \"ID assigned to the cardholder group or employer group by the secondary, tertiary, etc. payer.\" ",
+      "fieldNumber_": 992
+    },
+    {
+      "fieldNumber": 997,
+      "fieldName": "CMS PART D DEFINED QLFD FACLTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 997-G2 (CMS Part D Defined Qualified Facility), which is defined as \"Indicates that the patient resides in a facility that qualifies for the CMS Part D benefit.\" ",
+      "fieldNumber_": 997
+    },
+    {
+      "fieldNumber": 1022,
+      "fieldName": "PATIENT ID STATE/PROVINCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NCPDP Standard field A22-YR   The postal state code abbreviation that is used in conjunction with the  Patient ID Qualifier and the Patient ID fields to identify what state the  identification is from. ",
+      "fieldNumber_": 1022
+    },
+    {
+      "fieldNumber": 1043,
+      "fieldName": "PATIENT COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NCPDP Standard field A43-1K   The country of the patient's permanent residence. ",
+      "fieldNumber_": 1043
+    },
+    {
+      "fieldNumber": 1045,
+      "fieldName": "VETERINARY USE INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NCPDP Standard field A45-1R   To indicate that the prescription was dispensed for use on something  other than human. ",
+      "fieldNumber_": 1045
+    },
+    {
+      "fieldNumber": 2008,
+      "fieldName": "PATIENT STREET ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field B08-7A (Patient Street Address Line 1),  which is defined as \"Free-form text for address line 1 information\". ",
+      "fieldNumber_": 2008
+    },
+    {
+      "fieldNumber": 2009,
+      "fieldName": "PATIENT STREET ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field B09-7B (Patient Street Address Line 2),  which is defined as \"Free-form text for address line 2 information\". ",
+      "fieldNumber_": 2009
+    },
+    {
+      "fieldNumber": 2038,
+      "fieldName": "PATIENT ID ASSOC COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field B38-1Y (Patient ID Associated Country  Code), which is defined as \"Code of the country\". ",
+      "fieldNumber_": 2038
+    },
+    {
+      "fieldNumber": 9999,
+      "fieldName": "RAW DATA SENT",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.29999",
+      "required": false,
+      "helpText": "An exact copy of the record sent via the communications protocol. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.29999,
+      "fieldNumber_": 9999
+    }
+  ],
+  "fieldCount": 72,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.02", "field": .01, "type": "regular"},
+    {"name": "9002313.02", "field": .04, "type": "regular"},
+    {"name": "9002313.02", "field": .05, "type": "regular"},
+    {"name": "9002313.02", "field": 1.01, "type": "regular"},
+    {"name": "9002313.02", "field": 401, "type": "regular"},
+    {"name": "9002313.02", "field": 902, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

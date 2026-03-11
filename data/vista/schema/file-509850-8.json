@@ -1,0 +1,163 @@
+{
+  "fileNumber": 509850.8,
+  "fileName": "A&SP SITE PARAMETERS",
+  "globalRoot": "509850.8P",
+  "globalReference": "^ACK(509850.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The SITE NAME field is a pointer to the INSTITUTION file (#4).  The  INSTITUTION file contains listings of all VA facilities.  You can  enter your facility name or the three-digit station number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*WORKLOAD MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8I",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report will be  discontinued. Eighteen months after the release of QUASAR V. 2.0,  this field can be removed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*WKLD RECEIVING USER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report will be  discontinued. Eighteen months after the release of QUASAR V. 2.0,  this field can be removed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "*WKLD DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXI",
+      "required": false,
+      "helpText": "Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report will be  discontinued. Eighteen months after the release of QUASAR V. 2.0,  this field can be removed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "*USE ASP CLINIC FILE NUMBER",
+      "dataType": "SET",
+      "rawType": "SXI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The USE ASP CLINIC FILE NUMBER field is no longer used at the site level. With  Quasar version 3.0 this parameter is associated with each Division and can be found on the sub-file 509850.83   Eighteen months after the release of Quasar v3.0 this field can be removed.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "*USE MODIFIERS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The USE MODIFIERS field is no longer used at the site level. With Quasar version 3.0 the ASP Diagnosis Modifiers have been removed and the ASP Procedure Modifiers have been replaced with CPT Modifiers which are mandatory. There is no longer a need for this parameter.   Eighteen months after the release of Quasar v3.0 this field can be removed.   ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "*USE C&P",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The USE C&P field is no longer used at the site level. With Quasar version  3.0 this parameter is associated with each Division and can be found on the  sub-file 509850.83   Eighteen months after the release of Quasar v3.0 this field can be removed.   ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "*BYPASS AUDIOMETRICS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The BYPASS AUDIOMETRICS field is no longer used at the site level. With  Quasar version 3.0 this parameter is associated with each Division and can be found on the sub-file 509850.83   Eighteen months after the release of Quasar v3.0 this field can be removed.   ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "GENERATE CDR FOR SITE/DIVISION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "S:SITE;D:DIVISION;",
+      "helpText": "This field determines whether the CDR is Generated for the Site as a whole, or individually for each Division. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*CLINIC LOCATION",
+      "dataType": "POINTER",
+      "rawType": "509850.81P",
+      "required": false,
+      "helpText": "The CLINIC LOCATION sub-file has been moved and is now a sub-file of the  Division Multiple. With Quasar version 3.0 the ASP clinics are stored under their respective Divisions on the sub-file 509850.831   Eighteen months after the release of Quasar v3.0 this field and sub-file can be deleted.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INTERFACE WITH PCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field determines whether Quasar will interface with the PCE package. If you answer YES then Quasar will attempt to send visit data to PCE  whenever a visit is entered or edited. It will also delete visit data from PCE if the corresponding QUASAR visit is deleted.   If you wish QUASAR to send visit data to PCE then you must also set the  SEND TO PCE parameter to YES for the appropriate Division or Divisions.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "509850.83P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "*CONVERSION STATUS",
+      "dataType": "SET",
+      "rawType": "SXI",
+      "required": false,
+      "setOfCodes": "0:NOT RUN;1:RUN, NOT COMPLETELY CONVERTED;2:COMPLETED;",
+      "helpText": "Eighteen months after the release of QUASAR V. 2.0, this field can  be removed. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 727.8251,
+      "fieldName": "AUDIOLOGY DSS UNIT LINK",
+      "dataType": "POINTER",
+      "rawType": "P724'X",
+      "required": false,
+      "pointerTo": 724,
+      "helpText": "The AUDIOLOGY DSS UNIT LINK field is a pointer to the DSS UNIT file (#724) from Event Capture. This field creates linkage between QUASAR and a specific DSS unit in order to define data needed by the QUASAR/DSS extract. ",
+      "fieldNumber_": 727.8251
+    },
+    {
+      "fieldNumber": 727.8252,
+      "fieldName": "SPEECH PATHOLOGY DSS UNIT LINK",
+      "dataType": "POINTER",
+      "rawType": "P724'X",
+      "required": false,
+      "pointerTo": 724,
+      "helpText": "The SPEECH PATHOLOGY DSS UNIT LINK field is a pointer to the DSS UNIT file (#724) from Event Capture. This field creates linkage between QUASAR and a specific DSS unit in order to  define data needed by the QUASAR/DSS extract. ",
+      "fieldNumber_": 727.8252
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "509850.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 75.3,
+  "fileName": "COMMUNITY CARE JUSTIFICATIONS",
+  "globalRoot": "75.3",
+  "globalReference": "^RA(75.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ120",
+      "length": 120,
+      "required": true,
+      "helpText": "This field contains the allowable justifications a user may choose from when referring a radiology order to community care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXPLAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Flag to indicate the justification requires an explanation. If this flag  is set, the selection of this justification will result in an additional  user prompt for more information. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "75.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

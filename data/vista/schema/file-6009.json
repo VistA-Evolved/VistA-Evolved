@@ -1,0 +1,58 @@
+{
+  "fileNumber": 6009,
+  "fileName": "VBECS FILE & FIELD LEVEL SECURITY",
+  "globalRoot": "6009",
+  "globalReference": "^VBEC(6009,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2X",
+      "length": 5,
+      "required": true,
+      "helpText": "The VistA file number of the file being tracked. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRE-CONV. RESTRICTED ACCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;",
+      "helpText": "This field tracks if restricted access applies to this file prior to  executing the data conversion application. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PST-CONV. RESTRICTED ACCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;",
+      "helpText": "This field tracks if restricted access applies to this file after   executing the data conversion application. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DATA DICTIONARY",
+      "dataType": "SUBFILE",
+      "rawType": "6009.01A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6009.01,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6009", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

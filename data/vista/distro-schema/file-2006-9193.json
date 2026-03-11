@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.9193,
+  "fileName": "IMAGING APPLICATION SERVICE",
+  "globalRoot": "2006.9193",
+  "globalReference": "^MAGV(2006.9193,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of VistA Imaging application or service.  ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.9193", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

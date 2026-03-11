@@ -1,0 +1,78 @@
+{
+  "fileNumber": 344.72,
+  "fileName": "RCDPE AUTO-POST AUDIT",
+  "globalRoot": "344.72",
+  "globalReference": "^RCY(344.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date and time an ERA item had their Auto-Post status modified. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the internal ID of the user updating the auto-post  status.  If the auto-post status is updated through nightly processes,  the user will be the POSTMASTER. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ERA #",
+      "dataType": "POINTER",
+      "rawType": "P344.4'",
+      "required": false,
+      "pointerTo": 344.4,
+      "helpText": "This field points to the ERA the auto-post status that was changed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OLD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNPOSTED;1:PARTIAL;2:COMPLETE;3:QUEUED;",
+      "helpText": "This field stores the original Auto-Posting Status of the ERA. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNPOSTED;1:PARTIAL;2:COMPLETE;3:QUEUED;",
+      "helpText": "This field stores the new Auto-Posting Status of the ERA. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores a system generated reason for the auto-post status  change.   ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "344.72", "field": .01, "type": "regular"},
+    {"name": "344.72", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

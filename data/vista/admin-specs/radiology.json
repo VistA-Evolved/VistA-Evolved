@@ -1,0 +1,1065 @@
+{
+  "id": "radiology",
+  "name": "Radiology/Nuclear Medicine",
+  "description": "Imaging orders, exam tracking, results, reports",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.891Z",
+  "files": {
+    "count": 7,
+    "items": [
+      {
+        "fileNumber": 70,
+        "fileName": "File #70",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 71,
+        "fileName": "File #71",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 72,
+        "fileName": "File #72",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 73,
+        "fileName": "File #73",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 74,
+        "fileName": "File #74",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 75,
+        "fileName": "File #75",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 75.1,
+        "fileName": "File #75.1",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 14,
+    "items": [
+      {
+        "name": "RAMAG EXAM ORDER",
+        "tag": "ORDER",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 9,
+        "params": [
+          {
+            "name": "RADFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMLC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAPROC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQDTE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RACAT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQLOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQPHYS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM ORDER remote procedure requests a Radiology exam for the patient and returns the IEN of the new order in the RAD/NUC MED ORDERS file (#75.1). It also sends all required notifications.. "
+      },
+      {
+        "name": "RAMAG EXAM REGISTER",
+        "tag": "REGISTER",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RAOIFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EXMDTE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM REGISTER remote procedure registers the exam and returns identifiers of the new case(s) in the RAD/NUC MED PATIENT file (#70). It also sends all required notifications. "
+      },
+      {
+        "name": "RAMAG ORDER CANCEL",
+        "tag": "ORDCANC",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RAOIFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAREASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG ORDER CANCEL remote procedure cancels/holds the Radiology order and sends all required notifications.   NOTE: If there are active cases in the RAD/NUC MED PATIENT file (#70)       associated with an order, this remote procedure neither cancels       nor holds the order and returns the erro"
+      },
+      {
+        "name": "RAMAG EXAM CANCEL",
+        "tag": "EXAMCANC",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAREASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "RAFLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM CANCEL remote procedure cancels the Radiology exam(s) and sends all required notifications.   If all exams that reference the same order/request are canceled, this   function can also cancel/hold the order (if the appropriate parameters are provided). "
+      },
+      {
+        "name": "RAMAG EXAM COMPLETE",
+        "tag": "COMPLETE",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM COMPLETE remote procedure completes the exam. It also sends required HL7 messages, sends changed order control \"XX\" to CPRS, but does not send VistA alerts regarding the exam status change. "
+      },
+      {
+        "name": "RAMAG EXAMINED",
+        "tag": "EXAMINED",
+        "routine": "RAMAGRP2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAMINED remote procedure updates the status of the case (the procedure has been performed) and creates the stub report. It also sends required HL7 messages, sends changed order control \"XX\" to CPRS, but does not send VistA alerts regarding the exam status change. "
+      },
+      {
+        "name": "RAMAG EXAM STATUS REQUIREMENTS",
+        "tag": "EXMSTREQ",
+        "routine": "RAMAGRP2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RACTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAIMGTYI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAPROC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM STATUS REQUIREMENTS remote procedure returns a descriptor that indicates conditions that should be met in order to successfully  perform an action on an exam/case record.   These conditions are defined by the sites and stored in the EXAMINATION STATUS file (#72). See the .1 and .5 nod"
+      },
+      {
+        "name": "RAMAG EXAM ORDER",
+        "tag": "ORDER",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 9,
+        "params": [
+          {
+            "name": "RADFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMLC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAPROC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQDTE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RACAT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQLOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REQPHYS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM ORDER remote procedure requests a Radiology exam for the patient and returns the IEN of the new order in the RAD/NUC MED ORDERS file (#75.1). It also sends all required notifications.. "
+      },
+      {
+        "name": "RAMAG EXAM REGISTER",
+        "tag": "REGISTER",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RAOIFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EXMDTE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM REGISTER remote procedure registers the exam and returns identifiers of the new case(s) in the RAD/NUC MED PATIENT file (#70). It also sends all required notifications. "
+      },
+      {
+        "name": "RAMAG ORDER CANCEL",
+        "tag": "ORDCANC",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RAOIFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAREASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG ORDER CANCEL remote procedure cancels/holds the Radiology order and sends all required notifications.   NOTE: If there are active cases in the RAD/NUC MED PATIENT file (#70)       associated with an order, this remote procedure neither cancels       nor holds the order and returns the erro"
+      },
+      {
+        "name": "RAMAG EXAM CANCEL",
+        "tag": "EXAMCANC",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAREASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "RAFLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM CANCEL remote procedure cancels the Radiology exam(s) and sends all required notifications.   If all exams that reference the same order/request are canceled, this   function can also cancel/hold the order (if the appropriate parameters are provided). "
+      },
+      {
+        "name": "RAMAG EXAM COMPLETE",
+        "tag": "COMPLETE",
+        "routine": "RAMAGRP1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM COMPLETE remote procedure completes the exam. It also sends required HL7 messages, sends changed order control \"XX\" to CPRS, but does not send VistA alerts regarding the exam status change. "
+      },
+      {
+        "name": "RAMAG EXAMINED",
+        "tag": "EXAMINED",
+        "routine": "RAMAGRP2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "RAEXAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAMSC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAMINED remote procedure updates the status of the case (the procedure has been performed) and creates the stub report. It also sends required HL7 messages, sends changed order control \"XX\" to CPRS, but does not send VistA alerts regarding the exam status change. "
+      },
+      {
+        "name": "RAMAG EXAM STATUS REQUIREMENTS",
+        "tag": "EXMSTREQ",
+        "routine": "RAMAGRP2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RACTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAIMGTYI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RAPROC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The RAMAG EXAM STATUS REQUIREMENTS remote procedure returns a descriptor that indicates conditions that should be met in order to successfully  perform an action on an exam/case record.   These conditions are defined by the sites and stored in the EXAMINATION STATUS file (#72). See the .1 and .5 nod"
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "RA REG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA EDITPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA RPT",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PTEDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA OUTSIDE",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PROFDEMOS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA REPORTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA SUPERVISOR",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PROFILES",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA AMIS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA FLASH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA LABELS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA LOG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA FILMUSE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA OUTSIDERPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA COMPLICATION",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA SYSDIV",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PNLCLASS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA FILMEDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PROCEDURE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PROFQUICK",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA WORKSHEETS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA MAINTENANCE",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA MAJORAMIS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA DIAGEDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA COMPEDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA FLASHFORM",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PNL",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PNLTECH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "RA PNLRES",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 52,
+    "items": [
+      {
+        "prompt": "RADFN:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RADFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMLC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAMLC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAPROC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAPROC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQDTE:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQDTE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RACAT:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RACAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQLOC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQLOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQPHYS:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQPHYS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAOIFN:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "RAOIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EXMDTE:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "EXMDTE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAOIFN:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAOIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAREASON:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAREASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAREASON:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAREASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAFLAGS:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAFLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAM COMPLETE",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM COMPLETE",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAMINED",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAMINED",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RACTION:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAIMGTYI:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RAIMGTYI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAPROC:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RAPROC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RADFN:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RADFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMLC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAMLC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAPROC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAPROC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQDTE:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQDTE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RACAT:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RACAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQLOC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQLOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQPHYS:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REQPHYS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM ORDER",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAOIFN:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "RAOIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EXMDTE:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "EXMDTE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM REGISTER",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAOIFN:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAOIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAREASON:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAREASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG ORDER CANCEL",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAREASON:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAREASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAFLAGS:",
+        "rpcName": "RAMAG EXAM CANCEL",
+        "paramName": "RAFLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAM COMPLETE",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAM COMPLETE",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAEXAM:",
+        "rpcName": "RAMAG EXAMINED",
+        "paramName": "RAEXAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAMSC:",
+        "rpcName": "RAMAG EXAMINED",
+        "paramName": "RAMSC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RACTION:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAIMGTYI:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RAIMGTYI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RAPROC:",
+        "rpcName": "RAMAG EXAM STATUS REQUIREMENTS",
+        "paramName": "RAPROC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

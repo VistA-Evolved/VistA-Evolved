@@ -1,0 +1,64 @@
+{
+  "fileNumber": 101.15,
+  "fileName": "OE/RR COM OBJECTS",
+  "globalRoot": "101.15",
+  "globalReference": "^ORD(101.15,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBJECT GUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "COM Object GUID ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INACTIVE;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PARAM1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Optional parameter to pass to COM object as PARAM1  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "101.152",
+      "required": false,
+      "helpText": "Optional description of COM Object.  Should include any contact information for vendor or other provider of the COM Object. ",
+      "isMultiple": true,
+      "subFileNumber": 101.152,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "101.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

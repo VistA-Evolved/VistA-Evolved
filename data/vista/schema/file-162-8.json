@@ -1,0 +1,99 @@
+{
+  "fileNumber": 162.8,
+  "fileName": "FEE BASIS UNAUTHORIZED CLAIMS PENDING INFO",
+  "globalRoot": "162.8D",
+  "globalReference": "^FBAA(162.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE INFORMATION REQUESTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date information was requested for completion of an unauthorized claim. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "UNAUTHORIZED CLAIM",
+      "dataType": "POINTER",
+      "rawType": "R*P162.7'",
+      "required": true,
+      "pointerTo": 162.7,
+      "helpText": "The unauthorized claim associated with the requested information.  Claim must not have been dispostioned. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INFORMATION REQUESTED",
+      "dataType": "POINTER",
+      "rawType": "R*P162.93'",
+      "required": true,
+      "pointerTo": 162.93,
+      "helpText": "The information which is being requested.  Only active ones may be selected. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The elaborated reason why information is being requested.  Should only be entered/displayed when information requested is OTHER. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE INFORMATION RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "The date the requested information was received. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RECEIVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who received the information. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REQUESTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who requested the information. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACD", "field": },
+    {"name": "ACD1", "field": },
+    {"name": "ACD2", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AUI", "field": },
+    {"name": "AUI1", "field": },
+    {"name": "B", "field": },
+    {"name": "162.8", "field": .01, "type": "regular"},
+    {"name": "162.8", "field": .01, "type": "regular"},
+    {"name": "162.8", "field": .02, "type": "regular"},
+    {"name": "162.8", "field": .02, "type": "regular"},
+    {"name": "162.8", "field": .02, "type": "regular"},
+    {"name": "162.8", "field": .03, "type": "regular"},
+    {"name": "162.8", "field": .03, "type": "regular"},
+    {"name": "162.8", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

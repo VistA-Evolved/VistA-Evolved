@@ -1,0 +1,134 @@
+{
+  "fileNumber": 100.3,
+  "fileName": "CANCELLED ORDERS AND ORDER CHECKS",
+  "globalRoot": "100.3",
+  "globalReference": "^OR(100.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time the order was placed and subsequently cancelled. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the DFN of the patient associated with the order. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who entered the order information in CPRS. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the hospital location of the patient for the order. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OCCURRENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CANCELLED;AC:ACCEPTED_CANCELLED;RT:RTCLICK_CANCELLED;CH:CHANGED;",
+      "helpText": "This is the occurrence data related to the cancellation of the order.   Orders that are never accepted are considered CANCELLED.   Orders that have been accepted and discontinued at signature are  considered ACCEPTED_CANCELLED.   Orders that have been accepted and cancelled via right-click are  considered RTCLICK_CANCELLED. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the package information for the order. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the IEN of the ORDER file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the start date of the order. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDERABLE ITEMS",
+      "dataType": "POINTER",
+      "rawType": "100.31PA",
+      "required": false,
+      "helpText": "These are the orderable items of the actual order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER CHECKS",
+      "dataType": "POINTER",
+      "rawType": "100.32PA",
+      "required": false,
+      "helpText": "This is the order check data returned by the order check system when  placing an order via CPRS. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORDER DATA",
+      "dataType": "SUBFILE",
+      "rawType": "100.33",
+      "required": false,
+      "helpText": "This is the complete, unprocessed order data received by CPRS for the  associated order. ",
+      "isMultiple": true,
+      "subFileNumber": 100.33,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "CDL", "field": },
+    {"name": "LOCATION", "field": },
+    {"name": "OCCURRENCE", "field": },
+    {"name": "ORDCHECK", "field": },
+    {"name": "ORDITEM", "field": },
+    {"name": "PATIENT", "field": },
+    {"name": "USER", "field": },
+    {"name": "100.3", "field": .02, "type": "regular"},
+    {"name": "100.3", "field": .03, "type": "regular"},
+    {"name": "100.3", "field": .04, "type": "regular"},
+    {"name": "100.3", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

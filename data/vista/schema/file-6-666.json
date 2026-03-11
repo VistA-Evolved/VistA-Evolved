@@ -1,0 +1,159 @@
+{
+  "fileNumber": 6.666,
+  "fileName": "KERNEL PKI LOGS",
+  "globalRoot": "6.666",
+  "globalReference": "^XULOGS(6.666,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ40X",
+      "length": 40X,
+      "required": true,
+      "helpText": "The DATE/TIME CREATED field stores when the entry was inserted into the  file following the ISO 8601 date/time format.   The date/time format for November 1st, 2024 at 5:23 PM HST would be  ISO 8601 formatted as: 2024-11-01T17:23:00-10:00 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "USER'S SECID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "The USER'S SECID is extracted from the SAML TOKEN. This data may be forged, inaccurate or empty due to a SAML TOKEN failing digital signature validation. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "USER'S FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ99",
+      "length": 99,
+      "required": false,
+      "helpText": "The USER'S FIRST NAME is extracted from the SAML TOKEN. This data may be  forged, inaccurate or empty due to a SAML TOKEN failing digital signature  validation. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "USER'S LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ99",
+      "length": 99,
+      "required": false,
+      "helpText": "The USER'S LAST NAME is extracted from the SAML TOKEN. This data may be  forged, inaccurate or empty due to a SAML TOKEN failing digital signature  validation. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SAML TOKEN",
+      "dataType": "SUBFILE",
+      "rawType": "6.676",
+      "required": false,
+      "helpText": "The SAML TOKEN field stores the actual SAML TOKEN that failed PKI digital  signature validation in base64 format. ",
+      "isMultiple": true,
+      "subFileNumber": 6.676,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "SAML TOKEN HASH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ128",
+      "length": 128,
+      "required": false,
+      "helpText": "The SAML TOKEN HASH field stores the SHA-256 hash of the SAML TOKEN. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ERROR MESSAGE FROM API",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ256",
+      "length": 256,
+      "required": false,
+      "helpText": "The ERROR MESSAGE FROM API may store the error message returned by the  InterSystems APIs that perform digital signature validation. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ERROR MESSAGE FROM RSA",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ256",
+      "length": 256,
+      "required": false,
+      "helpText": "The ERROR MESSAGE FROM RSA may store any error messages produced by the OpenSSL implementation when attempting PKI digital signature validation. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "OTHER MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ255",
+      "length": 255,
+      "required": false,
+      "helpText": "This optional field will be used to capture any additional messages that may aid in explaining why this SAML TOKEN was logged. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RPC BROKER CONTEXT",
+      "dataType": "POINTER",
+      "rawType": "*P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "The RPC BROKER CONTEXT describes the context option that was used after  the SAML TOKEN was authenticated.   This helps to identify which applications might be using modified SAML  TOKENS. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "CLIENT IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "The CLIENT IP ADDRESS is the source IP address of the system or user who  is sending a SAML TOKEN that fails digital signature validation. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SERVER IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "The SERVER IP ADDRESS identifies the VistA backend or frontend server  that the client has connected to.   This is useful in determining which server may have a misconfiguration in its PKI setup. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LOGIN METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RPC BROKER;S:SSH (ROLL-N-SCROLL);V:VISTALINK;H:HL7;B:BROKER SECURITY ENHANCEMENT;",
+      "helpText": "The LOGIN METHOD describes the path taken by the user or application to authenticate with VistA.    For example, if the user connected and authenticated through the RPC Broker then R would be the LOGIN METHOD. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SAML TOKEN REUSE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This SAML TOKEN REUSE COUNT tracks how many times a SAML TOKEN has been  reused to authenticate with VistA. ",
+      "fieldNumber_": 34
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6.666", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

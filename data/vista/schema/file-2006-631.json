@@ -1,0 +1,123 @@
+{
+  "fileNumber": 2006.631,
+  "fileName": "MAG RAD LISTS DEFINITION",
+  "globalRoot": "2006.631",
+  "globalReference": "^MAG(2006.631,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ75",
+      "length": 75,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LIST #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XI",
+      "length": 3,
+      "required": true,
+      "helpText": "Enter a number to be used to uniquely identify this list; this number will be passed as a parameter from the workstation to cause this list to be generated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LIST TYPE",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "U:UNREAD;R:RECENT;A:ALL UNREAD & RECENT;P:PENDING;N:Newly Interpreted;H:History;I:Indexed;",
+      "helpText": "This determines what subset of the exams to display, based on the Exam Status value.  Choices are:     U  -- UNREAD Exams only; Exam Status Category= E(xamined)   R  -- RECENT Exams; Status Categories D(ictated) & T(ranscribed)   A  -- ALL Active Exams; Categories E, D, & T   P  -- PENDING Exams; Category= W(aiting for Exam)   N  -- Newly-Interpreted; NO Category   H  -- History List; NO Category   I  -- Indexed list; NO Category   List Types N, H and I are for internal use only, and are not ava",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "IMAGING TYPES",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "ALL:ALL;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Log of last time this report was edited. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENABLE LIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;0:N;",
+      "helpText": "Until the List definition is Enabled, it will not be available for use from the VistARad Workstation; this allows you time to develop and/or modify list definitions without worrying about end-users accessing a fully-defined list.  Also, you can retire a list that is no longer needed by deleting this field's answer. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BUTTON LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COLUMNS",
+      "dataType": "POINTER",
+      "rawType": "2006.6311PA",
+      "required": false,
+      "helpText": "Specify output columns here. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SORT",
+      "dataType": "POINTER",
+      "rawType": "2006.6312PA",
+      "required": false,
+      "helpText": "The sort sequence may be specified here. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "Enter the TAG to be used as the entry point for the compile routine. This is only used for List Type \"I\" exam lists, and is required. Code at this routine/tag performs the compile for the list being created. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "Enter the ROUTINE where the tag/entry-point is found. This is only used for List Type \"I\" exam lists, and is required. Code at this routine/tag performs the compile for the list being created. ",
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.631", "field": .01, "type": "regular"},
+    {"name": "2006.631", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

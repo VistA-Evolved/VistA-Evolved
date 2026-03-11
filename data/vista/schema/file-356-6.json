@@ -1,0 +1,90 @@
+{
+  "fileNumber": 356.6,
+  "fileName": "CLAIMS TRACKING TYPE",
+  "globalRoot": "356.6",
+  "globalReference": "^IBE(356.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the name of the type of event that can be stored in Claims Tracking. Only certain types of events or visits are known to Claims Tracking.  Adding or deleting entries can have unwanted effects on the IB package.  Currently only inpatient, outpatient, prosthetics, and Rx Refill visits are known  to IB.  Future plans call for adding Fee Basis visits.  This is limited to those areas that we currently have legislative authority to bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the 3-8 character abbreviation for this entry that will be used  on display screens and outputs. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE CODE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:INPATIENT CARE;2:OUTPATIENT CARE;3:RX REFILL;4:PROSTHETICS;",
+      "helpText": "Enter the correct type code for this entry.  This type code is used internally by the Claims Tracking Module.  Do not edit this field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AUTOMATE BILLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This will control the automated creation of bills for each type of care.   If this is \"Y\"es then the Earliest Auto Bill date will be automatically added to billable events.  These events can then be added to bills by the automated biller. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILLING CYCLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the maximum number of days allowed on a single bill for this type of care.   For example, if outpatient bills have a billing cycle of 7 days then one bill will be created for a seven day period, which may contain 1 visit or seven.   If this is left blank and the event type can be automatically billed then the bills will be created in one month intervals. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DAYS DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the minimum number of days delay that apparently billable  visits (for this type of event type) should wait for auto billing.   This field works in conjunction with the field BILLING CYCLE to  determine what visits are included on a bill and when those bills can be created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ENTRY CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is designed to be used internally by the claims tracking module to uniquely identify an entry.  This number will intially be the same as the internal entry number.  It should not be edited. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACODE", "field": },
+    {"name": "B", "field": },
+    {"name": "356.6", "field": .01, "type": "regular"},
+    {"name": "356.6", "field": .03, "type": "regular"},
+    {"name": "356.6", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

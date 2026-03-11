@@ -1,0 +1,67 @@
+{
+  "fileNumber": 2006.925,
+  "fileName": "TRANSFER STATISTICS",
+  "globalRoot": "2006.925",
+  "globalReference": "^MAGV(2006.925,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STORAGE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP2006.917'",
+      "required": true,
+      "pointerTo": 2006.917,
+      "helpText": "This is the storage provider that provided the storage or retrieval  service for the transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENDPOINT PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This is the place of the client. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time at which the transaction began. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DURATION IN MILLISECONDS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "The duration in milliseconds for the transfer. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SIZE IN BYTES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ14,0",
+      "length": 14,
+      "required": true,
+      "helpText": "The size of the transfer in bytes. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.925", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

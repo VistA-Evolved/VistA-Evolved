@@ -1,0 +1,116 @@
+{
+  "fileNumber": 791810.2,
+  "fileName": "ORDER STATUS",
+  "globalRoot": "791810.2",
+  "globalReference": "^RMPF(791810.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the status that is assigned to an order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the code for a status.  This code is used by ROES programs to determine functions that may be performed on an order with this status code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field indicates whether or not the status is inactive. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the short name of a status and is used in some output programs. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EDITABLE;C:COMPLETE;P:BEING PROCESSED;",
+      "helpText": "This field determines whether or not an order with this status may be edited. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SPECIAL STATUS EVALUATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain the name of a line tage in routine 'RMPFET3' that is to be executed to determine whether or not an order should remain in this status. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMERIC CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PROCESSING ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains a numeric value that is used to determine the status of an order based on the status of each line item. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "APPLY TO PSAS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:APPLIES TO PSAS;1:DOES NOT APPLY TO PSAS;",
+      "helpText": "This field indicates whether or not the status may apply to a PSAS order. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ACTION TO TRIGGER STATUS",
+      "dataType": "SET",
+      "rawType": "791810.2101S",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 791810.2101,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "791810.2", "field": .01, "type": "regular"},
+    {"name": "791810.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

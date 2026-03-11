@@ -1,0 +1,76 @@
+{
+  "fileNumber": 354.75,
+  "fileName": "IB COPAY CAPS",
+  "globalRoot": "354.75",
+  "globalReference": "^IBAM(354.75,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective date of this cap entry.  Based upon the date of the transaction, this will be used to determine if a billing transaction is above the cap or not. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRIORITY LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the priority level of the cap.  This will be used based upon the patient's priority level to determine what their cap amount is. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MONTHLY CAP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the monthly cap amount that will be used to determine if the bill is above the cap or not.  This is a total monthly amount that can be billed to a patient for pharmacy copay. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "YEARLY CAP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the yearly cap amount that will be used to determine if the bill is above the cap or not based on the year basis specified. This is the total yearly amount that can be billed to a patient for pharmacy copay. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TERMINATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the termination date of this cap amount.  This is optional. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "YEAR BASIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CALENDAR YEAR;F:FISCAL YEAR;",
+      "helpText": "This is the year basis for this cap amount.  This will be used to determine the timeframe to calculate the amounts billed to a patient. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "354.75", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "fileNumber": 169.99,
+  "fileName": "ONCOLOGY PACKAGE STATUS",
+  "globalRoot": "169.99",
+  "globalReference": "^ONCO(169.99,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "RECORDS THE NAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CURRENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "RECORDS THE CURRENT VERSION OF THE PACKAGE. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BEGIN INSTALL",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "RECORDS THE TIME INSTALLATION WAS BEGUN. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "END INSTALL",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "RECORDS THE TIME THE INSTALLATION WAS COMPLETE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREVIOUS VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the previous version of the package that was installed at this location. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "169.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

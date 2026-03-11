@@ -1,0 +1,54 @@
+{
+  "fileNumber": 9002313.511,
+  "fileName": "BPS NCPDP OVERRIDE",
+  "globalRoot": "9002313.511",
+  "globalReference": "^BPS(9002313.511,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the override.  Must start with punctuation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CREATED ON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the override was created. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NCPDP FIELD",
+      "dataType": "POINTER",
+      "rawType": "9002313.5111PA",
+      "required": false,
+      "helpText": "Which NCPDP field this override is used for. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ADDL NCPDP FIELD",
+      "dataType": "POINTER",
+      "rawType": "9002313.5112PA",
+      "required": false,
+      "helpText": "Additional NCPDP fields to be added to the claim. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.511", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

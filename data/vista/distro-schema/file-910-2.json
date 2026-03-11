@@ -1,0 +1,490 @@
+{
+  "fileNumber": 910.2,
+  "fileName": "ESP POLICE REGISTRATION LOG",
+  "globalRoot": "910.2I",
+  "globalReference": "^ESP(910.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VA TAG ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the VA tag ID, such as decal # for a vehicle. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DECAL COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the assigned decal.  You must choose from the  available listing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OWNER NAME",
+      "dataType": "POINTER",
+      "rawType": "P910",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "Choose from the available listing the name of the owner of the property being registered.  You may enter a new name if you wish. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REGISTRATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VEHICLE;2:BICYCLE;3:WEAPON;4:PET;5:GOLF;",
+      "helpText": "Choose the registration type from the available list, (i.e., VEHICLE.) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date of the registration.  Future dates are not allowed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the serial number of the item being registered. Answer must be [3-30 characters]. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a short description of the item being registered. Answer must be [1-50 characters]. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'I",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Enter the Facility associated with this entry. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LICENSE TAG NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the license tag # of the vehicle being registered. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Choose from the available listing the state that issued the license tag. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "VEHICLE MAKE",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the make or manufacturer of the item being registered. EX. FORD or CHEVROLET for vehicles. This field points to the Selectables file.  You must choose from the available listing. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "VEHICLE MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the model of the vehicle being registered.  EX. RANGER, MALIBU Answer must be [3-30 characters].  ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "VEHICLE STYLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the style of the vehicle being registered. Answer must be 3-30 characters in length. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "VEHICLE COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the vehicle being registered.  You must choose from the available listing. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "YEAR OF MANUFACTURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the year of manufacture of the item being registered, example:  1990 or 90. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "ASSIGNED PARKING SPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the assigned parking space.  Answer must be 1-30 characters. For example, the parking space #, the parking lot, or lot and space #. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "CAR POOL MEMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Entering a 'YES' to this prompt will indicate that the individual wishes to participate in the Car Pool Program. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "WEAPON MAKE",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the make of the weapon, ie. Smith & Wesson. You must choose from the available listing. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "WEAPON MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the model of this weapon. Answer must be [1-30 characters].  ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REVOLVER;S:SEMI-AUTOMATIC;P:PUMP;C:COMPOUND;CB:CAP & BALL;F:FLINTLOCK;B:BOLT;CR:CROSS;RE:RECURVED;",
+      "helpText": "Select from the available listing the best description of the weapon being registered. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "CAPACITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the maximum shot capacity for this weapon, 6 shot, 14 shot, single shot, etc.  Answer must be [1-30 characters]. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "CALIBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the caliber or gauge of the weapon, i.e., .38, .357, 9MM  or 12 GA.  Answer must be [3-30 characters]. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the length of the barrel or bow in inches. Type a Number between 1 and 100, 0 Decimal Digits. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "FINISH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLUE;N:NICKEL;C:CHROME;P:PARKERIZED;S:STAINLESS;F:FIBERGLASS;W:WOODGRAINED;A:ALUMINUM;",
+      "helpText": "Select from the available listing, the best descriptor of the weapon's finish. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EXCELLENT;G:GOOD;F:FAIR;P:POOR;D:DAMAGED;",
+      "helpText": "From the available listing, select the best description of the weapon's condition. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "PET'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the pet's name, (i.e., Blacky. Spot, Fluffy). Answer must be [3-30 characters]. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "TYPE OF PET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the type of animal of the pet, i.e. DOG, CAT, RABBIT, etc. Answer must be [3-30 characters]. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "BREED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the commonly known breed name, (i.e., PERSIAN, BEAGLE, GERMAN SHEPHERD).  Answer must be [3-30 characters]. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "This field is used to record whether the pet is male or female. whether the pet being registered is male or female. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "PET COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the pet.  The color must be in the Selectables File. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SMALL;M:MEDIUM;L:LARGE;X:EXTRA LARGE;",
+      "helpText": "Select from the available set of codes, the best descriptor for the size of the animal. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "RABIES INOCULATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the last date that the pet was inoculated for rabies. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "INOCULATION EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that the last inoculation for rabies expires. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "BICYCLE MAKE",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the make or manufacturer of the bicycle being registered. You must choose from the available listing.  It must be a valid bicycle make entered in the Selectables File. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "BICYCLE MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the model of the bicycle being registered. Answer must be [3-30 characters].  ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "BICYCLE STYLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the style of the bicycle being registered. Answer must be [3-30 characters].  ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "BICYCLE COLOR",
+      "dataType": "POINTER",
+      "rawType": "*P910.7'",
+      "required": false,
+      "pointerTo": 910.7,
+      "helpText": "Enter the color of the bicycle being reigistered. It must be a valid vehicle color. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "PARENT/GUARDIAN",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "Enter the parent or guardian of the owner of the bicycle if he/she is a dependent.  The parent/guardian must be in the Master Name Index file. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "Enter the sponsor of the person being issued golf tags. The sponsor must be in the Master Name Index file. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "NO. OF TAGS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Enter the number displayed on the golf tag issued. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "VEHICLE",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "This field is used to link the vehicle registration entry to the ESP Master Name file in conjunction with the Quick Name Check routine (ESPQNC). ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "BICYCLE",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "This field is used to link the bicycle registration entry to the ESP Master Name file in conjunction with the Quick Name Check routine (ESPQNC). ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "WEAPON",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "This field is used to link the weapon registration entry to the ESP Master Name file in conjunction with the Quick Name Check routine (ESPQNC). ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "PET",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "This field is used to link the pet registration entry to the ESP Master Name file in conjunction with the Quick Name Check routine (ESPQNC). ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "GOLF",
+      "dataType": "POINTER",
+      "rawType": "P910'",
+      "required": false,
+      "pointerTo": 910,
+      "helpText": "This field is used to link the golf registration entry to the ESP Master Name file in conjunction with the Quick Name Check routine (ESPQNC). ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "910.22",
+      "required": false,
+      "helpText": "This field is used to record any miscellanous information that might apply to a registration.  In a Vehicle Registration where the vehicle is listed as Multicolored, the Remarks entry could be \"Red over White, with special paint designs.\" ",
+      "isMultiple": true,
+      "subFileNumber": 910.22,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 46,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BI", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "J", "field": },
+    {"name": "K", "field": },
+    {"name": "P", "field": },
+    {"name": "T", "field": },
+    {"name": "V", "field": },
+    {"name": "W", "field": },
+    {"name": "910.2", "field": .01, "type": "regular"},
+    {"name": "910.2", "field": .02, "type": "regular"},
+    {"name": "910.2", "field": .03, "type": "regular"},
+    {"name": "910.2", "field": .04, "type": "regular"},
+    {"name": "910.2", "field": .05, "type": "regular"},
+    {"name": "910.2", "field": .07, "type": "regular"},
+    {"name": "910.2", "field": 1.01, "type": "regular"},
+    {"name": "910.2", "field": 1.08, "type": "regular"},
+    {"name": "910.2", "field": 4.05, "type": "regular"},
+    {"name": "910.2", "field": 5.01, "type": "regular"},
+    {"name": "910.2", "field": 6.01, "type": "regular"},
+    {"name": "910.2", "field": 6.02, "type": "regular"},
+    {"name": "910.2", "field": 6.03, "type": "regular"},
+    {"name": "910.2", "field": 6.04, "type": "regular"},
+    {"name": "910.2", "field": 6.05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .08, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WRITE, "value": "D ID^ESPUTIL(^(0))"}
+  ]
+}

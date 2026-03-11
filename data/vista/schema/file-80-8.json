@@ -1,0 +1,179 @@
+{
+  "fileNumber": 80.8,
+  "fileName": "TEMPORARY PROCEDURES",
+  "globalRoot": "80.8",
+  "globalReference": "^ICDYZ(80.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "ICD9 procedure or operation code ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains Operations Identifiers. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPERATION/PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of Operation or Procedure that code refers to. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MDC24",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CRANIAL;2:LIMB;3:OTHER OR;",
+      "helpText": "Set of codes refers to body site of procedure, when for a Multiple Significant Trauma (MDC 24) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAJOR DIAGNOSTIC CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "80.82PA",
+      "required": false,
+      "helpText": "Major Diagnostic Category which this code may fall under. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ICD EXPANDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "VA ONLY CODES. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "USE ONLY WITH SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Set of codes containing the sex if operation/procedure is gender-specific. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "More complete description of operation or procedure. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MAJOR O.R. PROC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Is this defined as a Major O.R. Procedure? ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "OPERATION LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of minutes for average length of time for this operation. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "REQUESTED BLOOD KIND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the requested blood kind. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "NUMBER OF BLOOD UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of Units of blood usually required. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "SCREEN OR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "X:CROSS-MATCH;S:TYPE OR SCREEN;",
+      "helpText": "This field contains a code indicating screening or cross-matching. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ANESTHESIA RUG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the Resource Utilization Group for the Anesthesia. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ACS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the ACS name. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE CODE;",
+      "helpText": "Set to 1 when code is inactivated. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date as of which code is inactive. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,4)"},
+    {"field": 10, "value": "W:$D(^(\"1\")) \"   \",$P(^(\"1\"),U,1)"}
+  ]
+}

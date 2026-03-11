@@ -1,0 +1,38 @@
+{
+  "fileNumber": 743.92,
+  "fileName": "TIME FRAME",
+  "globalRoot": "743.92",
+  "globalReference": "^QA(743.92,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the time frames that the user will see. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "START/END DATE CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains the entry point of a routine that will be used to calculate the starting and ending dates of the time frame. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "743.92", "field": .01, "type": "regular"},
+    {"name": "743.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

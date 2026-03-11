@@ -1,0 +1,38 @@
+{
+  "fileNumber": 7104.3,
+  "fileName": "NOIS STU ALERT",
+  "globalRoot": "7104.3",
+  "globalReference": "^FSCD(\"STU ALERT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user to be alerted on installs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P7104'",
+      "required": false,
+      "pointerTo": 7104,
+      "helpText": "This is the message of the insallation. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7104.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

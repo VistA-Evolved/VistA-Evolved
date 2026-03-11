@@ -1,0 +1,82 @@
+{
+  "fileNumber": 552,
+  "fileName": "CMOP NATIONAL SITE",
+  "globalRoot": "552OP",
+  "globalReference": "^PSX(552,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The facility participating in the Consolidated Mail Outpatient Pharmacy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "552.01DA",
+      "required": false,
+      "helpText": "The date/time this event activated the Consolidated Mail Outpatient Pharmacy server.                           ",
+      "isMultiple": true,
+      "subFileNumber": 552.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "The current CMOP processing status for this facility. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST BATCH TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "The transmission number of the last transmission received for this facility. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FACILITY DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "  This is the mail domain for the remote site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AGENCY SITE ID (NON VA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA CMOP station number, assigned to other agencies' sites by the CMOP  software, to be used as that facilities site number within the CMOP  database.   The existence of this field is used to determine that the site number  used belongs to an external agency.   It must be unique within the CMOP site numbers used for VA facilities and  the CMOP site numbers used for other agencies. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "552", "field": .01, "type": "regular"},
+    {"name": "552", "field": 2, "type": "regular"},
+    {"name": "552", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

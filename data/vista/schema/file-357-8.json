@@ -1,0 +1,90 @@
+{
+  "fileNumber": 357.8,
+  "fileName": "TEXT AREA",
+  "globalRoot": "357.8",
+  "globalReference": "^IBE(357.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name of the text area. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP357.1'",
+      "required": true,
+      "pointerTo": 357.1,
+      "helpText": "  The block the text area is displayed in. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TEXT AREA STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "  The starting position of the text area, relative to the block. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TEXT AREA STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "  The starting row of the text area, relative to the block. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TEXT WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The width of the text area, measured in characters. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TEXT HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The height of the text area, measured in lines. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "357.81",
+      "required": false,
+      "helpText": "  The text that should appear within the text area. ",
+      "isMultiple": true,
+      "subFileNumber": 357.81,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "357.8", "field": .01, "type": "regular"},
+    {"name": "357.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

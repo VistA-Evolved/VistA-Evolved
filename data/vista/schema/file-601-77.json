@@ -1,0 +1,37 @@
+{
+  "fileNumber": 601.77,
+  "fileName": "MH BATTERIES",
+  "globalRoot": "601.77",
+  "globalReference": "^YTT(601.77,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATTERY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "A unique identifier for the record. It is the IEN. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BATTERY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Title for the battery (a set of instruments) eg. 10 East Admission  Battery. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.77", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

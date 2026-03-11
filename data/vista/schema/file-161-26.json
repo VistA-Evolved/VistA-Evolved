@@ -1,0 +1,91 @@
+{
+  "fileNumber": 161.26,
+  "fileName": "FEE BASIS PATIENT MRA",
+  "globalRoot": "161.26P",
+  "globalReference": "^FBAA(161.26,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The veteran for whom this master record adjustment is created.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PENDING TRANSMISSION;T:TRANSMITTED;",
+      "helpText": "This field identifies whether this master record adjustment is pending transmission to Austin or has already been transmitted. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "POINTER TO AUTHORIZATION NODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This field contains the internal entry number of the authorization  record selected for the veteran. This is needed because master record adjustments are related to specific authorizations. The user does NOT enter this field directly. The data is captured automatically when the user selects the authorization. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADD;R:REINSTATE;D:DELETE;C:CHANGE;",
+      "helpText": "Indicates the type (ie add, change) of master record adjustment this is. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that last master record adjustment for this veteran was  transmitted to Austin. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AUTH. FROM DATE CHANGED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "This field is used as a flag to indicate that the authorization From Date is being changed by this master record adjustment. If this field is set to yes, the authorization To Date is set to spaces when the transaction is created. An Austin requirement is to change the From Date, the To date must be blank. This field only pertains to a 'Change' type  transaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SHORT TERM MRA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is used as a flag and relates to outpatient medical  reimbursements for a veteran with only a short term authorization.  For those reimbursements the system automatically creates a master record adjustment sending the most current data. This field is used to identify that this transaction is only temporary and not to establish a long term master record. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "161.26", "field": .01, "type": "regular"},
+    {"name": "161.26", "field": 1, "type": "regular"},
+    {"name": "161.26", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "fileNumber": 161.93,
+  "fileName": "REMITTANCE REMARK",
+  "globalRoot": "161.93",
+  "globalReference": "^FB(161.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code value. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "161.931D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.931,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "161.932D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.932,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADJUSTMENT GROUP",
+      "dataType": "POINTER",
+      "rawType": "161.933PA",
+      "required": false,
+      "helpText": "Some RARCs have GROUP restrictions. Set this RARC's allowable groups here. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": CDES, "value": "D RRCDES^FBUTL3"}
+  ]
+}

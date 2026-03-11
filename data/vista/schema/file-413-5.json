@@ -1,0 +1,47 @@
+{
+  "fileNumber": 413.5,
+  "fileName": "NX STATUS",
+  "globalRoot": "413.5",
+  "globalReference": "^PRCN(413.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Internal number for each status. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "These are the statuses used in the Equipment and Turn-In requests to go to the next step in the process.  Also used for users to only view certain statuses. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MODULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EQUIPMENT REQUEST;T:TURN-IN;B:BOTH;",
+      "helpText": "This explains which status goes with which part of the module. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "413.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

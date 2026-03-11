@@ -1,0 +1,374 @@
+{
+  "fileNumber": 59.4,
+  "fileName": "INPATIENT SITE",
+  "globalRoot": "59.4",
+  "globalReference": "^PS(59.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the name of the Inpatient Site.  A VAMC may have more than one inpatient site name, i.e. for multi-divisional sites or nursing homes.  A second site name would be used, for example, whenever different parameters are required. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*RELATED INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "  (Not currently used.) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "*DAYS UNTIL STOP DATE/TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This is the number of days a standard order should last.  The first order entered for a patient uses this number to calculate a default value for the order's STOP DATE/TIME.  This number is also used if SAME STOP DATE has no entry, or an entry of \"NO\". ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*SAME STOP DATE ON ALL ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag, if found to be YES, uses the STOP DATE/TIME from the patient's first order as a default value for the STOP DATE/TIME of all of the patient's following orders. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MERGE INV. SHEET AND PICK LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If 1 is entered, the Automatic Replenishment inventory sheet and pick list  are merged - a separate pick list does not have to be printed.  The  inventory sheet contains the quantity dispensed column. The on  hand values do not have to be input. The user only enters the actual  quantity dispensed. If 0 is entered, the inventory sheet and pick list are  not merged.  The user prints the inventory sheet, enters on hand amounts,  prints the pick list, and dispenses the items. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "AR/WS AMIS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "                        ***WARNING*** The setting of this parameter DIRECTLY AFFECTS THE ACCURACY of the AMIS report!  This parameter should be set to \"NO\" until you have completed ALL of the \"Prepare AMIS Data\" options on the  \"Supervisor's Menu\".  Carefully examine the reports produced by the \"Data for AMIS Stats - Print\" option and the \"Show AOU Status for AMIS\" option.  When you are sure that the data is accurate, then AND ONLY THEN, set this site parameter to \"YES\".  Once the parameter is s",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRINT RETURN COLUMNS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If 1, the return quantity column and the return reason column will appear on the inventory sheet in the Automatic Replenishment package. If 0, the return columns do not appear on the inventory sheet. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "IS SITE SELECTABLE FOR AR/WS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Should this inpatient site name be shown for use by AR/WS users?  When users sign into the module to carry out AR/WS functions, should this site name be displayed?  If you answer \"yes\", the software will display or allow you to pick this site name when you enter the module.  If you answer \"no\", the software will \"screen out\" the site name so that AR/WS users will not see or be able to select the site name while in the AR/WS module. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "PROMPT FOR BAR CODES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "* NOTE * This field is not in use at this time, it is for a future version. This field will control whether or not users will be given the opportunity to use bar code readers to enter On-Demands. ",
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*TIME OF DAY THAT ORDERS STOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is a time of day that, if found, will be used in calculating the default value for the STOP DATE/TIME of patients' orders. for a new order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "*START TIME FOR 24 HOUR MAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is the start time for the 24 hour MAR.  It is used whenever a user enters a start date without a time when running the 24 hour MAR.  This time should be in military time format, with leading and trailing zeros. (Entering '0001' would be seen as 1 minute after midnight.) ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*STOP TIME FOR MAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is the stop time for the 24 hour MAR.  It is automatically calculated when the START TIME FOR MAR is entered. FILEMANAGER. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is the flag for all label activity.  If this is a `1' (or `YES'), the other site parameters pertaining to labels are asked and labels (containing order data) are created.  If you answer `0' or `NO', the other label site parameters are reset to NULL. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*DAYS NEW LABELS LAST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  The Unit Dose package will run a background job once a day that will delete all unprinted new labels older than the number of days specified here.  If no days are specified here, any unprinted new labels for this  site will be purged at the end of the day.   **PLEASE NOTE - A label can still be printed for an order even though its new label record has been purged. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "*FIRST LABEL FOR NURSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT UNTIL NURSE VERIFICATION;1:BOTH INSTANCES;2:AT ORDER ENTRY;",
+      "helpText": "  This is a flag that will `tell' the UNIT DOSE package when to print the first label for an order input by nursing or ward staff personnel.  If a `2' is found, a label will print upon the entry or edit of an order and not print when a nurse verifies the order.  If a `0' (or no entry) is found, no label will be printed for an order until a nurse verifies the order. If a `1' is found, a label will print upon any action taken on an order. This flag is independent from the FIRST LABEL FOR PHARMACY.",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "*CANCEL ON WARD TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This is a flag that is looked at on patient look-up.  If a `1' is found, all of a patient orders will be cancelled if that patient has been transferred to another ward. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "*CANCEL ON SERVICE TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag that is looked at on patient look-up.  If a `1' is found, all of a patient orders will be cancelled if that patient has been transferred to another service. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "*AUTO NURSE VERIFY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If a '1' (for YES) is found here when a nurse enters an order, the order is automatically entered as ACTIVE.  Unless ward order entry is used, the nurse will then have an opportunity to delete or edit the order immediately after it is entered. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*AUTO PHARMACIST VERIFY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If a '1' (for YES) is found here when a pharmacist enters an order, the order is automatically entered as ACTIVE.  Unless ward order entry is used, the pharmacist will then have an opportunity to delete or edit the order immediately after it is entered. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "*PICK LIST - ROOM/BED SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ROOM-BED;1:BED-ROOM;",
+      "helpText": "  The Pick List normally sorts patients' orders by ROOM-BED.  To have the Pick List sort orders by BED-ROOM, enter a '1' here.  Any change in this field will NOT affect Pick Lists already run.  PLEASE NOTE that if the pick list is flagged to NOT sort by ROOM-BED, this flag will be ignored. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*PICK LIST - OMIT WARD SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO (SORT BY WARD);1:YES (DO NOT SORT BY WARD);",
+      "helpText": "  The Pick List normally sorts orders by TEAM, WARD, ROOM-BED...  To have the Pick List omit the WARD sort, answer 'YES' here, and the Pick List will sort by TEAM, ROOM-BED (and NOT by WARD).  Any change here will NOT affect any Pick Lists that have already been run. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "*PICK LIST - OMIT ROOM-BED SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES (DO NOT SORT BY ROOM-BED);0:NO (SORT BY ROOM-BED);",
+      "helpText": "  The PICK LIST normally sorts orders by ...TEAM, WARD, ROOM-BED, PATIENT NAME...  To have the pick list NOT sort by ROOM-BED at all, answer 'YES' here.  Any change here will NOT affect pick lists that have already been run. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "*FIRST LABEL FOR PHARMACY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT UNTIL PHARMACY VERIFICATION;2:AT ORDER ENTRY ONLY;1:BOTH INSTANCES;",
+      "helpText": "  This is a flag that `tells' the Unit Dose package when to print the first label of orders that are input, or worked on, by pharmacists.  If a 0 (or no entry) is found here, no label will be printed until the order is verified by a pharmacist.  If a 2 is found, a label will print only upon the entry of the order (by a pharmacist).  If a 1 is found, the label will print at order entry and verification.  This flag is independent from the FIRST LABEL FOR NURSING. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "*ORDER ENTRY PROCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR;1:ABBREVIATED;2:WARD;",
+      "helpText": "  This is the type of order entry process to be used by each user who signs onto the Inpatient Medications package under this site. The REGULAR order entry is the full set of prompts for the entry of an order, after  which the user is shown a full view of the order and allowed to take  immediate action on the order. The ABBREVIATED order entry gives the user  fewer prompts for the entry of an order, after which the user is shown a  full view of the order and is allowed to take immediate action o",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "*PICK LIST - FORM FEED/PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This is a flag that tells the package to start a new page for each patient found when printing the pick list. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "*DEFAULT LABEL PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  If a device is entered here, all users who sign on under the corresponding site will be shown that device as the default at the LABEL PRINTER prompt. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "*'SELF MED' IN ORDER ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If `YES' (or a 1) is entered here, the regular order entry process will prompt the user for SELF MED and HOSPITAL SUPPLIED SELF MED for each order entered.  The abbreviated processes and ward order entry and order sets are not affected in any way by this site parameter. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "*PRE-EXCHANGE ENVELOPES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag that tells the package that the pharmacy is using special envelopes for their pre-exchange needs report, and will print the pre-exchange needs information accordingly.  PLEASE NOTE that the package expects the envelopes to be at least 4 inches long and at least 8 1/2 inches wide. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "*PICK LIST - FORM FEED/WARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag that tells the pick list to start a new page for each ward found when printing.  This flag is ignored if the \"NEW PAGE PER PATIENT\" flag is turned on. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "*PICK LIST - LINES ON FORM FEED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag that tells the pick list to print the \"FILLED BY\" and the \"CHECKED BY\" lines after each ward or patient.  This is used only if either of the \"PICK LIST FORM FEED/PATIENT\" or \"PICK LIST FORM FEED/WARD\" site parameters is turned on. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "*ALLOWABLE CLERK/TECH ACTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:'MARK' ACTIVE ORDERS ONLY;1:TAKE ACTION ON ACTIVE ORDERS;",
+      "helpText": "  This is to allow ward clerks to actually take the actions necessary on Unit Dose Medication orders (all except verify), instead of just marking the order. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "*INPATIENT PROFILE ORDER SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MEDICATION NAME;1:START DATE OF ORDER;",
+      "helpText": "  This is the sort order in which the Inpatient Profile will show inpatient orders.  Enter 'MEDICATION NAME' (or '0') to show the orders alphabetically by drug name.  Enter 'START DATE OF ORDER' (or '1') to show the orders chronologically by start date, with the most recent dates showing first.   PLEASE NOTE - The profile will always first show orders by status (active, non-verified, and then non-active), and within status, schedule type (continuous, one-time, and then PRN). ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "*PRINT PROFILE IN ORDER ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This is a flag used to determine if the user should be prompted to print a patient's order profile after entering Inpatient orders for the patient. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "IS SITE SELECTABLE FOR CS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Should this site name be shown for use by the Controlled Substances module of the Pharmacy software?  If you answer \"YES\", the software will display or allow you to pick this site name for Controlled Substances.  If you answer \"NO\", the software will screen out the site name so that CS users will not see or be able to select the site name while in the CS package. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DEFAULT WS REQUESTS PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "If a printer is entered into this field it will be the default pharmacy  printer used to automatically print Ward Stock Requests. If the field is  blank the Ward Stock Request will not automatically print. ",
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 35,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APLFC", "field": },
+    {"name": "AUPLK", "field": },
+    {"name": "B", "field": },
+    {"name": "59.4", "field": .01, "type": "regular"},
+    {"name": "59.4", "field": .01, "type": "regular"},
+    {"name": "59.4", "field": .01, "type": "regular"},
+    {"name": "59.4", "field": 8, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

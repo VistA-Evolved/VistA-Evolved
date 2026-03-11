@@ -1,0 +1,313 @@
+{
+  "fileNumber": 351.5,
+  "fileName": "TRICARE PHARMACY TRANSACTIONS",
+  "globalRoot": "351.5",
+  "globalReference": "^IBA(351.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CARD HOLDER SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AMOUNT TRANSMITTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COPAYMENT CHARGE",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This field points to the copayment charge in the INTEGRATED BILLING ACTION (#350) file which was actually billed to the patient. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FISCAL INTERMEDIARY CLAIM",
+      "dataType": "POINTER",
+      "rawType": "P399'",
+      "required": false,
+      "pointerTo": 399,
+      "helpText": "This field points to the claim in the BILL/CLAIMS (#399) file which was created after the response from the FI was received. Creation of this claim also establishes a receivable in the ACCOUNTS RECEIVABLE (#430) file against which the FI payment will be posted. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PRODUCT SELECTION REASON",
+      "dataType": "POINTER",
+      "rawType": "P351.53'",
+      "required": false,
+      "pointerTo": 351.53,
+      "helpText": "This field will store the Product Selection Reason for billing acceptance. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COPAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "INGREDIENT COST PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "CONTRACT FEE PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "SALES TAX PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "TOTAL AMOUNT PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "AUTHORIZATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "ACCUMULATED DEDUCTIBLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "REMAINING DEDUCTABLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "REMAINING BENEFIT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "ATM APPL TO PER DEDUCTIBLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "AMT COPAY/COINSURANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "AMT ATTRIB TO PROD SEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "AMT EXCEEDING PERIODIC MAX BEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "INCENTIVE FEE PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "BASIS OF REIMB DETERMINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT SPECIFIED;1:PAID AS SUBMITTED;2:REDUCED TO AWP;3:AWP-X% PRICING;4:USUAL AND CUSTOMARY;5:LOWER IF ING. COST PLUS FEES VS U&C;6:MAC PRICING;7:MAC REDUCED TO MAC;8:CONTRACT PRICING;",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "AMOUNT ATTRIB TO SALES TAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "ERROR CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "REVERSAL AUTH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "REVERSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "REVERSAL ERROR CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "DUR RESPONSE DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "ADDITIONAL MESSAGE INFORMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.01
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "ACC", "field": },
+    {"name": "ACL", "field": },
+    {"name": "AUTH", "field": },
+    {"name": "B", "field": },
+    {"name": "351.5", "field": .01, "type": "regular"},
+    {"name": "351.5", "field": .08, "type": "regular"},
+    {"name": "351.5", "field": .09, "type": "regular"},
+    {"name": "351.5", "field": 2.06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

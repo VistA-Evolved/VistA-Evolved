@@ -1,0 +1,46 @@
+{
+  "fileNumber": 791,
+  "fileName": "WV CONTRACEPTIVE METHODS",
+  "globalRoot": "791",
+  "globalReference": "^WV(791,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONTRACEPTIVE METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the contraceptive method. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREGNANCY RISK LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIGH;2:LOW;",
+      "helpText": "This field stores the likelihood of the patient becoming pregnant while using this contraceptive method. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CODE TO DETERMINE RISK LEVEL",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field stores MUMPS code that will compute the likelihood of a  patient becoming pregnant using this contraceptive method.  This computed  value overrides the value stored in the PREGNANCY RISK LEVEL field (#1). ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

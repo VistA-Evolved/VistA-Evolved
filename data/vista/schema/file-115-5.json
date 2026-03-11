@@ -1,0 +1,39 @@
+{
+  "fileNumber": 115.5,
+  "fileName": "DIETETIC NUTRITION PLAN",
+  "globalRoot": "115.5",
+  "globalReference": "^FH(115.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text name of the nutrition plan entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "UPPERCASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the plan entry in uppercase text. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "115.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "115.5", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

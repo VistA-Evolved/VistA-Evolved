@@ -1,0 +1,91 @@
+{
+  "fileNumber": 2006.63,
+  "fileName": "MAG RAD LIST DATA ELEMENTS",
+  "globalRoot": "2006.63",
+  "globalReference": "^MAG(2006.63,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COLUMN HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Sort Only?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Internal Use Only?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:Yes;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RELATIVE ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,1I",
+      "length": 4,
+      "required": true,
+      "helpText": "Output columns will always appear in a fixed relative order according to the value of this field. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REVERSABLE SORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COLUMN TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S1:Date/Time;S2:Numeric;S3:Day/Case #;",
+      "helpText": "This indicates to the VistsRad Client that the data for this column requires special handling for either the Sort, or other defined needs.  No answer, by default, says treat column data as free-text data.  Defined needs are: Indicate Sort requirements (for Date & Numeric values)            Indicate Day/Case Number (used for key in Client App) ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "ASRTREV", "field": },
+    {"name": "B", "field": },
+    {"name": "2006.63", "field": .01, "type": "regular"},
+    {"name": "2006.63", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

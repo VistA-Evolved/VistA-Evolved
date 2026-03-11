@@ -1,0 +1,27 @@
+{
+  "fileNumber": 232.74,
+  "fileName": "EDP COMPONENT VALIDATORS",
+  "globalRoot": "232.74",
+  "globalReference": "^EDPB(232.74,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a validator used for EDIS worksheet components. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "232.74", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

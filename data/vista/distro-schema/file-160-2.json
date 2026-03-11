@@ -1,0 +1,61 @@
+{
+  "fileNumber": 160.2,
+  "fileName": "FORMS/INSTRUCTIONS",
+  "globalRoot": "160.2I",
+  "globalReference": "^ONCO(160.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter contact MD, Institution, or non-kin Oncology related contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROTECTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:PROTECT ENTRY FROM DELETION;N:DO NOT PROTECT ENTRY;",
+      "helpText": "This field is used to protect entries from being deleted. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIN FORM BODY",
+      "dataType": "SUBFILE",
+      "rawType": "160.21",
+      "required": false,
+      "helpText": "This is the main body of the follow-up form letter. ",
+      "isMultiple": true,
+      "subFileNumber": 160.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "160.23",
+      "required": false,
+      "helpText": "This field allows the Tumor Registrar to define and describe each letter. Also it allows for the description of letters exported. ",
+      "isMultiple": true,
+      "subFileNumber": 160.23,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "160.2", "field": .01, "type": "regular"},
+    {"name": "160.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

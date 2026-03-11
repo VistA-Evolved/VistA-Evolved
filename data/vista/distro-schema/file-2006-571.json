@@ -1,0 +1,84 @@
+{
+  "fileNumber": 2006.571,
+  "fileName": "DICOM RAW IMAGE",
+  "globalRoot": "2006.571",
+  "globalReference": "^MAGDINPT(2006.571,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the complete file name (directory path + name + extension) of a file that has been received by a DICOM Image Gateway. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTRUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the name of the instrument that transmitted the image file that is described in this entry.   The spelling of the name of the instrument must correspond to the name (.01 field) of an instrument that is described in File 2006.581 (stored in ^MAGDICOM(2006.581,...) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Not Complete;1:Complete;",
+      "helpText": "The value of this field is a code that indicates whether or not the received file is 'complete'.   0 indicates that the file is incomplete; 1 indicates that the file is complete. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORIGIN INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DOD;F:FEE;N:OTHER;V:VA;",
+      "helpText": "This field indicates whether the image originated inside or outside the VA. The information will be used for field ORIGIN INDEX (#45) in IMAGE file (#2005). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MEDIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Portable Media (CD or DVD);T:Transmitted (C-Stored);",
+      "helpText": "The value of this field indicates the source of the DICOM object. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OLDPATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the original path of the transmitted DICOM object. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that can be displayed as a warning message, indicating the reason why the current entry was made into this file. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.571", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

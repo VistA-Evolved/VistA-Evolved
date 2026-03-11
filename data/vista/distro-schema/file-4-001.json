@@ -1,0 +1,307 @@
+{
+  "fileNumber": 4.001,
+  "fileName": "MASTER FILE PARAMETERS",
+  "globalRoot": "4.001P",
+  "globalReference": "^DIC(4.001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MASTER FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1X",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This field is the Internal File Number (IFN) of the Master File table supported by the Master File Server (MFS). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEGMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the name of the HL7 data segment that hold the actual table values. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MFI CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This code identifies the master file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRE-UPDATE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the label of the  sub-routine in XUMFR that gets called before an update by the MFS for a data type segment.                                     Enter the label without '^XUMFR'.  The sub-routine can assume the presence of the variables IFN and IEN.  All local variables within the sub-routine must be NEW'd  before using them.                                   The default value for this field is  'PRE'.  The PRE sub-routine builds the current values of the entry in question (asso",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "POST-UPDATE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the label of the sub-routine in XUMFR that gets called after an update by the MFS for a data type segment.   Enter the label without '^XUMFR'.  The sub-routine can assume the presence of the variables IFN and IEN.  All local variables within the sub-routine must be NEW'd before using them.   The default value for this field is 'POST'.  The POST sub-routine builds the new values of the entry in question (associated with the IEN) and compares them against the previous values (prio",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8X",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This mail group will be notified when an HL7 unsolicited update message is received from the MFS server.  This group will be notified in addition to the group XUMF SERVER. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MASTER FILE IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the file to be updated. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SORT BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The default sort by field is VUID.  Only supply alternate sort by field in the case of no VUID such as files like mappings. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FILTER BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "You can specify a query filter by field (column description.)  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COLUMN",
+      "dataType": "SUBFILE",
+      "rawType": "4.011",
+      "required": false,
+      "helpText": "The COLUMN DESCRIPTION multiple maps the data type segment fields and components to FileMan fields for a standard table.  There are additional fields within the sub-file to handle multiple field types and extended references. ",
+      "isMultiple": true,
+      "subFileNumber": 4.011,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "POST-PROCESSING LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is Standard MUMPS code that gets executed after message processing. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADD-PROCESSING LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is Standard MUMPS code that gets executed before message processing. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MFE-PROCESSING LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is Standard MUMPS code that gets executed for each MFE segment. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "MFE ID FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RRNJ17,7X",
+      "length": 17,
+      "required": true,
+      "helpText": "This field holds the field number that corresponds to the ID of the Primary Key Value in MFE.   This field # is the SDS field added to the file to store the internal identifier to the SDS database. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "MFE ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'X",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "MFE ID HL7 data type. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "MFE TEXT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'X",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "Enter the MFE TEXT HL7 data type. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "MFE ALT ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'X",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "Enter the MFE ID HL7 data type. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 4.15,
+      "fieldName": "MFE ALT TEXT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'X",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "Enter the MFE ALT TEXT HL7 data type. ",
+      "fieldNumber_": 4.15
+    },
+    {
+      "fieldNumber": 4.16,
+      "fieldName": "MFE PRE-UPDATE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the label of the sub-routine in XUMFRMFE that gets called before an update by the MFS for an MFE segment.   Enter the label without '^XUMFRMFE'.  The sub-routine can assume the presence of the variable IFN.  All local variables within the sub-routine must be NEW'd before using the. ",
+      "fieldNumber_": 4.16
+    },
+    {
+      "fieldNumber": 4.17,
+      "fieldName": "MFE POST-UPDATE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the label of the sub-routine in XUMFRMFE that gets called after an update by the MFS for an MFE segment.                                Enter the label without '^XUMFRMFE'.  The sub-routine can assume the presence of the variables IFN and IEN.  All local variables within the sub-routine must be NEW'd before using them. ",
+      "fieldNumber_": 4.17
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "MFE TEXT FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ17,7X",
+      "length": 17,
+      "required": true,
+      "helpText": "This field holds the field number that corresponds to the TEXT of the Primary Key Value in MFE. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "MFE CODSYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the coding system that corresponds to the ID of the Primary Key Value in MFE. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "MFE ALT ID FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ17,7X",
+      "length": 17,
+      "required": true,
+      "helpText": "This field holds the field number that corresponds to the alternate ID of the Primary Key Value in MFE.   The field # should be a key field to the file (not the SDS identifier field).  This field will be used by MFS to determine which entry in the file corresponds to the PKV id if it hasn't been already associated. Ideally, this field is a unique key to the file. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "MFE ALT TEXT FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ17,7X",
+      "length": 17,
+      "required": true,
+      "helpText": "This field holds the field number that corresponds to the alternate TEXT of the Primary Key Value in MFE. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "MFE ALT CODSYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the alternate coding system that corresponds to the ID of the Primary Key Value in MFE. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "MFE PKV TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP771.4'X",
+      "required": true,
+      "pointerTo": 771.4,
+      "helpText": "This field holds the Primary Key Value data type.  Valid values stored in HL7 Table 0355 - Primary key value type. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "MFE PKV X-REF",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field hold the FileMan cross-reference of the Primary Key Value (PKV).   Since MFE.4.1 is the SDS internal identifier then provide the alternate ID (MFE.4.4) cross-reference.  The natural FileMan key x-ref that corresponds to the alt id. ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "ASSIGNING AUTHORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the assigning authority responsible for the code system used in the HL7 MFE PKV segment sequence.   See QRD segment.  Who Subject Filter.  This field holds the code that identifies the standards body, or in the case of VA specific data the routing symbol (or other identifying code) of the data owner of steward.  If all else fails, use 'VA' as the code. ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZRT-PROCESSING LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is Standard MUMPS code that gets executed for each ZRT segment. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ZRT-DISCOVERY LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is standard MUMPS code that gets execute in DISCOVERY for each ZRT segment.   ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "MFI", "field": },
+    {"name": "MFID", "field": },
+    {"name": "ZZZ", "field": },
+    {"name": "4.001", "field": .01, "type": "regular"},
+    {"name": "4.001", "field": .02, "type": "regular"},
+    {"name": "4.001", "field": .03, "type": "regular"},
+    {"name": "4.001", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

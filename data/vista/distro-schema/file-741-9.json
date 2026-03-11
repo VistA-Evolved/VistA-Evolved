@@ -1,0 +1,38 @@
+{
+  "fileNumber": 741.9,
+  "fileName": "QA OCCURRENCE TREATING SPECIALTY",
+  "globalRoot": "741.9IP",
+  "globalReference": "^QA(741.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "RP45.7'",
+      "required": true,
+      "pointerTo": 45.7,
+      "helpText": "This is a treating specialty used by your site which you want to associate with a particular type of care.  All treating specialties in use at your facility that you wish to screen should be entered here. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACUTE CARE;S:SPECIAL CARE;I:INTERMEDIATE CARE;N:NHCU;P:PSYCHIATRY;",
+      "helpText": "This describes the type of care for each treating specialty.  Each treating specialty should be associated with only one type of care. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "741.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(741.9,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

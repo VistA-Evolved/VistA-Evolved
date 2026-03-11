@@ -1,0 +1,97 @@
+{
+  "fileNumber": 1927.401,
+  "fileName": "NUPA CARE PLAN PRESSURE ULCERS",
+  "globalRoot": "1927.401",
+  "globalReference": "^NUPA(1927.401,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4'",
+      "required": true,
+      "pointerTo": 1927.4,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P1927.41",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The location of the pressure ulcer on the patient's body. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STAGE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The stage the ulcer is at. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The status of the ulcer. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4014",
+      "required": false,
+      "helpText": "A description of the pressure ulcer. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.4014,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4011'",
+      "required": true,
+      "pointerTo": 1927.4011,
+      "helpText": "Type of skin alteration. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The size of the skin alteration (non pressure ulcer). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HEALED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the skin alteration healed?  Skin alterations only.  Pressure ulcers  have a status of \"Healed\". ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.401", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^NUPA(1927.41,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1927.41,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

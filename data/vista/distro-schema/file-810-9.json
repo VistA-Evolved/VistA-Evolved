@@ -1,0 +1,95 @@
+{
+  "fileNumber": 810.9,
+  "fileName": "REMINDER LOCATION LIST",
+  "globalRoot": "810.9",
+  "globalReference": "^PXRMD(810.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the NAME of the Location List; it must be unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "810.91",
+      "required": false,
+      "helpText": "This word processing field is used for describing the LOCATION LIST. Information such as the purpose of the LOCATION LIST can be recorded here. The DESCRIPTION will be displayed when a LOCATION LIST inquiry is done. ",
+      "isMultiple": true,
+      "subFileNumber": 810.91,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 40.7,
+      "fieldName": "CLINIC STOP LIST",
+      "dataType": "POINTER",
+      "rawType": "810.9001PI",
+      "required": false,
+      "helpText": "This is the list of clinic stop codes that are included in the Location List. ",
+      "fieldNumber_": 40.7
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "HOSPITAL LOCATION LIST",
+      "dataType": "POINTER",
+      "rawType": "810.944P",
+      "required": false,
+      "helpText": "This is the list of hospital locations that are included in the Location List. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL;N:NATIONAL;V:VISN;",
+      "helpText": "This is the CLASS of the location list. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National location lists cannot be edited by sites.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this location list. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "REVIEW DATE is used to determine when the location list should be reviewed to verify that it is current with the latest standards and guidelines. You can find all location lists whose review date has passed using the Clinical Reminders Review Date Report. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "810.9002D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the location list. ",
+      "isMultiple": true,
+      "subFileNumber": 810.9002,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(810.9,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

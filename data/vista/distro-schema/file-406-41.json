@@ -1,0 +1,27 @@
+{
+  "fileNumber": 406.41,
+  "fileName": "LODGING REASON",
+  "globalRoot": "406.41",
+  "globalReference": "^DG(406.41,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the reason why a patient may be lodged. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "406.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

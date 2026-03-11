@@ -1,0 +1,818 @@
+{
+  "fileNumber": 453,
+  "fileName": "APPLICANT",
+  "globalRoot": "453I",
+  "globalReference": "^PRSP(453,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICANT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the applicant's name in the format LASTNAME,FIRSTNAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This is the applicant's Social Security Number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the applicant's date of birth. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the applicant's street address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the applicant's city of residence. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'O",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the applicnant's state of residence. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the applicant's zip code in the format NNNNN or NNNNN-NNNN. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HOME TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the applicant's home telephone number. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DAYTIME TELEPHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the daytime telephone number where you can contact the applicant. the number must be entered in the format:(NNN)NNN-NNNN XNNNN  After  space X enter the four digit extension number. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CITIZENSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:U.S. CITIZEN;2:NON-U.S. CITIZEN;",
+      "helpText": "This is the applicant's citizenship. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 747.01,
+      "fieldName": "APPOINTMENT DESIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL-TIME;2:PART-TIME;3:CONSULTING;4:CONTRACT, ON STATION;5:RESIDENT;6:FEE BASIS,ON STATION;7:SPECIALTY FELLOW;8:WOC;9:SHARING, ON STATION;10:INTERMITTENT;11:OTHER;",
+      "helpText": "Indicates the Appointment Desired for this practitioner.     ",
+      "fieldNumber_": 747.01
+    },
+    {
+      "fieldNumber": 747.02,
+      "fieldName": "REFERENCE A",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the name of Reference A.     ",
+      "fieldNumber_": 747.02
+    },
+    {
+      "fieldNumber": 747.03,
+      "fieldName": "A ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Address of Reference A.   ",
+      "fieldNumber_": 747.03
+    },
+    {
+      "fieldNumber": 747.04,
+      "fieldName": "A ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Address of Reference A.   ",
+      "fieldNumber_": 747.04
+    },
+    {
+      "fieldNumber": 747.05,
+      "fieldName": "A CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the City Reference A resides.     ",
+      "fieldNumber_": 747.05
+    },
+    {
+      "fieldNumber": 747.06,
+      "fieldName": "A STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Indicates the State where Reference A resides.     ",
+      "fieldNumber_": 747.06
+    },
+    {
+      "fieldNumber": 747.07,
+      "fieldName": "A ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Zip Code for Reference A.     ",
+      "fieldNumber_": 747.07
+    },
+    {
+      "fieldNumber": 747.08,
+      "fieldName": "REFERENCE B",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of Reference B. ",
+      "fieldNumber_": 747.08
+    },
+    {
+      "fieldNumber": 747.09,
+      "fieldName": "B ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicate the Address of Reference B. ",
+      "fieldNumber_": 747.09
+    },
+    {
+      "fieldNumber": 747.1,
+      "fieldName": "B ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicate the Address of Reference B. ",
+      "fieldNumber_": 747.1
+    },
+    {
+      "fieldNumber": 747.11,
+      "fieldName": "B CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicate the City where Reference B resides. ",
+      "fieldNumber_": 747.11
+    },
+    {
+      "fieldNumber": 747.12,
+      "fieldName": "B STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the State where Reference B resides. ",
+      "fieldNumber_": 747.12
+    },
+    {
+      "fieldNumber": 747.13,
+      "fieldName": "B ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Zip Code for Reference B. ",
+      "fieldNumber_": 747.13
+    },
+    {
+      "fieldNumber": 747.14,
+      "fieldName": "REFERENCE C",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the name of Reference C.     ",
+      "fieldNumber_": 747.14
+    },
+    {
+      "fieldNumber": 747.15,
+      "fieldName": "C ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Address of Reference C.     ",
+      "fieldNumber_": 747.15
+    },
+    {
+      "fieldNumber": 747.16,
+      "fieldName": "C ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Address of Reference C.     ",
+      "fieldNumber_": 747.16
+    },
+    {
+      "fieldNumber": 747.17,
+      "fieldName": "C CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the City where Reference C resides.     ",
+      "fieldNumber_": 747.17
+    },
+    {
+      "fieldNumber": 747.18,
+      "fieldName": "C STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Indicates the State where Reference C resides.     ",
+      "fieldNumber_": 747.18
+    },
+    {
+      "fieldNumber": 747.19,
+      "fieldName": "C ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Zip Code for Reference C.     ",
+      "fieldNumber_": 747.19
+    },
+    {
+      "fieldNumber": 747.2,
+      "fieldName": "APP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the Appointment Date for this practitioner.     ",
+      "fieldNumber_": 747.2
+    },
+    {
+      "fieldNumber": 747.21,
+      "fieldName": "INSURANCE CO",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "Indicates the Insurance Company for our practitioner. NOTE:  All CONTRACT Providers MUST Carry Malpractice Insurance   ",
+      "fieldNumber_": 747.21
+    },
+    {
+      "fieldNumber": 747.22,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "453.17P",
+      "required": false,
+      "helpText": "Enter the Specialty associated with this practitioner.     ",
+      "fieldNumber_": 747.22
+    },
+    {
+      "fieldNumber": 747.23,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P730'",
+      "required": false,
+      "pointerTo": 730,
+      "helpText": "Indicates the Service for this practitioner.     ",
+      "fieldNumber_": 747.23
+    },
+    {
+      "fieldNumber": 747.24,
+      "fieldName": "MANDATORY TRAINING",
+      "dataType": "SUBFILE",
+      "rawType": "453.01",
+      "required": false,
+      "helpText": "Indicates the Mandatory Training for this practitioner.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.01,
+      "fieldNumber_": 747.24
+    },
+    {
+      "fieldNumber": 747.25,
+      "fieldName": "TYPE OF APPOINTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:APPOINTMENT (INITIAL/15-DAY BREAK);2:REAPPRAISAL;",
+      "helpText": "Indicates the Type of Appointment for this practitioner.     ",
+      "fieldNumber_": 747.25
+    },
+    {
+      "fieldNumber": 747.26,
+      "fieldName": "APPLICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the Date of the Application for our Applicant. ",
+      "fieldNumber_": 747.26
+    },
+    {
+      "fieldNumber": 747.27,
+      "fieldName": "CERTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "453.02P",
+      "required": false,
+      "helpText": "This field allows you to enter specialties in which the practitioner is Board Certified.     ",
+      "fieldNumber_": 747.27
+    },
+    {
+      "fieldNumber": 747.28,
+      "fieldName": "PROFESSIONAL ORGANIZATION",
+      "dataType": "SUBFILE",
+      "rawType": "453.03A",
+      "required": false,
+      "helpText": "Indicates the Professional Organization to which the practitioner belongs.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.03,
+      "fieldNumber_": 747.28
+    },
+    {
+      "fieldNumber": 747.29,
+      "fieldName": "HONORS/OFFICES HELD",
+      "dataType": "SUBFILE",
+      "rawType": "453.04A",
+      "required": false,
+      "helpText": "Indicates Honors received and Offices held in medical and/or scientific societies.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.04,
+      "fieldNumber_": 747.29
+    },
+    {
+      "fieldNumber": 747.3,
+      "fieldName": "VAF 10-2850 COMPLETE (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicate whether the VAF 10-2850 has been completed by the practitioner.     ",
+      "fieldNumber_": 747.3
+    },
+    {
+      "fieldNumber": 747.31,
+      "fieldName": "VAF 10-2850 SIGNED/COS (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicates whether the Chief of Staff signed the VAF 10-2850.     ",
+      "fieldNumber_": 747.31
+    },
+    {
+      "fieldNumber": 747.32,
+      "fieldName": "VAF 10-2850 LICENSE DATA (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicate whether the License data for the practitioner is accurate, current, and complete. ",
+      "fieldNumber_": 747.32
+    },
+    {
+      "fieldNumber": 747.33,
+      "fieldName": "BOARD ELIGIBLE",
+      "dataType": "POINTER",
+      "rawType": "453.16PA",
+      "required": false,
+      "helpText": "If this practitioner is eligible to complete specialty board exams, enter the area of specialty.     ",
+      "fieldNumber_": 747.33
+    },
+    {
+      "fieldNumber": 747.34,
+      "fieldName": "FSMB MSG. SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Confirmation of the FSMB message being sent. triggered.  No User input required!! ",
+      "fieldNumber_": 747.34
+    },
+    {
+      "fieldNumber": 747.35,
+      "fieldName": "LICENSES",
+      "dataType": "SUBFILE",
+      "rawType": "453.05A",
+      "required": false,
+      "helpText": "Enter Your Professional Licenses. ",
+      "isMultiple": true,
+      "subFileNumber": 453.05,
+      "fieldNumber_": 747.35
+    },
+    {
+      "fieldNumber": 747.36,
+      "fieldName": "DEA #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds a number which uniquely identifies a practitioner.      ",
+      "fieldNumber_": 747.36
+    },
+    {
+      "fieldNumber": 747.361,
+      "fieldName": "DEA EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contain the expiration date of the DEA #. ",
+      "fieldNumber_": 747.361
+    },
+    {
+      "fieldNumber": 747.362,
+      "fieldName": "STATE ISSUING DEA NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the name of the state issuing the DEA #. ",
+      "fieldNumber_": 747.362
+    },
+    {
+      "fieldNumber": 747.363,
+      "fieldName": "DEA VERIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COPY OF CURRENT CERTIFICATE;2:WRITTEN VERIFICATION FROM DEA;3:OTHER METHOD USED TO VERIFY;",
+      "helpText": "Enter the method used to verify DEA registration. ",
+      "fieldNumber_": 747.363
+    },
+    {
+      "fieldNumber": 747.364,
+      "fieldName": "DEA CHALLENGES (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Has there been any DEA challenges? ",
+      "fieldNumber_": 747.364
+    },
+    {
+      "fieldNumber": 747.38,
+      "fieldName": "V.A. EMPLOYMENT START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the date employment started at the VA. ",
+      "fieldNumber_": 747.38
+    },
+    {
+      "fieldNumber": 747.39,
+      "fieldName": "SERVICE COMPUTATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the Length of Service for this practitioner.     ",
+      "fieldNumber_": 747.39
+    },
+    {
+      "fieldNumber": 747.4,
+      "fieldName": "END OF PROBATIONARY PERIOD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the ending date for the Probationary Period.     ",
+      "fieldNumber_": 747.4
+    },
+    {
+      "fieldNumber": 747.41,
+      "fieldName": "PRIMARY DEGREE",
+      "dataType": "POINTER",
+      "rawType": "P747.7'",
+      "required": false,
+      "pointerTo": 747.7,
+      "helpText": "Indicate the Primary Degree used for this practitioner.     ",
+      "fieldNumber_": 747.41
+    },
+    {
+      "fieldNumber": 747.42,
+      "fieldName": "SCHOOL ATTENDED",
+      "dataType": "SUBFILE",
+      "rawType": "453.06",
+      "required": false,
+      "helpText": "Indicates the School(s) attended.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.06,
+      "fieldNumber_": 747.42
+    },
+    {
+      "fieldNumber": 747.43,
+      "fieldName": "DATE REAPPRAISAL IS DUE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the Date Reappraisal is due.     ",
+      "fieldNumber_": 747.43
+    },
+    {
+      "fieldNumber": 747.44,
+      "fieldName": "NAME OF EVALUATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Contains the name of the person Evaluating our Applicant. ",
+      "fieldNumber_": 747.44
+    },
+    {
+      "fieldNumber": 747.45,
+      "fieldName": "CONTINUING EDUCATION PROGRAM",
+      "dataType": "SUBFILE",
+      "rawType": "453.07",
+      "required": false,
+      "helpText": "Name of the Continuing Education Program you have attended.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.07,
+      "fieldNumber_": 747.45
+    },
+    {
+      "fieldNumber": 747.47,
+      "fieldName": "ALIEN VISA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;3:N/A;",
+      "helpText": "Contains whether the Chief of Staff sighted the Alien Visa for the  Applicant who is not a citizen.     ",
+      "fieldNumber_": 747.47
+    },
+    {
+      "fieldNumber": 747.48,
+      "fieldName": "FINAL STATUS OF FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;P:PENDING;",
+      "helpText": "Contains the Status of the File for the Applicant. ",
+      "fieldNumber_": 747.48
+    },
+    {
+      "fieldNumber": 747.49,
+      "fieldName": "FINAL STATUS COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "453.08",
+      "required": false,
+      "helpText": "Contains any comments on the Final Status of the File. ",
+      "isMultiple": true,
+      "subFileNumber": 453.08,
+      "fieldNumber_": 747.49
+    },
+    {
+      "fieldNumber": 747.5,
+      "fieldName": "CLINICAL BACKGROUND",
+      "dataType": "POINTER",
+      "rawType": "453.09PA",
+      "required": false,
+      "helpText": "Indicates the Clinical Background of this practitioner.     ",
+      "fieldNumber_": 747.5
+    },
+    {
+      "fieldNumber": 747.51,
+      "fieldName": "ECFMG CERT. ISSUED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field refers To the Date the Education Commission for Foreign  Medical Graduate issued certificate ",
+      "fieldNumber_": 747.51
+    },
+    {
+      "fieldNumber": 747.511,
+      "fieldName": "ECFMG VERIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LETTER FROM ECFMG;2:ROC WITH ECFMG;3:NO RESPONSE TO INQUIRY;",
+      "helpText": "Indicates the method used for verification. ",
+      "fieldNumber_": 747.511
+    },
+    {
+      "fieldNumber": 747.512,
+      "fieldName": "ECFMG CERTIFICATE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Enter the seven digit ECFMG Certificate number without dashes. ",
+      "fieldNumber_": 747.512
+    },
+    {
+      "fieldNumber": 747.52,
+      "fieldName": "FSMB SCREENING REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "453.1DA",
+      "required": false,
+      "helpText": "This Field Refers To The Date The Request Was Sent To The Federation Of  State Medical Boards For Screening. ",
+      "isMultiple": true,
+      "subFileNumber": 453.1,
+      "fieldNumber_": 747.52
+    },
+    {
+      "fieldNumber": 747.53,
+      "fieldName": "HEALTH STATEMENT,APPLICANT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the Health Statement is received from the practitioner.     ",
+      "fieldNumber_": 747.53
+    },
+    {
+      "fieldNumber": 747.54,
+      "fieldName": "HEALTH STATEMENT,COLLEAGUE",
+      "dataType": "DATE",
+      "rawType": "453.12D",
+      "required": false,
+      "helpText": "This field allows you to enter the date on which the statement of health Status was received from a colleague of the practitioner.  Individuals from which this could be received include the Chief of Staff, Chief of Service, Training Program Director, or a peer.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.12,
+      "fieldNumber_": 747.54
+    },
+    {
+      "fieldNumber": 747.55,
+      "fieldName": "DATE REFERENCE RECEIVED",
+      "dataType": "SET",
+      "rawType": "453.13S",
+      "required": false,
+      "helpText": "Contains the date the three (3) References are received. ",
+      "isMultiple": true,
+      "subFileNumber": 453.13,
+      "fieldNumber_": 747.55
+    },
+    {
+      "fieldNumber": 747.56,
+      "fieldName": "BYLAWS AGREEMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date of the signature of the practitioner indicating agreement to abide by the bylaws of the medical staff.  This signature is contained on the form titled \"Applicant Memo to Director\".     ",
+      "fieldNumber_": 747.56
+    },
+    {
+      "fieldNumber": 747.57,
+      "fieldName": "RECOMMENDATION SIGNATURES",
+      "dataType": "SET",
+      "rawType": "453.14S",
+      "required": false,
+      "helpText": "Contains the signature date for the approving committee/official.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.14,
+      "fieldNumber_": 747.57
+    },
+    {
+      "fieldNumber": 747.58,
+      "fieldName": "LICENSURE CHALLENGES ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicates if the practitioner has been issued a License Challenge.       ",
+      "fieldNumber_": 747.58
+    },
+    {
+      "fieldNumber": 747.59,
+      "fieldName": "PERTINENT CLINICAL INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "453.15",
+      "required": false,
+      "helpText": "Enter any Pertinent Clinical Information such as: other hospitals the  practitioner practices, experience, and academic appointments. ",
+      "isMultiple": true,
+      "subFileNumber": 453.15,
+      "fieldNumber_": 747.59
+    },
+    {
+      "fieldNumber": 747.6,
+      "fieldName": "CLIN PRIVILEGES CHALLENGES ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicates whether the practitioner's Clinical Privileges have been challenged.     ",
+      "fieldNumber_": 747.6
+    },
+    {
+      "fieldNumber": 747.61,
+      "fieldName": "NPDB QUERIED ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;",
+      "helpText": "Indicates whether the National Practitioner Data Bank has been queried.       ",
+      "fieldNumber_": 747.61
+    },
+    {
+      "fieldNumber": 747.62,
+      "fieldName": "DATE SENT TO NPDB ?",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the date when the National Practitioner's Data Base was queried.     ",
+      "fieldNumber_": 747.62
+    },
+    {
+      "fieldNumber": 747.621,
+      "fieldName": "DATE REC'D FROM NPDB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date a response is received from NPDB.  ",
+      "fieldNumber_": 747.621
+    },
+    {
+      "fieldNumber": 747.63,
+      "fieldName": "RESULTS OF QUERY ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RESULTS UNREMARKABLE;2:RESULTS NEED FURTHER EXPLANATION (PLEASE REFER TO DOCUMENTATION IN FILE);3:NO RESPONSE TO INQUIRY;",
+      "helpText": "Indicates the results of the Query for this practitioner. ",
+      "fieldNumber_": 747.63
+    },
+    {
+      "fieldNumber": 747.64,
+      "fieldName": "PLACE OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the Place of Birth for this practitioner.     ",
+      "fieldNumber_": 747.64
+    },
+    {
+      "fieldNumber": 747.65,
+      "fieldName": "VA CAUTIONARY LIST CHECKED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;3:N/A;",
+      "helpText": "Indicate whether the VA Cautionary List issued by VACO has been checked.     ",
+      "fieldNumber_": 747.65
+    },
+    {
+      "fieldNumber": 747.66,
+      "fieldName": "INTERNSHIP/RESIDENCY",
+      "dataType": "SUBFILE",
+      "rawType": "453.11",
+      "required": false,
+      "helpText": "This field contains information relevant to the practitioner's Internship, Residency and Fellowship training.     ",
+      "isMultiple": true,
+      "subFileNumber": 453.11,
+      "fieldNumber_": 747.66
+    },
+    {
+      "fieldNumber": 747.67,
+      "fieldName": "CONTROL/SUBSTANCE CERT (Y/N)",
+      "dataType": "SET",
+      "rawType": "453.074767SA",
+      "required": false,
+      "helpText": "Does this Physican have a Controlled Substance Certificate ?  ",
+      "isMultiple": true,
+      "subFileNumber": 453.074767,
+      "fieldNumber_": 747.67
+    }
+  ],
+  "fieldCount": 82,
+  "crossReferences": [
+    {"name": "AEDLEVEL", "field": },
+    {"name": "AFSMB", "field": },
+    {"name": "B", "field": },
+    {"name": "DEA", "field": },
+    {"name": "SSN", "field": },
+    {"name": "453", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "453", "field": 1, "type": "regular"},
+    {"name": "453", "field": 747.34, "type": "regular"},
+    {"name": "453", "field": 747.36, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

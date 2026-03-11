@@ -1,0 +1,136 @@
+{
+  "fileNumber": 399.3,
+  "fileName": "RATE TYPE",
+  "globalRoot": "399.3I",
+  "globalReference": "^DGCR(399.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal file number of this entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name/description of this rate type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text which will appear on the UB claim form each time a bill of this rate type is printed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not this code has been inactivated. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This defines the abbreviation of the name of this rate type which will appear on all of the billing outputs. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "IS THIS A THIRD PARTY BILL?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This allows the user to determine whether or not a bill of this rate type is a third party bill. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACCOUNTS RECEIVABLE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "R*P430.2'",
+      "required": true,
+      "pointerTo": 430.2,
+      "helpText": "This points to the corresponding Accounts Receivable category. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WHO'S RESPONSIBLE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "p:PATIENT;i:INSURER;o:OTHER (INSTITUTION);",
+      "helpText": "This field is triggered when an Accounts Receivable Category is entered. It is used to provide consistency between packages so the the debtor for the bill is from the correct file.  Debtors can be from the Patient file, the Insurance Company file, or the Institution file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REIMBURSABLE INSURANCE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field should be answered 'YES' if this is a Reimbursable Insurance rate type, all other rate types should be answered 'NO'.  This field will be used to determine if a bill is reimbursable Insurance.   Primarily, this field will be used by the bill print option to determine  if the 7 line statement that begins \"For your information...\" should be printed on the UB claim form. (Only applies to the UB form types.) ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NSC STATEMENT ON UB BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The statement \"The undersigned certifies that treatment rendered is not for a service connected disablity.\" will be printed on UB claim forms of this Rate Type if this field is answered 'YES'.   This field should be answered 'YES' for all rate types where the bill can only be for NSC care. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ELECTRONIC TRANSMIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ALLOWED;1:ALLOWED;",
+      "helpText": "The type of transmission allowed, if any, for bills of this rate type. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BILL RESULTING FROM",
+      "dataType": "POINTER",
+      "rawType": "*P430.6'",
+      "required": false,
+      "pointerTo": 430.6,
+      "helpText": "This is the default value for the BILL RESULTING FROM (#4.5) field in the ACCOUNTS RECEIVABLE file (#430) that will be used during auto-audit for all bills with this rate type. ",
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "399.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .07, "value": "W \"Who's Responsible: \",@(\"$P($P($C(59)_$S($D(^DD(399.3,.07,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 396.55,
+  "fileName": "2507 REROUTE CODE",
+  "globalRoot": "396.55",
+  "globalReference": "^DVB(396.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REROUTE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Reason for rerouting the 2507 Request to another VCMA site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:Active;I:Inactive;",
+      "helpText": "This field will determine if the Reroute Reason is active or inactive. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "396.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,350 @@
+{
+  "fileNumber": 355.3,
+  "fileName": "GROUP INSURANCE PLAN",
+  "globalRoot": "355.3IP",
+  "globalReference": "^IBA(355.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "RP36'",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "Select the insurance company that this policy is with. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IS THIS A GROUP POLICY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Some policies are individual policies and are specific to a patient.  Many policies are group plans that many patients may have.  If this is a group plan, answer 'YES' so that other patients may be associated with this policy.  If this is an individual plan then answer 'NO' and only this  patient can be associated with this policy. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this is a group policy, enter the name of the group that this policy is associated with.  This is the name that the insurance company uses to identify the plan.  This will appear  on the health claims forms in the appropriate blocks.  It will also be used to help identify this policy so that other patients with the same plan can be associated with it.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "*GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If this is a group policy enter the number which identifies this policy, i.e. group number/code that the insurance company uses to identify this plan.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "IS UTILIZATION REVIEW REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer \"YES\" if Utilization Review is required by the insurance company for this policy.  Answer \"NO\" if it is not required.  The UR staff will automatically be required to follow-up on all billable cases where this field is answered \"YES\".  If the field is answered \"NO\" then UR follow-up will be considered optional. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "IS PRE-CERTIFICATION REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer \"YES\" if this policy requires Pre-certification of all non-emergent admissions.  Answer \"NO\" if pre-certification is not required.    If pre-certification is required but not obtained, follow-up will be required by the MCCR tracking module. | ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EXCLUDE PRE-EXISTING CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer \"YES\" if the policy excludes any pre existing conditions.  Answer \"NO\" if the policy covers any pre existing conditions.  If a patient has pre-exisiting conditions that are not covered they should be entered in the patient policy comment field.       ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BENEFITS ASSIGNABLE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this policy will allow assignment of benefits then answer YES, otherwise answer NO.  Normally this field will be answered YES.   However, it may be useful to track policies that do not allow for assignment of benefits. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TYPE OF PLAN",
+      "dataType": "POINTER",
+      "rawType": "*P355.1'",
+      "required": false,
+      "pointerTo": 355.1,
+      "helpText": "Select the type of plan that best describes this plan.  The type of policy will be used to determine if reimbursement for claims from the insurance carrier is appropriate.  It will also be used to determine what other fields and displays are appropriate for this plan.  If unknown or unsure, pick the more general type of plan. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INDIVIDUAL POLICY PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient associated with this policy if this is an individual policy.    If this is an individual policy, the system will store the patient  in this field.  Only one patient may be associated with an individual policy.  Many patients can be associated with a group policy.   ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this plan is no longer active in your area, enter INACTIVE here. This will disallow users from selecting this entry. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AMBULATORY CARE CERTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer \"YES\" if this plan requires certification of ambulatory procedures. This may include Ambulatory surgeries, CAT scans, MRI, non-invasive procedures, etc. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PLAN FILING TIME FRAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the maximum amount of time from the date of service to submission of the claim allowed by this Insurance Plan.  Examples:  60 days, 90 days, 6 months, 1 year, March 30 following year of service. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PLAN CATEGORY",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "A:MEDICARE PART A;B:MEDICARE PART B;C:MEDICARE OTHER;",
+      "helpText": "If the Type of Plan's Major Category is MEDICARE, this field should contain the specific type of coverage that this plan represents. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ELECTRONIC PLAN TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "16:HMO MEDICARE;MX:MEDICARE A or B;TV:TITLE V;MC:MEDICAID;BL:BC/BS;CH:TRICARE;15:INDEMNITY;CI:COMMERCIAL;HM:HMO;DS:DISABILITY;12:PPO;13:POS;ZZ:OTHER;FI:FEP - Do not use for BC/BS;17:DENTAL;",
+      "helpText": "This field contains the X12 data to identify the source of pay type. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PLAN STANDARD FTF",
+      "dataType": "POINTER",
+      "rawType": "P355.13'a",
+      "required": false,
+      "pointerTo": 355.13,
+      "helpText": "This is the standard filing time frame for the insurance plan.  It may be  automatically applied to dates of service. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PLAN STANDARD FTF VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,1a",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the value corresponding to the Standard Filing Time Frame.  For example, for the time frame of Days, enter the number of days. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this policy was entered.  It is triggered by the creation of this entry. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who created this entry.  It is automatically triggered by the creation of this entry. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this policy was last verified.  A policy is  verified by selecting the Verify Policy Action on the Patient  Insurance Management screen.  Generally this is the last time that somebody contacted the insurance company and verified that policy information is correct. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last verified that the policy information is correct. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this policy was last edited.  It is automatically updated any time a policy is editing using one of the options provided. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last edited this policy.  It is automatically updated everytime a policy is edited using one of the options. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "DATE LAST MATCHED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the policy was last matched. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "LAST MATCHED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last matched the policy. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "If this is a group policy, enter the name of the group that this policy  is associated with. This is the name that the insurance company uses to  identify the plan. This will appear on the health claims forms in the  appropriate blocks. It will also be used to help identify this policy so  that other patients with the same plan can be associated with it. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "If this is a group policy enter the number which identifies this policy,  i.e. group number/code that the insurance company uses to identify this  plan. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "PLAN ID",
+      "dataType": "POINTER",
+      "rawType": "P366.03'",
+      "required": false,
+      "pointerTo": 366.03,
+      "helpText": "The Group Insurance Plan's Plan ID. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "BANKING IDENTIFICATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Banking Identification Number (BIN). Used for NCPDP  transmissions. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "PROCESSOR CONTROL NUMBER (PCN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Processor Control Number (PCN). Used for NCPDP transmissions. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "355.311",
+      "required": false,
+      "helpText": "Enter comments that are specific to this group plan.  Do not enter comments about a specific patient or patient care here. ",
+      "isMultiple": true,
+      "subFileNumber": 355.311,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "ACCP", "field": },
+    {"name": "ACCP1", "field": },
+    {"name": "ACCP2", "field": },
+    {"name": "ACCP3", "field": },
+    {"name": "AENR04", "field": },
+    {"name": "AGNA", "field": },
+    {"name": "AGNA1", "field": },
+    {"name": "AGNU", "field": },
+    {"name": "AGNU1", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "355.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "355.3", "field": .01, "type": "regular"},
+    {"name": "355.3", "field": .01, "type": "regular"},
+    {"name": "355.3", "field": .01, "type": "regular"},
+    {"name": "355.3", "field": .01, "type": "regular"},
+    {"name": "355.3", "field": .03, "type": "regular"},
+    {"name": "355.3", "field": .03, "type": "regular"},
+    {"name": "355.3", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "355.3", "field": .04, "type": "regular"},
+    {"name": "355.3", "field": .04, "type": "regular"},
+    {"name": "355.3", "field": .04, "type": "regular"},
+    {"name": "355.3", "field": .04, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "", "field": .16, "type": "regular"},
+    {"name": "", "field": 2.01, "type": "regular"},
+    {"name": "", "field": 2.02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$P(^(0),U,2)=0 \"   Individual Policy\" W:$P(^(0),U,2) \"   Group Policy\""},
+    {"field": .03, "value": "I $P(^(0),U,3)]\"\" W \"   Group Name: \",$P(^(0),U,3)"},
+    {"field": .04, "value": "I $P(^(0),U,4)]\"\" W \"   Group No: \",$P(^(0),U,4)"}
+  ]
+}

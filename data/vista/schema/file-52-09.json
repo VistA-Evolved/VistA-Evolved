@@ -1,0 +1,291 @@
+{
+  "fileNumber": 52.09,
+  "fileName": "REMOTE PRESCRIPTION LOG",
+  "globalRoot": "52.09",
+  "globalReference": "^PSRXR(52.09,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time associated with this remote prescription  transaction. The date/time represents the date/time the message was  processed and filed locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient for which a refill or partial fill request was  generated. A refill request on the dispensing site can generate either a  refill or original fill on the host site as part of OneVA Pharmacy  functionality. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The RX# as stored at the remote facility. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SITE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Site number for the remote facility. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RF:REFILL;PR:PARTIAL FILL;OR:OUTSIDE REFILL;OP:OUTSIDE PARTIAL FILL;",
+      "helpText": "This fields holds the type of request being made for this RX. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OUTGOING REQUEST PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the Pharmacist who initiated the refill or partial fill request  to the remote facility. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .061,
+      "fieldName": "REMOTE FILLING PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ45",
+      "length": 45,
+      "required": false,
+      "helpText": "This is the name of the person at the remote site who filled the OneVA  refill/partial for the selected RX. ",
+      "fieldNumber_": .061
+    },
+    {
+      "fieldNumber": .062,
+      "fieldName": "REMOTE CHECKING PHARMACIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ45",
+      "length": 45,
+      "required": false,
+      "helpText": "This is the pharmacist from the remote site that checked the OneVA  prescription refill/partial. ",
+      "fieldNumber_": .062
+    },
+    {
+      "fieldNumber": .063,
+      "fieldName": "HOST REFILL IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the REFILL entry at the host site in the PRESCRIPTION File (#52).  This field will be populated at both the host and dispensing site. ",
+      "fieldNumber_": .063
+    },
+    {
+      "fieldNumber": .064,
+      "fieldName": "HOST PARTIAL IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the PARTIAL DATE entry at the host site in the PRESCRIPTION File  (#52). This field will be populated at both the host and dispensing site. ",
+      "fieldNumber_": .064
+    },
+    {
+      "fieldNumber": .065,
+      "fieldName": "HOST RX LOG IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20I",
+      "length": 20I,
+      "required": false,
+      "helpText": "This is the internal entry number of the Remote Prescription Log File  (#52.09) at host site that is associated with the OneVA refill/partial for the selected RX. This field will be populated at the dispensing site only. ",
+      "fieldNumber_": .065
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the quantity associated with this refill or partial fill. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the days supply for this refill or partial fill action. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "REFILL/PARTIAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date for the refill or partial fill request. This represents  the date/time as it is logged in the .01 field of either the REFILL or PARTIAL fill. subfile within the PRESCRIPTION file (#52) on the remote system. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DISPENSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Dispense date/time as it is held in the DISPENSED DATE within  the REFILL subfile of the PRESCRIPTION (#52) file, or the DISPENSED DATE  within the PARTIAL subfile of the PRESCRIPTION file. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "RELEASED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time a medication is auto-released at the host site when  a remote OneVA original fill, refill or partial fill is dispensed via an  OPAI automated dispensing device at the dispensing site. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REMOTE DRUG NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the drug being dispense for this request. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "LOCAL (MATCHED) DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the drug that was used for locally for the 'remote' refill or  partial fill. Since drug IENS and names may differ between sites, a user  must match the remote drug name to a local drug. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "TOTAL REFILL/PARTIAL FILL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,7",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the total cost for the 'remote'/filling facility. The cost is  derived by using the cost of the drug at the time of the refill or  partial fill. The cost is being retrieved from file 50, field 13. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "VA PRODUCT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VA product ID that will be passed in by the 'host' vista  system. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE DETAILS",
+      "dataType": "SUBFILE",
+      "rawType": "52.092",
+      "required": false,
+      "helpText": "This is the HL7 message that is associated with the refill or partial  fill request made on the dispensing site as part of OneVA Pharmacy  functionality. Note that a refill request can result in either a refill  or original fill being done on the host site. ",
+      "isMultiple": true,
+      "subFileNumber": 52.092,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LABEL DATA",
+      "dataType": "SUBFILE",
+      "rawType": "52.093",
+      "required": false,
+      "helpText": "This contains the label data returned from the remote facility for a  refill or partial fill. ",
+      "isMultiple": true,
+      "subFileNumber": 52.093,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPAI MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40I",
+      "length": 40I,
+      "required": false,
+      "helpText": "This is the message ID from the Outpatient Pharmacy Automated Interface (OPAI) to an automated dispensing device. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "HOST SITE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40I",
+      "length": 40I,
+      "required": false,
+      "helpText": "This is the site ID from the host site when a OneVA refill or partial fill is processed and sent to the Outpatient Pharmacy Automated Interface  (OPAI) at a dispensing site. This field will be populated at the  dispensing site only. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "DISP ADD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the name of the dispensing site's automated dispensing device  that the OneVA fill was sent to. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "DISP ADD DNS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This is the DNS name or IP address of the dispensing site's automated  dispensing device that the OneVA fill was sent to. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "DISP MULTI ADDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag is set to '1' when there are multiple Automated Dispensing  Devices (ADDs) defined for an outpatient site. An additional entry is  displayed in the prescription's activity log to indicate which ADD the  OneVA prescription refill/partial fill was sent to for dispensing. ",
+      "fieldNumber_": 4.4
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "52.09", "field": .01, "type": "regular"},
+    {"name": "52.09", "field": .02, "type": "regular"},
+    {"name": "52.09", "field": .03, "type": "regular"},
+    {"name": "52.09", "field": .04, "type": "regular"},
+    {"name": "52.09", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

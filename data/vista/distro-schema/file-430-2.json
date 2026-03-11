@@ -1,0 +1,188 @@
+{
+  "fileNumber": 430.2,
+  "fileName": "ACCOUNTS RECEIVABLE CATEGORY",
+  "globalRoot": "430.2I",
+  "globalReference": "^PRCA(430.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "These are the Categories for Accounts Receivable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This abbreviation can be used to enter or look-up the category. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REFER TO DMC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;",
+      "helpText": "The REFER TO DMC? prompt allows overdue bills to be sent to the Debt Management Center for Collection. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "REFER TO TOP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;",
+      "helpText": "The REFER TO TOP? field allows overdue bills to be sent to the Treasury Offset Program for collection. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "REFER TO CS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;",
+      "helpText": "The REFER TO CS? field allows overdue bills to be sent to the Cross Servicing (CS) program for collection. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEGMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the category's segment for AMIS reporting purposes. When a bill is setup, the AMIS segment of the bill is determined by the Category of bill and is stored with the bill under the AMIS Segment field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GL #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the General Ledger Number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ALD CODE",
+      "dataType": "POINTER",
+      "rawType": "P420.3'",
+      "required": false,
+      "pointerTo": 420.3,
+      "helpText": "This is the Appropriation/Limitation/Department code. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PATIENT;O:OTHER-PERSON;T:THIRD PARTY;V:VENDOR;C:MEANS TEST PATIENT;N:INSTITUTION;",
+      "helpText": "This code indicates the type of debtor that this category will be used for. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CATEGORY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0IX",
+      "length": 3,
+      "required": true,
+      "helpText": "This field is assigned by the package and should not be edited.  This field defines what type of AR category and is used throughout the AR package.  Since this is a table file and the internal entry number for categories may not be the same from site-to-site, this field should remain the same regardless of the site where the file is located. This field is used for \"look-up\" purposes by the AR package. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RECEIVABLE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FEDERAL;2:NON-FEDERAL;",
+      "helpText": "The receivable code defines if the category of bill is a Federal Receivable or non-federal receivable.  This field is used to provide a default when creating code sheets under the AR Accounting Technician menu.  The code sheets require a \"federal receivable\" code. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CHARGE INTEREST?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged interest based on the interest rate effective at the time the bill was created.   Interest is calculated every night by the AR package for all bills. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CHARGE ADMINISTRATIVE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged administrative charges based on the administrative amount effective at the time the bill was created.   Administrative charges are calculated for each account every night by the AR package for all accounts. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CHARGE PENALTY?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged penalty based on the penalty rate effective at the time the bill was created.   Interest is calculated every night by the AR package for all bills. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACCRUED?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ACCRUED;0:NON-ACCRUED;2:EITHER;",
+      "helpText": "determines if bill is detail or summary. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REFUND/REIMBURSEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REFUND;2:REIMBURSEMENT;",
+      "helpText": "Determines which type of FMS bill to be generated base on category. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PARAGRAPH CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Based on the category of the bill, CCPC will print out paragraph on the patient statement for the different rights and obligations.  This field contains which paragraph/s goes with which type of bill. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "430.2", "field": .01, "type": "regular"},
+    {"name": "430.2", "field": 1, "type": "regular"},
+    {"name": "430.2", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?25,$P(^(0),U,2)"}
+  ]
+}

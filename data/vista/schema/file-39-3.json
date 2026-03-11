@@ -1,0 +1,48 @@
+{
+  "fileNumber": 39.3,
+  "fileName": "EMBOSSER EQUIPMENT FILE",
+  "globalRoot": "39.3",
+  "globalReference": "^DIC(39.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used to assign the names of the devices to be used to  print data cards.  This field points to the DEVICE file (#3.5) therefore, a name entered here must match a name currently in that file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMBOSSER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DATA CARD;2:ADDRESSOGRAPH;0:PLAIN PRINTER;",
+      "helpText": "This field is used to assign the type of the embosser device.  Following are the available embosser types and their associated code number: '1' for DATACARD, '2' for ADDRESSOGRAPH, and '0' for PLAIN PRINTER. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF CARDS EMBOSSED",
+      "dataType": "SUBFILE",
+      "rawType": "39.31A",
+      "required": false,
+      "helpText": "This multiple field gives information that may be useful to site managers about data cards that have been processed. ",
+      "isMultiple": true,
+      "subFileNumber": 39.31,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "39.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

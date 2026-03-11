@@ -1,0 +1,2686 @@
+{
+  "fileNumber": 19620.3,
+  "fileName": "DSIR FINAL FOIA NUMBERS",
+  "globalRoot": "19620.3",
+  "globalReference": "^DSIR(19620.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FISCAL YEAR END DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": " FISCAL YEAR END DATE ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FISCAL YEAR START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "FISCAL YEAR START DATE ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FOIA LOCKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNLOCKED;1:LOCKED;",
+      "helpText": "Set of values indicating if the FOIA numbers for the fiscal yeare are  locked. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to identify who created the FOIA report ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENTERED ON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date when the FOIA data was processed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LOCKED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to identify who locked the FOIA data ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LOCKED ON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date when the FOIA data was locked ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Pointer to file 4 (Location File) identifying the division that owns this  FOIA data. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "*IVA5701",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 38 USC 5701 statute ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "*IVA5705",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 38 USC 5705 statute ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "*IVA205",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 35 USC 205 statute ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "*IVA7332",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 38 USC 7332 statute ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "*IVA253B",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 41 USC 253b statute ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "*IVAAPP3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Exemption 3 5 USC App. 3 statute ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "IVA5701 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 5701 statute count ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "IVA5701 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 5701 statute offset ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "IVA5705 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 5705 statute count ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "IVA5705 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 5705 statute offset ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "IVA7332 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 7332 statute count ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "IVA7332 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 38 USC 7332 statute offset ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "IVA253B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 41 USC 253b statute count ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "IVA253B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 41 USC 253b statute offset ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "IVAAPP3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 5 USC App. 3 statute count ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "IVAAPP3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Exemption 3 5 USC App. 3 statute offset ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EX3OTHER",
+      "dataType": "SUBFILE",
+      "rawType": "19620.301A",
+      "required": false,
+      "helpText": "Exemption 3 other reasons ",
+      "isMultiple": true,
+      "subFileNumber": 19620.301,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "VA1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY START COUNT ",
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 100.02,
+      "fieldName": "VA1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY START OFFSET ",
+      "fieldNumber_": 100.02
+    },
+    {
+      "fieldNumber": 101.01,
+      "fieldName": "VA2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS RECIEVED DURING FY COUNT ",
+      "fieldNumber_": 101.01
+    },
+    {
+      "fieldNumber": 101.02,
+      "fieldName": "VA2 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS RECIEVED DURING FY OFFSETR ",
+      "fieldNumber_": 101.02
+    },
+    {
+      "fieldNumber": 102.01,
+      "fieldName": "VA3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PROCESSED DURING FY COUNT ",
+      "fieldNumber_": 102.01
+    },
+    {
+      "fieldNumber": 102.02,
+      "fieldName": "VA3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PROCESSED DURING FY OFFSET ",
+      "fieldNumber_": 102.02
+    },
+    {
+      "fieldNumber": 103.01,
+      "fieldName": "VA4 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY END COUNT ",
+      "fieldNumber_": 103.01
+    },
+    {
+      "fieldNumber": 103.02,
+      "fieldName": "VA4 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY END OFFSET ",
+      "fieldNumber_": 103.02
+    },
+    {
+      "fieldNumber": 104.01,
+      "fieldName": "VB1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF TOTAL GRANTS COUNT ",
+      "fieldNumber_": 104.01
+    },
+    {
+      "fieldNumber": 104.02,
+      "fieldName": "VB1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF TOTAL GRANTS OFFSET ",
+      "fieldNumber_": 104.02
+    },
+    {
+      "fieldNumber": 105.01,
+      "fieldName": "VB2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF PARTIAL GRANTS COUNT ",
+      "fieldNumber_": 105.01
+    },
+    {
+      "fieldNumber": 105.02,
+      "fieldName": "VB2 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF PARTIAL GRANTS OFFSET ",
+      "fieldNumber_": 105.02
+    },
+    {
+      "fieldNumber": 106.01,
+      "fieldName": "VB3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF DENIALS COUNT ",
+      "fieldNumber_": 106.01
+    },
+    {
+      "fieldNumber": 106.02,
+      "fieldName": "VB3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "NUMBER OF DENIALS OFFSET ",
+      "fieldNumber_": 106.02
+    },
+    {
+      "fieldNumber": 107.01,
+      "fieldName": "VB3A1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 1 count ",
+      "fieldNumber_": 107.01
+    },
+    {
+      "fieldNumber": 107.02,
+      "fieldName": "VB3A1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 1 offset ",
+      "fieldNumber_": 107.02
+    },
+    {
+      "fieldNumber": 108.01,
+      "fieldName": "VB3A2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 2 count ",
+      "fieldNumber_": 108.01
+    },
+    {
+      "fieldNumber": 108.02,
+      "fieldName": "VB3A2 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 2 offset ",
+      "fieldNumber_": 108.02
+    },
+    {
+      "fieldNumber": 109.01,
+      "fieldName": "VB3A3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 3 count ",
+      "fieldNumber_": 109.01
+    },
+    {
+      "fieldNumber": 109.02,
+      "fieldName": "VB3A3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 3 offset ",
+      "fieldNumber_": 109.02
+    },
+    {
+      "fieldNumber": 110.01,
+      "fieldName": "VB3A4 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 4 count ",
+      "fieldNumber_": 110.01
+    },
+    {
+      "fieldNumber": 110.02,
+      "fieldName": "VB3A4 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 4 offset ",
+      "fieldNumber_": 110.02
+    },
+    {
+      "fieldNumber": 111.01,
+      "fieldName": "VB3A5 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 5 count ",
+      "fieldNumber_": 111.01
+    },
+    {
+      "fieldNumber": 111.02,
+      "fieldName": "VB3A5 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 5 offset ",
+      "fieldNumber_": 111.02
+    },
+    {
+      "fieldNumber": 112.01,
+      "fieldName": "VB3A6 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 6 count ",
+      "fieldNumber_": 112.01
+    },
+    {
+      "fieldNumber": 112.02,
+      "fieldName": "VB3A6 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 6 offset ",
+      "fieldNumber_": 112.02
+    },
+    {
+      "fieldNumber": 113.01,
+      "fieldName": "VB3A7 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7A count ",
+      "fieldNumber_": 113.01
+    },
+    {
+      "fieldNumber": 113.02,
+      "fieldName": "VB3A7 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7A offset ",
+      "fieldNumber_": 113.02
+    },
+    {
+      "fieldNumber": 114.01,
+      "fieldName": "VB3A8 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7B count ",
+      "fieldNumber_": 114.01
+    },
+    {
+      "fieldNumber": 114.02,
+      "fieldName": "VB3A8 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7B offset ",
+      "fieldNumber_": 114.02
+    },
+    {
+      "fieldNumber": 115.01,
+      "fieldName": "VB3A9 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7C count ",
+      "fieldNumber_": 115.01
+    },
+    {
+      "fieldNumber": 115.02,
+      "fieldName": "VB3A9 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7C offset ",
+      "fieldNumber_": 115.02
+    },
+    {
+      "fieldNumber": 116.01,
+      "fieldName": "VB3A10 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7D count ",
+      "fieldNumber_": 116.01
+    },
+    {
+      "fieldNumber": 116.02,
+      "fieldName": "VB3A10 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7D offset ",
+      "fieldNumber_": 116.02
+    },
+    {
+      "fieldNumber": 117.01,
+      "fieldName": "VB3A11 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7E count ",
+      "fieldNumber_": 117.01
+    },
+    {
+      "fieldNumber": 117.02,
+      "fieldName": "VB3A11 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7E offset ",
+      "fieldNumber_": 117.02
+    },
+    {
+      "fieldNumber": 118.01,
+      "fieldName": "VB3A12 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7F count ",
+      "fieldNumber_": 118.01
+    },
+    {
+      "fieldNumber": 118.02,
+      "fieldName": "VB3A12 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 7F offset ",
+      "fieldNumber_": 118.02
+    },
+    {
+      "fieldNumber": 119.01,
+      "fieldName": "VB3A13 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 8 count ",
+      "fieldNumber_": 119.01
+    },
+    {
+      "fieldNumber": 119.02,
+      "fieldName": "VB3A13 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 8 offset ",
+      "fieldNumber_": 119.02
+    },
+    {
+      "fieldNumber": 120.01,
+      "fieldName": "VB3A14 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 9 count ",
+      "fieldNumber_": 120.01
+    },
+    {
+      "fieldNumber": 120.02,
+      "fieldName": "VB3A14 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Exemption 9 offset ",
+      "fieldNumber_": 120.02
+    },
+    {
+      "fieldNumber": 121.01,
+      "fieldName": "VB4 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE TOTAL COUNT ",
+      "fieldNumber_": 121.01
+    },
+    {
+      "fieldNumber": 121.02,
+      "fieldName": "VB4 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE TOTAL OFFSET ",
+      "fieldNumber_": 121.02
+    },
+    {
+      "fieldNumber": 122.01,
+      "fieldName": "VB4A REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NO RECORDS COUNT ",
+      "fieldNumber_": 122.01
+    },
+    {
+      "fieldNumber": 122.02,
+      "fieldName": "VB4A MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NO RECORDS OFFSET ",
+      "fieldNumber_": 122.02
+    },
+    {
+      "fieldNumber": 123.01,
+      "fieldName": "VB4B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE REFERRALS COUNT ",
+      "fieldNumber_": 123.01
+    },
+    {
+      "fieldNumber": 123.02,
+      "fieldName": "VB4B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE REFERRALS OFFSET ",
+      "fieldNumber_": 123.02
+    },
+    {
+      "fieldNumber": 124.01,
+      "fieldName": "VB4C REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE REQUEST WITHDRAWN COUNT ",
+      "fieldNumber_": 124.01
+    },
+    {
+      "fieldNumber": 124.02,
+      "fieldName": "VB4C MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE REQUEST WITHDRAWN OFFSET ",
+      "fieldNumber_": 124.02
+    },
+    {
+      "fieldNumber": 125.01,
+      "fieldName": "VB4D REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE FEE-RELATED REASON COUNT ",
+      "fieldNumber_": 125.01
+    },
+    {
+      "fieldNumber": 125.02,
+      "fieldName": "VB4D MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE FEE- RELATED REASON OFFSET ",
+      "fieldNumber_": 125.02
+    },
+    {
+      "fieldNumber": 126.01,
+      "fieldName": "VB4E REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE RECORD NOT DESCRIBED COUNT ",
+      "fieldNumber_": 126.01
+    },
+    {
+      "fieldNumber": 126.02,
+      "fieldName": "VB4E MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE RECORD NOT DESCRIBED OFFSET ",
+      "fieldNumber_": 126.02
+    },
+    {
+      "fieldNumber": 127.01,
+      "fieldName": "VB4F REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NOT PROPER FOIA COUNT ",
+      "fieldNumber_": 127.01
+    },
+    {
+      "fieldNumber": 127.02,
+      "fieldName": "VB4F MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NOT PROPER FOIA OFFSET ",
+      "fieldNumber_": 127.02
+    },
+    {
+      "fieldNumber": 128.01,
+      "fieldName": "VB4G REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NOT AN AGENCY RECORD COUNT ",
+      "fieldNumber_": 128.01
+    },
+    {
+      "fieldNumber": 128.02,
+      "fieldName": "VB4G MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE NOT AN AGENCY RECORD OFFSET ",
+      "fieldNumber_": 128.02
+    },
+    {
+      "fieldNumber": 129.01,
+      "fieldName": "VB4H REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE DUPLICATE REQUEST COUNT ",
+      "fieldNumber_": 129.01
+    },
+    {
+      "fieldNumber": 129.02,
+      "fieldName": "VB4H MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE DUPLICATE REQUEST OFFSET ",
+      "fieldNumber_": 129.02
+    },
+    {
+      "fieldNumber": 130.01,
+      "fieldName": "VB4I REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE OTHER COUNT ",
+      "fieldNumber_": 130.01
+    },
+    {
+      "fieldNumber": 130.02,
+      "fieldName": "VB4I MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NON DISCLOSURE OTHER OFFSET ",
+      "fieldNumber_": 130.02
+    },
+    {
+      "fieldNumber": 131.01,
+      "fieldName": "VIIA2A REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "COMPLEX # OF REQUESTS COUNT ",
+      "fieldNumber_": 131.01
+    },
+    {
+      "fieldNumber": 131.02,
+      "fieldName": "VIIA2A MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "COMPLEX # OF REQUESTS OFFSET ",
+      "fieldNumber_": 131.02
+    },
+    {
+      "fieldNumber": 132.01,
+      "fieldName": "VIIA2B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "COMPLEX MED DAYS TO PROCESS COUNT ",
+      "fieldNumber_": 132.01
+    },
+    {
+      "fieldNumber": 132.02,
+      "fieldName": "VIIA2B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "COMPLEX MED DAYS TO PROCESS OFFSET ",
+      "fieldNumber_": 132.02
+    },
+    {
+      "fieldNumber": 133.01,
+      "fieldName": "VIIA3A REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "ACCORDED # EXPEDITED PROCESSING COUNT ",
+      "fieldNumber_": 133.01
+    },
+    {
+      "fieldNumber": 133.02,
+      "fieldName": "VIIA3A MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "ACCORDED # EXPEDITED PROCESSING OFFSET ",
+      "fieldNumber_": 133.02
+    },
+    {
+      "fieldNumber": 134.01,
+      "fieldName": "VIIA3B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "ACCORDED MED DAYS TO PROCESS ",
+      "fieldNumber_": 134.01
+    },
+    {
+      "fieldNumber": 134.02,
+      "fieldName": "VIIA3B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "ACCORDED MED DAYS TO PROCESS OFFSET ",
+      "fieldNumber_": 134.02
+    },
+    {
+      "fieldNumber": 135.01,
+      "fieldName": "VIIB1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY END COUNT ",
+      "fieldNumber_": 135.01
+    },
+    {
+      "fieldNumber": 135.02,
+      "fieldName": "VIIB1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "REQUESTS PENDING AT FY END OFFSET ",
+      "fieldNumber_": 135.02
+    },
+    {
+      "fieldNumber": 136.01,
+      "fieldName": "VIIB2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS REQUESTS WERE PENDING ",
+      "fieldNumber_": 136.01
+    },
+    {
+      "fieldNumber": 136.02,
+      "fieldName": "VIIB2 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS REQUESTS WERE PENDING OFFSET ",
+      "fieldNumber_": 136.02
+    },
+    {
+      "fieldNumber": 137.01,
+      "fieldName": "VIII1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "REQUESTS ASKING FOR EXPEDITED PROCESSING COUNT ",
+      "fieldNumber_": 137.01
+    },
+    {
+      "fieldNumber": 137.02,
+      "fieldName": "VIII1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "REQUESTS ASKING FOR EXPEDITED PROCESSING OFFSET ",
+      "fieldNumber_": 137.02
+    },
+    {
+      "fieldNumber": 138.01,
+      "fieldName": "VB5 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the calculated total number of requests processed during the timespan of the FOIA report. ",
+      "fieldNumber_": 138.01
+    },
+    {
+      "fieldNumber": 138.02,
+      "fieldName": "VB5 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the manual adjustments to total number of requests processed during the timespan of the FOIA report. ",
+      "fieldNumber_": 138.02
+    },
+    {
+      "fieldNumber": 139.01,
+      "fieldName": "VIIA2C REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the calculated average work days of complex requests. ",
+      "fieldNumber_": 139.01
+    },
+    {
+      "fieldNumber": 140.01,
+      "fieldName": "VIIA2D",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the lowest number of work days to process a complex request. ",
+      "fieldNumber_": 140.01
+    },
+    {
+      "fieldNumber": 141.01,
+      "fieldName": "VIIA2E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the highest number of work days to process complex requests. ",
+      "fieldNumber_": 141.01
+    },
+    {
+      "fieldNumber": 142.01,
+      "fieldName": "VIIA3C",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the average number of calendar days accorded/granted expedited  processing. ",
+      "fieldNumber_": 142.01
+    },
+    {
+      "fieldNumber": 143.01,
+      "fieldName": "VIIA3D",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the lowest number of calendar days accorded/granted expedited  processing. ",
+      "fieldNumber_": 143.01
+    },
+    {
+      "fieldNumber": 144.01,
+      "fieldName": "VIIA3E",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the highest number of calendar days accorded/granted expedited processing. ",
+      "fieldNumber_": 144.01
+    },
+    {
+      "fieldNumber": 145.01,
+      "fieldName": "EX35705 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 38 USC 5705 used. ",
+      "fieldNumber_": 145.01
+    },
+    {
+      "fieldNumber": 145.02,
+      "fieldName": "EX35705 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 38 USC 5705 used. ",
+      "fieldNumber_": 145.02
+    },
+    {
+      "fieldNumber": 146.01,
+      "fieldName": "EX37332 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 38 USC 7332 used. ",
+      "fieldNumber_": 146.01
+    },
+    {
+      "fieldNumber": 146.02,
+      "fieldName": "EX37332 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 38 USC 7332 used. ",
+      "fieldNumber_": 146.02
+    },
+    {
+      "fieldNumber": 147.01,
+      "fieldName": "EX35701 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 38 USC 5701 used. ",
+      "fieldNumber_": 147.01
+    },
+    {
+      "fieldNumber": 147.02,
+      "fieldName": "EX35701 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 38 USC 5701 used. ",
+      "fieldNumber_": 147.02
+    },
+    {
+      "fieldNumber": 148.01,
+      "fieldName": "EX3253B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 41 USC 253b(m) used. ",
+      "fieldNumber_": 148.01
+    },
+    {
+      "fieldNumber": 148.02,
+      "fieldName": "EX3253B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 41 USC 253b(m) used. ",
+      "fieldNumber_": 148.02
+    },
+    {
+      "fieldNumber": 149.01,
+      "fieldName": "EX3APP3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 5 USC APP 3 (IG ACT) used. ",
+      "fieldNumber_": 149.01
+    },
+    {
+      "fieldNumber": 149.02,
+      "fieldName": "EX3APP3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 5 USC APP 3 (IG ACT)  used. ",
+      "fieldNumber_": 149.02
+    },
+    {
+      "fieldNumber": 150.01,
+      "fieldName": "EX3205 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the calculated count of Exemption 3 35 USC 205 used. ",
+      "fieldNumber_": 150.01
+    },
+    {
+      "fieldNumber": 150.02,
+      "fieldName": "EX3205 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the adjustment to the count of Exemption 3 35 USC 205 used. ",
+      "fieldNumber_": 150.02
+    },
+    {
+      "fieldNumber": 151.01,
+      "fieldName": "NBRPROCD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "REQUESTS PROCESSED DURING FISCAL YEAR ",
+      "fieldNumber_": 151.01
+    },
+    {
+      "fieldNumber": 151.02,
+      "fieldName": "NBRPROCD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "REQUESTS PROCESSED DURING fISCAL YEAR OFFSET ",
+      "fieldNumber_": 151.02
+    },
+    {
+      "fieldNumber": 152.01,
+      "fieldName": "NBRPNDST REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PENDING AT START OF FISCAL YEAR ",
+      "fieldNumber_": 152.01
+    },
+    {
+      "fieldNumber": 152.02,
+      "fieldName": "NBRPNDST MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PENDING AT START OF FISCAL YEAR OFFSET ",
+      "fieldNumber_": 152.02
+    },
+    {
+      "fieldNumber": 153.01,
+      "fieldName": "NBRRECVD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS RECEIVED DURING THE FISCAL YEAR ",
+      "fieldNumber_": 153.01
+    },
+    {
+      "fieldNumber": 153.02,
+      "fieldName": "NBRRECVD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS RECEIVED DURING THE FISCAL YEAR OFFSET ",
+      "fieldNumber_": 153.02
+    },
+    {
+      "fieldNumber": 154.01,
+      "fieldName": "BACKLGCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "PENDING REQUESTS > 20 DAYS OLD ",
+      "fieldNumber_": 154.01
+    },
+    {
+      "fieldNumber": 154.02,
+      "fieldName": "BACKLGCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "PENDING REQUESTS > 20 DAYS OLD OFFSET ",
+      "fieldNumber_": 154.02
+    },
+    {
+      "fieldNumber": 155.01,
+      "fieldName": "NBRPNDED REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTES PENDING AT THE END OF THE FISCAL YEAR ",
+      "fieldNumber_": 155.01
+    },
+    {
+      "fieldNumber": 155.02,
+      "fieldName": "NBRPNDED MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTES PENDING AT THE END OF THE FISCAL YEAR OFFSET ",
+      "fieldNumber_": 155.02
+    },
+    {
+      "fieldNumber": 156.01,
+      "fieldName": "NBRGRNDS REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTES GRANTED THIS FISCAL YEAR ",
+      "fieldNumber_": 156.01
+    },
+    {
+      "fieldNumber": 156.02,
+      "fieldName": "NBRGRNTS MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTES GRANTED THIS FISCAL YEAR OFFSET ",
+      "fieldNumber_": 156.02
+    },
+    {
+      "fieldNumber": 157.01,
+      "fieldName": "NBRPARTS REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF PARTIAL GRANTS THIS FISCAL YEAR ",
+      "fieldNumber_": 157.01
+    },
+    {
+      "fieldNumber": 157.02,
+      "fieldName": "NBRPARTS MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 157.02
+    },
+    {
+      "fieldNumber": 158.01,
+      "fieldName": "NBRDENY REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS DENIED THIS FISCAL YEAR ",
+      "fieldNumber_": 158.01
+    },
+    {
+      "fieldNumber": 158.02,
+      "fieldName": "NBRDENY MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS DENIED THIS FISCAL YEAR OFFSET ",
+      "fieldNumber_": 158.02
+    },
+    {
+      "fieldNumber": 159.01,
+      "fieldName": "EXEMP1 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 1 COUNTER ",
+      "fieldNumber_": 159.01
+    },
+    {
+      "fieldNumber": 159.02,
+      "fieldName": "EXEMP1 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 1 COUNTER OFFSET ",
+      "fieldNumber_": 159.02
+    },
+    {
+      "fieldNumber": 160.01,
+      "fieldName": "EXEMP2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 2 COUNTER ",
+      "fieldNumber_": 160.01
+    },
+    {
+      "fieldNumber": 160.02,
+      "fieldName": "EXEMP2 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 2 COUNTER OFFSET ",
+      "fieldNumber_": 160.02
+    },
+    {
+      "fieldNumber": 161.01,
+      "fieldName": "EXEMP3 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 3 COUNTER ",
+      "fieldNumber_": 161.01
+    },
+    {
+      "fieldNumber": 161.02,
+      "fieldName": "EXEMP3 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 3 COUNTER OFFSET ",
+      "fieldNumber_": 161.02
+    },
+    {
+      "fieldNumber": 162.01,
+      "fieldName": "EXEMP4 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 4 COUNTER ",
+      "fieldNumber_": 162.01
+    },
+    {
+      "fieldNumber": 162.02,
+      "fieldName": "EXEMP4 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 162.02
+    },
+    {
+      "fieldNumber": 163.01,
+      "fieldName": "EXEMP5 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 5 COUNTER ",
+      "fieldNumber_": 163.01
+    },
+    {
+      "fieldNumber": 163.02,
+      "fieldName": "EXEMP5 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 5 COUNTER OFFSET ",
+      "fieldNumber_": 163.02
+    },
+    {
+      "fieldNumber": 164.01,
+      "fieldName": "EXEMP6 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 6 COUNTER ",
+      "fieldNumber_": 164.01
+    },
+    {
+      "fieldNumber": 164.02,
+      "fieldName": "EXEMP6 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 164.02
+    },
+    {
+      "fieldNumber": 165.01,
+      "fieldName": "EXEMP7A REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7A COUNTER ",
+      "fieldNumber_": 165.01
+    },
+    {
+      "fieldNumber": 165.02,
+      "fieldName": "EXEMP7A MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7A COUNTER OFFSET ",
+      "fieldNumber_": 165.02
+    },
+    {
+      "fieldNumber": 166.01,
+      "fieldName": "EXEMP7B REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7B COUNTER ",
+      "fieldNumber_": 166.01
+    },
+    {
+      "fieldNumber": 166.02,
+      "fieldName": "EXEMP7B MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7B COUNTER OFFSET ",
+      "fieldNumber_": 166.02
+    },
+    {
+      "fieldNumber": 167.01,
+      "fieldName": "EXEMP7C REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7C COUNTER ",
+      "fieldNumber_": 167.01
+    },
+    {
+      "fieldNumber": 167.02,
+      "fieldName": "EXEMP7C MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7C COUNTER OFFSET ",
+      "fieldNumber_": 167.02
+    },
+    {
+      "fieldNumber": 168.01,
+      "fieldName": "EXEMP7D REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7D COUNTER ",
+      "fieldNumber_": 168.01
+    },
+    {
+      "fieldNumber": 168.02,
+      "fieldName": "EXEMP7D MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7D COUNTER OFFSET ",
+      "fieldNumber_": 168.02
+    },
+    {
+      "fieldNumber": 169.01,
+      "fieldName": "EXEMP7E REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7E COUNTER ",
+      "fieldNumber_": 169.01
+    },
+    {
+      "fieldNumber": 169.02,
+      "fieldName": "EXEMP7E MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7E COUNTER OFFSET ",
+      "fieldNumber_": 169.02
+    },
+    {
+      "fieldNumber": 170.01,
+      "fieldName": "EXEMP7F REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7F COUNTER ",
+      "fieldNumber_": 170.01
+    },
+    {
+      "fieldNumber": 170.02,
+      "fieldName": "EXEMP7F MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 7F COUNTER OFFSET ",
+      "fieldNumber_": 170.02
+    },
+    {
+      "fieldNumber": 171.01,
+      "fieldName": "EXEMP8 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 8 COUNTER ",
+      "fieldNumber_": 171.01
+    },
+    {
+      "fieldNumber": 171.02,
+      "fieldName": "EXEMP8 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 8 COUNTER OFFSET ",
+      "fieldNumber_": 171.02
+    },
+    {
+      "fieldNumber": 172.01,
+      "fieldName": "EXEMP9 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 9 COUNTER ",
+      "fieldNumber_": 172.01
+    },
+    {
+      "fieldNumber": 172.02,
+      "fieldName": "EXEMP9 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXEMPTION 9 COUNTER OFFSET ",
+      "fieldNumber_": 172.02
+    },
+    {
+      "fieldNumber": 174.01,
+      "fieldName": "ORNDA REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NO RECORDS ",
+      "fieldNumber_": 174.01
+    },
+    {
+      "fieldNumber": 174.02,
+      "fieldName": "ORNDA MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NO RECORDS OFFSET ",
+      "fieldNumber_": 174.02
+    },
+    {
+      "fieldNumber": 175.01,
+      "fieldName": "ORNDB REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - REFERRALS ",
+      "fieldNumber_": 175.01
+    },
+    {
+      "fieldNumber": 175.02,
+      "fieldName": "ORNDB MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - REFERRALS OFFSET ",
+      "fieldNumber_": 175.02
+    },
+    {
+      "fieldNumber": 176.01,
+      "fieldName": "ORNDC REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - REQUEST WITHDRAWN ",
+      "fieldNumber_": 176.01
+    },
+    {
+      "fieldNumber": 176.02,
+      "fieldName": "ORNDC MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - REQUEST WITHDRAWN OFFSET ",
+      "fieldNumber_": 176.02
+    },
+    {
+      "fieldNumber": 177.01,
+      "fieldName": "ORNDD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - FEE RELATED REASON ",
+      "fieldNumber_": 177.01
+    },
+    {
+      "fieldNumber": 177.02,
+      "fieldName": "ORNDD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - FEE RELATED REASON OFFSET ",
+      "fieldNumber_": 177.02
+    },
+    {
+      "fieldNumber": 178.01,
+      "fieldName": "ORNDE REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - RECORD NOT DESCRIBED ",
+      "fieldNumber_": 178.01
+    },
+    {
+      "fieldNumber": 178.02,
+      "fieldName": "ORNDE MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - RECORD NOT DESCRIBED OFFSET ",
+      "fieldNumber_": 178.02
+    },
+    {
+      "fieldNumber": 179.01,
+      "fieldName": "ORNDF REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NOT PROPER FOIA ",
+      "fieldNumber_": 179.01
+    },
+    {
+      "fieldNumber": 179.02,
+      "fieldName": "ORNDF MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NOT PROPER FOIA OFFSET ",
+      "fieldNumber_": 179.02
+    },
+    {
+      "fieldNumber": 180.01,
+      "fieldName": "ORNDG REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NOT AN AGENCY RECORD ",
+      "fieldNumber_": 180.01
+    },
+    {
+      "fieldNumber": 180.02,
+      "fieldName": "ORNDG MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - NOT AN AGENCY RECORD OFFSET ",
+      "fieldNumber_": 180.02
+    },
+    {
+      "fieldNumber": 181.01,
+      "fieldName": "ORNDH REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - DUPLICATE REQUEST ",
+      "fieldNumber_": 181.01
+    },
+    {
+      "fieldNumber": 181.02,
+      "fieldName": "ORNDH MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - DUPLICATE REQUEST OFFSET ",
+      "fieldNumber_": 181.02
+    },
+    {
+      "fieldNumber": 182.01,
+      "fieldName": "ORNDI REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - OTHER ",
+      "fieldNumber_": 182.01
+    },
+    {
+      "fieldNumber": 182.02,
+      "fieldName": "ORNDI MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER NONDISCLOSURE - OTHER OFFSET ",
+      "fieldNumber_": 182.02
+    },
+    {
+      "fieldNumber": 183.01,
+      "fieldName": "ALLCPXMD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN # OF DAYS FOR COMPLEX REQUESTS ",
+      "fieldNumber_": 183.01
+    },
+    {
+      "fieldNumber": 183.02,
+      "fieldName": "ALLCPXMD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN # OF DAYS FOR COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 183.02
+    },
+    {
+      "fieldNumber": 184.01,
+      "fieldName": "ALLCPXAV REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE # OF DAYS FOR COMPLEX REQUESTS ",
+      "fieldNumber_": 184.01
+    },
+    {
+      "fieldNumber": 184.02,
+      "fieldName": "ALLCPXAV MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE # OF DAYS FOR COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 184.02
+    },
+    {
+      "fieldNumber": 185.01,
+      "fieldName": "ALLCPXLO REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "LOSEST # OF DAYS FOR COMPLEX REQUESTS ",
+      "fieldNumber_": 185.01
+    },
+    {
+      "fieldNumber": 185.02,
+      "fieldName": "ALLCPXLO MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "LOWEST # OF DAYS FOR COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 185.02
+    },
+    {
+      "fieldNumber": 186.01,
+      "fieldName": "ALLCPXHI REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "HIGHEST # OF DAYS FOR COMPLEX REQUESTS ",
+      "fieldNumber_": 186.01
+    },
+    {
+      "fieldNumber": 186.02,
+      "fieldName": "ALLCPXHI MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "HIGHEST # OF DAYS FOR COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 186.02
+    },
+    {
+      "fieldNumber": 187.01,
+      "fieldName": "GRTCPXMD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN # OF DAYS FOR GRANTED COMPLEX REQUESTS ",
+      "fieldNumber_": 187.01
+    },
+    {
+      "fieldNumber": 187.02,
+      "fieldName": "GRTCPXMD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN # OF DAYS FOR GRANTED COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 187.02
+    },
+    {
+      "fieldNumber": 188.01,
+      "fieldName": "GRTCPXAV REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE # OF DAYS FOR GRANTED COMPLEX REQUESTS ",
+      "fieldNumber_": 188.01
+    },
+    {
+      "fieldNumber": 188.02,
+      "fieldName": "GRTCPXAV MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE # OF DAYS FOR GRANTED COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 188.02
+    },
+    {
+      "fieldNumber": 189.01,
+      "fieldName": "GRTCPXLO REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "LOWEST # OF DAYS FOR GRANTED COMPLEX REQUESTS ",
+      "fieldNumber_": 189.01
+    },
+    {
+      "fieldNumber": 189.02,
+      "fieldName": "GRTCPXLO MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "LOWEST # OF DAYS FOR GRANTED COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 189.02
+    },
+    {
+      "fieldNumber": 190.01,
+      "fieldName": "GRTCPXHI REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "HIGHEST # OF DAYS FOR GRANTED COMPLEX REQUESTS ",
+      "fieldNumber_": 190.01
+    },
+    {
+      "fieldNumber": 190.02,
+      "fieldName": "GRTCPXHI MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "HIGHEST # OF DAYS FOR GRANTED COMPLEX REQUESTS OFFSET ",
+      "fieldNumber_": 190.02
+    },
+    {
+      "fieldNumber": 191.01,
+      "fieldName": "RSPTM020 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 20 DAYS OR LESS ",
+      "fieldNumber_": 191.01
+    },
+    {
+      "fieldNumber": 191.02,
+      "fieldName": "RSPTM020 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 20 DAYS OR LESS OFFSET ",
+      "fieldNumber_": 191.02
+    },
+    {
+      "fieldNumber": 192.01,
+      "fieldName": "RSPTM040 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 21-40 DAYS ",
+      "fieldNumber_": 192.01
+    },
+    {
+      "fieldNumber": 192.02,
+      "fieldName": "RSPTM040 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 21-40 DAYS OFFSET ",
+      "fieldNumber_": 192.02
+    },
+    {
+      "fieldNumber": 193.01,
+      "fieldName": "RSPTM060 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 41-60 DAYS ",
+      "fieldNumber_": 193.01
+    },
+    {
+      "fieldNumber": 193.02,
+      "fieldName": "RSPTM060 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 41-60 DAYS OFFSET ",
+      "fieldNumber_": 193.02
+    },
+    {
+      "fieldNumber": 194.01,
+      "fieldName": "RSPTM080 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 61-80 DAYS ",
+      "fieldNumber_": 194.01
+    },
+    {
+      "fieldNumber": 194.02,
+      "fieldName": "RSPTM080 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 61-80 DAYS OFFSET ",
+      "fieldNumber_": 194.02
+    },
+    {
+      "fieldNumber": 195.01,
+      "fieldName": "RSPTM100 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 81-100 DAYS ",
+      "fieldNumber_": 195.01
+    },
+    {
+      "fieldNumber": 195.02,
+      "fieldName": "RSPTM100 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 81-100 DAYS OFFSET ",
+      "fieldNumber_": 195.02
+    },
+    {
+      "fieldNumber": 196.01,
+      "fieldName": "RSPTM120 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 101-120 DAYS ",
+      "fieldNumber_": 196.01
+    },
+    {
+      "fieldNumber": 196.02,
+      "fieldName": "RSPTM120 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 101-120 DAYS OFFSET ",
+      "fieldNumber_": 196.02
+    },
+    {
+      "fieldNumber": 197.01,
+      "fieldName": "RSPTM140 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 121-140 DAYS ",
+      "fieldNumber_": 197.01
+    },
+    {
+      "fieldNumber": 197.02,
+      "fieldName": "RSPTM140 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 121-140 DAYS OFFSET ",
+      "fieldNumber_": 197.02
+    },
+    {
+      "fieldNumber": 198.01,
+      "fieldName": "RSPTM160 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 141-160 DAYS ",
+      "fieldNumber_": 198.01
+    },
+    {
+      "fieldNumber": 198.02,
+      "fieldName": "RSPTM160 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 141-160 DAYS OFFSET ",
+      "fieldNumber_": 198.02
+    },
+    {
+      "fieldNumber": 199.01,
+      "fieldName": "RSPTM180 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 161-180 DAYS ",
+      "fieldNumber_": 199.01
+    },
+    {
+      "fieldNumber": 199.02,
+      "fieldName": "RSPTM180 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 161-180 DAYS OFFSET ",
+      "fieldNumber_": 199.02
+    },
+    {
+      "fieldNumber": 200.01,
+      "fieldName": "RSPTM200 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 181-200 DAYS ",
+      "fieldNumber_": 200.01
+    },
+    {
+      "fieldNumber": 200.02,
+      "fieldName": "RSPTM200 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 181-200 DAYS OFFSET ",
+      "fieldNumber_": 200.02
+    },
+    {
+      "fieldNumber": 201.01,
+      "fieldName": "RSPTM300 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 201-300 DAYS ",
+      "fieldNumber_": 201.01
+    },
+    {
+      "fieldNumber": 201.02,
+      "fieldName": "RSPTM300 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 201-300 DAYS ",
+      "fieldNumber_": 201.02
+    },
+    {
+      "fieldNumber": 202.01,
+      "fieldName": "RSPTM400 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 301-400 DAYS ",
+      "fieldNumber_": 202.01
+    },
+    {
+      "fieldNumber": 202.02,
+      "fieldName": "RSPTM400 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING IN 301-400 DAYS OFFSET ",
+      "fieldNumber_": 202.02
+    },
+    {
+      "fieldNumber": 203.01,
+      "fieldName": "RSPTMUNL REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING >0 DAYS ",
+      "fieldNumber_": 203.01
+    },
+    {
+      "fieldNumber": 203.02,
+      "fieldName": "RSPTMUNL MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTS PROCESSED OR PENDING > DAYS OFFSET ",
+      "fieldNumber_": 203.02
+    },
+    {
+      "fieldNumber": 204.01,
+      "fieldName": "PNDPRFMD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS COMPLEX REQUESTS PENDING ",
+      "fieldNumber_": 204.01
+    },
+    {
+      "fieldNumber": 204.02,
+      "fieldName": "PNDPRFMD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS COMPLEX REQUESTS PENDING OFFSET ",
+      "fieldNumber_": 204.02
+    },
+    {
+      "fieldNumber": 205.01,
+      "fieldName": "PNDPRFAV REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE NUMBER OF DAYS COMPLEX REQUESTS PENDING ",
+      "fieldNumber_": 205.01
+    },
+    {
+      "fieldNumber": 205.02,
+      "fieldName": "PNDPRFAV MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE NUMBER OF DAYS COMPLEX REQUESTS PENDING OFFSET ",
+      "fieldNumber_": 205.02
+    },
+    {
+      "fieldNumber": 206.01,
+      "fieldName": "EXRQSDCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTED REQUESTS FOR EXPEDITED PROCESSING ",
+      "fieldNumber_": 206.01
+    },
+    {
+      "fieldNumber": 206.02,
+      "fieldName": "EXRQSDCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTED REQUESTS FOR EXPEDITED PROCESSING OFFSET ",
+      "fieldNumber_": 206.02
+    },
+    {
+      "fieldNumber": 207.01,
+      "fieldName": "EXPRGRNT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED REQUESTS FOR EXPEDITED PROCESSING ",
+      "fieldNumber_": 207.01
+    },
+    {
+      "fieldNumber": 207.02,
+      "fieldName": "EXPRGRNT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED REQUESTS FOR EXPEDITED PROCESSING OFFSET ",
+      "fieldNumber_": 207.02
+    },
+    {
+      "fieldNumber": 208.01,
+      "fieldName": "EXPRDENY REOPRT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF DENIED REQUESTS FOR EXPEDITED PROCESSING ",
+      "fieldNumber_": 208.01
+    },
+    {
+      "fieldNumber": 208.02,
+      "fieldName": "EXPRDENY MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED REQUESTS FOR EXPEDITED PROCESSING OFFSET ",
+      "fieldNumber_": 208.02
+    },
+    {
+      "fieldNumber": 209.01,
+      "fieldName": "EXPADJMD REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN DAY TO ADJUDICATE EXPEDITED REQUESTS ",
+      "fieldNumber_": 209.01
+    },
+    {
+      "fieldNumber": 209.02,
+      "fieldName": "EXPADJMD MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN DAY TO ADJUDICATE EXPEDITED REQUESTS OFFSET ",
+      "fieldNumber_": 209.02
+    },
+    {
+      "fieldNumber": 210.01,
+      "fieldName": "EXPADJAV REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE DAY TO ADJUDICATE EXPEDITED REQUESTS ",
+      "fieldNumber_": 210.01
+    },
+    {
+      "fieldNumber": 210.02,
+      "fieldName": "EXPADJAV MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE DAY TO ADJUDICATE EXPEDITED REQUESTS OFFSET ",
+      "fieldNumber_": 210.02
+    },
+    {
+      "fieldNumber": 211.01,
+      "fieldName": "EXPADJ10 REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXPEDITED REQUESTS ADJUDICATED IN < 10 DAYS ",
+      "fieldNumber_": 211.01
+    },
+    {
+      "fieldNumber": 211.02,
+      "fieldName": "EXPADJ10 MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "EXPEDITED REQUESTS ADJUDICATED IN < 10 DAYS OFFSET ",
+      "fieldNumber_": 211.02
+    },
+    {
+      "fieldNumber": 212.01,
+      "fieldName": "FWRQSDCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTED FEE WAIVERS ",
+      "fieldNumber_": 212.01
+    },
+    {
+      "fieldNumber": 212.02,
+      "fieldName": "FWRQSDCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF REQUESTED FEE WAIVERS OFFSET ",
+      "fieldNumber_": 212.02
+    },
+    {
+      "fieldNumber": 213.01,
+      "fieldName": "FWGRANT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED FEE WAIVER REQUESTS ",
+      "fieldNumber_": 213.01
+    },
+    {
+      "fieldNumber": 213.02,
+      "fieldName": "FWGRANT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED FEE WAIVER REQUESTS OFFSET ",
+      "fieldNumber_": 213.02
+    },
+    {
+      "fieldNumber": 214.01,
+      "fieldName": "FWDENY REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF DENIED FEE WAIVER REQUESTS ",
+      "fieldNumber_": 214.01
+    },
+    {
+      "fieldNumber": 214.02,
+      "fieldName": "FWDENY MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF DENIED FEE WAIVER REQUESTS OFFSET ",
+      "fieldNumber_": 214.02
+    },
+    {
+      "fieldNumber": 215.01,
+      "fieldName": "FWADJMED REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS TO ADJUDICATE FEE WAIVER REQUESTS ",
+      "fieldNumber_": 215.01
+    },
+    {
+      "fieldNumber": 215.02,
+      "fieldName": "FWADJMED MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "MEDIAN NUMBER OF DAYS TO ADJUDICATE FEE WAIVER REQUESTS OFFSET ",
+      "fieldNumber_": 215.02
+    },
+    {
+      "fieldNumber": 216.01,
+      "fieldName": "FWADJAVG REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE NUMBER OF DAYS TO ADJUDICATE FEE WAIVER REQUESTS ",
+      "fieldNumber_": 216.01
+    },
+    {
+      "fieldNumber": 216.02,
+      "fieldName": "FWADJAVG MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "AVERAGE NUMBER OF DAYS TO ADJUDICATE FEE WAIVER REQUESTS OFFSET ",
+      "fieldNumber_": 216.02
+    },
+    {
+      "fieldNumber": 217.01,
+      "fieldName": "PNDPRFCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF PENDING PERFECTED REQUESTS ",
+      "fieldNumber_": 217.01
+    },
+    {
+      "fieldNumber": 217.02,
+      "fieldName": "PNDPRFCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF PENDING PERFECTED REQUESTS OFFSET ",
+      "fieldNumber_": 217.02
+    },
+    {
+      "fieldNumber": 218.01,
+      "fieldName": "ALLCPXCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF ALL PERFECTED REQUESTST ",
+      "fieldNumber_": 218.01
+    },
+    {
+      "fieldNumber": 218.02,
+      "fieldName": "ALLCPXCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF ALL PERFECTED REQUESTS OFFSET ",
+      "fieldNumber_": 218.02
+    },
+    {
+      "fieldNumber": 219.01,
+      "fieldName": "GRTCPXCT REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED PERFECTED REQUESTS OFFSET ",
+      "fieldNumber_": 219.01
+    },
+    {
+      "fieldNumber": 219.02,
+      "fieldName": "GRTCPXCT MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF GRANTED PERFECTED REQUESTS OFFSET ",
+      "fieldNumber_": 219.02
+    },
+    {
+      "fieldNumber": 220.01,
+      "fieldName": "ORNDJ REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - MEDICALLY SENSITIVE ",
+      "fieldNumber_": 220.01
+    },
+    {
+      "fieldNumber": 220.02,
+      "fieldName": "ORNDJ MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - MEDICALLY SENSITIVE OFFSET ",
+      "fieldNumber_": 220.02
+    },
+    {
+      "fieldNumber": 221.01,
+      "fieldName": "ORNDK REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - PATIENT DIED BEFORE COMPLETION ",
+      "fieldNumber_": 221.01
+    },
+    {
+      "fieldNumber": 221.02,
+      "fieldName": "ORNDK MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - PATIENT DIED BEFORE COMPLETION OFFSET ",
+      "fieldNumber_": 221.02
+    },
+    {
+      "fieldNumber": 222.01,
+      "fieldName": "ORNDL REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - PUBLICLY AVAILABLE ",
+      "fieldNumber_": 222.01
+    },
+    {
+      "fieldNumber": 222.02,
+      "fieldName": "ORNDL MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - PUBLICLY AVAILABLE ",
+      "fieldNumber_": 222.02
+    },
+    {
+      "fieldNumber": 223.01,
+      "fieldName": "ORNDM REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - GLOMAR ",
+      "fieldNumber_": 223.01
+    },
+    {
+      "fieldNumber": 223.02,
+      "fieldName": "ORNDM MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - GLOMANR ",
+      "fieldNumber_": 223.02
+    },
+    {
+      "fieldNumber": 224.01,
+      "fieldName": "ORNDN REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - SUBSUMED BY LITIGATION ",
+      "fieldNumber_": 224.01
+    },
+    {
+      "fieldNumber": 224.02,
+      "fieldName": "ORNDN MANUAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "OTHER REASON FOR NONDISCLOSURE - SUBSUMED BY LITIGTION OFFSET ",
+      "fieldNumber_": 224.02
+    }
+  ],
+  "fieldCount": 267,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "DIV", "field": },
+    {"name": "19620.3", "field": .01, "type": "regular"},
+    {"name": "19620.3", "field": .08, "type": "regular"},
+    {"name": "19620.3", "field": 100.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

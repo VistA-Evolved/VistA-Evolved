@@ -1,0 +1,441 @@
+{
+  "fileNumber": 4,
+  "fileName": "INSTITUTION",
+  "globalRoot": "4Is",
+  "globalReference": "^DIC(4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This is the name of the institution with out modifiers like state or type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "State that the institution is physically located. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISTRICT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the Medical District of the Institution file.  Therefore it is not to be changed except by appropriately knowledgeable individuals. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short version of name. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VA TYPE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MC:HOSP;DM:DOM;NH:NH;RO:RO;DP:DPC;OI:OC-IND;OM:OC-UNDER MMT;OS:OC-SUB;PC:PROTH;PD:PDC;RP:RPC;CO:VACO;CR:VACO-RO;MCDM:MC&DOM;MCDMNH:MC,DOM,NH;MCNH:MC&NH;MCRO:MC&RO;RODP:RO&DPC;",
+      "helpText": "This field is being replaced by the Facitily type field. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REGION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "VA region number. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STREET ADDR. 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First line of the street address (physical) of the facility. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "STREET ADDR. 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second line of street address (physical) of the facility. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The city the facility is physically located. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Postal ZIP code for the physical address of the facility. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CONTACT",
+      "dataType": "SUBFILE",
+      "rawType": "4.03",
+      "required": false,
+      "helpText": "List of contacts. ",
+      "isMultiple": true,
+      "subFileNumber": 4.03,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "ST. ADDR. 1 (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First line of the street address (mailing) of the facility. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "ST. ADDR. 2 (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second line of the street address (mailing) of the facility. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "CITY (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The City of the facility's mailing address. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "STATE (MAILING)",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The State of the facility's mailing address. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "ZIP (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Postal ZIP code for the mailing address of the facility. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MULTI-DIVISION FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Flag to indicate this is a multi-division facility. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:National;L:Local;",
+      "helpText": "An Institution has a STATUS (#11) of either LOCAL or NATIONAL.  Inactive facilities are flagged as such by the field INACTIVE FACILITY FLAG (#101).  National entries are facilities that have a STATION NUMBER (#99) approved by Information Management Service (045A4).  National entries are maintained by the Master File Server located on FORUM.  Local entries are facilities that are entered locally.  Local entries no not have a STATION NUMBER (#99).  (Only offically approved station numbers are allo",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FACILITY TYPE",
+      "dataType": "POINTER",
+      "rawType": "P4.1X",
+      "required": false,
+      "pointerTo": 4.1,
+      "helpText": "The type of facility. A replacement for the type field. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ASSOCIATIONS",
+      "dataType": "POINTER",
+      "rawType": "4.014P",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 41.99,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Current Unique National Provider ID. A unique meaningless integer assigned to providers. ",
+      "fieldNumber_": 41.99
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "4.042D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.042,
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "TAXONOMY CODE",
+      "dataType": "POINTER",
+      "rawType": "4.043P",
+      "required": false,
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ACOS HOSPITAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the six-digit code assigned to this facility by the American College of Surgeons (ACOS) Commission on Cancer, the organization that accredits a hospital's Cancer Program and Tumor Registry.  A facility will only have an ACOS number if they have requested a Cancer Program survey from the ACOS (not all facilities will have a number). ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "FACILITY DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the facility DEA number. This allows house officers who  do not have their own DEA # to use a VA # for Digital Signatures. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 52.1,
+      "fieldName": "FACILITY DEA EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the expiration date for DEA#. ",
+      "fieldNumber_": 52.1
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "A pointer to the domain so the institution can be linked to a E-mail domain. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "AGENCY CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;AF:AIR FORCE;I:IHS;ARMY:ARMY;N:NAVY;O:OTHER;E:EHR;USCG:COAST GUARD;",
+      "helpText": "A code to identify the Government agency that this site belongs to. This is a duplicate of the POINTER TO AGENCY field. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "REPORTING STATION",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is a pointer back to the Institution file that indicates the site that does the reporting to VACO. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "POINTER TO AGENCY",
+      "dataType": "POINTER",
+      "rawType": "RP4.11'",
+      "required": true,
+      "pointerTo": 4.11,
+      "helpText": "A pointer to a file that identifies the government agency that this site belongs to.  Keep in sync with the Agency code field. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the 3 digit station number plus any modifiers. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "OFFICIAL VA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the Offical VA name for this VA facility. The value in this field should not be changed by the site. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "INACTIVE FACILITY FLAG",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "CERNER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if a facility has been converted to CERNER. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "BILLING FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the billing facility name populated with the GOLD STANDARD NAME provided by the CBO and required for pharmacies, CBOC's, VAMC's, etc - Anything that could be identified  as a Billing Facility (Billing Provider) for billing in VistA.   This new field is not editable locally (same as the .01 and 100  fields).  Updates would be managed through Forum and the Master File  Update mechanisms only.   ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 720,
+      "fieldName": "CURRENT LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags entries for use in the Event Capture software.           '1'  for   'YES'   (ACTIVE)           '0'  for   'NO'    (INACTIVE) ",
+      "fieldNumber_": 720
+    },
+    {
+      "fieldNumber": 800,
+      "fieldName": "LOCATION TIMEZONE",
+      "dataType": "POINTER",
+      "rawType": "P1.71'",
+      "required": false,
+      "pointerTo": 1.71,
+      "helpText": "This is the timezone of this specific location. ",
+      "fieldNumber_": 800
+    },
+    {
+      "fieldNumber": 801,
+      "fieldName": "COUNTRY",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "Country of this location ",
+      "fieldNumber_": 801
+    },
+    {
+      "fieldNumber": 802,
+      "fieldName": "TIMEZONE EXCEPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SST Only;",
+      "helpText": "This location does not follow the timezone and country timeframe changes therefore only follows STANDARD time. Example: Some locations in the USA do not follow the change to DAYLIGHT SAVINGS but remain STANDARD all year long. Those locations would need this exception defined. Puerto Rico's timezone is Atlantic which is also used by Canada, Dominican Republic, and Bermuda. Canada and Bermuda change timeframes and Puerto Rico and Dominican Republic do not. A location in Puerto Rico or Dominican Re",
+      "fieldNumber_": 802
+    },
+    {
+      "fieldNumber": 999.1,
+      "fieldName": "HISTORY",
+      "dataType": "DATE",
+      "rawType": "4.999DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.999,
+      "fieldNumber_": 999.1
+    },
+    {
+      "fieldNumber": 2514,
+      "fieldName": "ASSIGNED NAMESPACE",
+      "dataType": "SUBFILE",
+      "rawType": "4.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.05,
+      "fieldNumber_": 2514
+    },
+    {
+      "fieldNumber": 9999,
+      "fieldName": "IDENTIFIER",
+      "dataType": "SUBFILE",
+      "rawType": "4.9999A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.9999,
+      "fieldNumber_": 9999
+    }
+  ],
+  "fieldCount": 42,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AI", "field": },
+    {"name": "ANPI", "field": },
+    {"name": "AP1", "field": },
+    {"name": "ARF", "field": },
+    {"name": "ARFM", "field": },
+    {"name": "ART", "field": },
+    {"name": "ARTO", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "OLDNAM", "field": },
+    {"name": "XUMF", "field": },
+    {"name": "4", "field": .01, "type": "regular"},
+    {"name": "4", "field": .01, "type": "regular"},
+    {"name": "4", "field": .01, "type": "regular"},
+    {"name": "4", "field": 11, "type": "regular"},
+    {"name": "4", "field": 41.99, "type": "regular"},
+    {"name": "", "field": 95, "type": "regular"},
+    {"name": "", "field": 97, "type": "regular"},
+    {"name": "4", "field": 99, "type": "regular"},
+    {"name": "4", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "D EN^DDIOL($P($G(^DIC(5,+$P($G(^(0)),U,2),0)),U,2),,\"?31\")"},
+    {"field": W2, "value": "D EN^DDIOL($P($G(^DIC(4.1,+$G(^DIC(4,+Y,3)),0)),U),,\"?35\")"},
+    {"field": W3, "value": "D EN^DDIOL($P($G(^DIC(4,+Y,99)),U),,\"?45\")"},
+    {"field": W4, "value": "D:$P($G(^DIC(4,+Y,99)),U,4) EN^DDIOL(\"INACTIVE \"_$$FMTE^XLFDT($$IDT^XUAF4(+Y),\"D\"),,\"?54\")"}
+  ]
+}

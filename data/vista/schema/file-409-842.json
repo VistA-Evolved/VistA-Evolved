@@ -1,0 +1,28 @@
+{
+  "fileNumber": 409.842,
+  "fileName": "SDEC CHECK-IN STEP STATUS",
+  "globalRoot": "409.842",
+  "globalReference": "^SDEC(409.842,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHECK-IN STEP STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is the free text name that describes the appointment Check-In Step  Status. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.842", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

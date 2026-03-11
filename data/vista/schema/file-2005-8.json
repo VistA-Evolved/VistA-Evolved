@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2005.8,
+  "fileName": "IMAGING SERVICE INSTITUTION",
+  "globalRoot": "2005.8",
+  "globalReference": "^MAGV(2005.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the institution associated with an action performed on an Imaging file. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

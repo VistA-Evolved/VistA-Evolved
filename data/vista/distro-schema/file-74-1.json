@@ -1,0 +1,59 @@
+{
+  "fileNumber": 74.1,
+  "fileName": "STANDARD REPORTS",
+  "globalRoot": "74.1",
+  "globalReference": "^RA(74.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "REPORT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of this standard report. This provides a way to do quick look-ups of a report by its report number.   Report numbers are assigned by the system and are between 1 and 999. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "STANDARD REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of this standard report.  Names are assigned by the rad/nuc med coordinator at each site and must be between 3 and 30 non-numeric characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "REPORT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "74.11",
+      "required": false,
+      "helpText": "This field contains the text associated with this standard report.   When this standard report is chosen to be associated with an exam, the information in this field is copied into the 'report text' field for that exam. ",
+      "isMultiple": true,
+      "subFileNumber": 74.11,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "IMPRESSION",
+      "dataType": "SUBFILE",
+      "rawType": "74.12",
+      "required": false,
+      "helpText": "This field contains the impression associated with this standard report. The impression is used to give a quick summary of the report text.   When this standard report is chosen to be associated with an exam, the information in this field is copied into the 'impression text' field for that exam. ",
+      "isMultiple": true,
+      "subFileNumber": 74.12,
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "74.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

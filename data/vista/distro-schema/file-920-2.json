@@ -1,0 +1,101 @@
+{
+  "fileNumber": 920.2,
+  "fileName": "IMM ADMINISTRATION ROUTE",
+  "globalRoot": "920.2",
+  "globalReference": "^PXV(920.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROUTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the route of administration for an immunization/vaccine.  The response is expected to be at least 3 characters and no more than 30 characters.  Response should also be all uppercase letters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HL7 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the HL7 code associated with this route.  It is expected to be 1-3 uppercase alpha characters, only. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FDA NCIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the FDA NCIT code for this route.  It must be in the format of 1 uppercase alpha character followed by 5 numbers. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the definition of this route.  It must be 3-90 characters. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P920.2'aI",
+      "required": false,
+      "pointerTo": 920.2,
+      "helpText": "This field is populated when one Term/Concept replaces another Term/Concept.  This field is controlled by standardization and should only be changed by standardization processes.  This field contains a pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "920.299D",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 920.299,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "H", "field": },
+    {"name": "920.2", "field": .01, "type": "regular"},
+    {"name": "920.2", "field": .02, "type": "regular"},
+    {"name": "920.2", "field": 99.97, "type": "regular"},
+    {"name": "920.2", "field": 99.98, "type": "regular"},
+    {"name": "920.2", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

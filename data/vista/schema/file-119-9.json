@@ -1,0 +1,636 @@
+{
+  "fileNumber": 119.9,
+  "fileName": "FH SITE PARAMETERS",
+  "globalRoot": "119.9",
+  "globalReference": "^FH(119.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0X",
+      "length": 1,
+      "required": true,
+      "helpText": "This value is always 1. Number of the File Manager. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LABEL PRINTERS",
+      "dataType": "POINTER",
+      "rawType": "119.93P",
+      "required": false,
+      "helpText": "This is a list of printers using label stock. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OUTPATIENT MEALS DIET1",
+      "dataType": "POINTER",
+      "rawType": "P111'X",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the first allowable diet for ordering outpatient meals.  This first field will be used as the default diet when ordering outpatient meals. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OUTPATIENT MEALS DIET2",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 5 site parameter fields to be set up at the individual site.  This field will be the second allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OUTPATIENT MEALS DIET3",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 5 site parameter fields to be set up at the individual site.  This field will be the third allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OUTPATIENT MEALS DIET4",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 5 site parameter fields to be set up at the individual site.  This field will be the fourth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OUTPATIENT MEALS DIET5",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 5 site parameter fields to be set up at the individual site.  This field will be the fifth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AUTHORIZOR 1",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the first authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "AUTHORIZOR 2",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the second authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "AUTHORIZOR 3",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the third authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "AUTHORIZOR 4",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the fourth authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "AUTHORIZOR 5",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the fifth authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "EMPLOYEE CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not the site assigns a charge to the Employee Class. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PAID CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not the site assigns a charge to the Paid Class. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "OOD CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not the site assigns a charge to the OOD (Officer of the Day) Class. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "VOLUNTEER CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not the site assigns a charge to the Volunteer Class. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GRATUITOUS CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not the site assigns a charge to the Gratuitous Class. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MULTIDIVISIONAL SITE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will be used to determine if a site is multidivisional or not. If set to YES, the multidivisional enhancements released in patch FH*5.0*39 will be used, which involves prompting for Communication Office.  If set to NO, then the non-multidivisional routines, fields and files will be used. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "EMPLOYEE BREAKFAST CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the employee breakfast meal. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "EMPLOYEE NOON CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the employee noon meal. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EMPLOYEE EVENING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the employee evening meal. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PAID BREAKFAST CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the paid breakfast meal. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PAID NOON CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the paid noon meal. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PAID EVENING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the paid evening meal. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "OOD BREAKFAST CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the OOD breakfast meal. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "OOD NOON CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the OOD noon meal. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OOD EVENING MEAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the OOD evening meal. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "VOLUNTEER BREAKFAST CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the volunteer breakfast meal. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "VOLUNTEER NOON CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the volunteer noon meal. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "VOLUNTEER EVENING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the volunteer evening meal. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "GRATUITOUS BREAKFAST CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the gratuitous breakfast meal. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "GRATUITOUS NOON CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the gratuitous noon meal. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "GRATUITOUS EVENING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the cost for the gratuitous evening meal. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "OUTPATIENT MEALS DIET6",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  sixth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "OUTPATIENT MEALS DIET7",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  seventh allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "OUTPATIENT MEALS DIET8",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  eighth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "OUTPATIENT MEALS DIET9",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  ninth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "OUTPATIENT MEALS DIET10",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  tenth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "OUTPATIENT MEALS DIET11",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  eleventh allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "OUTPATIENT MEALS DIET12",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  twelfth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "OUTPATIENT MEALS DIET13",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  thirteenth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "OUTPATIENT MEALS DIET14",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  fourteenth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "OUTPATIENT MEALS DIET15",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "The outpatient meals will allow diet selection from 15 site parameter fields to be set up at the individual site.  This field will be the  fifteenth allowable diet for ordering outpatient meals. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AUTHORIZOR 6",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the sixth authorizor for special meals.  When a special meal is requested, if the requestor does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15 authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "AUTHORIZOR 7",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the seventh authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "AUTHORIZOR 8",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the eighth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "AUTHORIZOR 9",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the ninth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "AUTHORIZOR 10",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the tenth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "AUTHORIZOR 11",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the eleventh authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "AUTHORIZOR 12",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the twelfth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "AUTHORIZOR 13",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the thirteenth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "AUTHORIZOR 14",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the fourteenth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "AUTHORIZOR 15",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be used to store the name of the fifteenth authorizor for special meals.  When a special meal is requested, if the requestor    does not have the authorization to print a special meal ticket, an alert will be sent to the authorizors for action.  These 15  authorizors will also need to be given the FHAUTH security key. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "ASSESSMENT DEFAULT UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ENGLISH;M:METRIC;",
+      "helpText": "This field contains the default unit of measurement to be used in performing Nutrition Assessments ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "# OF DAYS TO OBTAIN LAB DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of days backward for which a search of laboratory data will be made. That is, only data obtained within the last # of days will be displayed. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "PRINT PROFILE AFTER SCREENING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;A:ASK USER;",
+      "helpText": "This parameter determines whether the Nutrition Profile is printed immediately following the printing of a screening form. If 'A' is selected, the user will be asked to make a selection at the time of printing screening forms. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "OPTIONAL SCREENING LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a line of text which will be printed as the last line of the S portion of the Nutrition Screening form. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "LAB TEST",
+      "dataType": "POINTER",
+      "rawType": "119.9001P",
+      "required": false,
+      "helpText": "This multiple contains a list of laboratory tests which are of interest to clinicians. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "DRUG CLASSIFICATIONS",
+      "dataType": "POINTER",
+      "rawType": "119.985P",
+      "required": false,
+      "helpText": "This multiple contains drug classifications of interest to clinicians. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "HEADING ON BOTTOM OF TICKET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is optional and it is used to indicate whether the heading should be printed on the bottom of the tray tickets and diet cards. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "WILL YOU USE TRAY TICKETS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is optional and it is used to indicate whether the user wants to use the Tray Tickets or not.  If the answer is Yes, you will be asked whether you want the heading for the Tray Tickets to be printed on the bottom or not and also you will be receiving a no diet pattern message on diet activity for patients that do not have a diet pattern which is related to the tray tickets. If the answer is No, you will not be asked the question and receive the message. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "OUTPATIENT MEALS INSTALLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Field to note if outpatient meals build has been installed previously. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 62,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "119.9", "field": .01, "type": "regular"},
+    {"name": "119.9", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

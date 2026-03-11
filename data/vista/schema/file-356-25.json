@@ -1,0 +1,140 @@
+{
+  "fileNumber": 356.25,
+  "fileName": "CLAIMS TRACKING ROI",
+  "globalRoot": "356.25",
+  "globalReference": "^IBT(356.25,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROI ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the main ROI entry number.  This is DINUM'd to the entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient for this ROI entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "This is the Drug the ROI has been used for in the past and will be  automatically applied to in the future within the effective dates. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "R*P36'",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "  Below are the Patient's Insurance Companies.   Please select from this list for the Insurance Company this ROI was used for.  The Insurance Company will automatically be used for future prescriptions. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective date of the ROI. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date that the ROI expires. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Inactivating an ROI entry has the same effect as deleting an entry except that the entry is left as a history. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ROI ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this ROI was added to the file. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that added this ROI entry ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE ROI LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "USER LAST UPDATING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that last updated this ROI entry. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This was the last time this ROI was used for a claim or a potential claim. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.01
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "356.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

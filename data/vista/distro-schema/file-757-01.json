@@ -1,0 +1,152 @@
+{
+  "fileNumber": 757.01,
+  "fileName": "EXPRESSIONS",
+  "globalRoot": "757.01",
+  "globalReference": "^LEX(757.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPLAYABLE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ4000X",
+      "length": 4000X,
+      "required": true,
+      "helpText": "This is the text which will be used to represent the expression (Major Concept, Synonym or Lexical Variant). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAJOR CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "RP757'I",
+      "required": true,
+      "pointerTo": 757,
+      "helpText": "Pointer to the Major Concept (file #757).  If the expression is a major concept, this pointer will be the same as the Expression pointer in the Major Concept Map file (#757).  If it is a synonym or a lexical variant it will point to it's parent major concept.  If it is a lexical variant of a synonym, it will point to the parent major concept of the synonym. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP757.011'I",
+      "required": true,
+      "pointerTo": 757.011,
+      "helpText": "This is a pointer to the Expression Type file (#757.011).  Examples of expression types include Major Concepts, Synonyms, Lexical Variants, etc.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCOPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "D:DIRECTLY LINKED;I:INDIRECTLY LINKED;B:BROADER VIEW;N:NARROWER VIEW;O:OTHER;R:RELATED VIEW;C:CONTROLLED VIEW;",
+      "helpText": "Scope - Demonstrates the relationship of the term to the Major Concept. Major Concepts, Synonyms to Major Concepts and Lexical Variants to a Major Concept are (D)irectly linked.  Lexical Variants to a Synonym of a Major Concept are (I)ndirectly linked.  Related concepts are either (B)roader in scope, (N)arrower in scope, or an (O)ther/undefined view of the Major Concept. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FORM",
+      "dataType": "POINTER",
+      "rawType": "RP757.014'I",
+      "required": true,
+      "pointerTo": 757.014,
+      "helpText": "Pointer to the Expression Form (file 757.014) which describes the lexical  style of an expression.  Major Concepts adopt the general form of \"MAJ\" while all other expressions describe their forms as they relate to the Major  Concept (i.e., plural, singular, acronym, etc.) ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "757.016",
+      "required": false,
+      "helpText": "Definition of an expression when available. ",
+      "isMultiple": true,
+      "subFileNumber": 757.016,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NEGATION",
+      "dataType": "SUBFILE",
+      "rawType": "757.17",
+      "required": false,
+      "helpText": "This field contains words which are negated within the expression, i.e,  without mention of \"complication\", except \"thumb\", and other than an  \"open wound\".  These type of negations will not be indexed in the word  index, preventing erroneous search results. ",
+      "isMultiple": true,
+      "subFileNumber": 757.17,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SUPPLEMENTAL",
+      "dataType": "SUBFILE",
+      "rawType": "757.18",
+      "required": false,
+      "helpText": "Supplemental words (not found in the expression) which should be indexed to assist in look-up operations. ",
+      "isMultiple": true,
+      "subFileNumber": 757.18,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEACTIVATION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEACTIVATED;0:ACTIVE;",
+      "helpText": "This field indicates that a term formerly in use by the Lexicon has been deactivated and should not be used in lookups or displays. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SOURCE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P757.13'",
+      "required": false,
+      "pointerTo": 757.13,
+      "helpText": "This field indicates the \"source\" provided category for a term.  It can be used to group terms or to locate descendant or ancestral term within the source vocabulary. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P757.14'",
+      "required": false,
+      "pointerTo": 757.14,
+      "helpText": "This indicates the source volcabulary (and source file) for the volcabulary. This field is used primarily in filtering (screen) the search and for Lexicon Maintenance. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DESIGNATION CODE",
+      "dataType": "SUBFILE",
+      "rawType": "757.118",
+      "required": false,
+      "helpText": "The purpose of this multiple is to store designation IDs in the Lexicon.  Designation is a word that terminologists use to encompass concept name,  preferred term, expression, code text, synonyms, etc. In some systems  such as SNOMED CT as well as the concept having a code (the SNOMED CT  code), the individual designations (terms) belong to the concept each  have their own codes (designation identifiers). ",
+      "isMultiple": true,
+      "subFileNumber": 757.118,
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "ADC", "field": },
+    {"name": "ADTERM", "field": },
+    {"name": "AH", "field": },
+    {"name": "AMC", "field": },
+    {"name": "ASL", "field": },
+    {"name": "AWORD", "field": },
+    {"name": "AWRD", "field": },
+    {"name": "757.01", "field": .01, "type": "regular"},
+    {"name": "757.01", "field": 1, "type": "regular"},
+    {"name": "757.01", "field": 2, "type": "regular"},
+    {"name": "757.01", "field": 9, "type": "regular"},
+    {"name": "757.01", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

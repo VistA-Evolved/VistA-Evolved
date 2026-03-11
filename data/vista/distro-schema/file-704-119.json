@@ -1,0 +1,104 @@
+{
+  "fileNumber": 704.119,
+  "fileName": "OBS_AUDIT",
+  "globalRoot": "704.119",
+  "globalReference": "^MDC(704.119,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUDIT_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This value is the Global Unique IDentifier (GUID) for this entry.  This value is maintained nationally and is the same throughout the enterprise.   A sample AUDIT ID could be \"{2E0C516D-3858-4A1F-A2F3-BF0AB9E3A7FC}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUDIT_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Record Status Update;1:Record Verified;2:Record Marked For Purging;3:Record Marked For Archiving;4:Record Corrected;5:Record Rescinded;",
+      "helpText": "This indicates the type of audit; the reason for the audit. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUDIT_OBSERVATION",
+      "dataType": "POINTER",
+      "rawType": "RP704.117'",
+      "required": true,
+      "pointerTo": 704.117,
+      "helpText": "This identifies the observation that has been audited via this entry.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AUDIT_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time this audit occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AUDIT_AUTHOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) that created this audit entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STATUS_ORIGINAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Unverified;1:Verified;2:Archived;3:Purged;4:Corrected;5:Rescinded;",
+      "helpText": "This indicates the status/condition of the observation(#.03) before this  audit entry (#.01) was created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS_NEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Unverified;1:Verified;2:Archived;3:Purged;4:Corrected;5:Rescinded;",
+      "helpText": "This indicates the status/condition of the observation(#.03) after this  audit entry (#.01) was created. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REPLACEMENT_OBSERVATION",
+      "dataType": "POINTER",
+      "rawType": "P704.117'",
+      "required": false,
+      "pointerTo": 704.117,
+      "helpText": "This identifies the observation that was replaced by a new observation  via this audit. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a COMMENT provided by the person as documentation per this  observation audit (#.01). A sample COMMENT could be \"Verified with Clinical Flowsheets\". ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

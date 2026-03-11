@@ -1,0 +1,43 @@
+{
+  "fileNumber": 786,
+  "fileName": "EEO COMPLAINT ISSUE CODES",
+  "globalRoot": "786",
+  "globalReference": "^EEO(786,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the Issue Codes from which the complainant may choose. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "LAST XMIT UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "TRANSMIT FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "786", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

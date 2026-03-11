@@ -1,0 +1,79 @@
+{
+  "fileNumber": 503330.2,
+  "fileName": "VOLUNTARY MEAL TICKET",
+  "globalRoot": "503330.2PI",
+  "globalReference": "^ABS(503330.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP503330'",
+      "required": true,
+      "pointerTo": 503330,
+      "helpText": "This field contains the name of the volunteer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station number of the volunteer for this meal. It is the station number recorded in the Austin database. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "PRINTED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the printed name of the volunteer.  It is also used for printing the names of unscheduled volunteers. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEAL TICKET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to 'yes' if the volunteer is eligible for a meal. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the volunteer is eligible for the meal. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME MEAL TICKET PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that a meal ticket was printed for the volunteer. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "503330.2", "field": .01, "type": "regular"},
+    {"name": "503330.2", "field": 2, "type": "regular"},
+    {"name": "503330.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.5, "value": "W \"   \",$P(^(0),U,6)"},
+    {"field": 3, "value": "W \"   \",$E($P(^(0),U,4),4,5)_\"-\"_$E($P(^(0),U,4),6,7)_\"-\"_$E($P(^(0),U,4),2,3)"}
+  ]
+}

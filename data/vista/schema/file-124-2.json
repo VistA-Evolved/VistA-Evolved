@@ -1,0 +1,222 @@
+{
+  "fileNumber": 124.2,
+  "fileName": "AGGREGATE TERM",
+  "globalRoot": "124.2I",
+  "globalReference": "^GMRD(124.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Text that composes the Aggregate Term ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF TERM",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "2:FRAME;3:TERM;",
+      "helpText": "Set of codes that identifies the basic types of text. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The DHCP package associated with this aggregate term.   If an application wants to allow site configuration of its care plans, the changes made by the site should be given 'ZZ' as a package.  In other words calls made to the Generic Input Utility routine (GMRGTGIF) for site configuration options should set the variable GMRGPK=\"ZZ\". set the variable GMRGPK=\"ZZ\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P124.25'",
+      "required": false,
+      "pointerTo": 124.25,
+      "helpText": "Special classification that further identifies an aggregate term. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NODE IDENTIFICATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0I",
+      "length": 5,
+      "required": true,
+      "helpText": "Identification which separates this Aggregate Term NODE from another Aggregate Term NODE that has the same NAME(.01), but different logical parent NODE. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TERM DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "124.22",
+      "required": false,
+      "helpText": "If further clarification of this term is needed, it may be added here. The definition of the term displays when a user types '???' while selecting terms through the Patient Data Enter/Edit module. added here, and when selecting terms in the patient edit, if the user types in '???' then this definition will appear in conjunction with this term. ",
+      "isMultiple": true,
+      "subFileNumber": 124.22,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHILDREN",
+      "dataType": "POINTER",
+      "rawType": "124.21IP",
+      "required": false,
+      "helpText": "Children are aggregate terms that are under this frame/document. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The minimum number of selections allowed under this frame/document. Null entry means zero. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The maximum number of selections allowed under this frame/document.  A null entry means there is no maximum. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "SUPRESS MIN/MAX MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO SUPRESSION;1:SUPRESS MIN MESSAGE;2:SUPRESS MAX MESSAGE;3:SUPRESS BOTH MESSAGES;",
+      "helpText": "This field determines whether the MIN and MAX messages should be supressed for this frame. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LEAD TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text that precedes the text of this frame/document in displays. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRAIL TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text that follows the text of this frame/document in displays. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FORMAT OF OUTPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SENTENCE;T:TABULAR;B:BRIEF TABULAR;",
+      "helpText": "This is the format of the frame/document display.  Tabular, and brief tabular displays in an outline format; tabular uses lead and trail texts, and brief tabular does not.  Sentence creates paragraphs using lead and trail texts, and ends sentences with periods. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "ASK ADDITIONAL TEXT",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "A flag determining whether Additional Text can be entered for an aggregate term or not. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACTION ON ENTERING SELECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is valid MUMPS code that is executed upon entering the screen of  an Aggregate Term in the General Medical Record Generator patient edit.       The variables that the programmer can rely on being set and the     programmer should not kill are:        DFN and arrays from DEM^VADPT and INP^VADPT          GMRGRT=Prime document data for this term in the following format:               AGGY IEN^Term text          GMRGPDA=ENTRY IN GMR TEXT (124.3) FILE          GMRGTERM=Data on term being process",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTION ON FILING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is valid MUMPS code that will be executed upon the filing of an Aggregate Term in the General Medical Record Treatment Planner.       The variables that the programmer can rely on being set and the     programmer should not kill are:        DFN and arrays from DEM^VADPT and INP^VADPT          GMRGRT=Prime document data for this term in the following format:               AGGY IEN^Term text          GMRGPDA = ENTRY IN GMR TEXT (124.3) FILE          GMRGTERM=Data on term being filed in the fo",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACTION ON LEAVING SELECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is valid MUMPS code that will be executed upon the leaving of this aggregate term screen from the General Medical Record Generator patient edit.      The variables that the programmer can rely on being set, and that the    programmer should not kill are:         DFN and arrays from DEM^VADPT and INP^VADPT         GMRGRT=Prime document data for this term in the following format:              AGGY IEN^Term text         GMRGPDA= ENTRY IN GMR TEXT (124.3) FILE         GMRGTERM=Data on term bein",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTION ON PRINTING SELECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "An action that occurs when an aggregate term is printed as a selection on the screen.      The variables that the programmer can rely on being set, and that the    programmer should not kill are:       DFN and arrays from DEM^VADPT and INP^VADPT         GMRGRT=Prime document data for this term in the following format:              AGGY IEN^Term text         GMRGPDA= ENTRY IN GMR TEXT (124.3) FILE         GMRGTERM=Term data whose selections are being printed as follows:                124.2 FILE ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AA02", "field": },
+    {"name": "AA03", "field": },
+    {"name": "AA05", "field": },
+    {"name": "AKID", "field": },
+    {"name": "ANDUP", "field": },
+    {"name": "APKUP", "field": },
+    {"name": "ATD", "field": },
+    {"name": "ATD1", "field": },
+    {"name": "ATXTUP", "field": },
+    {"name": "ATY", "field": },
+    {"name": "ATYUP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CL", "field": },
+    {"name": "PK", "field": },
+    {"name": "124.2", "field": .01, "type": "regular"},
+    {"name": "124.2", "field": .01, "type": "regular"},
+    {"name": "124.2", "field": .01, "type": "regular"},
+    {"name": "124.2", "field": .01, "type": "regular"},
+    {"name": "124.2", "field": .02, "type": "regular"},
+    {"name": "124.2", "field": .02, "type": "regular"},
+    {"name": "124.2", "field": .02, "type": "regular"},
+    {"name": "124.2", "field": .03, "type": "regular"},
+    {"name": "124.2", "field": .03, "type": "regular"},
+    {"name": "124.2", "field": .03, "type": "regular"},
+    {"name": "124.2", "field": .03, "type": "regular"},
+    {"name": "124.2", "field": .04, "type": "regular"},
+    {"name": "124.2", "field": .04, "type": "regular"},
+    {"name": "124.2", "field": .05, "type": "regular"},
+    {"name": "124.2", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "W \"\""},
+    {"field": .05, "value": "W \"\""},
+    {"field": WRITE, "value": "D EN1^GMRGUT3"}
+  ]
+}

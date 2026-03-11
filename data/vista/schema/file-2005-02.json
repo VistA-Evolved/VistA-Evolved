@@ -1,0 +1,88 @@
+{
+  "fileNumber": 2005.02,
+  "fileName": "OBJECT TYPE",
+  "globalRoot": "2005.02",
+  "globalReference": "^MAG(2005.02,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Each kind of data supported by the Imaging System has an entry in the Object Type file.  The Object Type file manages the kinds of actions which that type of object can have and the routines that are executed for each action. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABSTRACT REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is reserved for future use and will indicates whether a separate abstract file is required for this type of object. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "2005.21",
+      "required": false,
+      "helpText": "This field is reserved for future use will contain the kinds of actions which apply to the object type. Generally, all objects can be displayed as a full image/object and they have an abstract display method.  In addition, groups of objects may have other actions such as cineloop display or tiled display. ",
+      "isMultiple": true,
+      "subFileNumber": 2005.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EDIT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is reserved for future use for the name of the edit template used to enter data pertaining to this type of object. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P2005.02'",
+      "required": false,
+      "pointerTo": 2005.02,
+      "helpText": "This field is reserved for future use to allow object types to inherit characteristics from a parent object type. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHILD CLASS",
+      "dataType": "POINTER",
+      "rawType": "2005.24P",
+      "required": false,
+      "helpText": "This field is reserved for future use to allow object types to inherit characteristics from other object types. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFAULT EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default extension for this type of object. When Object Type is not known, at time of capture, the extension is  used to determine the type. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "2005.02", "field": .01, "type": "regular"},
+    {"name": "2005.02", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

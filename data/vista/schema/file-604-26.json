@@ -1,0 +1,50 @@
+{
+  "fileNumber": 604.26,
+  "fileName": "ASI PROGRAM TYPE",
+  "globalRoot": "604.26",
+  "globalReference": "^YSTX(604.26,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the IDentification number for the substance abuse program type as defined in the substance abuse annual report from VA headquarters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the TITLE of the substance abuse program type as defined in the substance abuse annual report from VA headquarters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "Activate a program only if its available at your site. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "604.26", "field": .01, "type": "regular"},
+    {"name": "604.26", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(604.26,3,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

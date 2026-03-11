@@ -1,0 +1,38 @@
+{
+  "fileNumber": 812,
+  "fileName": "PCE CUSTOMIZE REPORT",
+  "globalRoot": "812",
+  "globalReference": "^PXD(812,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PRINT FROM FILE/SUBFILE",
+      "dataType": "SUBFILE",
+      "rawType": "812.01",
+      "required": false,
+      "helpText": "This is the file or subfile, that if located while a searching for visits,  the User Visit Review option will priint additional fields from when a  Customized report is selected. ",
+      "isMultiple": true,
+      "subFileNumber": 812.01,
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "812", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

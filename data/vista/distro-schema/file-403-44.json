@@ -1,0 +1,67 @@
+{
+  "fileNumber": 403.44,
+  "fileName": "SCHEDULING REASON",
+  "globalRoot": "403.44I",
+  "globalReference": "^SD(403.44,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Brief description of the event reason.   This field is the primary key to the scheduling reason file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT CODE",
+      "dataType": "POINTER",
+      "rawType": "RP403.43'",
+      "required": true,
+      "pointerTo": 403.43,
+      "helpText": "Indicates which processes can utilize this entry.   This field indicates the event where this reason can be used.  For example, 'HL-S15' means this reason can be used during appointment cancellations. This field associates a scheduling reason with a particular event code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "403.445",
+      "required": false,
+      "helpText": "This field contains the scheduling reason description. ",
+      "isMultiple": true,
+      "subFileNumber": 403.445,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "EVC", "field": },
+    {"name": "403.44", "field": .01, "type": "regular"},
+    {"name": "403.44", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SD(403.43,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(403.43,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

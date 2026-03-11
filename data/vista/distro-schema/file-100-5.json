@@ -1,0 +1,187 @@
+{
+  "fileNumber": 100.5,
+  "fileName": "OE/RR RELEASE EVENTS",
+  "globalRoot": "100.5",
+  "globalReference": "^ORD(100.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the event, used to uniquely identify it in the file; it is visible in the Event Editor only. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a shorter version of the Display Text, to be used for displaying and grouping delayed orders on the Orders tab where space is limited. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that this event became inactive; once this date/time has passed, this event may no longer be selected for delaying orders, however any orders already delayed for this event will still be released when the event occurs.  If this date/time is in the future, this event may continue to be selected for delaying orders until this time passes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "ACTIVATION HISTORY",
+      "dataType": "DATE",
+      "rawType": "100.52DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.52,
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADMISSION;T:TRANSFER;D:DISCHARGE;O:O.R.;M:MANUAL RELEASE;",
+      "helpText": "This is the event that should cause delayed orders to be released to the service(s) for action; for OR (Surgery) events, the orders will be released when TIME PAT IN OR (#130,.205) is entered in the Surgery package.     Orders delayed for Manual Release will not be automatically released by CPRS at all and can only be released via the \"Release to Service\" action by a user who is authorized to do so.  Authorization is controlled by the parameter OREVNT MANUAL RELEASE CONTROL, which lets sites cho",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the division that this event will apply to; for transfers across divisions, this should be the new division that the patient is going to. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EVENT ORDER DIALOG",
+      "dataType": "POINTER",
+      "rawType": "*P101.41'",
+      "required": false,
+      "pointerTo": 101.41,
+      "helpText": "This should be the dialog for a generic order requesting this event; if such an order is not necessary for this event, leave this empty.  Unlike other delayed orders, the order created by this dialog will become active right away when signed and be visible on the Active Orders view as well as with the delayed orders on the Orders tab. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDER SET/MENU",
+      "dataType": "POINTER",
+      "rawType": "*P101.41'",
+      "required": false,
+      "pointerTo": 101.41,
+      "helpText": "This is a menu or order set containing items that are either necessary or commonly ordered when this event occurs.  It will be invoked right away when first placing delayed orders for this event; if an EVENT ORDER DIALOG was defined for this event, this order set will be presented to the user immediately following that dialog.  You may enter any type of order dialog except prompt types. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAPSE IN #DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of days to allow orders for this event to remain delayed for a patient.  Patient Events are evaluated whenever delayed orders are acted upon or viewed, and if this number of days has passed since delayed orders were entered for this event for the patient then the status of all orders delayed for this event will be changed to \"lapsed\" and the Patient Event itself will be terminated.  The orders can no longer be released to the service then. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAS MOVEMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P405.2'",
+      "required": false,
+      "pointerTo": 405.2,
+      "helpText": "This is an MAS Movement Type that can further define this event; it is optional, but if defined then it must match the patient's movement data to satisfy the event and cause any delayed orders to be released.  For example, to have delayed orders released when a patient returns from pass enter the movement type of AUTH ABSENCE 96 HOURS OR LESS, or leave this field empty to have the transfer event defined by other criteria such as treating specialty or ward location. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name of the event as it will appear to the user in CPRS. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORDERING PARAMETERS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Many order dialogs use parameters that depend on location; this field will be used as the default location for retrieving those parameter values when delaying orders to this event.  The patient's actual location will be saved with the order at the time of its release. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INCLUDED TREATING SPECIALTIES",
+      "dataType": "POINTER",
+      "rawType": "100.51P",
+      "required": false,
+      "helpText": "These are treating specialties that can satisfy this event; if the patient's new specialty matches one in this list then orders delayed for this event may be released. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INCLUDED LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "100.511P",
+      "required": false,
+      "helpText": "These are ward locations that can satisfy this event; if the patient's new location matches one in this list then orders delayed for this event may be released. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "100.512DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.512,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COPY ACTIVE ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether or not the user will be presented  with the patient's active orders, which may then be copied to the  delayed event being created.   If this field is set to no then the user will not see the  patient's active orders and will not be allowed to copy any  current orders.   If this field is set to yes then the user will be shown the  patient's active orders and the user may select orders to be  copied to the delayed event.  The list of active orders will be  presented t",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P100.5'",
+      "required": false,
+      "pointerTo": 100.5,
+      "helpText": "For release events that have a common trigger event (e.g. same treating specialty or same locations) but require different names or display text a parent-child relationship can be set up.  The parent contains the base trigger event logic while the child contains the information unique to this event.  In a sense, the child events are \"synonyms\" to the parent event as all childen are related to the parent. When the trigger event occurs that would release orders for the parent all the child orders ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "ADT", "field": },
+    {"name": "B", "field": },
+    {"name": "DAD", "field": },
+    {"name": "100.5", "field": .01, "type": "regular"},
+    {"name": "100.5", "field": 2, "type": "regular"},
+    {"name": "100.5", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(100.5,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

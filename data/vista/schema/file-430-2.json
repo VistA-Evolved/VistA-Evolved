@@ -1,0 +1,236 @@
+{
+  "fileNumber": 430.2,
+  "fileName": "ACCOUNTS RECEIVABLE CATEGORY",
+  "globalRoot": "430.2I",
+  "globalReference": "^PRCA(430.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "These are the Categories for Accounts Receivable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This abbreviation can be used to enter or look-up the category. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REFER TO DMC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;4:PRIOR TO 8/1/19;5:8/1/19 AND AFTER;",
+      "helpText": "The REFER TO TOP? field allows overdue bills to be sent to the Treasury  Offset Program for collection.   NOTE:  This field is set automatically and should not be modified  directly or with FileMan. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "REFER TO TOP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;4:PRIOR TO 8/1/19;5:8/1/19 AND AFTER;",
+      "helpText": "The REFER TO TOP? field allows overdue bills to be sent to the Treasury  Offset Program for collection.   NOTE:  This field is set automatically and should not be modified  directly or with FileMan. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "REFER TO CS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:PRIOR TO 8/1/15;3:8/1/15 AND AFTER;4:PRIOR TO 8/1/19;5:8/1/19 AND AFTER;",
+      "helpText": "The REFER TO TOP? field allows overdue bills to be sent to the Treasury  Offset Program for collection.   NOTE:  This field is set automatically and should not be modified  directly or with FileMan. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DISPLAY IN BILL PROFILE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RX;2:OUTPATIENT;3:LTC;4:INPATIENT;5:CC RX;",
+      "helpText": "This field controls whether an entry in the Accounts Receivable (AR) file  (#430) linked to an AR Category will display the associated IB transaction information when using the BILL PROFILE [RCDP ACCOUNT PROFILE] options.     0 : The IB transaction information will not display for that AR Category   The other codes will display the IB informtion for that transaction using  the following output format:    1 : Use the VA RX output format  2 : Use the Outpatient output format  3 : Use the LTC outpu",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DISP BILL PROF DESC INFO?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RX DISPLAY;2:OUTPATIENT DISPLAY;3:INPATIENT DISPLAY;4:COMM CARE RX DISPLAY;5:OPT LTC DISPLAY;6:INPT LTC DISPLAY;7:CC LTC DISPLAY;",
+      "helpText": "This field controls how a transaction linked to an AR Category will  appear in the Description Column on screen 3 of the Bill Profile Option [RCDP BILL PROFILE].  The possible formats are:    NULL - No display                 1 - RX Display (RX # and Medication)  2 - Outpatient Display (Outpatient Visit Date)  3 - Inpatient Display (Inpatient Admission Date)  4 - Comm Care RX Display (Comm Care RX Fill Date)  5 - OPT LTC Display (Outpatient LTC Visit Date)  6 - INPT LTC Display (Inpatient LTC Vi",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ELIG FOR RPP",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field determines if bills associated with this AR Category can be  included in a Debtor Repayment Plan. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PRINT SPECIAL NOTICE?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field determines if bills associated with this AR Category will  force the Special Notice Addendum to print when a Patient Statement  prints. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEGMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the category's segment for AMIS reporting purposes. When a bill is setup, the AMIS segment of the bill is determined by the Category of bill and is stored with the bill under the AMIS Segment field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GL #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the General Ledger Number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ALD CODE",
+      "dataType": "POINTER",
+      "rawType": "P420.3'",
+      "required": false,
+      "pointerTo": 420.3,
+      "helpText": "This is the Appropriation/Limitation/Department code. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PATIENT;O:OTHER-PERSON;T:THIRD PARTY;V:VENDOR;C:MEANS TEST PATIENT;N:INSTITUTION;",
+      "helpText": "This code indicates the type of debtor that this category will be used for. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CATEGORY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0IX",
+      "length": 3,
+      "required": true,
+      "helpText": "This field is assigned by the package and should not be edited.  This field defines what type of AR category and is used throughout the AR package.  Since this is a table file and the internal entry number for categories may not be the same from site-to-site, this field should remain the same regardless of the site where the file is located. This field is used for \"look-up\" purposes by the AR package. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RECEIVABLE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FEDERAL;2:NON-FEDERAL;",
+      "helpText": "The receivable code defines if the category of bill is a Federal Receivable or non-federal receivable.  This field is used to provide a default when creating code sheets under the AR Accounting Technician menu.  The code sheets require a \"federal receivable\" code. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CHARGE INTEREST?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged interest based on the interest rate effective at the time the bill was created.   Interest is calculated every night by the AR package for all bills. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CHARGE ADMINISTRATIVE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged administrative charges based on the administrative amount effective at the time the bill was created.   Administrative charges are calculated for each account every night by the AR package for all accounts. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CHARGE PENALTY?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field defines if this category of bill should be charged penalty based on the penalty rate effective at the time the bill was created.   Interest is calculated every night by the AR package for all bills. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACCRUED?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ACCRUED;0:NON-ACCRUED;2:EITHER;",
+      "helpText": "determines if bill is detail or summary. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REFUND/REIMBURSEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REFUND;2:REIMBURSEMENT;",
+      "helpText": "Determines which type of FMS bill to be generated base on category. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PARAGRAPH CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Based on the category of the bill, CCPC will print out paragraph on the patient statement for the different rights and obligations.  This field contains which paragraph/s goes with which type of bill. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 580000.01,
+      "fieldName": "COLLECT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "When processing bills for transmission to initiate collection efforts, only certain \"categories\" of bills are included.  If you want bills identified as being associated with this Accounts Receivable Category to be included for transmission consideration please respond YES to this field.  If you DO NOT wish to include bills with this Accounts Receivable Category in collections transmission leave this field blank.   Simply put, a bill which is classified in the Accounts Receivable file (430) with",
+      "fieldNumber_": 580000.01
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "430.2", "field": .01, "type": "regular"},
+    {"name": "430.2", "field": 1, "type": "regular"},
+    {"name": "430.2", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?25,$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2041.6,
+  "fileName": "VIST CHECKLIST OPTIONS",
+  "globalRoot": "2041.6",
+  "globalReference": "^ANRV(2041.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHECKLIST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text you wish to choose from as an answer to the fields in the VIST BENEFITS AND SERVICES CHECKLIST file.  These fields include BLIND REHAB. TRAINING, CHAMPUS, CHAMPVA, CLOTHING ALLOWANCE, ect. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2041.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

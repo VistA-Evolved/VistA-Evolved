@@ -1,0 +1,93 @@
+{
+  "fileNumber": 704.1211,
+  "fileName": "CP_KARDEX_EVENTS",
+  "globalRoot": "704.1211",
+  "globalReference": "^MDC(704.1211,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a Globally Unique IDentifier (GUID) for this entry. This is  maintained nationally so it is the same throughout the enterprise.   A sample EVENT ID could be \"{69DBD11E-9A8C-4ECE-AFA4-73947218807D}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CARE_ACTION_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.121'",
+      "required": true,
+      "pointerTo": 704.121,
+      "helpText": "This identifies the action (#704.121) to which this event will be  assigned. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DUE_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this event is scheduled to be executed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMPLETED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this event was actually done. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COMPLETED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) who marked this event as completed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:PENDING;1:COMPLETED;2:HELD;3:REFUSED;",
+      "helpText": "This indicates the status, condition, or state of this event.   ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free-text, user entered COMMENT for this event. A sample COMMENT could be \"This event was completed on time.  It was  entered late\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .991,
+      "fieldName": "AUDIT_COUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a calculated count of the number of audits for this event. ",
+      "fieldNumber_": .991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

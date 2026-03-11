@@ -1,0 +1,385 @@
+{
+  "fileNumber": 68,
+  "fileName": "ACCESSION",
+  "globalRoot": "68I",
+  "globalReference": "^LRO(68,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AREA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The accession area of the Lab. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LR SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CH:CHEM, HEM, TOX, RIA, SER, etc.;MI:MICROBIOLOGY;EM:ELECTRON MICROSCOPY;SP:SURGICAL PATHOLOGY;CY:CYTOLOGY;AU:AUTOPSY;BB:BLOOD BANK;",
+      "helpText": "This represents the functional area of the Lab.  Must be chosen from a set of codes. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLEAN UP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "D:DAILY;W:WEEKLY;M:MONTHLY;Q:QUARTERLY;Y:YEARLY;",
+      "helpText": "Triggered by the Accession Transform field. Determines frequency of clean up on accession lists. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMMON ACCESSION #'S WITH AREA",
+      "dataType": "POINTER",
+      "rawType": "*P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "If another accession area is designated here, that other accession area will be used to find the next \"available\" accession number which will be updated on the other accession area. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACCESSION TRANSFORM",
+      "dataType": "POINTER",
+      "rawType": "R*P62.07'",
+      "required": true,
+      "pointerTo": 62.07,
+      "helpText": "Determines when a new accession list begins. Points to the EXECUTE CODE file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .051,
+      "fieldName": "ACC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Mumps code that is triggered by the Accession Transform field. ",
+      "fieldNumber_": .051
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VERIFICATION CODE",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "Points to EXECUTE CODE file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .061,
+      "fieldName": "VER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Triggered by the Verification Code field. ",
+      "fieldNumber_": .061
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "*IDENTITY CONTROL",
+      "dataType": "POINTER",
+      "rawType": "P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "No longer used.  Will be deleted in later version. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .071,
+      "fieldName": "*IDENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used.  Will be deleted in later version. ",
+      "fieldNumber_": .071
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The print order of the Accession Area.  If the entry is less than 1 it will not be displayed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .085,
+      "fieldName": "BYPASS ROLLOVER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If you choose not to bypass rollover (i.e., have a null entry), then any unverified data will be \"rolled over\" to the next day.  You will not be allowed to have a duplicate accession number. ",
+      "fieldNumber_": .085
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Abbreviation for the accession area.  Must have programmer privileges to alter this entry. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "ASSOCIATED DIVISION",
+      "dataType": "POINTER",
+      "rawType": "68.03PA",
+      "required": false,
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": .092,
+      "fieldName": "TYPE OF ACCESSION NUMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SHORT;L:LONG;",
+      "helpText": "This field determines whether a full unique accession number is used for barcoding and messages between instruments.  The unique accession number is built from three different numbers, the accession area, the date, and the accession entry number. If 'S'hort is selected, the accession number used in barcodes and for input at the instrument keypad is treated the  same as it was traditionally.  The 'L'ong unique accession will always be generated, it just won't be used in communicating with the ins",
+      "fieldNumber_": .092
+    },
+    {
+      "fieldNumber": .095,
+      "fieldName": "*LAB SECTION",
+      "dataType": "POINTER",
+      "rawType": "R*P62.2",
+      "required": true,
+      "pointerTo": 62.2,
+      "helpText": "  THIS FIELD HAS BEEN MARKED FOR DELETION IN FUTURE VERSIONS THE FIELD LAB DIVISION (#.19) WILL BE USED INSTEAD PER WORKLOAD REVISION. ",
+      "fieldNumber_": .095
+    },
+    {
+      "fieldNumber": .097,
+      "fieldName": "NON LAB ACCESSION AREA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": " This field indicates if this particular accession area is operated by another service other than Pathology & Laboratory Medicine. If this accession area in staffed or funded from non Pathology sources, mark this field yes.    An example would be Blood Gas laboratory staffed or funded by Medicine service.   HOWEVER If this accession area is used by Point of Care (ie. Nurses entering finger stick glucose) do not set this field to yes. Because in this case the location is relevant to DSS database.",
+      "fieldNumber_": .097
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RESPONSIBLE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The responsible official in the laboratory.  Usually the Chief of Laboratory Service, or his designee. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INHIBIT AREA LABEL PRINTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "A YES entry stops all label printing for this accession area. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "LAB DIVISION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AP:ANATOMIC PATHOLOGY;CP:CLINICAL PATHOLOGY;",
+      "helpText": "  This field will be used to determine which lab division a particular accession area belongs.  If this field is not filled in, CP (Clinical Pathology ) will be assumed. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "NUMERIC IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to build the unique accession identifier number. It is used as the first two characters of the number.  Use the numbers 1-9 and uppercase letters A-Z to designate the identifier. For example, if you enter 99 all accession identifiers for this accession area will start with 99, e.g. 9923400025.   If a single character is used the system will append a leading zero to the unique identifier generated.   No two accession areas can use the same identifier.   Changing the identifier ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "Lock for load/work list build",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This locks the accession to allow only ONE load/work list to build at a time. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "LAB OOS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Occassion Of Service (OOS)    This field is used for passing data to the PCE API. This API is used to capture CPT codes for laboratory procedures.   Special OOS Hospital locations have been created that are solely used for recording workload (No count locations). These OOS location all begin with 'LAB DIV' in their names.   Example of name: LAB DIV 600 OOS ID 108 Where 600 is the Station Number from the Institution file (#4). Where 600 is the division Station Number where the work is done. Where",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "USER ACCESS AUTHORIZATION",
+      "dataType": "POINTER",
+      "rawType": "P19.1'",
+      "required": false,
+      "pointerTo": 19.1,
+      "helpText": "If left blank, any lab person may access this accession area.  If filled in, only lab persons holding the key that is entered here may use this accession area. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENTATION CONTROLS",
+      "dataType": "POINTER",
+      "rawType": "68.09PA",
+      "required": false,
+      "helpText": "Select the instrument (if appropriate, otherwise use the MANUAL selection) to be associated with the controls you will be selecting. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "68.01DA",
+      "required": false,
+      "helpText": "The date of the accession. ",
+      "isMultiple": true,
+      "subFileNumber": 68.01,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPECIMEN HANDLING CODES",
+      "dataType": "POINTER",
+      "rawType": "68.03P",
+      "required": false,
+      "helpText": " If there a particular set of wkld codes that can be associated with this specimen, enter them in this field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BAR CODE PRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:YES;2:CODE39;3:CODE39 WITH CHECK DIGIT;4:CODE128;",
+      "helpText": " This field is used by the label print utilities to determine if bar code labels should be printed for this accession area. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "BAR CODE PAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of zeros (\"0\") to pad an accession number when printing a bar code using the accession number. Used when site needs a minimum length bar code on labels.   Example if need a four digit bar code then enter four.         This would produce the following:          Accession number       Bar Code               1                  0001              12                  0012             123                  0123            1234                  1234           12345                 12345 ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "ALTERNATE LABEL ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Site can enter an alternate label entry point to be used instead of the standard lab label routine entry point defined in file LABORATORY SITE (#69.9).   This field overrides the label routine settings in file LABORATORY SITE (#69.9) for this accession area. Field ALTERNATE LABEL ROUTINE (#5.3) must be completed for the software to use this field. See description of field #5.3. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "ALTERNATE LABEL ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Site can enter an alternate label routine to be used instead of the standard lab label routine defined in file LABORATORY SITE (#69.9).   This field overrides the label routine settings in file LABORATORY SITE (#69.9) for this accession area. It is used in conjunction with field ALTERNATE LABEL ENTRY (#5.2) for building the variable LRLABEL. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "Reserved",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:2X5 UNEVEN;2:ORDER # FIRST;3:MEDLAB;4:SITE FILE;5:SITE DEVELOPED VAF 10-1392;",
+      "helpText": "Reserved for future use. the same choices you have for the entire lab. If you have selected special label in this file then the routine will use this field to determine what label style to us for this accession area. The field Bar Code Printer will determine where the label will print. Remember these three field work together. The Bar code printer, the special label, and the label type.     If you selected special label and leave this field blank the default will be the 2X5 uneven will be used. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WORK AREA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "WORK AREA:WORK AREA;",
+      "helpText": " This field should only be edited if this accession area is used for the purpose of workload definitions. This accession area is then used with load/worklist to define the area of the lab which should receive WKLD credit.   SPECIMENS CAN NOT BE ACCESSIONED INTO THIS ACCESSION AREA. IT IS SOLELY FOR THE USE WKLD DEFAULT ANSWERS FOR LMIP/WKLD DATA COLLECTION. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "WORKLOAD ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  this field is used to activate wkld collection. Each accession area can be turned on independently. In order for this field to trigger wkld collection, the field WKLD STATS ON (#17) in the LABORATORY SITE (#69.9) file must also indicate ON. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COLLECT STD/QC/REPEATS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " If you wish to have the verification process to prompt the user for Standards, QC and Repeats after each session enter a Yes.  This will cause the counts entered to be added to all test the user verified during that particular session.  The function of entering this data can be also done by the option STD/QC/REPS/MANUAL WKLD COUNT [LR WKLD STD/QC/REPS] found on the  Process Menu [LR DO!]. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EXTERNAL SERVICE AREA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines if the Accession Area is defined for send out tests. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AMI", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "68", "field": .01, "type": "regular"},
+    {"name": "68", "field": .04, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .06, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "68", "field": .09, "type": "regular"},
+    {"name": "68", "field": .095, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "W \"\""},
+    {"field": .06, "value": "W \"\""},
+    {"field": .08, "value": "W \"\""},
+    {"field": .09, "value": "W \"\""}
+  ]
+}

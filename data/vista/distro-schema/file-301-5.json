@@ -1,0 +1,210 @@
+{
+  "fileNumber": 301.5,
+  "fileName": "IVM PATIENT",
+  "globalRoot": "301.5IP",
+  "globalReference": "^IVM(301.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "  This field contains the name of a patient for which the income verification process will be (or has been) done.  The patients stored in this file are patients that are either Category A by virtue of the means test or are Category C veterans without insurance.   Entries are placed into this file automatically by the IVM module.  They should not be added, edited, or removed from this file without using the appropriate IVM menu option. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INCOME YEAR",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "  This field should contain the year (no month or date) for which this patient's income is being verified by the IVM Center in Birmingham.   This field is populated automatically by the IVM module and will not be editable. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRANSMITTED;0:NOT TRANSMITTED;",
+      "helpText": "  This field will be maintained by the IVM software module.  If data for a patient requires transmission, this field will be set to 0.  Once the data has been transmitted, the field will be set to 1. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STOP FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STOP;0:DON'T STOP;",
+      "helpText": "This field does not affect transmissions necessary for enrollment updates.   This field will be updated automatically by the DHCP IVM software module. If it contains a 0 or is null, whenever changes are made to the means test or demographic information for this patient, a new transmission will be sent.   If the field equals 1, it means that further transmissions should not be sent to the IVM Center unless requested via a query. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "QUERY TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the first date/time that a full query message for the IVM PATIENT was transmitted to the IVM Center. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FUTURE MEANS TEST",
+      "dataType": "POINTER",
+      "rawType": "P408.31'",
+      "required": false,
+      "pointerTo": 408.31,
+      "helpText": "This field will be used to indicate the existence of a means test being held for a future date. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FUTURE RX COPAY TEST",
+      "dataType": "POINTER",
+      "rawType": "P408.31'",
+      "required": false,
+      "pointerTo": 408.31,
+      "helpText": "This field will be used to indicate the existence of a pharmacy co-pay test being held for a future effective date. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MEANS TEST DELETION TEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be used to indicate that HEC should be notified that the veteran's means test was deleted.  The presence of a date will both indicate that a deletion occurred and the income year of the test that was deleted. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RX TEST DELETION TEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will indicate whether HEC needs to be notified of the deletion of the veteran's pharmacy co-pay test.  The presence of a date will both indicate that a deletion occurred and the income year of the test that was deleted.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HARDSHIP DELETION TEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be used to indicate whether or not HEC needs to be notified of the deletion of a hardship.  The presence of a date will both indicate that a deletion occurred and the income year of the test for which the hardship was deleted. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LTC COPAY EXMPT TEST DELETE DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will indicate whether HEC needs to be notified of the deletion of the veteran's Long Term Care Copay Exemption test.  The presence of a date will both indicate that a deletion occurred and the income year of the test that was deleted. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "CLOSURE REASON",
+      "dataType": "POINTER",
+      "rawType": "P301.93'",
+      "required": false,
+      "pointerTo": 301.93,
+      "helpText": "If a case record has been closed (the STOP FLAG [#.04] field is set to YES), this field will store the reason that the case was closed. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "CLOSURE SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:IVM CENTER;2:DHCP (SYSTEM);",
+      "helpText": "If a case record has been closed, this field is used to store the source which was responsible for closing the record.  If the IVM Center is not going to verify a Means Test, they will send a CASE STATUS messaage to DHCP in order to close the case. In this case IVM will be the source of the closure.  They will also be the closure source when they transmit a verified Means Test to DHCP.   If a veteran's Means Test no longer meets the IVM criteria, then DHCP will serve as the closure source.  Case",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "CLOSURE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a case record has been closed, this field will be used to store the date and time that the case was closed. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "IVM EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEVER OCCURRED;1:IVM EVENT REQUIRES TRANSMISSION;2:IVM EVENT WAS TRANSMITTED;",
+      "helpText": "This field is used to indicate whether or not transmission is necessary under the criteria defined for IVM. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "DCD EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEVER OCCURRED;1:DCD EVENT REQUIRES TRANSMISSION;2:DCD EVENT WAS TRANSMITTED;",
+      "helpText": "This field is used to indicate whether or not transmission is necessary under the criteria defined by DCD. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "ENROLLMENT EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEVER OCCURRED;1:ENROLLMENT EVENT REQUIRES TRANSMISSION;2:ENROLLMENT EVENT WAS TRANSMITTED;",
+      "helpText": "This field is used to indicate whether or not transmission of the patient is necessary under the criteria defined for enrollment. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INCOMING SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "301.501PA",
+      "required": false,
+      "helpText": "  This field will contain a pointer to the HL7 SEGMENT NAME file.  It will represent the segment which has been received by the VAMC from the IVM Center.  Note:  the .02 field will contain the free text segment name. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "APT1", "field": },
+    {"name": "APT2", "field": },
+    {"name": "ASEG", "field": },
+    {"name": "ATR", "field": },
+    {"name": "AUPL", "field": },
+    {"name": "AYR1", "field": },
+    {"name": "AYR2", "field": },
+    {"name": "B", "field": },
+    {"name": "301.5", "field": .01, "type": "regular"},
+    {"name": "301.5", "field": .01, "type": "regular"},
+    {"name": "301.5", "field": .01, "type": "regular"},
+    {"name": "301.5", "field": .02, "type": "regular"},
+    {"name": "301.5", "field": .02, "type": "regular"},
+    {"name": "301.5", "field": .03, "type": "regular"},
+    {"name": "301.5", "field": .06, "type": "regular"},
+    {"name": "301.5", "field": .06, "type": "regular"},
+    {"name": "301.5", "field": .07, "type": "regular"},
+    {"name": "301.5", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

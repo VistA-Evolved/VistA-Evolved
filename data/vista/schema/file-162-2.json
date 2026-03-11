@@ -1,0 +1,236 @@
+{
+  "fileNumber": 162.2,
+  "fileName": "FEE NOTIFICATION/REQUEST",
+  "globalRoot": "162.2DI",
+  "globalReference": "^FBAA(162.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRDX",
+      "required": true,
+      "helpText": "Date and Time that the vendor notifies the COJ of this episode of hospitalization. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP161.2",
+      "required": true,
+      "pointerTo": 161.2,
+      "helpText": "Name of the vendor who is notifying you of a veteran request for care. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PERSON WHO CALLED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field that contains the name of the person who is notifying you. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VETERAN",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is name of the veteran who is requesting services from the VA. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DATE/TIME OF ADMISSION",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date and time of admission to the civil hospital. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AUTHORIZED FROM DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date and time that you begin accepting responsibility for bills incurred if the veteran is found to be legally and medically entitled. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADMITTING DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the admitting diagnosis of the veteran which is usually obtained from the person who called. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a free text field. Please enter the name of the attending physician for this patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "ATTEN.PHYSICIAN PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the phone number of the attending physician while the patient was residing in the non-VA facility. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER ENTERING NOTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the user who entered the notification. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LEGAL ENTITLEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaXO",
+      "required": false,
+      "helpText": "If a veteran is determined not to be legally entitled then s/he is assumed not medically entitled and the status of the request becomes complete. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE OF LEGAL DETERMINATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the legal entitlement was entered into the computer. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "USER ENTERING LEGAL DETERM.",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who entered the legal entitlement. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MEDICAL ENTITLEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaXO",
+      "required": false,
+      "helpText": "Once the legal entitlement has been determined the medical entitlement must be determined following VA regulations. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE OF MEDICAL DETERMINATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the user entered the Medical determination. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "USER ENTERING MEDICAL DETERM.",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of the user who entered the medical determination. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SUSPENSE CODE",
+      "dataType": "POINTER",
+      "rawType": "P161.27'",
+      "required": false,
+      "pointerTo": 161.27,
+      "helpText": "A pointer to the Fee Basis Suspension file, allows the user to enter in a suspense reason for Legal or Medical denial. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DESCRIPTION OF SUSPENSION",
+      "dataType": "SUBFILE",
+      "rawType": "162.215",
+      "required": false,
+      "helpText": "If the user enters a '4' for 'other' in the suspense field s/he can enter a word processing text for reason why. ",
+      "isMultiple": true,
+      "subFileNumber": 162.215,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ASSOCIATED 7078",
+      "dataType": "POINTER",
+      "rawType": "P162.4'",
+      "required": false,
+      "pointerTo": 162.4,
+      "helpText": "This field is set by the system when the user sets-up a 7078 for an associated request. This prevents multiple 7078's for one request. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "REFERRING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The VA physician who made the referral on behalf of the veteran to the  non-VA hospital for inpatient health care services. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PENDING ENTITLEMENT;2:PENDING PHYSICIAN CONTACT;3:COMPLETE;",
+      "helpText": "This status is determined based on the medical and legal entitlement questions being answered. The status is 'Pending Entitlement' until the legal entitlement is determined. The status goes to 'Pending Physician Contact' until the Medical determination has been entered. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 292,
+      "fieldName": "USER AUDIT",
+      "dataType": "DATE",
+      "rawType": "162.292D",
+      "required": false,
+      "helpText": "The user audit tracks users that enter or edit the notification. ",
+      "isMultiple": true,
+      "subFileNumber": 162.292,
+      "fieldNumber_": 292
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "162.2", "field": .01, "type": "regular"},
+    {"name": "162.2", "field": 1, "type": "regular"},
+    {"name": "162.2", "field": 3, "type": "regular"},
+    {"name": "162.2", "field": 16, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^FBAAV(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(161.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

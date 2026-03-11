@@ -1,0 +1,59 @@
+{
+  "fileNumber": 64.7,
+  "fileName": "CUMULATIVE",
+  "globalRoot": "64.7",
+  "globalReference": "^LAC(\"LRAC\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LRDFN",
+      "dataType": "POINTER",
+      "rawType": "RP63'X",
+      "required": true,
+      "pointerTo": 63,
+      "helpText": "This is the internal entry in the LAB DATA File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the report is printed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MAJOR HEADER",
+      "dataType": "SUBFILE",
+      "rawType": "64.701",
+      "required": false,
+      "helpText": "These are the major or general headings of the report. ",
+      "isMultiple": true,
+      "subFileNumber": 64.701,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MISCELLANEOUS",
+      "dataType": "SUBFILE",
+      "rawType": "64.702",
+      "required": false,
+      "helpText": "These are test(s) not defined under a major header. ",
+      "isMultiple": true,
+      "subFileNumber": 64.702,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "64.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "fileNumber": 228.6,
+  "fileName": "DENTAL TP NOTES",
+  "globalRoot": "228.6",
+  "globalReference": "^DENT(228.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DENTAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "R*P2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the dental patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date for this note for this patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TOOTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the tooth number for this note.  For a general note not related to  a specific tooth number, or a sequencing note, enter 0.  For a supernumerary tooth note, enter a tooth number of 99. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NOTE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNKNOWN;1:PATIENT;2:TOOTH;3:NON-TOOTH;4:SEQUENCING;5:COVER PAGE;",
+      "helpText": "Used by DRM Plus to incorporate free text notes on the sequencing screen  without affecting the current patient and tooth notes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "228.601",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 228.601,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "228.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,3215 @@
+﻿[
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-create-outcome",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-get-outcome-text",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-get-pt-outcomes",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-get-ptall",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-get-ptlast5",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-ptinfo-core",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-outcome-section-text",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-tanrvmessage",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-set-record-status",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-tanrvpatient",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-gui-parameter",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-tanrvuser",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-fullssn",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrvj1-rpc-main",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "an",
+        "route":  "/vista/an/rpc/anrv-create-encounter",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-sensitive-record-access",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-sensitive-record-bulletin",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-chk-bs5-xref-y-n",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-chk-bs5-xref-array",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-chk-means-test-div-display",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-chk-pat-means-test-required",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-chk-pat-div-means-test",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dg-patient-treatment-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-dfltsrc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-top",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-selchk",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-savdflt",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-clinrng",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-byward",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-diedon",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt1-prcare",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgwpt-select",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgrr-patient-lookup-search",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgrr-get-ptlk-business-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "dg",
+        "route":  "/vista/dg/rpc/dgrr-set-sensitive-access-log",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getdssunitusrs",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getecscreen",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getpxreason",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getecsdetail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getpatprocs",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getscnhelp",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getecloc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getusrdssunit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getcptlst",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getecsprocs",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getecscats",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getbatprocs",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-reports",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getien",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getpatinfo",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getpxmodifier",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getprovider",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getnatpx",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-validate-spreadsheet-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ec",
+        "route":  "/vista/ec/rpc/ec-getpatelig",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-convert-date",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-add-vm",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-extract-rec",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-ward-location",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-ward-pt",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-mark-error",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-pt-graph",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-v-m-alldata",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-team-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-allergy",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-clinic-pt",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-vitals-cat-qual",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-ptselect",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-latest-vm",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-room-bed",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-cumulative-report",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-latest-vitals-by-location",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-latest-vitals-for-patient",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-entered-in-error-patient",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "gmv",
+        "route":  "/vista/gmv/rpc/gmv-qualifier-table",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-expand-formid",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-formspec",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-input-object-by-clinic",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-input-object-by-form",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-one-input-object",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-receive-form-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-validate-user",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-receive-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-return-image-id",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-elapsed-time",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-store-workstation-error",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-store-image-name",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-all-pce-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibd-get-past-appt-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibarxm-query-only",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibarxm-trans-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibarxm-trans-bill",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibarxm-query-suppress-user",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibo-mt-ltc-copay-query",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ib",
+        "route":  "/vista/ib/rpc/ibcn-insurance-query",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-consult-msg-create",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-olu-consult",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-absjb",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-get-netloc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-ekg-online",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-field-validate",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-key-validate",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-patient-vitals",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-audit-count",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-audit-purge",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-audit-range",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-et-phone-home",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-fileman-get",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-find-location",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-basic-image",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-domain",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-highest-hl7",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-image-group",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-imaging-types",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mag",
+        "route":  "/vista/mag/rpc/mag-dicom-get-next-queue-entry",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-remote-local-icn-assign",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-remote-full-icn-stats",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-change-cmor",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-ssn-dups",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-icn-stats",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-ext-pdat-remote",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-inactivate",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-remote-spi",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-remote-icn-update",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-ack-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-seeding-update",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-seeding-stats",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-cmor-push-remote",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-remote-primary-dfn-icn",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/rg-primary-view-reject",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/rg-primary-view-from-mpi",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-dnl-add-upd",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpif-edat-remote",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpi-event-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "mp",
+        "route":  "/vista/mp/rpc/mpi-tk-poc-user-setup",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqal-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqal-detail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqpl-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqpl-detail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqxqa-patient",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqxqa-user",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqvi-vitals",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-default-patient-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-providers",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-provider-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-clinic-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-specialties",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-specialty-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-teams",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-team-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-ward-patients",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqpt-clinics",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orqqps-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orb-follow-up-string",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "or",
+        "route":  "/vista/or/rpc/orb-delete-alert",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-scanpt",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-instructor",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-userload",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-usersave",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-fmdate",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-scanmed",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-parameter",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-transaction",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-validate-order",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-server-clock-variance",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-medication-history",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-getprns",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-report",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-submit-missing-dose",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-validate-esig",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-lock",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-check-server",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-mail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-getordertab",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "psb",
+        "route":  "/vista/psb/rpc/psb-wardlist",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-vcc-refill",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-edit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-add-dea",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-deadoj",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-mbm",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-remove-dea",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-dea-dup-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-dealist",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-version",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-detox-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-va-dup-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-filer",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-reports",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-system-date-time",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-field-help",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-get-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-list-np-sched",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-file-np-sched",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-list-optn-desc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "pso",
+        "route":  "/vista/pso/rpc/pso-epcs-topic-help",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-category",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminders-and-categories",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/orqqpx-get-not-purpose",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/orqqpxrm-get-wh-proc-result",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-education-subtopics",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-education-summary",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-education-topic",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-categories",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-dialog",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-dialog-prompts",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-evaluation",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-inquiry",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-web",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminders-unevaluated",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-detail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-mental-health",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-progress-note-header",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-mental-health-results",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-mental-health-save",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "px",
+        "route":  "/vista/px/rpc/pxrm-reminder-rpc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-exam-order",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-exam-register",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-order-cancel",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-exam-cancel",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-exam-complete",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-examined",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ra",
+        "route":  "/vista/ra/rpc/ramag-exam-status-requirements",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-convert-date",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-send-email",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-form",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-cases",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-selected-case",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-user-info",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-dfn",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-fim-parameter",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-get-patient-dme",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-save-fsod",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-patient-lookup",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-patient-info",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-author-lookup",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-location-lookup",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-restricted-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-version",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-consult-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-lock-patient",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmim-check-duplicate",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "rm",
+        "route":  "/vista/rm/rpc/rmpr-nppd-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-full-data",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-create-file",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-brief",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-medical-review",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-disposition",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-institution-4",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-clinic-409-32",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-hosp-loc-44",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-team-404-51",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-tm-pos-404-57",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-ser-sp-409-31",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-retrive-person-200",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-priority-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-req-by-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-type-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-disposition-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-current-status-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-package-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-new-enrollee-409-3",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "sd",
+        "route":  "/vista/sd/rpc/sd-w-l-create-disposition",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-notes",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-record-text",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-summaries",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-notes-by-visit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-summaries-by-visit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-pn-titles",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-ds-titles",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-load-boilerplate-text",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-sign-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-personal-preferences",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-update-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-requires-cosignature",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-load-record-for-edit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-detailed-display",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-create-addendum-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-create-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-delete-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-print-record",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-document-parameters",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "tiu",
+        "route":  "/vista/tiu/rpc/tiu-get-ds-urgencies",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/orqqpxrm-get-wh-letter-text",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/orqqpxrm-get-wh-letter-type",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-cover",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-postrep",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-savedata",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-eie",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-reasons",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-sites",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-consave",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "wv",
+        "route":  "/vista/wv/rpc/wvrpcor-detail",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xq",
+        "route":  "/vista/xq/rpc/xqal-gui-alerts",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xq",
+        "route":  "/vista/xq/rpc/xu-rebuild-menu-tree",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtmunit-test-load",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtmunit-test-next",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtmunit-test-group-load",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xt-eclipse-m-editor",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-do-line",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-next",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-start",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-symbol-table",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-add-breakpoint",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-add-watch",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-delete-break",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-delete-watch",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xt",
+        "route":  "/vista/xt/rpc/xtdebug-read-input",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xu",
+        "route":  "/vista/xu/rpc/xups-personquery",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xu",
+        "route":  "/vista/xu/rpc/xu-epcs-edit",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xu",
+        "route":  "/vista/xu/rpc/mpi-vista-hws-config",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xu",
+        "route":  "/vista/xu/rpc/xulm-get-lock-table",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xu",
+        "route":  "/vista/xu/rpc/xulm-kill-process",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-signon-setup",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-send-keys",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-av-code",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-intro-msg",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-key-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-cvc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-av-help",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-division-set",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-get-user-info",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-division-get",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-kaajee-get-user-via-proxy",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-kaajee-get-ccow-token",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-get-token",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-ccow-vault-param",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-get-ccow-token",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-allkeys",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-set-visitor",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-get-visitor",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-kaajee-get-user-info",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xus",
+        "route":  "/vista/xus/rpc/xus-kaajee-logout",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-egcho-string",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-egcho-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-egcho-big-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-egcho-sort-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-egcho-memo",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-file-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-filename-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-rpc-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-get-variable-value",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-create-context",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-example-echo-string",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-example-get-list",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-example-wptext",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-example-sort-numbers",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-get-broker-info",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-im-here",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-is-rpc-available",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-are-rpcs-available",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-remote-rpc",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "xwb",
+        "route":  "/vista/xwb/rpc/xwb-remote-status-check",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ys",
+        "route":  "/vista/ys/rpc/ys-gaf-api",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ys",
+        "route":  "/vista/ys/rpc/ytapi-new-gaf",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ys",
+        "route":  "/vista/ys/rpc/ysrp-asi-narrative",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ys",
+        "route":  "/vista/ys/rpc/ysrp-asi-item",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    },
+    {
+        "package":  "ys",
+        "route":  "/vista/ys/rpc/ytapi-asi-factors",
+        "method":  "GET",
+        "status":  "other",
+        "snippet":  {
+
+                    }
+    }
+]

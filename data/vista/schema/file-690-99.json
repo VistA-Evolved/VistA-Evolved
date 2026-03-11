@@ -1,0 +1,76 @@
+{
+  "fileNumber": 690.99,
+  "fileName": "*NEW PERSON CONVERSION",
+  "globalRoot": "690.99",
+  "globalReference": "^MCAR(690.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This field contains an internal entry number in the Medicine file specified be the File Number field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUB-IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains a sub-internal entry number in the Medicine file specified be the File Number field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,3",
+      "length": 16,
+      "required": false,
+      "helpText": "This field contains a field number in the Medicine file specified be the File Number field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the file number of a Medicine file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OLD PROVIDER POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the value of the pointer to the Provider file (#6) prior to it's conversion. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "AA4", "field": },
+    {"name": "B", "field": },
+    {"name": "690.99", "field": .01, "type": "regular"},
+    {"name": "690.99", "field": .01, "type": "regular"},
+    {"name": "690.99", "field": .02, "type": "regular"},
+    {"name": "690.99", "field": .03, "type": "regular"},
+    {"name": "690.99", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

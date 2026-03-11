@@ -1,0 +1,39 @@
+{
+  "fileNumber": 790.405,
+  "fileName": "WV NOTIFICATION OUTCOME",
+  "globalRoot": "790.405",
+  "globalReference": "^WV(790.405,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OUTCOME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the terms describing a notification outcome.  An outcome may be a goal or an event (e.g., PAP normal letter sent, provider consult, CBE refused, scheduled appt for MAM). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains a set of codes (1 = Yes, 0 = No) used to display or hide an entry in a selection list.  If the field is active and contains a '1' or yes, users of this package can select the entry. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "U", "field": },
+    {"name": "790.405", "field": .01, "type": "regular"},
+    {"name": "790.405", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

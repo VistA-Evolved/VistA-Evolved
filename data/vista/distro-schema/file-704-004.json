@@ -1,0 +1,47 @@
+{
+  "fileNumber": 704.004,
+  "fileName": "CP_HL7_LOG_REASON",
+  "globalRoot": "704.004",
+  "globalReference": "^MDC(704.004,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLIO_HL7_LOG",
+      "dataType": "POINTER",
+      "rawType": "RP704.002'",
+      "required": true,
+      "pointerTo": 704.002,
+      "helpText": "This field indentifies this entry with an entry in the CP_HL7_LOG file  (#704.002). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE_TIME_ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the file entry was created. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reason this file entry was created.   A sample REASON could be \"No term mapper returned for 'DEVICEX'.\". ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "704.004", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

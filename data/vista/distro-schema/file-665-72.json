@@ -1,0 +1,41 @@
+{
+  "fileNumber": 665.72,
+  "fileName": "HOME OXYGEN TRANSACTIONS FILE",
+  "globalRoot": "665.72P",
+  "globalReference": "^RMPO(665.72,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP669.9'",
+      "required": true,
+      "pointerTo": 669.9,
+      "helpText": "This is the Veterans Affairs site where this transaction will come to  completion.  It is the site that is ultimately responsible for the issue  and payment for Home Oxygen devices. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BILLING MONTH",
+      "dataType": "DATE",
+      "rawType": "665.723DA",
+      "required": false,
+      "helpText": "Billing month in which patient transactions are generated in Home Oxygen for the purpose of reconciliation with contractors invoices and payment  through IFCAP. ",
+      "isMultiple": true,
+      "subFileNumber": 665.723,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "665.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "fileNumber": 700.1,
+  "fileName": "PFT PREDICTED VALUES",
+  "globalRoot": "700.1",
+  "globalReference": "^MCAR(700.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies the name for the set of formulas used to calculate predicted values and corrections.  Current entries are Male and Female. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "This field identifies which Sex the set of formulas are used for:  Male or Female.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TLC",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula used for calculating the predicted value of the 'Total Lung Capacity'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VC",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value of the 'Vital Capacity' ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FVC",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for calculating the predicted value of the Forced Vital Capacity ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FRC",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value of the Forced Residual Capacity ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RV",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value for the Residual Volume ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FEV1",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value for the Forced Expiratory Volume in 1 second ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PF",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value for the Peak Flow ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FEF25-75",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value of the Forced Expiratory Flow at 25 to 75 liters ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "MVV",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value for the Maximal Voluntary Ventilation ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DLCO-SB",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This field contains the formula for calculating the predicted value for the Diffusion ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TLC,VC,FVC,FEV1 CORR.-BLACK",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Black patients on Total Lung Capacity, Vital Capacity, Forced Vital Capacity, and Forced Expiratory Volume. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TLC,VC,FVC,FEV1 CORR.-ORIENTAL",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Oriental patients on Total Lung Capacity, Vital Capacity, Forced Vital Capacity, and Forced Expiratory Volume. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FRC,RV CORR.-BLACK",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Black patients on Forced Residual Capacity and Residual Volume. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "FEF25-75 RACE CORR.-BLACK",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Black patients on the Forced Expiratory Flow at 25 to 75 liters. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "MVV CORR.-BLACK",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Black patients for Maximum Voluntary Ventilation. ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.02,
+      "fieldName": "MVV CORR.-ORIENTAL",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for a race correction for Oriental patients for Maximum Voluntary Ventilation. ",
+      "fieldNumber_": 13.02
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COHB CORRECTION",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for correcting the diffusion for Carboxyl. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "HB CORRECTION",
+      "dataType": "POINTER",
+      "rawType": "*P700.2'",
+      "required": false,
+      "pointerTo": 700.2,
+      "helpText": "This contains the formula for correcting the diffusion for Hemoglobin. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "700.1", "field": .01, "type": "regular"},
+    {"name": "700.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

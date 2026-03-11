@@ -1,0 +1,104 @@
+{
+  "fileNumber": 358.93,
+  "fileName": "IMP/EXP MULTIPLE CHOICE FIELD",
+  "globalRoot": "358.93",
+  "globalReference": "^IBE(358.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The division the setup is for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUESTION OR EXPLANATION ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STARTING COLUMN FOR TEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STARTING ROW FOR TEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TYPE OF DATA",
+      "dataType": "POINTER",
+      "rawType": "R*P358.6'X",
+      "required": true,
+      "pointerTo": 358.6,
+      "helpText": "Points to the package interface file. That is where information about the data and how to map it to DHCP is stored. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TEXT APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP358.1'",
+      "required": true,
+      "pointerTo": 358.1,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SELECTION RULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ANY NUMBER;1:EXACTLY ONE;2:AT MOST ONE (0 or 1);3:AT LEAST ONE (1 or more);",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHOICE",
+      "dataType": "SUBFILE",
+      "rawType": "358.931",
+      "required": false,
+      "helpText": "  The reports that should print. ",
+      "isMultiple": true,
+      "subFileNumber": 358.931,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "A1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "358.93", "field": .01, "type": "regular"},
+    {"name": "358.93", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

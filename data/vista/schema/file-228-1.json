@@ -1,0 +1,248 @@
+{
+  "fileNumber": 228.1,
+  "fileName": "DENTAL HISTORY",
+  "globalRoot": "228.1IA",
+  "globalReference": "^DENT(228.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD#",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the number of the record.  It is just a unique place holder. Entries in this file are entered through the RPC broker call from the DSS-CPRS-Dental gui. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field has a C cross refernece on it for sorting the file by patient DFN. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this record was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created this record ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This contains the pointer for the Visit file entry that created this record. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DAS",
+      "dataType": "POINTER",
+      "rawType": "P221'",
+      "required": false,
+      "pointerTo": 221,
+      "helpText": "This contains the pointer to the national Dental Activity System (DAS) record that was created by the DSS-DENTAL-CPRS application through this record. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the provider that was responsible for this record and procedures. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DISTRIBUTED PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Provider who receives PCE credit when the entering provider  is a resident. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this encounter was not related to an individual patient, but rather to a GROUP, then enter Yes for this field.  Entering NO is not required. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:inpatient;O:outpatient;",
+      "helpText": "This indicates the status of the patient at the time of the encounter. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the location that was selected (for filing to PCE) ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.68'",
+      "required": false,
+      "pointerTo": 409.68,
+      "helpText": "This pointer to the Outpatient Encounter field was requested by the  Decision Support System staff.  It cannot be provided at this time as a  change to the DATA2PCE^PXAPI utility must be made to support the  returning of outpatient encounter. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DAS PATIENT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P220.2'",
+      "required": false,
+      "pointerTo": 220.2,
+      "helpText": "This is the patient category for this encounter that was filed to DAS ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DAS BED SECTION",
+      "dataType": "POINTER",
+      "rawType": "P220.4'",
+      "required": false,
+      "pointerTo": 220.4,
+      "helpText": "This is the bed section for this encounter that was filed to DAS ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DAS DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P225'",
+      "required": false,
+      "pointerTo": 225,
+      "helpText": "This is the station.division for this encounter that was filed to DAS ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DAS DISPOSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:In progress;2:Completed;3:Terminated;4:Maintenance;",
+      "helpText": "This is the patient disposition for the encounter. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P42.4'",
+      "required": false,
+      "pointerTo": 42.4,
+      "helpText": "This is the bedsection of the inpatient at the time of the encounter.  It  is computer derived from the current Ward at the time of the dental  encounter.   This field replaces the old DENTAL BEDSECTION file which will be deleted  in FY2004. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the division where this encounter occurred.   ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "FILED TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this value is yes then this record plus the associated transactions  were filed to PCE. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE DELETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter that date that this record was deleted to indicate that it is no  longer part of the official medical record. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DELETE PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who deleted this record. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DELETE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reason that this record was deleted. ",
+      "fieldNumber_": 1.03
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "AF", "field": },
+    {"name": "AV", "field": },
+    {"name": "B", "field": },
+    {"name": "228.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "228.1", "field": .03, "type": "regular"},
+    {"name": "228.1", "field": .05, "type": "regular"},
+    {"name": "228.1", "field": .05, "type": "regular"},
+    {"name": "228.1", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": W, "value": "D ID^DENTVDD"}
+  ]
+}

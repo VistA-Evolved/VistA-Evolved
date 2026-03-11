@@ -1,0 +1,40 @@
+{
+  "fileNumber": 9002313.39,
+  "fileName": "BPS NCPDP COMPOUND PROD ID QUALIFIER",
+  "globalRoot": "9002313.39",
+  "globalReference": "^BPS(9002313.39,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "List of codes for the NCPDP field F05-Z0 DUR/DUE Compound Product ID  Qualifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ70",
+      "length": 70,
+      "required": true,
+      "helpText": "Contains the name of the code associated with NCPDP field F05-Z0 DUR/DUE  Compound Product ID Qualifier. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.39", "field": .01, "type": "regular"},
+    {"name": "9002313.39", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

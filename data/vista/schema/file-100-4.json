@@ -1,0 +1,75 @@
+{
+  "fileNumber": 100.4,
+  "fileName": "OE/RR ERRORS",
+  "globalRoot": "100.4D",
+  "globalReference": "^ORYX(\"ORERR\",",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRDI",
+      "required": true,
+      "helpText": "This is the date/time the error occurred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the name of the device that the error occurred on. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the user that was signed on when the error occurred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the type of error that caused the failure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TASK",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0I",
+      "length": 11,
+      "required": true,
+      "helpText": "This is a pointer to the task in ^%ZTSK that will purge this entry from this file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ERROR TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "100.45",
+      "required": false,
+      "helpText": "This contains a description of the error; if the error occurred within the processing of HL7 messages, the message itself may be stored here. ",
+      "isMultiple": true,
+      "subFileNumber": 100.45,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

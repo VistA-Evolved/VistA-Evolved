@@ -1,0 +1,203 @@
+{
+  "fileNumber": 142.1,
+  "fileName": "HEALTH SUMMARY COMPONENT",
+  "globalRoot": "142.1I",
+  "globalReference": "^GMT(142.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0X",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the internal record number of the component record.  If you are creating a new component, then this should be a sequential number, preceded by your station number (e.g., station number 660 should number custom-built components from 660001-660999, etc.). ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the health summary component, which both uniquely identifies the component's record for look-ups, sorts, etc. and is also displayed in the component header, when the health summary is run. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRINT ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the entry point and routine to be called when the component is run for a given health summary type.  Enter the line label, followed by a semi-colon, followed by the routine name (e.g., MAIN;GMTSLRC). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "EXTERNAL/EXTRACT ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "142.11",
+      "required": false,
+      "helpText": "Source of Health Summary Component data. ",
+      "isMultiple": true,
+      "subFileNumber": 142.11,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TIME LIMITS APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is set up by the programmer to indicate whether the routine to print this component will allow a time range to be applied to the data to be displayed in the Health Summary. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This 2-4 character abbreviation should uniquely identify the component, since it is used both for lookup in the build health summary and ad hoc health summary options, and for navigation between components when the health summary is run interactively. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "142.35",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 142.35,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAXIMUM OCCURRENCES APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is used by the programmer to indicate whether the routine which prints this component is set up to handle maximum occurrence limits on the Health Summary. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISABLE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:temporary;P:permanent;",
+      "helpText": "IRM Staff or Clin Coordinator:  Use this field to disable (inactivate) a health summary component (e.g., Lab Orders).  Setting this DISABLE FLAG field to P(ermanent) causes a component to be non-selectable for use, and prevents the component from being printed in any Health Summary in which it is included.  Setting DISABLE FLAG to T(emporary) causes a component to be non-selectable for use, but its OUT OF ORDER MESSAGE will appear in any Health Summary in which it is included.   Use the at-sign ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "To be used for components such as psychology test results Restricts viewing access under Print Health Summary Menu ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SELECTION FILE",
+      "dataType": "POINTER",
+      "rawType": "142.17P",
+      "required": false,
+      "helpText": "Enter the name or number of the file from which selection items (e.g., lab tests (file 60), radiology procedures (file 71), vital signs (file 120.51), PCE reminder/maintenance item (file 811.9) may be chosen for this component.   The file you identify here must have its \"Application Group\" multiple include \"GMTS\" BEFORE it can be selected as a selection file.   Components which require selection of items should have its component name include the word \"SELECTED\". ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OUT OF ORDER MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used when a health summary component is temporarily disabled. If it is filled in, the message here will be displayed whenever the user attempts to select the component ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEFAULT HEADER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The DEFAULT HEADER NAME will appear in menus and component headers in preference to the COMPONENT NAME, but NOT in preference to the local HEADER NAME, if it is defined for that component within a given Health  Summary Type.  If defined the local HEADER NAME will have precedence within a given Health Summary Type. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HOSPITAL LOCATION APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is used by the programmer to indicate whether the routine which prints this component is set up to handle the display of the hospital location abbreviation on the Health Summary. file related components (PCE related components). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ICD TEXT APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is used by the programmer to indicate whether the routine which prints this component is set up to handle the display of standardized ICD text on the Health Summary. (PCE related components). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER NARRATIVE APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field is used by the programmer to indicate whether the routine which prints this component is set up to handle the display of the provider narrative on the Health Summary. (PCE related components). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Namespace of the component's supporting package. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CPT MODIFIER APPLICABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is used by the programmer to indicate whether the routine which prints this component is set up to handle the display of CPT Modifiers on the Health Summary. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "AM2", "field": },
+    {"name": "AM9", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "142.1", "field": .01, "type": "regular"},
+    {"name": "142.1", "field": .01, "type": "regular"},
+    {"name": "142.1", "field": 3, "type": "regular"},
+    {"name": "142.1", "field": 3, "type": "regular"},
+    {"name": "142.1", "field": 5, "type": "regular"},
+    {"name": "142.1", "field": 9, "type": "regular"},
+    {"name": "142.1", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

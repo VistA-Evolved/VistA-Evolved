@@ -1,0 +1,140 @@
+{
+  "fileNumber": 395.5,
+  "fileName": "HINQ SUSPENSE",
+  "globalRoot": "395.5P",
+  "globalReference": "^DVB(395.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field points to the main patient file (#2) to give the name of the patient who this HINQ request is for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECIPIENT",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field points to the Mail Group file (#3.8) to give the name of the mail group who will receive the HINQ mail message associated with this request. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIME OF STATUS CHANGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is filled in by the system with the date and time that the suspense file status of this entry was last updated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ABBREVIATED;P:PENDING;E:ERROR;N:NEW MAIL;V:IDCU ERROR;",
+      "helpText": "This field contains the suspense file status of this entry. Five statuses are available:  'P' for PENDING, 'A' for ABBREVIATED 'E' for ERROR, 'V' for IDCU error, and 'N' for NEW MAIL. Suspense file statuses are updated by the system automatically when there has been a change which effects the status. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "UPDATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;I:IGNORED;",
+      "helpText": "This field is to keep track of if the HINQ data for a patient has been uploaded to the patient file or not.  It will restrict the display and action of the ALL portion of the UPLOAD option, ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ALERT SET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set when an alert is generated to avoid multiple alerts on the same patient on the same day. out by the DHCP site. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "Message-ID",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This field points to the Message file (#3.9) to give the ID number associated with this mail message. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MESSAGE IN TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is filled in by the system with the date and time a HINQ response to this HINQ inquiry request is received.  ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field is used to aid in HINQ response identification at multi-divisional sites. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "395.51PA",
+      "required": false,
+      "helpText": "This multiple field stores information about all requests that are associated with this entry in the suspense file. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATA STRING OUT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATA STRING IN",
+      "dataType": "SUBFILE",
+      "rawType": "395.512A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 395.512,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "395.5", "field": .01, "type": "regular"},
+    {"name": "395.5", "field": 3, "type": "regular"},
+    {"name": "395.5", "field": 4, "type": "regular"},
+    {"name": "395.5", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W ?33 S:$D(^DVB(395.7,Y,0)) DVBJ=$P(^(0),U,3) W:$P(^DVB(395.5,Y,0),U,5)=\"Y\"&$D(DVBJ) \"UPDATED \",\"(\",$E(DVBJ,4,5),\"-\",$E(DVBJ,6,7),\"-\",1700+$E(DVBJ,1,3),\")\" K DVBJ W:$P(^DVB(395.5,Y,0),U,5)'=\"Y\" \"NOT  UPDATED\" W !,?17"}
+  ]
+}

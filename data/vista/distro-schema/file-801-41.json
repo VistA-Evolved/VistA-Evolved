@@ -1,0 +1,467 @@
+{
+  "fileNumber": 801.41,
+  "fileName": "REMINDER DIALOG",
+  "globalRoot": "801.41",
+  "globalReference": "^PXRMD(801.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the dialog entry.   Dialogs that are auto-generated from a reminder will default to the name of  the reminder for ease in identifying the reminder dialog entry. Dialog  elements that are auto-generated use the following naming convention:   Finding type prefix_ _Name from finding file_ _Resolution Status. Examples  of two dialog element entry names generated from an Exam file entry for  DIABETIC EYE EXAM follow.    EX DIABETIC EYE EXAM DONE  EX DIABETIC EYE EXAM DONE ELSEWHER",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOURCE REMINDER",
+      "dataType": "POINTER",
+      "rawType": "P811.9'",
+      "required": false,
+      "pointerTo": 811.9,
+      "helpText": "This identifies which reminder definition is associated with this \"Reminder Dialog\" entry.  \"Reminder Dialog\" type entries are the only entries that require this field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:DISABLE AND SEND MESSAGE;2:DISABLE AND DO NOT SEND MESSAGE;",
+      "helpText": "This field disables the use of a dialog item. If a dialog item is marked as DISABLE AND SEND MESSAGE and a user tries to use it in CPRS, a message will be sent to the Clinical Reminders mail group.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:prompt;E:dialog element;R:reminder dialog;F:forced value;G:dialog group;S:result group;T:result element;",
+      "helpText": "This field defines what type of dialog component this entry is. The type determines the processing that can occur with this entry.    Reminder dialogs are the dialog entries that can be mapped to a reminder definition. Reminder dialogs will typically contain several dialog elements and/or dialog groups.    Dialog elements that are auto-generated represent a finding item and resolution status combination, based on the Finding Type Parameters for auto-generation. The dialog elements can be defined",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The caption is used for prompt, dialog group, and reminder components. When a prompt has a caption defined, this is the text that should be used whenever the prompt is asked (e.g., Comment:). A dialog group can use the caption field to specify a header to use on a box around the group of dialog elements. The reminder dialog component can use the caption to specify a header to use on a box around the dialog elements for a reminder.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BOX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag will be used to determine whether the components will be presented to the user in a box. If the caption field is defined, it will appear as header text in the top line of the box. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NUMBER OF INDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the number of indents that should be made before presenting the group's components/elements. Indent is used only for dialog groups. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SHARE COMMON PROMPTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used only for a dialog group where different dialog elements have common prompts. Prompts will be shared for all dialog elements unless otherwise selected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "GROUP ENTRY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:ONE SELECTION ONLY;2:ONE OR MORE SELECTIONS;3:NONE OR ONE SELECTION;4:ALL SELECTIONS ARE REQUIRED;0:NO SELECTION REQUIRED;",
+      "helpText": "Used for dialog groups only.   1 indicates that only one element in the dialog group may be selected. 2 indicates that one or more elements must be selected. 3 indicates that either none or one selection is required. 4 indicates all selections are required. 0 or null indicates no selection required.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMPONENTS",
+      "dataType": "SUBFILE",
+      "rawType": "801.412IA",
+      "required": false,
+      "helpText": "This field contains the components that are used to process a reminder.  Generally the components relate to the TYPE of entry in the Reminder Dialog File:        Reminder dialogs have dialog group or dialog element components.      Dialog groups have a combination of dialog element components.      Dialog elements have prompt and forced value components. ",
+      "isMultiple": true,
+      "subFileNumber": 801.412,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RESOLUTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P801.9'",
+      "required": false,
+      "pointerTo": 801.9,
+      "helpText": "This field contains what type of resolution is represented by this dialog entry. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FINDING TYPE",
+      "dataType": "POINTER",
+      "rawType": "P801.45'",
+      "required": false,
+      "pointerTo": 801.45,
+      "helpText": "1f an additional prompt is restricted to use with only one type of finding item this field contains the mnemonic of the finding type. The mnemonics allowed are:      CPT  Procedure          ED   Education Topic    EX   Exam    HF   Health Factor    IM   Immunization    OI   Orderable Item    POV  Diagnosis (ICD9)     ST   Skin Test    VM   Vital Measurement    WH   WH Notification Purpose   (e.g. PXRM Contraindicated is restricted to IMMUNIZATION,  finding type IM) ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "FINDING ITEM",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the finding item that should be created if the dialog element/group is checked in CPRS. Additional findings may be entered into the additional findings field. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "*P101.43'",
+      "required": false,
+      "pointerTo": 101.43,
+      "helpText": "Orderable item from the reminder definition. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ADDITIONAL FINDINGS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "801.4118AV",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 801.4118,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DEFAULT VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default value for an additional prompt.   If entering defaults for the PXRM VISIT DATE prompt (or copies) then the following codes are available:     0  - no year is initially set (forces required dates to be entered).   M  - Month is required.   M0 - Month is required, no year initially set. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "FORCED VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value that will be used for a forced value type dialog. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "EXCLUDE FROM PROGRESS NOTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates that the question text of the dialog element will be excluded from the progress note. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PROMPT CAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the caption that will be used for this prompt.  This caption can be overridden by the OVERRIDE PROMPT CAPTION field in the ITEMS multiple, which can be more specific for the instance of the prompt. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DIALOG/PROGRESS NOTE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "801.4125",
+      "required": false,
+      "helpText": "This is the sentence text that will appear in the reminder dialog and progress note. ",
+      "isMultiple": true,
+      "subFileNumber": 801.4125,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ALTERNATE PROGRESS NOTE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "801.4135",
+      "required": false,
+      "helpText": "This field is only required if the text on the progress note differs from the dialog text. ",
+      "isMultiple": true,
+      "subFileNumber": 801.4135,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CHECKBOX SEQUENCE",
+      "dataType": "SUBFILE",
+      "rawType": "801.4145I",
+      "required": false,
+      "helpText": "Comment prompts (with a GUI Process ID of COM) may have a number of checkboxes associated with the comment prompt. ",
+      "isMultiple": true,
+      "subFileNumber": 801.4145,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "GUI PROCESS ID",
+      "dataType": "POINTER",
+      "rawType": "P801.42'",
+      "required": false,
+      "pointerTo": 801.42,
+      "helpText": "Additional prompts and forced values which update PCE should have a GUI Process ID. If an additional prompt or forced value is created by copying one of the PXRM prompts, the GUI Process ID field will automatically be populated by the copy process. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "HIDE/SHOW GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIDE;0:SHOW;",
+      "helpText": "Used for dialog groups.   1 indicates that the group will be hidden until checked 0 indicates that the group will be displayed  ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "SUPPRESS CHECKBOX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPPRESS;",
+      "helpText": "If the field is set to SUPPRESS, the dialog element or group header will be displayed without a checkbox. Otherwise the WP text will be presented with a checkbox.   If the dialog element or group header has a finding item associated with it the SUPPRESS CHECKBOX flag will be ignored.   Also if the HIDE/SHOW GROUP field is set to hide, then the SUPPRESS CHECKBOX field will be ignored (the group header question must be a checkbox). ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "INDENT PROGRESS NOTE TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INDENT;0:NO INDENT;",
+      "helpText": "In a dialog group the dialog questions may be indented. This field allows the progress note text to be indented also. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "RESULT CONDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is used for dialog result elements only. The result condition determines if the progress note text of the result element will be included in the progress note e.g., I SCORE<2 will insert the text in the progress note if the SCORE from the mental health test is below 2.  Result Elements will only use the Raw Score returned from a MH test.  ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "EXCLUDE MH TEST FROM PN TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag is used to control whether or not a mental health instrument question will be excluded from the progress note text when the component is acted upon. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of dialog. National dialogs cannot be edited. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this dialog. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the dialog should be reviewed, to verify that it is current with the latest standards and guidelines. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "801.44D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes to the dialog. ",
+      "isMultiple": true,
+      "subFileNumber": 801.44,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "IDENTIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field will associate a dialog with a package or module. Example:  if the field contained the letters IHD, then this dialog would be part of the  Ischemic Heart Disease project. If one dialog had IHD1 in this field and  another had IHD2 located in this field, we would know that they were associated  with each other and were both part of the same project. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "PATIENT SPECIFIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "This field is used to identify a Reminder Dialog that has branching logic  defined in the dialog. It is used in conjunction with three additional fields (Reminder Term, Reminder Term Status, and Replacement Element/group) defined  at the item level of the Reminder Dialog.   This field is used by CPRS to identify if the dialog set-up should be cached  or re-built between every use. If the field is set to Yes, then the dialog will be re-loaded every time it is opened in CPRS. If the field is set t",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "MH TEST REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Optional open and optional complete (partial complete possible);1:Required open and required complete before finish;2:Optional open and required complete or cancel before finish;",
+      "helpText": "The value defined in this field is used to control whether or not a mental health (MH) test is required to open from the reminder dialog, and whether the test must be completed before the reminder dialog can be finished in CPRS.  If the value is 0, the user is not required to select/open the MH test before the reminder dialog can be finished.   If the value is 1, the user is required to select/open and complete the MH test in the reminder dialog before the reminder dialog can be finished.   If t",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "LOCK",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to \"Lock\" a reminder dialog, dialog element, and/or a  dialog group from being copied and/or edited. It will prevent any copying  and/or editing of a dialog element if a finding item is defined or if the  only finding item defined for the element/group is an order.  ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "REMINDER TERM",
+      "dataType": "POINTER",
+      "rawType": "P811.5'",
+      "required": false,
+      "pointerTo": 811.5,
+      "helpText": "This field is a pointer to file 811.5. If a reminder term is defined in this  field when the dialog is loaded by CPRS, the reminder term will be  evaluated. The Reminder Term evaluation will return either a True of False  value. The value returned by the Reminder Term evaluation is used in  conjunction with the Reminder Term Status field. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "REMINDER TERM STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "This field is used in conjunction with the Reminder Term field. It will be  used to determine if a Reminder Dialog Element/Group should do a special  action. When the Reminder Term is defined in field #116, the True/False  result of the term evaluation will be compared to the value defined in this  field. If the value matches the dialog, it will complete the action defined  in field #118. If the reminder term evaluation value does not match the  value defined in this field, the default action of",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "REPLACEMENT ELEMENT/GROUP",
+      "dataType": "POINTER",
+      "rawType": "*P801.41'",
+      "required": false,
+      "pointerTo": 801.41,
+      "helpText": "This field is used to determine if a dialog element/group should be replaced  with another element/group or if the original element/group should be  suppressed in the Dialog.    If the Reminder Term defined in field #116 is evaluated and matches the  value defined in field #117, then the dialog element/group will either be  replaced or suppressed depending on the value defined in this field. This  field points to file 801.41.  If there is an active element/group defined  in this field, then the ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "MH TEST",
+      "dataType": "POINTER",
+      "rawType": "*P601.71'",
+      "required": false,
+      "pointerTo": 601.71,
+      "helpText": "This field is used to assign a mental health test to a result group. The value assigned to this field must match the mental health test assigned to the dialog element finding item.  ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "MH SCALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the mental health scale number used when obtaining a score for the mental health test defined in the MH Test field #119.  ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "RESULT GROUP LIST",
+      "dataType": "POINTER",
+      "rawType": "801.41121P",
+      "required": false,
+      "helpText": "This multiple assigns one or more result groups to the MH Test  finding item, field #119, for creating progress note text. The text will change depending on the score of the MH Test. The score depends on the scale defined in the MH Scale field, #120.   ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "TAXONOMY PICK LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALL;D:DIAGNOSIS ONLY;P:PROCEDURE ONLY;N:NO PICK LIST;",
+      "helpText": "This field is used to determine how a Taxonomy should be display to an  user in CPRS. A selection of:     A: Displays two pick lists one for Diagnosis Codes and one for       procedure codes.   D: Displays a pick list for Diagnosis Codes only. The procedures codes       will automatically be filed to VistA when the dialog is finish.   P: Displays a pick list for Procedure Codes only. The diagnosis codes       will automatically be filed to VistA when the dialog is finish.   N: Does not displays ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "POV HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to set the diagnosis header text to display in CPRS  when using a Taxonomy. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "CPT HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to set the Procedure Text to display in CPRS when  using a Taxonomy. ",
+      "fieldNumber_": 142
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AG", "field": },
+    {"name": "TYPE", "field": },
+    {"name": "801.41", "field": 2, "type": "regular"},
+    {"name": "801.41", "field": 4, "type": "regular"},
+    {"name": "801.41", "field": 111, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(801.41,4,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(801.41,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

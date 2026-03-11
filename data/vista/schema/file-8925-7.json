@@ -1,0 +1,106 @@
+{
+  "fileNumber": 8925.7,
+  "fileName": "TIU MULTIPLE SIGNATURE",
+  "globalRoot": "8925.7P",
+  "globalReference": "^TIU(8925.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIU DOCUMENT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP8925'",
+      "required": true,
+      "pointerTo": 8925,
+      "helpText": "This is the record number in the TIU DOCUMENT FILE (#8925). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COSIGNATURE NEEDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXPECTED SIGNER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who the author expects to sign the document. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COSIGNATURE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time at which the cosignature was obtained. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTUAL COSIGNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the person who actually signed for this Additional  Signer. This field will trigger field .09 (Signed by Surrogate). That  trigger will check if the Actual Co-signer is a surrogate for the Expected Signer. If so the .09 field will be set to 1. If not it will be set to 0. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COSIGNER'S SIGNATURE BLOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COSIGNER'S TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COSIGNATURE MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:electronic;C:chart;",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SIGNED BY SURROGATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set by a trigger on the .05 field (ACTUAL COSIGNER). The  trigger will check if the actual cosigner is a surrogate for the expected  signer at the time of signing. If so this field will be set to 1. If  not it will be set to 0. This will enable other processes to know if the  Additional Signer was signed by a surrogate as the assignment of the  surrogate is temporary and cannot be checked at a later date. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "B", "field": },
+    {"name": "8925.7", "field": .01, "type": "regular"},
+    {"name": "8925.7", "field": .01, "type": "regular"},
+    {"name": "8925.7", "field": .03, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

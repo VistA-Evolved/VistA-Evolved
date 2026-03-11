@@ -1,0 +1,187 @@
+{
+  "fileNumber": 791810.1,
+  "fileName": "ORDER TYPE",
+  "globalRoot": "791810.1",
+  "globalReference": "^RMPF(791810.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The order type is the name of the order that is initiated from the field station (Ex.:  REQUEST 2474). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Type Abbreviation is a one character alphabetic that is used to represent the order type.  A character may only be used one time for an order type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT OR STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PATIENT;S:STATION;",
+      "helpText": "This indicates whether the order type is one that related to a specific veteran or whether it relates to station stock. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAXIMUM NUMBER OF ITEMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field indicates the maximum number of items that may be listed for the order type. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ORDER MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may hold a free text message that will be displayed on the screen for the order type. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISPLAY COSTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DO NOT DISPLAY COSTS;1:DISPLAY COSTS;",
+      "helpText": "This field indicates whether or not costs should be displayed for items entered under this order type. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field may be set to '1' to make the order type inactive for selection from the ROES menus. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the short name for an order type to be used in displays and print-outs. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NON-CONTRACT ITEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DO NOT ALLOW NON-CONTRACT ITEMS;1:ALLOW NON-CONTRACT ITEMS;2:ASSUME NON-CONTRACT ITEMS;",
+      "helpText": "This field controls the selection of NON-CONTRACT ITEMS for the order type.  An order type may be set to '0' for DO NOT ALLOW NON-CONTRACT ITEMS, to '1' for ALLOW NON-CONTRACT ITEMS or to '2' for ASSUME NON-CONTRACT ITEMS. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ASK TO VIEW ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ASK TO VIEW ADDRESS;1:DO NOT ASK TO VIEW ADDRESS;",
+      "helpText": "This field controls whether or not the user is asked to view or change the patient address from within the order process. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM EDIT STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field that contains the 'DR' edit string for items chosen under this order type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ITEM REQUIREMENTS STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 'DR' type of string that contains the field numbers of fields that are required for the completion of an order of this type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "SPECIAL REQUIREMENTS MODULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain the name of the program that checks for special requirements needed for this order type to be considered complete. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EDIT FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "791810.11I",
+      "required": false,
+      "helpText": "This multiple field contains information about the general fields (non-item related) that are needed to complete this order type. ",
+      "isMultiple": true,
+      "subFileNumber": 791810.11,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PRODUCT GROUP(S)",
+      "dataType": "POINTER",
+      "rawType": "791810.1101P",
+      "required": false,
+      "helpText": "This multiple contains a list of product groups that may be associated with this order type. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "AVAILABLE TO ROES MENU #",
+      "dataType": "SET",
+      "rawType": "791810.1102S",
+      "required": false,
+      "helpText": "This field designates from which menus that this order type may be selected. ",
+      "isMultiple": true,
+      "subFileNumber": 791810.1102,
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DISABILITIES ALLOWED",
+      "dataType": "SUBFILE",
+      "rawType": "791810.1103A",
+      "required": false,
+      "helpText": "  This multiple contains free text codes which are included in the prosthetic disabilities that this order type allows. ",
+      "isMultiple": true,
+      "subFileNumber": 791810.1103,
+      "fieldNumber_": 103
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "791810.1", "field": .01, "type": "regular"},
+    {"name": "791810.1", "field": .02, "type": "regular"},
+    {"name": "791810.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

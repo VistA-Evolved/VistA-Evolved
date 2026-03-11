@@ -1,0 +1,162 @@
+{
+  "fileNumber": 2006.565,
+  "fileName": "EXPORT DICOM RUN",
+  "globalRoot": "2006.565",
+  "globalReference": "^MAGDICOM(2006.565,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RUN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date/time value. This value is the time-stamp that indicates the date and time when a batch-run was entered into the database. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STORAGE SCP",
+      "dataType": "POINTER",
+      "rawType": "P2006.585'",
+      "required": false,
+      "pointerTo": 2006.585,
+      "helpText": "The value of this field is a pointer to the User Application table (FileMan file # 2006.585). This pointer identifies the Storage SCP to which the images are to be transmitted in this batch run. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SORT ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ASCENDING:Ascending;DESCENDING:Descending;",
+      "helpText": "The value of this field is a code that indicates the direction in which the Radiology Report table is to be scanned in this batch run. Possible values are \"ASCENDING\" and \"DESCENDING\". ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FIRST REPORT",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report table (FileMan file # 74). This pointer identifies the first report for which images will be included in this batch run. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAXIMUM NUMBER OF GROUPS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This number identifies the maximum number of image groups that may be included in this batch run. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string consists of the letters \"Y\" and \"N\". This value indicates during which hours of the day this batch run may be active.   A string of 24 letters \"Y\" denotes a batch run that may run all day long.   A string like \"YYYYYYYYNNNNNNNNNYYYYYYY\" denotes a batch run that may only run outside of regular office hours (midnight to 9am and 6pm to midnight). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (FileMan formatted) date/time.. This value represents the timestamp for the most recent transmission of a study. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LAST REPORT",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report table. This pointer identifies the study that was transmitted most recently. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STUDIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This value identifies the number of studies that have been processed in the current batch-run. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NUMBER OF IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This value identifies the number of images that have been transmitted in the current batch-run. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SCAN MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DATE:Date;NUMBER:Report;PATIENT:Patient;",
+      "helpText": "The value of this field is a code that identifies the method of scanning the Radiology Reports. Possible values are \"DATE\", \"NUMBER\" and \"PATIENT\".   A value of \"DATE\" indicates that the reports are scanned by date.   A value of \"PATIENT\" indicates that the reports are scanned by (internal entry number of) patient.   A value of \"NUMBER\" indicates that the reports are scanned by (internal entry number of) report. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date identifies the first day of the period that is intended to be included in this batch run. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date identifies the last day of the period that is intended to be included in this batch run. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LAST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date/time value. This value is the time-stamp that indicates when the Radiology Report was created for the current study in this batch run. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The patient to whom the current report applies. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.565", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

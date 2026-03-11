@@ -1,0 +1,37 @@
+{
+  "fileNumber": 790.011,
+  "fileName": "WV MATERNITY CARE COORDINATOR",
+  "globalRoot": "790.011",
+  "globalReference": "^WV(790.011,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'XI",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the Women's Health maternity care  coordinator. Maternity care coordinators are assigned to pregnant female  patients to coordinate their maternity care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date after which the person is no longer  considered a maternity care coordinator. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "790.011", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

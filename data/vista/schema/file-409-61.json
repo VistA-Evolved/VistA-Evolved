@@ -1,0 +1,237 @@
+{
+  "fileNumber": 409.61,
+  "fileName": "LIST TEMPLATE",
+  "globalRoot": "409.61",
+  "globalReference": "^SD(409.61,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the list.  The list name should be namespaced and unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROTOCOL;2:DISPLAY;3:SELECT (NOT AVAILABLE);",
+      "helpText": " This field indicates the type of list.   A 'protocol' list will cause the List Manager to  use the PROTOCOL entered in the 'PROTOCOL MENU'  field.   A 'display' list will use the standard VALM DISPLAY protocol  supplied by the List Manager.  This protocol allows  user to view or scroll though the list.  The user  will be able to use the standard 'next screen',  'previous screen',etc. actions.   A 'select' list is similar to the 'display' list but  will also allow the user to 'select' entries.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LEFT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the left column of the scrolling region where the list will be displayed.  Currently(11/91), this parameter is not used. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RIGHT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates the maximum number of characters a row can contain.  Currently(11/91), this parameter is not used. EE ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TOP MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number of the top row of the scrolling region where the list will be displayed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BOTTOM MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number of the bottom row of the scrolling region where the list will be displayed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OK TO TRANSPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT OK;1:OK;",
+      "helpText": "This field indicates to the transport utility if this list template should be distributed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "USE CURSOR CONTROL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the cursor positioning and character enhancements capabilities of the device should be used.  If set to 'NO', then lists will be presented in scrolling mode. For some actions, like 'up one entry', this would increase use of system resources.  If set to 'YES', then list will be presented using the terminal type's capabilities.   However, if the user signs on to a device that is not adequately defined in the TERMINAL TYPE file, then the list will automatically display ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ENTITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the term that will be displayed to the user that best describes the items in the list.  The term will be used if the developer wishes to use the generic 'select' action.  For example, \"Select Appointment(s):\" could be displayed and the entity is 'Appointment'.  The term will be used in other displays as well. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PROTOCOL MENU",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the name of the PROTOCOL that will be used by the List Manager if the the TYPE OF LIST is 'protocol'.  This field is not used for 'display' or 'select' types. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SCREEN TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the text that will be display/printed in the upper left corner of the screen display. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ALLOWABLE NUMBER OF ACTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field indicates the number of actions a user can select at one time.  For example, if this parameter is set to 1 then the user can only enter one action...     Select Action: NX  ...and the following would not be allowed:     Select Action: NX,EP  If this parameter is not entered then the system defaults to 1. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE RANGE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the maximum number of days that can be specified by the user while entering a date range.  This parameter is only used if the application calls the List Manager's date range selection utility. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "AUTOMATIC DEFAULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether List Manager should always supply a default action at the 'Select' prompt for 'Protocol' type List Templates.     If set to 'NO', a default will not be provided automatically. It will be the developer's responsibility to indicate a default, if desired. This default can be indicated by setting XQORM(\"B\") as part of the protocol menu's HEADER code. (i.e. D SHOW^VALM S XQORM(\"B\")=\"Your action\")     This parameter only is valid for 'Protocol' type List Templates.     If ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PRINT LIST PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " This field contains the name of the protocol that will be called when the user selects the generic 'Print List' action.  Normally, this field is blank and the generic printing action is sufficient. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "HIDDEN ACTION MENU",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " This field contains the name of the protocol menu that will be used by the List Manager for the 'hidden' actions available to the user.  Normally, the application enters the 'VALM HIDDEN ACTIONS' menu in this field. However, there maybe applications that would require a different set of 'hidden' actions. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "HEADER CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This MUMPS field contains the code that the List Manager will execute to print the application specific screen header. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "EXPAND CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains the MUMPS code that displays a detail inquiry-type report/screen for a specific entry in the list. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "HELP CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains the MUMPS code for the help that will appear when the user types '?' at the 'Select Action:' prompt.  This field is optional.  If not defined, the normal help given by the XQOR* driver will take affect.  ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "EXIT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS logic that will be executed by the List Manager when the user exits the list.  The code is usually used to clean up the partiton and kill any temporary globals used during the List Manager call.  After this code is executed, the List Manager will clean up the variables and temporary globals it set.  This field is optional. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "ENTRY CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that is executed when then List Manager is called.  This code is usually used by the application to initialize variables.  This field is optional. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "ARRAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the array that holds the list of items to be displayed.  The array name must be preceded by a space character.  This is needed to allow global specifications. (File Manager will not allow '^' as the first character.)  The array can be either a local or global variable. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "CAPTION LINE COLUMNS",
+      "dataType": "SUBFILE",
+      "rawType": "409.621",
+      "required": false,
+      "helpText": "This multiple field contains column definitions for the data displayed in the list.  Adding entries to this multiple is optional.  The column parameters are used when the List Manager writes the line indicating the top of the list's scrolling region.  If no entries are added then only a line is written with no captions.   The parameters are also used by special function calls that an application is allowed to used.  For example, there is a function at FLDUPD^VALM1 that can be used to update the ",
+      "isMultiple": true,
+      "subFileNumber": 409.621,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.61", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "fileNumber": 52.86,
+  "fileName": "EPHARMACY SITE PARAMETERS",
+  "globalRoot": "52.86",
+  "globalReference": "^PS(52.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "This is the Pharmacy Division for which the division-specific ePharmacy  parameters will be active. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user that created or last updated the REJECT WORKLIST DAYS field (#4) in this file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE OF LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the REJECT WORKLIST DAYS field  (#4) was created or last updated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REJECT WORKLIST DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of days an uncommented reject can remain on the reject worklist without being included in the nightly reject worklist alert mail message. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REJ RESOLUTION REQUIRED CODE",
+      "dataType": "POINTER",
+      "rawType": "52.865P",
+      "required": false,
+      "helpText": "This field identifies Reject Resolution Required Codes defined for the selected ePharmacy Division. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EPHARMACY RESPONSE PAUSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the number of seconds the claim status message will  be displayed on the screen after the transmission message. The number of seconds to delay may be from 0 to 3 with the default of 2 seconds. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IGNORE THRESHOLD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The value of the Ignore Threshold field is compared to the Gross Amount  Due of the prescription. If the Gross Amount Due is greater than or equal to the value of this  field, then the user must hold the EPHARMACY SITE MANAGER security key in  order to Ignore the reject. If the value of this field is set to 0, then no rejects can be Ignored  unless the user has the security key. If the value of this field is left blank, the Gross Amount Due will not be considered. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 52.8651,
+      "fieldName": "TRANSFER REJECT CODE",
+      "dataType": "POINTER",
+      "rawType": "52.8651PA",
+      "required": false,
+      "helpText": "This multiple contains all reject codes other than DUR and refill-too-soon that will be allowed to be placed on the Pharmacy Reject Worklist. ",
+      "fieldNumber_": 52.8651
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.86", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

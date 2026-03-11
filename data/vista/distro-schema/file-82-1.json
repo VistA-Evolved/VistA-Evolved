@@ -1,0 +1,36 @@
+{
+  "fileNumber": 82.1,
+  "fileName": "DRG PROCEDURE IDENTIFIER CODES",
+  "globalRoot": "82.1",
+  "globalReference": "^ICDIP(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IDENTIFIER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "ICD-9 and ICD-10 Identifier Code ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of this Identifier Code ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "82.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

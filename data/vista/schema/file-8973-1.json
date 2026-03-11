@@ -1,0 +1,2970 @@
+{
+  "fileNumber": 8973.1,
+  "fileName": "CM HL7 DATA",
+  "globalRoot": "8973.1",
+  "globalReference": "^KMPD(8973.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SENT TO NATIONAL DATABASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SYNC/ASYNC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SYNCHRONOUS;2:ASYNCHRONOUS;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.001,
+      "fieldName": "TRANS TCP TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.001
+    },
+    {
+      "fieldNumber": 1.002,
+      "fieldName": "TRANS TCP TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.002
+    },
+    {
+      "fieldNumber": 1.003,
+      "fieldName": "TRANS TCP TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.003
+    },
+    {
+      "fieldNumber": 1.004,
+      "fieldName": "TRANS MAIL TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.004
+    },
+    {
+      "fieldNumber": 1.005,
+      "fieldName": "TRANS MAIL TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.005
+    },
+    {
+      "fieldNumber": 1.006,
+      "fieldName": "TRANS MAIL TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.006
+    },
+    {
+      "fieldNumber": 1.007,
+      "fieldName": "TRANS UNK TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.007
+    },
+    {
+      "fieldNumber": 1.008,
+      "fieldName": "TRANS UNK TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.008
+    },
+    {
+      "fieldNumber": 1.009,
+      "fieldName": "TRANS UNK TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.009
+    },
+    {
+      "fieldNumber": 1.101,
+      "fieldName": "I/O INCOMING TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.101
+    },
+    {
+      "fieldNumber": 1.102,
+      "fieldName": "I/O INCOMING TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.102
+    },
+    {
+      "fieldNumber": 1.103,
+      "fieldName": "I/O INCOMING TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.103
+    },
+    {
+      "fieldNumber": 1.104,
+      "fieldName": "I/O OUTGOING TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.104
+    },
+    {
+      "fieldNumber": 1.105,
+      "fieldName": "I/O OUTGOING TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.105
+    },
+    {
+      "fieldNumber": 1.106,
+      "fieldName": "I/O OUTGOING TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.106
+    },
+    {
+      "fieldNumber": 1.107,
+      "fieldName": "I/O UNK TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.107
+    },
+    {
+      "fieldNumber": 1.108,
+      "fieldName": "I/O UNK TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.108
+    },
+    {
+      "fieldNumber": 1.109,
+      "fieldName": "I/O UNK TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.109
+    },
+    {
+      "fieldNumber": 1.201,
+      "fieldName": "L/R LOCAL TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.201
+    },
+    {
+      "fieldNumber": 1.202,
+      "fieldName": "L/R LOCAL TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.202
+    },
+    {
+      "fieldNumber": 1.203,
+      "fieldName": "L/R LOCAL TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.203
+    },
+    {
+      "fieldNumber": 1.204,
+      "fieldName": "L/R REMOTE TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.204
+    },
+    {
+      "fieldNumber": 1.205,
+      "fieldName": "L/R REMOTE TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.205
+    },
+    {
+      "fieldNumber": 1.206,
+      "fieldName": "L/R REMOTE TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.206
+    },
+    {
+      "fieldNumber": 1.207,
+      "fieldName": "L/R UNK TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.207
+    },
+    {
+      "fieldNumber": 1.208,
+      "fieldName": "L/R UNK TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.208
+    },
+    {
+      "fieldNumber": 1.209,
+      "fieldName": "L/R UNK TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.209
+    },
+    {
+      "fieldNumber": 2.001,
+      "fieldName": "TRANS TCP TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.001
+    },
+    {
+      "fieldNumber": 2.002,
+      "fieldName": "TRANS TCP TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.002
+    },
+    {
+      "fieldNumber": 2.003,
+      "fieldName": "TRANS TCP TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.003
+    },
+    {
+      "fieldNumber": 2.004,
+      "fieldName": "TRANS MAIL TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.004
+    },
+    {
+      "fieldNumber": 2.005,
+      "fieldName": "TRANS MAIL TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.005
+    },
+    {
+      "fieldNumber": 2.006,
+      "fieldName": "TRANS MAIL TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.006
+    },
+    {
+      "fieldNumber": 2.007,
+      "fieldName": "TRANS UNK TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.007
+    },
+    {
+      "fieldNumber": 2.008,
+      "fieldName": "TRANS UNK TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.008
+    },
+    {
+      "fieldNumber": 2.009,
+      "fieldName": "TRANS UNK TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.009
+    },
+    {
+      "fieldNumber": 2.101,
+      "fieldName": "I/O INCOMING TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.101
+    },
+    {
+      "fieldNumber": 2.102,
+      "fieldName": "I/O INCOMING TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.102
+    },
+    {
+      "fieldNumber": 2.103,
+      "fieldName": "I/O INCOMING TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.103
+    },
+    {
+      "fieldNumber": 2.104,
+      "fieldName": "I/O OUTGOING TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.104
+    },
+    {
+      "fieldNumber": 2.105,
+      "fieldName": "I/O OUTGOING TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.105
+    },
+    {
+      "fieldNumber": 2.106,
+      "fieldName": "I/O OUTGOING TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.106
+    },
+    {
+      "fieldNumber": 2.107,
+      "fieldName": "I/O UNK TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.107
+    },
+    {
+      "fieldNumber": 2.108,
+      "fieldName": "I/O UNK TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.108
+    },
+    {
+      "fieldNumber": 2.109,
+      "fieldName": "I/O UNK TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.109
+    },
+    {
+      "fieldNumber": 2.201,
+      "fieldName": "L/R LOCAL TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.201
+    },
+    {
+      "fieldNumber": 2.202,
+      "fieldName": "L/R LOCAL TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.202
+    },
+    {
+      "fieldNumber": 2.203,
+      "fieldName": "L/R LOCAL TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.203
+    },
+    {
+      "fieldNumber": 2.204,
+      "fieldName": "L/R REMOTE TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.204
+    },
+    {
+      "fieldNumber": 2.205,
+      "fieldName": "L/R REMOTE TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.205
+    },
+    {
+      "fieldNumber": 2.206,
+      "fieldName": "L/R REMOTE TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.206
+    },
+    {
+      "fieldNumber": 2.207,
+      "fieldName": "L/R UNK TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.207
+    },
+    {
+      "fieldNumber": 2.208,
+      "fieldName": "L/R UNK TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.208
+    },
+    {
+      "fieldNumber": 2.209,
+      "fieldName": "L/R UNK TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.209
+    },
+    {
+      "fieldNumber": 5.109,
+      "fieldName": "HOUR 8 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.109
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "HOUR 9 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.111,
+      "fieldName": "HOUR 10 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.111
+    },
+    {
+      "fieldNumber": 5.112,
+      "fieldName": "HOUR 11 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.112
+    },
+    {
+      "fieldNumber": 5.113,
+      "fieldName": "HOUR 12 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.113
+    },
+    {
+      "fieldNumber": 5.114,
+      "fieldName": "HOUR 13 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.114
+    },
+    {
+      "fieldNumber": 5.115,
+      "fieldName": "HOUR 14 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.115
+    },
+    {
+      "fieldNumber": 5.116,
+      "fieldName": "HOUR 15 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.116
+    },
+    {
+      "fieldNumber": 5.117,
+      "fieldName": "HOUR 16 MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.117
+    },
+    {
+      "fieldNumber": 5.209,
+      "fieldName": "HOUR 8 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.209
+    },
+    {
+      "fieldNumber": 5.21,
+      "fieldName": "HOUR 9 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.21
+    },
+    {
+      "fieldNumber": 5.211,
+      "fieldName": "HOUR 10 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.211
+    },
+    {
+      "fieldNumber": 5.212,
+      "fieldName": "HOUR 11 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.212
+    },
+    {
+      "fieldNumber": 5.213,
+      "fieldName": "HOUR 12 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.213
+    },
+    {
+      "fieldNumber": 5.214,
+      "fieldName": "HOUR 13 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.214
+    },
+    {
+      "fieldNumber": 5.215,
+      "fieldName": "HOUR 14 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.215
+    },
+    {
+      "fieldNumber": 5.216,
+      "fieldName": "HOUR 15 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.216
+    },
+    {
+      "fieldNumber": 5.217,
+      "fieldName": "HOUR 16 MSG TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.217
+    },
+    {
+      "fieldNumber": 5.309,
+      "fieldName": "HOUR 8 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.309
+    },
+    {
+      "fieldNumber": 5.31,
+      "fieldName": "HOUR 9 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.31
+    },
+    {
+      "fieldNumber": 5.311,
+      "fieldName": "HOUR 10 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.311
+    },
+    {
+      "fieldNumber": 5.312,
+      "fieldName": "HOUR 11 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.312
+    },
+    {
+      "fieldNumber": 5.313,
+      "fieldName": "HOUR 12 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.313
+    },
+    {
+      "fieldNumber": 5.314,
+      "fieldName": "HOUR 13 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.314
+    },
+    {
+      "fieldNumber": 5.315,
+      "fieldName": "HOUR 14 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.315
+    },
+    {
+      "fieldNumber": 5.316,
+      "fieldName": "HOUR 15 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.316
+    },
+    {
+      "fieldNumber": 5.317,
+      "fieldName": "HOUR 16 MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.317
+    },
+    {
+      "fieldNumber": 5.409,
+      "fieldName": "HOUR 8 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.409
+    },
+    {
+      "fieldNumber": 5.41,
+      "fieldName": "HOUR 9 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.41
+    },
+    {
+      "fieldNumber": 5.411,
+      "fieldName": "HOUR 10 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.411
+    },
+    {
+      "fieldNumber": 5.412,
+      "fieldName": "HOUR 11 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.412
+    },
+    {
+      "fieldNumber": 5.413,
+      "fieldName": "HOUR 12 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.413
+    },
+    {
+      "fieldNumber": 5.414,
+      "fieldName": "HOUR 13 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.414
+    },
+    {
+      "fieldNumber": 5.415,
+      "fieldName": "HOUR 14 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.415
+    },
+    {
+      "fieldNumber": 5.416,
+      "fieldName": "HOUR 15 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.416
+    },
+    {
+      "fieldNumber": 5.417,
+      "fieldName": "HOUR 16 PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.417
+    },
+    {
+      "fieldNumber": 5.509,
+      "fieldName": "HOUR 8 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.509
+    },
+    {
+      "fieldNumber": 5.51,
+      "fieldName": "HOUR 9 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.51
+    },
+    {
+      "fieldNumber": 5.511,
+      "fieldName": "HOUR 10 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.511
+    },
+    {
+      "fieldNumber": 5.512,
+      "fieldName": "HOUR 11 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.512
+    },
+    {
+      "fieldNumber": 5.513,
+      "fieldName": "HOUR 12 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.513
+    },
+    {
+      "fieldNumber": 5.514,
+      "fieldName": "HOUR 13 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.514
+    },
+    {
+      "fieldNumber": 5.515,
+      "fieldName": "HOUR 14 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.515
+    },
+    {
+      "fieldNumber": 5.516,
+      "fieldName": "HOUR 15 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.516
+    },
+    {
+      "fieldNumber": 5.517,
+      "fieldName": "HOUR 16 PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.517
+    },
+    {
+      "fieldNumber": 5.709,
+      "fieldName": "HOUR 8 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.709
+    },
+    {
+      "fieldNumber": 5.71,
+      "fieldName": "HOUR 9 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.71
+    },
+    {
+      "fieldNumber": 5.711,
+      "fieldName": "HOUR 10 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.711
+    },
+    {
+      "fieldNumber": 5.712,
+      "fieldName": "HOUR 11 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.712
+    },
+    {
+      "fieldNumber": 5.713,
+      "fieldName": "HOUR 12 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.713
+    },
+    {
+      "fieldNumber": 5.714,
+      "fieldName": "HOUR 13 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.714
+    },
+    {
+      "fieldNumber": 5.715,
+      "fieldName": "HOUR 14 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.715
+    },
+    {
+      "fieldNumber": 5.716,
+      "fieldName": "HOUR 15 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.716
+    },
+    {
+      "fieldNumber": 5.717,
+      "fieldName": "HOUR 16 AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.717
+    },
+    {
+      "fieldNumber": 5.809,
+      "fieldName": "HOUR 8 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.809
+    },
+    {
+      "fieldNumber": 5.81,
+      "fieldName": "HOUR 9 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.81
+    },
+    {
+      "fieldNumber": 5.811,
+      "fieldName": "HOUR 10 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.811
+    },
+    {
+      "fieldNumber": 5.812,
+      "fieldName": "HOUR 11 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.812
+    },
+    {
+      "fieldNumber": 5.813,
+      "fieldName": "HOUR 12 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.813
+    },
+    {
+      "fieldNumber": 5.814,
+      "fieldName": "HOUR 13 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.814
+    },
+    {
+      "fieldNumber": 5.815,
+      "fieldName": "HOUR 14 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.815
+    },
+    {
+      "fieldNumber": 5.816,
+      "fieldName": "HOUR 15 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.816
+    },
+    {
+      "fieldNumber": 5.817,
+      "fieldName": "HOUR 16 AA TO CA MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.817
+    },
+    {
+      "fieldNumber": 5.909,
+      "fieldName": "HOUR 8 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.909
+    },
+    {
+      "fieldNumber": 5.91,
+      "fieldName": "HOUR 9 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.91
+    },
+    {
+      "fieldNumber": 5.911,
+      "fieldName": "HOUR 10 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.911
+    },
+    {
+      "fieldNumber": 5.912,
+      "fieldName": "HOUR 11 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.912
+    },
+    {
+      "fieldNumber": 5.913,
+      "fieldName": "HOUR 12 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.913
+    },
+    {
+      "fieldNumber": 5.914,
+      "fieldName": "HOUR 13 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.914
+    },
+    {
+      "fieldNumber": 5.915,
+      "fieldName": "HOUR 14 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.915
+    },
+    {
+      "fieldNumber": 5.916,
+      "fieldName": "HOUR 15 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.916
+    },
+    {
+      "fieldNumber": 5.917,
+      "fieldName": "HOUR 16 AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.917
+    },
+    {
+      "fieldNumber": 6.101,
+      "fieldName": "HOUR 0 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.101
+    },
+    {
+      "fieldNumber": 6.102,
+      "fieldName": "HOUR 1 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.102
+    },
+    {
+      "fieldNumber": 6.103,
+      "fieldName": "HOUR 2 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.103
+    },
+    {
+      "fieldNumber": 6.104,
+      "fieldName": "HOUR 3 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.104
+    },
+    {
+      "fieldNumber": 6.105,
+      "fieldName": "HOUR 4 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.105
+    },
+    {
+      "fieldNumber": 6.106,
+      "fieldName": "HOUR 5 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.106
+    },
+    {
+      "fieldNumber": 6.107,
+      "fieldName": "HOUR 6 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.107
+    },
+    {
+      "fieldNumber": 6.108,
+      "fieldName": "HOUR 7 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.108
+    },
+    {
+      "fieldNumber": 6.109,
+      "fieldName": "HOUR 8 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.109
+    },
+    {
+      "fieldNumber": 6.11,
+      "fieldName": "HOUR 9 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.11
+    },
+    {
+      "fieldNumber": 6.111,
+      "fieldName": "HOUR 10 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.111
+    },
+    {
+      "fieldNumber": 6.112,
+      "fieldName": "HOUR 11 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.112
+    },
+    {
+      "fieldNumber": 6.113,
+      "fieldName": "HOUR 12 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.113
+    },
+    {
+      "fieldNumber": 6.114,
+      "fieldName": "HOUR 13 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.114
+    },
+    {
+      "fieldNumber": 6.115,
+      "fieldName": "HOUR 14 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.115
+    },
+    {
+      "fieldNumber": 6.116,
+      "fieldName": "HOUR 15 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.116
+    },
+    {
+      "fieldNumber": 6.117,
+      "fieldName": "HOUR 16 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.117
+    },
+    {
+      "fieldNumber": 6.118,
+      "fieldName": "HOUR 17 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.118
+    },
+    {
+      "fieldNumber": 6.119,
+      "fieldName": "HOUR 18 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.119
+    },
+    {
+      "fieldNumber": 6.12,
+      "fieldName": "HOUR 19 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.12
+    },
+    {
+      "fieldNumber": 6.121,
+      "fieldName": "HOUR 20 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.121
+    },
+    {
+      "fieldNumber": 6.122,
+      "fieldName": "HOUR 21 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.122
+    },
+    {
+      "fieldNumber": 6.123,
+      "fieldName": "HOUR 22 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.123
+    },
+    {
+      "fieldNumber": 6.124,
+      "fieldName": "HOUR 23 MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.124
+    },
+    {
+      "fieldNumber": 6.201,
+      "fieldName": "HOUR 0 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.201
+    },
+    {
+      "fieldNumber": 6.202,
+      "fieldName": "HOUR 1 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.202
+    },
+    {
+      "fieldNumber": 6.203,
+      "fieldName": "HOUR 2 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.203
+    },
+    {
+      "fieldNumber": 6.204,
+      "fieldName": "HOUR 3 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.204
+    },
+    {
+      "fieldNumber": 6.205,
+      "fieldName": "HOUR 4 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.205
+    },
+    {
+      "fieldNumber": 6.206,
+      "fieldName": "HOUR 5 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.206
+    },
+    {
+      "fieldNumber": 6.207,
+      "fieldName": "HOUR 6 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.207
+    },
+    {
+      "fieldNumber": 6.208,
+      "fieldName": "HOUR 7 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.208
+    },
+    {
+      "fieldNumber": 6.209,
+      "fieldName": "HOUR 8 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.209
+    },
+    {
+      "fieldNumber": 6.21,
+      "fieldName": "HOUR 9 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.21
+    },
+    {
+      "fieldNumber": 6.211,
+      "fieldName": "HOUR 10 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.211
+    },
+    {
+      "fieldNumber": 6.212,
+      "fieldName": "HOUR 11 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.212
+    },
+    {
+      "fieldNumber": 6.213,
+      "fieldName": "HOUR 12 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.213
+    },
+    {
+      "fieldNumber": 6.214,
+      "fieldName": "HOUR 13 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.214
+    },
+    {
+      "fieldNumber": 6.215,
+      "fieldName": "HOUR 14 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.215
+    },
+    {
+      "fieldNumber": 6.216,
+      "fieldName": "HOUR 15 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.216
+    },
+    {
+      "fieldNumber": 6.217,
+      "fieldName": "HOUR 16 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.217
+    },
+    {
+      "fieldNumber": 6.218,
+      "fieldName": "HOUR 17 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.218
+    },
+    {
+      "fieldNumber": 6.219,
+      "fieldName": "HOUR 18 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.219
+    },
+    {
+      "fieldNumber": 6.22,
+      "fieldName": "HOUR 19 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.22
+    },
+    {
+      "fieldNumber": 6.221,
+      "fieldName": "HOUR 20 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.221
+    },
+    {
+      "fieldNumber": 6.222,
+      "fieldName": "HOUR 21 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.222
+    },
+    {
+      "fieldNumber": 6.223,
+      "fieldName": "HOUR 22 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.223
+    },
+    {
+      "fieldNumber": 6.224,
+      "fieldName": "HOUR 23 MSG TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.224
+    },
+    {
+      "fieldNumber": 6.301,
+      "fieldName": "HOUR 0 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.301
+    },
+    {
+      "fieldNumber": 6.302,
+      "fieldName": "HOUR 1 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.302
+    },
+    {
+      "fieldNumber": 6.303,
+      "fieldName": "HOUR 2 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.303
+    },
+    {
+      "fieldNumber": 6.304,
+      "fieldName": "HOUR 3 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.304
+    },
+    {
+      "fieldNumber": 6.305,
+      "fieldName": "HOUR 4 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.305
+    },
+    {
+      "fieldNumber": 6.306,
+      "fieldName": "HOUR 5 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.306
+    },
+    {
+      "fieldNumber": 6.307,
+      "fieldName": "HOUR 6 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.307
+    },
+    {
+      "fieldNumber": 6.308,
+      "fieldName": "HOUR 7 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.308
+    },
+    {
+      "fieldNumber": 6.309,
+      "fieldName": "HOUR 8 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.309
+    },
+    {
+      "fieldNumber": 6.31,
+      "fieldName": "HOUR 9 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.31
+    },
+    {
+      "fieldNumber": 6.311,
+      "fieldName": "HOUR 10 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.311
+    },
+    {
+      "fieldNumber": 6.312,
+      "fieldName": "HOUR 11 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.312
+    },
+    {
+      "fieldNumber": 6.313,
+      "fieldName": "HOUR 12 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.313
+    },
+    {
+      "fieldNumber": 6.314,
+      "fieldName": "HOUR 13 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.314
+    },
+    {
+      "fieldNumber": 6.315,
+      "fieldName": "HOUR 14 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.315
+    },
+    {
+      "fieldNumber": 6.316,
+      "fieldName": "HOUR 15 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.316
+    },
+    {
+      "fieldNumber": 6.317,
+      "fieldName": "HOUR 16 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.317
+    },
+    {
+      "fieldNumber": 6.318,
+      "fieldName": "HOUR 17 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.318
+    },
+    {
+      "fieldNumber": 6.319,
+      "fieldName": "HOUR 18 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.319
+    },
+    {
+      "fieldNumber": 6.32,
+      "fieldName": "HOUR 19 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.32
+    },
+    {
+      "fieldNumber": 6.321,
+      "fieldName": "HOUR 20 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.321
+    },
+    {
+      "fieldNumber": 6.322,
+      "fieldName": "HOUR 21 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.322
+    },
+    {
+      "fieldNumber": 6.323,
+      "fieldName": "HOUR 22 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.323
+    },
+    {
+      "fieldNumber": 6.324,
+      "fieldName": "HOUR 23 MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.324
+    },
+    {
+      "fieldNumber": 6.401,
+      "fieldName": "HOUR 0 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.401
+    },
+    {
+      "fieldNumber": 6.402,
+      "fieldName": "HOUR 1 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.402
+    },
+    {
+      "fieldNumber": 6.403,
+      "fieldName": "HOUR 2 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.403
+    },
+    {
+      "fieldNumber": 6.404,
+      "fieldName": "HOUR 3 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.404
+    },
+    {
+      "fieldNumber": 6.405,
+      "fieldName": "HOUR 4 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.405
+    },
+    {
+      "fieldNumber": 6.406,
+      "fieldName": "HOUR 5 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.406
+    },
+    {
+      "fieldNumber": 6.407,
+      "fieldName": "HOUR 6 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.407
+    },
+    {
+      "fieldNumber": 6.408,
+      "fieldName": "HOUR 7 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.408
+    },
+    {
+      "fieldNumber": 6.409,
+      "fieldName": "HOUR 8 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.409
+    },
+    {
+      "fieldNumber": 6.41,
+      "fieldName": "HOUR 9 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.41
+    },
+    {
+      "fieldNumber": 6.411,
+      "fieldName": "HOUR 10 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.411
+    },
+    {
+      "fieldNumber": 6.412,
+      "fieldName": "HOUR 11 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.412
+    },
+    {
+      "fieldNumber": 6.413,
+      "fieldName": "HOUR 12 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.413
+    },
+    {
+      "fieldNumber": 6.414,
+      "fieldName": "HOUR 13 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.414
+    },
+    {
+      "fieldNumber": 6.415,
+      "fieldName": "HOUR 14 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.415
+    },
+    {
+      "fieldNumber": 6.416,
+      "fieldName": "HOUR 15 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.416
+    },
+    {
+      "fieldNumber": 6.417,
+      "fieldName": "HOUR 16 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.417
+    },
+    {
+      "fieldNumber": 6.418,
+      "fieldName": "HOUR 17 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.418
+    },
+    {
+      "fieldNumber": 6.419,
+      "fieldName": "HOUR 18 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.419
+    },
+    {
+      "fieldNumber": 6.42,
+      "fieldName": "HOUR 19 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.42
+    },
+    {
+      "fieldNumber": 6.421,
+      "fieldName": "HOUR 20 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.421
+    },
+    {
+      "fieldNumber": 6.422,
+      "fieldName": "HOUR 21 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.422
+    },
+    {
+      "fieldNumber": 6.423,
+      "fieldName": "HOUR 22 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.423
+    },
+    {
+      "fieldNumber": 6.424,
+      "fieldName": "HOUR 23 PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.424
+    },
+    {
+      "fieldNumber": 6.501,
+      "fieldName": "HOUR 0 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.501
+    },
+    {
+      "fieldNumber": 6.502,
+      "fieldName": "HOUR 1 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.502
+    },
+    {
+      "fieldNumber": 6.503,
+      "fieldName": "HOUR 2 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.503
+    },
+    {
+      "fieldNumber": 6.504,
+      "fieldName": "HOUR 3 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.504
+    },
+    {
+      "fieldNumber": 6.505,
+      "fieldName": "HOUR 4 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.505
+    },
+    {
+      "fieldNumber": 6.506,
+      "fieldName": "HOUR 5 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.506
+    },
+    {
+      "fieldNumber": 6.507,
+      "fieldName": "HOUR 6 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.507
+    },
+    {
+      "fieldNumber": 6.508,
+      "fieldName": "HOUR 7 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.508
+    },
+    {
+      "fieldNumber": 6.509,
+      "fieldName": "HOUR 8 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.509
+    },
+    {
+      "fieldNumber": 6.51,
+      "fieldName": "HOUR 9 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.51
+    },
+    {
+      "fieldNumber": 6.511,
+      "fieldName": "HOUR 10 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.511
+    },
+    {
+      "fieldNumber": 6.512,
+      "fieldName": "HOUR 11 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.512
+    },
+    {
+      "fieldNumber": 6.513,
+      "fieldName": "HOUR 12 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.513
+    },
+    {
+      "fieldNumber": 6.514,
+      "fieldName": "HOUR 13 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.514
+    },
+    {
+      "fieldNumber": 6.515,
+      "fieldName": "HOUR 14 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.515
+    },
+    {
+      "fieldNumber": 6.516,
+      "fieldName": "HOUR 15 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.516
+    },
+    {
+      "fieldNumber": 6.517,
+      "fieldName": "HOUR 16 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.517
+    },
+    {
+      "fieldNumber": 6.518,
+      "fieldName": "HOUR 17 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.518
+    },
+    {
+      "fieldNumber": 6.519,
+      "fieldName": "HOUR 18 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.519
+    },
+    {
+      "fieldNumber": 6.52,
+      "fieldName": "HOUR 19 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.52
+    },
+    {
+      "fieldNumber": 6.521,
+      "fieldName": "HOUR 20 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.521
+    },
+    {
+      "fieldNumber": 6.522,
+      "fieldName": "HOUR 21 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.522
+    },
+    {
+      "fieldNumber": 6.523,
+      "fieldName": "HOUR 22 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.523
+    },
+    {
+      "fieldNumber": 6.524,
+      "fieldName": "HOUR 23 PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.524
+    },
+    {
+      "fieldNumber": 6.701,
+      "fieldName": "HOUR 0 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.701
+    },
+    {
+      "fieldNumber": 6.702,
+      "fieldName": "HOUR 1 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.702
+    },
+    {
+      "fieldNumber": 6.703,
+      "fieldName": "HOUR 2 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.703
+    },
+    {
+      "fieldNumber": 6.704,
+      "fieldName": "HOUR 3 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.704
+    },
+    {
+      "fieldNumber": 6.705,
+      "fieldName": "HOUR 4 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.705
+    },
+    {
+      "fieldNumber": 6.706,
+      "fieldName": "HOUR 5 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.706
+    },
+    {
+      "fieldNumber": 6.707,
+      "fieldName": "HOUR 6 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.707
+    },
+    {
+      "fieldNumber": 6.708,
+      "fieldName": "HOUR 7 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.708
+    },
+    {
+      "fieldNumber": 6.709,
+      "fieldName": "HOUR 8 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.709
+    },
+    {
+      "fieldNumber": 6.71,
+      "fieldName": "HOUR 9 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.71
+    },
+    {
+      "fieldNumber": 6.711,
+      "fieldName": "HOUR 10 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.711
+    },
+    {
+      "fieldNumber": 6.712,
+      "fieldName": "HOUR 11 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.712
+    },
+    {
+      "fieldNumber": 6.713,
+      "fieldName": "HOUR 12 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.713
+    },
+    {
+      "fieldNumber": 6.714,
+      "fieldName": "HOUR 13 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.714
+    },
+    {
+      "fieldNumber": 6.715,
+      "fieldName": "HOUR 14 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.715
+    },
+    {
+      "fieldNumber": 6.716,
+      "fieldName": "HOUR 15 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.716
+    },
+    {
+      "fieldNumber": 6.717,
+      "fieldName": "HOUR 16 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.717
+    },
+    {
+      "fieldNumber": 6.718,
+      "fieldName": "HOUR 17 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.718
+    },
+    {
+      "fieldNumber": 6.719,
+      "fieldName": "HOUR 18 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.719
+    },
+    {
+      "fieldNumber": 6.72,
+      "fieldName": "HOUR 19 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.72
+    },
+    {
+      "fieldNumber": 6.721,
+      "fieldName": "HOUR 20 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.721
+    },
+    {
+      "fieldNumber": 6.722,
+      "fieldName": "HOUR 21 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.722
+    },
+    {
+      "fieldNumber": 6.723,
+      "fieldName": "HOUR 22 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.723
+    },
+    {
+      "fieldNumber": 6.724,
+      "fieldName": "HOUR 23 AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.724
+    },
+    {
+      "fieldNumber": 6.801,
+      "fieldName": "HOUR 0 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.801
+    },
+    {
+      "fieldNumber": 6.802,
+      "fieldName": "HOUR 1 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.802
+    },
+    {
+      "fieldNumber": 6.803,
+      "fieldName": "HOUR 2 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.803
+    },
+    {
+      "fieldNumber": 6.804,
+      "fieldName": "HOUR 3 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.804
+    },
+    {
+      "fieldNumber": 6.805,
+      "fieldName": "HOUR 4 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.805
+    },
+    {
+      "fieldNumber": 6.806,
+      "fieldName": "HOUR 5 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.806
+    },
+    {
+      "fieldNumber": 6.807,
+      "fieldName": "HOUR 6 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.807
+    },
+    {
+      "fieldNumber": 6.808,
+      "fieldName": "HOUR 7 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.808
+    },
+    {
+      "fieldNumber": 6.809,
+      "fieldName": "HOUR 8 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.809
+    },
+    {
+      "fieldNumber": 6.81,
+      "fieldName": "HOUR 9 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.81
+    },
+    {
+      "fieldNumber": 6.811,
+      "fieldName": "HOUR 10 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.811
+    },
+    {
+      "fieldNumber": 6.812,
+      "fieldName": "HOUR 11 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.812
+    },
+    {
+      "fieldNumber": 6.813,
+      "fieldName": "HOUR 12 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.813
+    },
+    {
+      "fieldNumber": 6.814,
+      "fieldName": "HOUR 13 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.814
+    },
+    {
+      "fieldNumber": 6.815,
+      "fieldName": "HOUR 14 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.815
+    },
+    {
+      "fieldNumber": 6.816,
+      "fieldName": "HOUR 15 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.816
+    },
+    {
+      "fieldNumber": 6.817,
+      "fieldName": "HOUR 16 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.817
+    },
+    {
+      "fieldNumber": 6.818,
+      "fieldName": "HOUR 17 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.818
+    },
+    {
+      "fieldNumber": 6.819,
+      "fieldName": "HOUR 18 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.819
+    },
+    {
+      "fieldNumber": 6.82,
+      "fieldName": "HOUR 19 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.82
+    },
+    {
+      "fieldNumber": 6.821,
+      "fieldName": "HOUR 20 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.821
+    },
+    {
+      "fieldNumber": 6.822,
+      "fieldName": "HOUR 21 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.822
+    },
+    {
+      "fieldNumber": 6.823,
+      "fieldName": "HOUR 22 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.823
+    },
+    {
+      "fieldNumber": 6.824,
+      "fieldName": "HOUR 23 AA TO CA MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.824
+    },
+    {
+      "fieldNumber": 6.901,
+      "fieldName": "HOUR 0 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.901
+    },
+    {
+      "fieldNumber": 6.902,
+      "fieldName": "HOUR 1 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.902
+    },
+    {
+      "fieldNumber": 6.903,
+      "fieldName": "HOUR 2 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.903
+    },
+    {
+      "fieldNumber": 6.904,
+      "fieldName": "HOUR 3 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.904
+    },
+    {
+      "fieldNumber": 6.905,
+      "fieldName": "HOUR 4 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.905
+    },
+    {
+      "fieldNumber": 6.906,
+      "fieldName": "HOUR 5 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.906
+    },
+    {
+      "fieldNumber": 6.907,
+      "fieldName": "HOUR 6 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.907
+    },
+    {
+      "fieldNumber": 6.908,
+      "fieldName": "HOUR 7 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.908
+    },
+    {
+      "fieldNumber": 6.909,
+      "fieldName": "HOUR 8 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.909
+    },
+    {
+      "fieldNumber": 6.91,
+      "fieldName": "HOUR 9 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.91
+    },
+    {
+      "fieldNumber": 6.911,
+      "fieldName": "HOUR 10 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.911
+    },
+    {
+      "fieldNumber": 6.912,
+      "fieldName": "HOUR 11 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.912
+    },
+    {
+      "fieldNumber": 6.913,
+      "fieldName": "HOUR 12 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.913
+    },
+    {
+      "fieldNumber": 6.914,
+      "fieldName": "HOUR 13 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.914
+    },
+    {
+      "fieldNumber": 6.915,
+      "fieldName": "HOUR 14 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.915
+    },
+    {
+      "fieldNumber": 6.916,
+      "fieldName": "HOUR 15 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.916
+    },
+    {
+      "fieldNumber": 6.917,
+      "fieldName": "HOUR 16 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.917
+    },
+    {
+      "fieldNumber": 6.918,
+      "fieldName": "HOUR 17 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.918
+    },
+    {
+      "fieldNumber": 6.919,
+      "fieldName": "HOUR 18 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.919
+    },
+    {
+      "fieldNumber": 6.92,
+      "fieldName": "HOUR 19 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.92
+    },
+    {
+      "fieldNumber": 6.921,
+      "fieldName": "HOUR 20 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.921
+    },
+    {
+      "fieldNumber": 6.922,
+      "fieldName": "HOUR 21 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.922
+    },
+    {
+      "fieldNumber": 6.923,
+      "fieldName": "HOUR 22 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.923
+    },
+    {
+      "fieldNumber": 6.924,
+      "fieldName": "HOUR 23 AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6.924
+    },
+    {
+      "fieldNumber": 99.001,
+      "fieldName": "TOT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.001
+    },
+    {
+      "fieldNumber": 99.002,
+      "fieldName": "TOT MESSAGES (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.002
+    },
+    {
+      "fieldNumber": 99.003,
+      "fieldName": "TOT SECONDS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.003
+    },
+    {
+      "fieldNumber": 99.004,
+      "fieldName": "TOT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.004
+    },
+    {
+      "fieldNumber": 99.005,
+      "fieldName": "TOT MESSAGES (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.005
+    },
+    {
+      "fieldNumber": 99.006,
+      "fieldName": "TOT SECONDS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.006
+    },
+    {
+      "fieldNumber": 99.201,
+      "fieldName": "TOT MSG UNIT CHR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.201
+    },
+    {
+      "fieldNumber": 99.202,
+      "fieldName": "TOT MSG UNIT MSGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.202
+    },
+    {
+      "fieldNumber": 99.203,
+      "fieldName": "TOT MSG UNIT SEC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.203
+    },
+    {
+      "fieldNumber": 99.206,
+      "fieldName": "MSG UNIT TYPE(S)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.206
+    },
+    {
+      "fieldNumber": 99.207,
+      "fieldName": "MSG UNIT PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.207
+    },
+    {
+      "fieldNumber": 99.208,
+      "fieldName": "MSG UNIT PROTOCOL - INFERRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.208
+    },
+    {
+      "fieldNumber": 99.209,
+      "fieldName": "MSG UNIT NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.209
+    },
+    {
+      "fieldNumber": 99.21,
+      "fieldName": "MSG UNIT NAMESPACE - INFERRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.21
+    },
+    {
+      "fieldNumber": 99.211,
+      "fieldName": "CONTACTED SITE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.211
+    },
+    {
+      "fieldNumber": 99.212,
+      "fieldName": "CONTACTED SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.212
+    },
+    {
+      "fieldNumber": 99.213,
+      "fieldName": "CONTACTED SITE LOCAL/REMOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.213
+    },
+    {
+      "fieldNumber": 99.301,
+      "fieldName": "TOT MSG UNIT CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.301
+    },
+    {
+      "fieldNumber": 99.302,
+      "fieldName": "TOT MSG UNIT MSGS (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.302
+    },
+    {
+      "fieldNumber": 99.303,
+      "fieldName": "TOT MSG UNIT SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.303
+    },
+    {
+      "fieldNumber": 99.304,
+      "fieldName": "TOT MSG UNIT CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.304
+    },
+    {
+      "fieldNumber": 99.305,
+      "fieldName": "TOT MSG UNIT MSGS (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.305
+    },
+    {
+      "fieldNumber": 99.306,
+      "fieldName": "TOT MSG UNIT SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.306
+    },
+    {
+      "fieldNumber": 99.307,
+      "fieldName": "TOT MSG UNIT CHR (PT&NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.307
+    },
+    {
+      "fieldNumber": 99.308,
+      "fieldName": "TOT MSG UNIT MSGS (PT&NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.308
+    },
+    {
+      "fieldNumber": 99.309,
+      "fieldName": "TOT MSG UNIT SEC (PT&NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.309
+    },
+    {
+      "fieldNumber": 99.401,
+      "fieldName": "TOT MSG TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.401
+    },
+    {
+      "fieldNumber": 99.402,
+      "fieldName": "TOT MSG TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.402
+    },
+    {
+      "fieldNumber": 99.403,
+      "fieldName": "TOT MSG TO CA COUNT (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.403
+    },
+    {
+      "fieldNumber": 99.404,
+      "fieldName": "TOT MSG TO CA COUNT (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.404
+    },
+    {
+      "fieldNumber": 99.405,
+      "fieldName": "TOT MSG TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.405
+    },
+    {
+      "fieldNumber": 99.406,
+      "fieldName": "TOT MSG TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.406
+    },
+    {
+      "fieldNumber": 99.407,
+      "fieldName": "TOT PROC TM (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.407
+    },
+    {
+      "fieldNumber": 99.408,
+      "fieldName": "TOT PROC TM (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.408
+    },
+    {
+      "fieldNumber": 99.409,
+      "fieldName": "TOT PROC CNT (CA-AA) (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.409
+    },
+    {
+      "fieldNumber": 99.41,
+      "fieldName": "TOT PROC CNT (CA-AA) (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.41
+    },
+    {
+      "fieldNumber": 99.411,
+      "fieldName": "TOT AA TO CA CHR (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.411
+    },
+    {
+      "fieldNumber": 99.412,
+      "fieldName": "TOT AA TO CA CHR (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.412
+    },
+    {
+      "fieldNumber": 99.413,
+      "fieldName": "TOT AA TO CA COUNT (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.413
+    },
+    {
+      "fieldNumber": 99.414,
+      "fieldName": "TOT AA TO CA COUNT (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.414
+    },
+    {
+      "fieldNumber": 99.415,
+      "fieldName": "TOT AA TO CA SEC (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.415
+    },
+    {
+      "fieldNumber": 99.416,
+      "fieldName": "TOT AA TO CA SEC (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.416
+    },
+    {
+      "fieldNumber": 99.501,
+      "fieldName": "TOT MSG UNIT COUNT (PT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.501
+    },
+    {
+      "fieldNumber": 99.502,
+      "fieldName": "TOT MSG UNIT COUNT (NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.502
+    },
+    {
+      "fieldNumber": 99.503,
+      "fieldName": "TOT MSG UNIT COUNT (PT&NP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99.503
+    }
+  ],
+  "fieldCount": 368,
+  "crossReferences": [
+    {"name": "ACSDTPRNM", "field": },
+    {"name": "APTDTNM", "field": },
+    {"name": "ASYNC", "field": },
+    {"name": "B", "field": },
+    {"name": "8973.1", "field": .01, "type": "regular"},
+    {"name": "8973.1", "field": .05, "type": "regular"},
+    {"name": "8973.1", "field": .06, "type": "regular"},
+    {"name": "8973.1", "field": 99.212, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W, "value": "D:$G(Y) ID^KMPDUT2(Y)"}
+  ]
+}

@@ -1,0 +1,1916 @@
+{
+  "id": "clinical-notes",
+  "name": "Clinical Notes (TIU)",
+  "description": "Progress notes, discharge summaries, document definitions",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.873Z",
+  "files": {
+    "count": 3,
+    "items": [
+      {
+        "fileNumber": 8925,
+        "fileName": "File #8925",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 8925.1,
+        "fileName": "File #8925.1",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 8926,
+        "fileName": "File #8926",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 50,
+    "items": [
+      {
+        "name": "TIU NOTES",
+        "tag": "NOTES",
+        "routine": "TIUSRVLO",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API gets lists of progress notes for a patient, with optional  parameters for STATUS, EARLY DATE/TIME, and LATE DATE/TIME. "
+      },
+      {
+        "name": "TIU GET RECORD TEXT",
+        "tag": "TGET",
+        "routine": "TIUSRVR1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will get the textual portion of a TIU Document Record. "
+      },
+      {
+        "name": "TIU SUMMARIES",
+        "tag": "SUMMARY",
+        "routine": "TIUSRVLO",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API gets lists of Discharge Summaries for a patient, with optional  parameters for STATUS, EARLY DATE/TIME, and LATE DATE/TIME. "
+      },
+      {
+        "name": "TIU NOTES BY VISIT",
+        "tag": "NOTES",
+        "routine": "TIUSRVLV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VISIT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API gets lists of Progress Notes by visit from TIU. "
+      },
+      {
+        "name": "TIU SUMMARIES BY VISIT",
+        "tag": "SUMMARY",
+        "routine": "TIUSRVLV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VISIT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API returns lists of Discharge Summaries by visit. "
+      },
+      {
+        "name": "TIU GET PN TITLES",
+        "tag": "NOTES",
+        "routine": "TIUSRVD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This API returns a list of Progress Notes Titles, including a SHORT LIST of preferred titles as defined by the user, and a LONG LIST of all titles defined at the site. "
+      },
+      {
+        "name": "TIU GET DS TITLES",
+        "tag": "SUMMARY",
+        "routine": "TIUSRVD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "TIU LOAD BOILERPLATE TEXT",
+        "tag": "BLRSHELL",
+        "routine": "TIUSRVD",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "TITLE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VSTRING",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will load the boilerplate text associated with the selected title, and execute the methods for any objects embedded in the boilerplate text. "
+      },
+      {
+        "name": "TIU SIGN RECORD",
+        "tag": "SIGN",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API Supports the application of the user's electronic signature to a TIU document while evaluating authorization, and validating the user's electronic signature. "
+      },
+      {
+        "name": "TIU GET PERSONAL PREFERENCES",
+        "tag": "GETPREF",
+        "routine": "TIUSRVR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns Users personal preferences for TIU in the following format:   TIUY = USER [1P] ^ DEFAULT LOCATION [2P] ^ REVIEW SCREEN SORT FIELD [3S] ^     ==>REVIEW SCREEN SORT ORDER [4S] ^ DISPLAY MENUS [5S] ^ PATIENT     ==>SELECTION PREFERENCE [6S] ^ ASK 'Save changes?' AFTER EDIT [7S] ^     ==>ASK SUB"
+      },
+      {
+        "name": "TIU UPDATE RECORD",
+        "tag": "UPDATE",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "ERR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "SUPPRESS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API updates the record named in the TIUDA parameter, with the information contained in the TIUX(Field #) array.  The body of the modified TIU document should be passed in the TIUX(\"TEXT\",i,0) subscript, where i is the line number (i.e., the \"TEXT\" node should be ready to MERGE with a word proce"
+      },
+      {
+        "name": "TIU REQUIRES COSIGNATURE",
+        "tag": "REQCOS",
+        "routine": "TIUSRVA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "TIUTYP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Boolean RPC simply evaluates whether the current user requires cosignature for TIU DOCUMENTS, and returns a 1 if true, or a 0 if false. "
+      },
+      {
+        "name": "TIU LOAD RECORD FOR EDIT",
+        "tag": "GET4EDIT",
+        "routine": "TIUSRVR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DR ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC loads the return array with data in a format consistent with that required by the TIU UPDATE RECORD API.  It should be invoked when the user invokes the Edit action, to load the dialog for editing the document. "
+      },
+      {
+        "name": "TIU DETAILED DISPLAY",
+        "tag": "RPC",
+        "routine": "TIUSRV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Gets details for display of a given record. "
+      },
+      {
+        "name": "TIU CREATE ADDENDUM RECORD",
+        "tag": "MAKEADD",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure allows the creation of addenda to TIU Documents. "
+      },
+      {
+        "name": "TIU CREATE RECORD",
+        "tag": "MAKE",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 9,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TITLE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VLOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VSIT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "VSTR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SUPPRESS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NOASF",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure allows the creation of TIU DOCUMENT records. "
+      },
+      {
+        "name": "TIU DELETE RECORD",
+        "tag": "DELETE",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIURSN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Deletes TIU Document records...Evaluates authorization. "
+      },
+      {
+        "name": "TIU PRINT RECORD",
+        "tag": "RPC",
+        "routine": "TIUPD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUIO",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUFLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Allows Printing of TIU Documents on demand. "
+      },
+      {
+        "name": "TIU GET DOCUMENT PARAMETERS",
+        "tag": "DOCPARM",
+        "routine": "TIUSRVP1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUTYP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure returns the parameters by which a given document or document type is to be processed. "
+      },
+      {
+        "name": "TIU GET DS URGENCIES",
+        "tag": "URGENCY",
+        "routine": "TIUSRVA",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a set of discharge summary urgencies for use in a long list box. "
+      },
+      {
+        "name": "TIU AUTHORIZATION",
+        "tag": "CANDO",
+        "routine": "TIUSRVA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUACT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows the calling application to evaluate privilege to perform any ASU-mediated action on a TIU document. "
+      },
+      {
+        "name": "TIU DOCUMENTS BY CONTEXT",
+        "tag": "CONTEXT",
+        "routine": "TIUSRVLO",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 12,
+        "params": [
+          {
+            "name": "CLASS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CONTEXT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EARLY",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PERSON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "OCCLIM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEQUENCE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SHOWADD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "INCUND",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SHOW",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns lists of TIU Documents that satisfy the following search criteria:   1 - signed documents (all)    2 - unsigned documents   3 - uncosigned documents 4 - signed documents/author 5 - signed documents/date range "
+      },
+      {
+        "name": "TIU NOTES 16 BIT",
+        "tag": "NOTES",
+        "routine": "TIUSRVLC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This API gets lists of progress notes for a patient, with optional  parameters for STATUS, EARLY DATE/TIME, and LATE DATE/TIME. "
+      },
+      {
+        "name": "TIU WHICH SIGNATURE ACTION",
+        "tag": "WHATACT",
+        "routine": "TIUSRVA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC infers whether the user is trying to sign or cosign the docuement in question, and indicates which ASU ACTION the GUI should pass to the TIU AUTHORIZATION RPC. "
+      },
+      {
+        "name": "TIU IS THIS A CONSULT?",
+        "tag": "ISCNSLT",
+        "routine": "TIUCNSLT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TITLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "BOOLEAN RPC which evaluates whether the title indicated is that of a consult. "
+      },
+      {
+        "name": "TIU LONG LIST OF TITLES",
+        "tag": "LONGLIST",
+        "routine": "TIUSRVD",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "CLASS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FROM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC serves data to a longlist of selectable TITLES by CLASS.  e.g., passing the class PROGRESS NOTES will return active Progress Notes titles which the current user is authorized to enter notes under. "
+      },
+      {
+        "name": "TIU PERSONAL TITLE LIST",
+        "tag": "PERSLIST",
+        "routine": "TIUSRVD",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLASS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "INDEX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure returns the user's list of preferred titles for a given class of documents, along with the default title, if specified. "
+      },
+      {
+        "name": "TIU LONG LIST CONSULT TITLES",
+        "tag": "LNGCNSLT",
+        "routine": "TIUSRVD",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "FROM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC serves data to a longlist of selectable TITLES for CONSULTS. "
+      },
+      {
+        "name": "TIU IDENTIFY CONSULTS CLASS",
+        "tag": "CNSLCLAS",
+        "routine": "TIUSRVD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns the record number of the class CONSULTS in the TIU DOCUMENT DEFINITION file (#8925.1). "
+      },
+      {
+        "name": "TIU GET ADDITIONAL SIGNERS",
+        "tag": "GETSIGNR",
+        "routine": "TIULX",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the list of additional signers currently identified for a given TIU document. "
+      },
+      {
+        "name": "TIU UPDATE ADDITIONAL SIGNERS",
+        "tag": "IDSIGNRS",
+        "routine": "TIULX",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIULIST",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC accepts a list of persons, and adds them as additional signers for the document identified by the first parameter. "
+      },
+      {
+        "name": "TIU LOCK RECORD",
+        "tag": "LOCK",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will issue an incremental LOCK on the record identified by the TIUDA parameter, returning an integer truth value indicating success or failure in obtaining the LOCK. "
+      },
+      {
+        "name": "TIU UNLOCK RECORD",
+        "tag": "UNLOCK",
+        "routine": "TIUSRVP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will decrement the lock on a given TIU Document Record, identified by the TIUDA input parameter. The return value will always be 0. "
+      },
+      {
+        "name": "TIU CAN CHANGE COSIGNER?",
+        "tag": "CANCHCOS",
+        "routine": "TIUSRVA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "BOOLEAN RPC to evaluate user's privilege to modify the expected cosigner,  given the current status of the document, and the user's role with respect  to it. "
+      },
+      {
+        "name": "TIU JUSTIFY DELETE?",
+        "tag": "NEEDJUST",
+        "routine": "TIUSRVA",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "BOOLEAN RPC that evaluates wheter a justification is required for deletion  (e.g., deletion is authorized, but the document has been signed, etc.). "
+      },
+      {
+        "name": "TIU GET ALERT INFO",
+        "tag": "GETALRT",
+        "routine": "TIUSRVR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Given a TIU XQAID, return the patient and document type for the item being alerted. "
+      },
+      {
+        "name": "TIU GET DOC COUNT BY VISIT",
+        "tag": "DOCCNT",
+        "routine": "TIUSRVLV",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VSIT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure returns the number of documents that are linked to a  particular visit. "
+      },
+      {
+        "name": "TIU TEMPLATE GETROOTS",
+        "tag": "GETROOTS",
+        "routine": "TIUSRVT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE GETITEMS",
+        "tag": "GETITEMS",
+        "routine": "TIUSRVT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE GETBOIL",
+        "tag": "GETBOIL",
+        "routine": "TIUSRVT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE GETTEXT",
+        "tag": "GETTEXT",
+        "routine": "TIUSRVT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VSTR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE ISEDITOR",
+        "tag": "ISEDITOR",
+        "routine": "TIUSRVT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ROOT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE GETPROOT",
+        "tag": "GETPROOT",
+        "routine": "TIUSRVT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE LISTOWNR",
+        "tag": "LISTOWNR",
+        "routine": "TIUSRVT",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "FROM",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "DIR",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "TIU TEMPLATE CREATE/MODIFY",
+        "tag": "SETTMPLT",
+        "routine": "TIUSRVT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure allows creation and update of Templates. "
+      },
+      {
+        "name": "TIU TEMPLATE SET ITEMS",
+        "tag": "SETITEMS",
+        "routine": "TIUSRVT",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will create or update the items for a Group, Class, or Root. "
+      },
+      {
+        "name": "TIU GET LIST OF OBJECTS",
+        "tag": "OBJLST",
+        "routine": "TIUSRVT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns the list of TIU OBJECTS that the current user may select from. "
+      },
+      {
+        "name": "TIU TEMPLATE DELETE",
+        "tag": "DELETE",
+        "routine": "TIUSRVT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will delete orphan entries in the Template file (i.e., only those entries that have been removed from any Groups, Classes, Personal or Shared Root entries). "
+      },
+      {
+        "name": "TIU TEMPLATE CHECK BOILERPLATE",
+        "tag": "BPCHECK",
+        "routine": "TIUSRVT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TIUX",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will evaluate boilerplate passed in the input array, checking to see whether any of the embedded objects are inactive, faulty, or ambiguous. "
+      },
+      {
+        "name": "TIU LINK DOCUMENT TO IMAGE",
+        "tag": "PUTIMAGE",
+        "routine": "TIUSRVPL",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "TIUDA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IMGDA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC links a document with an image. It will support a many-to-many association between documents and images. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "TIU REVIEW SCREEN CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU BROWSE DOCUMENT CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU ENTER/EDIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU MIXED CLINICIAN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU REVIEW UNSIGNED",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU REVIEW SCREEN MIS MANAGER",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU REVIEW SCREEN MRT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU MRT",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU MGR",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU TRANSCRIPTION",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU REVIEW SCREEN READ ONLY",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU BROWSE DOCUMENT MGR",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU BROWSE DOCUMENT MRT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU BROWSE DOCUMENT READ ONLY",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU REMOTE USER",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU GMRPN CONVERSION",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU GMRPN CONVERT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU GMRPN RESTART",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU PRINT PN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU PRINT PN PT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU PRINT PN AUTHOR",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU DOCUMENT DEFINITION EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU PRINT PN LOC",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU UPLOAD DOCUMENTS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU UPLOAD HELP",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU UPLOAD MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU ENTER/EDIT PN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU MAIN MENU PN CLINICIAN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU REVIEW PN CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "TIU BROWSE PN CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 92,
+    "items": [
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU NOTES",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU GET RECORD TEXT",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU SUMMARIES",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VISIT:",
+        "rpcName": "TIU NOTES BY VISIT",
+        "paramName": "VISIT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VISIT:",
+        "rpcName": "TIU SUMMARIES BY VISIT",
+        "paramName": "VISIT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TITLE:",
+        "rpcName": "TIU LOAD BOILERPLATE TEXT",
+        "paramName": "TITLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU LOAD BOILERPLATE TEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VSTRING:",
+        "rpcName": "TIU LOAD BOILERPLATE TEXT",
+        "paramName": "VSTRING",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU SIGN RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU SIGN RECORD",
+        "paramName": "TIUX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "TIU GET PERSONAL PREFERENCES",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ERR:",
+        "rpcName": "TIU UPDATE RECORD",
+        "paramName": "ERR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU UPDATE RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU UPDATE RECORD",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SUPPRESS:",
+        "rpcName": "TIU UPDATE RECORD",
+        "paramName": "SUPPRESS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUTYP:",
+        "rpcName": "TIU REQUIRES COSIGNATURE",
+        "paramName": "TIUTYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU REQUIRES COSIGNATURE",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "TIU REQUIRES COSIGNATURE",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU LOAD RECORD FOR EDIT",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DR :",
+        "rpcName": "TIU LOAD RECORD FOR EDIT",
+        "paramName": "DR ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU DETAILED DISPLAY",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU CREATE ADDENDUM RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU CREATE ADDENDUM RECORD",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TITLE:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "TITLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VDT:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "VDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VLOC:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "VLOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VSIT:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "VSIT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VSTR:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "VSTR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SUPPRESS:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "SUPPRESS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NOASF:",
+        "rpcName": "TIU CREATE RECORD",
+        "paramName": "NOASF",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU DELETE RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIURSN:",
+        "rpcName": "TIU DELETE RECORD",
+        "paramName": "TIURSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU PRINT RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUIO:",
+        "rpcName": "TIU PRINT RECORD",
+        "paramName": "TIUIO",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUFLAG:",
+        "rpcName": "TIU PRINT RECORD",
+        "paramName": "TIUFLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU GET DOCUMENT PARAMETERS",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUTYP:",
+        "rpcName": "TIU GET DOCUMENT PARAMETERS",
+        "paramName": "TIUTYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU AUTHORIZATION",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUACT:",
+        "rpcName": "TIU AUTHORIZATION",
+        "paramName": "TIUACT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLASS:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "CLASS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CONTEXT:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "CONTEXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EARLY:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "EARLY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LATE:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "LATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PERSON:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "PERSON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OCCLIM:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "OCCLIM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEQUENCE:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "SEQUENCE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SHOWADD:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "SHOWADD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INCUND:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "INCUND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SHOW:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "SHOW",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUIEN:",
+        "rpcName": "TIU DOCUMENTS BY CONTEXT",
+        "paramName": "TIUIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU NOTES 16 BIT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU WHICH SIGNATURE ACTION",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TITLE:",
+        "rpcName": "TIU IS THIS A CONSULT?",
+        "paramName": "TITLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLASS:",
+        "rpcName": "TIU LONG LIST OF TITLES",
+        "paramName": "CLASS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FROM:",
+        "rpcName": "TIU LONG LIST OF TITLES",
+        "paramName": "FROM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIR:",
+        "rpcName": "TIU LONG LIST OF TITLES",
+        "paramName": "DIR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "TIU PERSONAL TITLE LIST",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLASS:",
+        "rpcName": "TIU PERSONAL TITLE LIST",
+        "paramName": "CLASS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INDEX:",
+        "rpcName": "TIU PERSONAL TITLE LIST",
+        "paramName": "INDEX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FROM:",
+        "rpcName": "TIU LONG LIST CONSULT TITLES",
+        "paramName": "FROM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIR:",
+        "rpcName": "TIU LONG LIST CONSULT TITLES",
+        "paramName": "DIR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU GET ADDITIONAL SIGNERS",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU UPDATE ADDITIONAL SIGNERS",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIULIST:",
+        "rpcName": "TIU UPDATE ADDITIONAL SIGNERS",
+        "paramName": "TIULIST",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU LOCK RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU UNLOCK RECORD",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU CAN CHANGE COSIGNER?",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU JUSTIFY DELETE?",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "TIU GET ALERT INFO",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VSIT:",
+        "rpcName": "TIU GET DOC COUNT BY VISIT",
+        "paramName": "VSIT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "TIU TEMPLATE GETROOTS",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU TEMPLATE GETITEMS",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU TEMPLATE GETBOIL",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "TIU TEMPLATE GETTEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VSTR:",
+        "rpcName": "TIU TEMPLATE GETTEXT",
+        "paramName": "VSTR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU TEMPLATE GETTEXT",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ROOT:",
+        "rpcName": "TIU TEMPLATE ISEDITOR",
+        "paramName": "ROOT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "TIU TEMPLATE ISEDITOR",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "TIU TEMPLATE GETPROOT",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FROM:",
+        "rpcName": "TIU TEMPLATE LISTOWNR",
+        "paramName": "FROM",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIR:",
+        "rpcName": "TIU TEMPLATE LISTOWNR",
+        "paramName": "DIR",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU TEMPLATE CREATE/MODIFY",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU TEMPLATE CREATE/MODIFY",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU TEMPLATE SET ITEMS",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU TEMPLATE SET ITEMS",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU TEMPLATE DELETE",
+        "paramName": "TIUDA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUX:",
+        "rpcName": "TIU TEMPLATE CHECK BOILERPLATE",
+        "paramName": "TIUX",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIUDA:",
+        "rpcName": "TIU LINK DOCUMENT TO IMAGE",
+        "paramName": "TIUDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IMGDA:",
+        "rpcName": "TIU LINK DOCUMENT TO IMAGE",
+        "paramName": "IMGDA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

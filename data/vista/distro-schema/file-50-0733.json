@@ -1,0 +1,36 @@
+{
+  "fileNumber": 50.0733,
+  "fileName": "DUE SECTION",
+  "globalRoot": "50.0733",
+  "globalReference": "^PS(50.0733,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Free Text name of this DUE SECTION. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "50.07331P",
+      "required": false,
+      "helpText": "A provider associated with this DUE SECTION. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.0733", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

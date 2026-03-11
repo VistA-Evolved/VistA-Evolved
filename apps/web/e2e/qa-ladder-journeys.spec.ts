@@ -11,7 +11,7 @@
  */
 
 import { test, expect, type Page, type Locator } from '@playwright/test';
-import { TEST_DFN, chartRoute, selectPatient, setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, selectPatient, setupConsoleGate } from './helpers/auth';
 
 const API_BASE = process.env.API_URL ?? 'http://localhost:3001';
 const DFN = TEST_DFN;

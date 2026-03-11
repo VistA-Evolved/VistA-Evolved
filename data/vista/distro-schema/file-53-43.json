@@ -1,0 +1,38 @@
+{
+  "fileNumber": 53.43,
+  "fileName": "MISCELLANEOUS REPORT FILE",
+  "globalRoot": "53.43S",
+  "globalReference": "^PS(53.43,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE OF REPORT",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:PATIENT ORDER PURGE;",
+      "helpText": "  This is the type of report that has data in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "53.4301A",
+      "required": false,
+      "helpText": "  This is a unique indentifier to separate the reports from each other just in case more than one is running at the same time. ",
+      "isMultiple": true,
+      "subFileNumber": 53.4301,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

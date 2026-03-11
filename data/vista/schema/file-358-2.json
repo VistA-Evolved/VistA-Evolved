@@ -1,0 +1,206 @@
+{
+  "fileNumber": 358.2,
+  "fileName": "IMP/EXP SELECTION LIST",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name of the list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP358.1'",
+      "required": true,
+      "pointerTo": 358.1,
+      "helpText": "The block that the list appears on. The position of the selection list is relative to the block. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SUBCOLUMN HEADER APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COLUMN HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The text that appears at the top of each column (NOT subcolumn). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COLUMN HEADER APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  The column header can be give characteristics, such as centered and bold. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SUBCOLUMNS SEPARATED WITH?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ONE SPACE;2:TWO SPACES;3:LINE;4:SPACE/LINE/SPACE;",
+      "helpText": "  What characters are used to separate the subcolumns. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXTRA LINES FOR SELECTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "  Each entry on the list prints on only one line. However, if you want extra space to appear below each entry on the list then this field should be set to the number of blank lines desired. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "GROUP HEADER APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field determines the appearance of the group headers. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SELECTION ROUTINE",
+      "dataType": "POINTER",
+      "rawType": "R*P358.6'",
+      "required": true,
+      "pointerTo": 358.6,
+      "helpText": "  This identifies the Package Interface that is used to fill the list. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "UNDERLINE SELECTIONS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  Answer yes if each entry on the list should be underlined. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "NUMBER OF COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  A selection list may be displayed in an area several columns wide. The starting position and height of each column may be specified. However, it is not necessary because defaults values will be used. The defaults used assume that nothing else is going in the block except the selection list and that the entire block should be filled. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DYNAMIC SELECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRINT COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Applies only to dynamic selection lists. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "NUMBER OF OTHER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Space will be allocated at the bottom of the lsit for this number of items not found on the list. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "WHAT TO ALLOCATE SPACE FOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NARRATIVE ONLY;2:CODE ONLY;3:NARRATIVE AND CODE;",
+      "helpText": "This field will determine what fields will be placed on the form for writting in other items not found on the list. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "WHAT TO SEND TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NARRATIVE ONLY;2:CODE ONLY;3:NARRATIVE AND CODE;",
+      "helpText": "This determines what is sent to PCE.  For example, some types of data may require that a code be sent, but the narrative may be optional. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "CLINICAL REMINDER DISPLAY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DUE NOW ONLY;2:ALL REMINDERS;",
+      "helpText": "This is the display type for this list of clinical reminders. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIST COLUMN",
+      "dataType": "SUBFILE",
+      "rawType": "358.21I",
+      "required": false,
+      "helpText": "A column is a rectangular area that has the necessary width to display a single item on the list. ",
+      "isMultiple": true,
+      "subFileNumber": 358.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBCOLUMN NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "358.22I",
+      "required": false,
+      "helpText": "  A subcolumn contains one field of the entry on the list. The subcolumn order is the order, from left to right, that the subcolumns will appear in. ",
+      "isMultiple": true,
+      "subFileNumber": 358.22,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "358.2", "field": .01, "type": "regular"},
+    {"name": "358.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .11, "value": "W \"\""}
+  ]
+}

@@ -1,0 +1,513 @@
+{
+  "fileNumber": 396.3,
+  "fileName": "2507 REQUEST",
+  "globalRoot": "396.3IP",
+  "globalReference": "^DVB(396.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the veteran for whom you are requesting a 2507 exam. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "MRD",
+      "required": true,
+      "helpText": "This field contains the date the 2507 request was entered. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REGIONAL OFFICE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field contains the name of the regional office that entered the request. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUESTER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the regional office employee who entered the 2507 request. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE REPORTED TO MAS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the request was reported (printed) to MAS.  It can only be set one time, at the first printing.  Future prints or reprints of the same request will not alter the \"starting\" date.  This date is the basis for when the clock begins for both the RO and MAS.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modif",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE SCHEDULING COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date scheduling of the 2507 request was completed through the AMIE option.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the entire 2507 request was completed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE STATUS LAST CHANGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the last change to the REQUEST STATUS field (#17).   The field is populated by a trigger on the REQUEST STATUS field. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRIORITY OF EXAM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "T:TERMINAL;P:POW;OS:ORIGINAL SC;ON:ORIGINAL NSC;I:INCREASE;R:REVIEW;OTR:OTHER;E:INSUFFICIENT EXAM;AO:AGENT ORANGE;BDD:BEN DELIV AT DISCHG;QS:QUICK START;IDES:IDES;",
+      "helpText": "This field contains the status of the 2507 exam to be conducted. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "CLAIM TYPE",
+      "dataType": "POINTER",
+      "rawType": "396.32P",
+      "required": false,
+      "helpText": "This is a list of Claim Types for this request. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OTHER DISABILITIES [Line 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains other known disabilities or those stated by the veteran. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "OTHER DISABILITIES [Line 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains other known disabilities or those stated by the veteran. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "OTHER DISABILITIES [Line 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains other known disabilities or those stated by the veteran. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSCRIPTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time transcription was completed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE APPROVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time exam results were approved. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the 2507 request was released to the regional office for printing.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the MAS employee who released the request to the regional office. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE PRINTED BY THE RO",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "This field contains the date/time the examination results were printed by the regional office. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PRINTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the regional office employee who printed the examination results. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP396.33'",
+      "required": true,
+      "pointerTo": 396.33,
+      "helpText": "This field contains the request status of the 2507 exam request. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ELAPSED TIME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the computation of TODAY - DATE REPORTED TO MAS. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CANCELLATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the entire request was cancelled.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CANCELLED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the employee who cancelled the entire request. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CLAIM FOLDER REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether or not a claim folder is required for this request. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.1,
+      "fieldName": "ELECTRONIC CLAIM FOLDER AVAIL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "An answer is required in the EXAM FOLDER AVAILABLE field if the CLAIM FOLDER REQUIRED field is marked YES ",
+      "fieldNumber_": 21.1
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "OTHER DOCUMENTS REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether or not a document will be able to be printed at the regional office.  If YES, the regional office will not be prompted to print the document when it is released by the Medical Center.  option. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "396.323",
+      "required": false,
+      "helpText": "This field contains the remarks that are entered for a 2507 request. ",
+      "isMultiple": true,
+      "subFileNumber": 396.323,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 23.3,
+      "fieldName": "LAST EXAM ADD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date an exam was added to this request. ",
+      "fieldNumber_": 23.3
+    },
+    {
+      "fieldNumber": 23.4,
+      "fieldName": "LAST PERSON TO ADD EXAM",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the last person to add an exam to this request after it was originally entered by the RO. ",
+      "fieldNumber_": 23.4
+    },
+    {
+      "fieldNumber": 23.5,
+      "fieldName": "REMARKS MODIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the REMARKS field was last modified. ",
+      "fieldNumber_": 23.5
+    },
+    {
+      "fieldNumber": 23.6,
+      "fieldName": "REMARKS MODIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the employee who last modified the REMARKS field. ",
+      "fieldNumber_": 23.6
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ROUTING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This field contains the station name or number of the site which will be responsible for this request. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "APPROVED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the employee who approved the examination results. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "APPROVAL DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date/time the exam was approved. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "*EXAM",
+      "dataType": "POINTER",
+      "rawType": "396.327P",
+      "required": false,
+      "helpText": "Data moved to File #396.4; field starred for deletion. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 27.5,
+      "fieldName": "RETURNED TO OWNER SITE BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the employee who returned the transferred request to the owner site. ",
+      "fieldNumber_": 27.5
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "OWNER DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "For transferred-in requests, this field contains the domain of the site which owns the request. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "LAST RATING EXAM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date of the last rating exam. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ORIGINAL REQUEST POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains a number which is used to point to the original request at the original site. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "TRANSFERRED TO ANOTHER SITE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "This field is set to YES if either the entire request or individual exams on it have been transferred to another site. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DATE TRANSFERRED TO OTHER SITE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the owner site transferred this request to another site.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DATE TRANSFRD IN FRM REM SITE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date this transferred in request was received from the owner site.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DATE ALL TRANSFERS RETURNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "A request may be transferred to multiple sites.  This field represents the date the last transfer on the request was received back at the owner site. Only after this date is set will the request be counted on the AMIS 290.   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "REROUTE DATE/TIME",
+      "dataType": "POINTER",
+      "rawType": "396.34PA",
+      "required": false,
+      "helpText": "This sub file contains information about the sites where the original request was placed. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "ORIGINAL 2507 REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P396.3'",
+      "required": false,
+      "pointerTo": 396.3,
+      "helpText": "This field is a pointer to the insufficient request this 2507 was entered for. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ORIGINAL 2507 PROCESSING TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the processing time of the original request the insufficient request was entered for. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "REQUEST UUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the Request UUID (universally unique identifier for VLER  DAS.) ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SPECIAL CONSIDERATIONS",
+      "dataType": "POINTER",
+      "rawType": "396.31P",
+      "required": false,
+      "helpText": "This is the list of special considerations for this request. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "INSUFFICIENT REQUEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The CAPRI GUI will mark this field Yes or No. If this request is marked  Insufficient, then this field will be set to Y(es) by the CAPRI GUI. ",
+      "fieldNumber_": 51
+    }
+  ],
+  "fieldCount": 49,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADP1", "field": },
+    {"name": "ADP2", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AORQ", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "396.3", "field": .01, "type": "regular"},
+    {"name": "396.3", "field": 1, "type": "regular"},
+    {"name": "396.3", "field": 2, "type": "regular"},
+    {"name": "396.3", "field": 4, "type": "regular"},
+    {"name": "396.3", "field": 7, "type": "regular"},
+    {"name": "396.3", "field": 9, "type": "regular"},
+    {"name": "396.3", "field": 11, "type": "regular"},
+    {"name": "396.3", "field": 17, "type": "regular"},
+    {"name": "", "field": 17, "type": "regular"},
+    {"name": "396.3", "field": 21.1, "type": "regular"},
+    {"name": "396.3", "field": 23.3, "type": "regular"},
+    {"name": "396.3", "field": 23.5, "type": "regular"},
+    {"name": "396.3", "field": 31, "type": "regular"},
+    {"name": "396.3", "field": 44, "type": "regular"},
+    {"name": "396.3", "field": 51, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": WRITE, "value": "D DICW^DVBCUTIL"}
+  ]
+}

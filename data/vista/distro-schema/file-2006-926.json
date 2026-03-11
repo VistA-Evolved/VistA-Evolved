@@ -1,0 +1,88 @@
+{
+  "fileNumber": 2006.926,
+  "fileName": "STORAGE TRANSACTION",
+  "globalRoot": "2006.926",
+  "globalReference": "^MAGV(2006.926,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:Read;W:Write;C:Configuration;",
+      "helpText": "This is the type of transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUCCEEDED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not the transaction was successful. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time at which the transaction entry was recorded. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INITIATING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP2006.9193",
+      "required": true,
+      "pointerTo": 2006.9193,
+      "helpText": "This is the application that initiated the transaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ARTIFACT",
+      "dataType": "POINTER",
+      "rawType": "RP2006.916'",
+      "required": true,
+      "pointerTo": 2006.916,
+      "helpText": "This is the Artifact related to the transaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STORAGE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP2006.917'",
+      "required": true,
+      "pointerTo": 2006.917,
+      "helpText": "This is the Storage Provider related to the transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9267",
+      "required": false,
+      "helpText": "An optional field containing additional information related to the transaction (stack trace, error codes, etc). ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9267,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.926", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

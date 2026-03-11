@@ -1,0 +1,59 @@
+{
+  "fileNumber": 161.3,
+  "fileName": "FEE BASIS LETTER",
+  "globalRoot": "161.3",
+  "globalReference": "^FBAA(161.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name assigned to this letter for later selection. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF LETTER",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:UNAUTHORIZED CLAIM;",
+      "helpText": "Used to designate the appropriate letter category. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BEGINNING OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "161.31",
+      "required": false,
+      "helpText": "Any number of paragraphs which will be printed at the top of the letter. This same data will be printed on every suspense letter generated, therefore it should be as generic as possible.  See the SAMPLE letter sent out with the DHCP Fee package. ",
+      "isMultiple": true,
+      "subFileNumber": 161.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "END OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "161.32",
+      "required": false,
+      "helpText": "This can be any number of paragraphs and will be printed after the  specific suspended line items are printed. This, like field #1 will be printed on all suspense letters generated, therefore it must be generic. See the Sample letter sent out with the system. ",
+      "isMultiple": true,
+      "subFileNumber": 161.32,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

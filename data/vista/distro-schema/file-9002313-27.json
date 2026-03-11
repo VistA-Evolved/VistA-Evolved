@@ -1,0 +1,48 @@
+{
+  "fileNumber": 9002313.27,
+  "fileName": "BPS NCPDP PATIENT RESIDENCE CODE",
+  "globalRoot": "9002313.27",
+  "globalReference": "^BPS(9002313.27,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the NCPDP standard code identifying the patient's place of residence. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short description of the NCPDP code meaning. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FULL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.271",
+      "required": false,
+      "helpText": "This is the full description for the Patient Residence Code from the NCPDP standard. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.271,
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.27", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

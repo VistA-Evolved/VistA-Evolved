@@ -1,0 +1,119 @@
+{
+  "fileNumber": 800001.2,
+  "fileName": "HMP ROSTER",
+  "globalRoot": "800001.2",
+  "globalReference": "^HMPROSTR(800001.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of an eHMP roster. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the actual name of an eHMP roster. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is a setting to disable an eHMP roster. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the DUZ of the HMP roster's owner. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "PU:PUBLIC;PR:PRIVATE;",
+      "helpText": "The type of an HMP roster. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PATIENT LIST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The file containing the patient list names. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOURCES",
+      "dataType": "SUBFILE",
+      "rawType": "800001.21",
+      "required": false,
+      "helpText": "The sources of the patient list. ",
+      "isMultiple": true,
+      "subFileNumber": 800001.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIAL HANDLING",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code for filtering and refreshing patient lists. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "800001.23P",
+      "required": false,
+      "helpText": "Patients which are members of this roster. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date.time of a patient's entry in the HMP Roster file. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ATS", "field": },
+    {"name": "B", "field": },
+    {"name": "800001.2", "field": .01, "type": "regular"},
+    {"name": "800001.2", "field": .04, "type": "regular"},
+    {"name": "800001.2", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

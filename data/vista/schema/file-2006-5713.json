@@ -1,0 +1,72 @@
+{
+  "fileNumber": 2006.5713,
+  "fileName": "DICOM UNKNOWN MODALITY",
+  "globalRoot": "2006.5713",
+  "globalReference": "^MAGDINPT(2006.5713,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The value of this field is a date/time value that represents the timestamp of the moment when it was discovered that the current image (identified by its file-name in the field FROM PATH) could not be processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the company the produces this equipment. The value of this field is a text that identifies the manufacturer of the modality that is described in the current entry.   This name must be spelled exactly as it is presented in the headers of the image files that are produced by modalities of this type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a text that identifies the model of the modality that is described in the current entry.   This name must be spelled exactly as it is presented in the headers of the image files that are produced by modalities of this type. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the type of modality for the current entry.   The possible values for this two-letter code are defined in the DICOM standard, and are also stored in file 73.1, stored in ^RAMIS(73.1,...) ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an abbreviation that identifies the instrument that is being described in this entry.   Typical abbreviations are CR1, CT2, US, etcetera. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FROM PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies a file. This value is the original name of the image file (directory path, filename and extension) of the image.  Files of this type are always stored in a directory called xx:\\DICOM\\IMAGE_IN. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5713", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

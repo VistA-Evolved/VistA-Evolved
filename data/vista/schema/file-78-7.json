@@ -1,0 +1,87 @@
+{
+  "fileNumber": 78.7,
+  "fileName": "LABEL PRINT FIELDS",
+  "globalRoot": "78.7",
+  "globalReference": "^RA(78.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of this print field.  It is available for the print formats of flash cards, exam labels, jacket labels, report headers, and report footers.  Print field names must be between 3 and 30 non-numeric characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF DATA",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "P:PATIENT DEMOGRAPHICS;V:VISIT SPECIFIC;E:EXAM SPECIFIC;O:OTHER;",
+      "helpText": "This field contains the data type of this print field.  Following are the available types of data, explanations, and examples of each type.     'P' for patient demographics     ie. Date of birth     'V' for visit specific           ie. Hospital division     'E' for exam specific            ie. Technologist who performed exam     'O' for other                    ie. Page # on report header ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the default title of this print field.  It may be between 3 and 20 characters in length and will appear on any of the print formats that do not have a title specified in the 'Flash Card Formats' file  for this print field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEST VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an example value of this print field between 1 and 30 characters in length.  It is used as an example when setting up the various print formats. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INTERNAL VARIABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the MUMPS local variable name that this print field will be associated with when the print format is used by the system.  It is assigned by the developer and must be between 1 and 8 characters in length. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "UNIQUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "When this field is printed in a report, and the report is a combined report of several cases that belong to the same report, then this field value will be trailed by a '+'.  The purpose of this character is to give the user a visual cue that there is additional data that cannot be printed within the space confines of a label or report header or footer.  For example, print sets include several different procedures but not all of them will fit on a report header or a label, so a single procedure n",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MUMPS CODE TO SET VARIABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXI",
+      "required": false,
+      "helpText": "This is the MUMPS code that sets the 'Internal Variable' to the appropriate value.  It is executed when this print field is used to print the appropriate data and is between 1 and 240 characters in length. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "78.7", "field": .01, "type": "regular"},
+    {"name": "78.7", "field": 2, "type": "regular"},
+    {"name": "78.7", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

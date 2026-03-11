@@ -1,0 +1,57 @@
+{
+  "fileNumber": 51.7,
+  "fileName": "DRUG TEXT",
+  "globalRoot": "51.7",
+  "globalReference": "^PS(51.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field will hold a short description of the text entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "51.71",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 51.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will hold an inactivation date of the drug text entry. If an inactivation date is present, this drug text entry will not be selectable for a pharmacy orderable item or a drug file entry. It will be used as a screen for any lookups, displays, or reports. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "51.73",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 51.73,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "51.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$$NAKED^DIUTL(\"$$DATE^DIUTL($P(^(0),U,2))\")"}
+  ]
+}

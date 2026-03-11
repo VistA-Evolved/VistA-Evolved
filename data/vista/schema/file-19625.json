@@ -1,0 +1,416 @@
+{
+  "fileNumber": 19625,
+  "fileName": "DSIV ICB AUDIT",
+  "globalRoot": "19625",
+  "globalReference": "^DSI(19625,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient covered by this insurance policy ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BUFFER IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The BUFFER IEN for this audit entry. This is the pointer to file #355.33 INSURANCE BUFFER, maintained here for audit purposes, the audit record  will exist after the Buffer entry has been deleted. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSURANCE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The insurance company name that provides coverage to the patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "GROUP PLAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the Group this policy is associated with. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .032,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the source by which this insurance information was obtained. ",
+      "fieldNumber_": .032
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT POLICY NEED UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the patient insurance policy needs to be updated then this will be Yes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The user that entered the Buffer entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the Buffer entry was entered. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who updated the Buffer entry. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the Buffer was updated. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who deleted the Buffer entry. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE DELETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the Buffer entry was deleted. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ACCEPTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who accepted the Buffer entry. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "DATE ACCEPTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the Buffer entry was accepted. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "REJECTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "PERSON WHO REJECTED THIS ENTRY. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "DATE REJECTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE BUFFER ENTRY WAS REJECTED. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The appointment (clinic) location, or clinic location the clerk associated with the buffer entry.  This is the .01 field of file #44 HOSPITAL LOCATION. It is the external name of the Clinic used for audit report purposes. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGES SCANNED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "NUMBER OF IMAGES SCANNED FOR THIS BUFFER ENTRY. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Division for the buffer entry based on the Location field.  This is  the .01 field of file #40.8 MEDICAL CENTER DIVISION derived from an inquiry of file #44 HOSPITAL LOCATION and retrieving field #3.5 DIVISION. The Division field is used for audit reporting. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Station Number for the buffer entry based on the Location field.  The Station Number is the 3-7 character station derived from the third piece of the $$SITE^VASITE API using field #3.5, the Medical Center Division (#40.8) pointer of the selected Location from file #44.  The Station Number is used for audit reporting. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMMENT PATIENT POLICY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient policy comments that were saved in the buffer entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "COMMENT GROUP PLAN",
+      "dataType": "SUBFILE",
+      "rawType": "19625.01",
+      "required": false,
+      "helpText": "The Group Plan comments that were saved in the application.  This data is  not saved in the Buffer (#355.33), so the data is moved from the audit  file to the Group Insurance Plan (#355.3) during the Accept Buffer  process as part of the ICB enhancement. ",
+      "isMultiple": true,
+      "subFileNumber": 19625.01,
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "PATIENT POLICY IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the ien to the Patient file (#2) insurance multiple subfile  entry (#.312). ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "INSURANCE DFN POINTER",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "Pointer to the insurance company for this policy and buffer entry. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "GROUP PLAN IEN POINTER",
+      "dataType": "POINTER",
+      "rawType": "P355.3'",
+      "required": false,
+      "pointerTo": 355.3,
+      "helpText": "Pointer to the GROUP INSURANCE PLAN file for the policy and this buffer  entry. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PLAN ELEC FILING INFO",
+      "dataType": "SUBFILE",
+      "rawType": "19625.05",
+      "required": false,
+      "helpText": "The Plan Filing Time Frame (.13), Electronic Plan Type (.15), Plan  Standard FTF (.16) and Plan Standard Value (.17) fields from the Group Insurance Plan file (#355.3) that were saved in the ICB application.  This data is not saved in the Buffer (#355.33), so the data is moved from the audit file to the Group Insurance Plan (#355.3) during the Accept Buffer process as part of the ICB enhancement. ",
+      "isMultiple": true,
+      "subFileNumber": 19625.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NEW ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains flag bits (1 or 0) for new entry values on the ICB edit form.   When the flag bit=1 then we have a new entry (new=yes) on the edit screen. When the flag bit=0 then we are using an existing entry (new=no).   Currently 10 bits are set, but only three are used at this time, e.g. 1110000000 would represent the following new entry values:    Position 1=New Patient Policy for file 2.312 (yes)  Position 2=New Insurance Company for file 36 (yes)  Position 3=New Group Insurance Plan for file 355",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "SIGNATURE REQUIRED ON BILL?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter a Yes or No in this field denoting whether a signature is required  on a bill before being submitted to the insurance carrier. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "STANDARD FTF",
+      "dataType": "POINTER",
+      "rawType": "P355.13'",
+      "required": false,
+      "pointerTo": 355.13,
+      "helpText": "This is the standard filing time frame for the insurance company.  It may  be automatically applied to dates of service. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "STANDARD FTF VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the value corresponding to the Standard Filing Time Frame.  For  example, for the time frame of Days, enter the number of days. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "FILING TIME FRAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the maximum amount of time from the date of service that the  insurance company allows for submitting claims.  Examples:  60 days, 90  days, 6 months, 1 year, 18 months; March 30 following year of service,  June 1 following year of service. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "TYPE OF COVERAGE",
+      "dataType": "POINTER",
+      "rawType": "P355.2'",
+      "required": false,
+      "pointerTo": 355.2,
+      "helpText": "If this insurance carrier provides only one type of coverage, then select  the entry that best describes this carrier's type of coverage.  If this  carrier provides more than one type of coverage, then select HEALTH  INSURANCE.  The default answer if left unanswered is Health Insurance.   This is useful information when contacting carriers, when creating claims  for reimbursement, and when estimating if the payment received is  appropriate.   If this field is answered, it may affect choices that",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "TRANSMIT ELECTRONICALLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES-LIVE;2:YES-TEST;",
+      "helpText": "This is the flag that says whether or not an insurance company is ready  to be billed electronically via 837/EDI functions. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "ELECTRONIC INSURANCE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HMO;2:COMMERCIAL;3:MEDICARE;4:MEDICAID;5:GROUP POLICY;9:OTHER;",
+      "helpText": "This field contains the code to be used in the electronic transmission of  claims to identify the type of insurance company the claim is for.  The  default, if this field is blank, is Group Policy.  If you select GROUP  POLICY, this will force a check in the GROUP insurance box of the CMS  1500/BOX 1. ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.08,
+      "fieldName": "REJECTION REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reason the Insurance Buffer entry was  rejected. ",
+      "fieldNumber_": 6.08
+    },
+    {
+      "fieldNumber": 6.09,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of this insurance carrier. ",
+      "fieldNumber_": 6.09
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "OTHER DATA",
+      "dataType": "SUBFILE",
+      "rawType": "19625.07",
+      "required": false,
+      "helpText": "The Policy Not Billable (#3.04) field from the Insurance Type multiple  (#2.312) of the patient file is saved from the ICB application.  This  data is not saved in the buffer so it is moved from the audit file to the insurance type multiple (#2.312) during the Accept Buffer process as part  of the ICB enhancement. ",
+      "isMultiple": true,
+      "subFileNumber": 19625.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "19625.08",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19625.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "19625.09",
+      "required": false,
+      "helpText": "You may enter unlimited free text comments about this insurance company.   It may be helpful to date ongoing comments and identify the source of the  comments. ",
+      "isMultiple": true,
+      "subFileNumber": 19625.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NON-ICB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field contains a flag that, if set, indicates this record did not  originate from ICB but rather was pulled from the buffer file by a  nightly process. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "H", "field": },
+    {"name": "19625", "field": .01, "type": "regular"},
+    {"name": "19625", "field": 1.01, "type": "regular"},
+    {"name": "19625", "field": 1.03, "type": "regular"},
+    {"name": "19625", "field": 1.05, "type": "regular"},
+    {"name": "19625", "field": 1.07, "type": "regular"},
+    {"name": "19625", "field": 1.09, "type": "regular"},
+    {"name": "", "field": 6.02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

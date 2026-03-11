@@ -1,0 +1,56 @@
+{
+  "fileNumber": 355.7,
+  "fileName": "PERSONAL POLICY",
+  "globalRoot": "355.7PI",
+  "globalReference": "^IBA(355.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RIDER",
+      "dataType": "POINTER",
+      "rawType": "RP355.6'",
+      "required": true,
+      "pointerTo": 355.6,
+      "helpText": "Select the Insurance Rider that best describes the personal rider you are adding or editing for this patient.  A personal rider is add-on coverage that an individual may purchase as part of their group plan but is has additional cost. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Select the patient that this is a rider for. For any patients' policy there may be a number of riders associated with it. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HEALTH INSURANCE POLICY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the policy for the patient that this is a rider for.   One or more riders may be associated with any policy for any patient. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APP", "field": },
+    {"name": "APP1", "field": },
+    {"name": "APP2", "field": },
+    {"name": "B", "field": },
+    {"name": "355.7", "field": .01, "type": "regular"},
+    {"name": "355.7", "field": .01, "type": "regular"},
+    {"name": "355.7", "field": .02, "type": "regular"},
+    {"name": "355.7", "field": .02, "type": "regular"},
+    {"name": "355.7", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

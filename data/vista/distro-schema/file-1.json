@@ -1,0 +1,243 @@
+{
+  "fileNumber": 1,
+  "fileName": "FILE",
+  "globalRoot": "1",
+  "globalReference": "^DIC(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GLOBAL NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ14",
+      "length": 14,
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.008,
+      "fieldName": "TRANSLATION",
+      "dataType": "SUBFILE",
+      "rawType": "1.008",
+      "required": false,
+      "helpText": "This multiple contains the renderings of the File's NAME in various languages. ",
+      "isMultiple": true,
+      "subFileNumber": 1.008,
+      "fieldNumber_": 1.008
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ENTRIES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1.001",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1.001,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "APPLICATION GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "1.005",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1.005,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DEVELOPER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.214,
+      "fieldName": "LAST DD MODIFICATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the Data Dictionary was last edited. It is updated when Modify File Attributes is used to change the DD. ",
+      "fieldNumber_": 21.214
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DD ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "RD ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "WR ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DEL ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "LAYGO ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "AUDIT ACCESS",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LOOKUP PROGRAM",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "VERSION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 51.1,
+      "fieldName": "DISTRIBUTION PACKAGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 51.1
+    },
+    {
+      "fieldNumber": 51.2,
+      "fieldName": "PACKAGE REVISION DATA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ240",
+      "length": 240,
+      "required": false,
+      "fieldNumber_": 51.2
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ARCHIVE FILE",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 1815,
+      "fieldName": "COMPILED X-REF ROUTINE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1815
+    },
+    {
+      "fieldNumber": 1816,
+      "fieldName": "OLD COMPILED X-REF ROUTINE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 1816
+    },
+    {
+      "fieldNumber": 1819,
+      "fieldName": "COMPILED CROSS-REFERENCES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Computed field that indicates whether or not cross-references are compiled.  This field can be seen when doing an INQUIRE to the FILE  file (file #1, sometimes referred to as the file of files.) ",
+      "fieldNumber_": 1819
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "BUILD",
+      "dataType": "COMPUTED",
+      "rawType": "Cmp9.6",
+      "required": false,
+      "helpText": "The Build File (#9.6) is searched for Builds containing the File.   A list of the identified Builds is created for display.   Multiple Builds will be shown if appropriate. ",
+      "fieldNumber_": 21400
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "ALANG", "field": },
+    {"name": "B", "field": },
+    {"name": "1", "field": .01, "type": "regular"},
+    {"name": "1", "field": .01, "type": "regular"},
+    {"name": "1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

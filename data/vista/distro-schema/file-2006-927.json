@@ -1,0 +1,77 @@
+{
+  "fileNumber": 2006.927,
+  "fileName": "QUEUE",
+  "globalRoot": "2006.927",
+  "globalReference": "^MAGV(2006.927,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The queue name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:ERROR;I:ICON;S:STORAGE;M:E-MAIL;",
+      "helpText": "The queue type. ERROR indicates that the messages in this queue are ERROR messages. ICON indicates that the messages in this queue are requests for  icons (abstracts) to be made. STORAGE indicates that the messages in this queue are requests  for async storage operations to be completed. E-MAIL indicates that the messages in this queue are messages that need  to be sent to system administrators. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Inactive;1:Active;",
+      "helpText": "Whether or not the queue is active. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NUM RETRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of times the system should attempt to process a queue message  before it considers the message a failure. Default value is 5.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RETRY DELAY IN SECONDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of seconds the system should wait before re-attempting to  process a message if the previous attempt failed. Default value is 1200. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRIGGER DELAY IN SECONDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of seconds the system should wait before checking for another  queue message after the queue is empty. Default value is 60. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.927", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

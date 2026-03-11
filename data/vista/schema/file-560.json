@@ -1,0 +1,82 @@
+{
+  "fileNumber": 560,
+  "fileName": "VPR SUBSCRIPTION",
+  "globalRoot": "560",
+  "globalReference": "^VPR(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter a name for this system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENABLE MONITORING",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "Select YES to track the record numbers of patient data that is modified in the AVPR index. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE DISABLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This value is stuffed in automatically by the VPR HS ENABLE option when the ENABLE MONITORING FIELD (#.02) is changed to NO. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE ENABLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This value is stuffed in automatically by the VPR HS ENABLE option when the ENABLE MONITORING FIELD (#.02) is changed to YES. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENABLE LOGGING",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "If this field is set to YES, then every AVPR and ANEW entry created to notify HealthShare will be stored in ^XTMP(\"VPRHS\",seq,dfn)=data string. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the last sequence number used in the AVPR index. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENTS",
+      "dataType": "POINTER",
+      "rawType": "560.02PA",
+      "required": false,
+      "helpText": "This is the list of patients on this system who are being monitored for changes, which will be retrieved by the Regional Health Connect. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "560", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

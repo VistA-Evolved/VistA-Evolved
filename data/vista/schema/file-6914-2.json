@@ -1,0 +1,58 @@
+{
+  "fileNumber": 6914.2,
+  "fileName": "PM PROCEDURES",
+  "globalRoot": "6914.2I",
+  "globalReference": "^ENG(6914.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PM REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This reference identifies the PM procedure and is similar in concept to a memo number (e.g. EL-1). It will be shown on PM worklists along with the PM title. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the title of the PM procedure. It will be shown on PM worklists and also in the Work Performed field of PM work orders. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Source of the PM instructions. Could be the equipment manufacturer or some authoritative and/or knowledgeable organization (ex: ASHE, VACO, NEMA, etc). Use of this field is optional. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "6914.23",
+      "required": false,
+      "helpText": "Enter the actual PM instructions here. Sites that are short on disk space should generally maintain the actual procedures in hard copy only. ",
+      "isMultiple": true,
+      "subFileNumber": 6914.23,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6914.2", "field": .01, "type": "regular"},
+    {"name": "6914.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

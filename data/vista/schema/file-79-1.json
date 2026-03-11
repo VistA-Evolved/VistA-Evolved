@@ -1,0 +1,410 @@
+{
+  "fileNumber": 79.1,
+  "fileName": "IMAGING LOCATIONS",
+  "globalRoot": "79.1IP",
+  "globalReference": "^RA(79.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P44I",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field points to the Hospital Location File, and contains the name of this location.  The Hospital Location pointed to should be a COUNT clinic, with a type of 'CLINIC', and should be a clinic that prohibits making appointments or creating appointment patterns.  The Stop Code of the clinic in file #44 should be a valid imaging stop code (i.e. an entry in file #71.5) and should match the DSS ID field #22 of the Imaging Location in file #79.1.  The Institution of this clinic in file #44 should",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SUPPRESS ORDERING?",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This imaging location parameter can be set to 'Yes' to indicate that  location will not be available to submit an imaging request to in CPRS.  It is recommended that this be set for 'No Credit' locations only. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOW MANY FLASH CARDS PER VISIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This imaging 'locations' parameter is used to set up the number of flash cards to print per patient visit.  It must contain a whole number between 0 and 10.  If the Division parameter 'Print Flash Card for each exam' is set to 'Yes', this location parameter is ignored. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FLASH CARD PRINTER NAME",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This 'locations' parameter can contain the device name (1-20 characters) that flash cards and exam labels are to be printed on.  If this field is filled in, the system automatically queues the process and the user is not asked the device question. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HOW MANY JACKET LBLS PER VISIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This 'locations' parameter is used to set up the number of jacket labels to print per patient visit. It must contain a whole number between 0 and 10. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JACKET LABEL PRINTER NAME",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This 'locations' parameter can contain the device name (1-20 characters) that the jacket labels are to be printed on.  If this field is filled in, the system automatically queues the process and the user is not asked the device question. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TYPE OF IMAGING",
+      "dataType": "POINTER",
+      "rawType": "RP79.2'X",
+      "required": true,
+      "pointerTo": 79.2,
+      "helpText": "This 'locations' parameter can contain the name of the type of imaging from the 'Imaging Type' file.  If this field is filled in, the system automatically fills in the proper imaging type on the registration record.   Assigning an new imaging type (i.e. one not previously selected for any other location) implies that procedures of the new imaging type are performed under a separate service or section at your site, and separate workload report is desired. For instance, at some sites Ultrasound ma",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEFAULT FLASH CARD FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P78.2'",
+      "required": false,
+      "pointerTo": 78.2,
+      "helpText": "This 'locations' parameter can contain the default format (from the 'Flash Cards Formats' file) to be used when queueing a flash card to print.  This format is the default 'flash card' for the current location. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HOW MANY EXAM LABELS PER EXAM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This imaging location parameter is used to set up the number of exam labels to print per registered case.  It must contain a whole number between 0 and 9. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEFAULT EXAM LABEL FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P78.2'",
+      "required": false,
+      "pointerTo": 78.2,
+      "helpText": "This imaging 'locations' parameter can contain the default format (from the 'Flash Cards Formats File') to be used when queueing an exam label to print.  This format is the default 'exam label' for the current location.   Exam labels always print after flash card labels are printed. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REPORT PRINTER NAME",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This 'locations' parameter can contain the device name (1-20 characters) that reports are to be printed on.  If this field is filled in, the system automatically queues the process and the user is not asked the device question. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFAULT JACKET LABEL FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P78.2'",
+      "required": false,
+      "pointerTo": 78.2,
+      "helpText": "This 'locations' parameter can contain the default format (from the 'Flash Cards Formats' file) to be used when queueing a jacket label to print. This format is the default 'jacket label' for the current location. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DEFAULT REPORT HEADER FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P78.2'",
+      "required": false,
+      "pointerTo": 78.2,
+      "helpText": "This 'locations' parameter can contain the default format (from the 'Flash Cards Formats' file) to be used when queing a report to print. This format is the default 'header' for the current location. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DEFAULT REPORT FOOTER FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P78.2'",
+      "required": false,
+      "pointerTo": 78.2,
+      "helpText": "This 'locations' parameter can contain the default format (from the 'Flash Cards Formats' file) to be used when queing a report to print. This format is the default 'footer' for the current location. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REPORT LEFT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates which column the text for 'clinical history', 'report' and 'impression' should start at when printing the report. Enter a number between 1 and 20. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REPORT RIGHT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates which column the text for 'clinical history', 'report' and 'impression' should end at when printing the report. Enter a number between 50 and 130. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "REQUEST PRINTER NAME",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This 'locations' parameter can contain the device name (1-20 characters) that requests are to be printed on. If this field is filled in, the system automatically queues the process to the specified device. If this field is not filled in the request is not automatically queued to print to any device. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ALLOW 'RELEASED/NOT VERIFIED'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This Imaging Location parameter can be set to 'Yes' to allow reports to have the status 'RELEASED/NOT VERIFIED' which permits the displaying  of the report to users outside of the Imaging service even if it is not yet verified. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PRINT DX CODES IN REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "If this field is set to Yes, all primary and secondary diagnostic codes associated with the exam will be printed on the exam report.  (Note: Since the primary diagnostic code may be printed in exam report headers and footers, you may also need to change report header and footer set-ups to get the diagnostic codes printed exactly as you wish.) ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "INACTIVE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the date the Imaging Location was inactivated.  Orders cannot be submitted to an inactive location and cases cannot be registered in an inactive location. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "URGENT REQUEST ALERTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field will determine if alerts will be sent to the Imaging Personnel defined in the STAT REQUEST ALERT RECIPIENTS field.  If this field is set  to 'Yes', then all the users in the STAT REQUEST ALERT RECIPIENTS field  will be sent an alert for urgent requests. To use this feature, the Division parameter 'Ask Imaging Location' must be set to 'YES', and OE/RR Version 3.0 or higher must be installed. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CREDIT METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Regular Credit;1:Interpretation Only;2:No Credit;3:Technical Component Only;",
+      "helpText": "This field indicates the type of credit this location receives for examinations.  The default is REGULAR (code 0), which means that for this imaging location both the exam and the interpretation are done at your facility. If this imaging location has been set up to register exams done in another facility, with the imaging interpretation only done at this facility, enter code 1.  If exams are done in this location, but interpretation is done elsewhere, enter code 3.  If both the exam and the inte",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DSS ID",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "DSS ID will be used to identify the general outpatient area where an imaging exam was done.  It is used only by DSS, and only when processing outpatients. It is roughly equivalent to the \"Stop Codes\" previously used for crediting outpatient exams.  Only entries also in the Imaging Stop Codes file #71.5 (which must be updated yearly by the Radiology/Nuclear Medicine ADPAC) are valid. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DOSAGE TICKET PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This question only applies to imaging locations with an imaging type where radiopharmaceuticals are used (i.e. nuclear medicine and cardiology studies). If the facility's exam status parameters are configured to print Radiopharmaceutical dosage tickets when exams reach a specified status, and name of the printer device is entered here, then dosage tickets for nuclear medicine procedures registered in this location will print on this device. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CANCELLED REQUEST PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field specifies the device where the cancelled request will be output. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "RAD/NUC MED DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P79'I",
+      "required": false,
+      "pointerTo": 79,
+      "helpText": "This field contains the name of the Radiology/Nuclear Medicine 'division' that this 'location' is associated with.  A 'location' can only be associated with one 'division'. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "VOICE DICTATION AUTO-PRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "If this field is  Y  , and voice dictation is used to enter a report, a copy of the report will be automatically printed on the device defined in field REPORT PRINTER NAME. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "REGISTERED REQUEST PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field specifies the device where the registered request will be  output. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "ALTERNATE REQUEST PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This 'locations' parameter can contain the device name (1-20 characters) that requests are to be printed on based on the ALTERNATE PRINTER USAGE  parameter, either after hours or as an alternate printer. If this field is filled in and the other parameter criteria are met, the system automatically queues the request to the specified device. If this field is not filled in, the request is will queue to print to the REQUEST PRINTER, if defined. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "ALTERNATE PRINTER USAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AFTER HOURS PRINTER;2:ALTERNATE PRINTER;",
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE REQUEST PRINTER to define it's usage. The choices are:          1        AFTER HOURS PRINTER        2        ALTERNATE PRINTER   If After Hours Printer is selected, the printing logic will evaluate the After Hours parameters BEGIN/END times, along with WEEKEND, HOLIDAY and CATEGORY OF EXAM to determine if the request should be routed to the  ALTERNATE REQUEST PRINTER.   If Alternate Printer is selected, the alternate printer param",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "AFTER HOURS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Ft13",
+      "required": false,
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE    REQUEST PRINTER to set the time of day that requests will automatically start printing on the ALTERNATE REQUEST PRINTER. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "AFTER HOURS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Ft13",
+      "required": false,
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE REQUEST PRINTER to set the time of day that requests will automatically be routed back to the REQUEST PRINTER. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "AFTER HOURS WEEKEND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE REQUEST PRINTER to determine if weekends (Saturday/Sunday) are considered after hours. If set to YES, radiology requests will be routed to the ALTERNATE  REQUEST PRINTER all day on the weekend. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "AFTER HOURS HOLIDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE REQUEST PRINTER to determine if holidays are considered after hours. If set to YES, radiology requests will be routed to the ALTERNATE REQUEST PRINTER all day on holidays.    Note that this parameter relies on the HOLIDAY file (#40.5) being populated with the each year's holidays. If it is not populated, holidays will not be included in after hours printing. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "ARP CATEGORY OF EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ALL;",
+      "helpText": "This location parameter is used in conjunction with the ALTERNATE REQUEST PRINTER to determine if the category of exam (patient classification) of  the request will be routed to the ALTERNATE REQUEST PRINTER.  ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "ALTERNATE PRT REQUESTING LOC",
+      "dataType": "POINTER",
+      "rawType": "79.188PA",
+      "required": false,
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CAMERAS/EQUIP/RMS",
+      "dataType": "POINTER",
+      "rawType": "79.12P",
+      "required": false,
+      "helpText": "This is a multiple field containing the cameras/equip/rms associated with this 'location'. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "COMMUNITY CARE REQUEST SERVICE",
+      "dataType": "POINTER",
+      "rawType": "79.11PA",
+      "required": false,
+      "helpText": "Consult request service for Community Care Consults referral program. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "DEFAULT CPT MODIFIERS(LOC)",
+      "dataType": "POINTER",
+      "rawType": "79.1135P",
+      "required": false,
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "STAT REQUEST ALERT RECIPIENTS",
+      "dataType": "POINTER",
+      "rawType": "79.13PA",
+      "required": false,
+      "helpText": "Names entered here will be used as recipients of an alert when new STAT requests for Imaging exams are submitted to this Imaging Location. To use this feature, the division parameter 'ASK IMAGING LOCATION' must be set to 'Yes', and OE/RR Version 3.0 or higher must be installed. If the URGENT alert is turned on, the recipients entered here will also receive alerts when an URGENT request is entered. ",
+      "fieldNumber_": 150
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BIMG", "field": },
+    {"name": "79.1", "field": .01, "type": "regular"},
+    {"name": "79.1", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "D EN^DDIOL($$GETID^RADD3(+Y),\"\",\"?32\")"}
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "fileNumber": 452,
+  "fileName": "PRSE STUDENT EDUCATION TRACKING",
+  "globalRoot": "452PI",
+  "globalReference": "^PRSE(452,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STUDENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the employee who attended this program/class. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROGRAM/CLASS TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the program/class attended. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "RDXO",
+      "required": true,
+      "helpText": "This is the scheduled start date/time for the program or class. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PRSE PROGRAM/CLASS LENGTH HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "The length of the class in hours. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "CLASS HRS DURING ON-DUTY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of class room hours during the student's on-duty time. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "CLASS HRS DURING OFF-DUTY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of class room hours during the student's off-duty time. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "PROGRAM/CLASS SUPPLIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the company or organization who supplied the materials for this class. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROGRAM/CLASS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP452.4'X",
+      "required": true,
+      "pointerTo": 452.4,
+      "helpText": "This is a group of related subjects as categorized on VA Form 5-4691 (Report of Employee Training) under #14. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "PURPOSE OF TRAINING",
+      "dataType": "POINTER",
+      "rawType": "P452.51'",
+      "required": false,
+      "pointerTo": 452.51,
+      "helpText": "This field indicates the reason for the student's training. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF EDUCATION",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "M:MANDATORY INSERVICE;O:OTHER TRAINING;C:CONTINUING EDUCATION;W:WARD INSERVICE;",
+      "helpText": "This field categorizes the class as mandatory inservice, continuing education, ward inservice, or other. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SOURCE OF TRAINING",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:VA;2:INTERAGENCY;3:NON-GOVERNMENT (Designed for VA);4:NON-GOVERNMENT (e.g. Institution, Company or University);5:STATE OR LOCAL GOVERNMENT;",
+      "helpText": "This field identifies the source of funding for the program. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STUDENT EXPENSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount, if any, incurred by this employee for a government sponsored program or class. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACCREDITING ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P452.9'",
+      "required": false,
+      "pointerTo": 452.9,
+      "helpText": "This field contains the name of the organization accrediting the program. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CONTACT HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the number of contact hours associated with this program. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "C.E.U.s",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of continuing education units associated with this class. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "S.S.N.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the social security number of the student. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CODE FOR OLDE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:CODED;N:NOT CODED;",
+      "helpText": "This field indicates whether or not this record should be transmitted to Austin, Texas. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SPONSORING SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name of the student's service. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ENDING DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date/time the program is scheduled to end. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "PROGRAM/CLASS LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains a general location for the class, e.g., Nursing Education, Training Room # ... ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LOCAL NON-LOCAL",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL;N:NON-LOCAL;",
+      "helpText": "This field indicates when the class was presented at the VA facility (local) or at another location (non-local). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "GOVERNMENT FUNDED",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "G:GOVERNMENT FUNDED;E:EMPLOYEE FUNDED;",
+      "helpText": "This field indicates that the program was paid for by the gov't or by the employee. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "HOURS A/A REQUESTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the hours of authorized absence requested by employee to attend a program. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "HOURS A/A GRANTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the total hours of authorized absence granted to attend a program. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DIRECT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the direct government cost (tuition, books, etc.) of the program.  Refer to VA Form 5-4691, field 13. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "INDIRECT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the indirect government cost (travel, per diem) of the program.  Refer to VA Form 5-4691, field 13. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ROUTINE/NON-ROUTINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:ROUTINE;N:NON-ROUTINE;",
+      "helpText": " This field indicates whether or not the class enhances or does not enhance the employee's job qualifications. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SVC REASON",
+      "dataType": "POINTER",
+      "rawType": "452.033PA",
+      "required": false,
+      "helpText": "This field contains the service's reason or purpose for emloyees attending the class.  This field uses data contained in File 452.6. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "FUNDS REQUESTED",
+      "dataType": "SET",
+      "rawType": "452.055SA",
+      "required": false,
+      "helpText": "This field indicates intended use of requested funds, e.g., hotel, registration, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 452.055,
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "FUNDS AUTHORIZED",
+      "dataType": "SET",
+      "rawType": "452.066SA",
+      "required": false,
+      "helpText": "This field indicates intended use of authorized funds, e.g., hotel, airfare. ",
+      "isMultiple": true,
+      "subFileNumber": 452.066,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "C.E.U. COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "452.077",
+      "required": false,
+      "helpText": "This field contains additional comments regarding program/funding. ",
+      "isMultiple": true,
+      "subFileNumber": 452.077,
+      "fieldNumber_": 77
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "B", "field": },
+    {"name": "CLS", "field": },
+    {"name": "D", "field": },
+    {"name": "D1", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "H", "field": },
+    {"name": "LOC1", "field": },
+    {"name": "LOC2", "field": },
+    {"name": "SER", "field": },
+    {"name": "452", "field": .01, "type": "regular"},
+    {"name": "452", "field": .01, "type": "regular"},
+    {"name": "452", "field": .01, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 1, "type": "regular"},
+    {"name": "452", "field": 2, "type": "regular"},
+    {"name": "452", "field": 2, "type": "regular"},
+    {"name": "452", "field": 2, "type": "regular"},
+    {"name": "452", "field": 2, "type": "regular"},
+    {"name": "452", "field": 5, "type": "regular"},
+    {"name": "452", "field": 5, "type": "regular"},
+    {"name": "452", "field": 12, "type": "regular"},
+    {"name": "452", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

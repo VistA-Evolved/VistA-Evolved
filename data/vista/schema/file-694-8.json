@@ -1,0 +1,118 @@
+{
+  "fileNumber": 694.8,
+  "fileName": "PROCEDURE TERM",
+  "globalRoot": "694.8",
+  "globalReference": "^MCAR(694.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the procedural term used to identify clinical results sets as well as individual result atoms. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This generic field available to define the individual elements of the term.  In the case of atomic terms this field may contain input transform information. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to specify terms which mean the same as the named term. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "694.801AV",
+      "required": false,
+      "helpText": "This multiple field allows the term to be coded to CPT and ICD procedure file entries. ",
+      "isMultiple": true,
+      "subFileNumber": 694.801,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "694.802PA",
+      "required": false,
+      "helpText": "This field provides a method of screening or associating procedural terms or atoms which are logically linked by the application. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field allows this term to be turned on or off for selection by current users of the system.  If this term is associated with a result the term will always be active for display or print. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field documents the date/time the term was added to the file for auditing purposes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "ENTERING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the indivual who added this term to the file for auditing purposes. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE OF INACTIVITY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The is date/time field documents the latest time this field was inactivated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROCEDURE/SUBSPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P697.2'",
+      "required": false,
+      "pointerTo": 697.2,
+      "helpText": "This field associates the term with a particular data set in the procedure/subspecialty file. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "PAR", "field": },
+    {"name": "PS", "field": },
+    {"name": "694.8", "field": .01, "type": "regular"},
+    {"name": "694.8", "field": 2, "type": "regular"},
+    {"name": "694.8", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "fileNumber": 68.2,
+  "fileName": "LOAD/WORK LIST",
+  "globalRoot": "68.2",
+  "globalReference": "^LRO(68.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the load or work list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LOAD TRANSFORM",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "This entry controls the algorithm for placing work on the list. Inquire to the EXECUTE CODES file (Loadlist types) for specifics. Leave this blank unless you want more sophisticated placement. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:SEQUENCE/BATCH;1:TRAY,CUP;2:POINT OF CARE;",
+      "helpText": "Determines if this list is a sequence/batch, tray,cup or Point of Care (POC) type of load/work list. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CUPS PER TRAY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "Contains number of cups per tray if a tray,cup type. If you are using Sequence/Batch enter a Zero (0) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FULL TRAY'S ONLY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If you want to accept full trays only set this field to YES. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXPAND PANELS ON PRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If you want test panels expanded to display all tests when printed, this field must contain YES. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INITIAL SETUP",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": "This code would be used each time a load or work list is built for the first time after it has been \"cleared\".  \"Special\" initialization may be customized through the EXECUTE CODE chosen. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "VERIFY BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSION;M:MACHINE SEQUENCE;T:TRAY;W:WORKLIST;",
+      "helpText": "Determines the method of verification for this list. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SUPPRESS SEQUENCE #",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "\"YES\" will suppress the sequence # listing. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INCLUDE UNCOLLECTED ACCESSIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to tell the load list routine whether to include (if set to YES) ALL accessions that have the tests in the profile, or (if set to NO) only accessions that have ARRIVED in the lab. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SHORT TEST LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field contains \"YES\" a short test list will be generated. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AUTO MICRO EDIT TEMPLATE",
+      "dataType": "POINTER",
+      "rawType": "*P62.07'",
+      "required": false,
+      "pointerTo": 62.07,
+      "helpText": " Select Execute Code to be associated with this Load/worklist. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "WKLD METHOD",
+      "dataType": "POINTER",
+      "rawType": "P64.2'",
+      "required": false,
+      "pointerTo": 64.2,
+      "helpText": "This field will be used as default response when setting up WKLD code during verification. This field updated after the technologist confirm the method for this particular verification session.  The name and suffix number are automatically stuff for the user. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "WKLD CODE METHOD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The field should contain the subsection which should receive credit for workload any time a user selects this worklist. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "WKLD CODE SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " This field indicates what is the standard default method used by this particular LOAD/WORK LIST. This suffix is appended to prefix or procedure wkld code for each test verified. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAJOR ACCESSION AREA",
+      "dataType": "POINTER",
+      "rawType": "P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "  This field contains the major accession area which should recieve the workload credit. Anytime a user selects this worklist the entry will be used to tally workload.  NOTE: THIS FIELD IS ASSOCIATED WITH WORKLOAD. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "LAB SUBSECTION",
+      "dataType": "POINTER",
+      "rawType": "P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "  This is the next level down from the Major Accession area. An example might be, chemistry is the major accession area and Sp chemistry would be the lab subsection. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WORK AREA",
+      "dataType": "POINTER",
+      "rawType": "*P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "  This is the lowest level of work distribution. Generally this would indicate the work bench where the work is to be done. An example might be Chemistry (major accession area), Sp Chemistry (lab sub section) and Drug screens (work area).     Note: The default for, major accession area, lab sub section and work area is the entry above it. The order is as follows:  Major accession area           Default is the accession area of the test.  Lab Subsection                 Default is the Major access",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RUN or TRAY NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "68.21",
+      "required": false,
+      "helpText": "All data in this multiple field is computer generated. ",
+      "isMultiple": true,
+      "subFileNumber": 68.21,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE OF SETUP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the load/work list was created is stored here. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FIRST TRAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The first tray built on the last \"build\" is stored here. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "STARTING CUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The starting cup (or sequence number) on the last \"build\" is stored here. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LAST TRAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The last tray built on the last \"build\" is stored here. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LAST CUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The last cup (or sequence number) on the last \"build\" is stored here. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "BUILDING IN PROGRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "While the load list is being built, the program sets this flag to YES. At the completion of building, this flag is returned to NO.  The purpose is to keep multiple users from competing for the same load list at the same time.  If the flag is left set, set to NO to continue building load lists. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PROFILE",
+      "dataType": "SUBFILE",
+      "rawType": "68.23I",
+      "required": false,
+      "helpText": "Only ONE load or work list can exist at a time.  But more than one profile can be defined to make \"alternate\" groupings of tests for the load/worklist which might be used on an infrequent or non-standard basis. ",
+      "isMultiple": true,
+      "subFileNumber": 68.23,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "USER ACCESS AUTHORIZATION",
+      "dataType": "POINTER",
+      "rawType": "P19.1'",
+      "required": false,
+      "pointerTo": 19.1,
+      "helpText": "If left blank, any lab person may access this load/worklist. If filled in only lab person holding the authorization may use this load/worklist. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "ADDITIONAL LAB TESTS",
+      "dataType": "POINTER",
+      "rawType": "68.3P",
+      "required": false,
+      "helpText": " To used for any additional WKLD codes used for this particular W/L. ",
+      "fieldNumber_": 52
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "68.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"},
+    {"name": "", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

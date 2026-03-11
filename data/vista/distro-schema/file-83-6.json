@@ -1,0 +1,62 @@
+{
+  "fileNumber": 83.6,
+  "fileName": "DRG PROCEDURE",
+  "globalRoot": "83.6",
+  "globalReference": "^ICDD(83.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "RP80.1'",
+      "required": true,
+      "pointerTo": 80.1,
+      "helpText": "An ICD Procedure code that affects DRG calculations.  Only one record per  Procedure is necessary, all criteria and associations are date versioned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ATTRIBUTES",
+      "dataType": "DATE",
+      "rawType": "83.6001D",
+      "required": false,
+      "helpText": "The attributes are various characteristics of the Procedure code specific  to the DRG assignment.  There can be only one record of attributes  active for a date range.  Each version that modifies any of the attributes  will have a separate date based record. ",
+      "isMultiple": true,
+      "subFileNumber": 83.6001,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MDC CODE SETS",
+      "dataType": "DATE",
+      "rawType": "83.6002D",
+      "required": false,
+      "helpText": "This is the list of all MDC Code Sets the Procedure has been assigned to.  Each Procedure may be assigned to multiple Code Sets and they may change  by version or date range. ",
+      "isMultiple": true,
+      "subFileNumber": 83.6002,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "HAC CODE SET",
+      "dataType": "DATE",
+      "rawType": "83.6003D",
+      "required": false,
+      "helpText": "This is the list of all HAC Code Sets the Procedure has been assigned to.  Each Procedure may be assigned to multiple HAC Code Sets and they may  change by version or date range. ",
+      "isMultiple": true,
+      "subFileNumber": 83.6003,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ASC", "field": },
+    {"name": "B", "field": },
+    {"name": "83.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

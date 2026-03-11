@@ -1,0 +1,55 @@
+{
+  "fileNumber": 1.5211,
+  "fileName": "SQLI_DATA_TYPE",
+  "globalRoot": "1.5211",
+  "globalReference": "^DMSQ(\"DT\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "D_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "ODBC Standard data type corresponding to FileMan domains ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "D_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short description of the data type ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "D_OUTPUT_STRATEGY",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "M code which returns external value, {E} of base value, {B}. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "D_OUTPUT_FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P1.5214'",
+      "required": false,
+      "pointerTo": 1.5214,
+      "helpText": "IEN of default output format in SQLI_OUTPUT_FORMAT ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.5211", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

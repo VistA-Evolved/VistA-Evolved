@@ -1,0 +1,171 @@
+{
+  "fileNumber": 100.6,
+  "fileName": "OE/RR AUTO-DC RULES",
+  "globalRoot": "100.6",
+  "globalReference": "^ORD(100.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the rule, used to identify it uniquely in the file; it is visible in the Rule Editor only. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this rule is no longer considered active; after this date/time, this rule will no longer apply. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "ACTIVATION HISTORY",
+      "dataType": "DATE",
+      "rawType": "100.61DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.61,
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADMISSION;T:TRANSFER;D:DISCHARGE;S:SPECIALTY TRANSFER;O:O.R.;",
+      "helpText": "This is the event that should cause orders to be automatically  discontinued; for OR events, the orders will be discontinued when the TIME PAT IN OR field is entered in the Surgery package. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the division that this auto-dc rule should be applied to; for a transfer across divisions, this should be the new division that the patient is going to. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DC REASON",
+      "dataType": "POINTER",
+      "rawType": "P100.03'",
+      "required": false,
+      "pointerTo": 100.03,
+      "helpText": "This is the reason that will be saved with the order indicating why it was automatically discontinued. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name of the rule as it will appear to the user in CPRS. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EXCEPT FROM OBSERVATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:IF READMITTING;2:YES;",
+      "helpText": "This indicates if an observation treating specialty should prevent this rule from being applied, when the patient is discharged from it.  Enter YES if an observation specialty should always be considered an exception to this rule, or NO to never consider it.  IF READMITTED will cause the clerk to be asked if the patient will be immediately admitted again, and a response of YES will prevent this rule from being applied; because it requires user interaction, this value should only be used with the",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "MAS MOVEMENT TYPES",
+      "dataType": "POINTER",
+      "rawType": "100.63P",
+      "required": false,
+      "helpText": "These are the MAS Movement Types that define this event; when an MAS event occurs for one of these types, this rule will be processed if active. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "EXCLUDED TREATING SPECIALTIES",
+      "dataType": "POINTER",
+      "rawType": "100.64P",
+      "required": false,
+      "helpText": "These are treating specialties that will cause this rule to not be processed, if the EXCEPT FROM and TO specialties match the patient's transfer. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INCLUDED LOCATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "100.62",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.62,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "INCLUDED DIVISIONS",
+      "dataType": "POINTER",
+      "rawType": "100.66P",
+      "required": false,
+      "helpText": "These are the divisions that will cause this rule to be processed, if the FROM division matches the patient's transfer. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "INCLUDED PACKAGES",
+      "dataType": "POINTER",
+      "rawType": "100.67P",
+      "required": false,
+      "helpText": "These are the packages whose orders are to be automatically discontinued when this rule is processed. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "EXCLUDED ORDERABLE ITEMS",
+      "dataType": "POINTER",
+      "rawType": "100.68P",
+      "required": false,
+      "helpText": "These are the orderable items that are NOT to be automatically discontinued when this rule is processed, even if an order for it belongs to a package in the INCLUDED PACKAGES multiple. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "100.681DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.681,
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EXCLUDED DISPLAY GROUP",
+      "dataType": "POINTER",
+      "rawType": "100.65P",
+      "required": false,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "100.6", "field": .01, "type": "regular"},
+    {"name": "100.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(100.6,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

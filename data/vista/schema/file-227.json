@@ -1,0 +1,78 @@
+{
+  "fileNumber": 227,
+  "fileName": "DENTAL CANNED COMMENTS",
+  "globalRoot": "227",
+  "globalReference": "^DENT(227,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMMENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0X",
+      "length": 6,
+      "required": true,
+      "helpText": "This is the comment number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider that this canned comment belongs to. This is only required if the canned comment is a user comment. System comments do not  have a provider. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:System;2:User;",
+      "helpText": "This is the type of canned comment. A system canned comment supersedes all user canned comments. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SORT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the sort order for this canned comment in its category. Every  category may have 12 comments. The lower the sort order number, the  higher the comment will appear on the list. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Radiographic Findings;2:Summary Assessment;3:Treatment Plan;4:Patient Education;5:Disposition;",
+      "helpText": "This is the category of the canned comment. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CANNED COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "227.01",
+      "required": false,
+      "helpText": "This is the text for the canned comment. This text will be made available  for selection in a progress note within the exam template screen in DRM  Plus. ",
+      "isMultiple": true,
+      "subFileNumber": 227.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "fileNumber": 7105.5,
+  "fileName": "NOIS PACKAGE",
+  "globalRoot": "7105.5",
+  "globalReference": "^FSC(\"PACK\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the package used by NOIS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7105.51",
+      "required": false,
+      "helpText": "These are synonyms of the package. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available on any call with this package. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "WEB TROUBLESHOOTING PAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a URL to a page on troubleshooting for this package. If an entry is made, a link will appear on the package solution page. The information on this page might include: tips and tricks, frequently asked questions, documentation, etc. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P7105.8'",
+      "required": false,
+      "pointerTo": 7105.8,
+      "helpText": "This field can be used to designate a package group that this package belongs to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the entry in the package file associated with this package. Not used for local NOIS implementations. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short name describing the package. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEV OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "helpText": "This is the develpment office responsible for this package. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7105.599",
+      "required": false,
+      "helpText": "These are the names for this package used by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.599,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "7105.5", "field": .01, "type": "regular"},
+    {"name": "7105.5", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

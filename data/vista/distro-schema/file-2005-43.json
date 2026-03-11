@@ -1,0 +1,76 @@
+{
+  "fileNumber": 2005.43,
+  "fileName": "MAG PATH INTERPRETATION",
+  "globalRoot": "2005.43",
+  "globalReference": "^MAG(2005.43,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the case accession number of the case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INTERPRETATION;1:CONSULTATION;",
+      "helpText": "This flag indicates whether the entry is an interpretation or a  consultation attached to a case. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RESERVATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRDX",
+      "required": true,
+      "helpText": "This is the date/time when the interpretation or consultation was entered. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INTERPRETING SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the Interpreting Site, i.e. the Site reading the slide. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PARENT INTERPRETATION INDEX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the Parent Interpretation Index, i.e. the IEN of the  Interpretation to which a Consultation is attached. If the entry is an  Interpretation, this index is left blank. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PENDING;1:COMPLETED;2:REFUSED;3:RECALLED;",
+      "helpText": "This is the Status of the Interpretation or Consultation. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.43", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

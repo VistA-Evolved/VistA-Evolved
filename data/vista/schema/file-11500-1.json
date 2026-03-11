@@ -1,0 +1,242 @@
+{
+  "fileNumber": 11500.1,
+  "fileName": "ODS PATIENT",
+  "globalRoot": "11500.1I",
+  "globalReference": "^A1B2(11500.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BRANCH OF SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P23'",
+      "required": false,
+      "pointerTo": 23,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RANK/RATE",
+      "dataType": "POINTER",
+      "rawType": "*P25002.1'",
+      "required": false,
+      "pointerTo": 25002.1,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RECALLED TO ACTIVE DUTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:NATIONAL GUARD;2:RESERVES;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SERIOUSLY ILL;",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ODS PATIENT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "COUNTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LOCAL PATIENT ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRANSMITTED;2:NEVER TRANSMITTED;3:RE-TRANSMIT;0:PENDING;",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DATE INITIALLY TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "LAST MESSAGE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "NETWORK DATA",
+      "dataType": "SUBFILE",
+      "rawType": "11500.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 11500.11,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AFAC", "field": },
+    {"name": "AFAC3", "field": },
+    {"name": "AX", "field": },
+    {"name": "AXDT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "11500.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "11500.1", "field": .02, "type": "regular"},
+    {"name": "11500.1", "field": .04, "type": "regular"},
+    {"name": "11500.1", "field": .12, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "11500.1", "field": 1.01, "type": "regular"},
+    {"name": "11500.1", "field": 1.03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(25002.1,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(25002.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .08, "value": "W \"\""},
+    {"field": .13, "value": "W \"   \",$P(^(0),U,13)"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 413.2,
+  "fileName": "EQUIPMENT COMMITTEE",
+  "globalRoot": "413.2",
+  "globalReference": "^PRCN(413.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEMBER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is a person who has been selected to serve on the Medical Center's Equipment Committee. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEMBER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CHAIRPERSON;M:MEMBER;",
+      "helpText": "Enter the member type of the committee member. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SIGNATURE REQUIRED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter 'yes' if a signture is required for approving a NX item. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCHEDULED MEETINGS",
+      "dataType": "DATE",
+      "rawType": "413.23D",
+      "required": false,
+      "helpText": "Enter the date when the Equipment Committee is going to meet to review requests. ",
+      "isMultiple": true,
+      "subFileNumber": 413.23,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "413.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

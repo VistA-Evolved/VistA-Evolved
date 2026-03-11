@@ -1,0 +1,56 @@
+{
+  "fileNumber": 704.1131,
+  "fileName": "OBS_TOTAL_TERMINOLOGY",
+  "globalRoot": "704.1131",
+  "globalReference": "^MDC(704.1131,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TOTAL_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.113'",
+      "required": true,
+      "pointerTo": 704.113,
+      "helpText": "This identifies the observation total portion of this total-terminology  entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the term portion of this total-terminology entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TERM_ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field indicates the display order of this term (#.02) within this  observation total (#.01). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TERM_DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name to display within the Clinical Flowsheets application  for this total terminology entry. A sample TERM DISPLAY NAME could be \"TOTs IntakeX\". ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

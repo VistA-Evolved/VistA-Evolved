@@ -1,0 +1,71 @@
+{
+  "fileNumber": 11500.5,
+  "fileName": "ODS PARAMETER",
+  "globalRoot": "11500.5",
+  "globalReference": "^A1B2(11500.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0X",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVATE ODS SOFTWARE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE SOFTWARE ACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME OF LAST ROLLUP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST ROLLUP STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADDTIONS ONLY;2:CORRECTIONS ONLY;3:ADDITIONS & CORRECTIONS;9:NOTHING TO REPORT;",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NETWORK DATABASE DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "11500.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

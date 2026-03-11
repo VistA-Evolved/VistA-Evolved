@@ -1,0 +1,197 @@
+{
+  "fileNumber": 51.1,
+  "fileName": "ADMINISTRATION SCHEDULE",
+  "globalRoot": "51.1I",
+  "globalReference": "^PS(51.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This a common abbreviation for a schedule.  A schedule is the frequency for which an action is to take place, such as every eight hours ('Q8H') or every other day ('QOD'). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STANDARD ADMINISTRATION TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "These are the times of day, for this schedule, that the action should take place.  Use military time (24 hour clock) when entering the times, separating each time with a '-'.  Be sure that the times are in ascending order, i.e., 06-14-22 or 0600-1400-2200.  All times must be the same length, either 2 or 4 digits. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FREQUENCY (IN MINUTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "  The number of minutes between each time that the action should take place. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "MAX DAYS FOR ORDERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "51.11P",
+      "required": false,
+      "helpText": "  This allows the site to enter information pertaining to a schedule on ward by ward basis.  The wards used are from the WARD LOCATION file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PACKAGE PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is the package prefix (as found in file 9.4) for the package that will be the primary user of this schedule.  This is used primary as a screen to allow various packages to enter and edit their own set of schedules.  This is NOT to be set through the VA FileMan, but only through the designated utility. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF SCHEDULE",
+      "dataType": "SET",
+      "rawType": "*SX",
+      "required": false,
+      "setOfCodes": "C:CONTINUOUS;D:DAY OF THE WEEK;DR:DAY OF THE WEEK-RANGE;O:ONE-TIME;R:RANGE;S:SHIFT;OC:ON CALL;P:PRN;",
+      "helpText": "  This is the type of schedule.  The type of schedule determines how the schedule will be processed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STANDARD SHIFTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is the standard shift (or shifts) which pertain to this schedule.  If there is more than one shift, separate them with dashes (i.e., 'M-E'). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "51.17P",
+      "required": false,
+      "helpText": "  This allows the site to enter information pertaining to a schedule on hospital location by hospital location basis.  The wards used are from the HOSPITAL LOCATION file. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "OUTPATIENT EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the expansion for this Administration Schedule to be use in the Outpatient Pharmacy. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "OTHER LANGUAGE EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language expansion. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "EXCLUDE FROM ALL DOSING CHECKS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to '1' or 'Yes', no dosing checks will be performed for any medication orders entered in Computerized Patient Record System (CPRS), Inpatient Medications, or Outpatient Pharmacy, that contain this schedule. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXCLUDE FROM DAILY DOSE CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to '1' or 'Yes', a daily dose range check will not be performed for any medication orders entered in Computerized Patient Record System (CPRS), Inpatient Medications, or Outpatient Pharmacy, that contain this schedule. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DOSING CHECK FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The DOSING CHECK FREQUENCY field takes priority over all other  fields/values when determining frequency.       PLEASE BE AWARE that the format of the frequency in this field must  employ the format patterns of the vendor database, which always places  the numeric value in the middle position of the schedule.  In some   cases an 'X' (symbol for 'times') must be entered as the first  character, although it is still translated as the number of times per  designated period.     The text examples wi",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "DRUG(S) FOR DOSING CHK FREQ",
+      "dataType": "POINTER",
+      "rawType": "51.111P",
+      "required": false,
+      "helpText": "  This multiple field allows for dispense drugs from the DRUG (#50) file to be associated with the DOSING CHECK FREQUENCY (#11) field value within the ADMINISTRATION SCHEDULE (#51.1) file.   When a value is entered for \"DOSING CHECK FREQUENCY:\" and NO drug(s) is entered for \"Select DRUG(S) FOR DOSING CHK FREQ:\",the dosing check will use the value for \"DOSING CHECK FREQUENCY:\" to derive a frequency for all orders that have that schedule.                                     When a value is entered",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate that a Standard Schedule is inactive. Inactive schedules are filtered from the list of schedules sent to CPRS for selection when users are placing a medication order. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "OLD SCHEDULE NAME(S)",
+      "dataType": "SUBFILE",
+      "rawType": "51.113",
+      "required": false,
+      "helpText": "  This multiple stores the old values of the administration schedule when  the NAME (#.01) field is edited.  Values can also be added to this field  directly. ",
+      "isMultiple": true,
+      "subFileNumber": 51.113,
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACC", "field": },
+    {"name": "ADHL", "field": },
+    {"name": "AHL", "field": },
+    {"name": "AP", "field": },
+    {"name": "APP", "field": },
+    {"name": "AUWD", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "51.1", "field": .01, "type": "regular"},
+    {"name": "51.1", "field": .01, "type": "regular"},
+    {"name": "51.1", "field": .01, "type": "regular"},
+    {"name": "51.1", "field": .01, "type": "regular"},
+    {"name": "51.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "51.1", "field": 4, "type": "regular"},
+    {"name": "51.1", "field": 4, "type": "regular"},
+    {"name": "51.1", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 4, "value": "W \"\""},
+    {"field": 12, "value": "W:$P(^(0),U,12)=1 \"   ** INACTIVE **\""}
+  ]
+}

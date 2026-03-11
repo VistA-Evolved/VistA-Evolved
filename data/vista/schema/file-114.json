@@ -1,0 +1,206 @@
+{
+  "fileNumber": 114,
+  "fileName": "RECIPE",
+  "globalRoot": "114",
+  "globalReference": "^FH(114,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the recipe. A recipe is anything served and may consist of a single ingredient which requires no preparation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INGREDIENT",
+      "dataType": "POINTER",
+      "rawType": "114.01PA",
+      "required": false,
+      "helpText": "This multiple contains the ingredients used in the recipe. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "EMBEDDED RECIPE",
+      "dataType": "POINTER",
+      "rawType": "114.03PA",
+      "required": false,
+      "helpText": "This field contains recipes which are 'embedded' in this recipe. For example, a hot roast beef sandwich might contain bread as an ingredient but roast beef as an embedded recipe and perhaps even brown gravy as another embedded recipe. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER OF PORTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the yield, in terms of number of portions, of the recipe. It should be within a factor of 10 of the normal quantity needed and need not be 100. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PORTION SIZE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a short description of the portion size, e.g., 3-oz. or 1 each. Size must be a number followed by OZ, EACH or FLOZ. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PREPARATION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates the amount of preparation time this recipe will require. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EQUIPMENT",
+      "dataType": "POINTER",
+      "rawType": "114.05P",
+      "required": false,
+      "helpText": "This multiple is used to indicate the various types of equipment necessary to produce this recipe. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SERVING UTENSIL",
+      "dataType": "POINTER",
+      "rawType": "P114.3'",
+      "required": false,
+      "pointerTo": 114.3,
+      "helpText": "This field indicates the primary serving utensil which will be required by tray line personnel or cafeteria line personnel. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEFAULT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP114.1'",
+      "required": true,
+      "pointerTo": 114.1,
+      "helpText": "This is the primary category of the recipe. Selection does not prohibit the use of the recipe in other ways (e.g., a 'salad' being used for dessert) but does influence the printing order of the recipe in various lists. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a synonym, or alternate name, for the recipe. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "# DAYS PRE-PREP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the number of days in advance that the recipe must be prepared. It need be answered only when non-zero, that is, when the recipe is prepared in advance of the serving day. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PRINT RECIPE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered NO, will inhibit the printing of the recipe even when such printing is requested as part of the production summary. It is generally used to inhibit printing of one-ingredient recipes or those which require no preparation. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRE-PREP STATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MIX;D:DEHYDRATED;F:FROZEN;C:CANNED;X:CONCENTRATED;S:SCRATCH;I:IND/R-T-S;P:PARTIALLY PREP;R:R-T-S;",
+      "helpText": "This field indicates the state of the recipe, i.e., whether a canned item, dehydrated, partially prepared, ready-to-serve, etc. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PREPARATION AREA",
+      "dataType": "POINTER",
+      "rawType": "P114.2'",
+      "required": false,
+      "pointerTo": 114.2,
+      "helpText": "This field indicates the preparation area of the kitchen where the recipe would normally be prepared. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DIRECTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "114.02",
+      "required": false,
+      "helpText": "This field contains the directions for the preparation of the recipe. References to absolute quantities of an ingredient should not be made since the recipe will normally be printed in an 'adjusted' form -- that is, the number of portions will be adjusted and hence the individual ingredient amounts will vary from those entered for the yield of the recipe. ",
+      "isMultiple": true,
+      "subFileNumber": 114.02,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "COST/PORTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the cost per portion of the recipe based upon the current prices shown in the Ingredient file (113). ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "ASSOCIATED NUTRIENT ANALYSIS",
+      "dataType": "POINTER",
+      "rawType": "P112'",
+      "required": false,
+      "pointerTo": 112,
+      "helpText": "This is a pointer to the Nutrient file (112) and contains the nutrient analysis of this recipe. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DIABETIC EXCHANGE",
+      "dataType": "POINTER",
+      "rawType": "114.0103P",
+      "required": false,
+      "helpText": "This multiple contains the Diabetic exchanges associated with this recipe.  It is use to handle the Diabetic calculated diets. ",
+      "fieldNumber_": 103
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "114", "field": .01, "type": "regular"},
+    {"name": "114", "field": 8, "type": "regular"},
+    {"name": "114", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"Z\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

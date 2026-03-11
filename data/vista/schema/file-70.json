@@ -1,0 +1,145 @@
+{
+  "fileNumber": 70,
+  "fileName": "RAD/NUC MED PATIENT",
+  "globalRoot": "70IP",
+  "globalReference": "^RADPT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field gives the name of this Radiology/Nuclear Medicine patient.  The system obtains this information from the main 'PATIENT' file (#2).  It is not stored in the 'RAD/NUC MED PATIENT' file (#70).            ALLOWABLE WAYS TO ENTER PATIENT NAME:          -------------------------------------            -Patient's last name (to reduce typing errors,             enter only first few letters of last name)            -Last 4 digits of patient's Social Security Number            -First letter of ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This field is computed by the system to be the date of birth of this Radiology/Nuclear Medicine patient.  The system obtains this information from the main 'PATIENT' file (#2).  It is not stored in the 'RAD/NUC MED PATIENT' file (#70). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .033,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed by the system to the age of this Radiology/Nuclear Medicine patient. The system obtains this information from the main 'PATIENT' file (#2). It is not stored in the 'RAD/NUC MED PATIENT' file (#70). ",
+      "fieldNumber_": .033
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USUAL CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "O:OUTPATIENT;C:CONTRACT;S:SHARING;R:RESEARCH;E:EMPLOYEE;",
+      "helpText": "This field contains a default value used during the exam registration process to indicate the category of exam for this Radiology/Nuclear Medicine patient. Available categories are: 'O' for OUTPATIENT, 'C' for CONTRACT, 'S' for SHARING, 'R' for RESEARCH, and 'E' for EMPLOYEE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USER WHO ENTERED PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field points to the 'NEW PERSON' file (#200) to indicate the person who entered this patient into the Radiology/Nuclear Medicine system.  It is filled in by the system from information the user entered at sign-on. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is computed by the system to the social security number of this Radiology/Nuclear Medicine patient.  The system obtains this information from the main 'PATIENT' file (#2).  It is not stored in the 'RAD/NUC MED PATIENT' file (#70). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .361,
+      "fieldName": "ELIGIBILITY CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is computed by the system to the eligibility code of this Radiology/Nuclear Medicine patient from information obtained from the main 'PATIENT' file (#2). It is not stored in the 'RAD/NUC MED PATIENT' file (#70). ",
+      "fieldNumber_": .361
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a brief note (up to 250 characters) about this Radiology/Nuclear Medicine patient. It may describe the personality or any unusual characteristic to identify this Radiology/Nuclear Medicine patient. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REGISTERED EXAMS",
+      "dataType": "DATE",
+      "rawType": "70.02DA",
+      "required": false,
+      "helpText": "This is a multiple field containing information about the patient's registered Radiology/Nuclear Medicine exams. ",
+      "isMultiple": true,
+      "subFileNumber": 70.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "OUTSIDE FILMS REGISTRY",
+      "dataType": "DATE",
+      "rawType": "70.06ID",
+      "required": false,
+      "helpText": "This is a multiple field containing information about this patient's films obtained from an outside source. ",
+      "isMultiple": true,
+      "subFileNumber": 70.06,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 1901,
+      "fieldName": "IS PATIENT A VETERAN?",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed by the system and indicates whether this patient is a veteran or not.  The system obtains this information from the main 'PATIENT' file (#2).  It is not stored in this file (#70). ",
+      "fieldNumber_": 1901
+    },
+    {
+      "fieldNumber": 500001,
+      "fieldName": "IS PATIENT DIABETIC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 500001
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADC", "field": },
+    {"name": "AO", "field": },
+    {"name": "AR", "field": },
+    {"name": "ARES", "field": },
+    {"name": "ASTF", "field": },
+    {"name": "AVSIT", "field": },
+    {"name": "B", "field": },
+    {"name": "70", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"\""},
+    {"field": .05, "value": "W \"\""}
+  ]
+}

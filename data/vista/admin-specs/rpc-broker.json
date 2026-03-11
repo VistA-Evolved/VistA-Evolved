@@ -1,0 +1,825 @@
+{
+  "id": "rpc-broker",
+  "name": "RPC Broker",
+  "description": "Remote procedure call infrastructure, context management",
+  "vdlManual": "rpc-broker-developer-guide.pdf",
+  "generatedAt": "2026-03-11T04:21:11.898Z",
+  "files": {
+    "count": 2,
+    "items": [
+      {
+        "fileNumber": 8994,
+        "fileName": "File #8994",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 8994.5,
+        "fileName": "File #8994.5",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 33,
+    "items": [
+      {
+        "name": "XWB EGCHO STRING",
+        "tag": "ECHO1",
+        "routine": "XWBZ1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "INP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC receives a string which will be sent right back to the client. It exists for support of EGcho - Broker demonstration program. to run d ECHO^XWBZ1(something) "
+      },
+      {
+        "name": "XWB EGCHO LIST",
+        "tag": "LIST",
+        "routine": "XWBZ1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC brings back a small list of elements to the client.  It exists for support of EGcho - Broker demonstration program. "
+      },
+      {
+        "name": "XWB EGCHO BIG LIST",
+        "tag": "BIG",
+        "routine": "XWBZ1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC brings back a lot of meaningless data to the client.  It exists for support of EGcho - Broker demonstration program. "
+      },
+      {
+        "name": "XWB EGCHO SORT LIST",
+        "tag": "SRT",
+        "routine": "XWBZ1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DIRECTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Sorts a given numeric array, starting from HI or LO It exists for support of EGcho - Broker demonstration program. "
+      },
+      {
+        "name": "XWB EGCHO MEMO",
+        "tag": "MEMO",
+        "routine": "XWBZ1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC accepts text from a client which it will send right back to the client.  It exists for support of EGcho - Broker demonstration program. "
+      },
+      {
+        "name": "XWB FILE LIST",
+        "tag": "FILELIST",
+        "routine": "XWBFM",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "START",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "XWB FILENAME CHECK",
+        "tag": "FILECHK",
+        "routine": "XWBFM",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "START",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FNAME",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "XWB RPC LIST",
+        "tag": "APILIST",
+        "routine": "XWBFM",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "START",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of remote procedures from the REMOTE PROCEDURE file. "
+      },
+      {
+        "name": "XWB GET VARIABLE VALUE",
+        "tag": "VARVAL",
+        "routine": "XWBLIB",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VARIABLE",
+            "type": "WORD-PROCESSING",
+            "required": false
+          }
+        ],
+        "description": "This RPC accepts the name of a variable which will be evaluated and its value returned to the server.  For example, this RPC may be called with a parameter variable like DUZ which will be returned as 123456.   It should NOT be used to return the value of anything other than a  variable. For example,"
+      },
+      {
+        "name": "XWB CREATE CONTEXT",
+        "tag": "CRCONTXT",
+        "routine": "XWBSEC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Establishes context on the server, which will be checked by the Broker before executing any other remote procedure.  Since context is nothing more than a client/server \"B\"-type option in the OPTION file (#19), standard MenuMan security is applied in establishing a context.  Therefore, a context opti"
+      },
+      {
+        "name": "XWB EXAMPLE ECHO STRING",
+        "tag": "ECHOSTR",
+        "routine": "XWBEXMPL",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "INP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC receives a string which will be sent right back to the client. It exists for support of RPC Broker Example program. "
+      },
+      {
+        "name": "XWB EXAMPLE GET LIST",
+        "tag": "GETLIST",
+        "routine": "XWBEXMPL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ITEMS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "QUANTITY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC brings back a list of elements to the client.  The user can request either a number of lines or a number of Kilobytes of data to be returned. This RPC exists support of RPC Broker Example program. "
+      },
+      {
+        "name": "XWB EXAMPLE WPTEXT",
+        "tag": "WPTEXT",
+        "routine": "XWBEXMPL",
+        "returnType": "WORD PROCESSING",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "XWB EXAMPLE SORT NUMBERS",
+        "tag": "SORTNUM",
+        "routine": "XWBEXMPL",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "XWB GET BROKER INFO",
+        "tag": "BRKRINFO",
+        "routine": "XWBLIB",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns info regarding setup and parameters of the Broker. "
+      },
+      {
+        "name": "XWB IM HERE",
+        "tag": "IMHERE",
+        "routine": "XWBLIB",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a simple value to the client.  Used to establish continued  existence of the client to the server: resets the server READ timeout. "
+      },
+      {
+        "name": "XWB IS RPC AVAILABLE",
+        "tag": "CKRPC",
+        "routine": "XWBLIB",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "RPC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RUN CONTEXT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VERSION NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "If RPC is installed, available in relevant context, and of proper version returns 1.   Otherwise, returns 0.   Integration Agreement (IA) #3011 "
+      },
+      {
+        "name": "XWB ARE RPCS AVAILABLE",
+        "tag": "CKRPCS",
+        "routine": "XWBLIB",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "RPC",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "RUN CONTEXT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "If RPC in the passed array is installed, available in relevant context, and of proper version returns 1 for that RPC. Otherwise, returns 0.   Integration Agreement (IA) #3012 "
+      },
+      {
+        "name": "XWB REMOTE RPC",
+        "tag": "EN1",
+        "routine": "XWB2HL7",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "LOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RRPC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IP1",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IP2",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This is the RPC that is called to request that an application RPC be run on a remote system.  The data is passed by HL7 to the remote system as is the return value.     This RPC will return a HANDLE that can be used to check if the data has been sent back from the remote system.  The HANDLE can be u"
+      },
+      {
+        "name": "XWB REMOTE STATUS CHECK",
+        "tag": "RPCCHK",
+        "routine": "XWB2HL7",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return the status of a remote RPC. "
+      },
+      {
+        "name": "XWB REMOTE GETDATA",
+        "tag": "RTNDATA",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return an ARRAY with what ever data has been sent back from the remote site. "
+      },
+      {
+        "name": "XWB DEFERRED RPC",
+        "tag": "EN1",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "RPC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This is the RPC that is called to request that a RPC be run through taskman in the background.   The first parameter is the name of the RPC to be run.   The next 1-10 parameters are the ones for the RPC. "
+      },
+      {
+        "name": "XWB DEFERRED STATUS",
+        "tag": "RPCCHK",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return the status of a deferred RPC. "
+      },
+      {
+        "name": "XWB DEFERRED GETDATA",
+        "tag": "RTNDATA",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to return the data from the XWB DEFERRED RPC call. "
+      },
+      {
+        "name": "XWB DIRECT RPC",
+        "tag": "DIRECT",
+        "routine": "XWB2HL7",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "LOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RRPC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": " This is the Broker RPC that is called to request that a RPC be run on a remote system.  The data is passed by HL7 to the remote system as is the return value.  The difference between this and the XWB REMOTE RPC is this is a blocking call meaning the user's workstation will not process anything else"
+      },
+      {
+        "name": "XWB REMOTE CLEAR",
+        "tag": "CLEAR",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to CLEAR the data under a HANDLE in the ^XTMP global. "
+      },
+      {
+        "name": "XWB DEFERRED CLEAR",
+        "tag": "CLEAR",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "HANDLE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to CLEAR the data under a handle in the ^XTMP global. "
+      },
+      {
+        "name": "XWB DEFERRED CLEARALL",
+        "tag": "CLEARALL",
+        "routine": "XWBDRPC",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC is used to CLEAR all the data known to this job in the ^XTMP global.  Makes use of the list in ^TMP(\"XWBHDL\",$J,handle). "
+      },
+      {
+        "name": "XWB EXAMPLE TRAP PARAMS",
+        "tag": "ERRTRAP",
+        "routine": "XWBEXMPL",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC is for testing use only. It calls the Error Trap to save off the symbol table for debuging.   The call accepts up to 9 parameters that are labeled P1 to P9. "
+      },
+      {
+        "name": "XWB M2M EXAMPLE LARRY",
+        "tag": "LARRYRP",
+        "routine": "XWBM2MT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "XWB M2M EXAMPLE REF",
+        "tag": "REFRP",
+        "routine": "XWBM2MT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Test RPC for M2M.  This just returns result by reference. "
+      },
+      {
+        "name": "XWB EXAMPLE GLOBAL SORT",
+        "tag": "GSORT",
+        "routine": "XWBEXMPL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": " This RPC uses the new Global call to send down a BIG list of number to   sort.  In the old Broker it would cause an allocation error but this one   saves the data into a temp global.   "
+      },
+      {
+        "name": "XWB EXAMPLE BIG TEXT",
+        "tag": "BIGTXT",
+        "routine": "XWBEXMPL",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      }
+    ]
+  },
+  "menus": {
+    "count": 11,
+    "items": [
+      {
+        "name": "XWB EGCHO",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB LISTENER STARTER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB RPC TEST",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB BROKER EXAMPLE",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB LISTENER STOP ALL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB LISTENER EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB M2M CACHE LISTENER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB DEBUG EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB LOG VIEW",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "XWB LOG CLEAR",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 31,
+    "items": [
+      {
+        "prompt": "INP:",
+        "rpcName": "XWB EGCHO STRING",
+        "paramName": "INP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIRECTION:",
+        "rpcName": "XWB EGCHO SORT LIST",
+        "paramName": "DIRECTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARRAY:",
+        "rpcName": "XWB EGCHO SORT LIST",
+        "paramName": "ARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START:",
+        "rpcName": "XWB FILE LIST",
+        "paramName": "START",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START:",
+        "rpcName": "XWB FILENAME CHECK",
+        "paramName": "START",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FNAME:",
+        "rpcName": "XWB FILENAME CHECK",
+        "paramName": "FNAME",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START:",
+        "rpcName": "XWB RPC LIST",
+        "paramName": "START",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VARIABLE:",
+        "rpcName": "XWB GET VARIABLE VALUE",
+        "paramName": "VARIABLE",
+        "paramType": "WORD-PROCESSING",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INP:",
+        "rpcName": "XWB EXAMPLE ECHO STRING",
+        "paramName": "INP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STR:",
+        "rpcName": "XWB EXAMPLE ECHO STRING",
+        "paramName": "STR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ITEMS:",
+        "rpcName": "XWB EXAMPLE GET LIST",
+        "paramName": "ITEMS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "QUANTITY:",
+        "rpcName": "XWB EXAMPLE GET LIST",
+        "paramName": "QUANTITY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RPC:",
+        "rpcName": "XWB IS RPC AVAILABLE",
+        "paramName": "RPC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RUN CONTEXT:",
+        "rpcName": "XWB IS RPC AVAILABLE",
+        "paramName": "RUN CONTEXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VERSION NUMBER:",
+        "rpcName": "XWB IS RPC AVAILABLE",
+        "paramName": "VERSION NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RPC:",
+        "rpcName": "XWB ARE RPCS AVAILABLE",
+        "paramName": "RPC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RUN CONTEXT:",
+        "rpcName": "XWB ARE RPCS AVAILABLE",
+        "paramName": "RUN CONTEXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LOC:",
+        "rpcName": "XWB REMOTE RPC",
+        "paramName": "LOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RRPC:",
+        "rpcName": "XWB REMOTE RPC",
+        "paramName": "RRPC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IP1:",
+        "rpcName": "XWB REMOTE RPC",
+        "paramName": "IP1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IP2:",
+        "rpcName": "XWB REMOTE RPC",
+        "paramName": "IP2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB REMOTE STATUS CHECK",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB REMOTE GETDATA",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RPC:",
+        "rpcName": "XWB DEFERRED RPC",
+        "paramName": "RPC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB DEFERRED STATUS",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB DEFERRED GETDATA",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LOC:",
+        "rpcName": "XWB DIRECT RPC",
+        "paramName": "LOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RRPC:",
+        "rpcName": "XWB DIRECT RPC",
+        "paramName": "RRPC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB REMOTE CLEAR",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HANDLE:",
+        "rpcName": "XWB DEFERRED CLEAR",
+        "paramName": "HANDLE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARRAY:",
+        "rpcName": "XWB M2M EXAMPLE LARRY",
+        "paramName": "ARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 162.96,
+  "fileName": "FEE BASIS GEOGRAPHIC INDEX",
+  "globalRoot": "162.96",
+  "globalReference": "^FB(162.96,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a table entry from the ZIP CODE [#5.11] file.  This field allows the association of a locality to relative value units. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALENDAR YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "162.961A",
+      "required": false,
+      "helpText": "This multiple will store by calendar year the GPCI associated with a ZIP Code Locality. ",
+      "isMultiple": true,
+      "subFileNumber": 162.961,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "162.96", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

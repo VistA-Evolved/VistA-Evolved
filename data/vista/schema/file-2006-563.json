@@ -1,0 +1,1258 @@
+{
+  "fileNumber": 2006.563,
+  "fileName": "DICOM GATEWAY PARAMETER",
+  "globalRoot": "2006.563",
+  "globalReference": "^MAGDICOM(2006.563,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYSTEM TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a text that identifies the computer on which this database is stored.   Note that each VistA DICOM Gateway computer has its own copy of ^MAGDICOM, in which these site-parameters are stored. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASCII DICOM TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that indicates whether or not files will be created that make the data-streams that are exchanged according to the DICOM protocol available in a human-readable form.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals).   The human-readable files will have a file name extension of '.TXT'.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMERCIAL PACS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that indicates if a PACS is present at the site, and, if so, whether or not this PACS has a brand-name of General Electric.   Possible values for this code are 'N/A', 'GE' and 'NON-GE'.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATA PATH",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5631A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5631,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DICT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the 'path-prefix' that needs to be applied to gain access to the 'dictionary' files (also known as 'master files).   These 'master files' contain the various tables that drive the operation of the VistA DICOM Gateways. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HIS/RIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the type of Hospital Information System that is being used at the site.   Currently, this value is always equal to 'VISTA'.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IMAGE INPUT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the 'path-prefix' that needs to be applied to gain access to the files that are being used by the VistA DICOM Image Gateway for newly created image files. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IMAGE OUTPUT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the 'path-prefix' that needs to be applied to gain access to the files that are being used by the VistA DICOM Image Gateway for image files that need to be copied to other destinations. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MACHINE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a single-character code that identifies the computer on which this database is stored.   This code will be used as a prefix for names of image files that are created by the software that runs on this computer. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE LOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not diagnostic messages will be kept in a global variable after they have been displayed on a monitor.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals).   It is recommended that this value always be set to 'YES'.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network l",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INSTRUMENT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the 'path-prefix' that needs to be applied to gain access to the files that are being used by the VistA DICOM Image Gateway to store intermediate copies of image files as they are received by the C-Store program. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MODALITY WORKLIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not the machine on which this table is stored will be executing the tasks of a Modality Worklist Provider.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PACS IMAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not a PACS will be sending images to the VistA Hospital Information System.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals).   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ROUTING RULES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not the site where this table is stored is using the automated routing facility that is part of the VistA DICOM Gateway.   Automated routing is not included in Version 2.5 of the VistA DICOM Gateway and only sites that are executing an pre-alpha test of this functionality should set this parameter to YES. All other sites should set this parameter to NO.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals).   T",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SCRATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the 'path-prefix' that needs to be applied to gain access to the temporary files that are used by the VistA DICOM Gateway.   Typically, the value of this field will be equal to c:\\temp\\ ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SEND PACS TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not the VistA DICOM Gateway computer on which this table is stored will be transmitting text messages to a PACS.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals). ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the institution where this DICOM Gateway computer resides. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "UID ROOT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the 'root' for unique identifiers that are created for the purpose of uniquely identifying DICOM objects.   This value has been assigned to the Veterans Administration by the American National Standards Institute and may not be changed by any site.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link w",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the version of the implementation of the VA DICOM SOP Classes.   This value should not be modified by any sites.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "HL7 POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2006.5'",
+      "required": false,
+      "pointerTo": 2006.5,
+      "helpText": "The value of this field is a pointer to the table that contains the HL7-messages that are to be processed by a VistA DICOM Text Gateway. This value corresponds to the internal entry number of the last message that was processed.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "FREE DISK SPACE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The value of this field is an integer number that indicates the percentage of disk space that needs to be left as free space. The acquisition of image files will be suspended when the amount of free disk space drops below this threshold. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TEXT GATEWAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not the computer on which this table is stored will operate as a Text Gateway.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LAST SYSTEM REPORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The value of this field is a code for the date on which the most recent system report was e-mailed to the VistA central repository. This value is encoded as a $HOROLOG date. This value is calculated by the application as the report in question is being produced, and never entered by an end-user. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "POST OFFICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the IP address of the computer that will function as the SMTP post office for sending e-mail from this site.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CONSOLIDATED IMAGING SOFTWARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Consolidated;NO:Non-Consolidated;",
+      "helpText": "The value of this field is a code that indicates whether or not the current site is running the consolidated version of the Imaging software.   A value of \"YES\" indicates that the consolidated software is in use. A value of \"NO\" indicates that the non-consolidated software is in use. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "The value of this field is a code that indicates whether or not CPT modifier codes will be included in messages that are transmitted by the computer on which this table is stored.   Possible values for this code are 'YES' and 'NO' (fully spelled, in capitals). ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "TIME ZONE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The value of this field is an integer number that indicates the time zone offset for the computer on which this table is stored.   The time zone offset is encoded as 100*hours+minutes, and is a positive number when the time is later than GMT (Greenwich Mean Time), or a negative number when the time is earlier than GMT.   E.g. EST in the USA corresponds to a time zone offset of -500.   This value is stored in this table (^MAGDICOM(2006.563,... rather than in ^MAG(2006.1,...), because the VistA DI",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "LOCATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of a site. Its value is copied from the INSTITUTION file when a value is assigned to the field LOCATION in this table.   A DICOM Gateway stores a redundant copy of this name, so that it will be able to display the name when DDP is not available, and the value cannot be fetched from ^DIC. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ACCESS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the access code that will be used to operate this DICOM Gateway. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "VERIFY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the verify code that will be used to operate this DICOM Gateway. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "READ ONLY ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the access code that will be used to operate this gateway in \"read only\" mode. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PROGRAMMER ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the access code that will be used to gain programmer access to this gateway. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "EVALUATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The value of this field is a code that indicates whether or not a Rule Evaluator may currently run on this computer.   This flag is automatically set to 1 (yes) when the menu option is used to start a Rule Evaluator, and to 0 (no) when the menu option is used to stop all Rule Evaluators.   ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "CSTORE CONTROL PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port that will be used by each C-Store process to obtain information from a DICOM Gateway.   The information provided is limited to known \"modalities\" and which port numbers are assigned to these modalities. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "WORKLIST PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port that will be used by DICOM WorkList processes to post their requests and obtain their results. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "VISTA RPC PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number between 0 and 65,535 that identifies the port number on which a (MUMPS-to-MUMPS) RPC broker is \"listening\" on the VistA system. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "VISTA RPC IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the IP address of the VistA system. This IP address is used to establish a MUMPS-to-MUMPS RPC broker connection. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PROFILE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5632A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5632,
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "MAILGROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies a (SMTP) mailgroup. When emergencies arise, a DICOM Gateway will send an e-mail message to this mailgroup. Since the emergency might be that the connection with the VistA system is temporarily not available, such messages are sent by SMTP mail, not by FORUM mail. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "DELAY FOR C-MOVE TO EMED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This number indicates the waiting time (in seconds) that has to elapse between the acquisition of an image and the time when this image may be relayed on to an E-Med picture archival system. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "LAST IMAGE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "The value of this field is a pointer to the Image File (#2005). The pointed-to image is the one with the highest IEN that has been processed by a DICOM Gateway.   This value is being tracked for patient-safety reasons.   At a number of sites it has happened that procedural mistakes during normal maintenance caused part of the Image File to \"disappear\". Keeping track of this highest IEN allows the imaging software to cause a \"controlled shut-down\" when such a situation occurs. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "LAST RAD REPORT POINTER",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Rad/Nuc Report File (#74). The pointed-to report is the one with the highest IEN that has been processed by a DICOM Gateway.   This value is being tracked for patient-safety reasons.   At a number of sites it has happened that procedural mistakes during normal maintenance caused part of the Rad/Nuc Report to \"disappear\". Keeping track of this highest IEN allows the imaging software to cause a \"controlled shut-down\" when such a situation occurs. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "SUPPORT ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the access code that will be used to gain 'support staff' access to this gateway. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ET PHONES HOME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not the \"ET-Phone Home\" feature will be enabled.   When the value of this field is equal to \"YES\", the DICOM Gateway will send a report to the support-organization in Silver Spring each day. This report includes a summary of the entries in the error trap, information of site-specific parameters and station-specific parameters, checksums of routines, and usage statistics. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "M-to-M BROKER MESSAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not messages will be logged that report on the usage of the MUMPS-to-MUMPS RPC Broker.   When the value of this field is equal to \"YES\", such messages will be logged. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PACS EXAM COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not this DICOM Gateway will be receiving \"Exam Complete\" messages from a PACS.   When the value of this field is \"YES\", such messages will be processed. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "STOP ROUTING TRANSMITTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Stop;0:Run;",
+      "helpText": "The value of this field is a code that indicates whether or not routing transmitters are currently allowed to run on a suite of DICOM Gateways.   When a routing transmitter process is started, the value of this field is set to 0 (run).   When the menu option \"Stop Transmission Processors\" is executed, the value of this field is set to 1 (Stop).   The software of the transmission processor checks this value to determine whether to stop gracefully, or to continue transmitting the next file. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "DASHES IN SSN FOR PACS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Include dashes;NO:Omit dashes;",
+      "helpText": "The value of this field is a code that indicates whether or not the PACS (Picture Archival and Communication System) that is connected to this DICOM Gateway requires that SSNs are transmitted with dashes included or not.   When the value of this field is equal to \"YES\", SSNs will be transmitted to this PACS with dashed included; otherwise the dashes will be omitted. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "INSTALLATION",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5634A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5634,
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "LAST CONFIGURATION CHANGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA-FileMan format) that indicates the date and time when the most recent configuration update occurred on this DICOM Gateway. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "DICOM TRANSMITTER ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RUN:Running;STOP:Inactive;",
+      "helpText": "The value of this field is a code that indicates whether or not a DICOM Transmitter is currently running. Possible values are \"RUN\" and \"STOP\". Each active DICOM Transmitter will periodically check the value of this field, and gracefully terminate if the value of this field has been set to \"STOP\". ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the domain to which the site belongs at which this DICOM Gateway is located. This field is populated automatically, using an RPC to query the VistA system for the current values of its Kernel Site Parameters when the configuration of the DICOM Gateway is updated. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PACS QUERY",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5633A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5633,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "PACS QUERY ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Active;NO:Idle;STOP:Stop Requested;",
+      "helpText": "The value of this field is a code that indicates whether a PACS query process is currently active. Possible values are \"YES\", \"NO\" and \"STOP\".   Each PACS Query process will periodically check the value of this field, and gracefully terminate if the value of this field has been set to \"STOP\".   When a PACS Query Process fully completed its activity, it will set the value of this field to \"NO\". ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "PACS QUERY DIRECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ASCENDING:Ascending Order;DESCENDING:Descending Order;",
+      "helpText": "The value of this field is a code that indicates in which direction the PACS QUery process will traverse the database. Possible values are \"ASCENDING\" and \"DESCENDING\". ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "PACS QUERY ERA 1 START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the start of the time-period during which communication with the PACS was conducted using the ACR/NEMA protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the next).   Note that protocol-eras are allowed to overlap. The result of registering overlapping pr",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PACS QUERY ERA 1 END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the end of the time-period during which communication with the PACS was conducted using the ACR/NEMA protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the previous).   Note that protocol-eras are allowed to overlap. The result of registering overlapping ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "PACS QUERY ERA 2 START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the start of the time-period during which communication with the PACS was conducted using the Pre Version 12.1 protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the next).   Note that protocol-eras are allowed to overlap. The result of registering overla",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PACS QUERY ERA 2 END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the end of the time-period during which communication with the PACS was conducted using the Pre Version 12.1 protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the previous).   Note that protocol-eras are allowed to overlap. The result of registering over",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "PACS QUERY ERA 3 START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the start of the time-period during which communication with the PACS was conducted using the Post Version 12.1 protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the next).   Note that protocol-eras are allowed to overlap. The result of registering overl",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "PACS QUERY ERA 3 END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a timestamp (VA FileMan format, date only) that indicates the end of the time-period during which communication with the PACS was conducted using the Post Version 12.1 protocol.   When querying the PACS, the query process will issue its queries according to this protocol for all studies that were conducted between the start and end dates that are registered in this field (and the previous).   Note that protocol-eras are allowed to overlap. The result of registering ove",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "PACS QUERY UPPER LIMIT",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report Table (#74). This pointer identifies the highest internal entry number of a report that was scanned by the PACS Query Process.   When the \"highest\" and \"lowest\" pointer values \"pass\" one another, the scanning process is complete.   Note that the end-user may decide to switch the scanning direction from \"ASCENDING\" to \"DESCENDING\" (or the other way about) at any time. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "PACS QUERY LOWER LIMIT",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report Table (#74). This pointer identifies the lowest internal entry number of a report that was scanned by the PACS Query Process.   When the \"highest\" and \"lowest\" pointer values \"pass\" one another, the scanning process is complete.   Note that the end-user may decide to switch the scanning direction from \"ASCENDING\" to \"DESCENDING\" (or the other way about) at any time. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "PACS QUERY ALLOW ACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string of exactly 24 characters. Each of these characters is either a \"Y\" or an \"N\". Each character in this string corresponds to an hour of the day, and indicates whether or not a PACS Query Process is allowed to be active during that hour of the day.   The first character corresponds to the hour between midnight and 1am, the last one corresponds to the hour between 11pm and midnight.   The default value of this field is \"YYYYYYYYYYYYYYYYYYYYYYYY\". ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "CURRENT IMAGE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "The value of this field is a pointer to the Image Table (#2005). This value identifies the image that is currently being processed. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "CURRENT IMAGE DESTINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the image file (host system file name, including directory path) that is currently being created. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "CURRENT IMAGE FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the image file (host system file name, no directory path) that is currently being processed. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "CURRENT IMAGE SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the image file (directory path, no file name) that is currently being processed. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "LAST UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that meets the format of a Unique Object Identifier as specified in the DICOM Standard (maximum 64 characters, only digits and periods, leading characters are the root-numbers that are assigned by ANSI to the VA). The value of this field is the UID that was most recently assigned by the DICOM Gateway. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "BACKGROUND PROCESS ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an (encrypted) string. This value will be used as an access code by the DICOM Gateway when a \"modality\" performs a Modality Worklist Query, in those special cases where the DICOM Gateway needs to query the VistA system about details about \"old\" Radiology studies. (Under normal circumstances, a DICOM Gateway will be able to respond to a Modality Worklist QUery using only information that is stored on the DICOM Gateway itself.) ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "BACKGROUND PROCESS VERIFY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is an (encrypted) string. This value will be used as a verify code by the DICOM Gateway when a \"modality\" performs a Modality Worklist Query, in those special cases where the DICOM Gateway needs to query the VistA system about details about \"old\" Radiology studies. (Under normal circumstances, a DICOM Gateway will be able to respond to a Modality Worklist Query using only information that is stored on the DICOM Gateway itself.) ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "M2M BROKER DEBUG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "The value of this field is a code that indicates whether or not the client for the MUMPS-to-MUMPS Broker should record any debugging information. Possible values are 1 (do record information) and 0 (do NOT record any information).   When a DICOM Gateway is installed at a new site, the value of this field is \"false\", and this field can only receive a \"true\" value through a manual operation from \"programmer mode\".   Since the information that is recorded when this switch is turned \"on\" is quite vo",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "MULTIFRAME COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number that records the progress through the various frames of a multi-frame image as data for that image is being received.   Under normal circumstances, the various \"frames\" are converted to individual images, and there is no need to know the number of frames processed to any process other than the one receiving the image data.   However, if that process is interrupted (user interrupt, network outage, power failure), a subsequent process will need to know ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "SHOW PATIENT IDENTIFIERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not an Image Gateway is to display patient identifying information while processing images. Possible values are \"YES\" and \"NO\".   When a DICOM Gateway is located in a well-protected area, it is permissible to leave the value of this field equal to \"YES\". When a DICOM Gateway is located in a publicly accessible area, the value of this field may only be set to \"YES\" while an adequately privileged user is diagnosing a problem, and should b",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "TEXT GATEWAY SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:Radiology;CON:Consults;",
+      "helpText": "The value of this field is a code that indicates which imaging service is being performed by this Text Gateway. Possible values are \"RAD\" (Radiology) and \"CON\" (Consults). ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "ET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string identifies the mail-group that is used to process messages containing routine checksum information.   Typically, the value will look like: G.MAGDBB@LAVC-WASH.MED.VA.GOV ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "MAG VISTA CHECKSUMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not reports will be sent containing the checksums of all imaging routines on the VistA system.   A value of YES indicates that reports are to be sent. A value of NO indicates that no reports are to be sent. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "EXPORT ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not a batch export run is currently active. Possible values are \"YES\" and \"NO\". ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "EXPORT BATCH IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This number indicates the number of images that have been queued up for batch transmission. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "EXPORT BATCH GROUP COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This number indicates the number of image groups that have been queued up for batch transmission. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "EXPORT BATCH MAX GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "is the default value for the maximum number of image groups that may be queued up in the next batch transmission. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "EXPORT BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date is the default value for the first day of the period that is intended to be included in the next DICOM export batch. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "EXPORT FIRST REPORT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report table (FileMan file # 74). This pointer is the default value for the first report for which images will be included in the next DICOM batch transmission. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "EXPORT LAST REPORT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report table (FileMan file # 74). This pointer is the default value for the last report for which images will be included in a DICOM batch transmission. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "DICOM EXPORT RUN NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P2006.565'",
+      "required": false,
+      "pointerTo": 2006.565,
+      "helpText": "The value of this field is a pointer to the table that keeps track of the various DICOM export batch runs (#2006.565). This field identifies the most recently added entry to that table. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "EXPORT DICOM STORAGE SCP",
+      "dataType": "POINTER",
+      "rawType": "P2006.585'",
+      "required": false,
+      "pointerTo": 2006.585,
+      "helpText": "The value of this field is a pointer to the User Application table (FileMan file # 2006.585). This pointer is the default value for the Storage SCP to which the images are to be transmitted in the next batch run. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "EXPORT DIRECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ASCENDING:Ascending;DESCENDING:Descending;",
+      "helpText": "The value of this field is a code that indicates the direction in which the Radiology Report table is to be scanned. This value is the default code to be used in the next batch run. Possible values are \"ASCENDING\" and \"DESCENDING\". ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "EXPORT HOURS OF OPERATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string consists of the letters \"Y\" and \"N\". This value indicates during which hours of the day this batch run may be active.   A string of 24 letters \"Y\" denotes a batch run that may run all day long.   A string like \"YYYYYYYYNNNNNNNNNYYYYYYY\" denotes a batch run that may only run outside of regular office hours (midnight to 9am and 6pm to midnight).   This value is the default for the setting to be used in the next batch run. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "EXPORT PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "---???--- ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "EXPORT RADIOLOGY REPORT",
+      "dataType": "POINTER",
+      "rawType": "P74'",
+      "required": false,
+      "pointerTo": 74,
+      "helpText": "The value of this field is a pointer to the Radiology Report table (FileMan file # 74). This pointer identifies the report that has been scanned most recently in a batch run. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "EXPORT SCAN MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DATE:Date;NUMBER:Report;PATIENT:Patient;",
+      "helpText": "Set of codes: DATE, NUMBER, PATIENT The value of this field is a code that identifies the method of scanning the Radiology Reports. Possible values are \"DATE\", \"NUMBER\" and \"PATIENT\".   A value of \"DATE\" indicates that the reports are scanned by date.   A value of \"PATIENT\" indicates that the reports are scanned by (internal entry number of) patient.   A value of \"NUMBER\" indicates that the reports are scanned by (internal entry number of) report.   This value is the default to be used in the ne",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "FUJI PACS START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date that indicates the first day of the period during which information was stored according to the format for a Fuji PACS. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "FUJI PACS END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date that indicates the last day of the period during which information was stored according to the format for a Fuji PACS. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "QUERY STUDY SELECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:All Studies;2:Studies without images;3:Studies with images;",
+      "helpText": "The value of this field is a code that indicates for which studies queries will be issued:   1 = for all studies   2 = only for studies that don't currently have images   3 = only for studies that already have images ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DASHES FOR SSN IN PACS QUERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:No;",
+      "helpText": "The value of this field is a code that indicates whether or not dashes are to be included in values of SSNs that are transmitted to the external PACS. Possible values are \"YES\" and \"NO\". ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "EXPORT STOP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date is the default value for the last day of the period that is intended to be included in the next DICOM export batch. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "WORKLIST PORT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5635A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5635,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "VISTA STORAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string. This string represents the Application Entity that a PACS system would use when transmitting image files to VistA using the DICOM C-Move protocol.   (AE Title, C-Move and PACS are described in the DICOM Standard.)   An AE-Title is a string of up to 16 characters. Since some systems also use AE-Titles as host-names for computers, it is recommended that no spaces be used in AE-Titles. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "IMPORTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "Indicates whether or not the Importer is to be used on the DICOM Image Gateway.   ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "IMPORTER LOG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the directory where the summary importer reports are created. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "IMPORTER DRIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CD/DVD drive letter that is used by the Importer application. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "IMPORTER ORDER LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field records the last hospital location used when placing a study order on the DICOM Gateway.  This location is used as a default for the next case to facilitate the ordering process.  ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "IMPORTER ORDER LOCATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual Hospital Location name is copied to this field when IMPORTER  ORDER LOCATION field (#117) is updated. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "IMPORTER ORDER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records the last provider used when placing a study order on  the DICOM Gateway.  This provider is used as a default to facilitate the  next order process. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "IMPORTER ORDER PROVIDER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual Provider's name is copied to this field when IMPORTER ORDER PROVIDER field (#119) is updated. DICOM Gateway store a redundant copy of the provider name, so that it  is available for display when a connection to VistA is not available. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "IMPORTER RAD DICT DOWNLOAD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is the date/time the Radiology Procedure and Modifier dictionaries were last downloaded.  Downloading automatically occurs the first time the Importer is used each day. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "IMPORTER RAD CAMERA",
+      "dataType": "POINTER",
+      "rawType": "P78.6",
+      "required": false,
+      "pointerTo": 78.6,
+      "helpText": "This field records the last camera/equip/rm used when placing a study  order on the DICOM Gateway.  The camera/equip/rm is used as a default for  the next case to facilitate the ordering process. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "IMPORTER RAD CAMERA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual Camera/Equip/Rm name is copied to this field when IMPORTER RAD CAMERA FIELD (#122) is updated.   DICOM Gateway stores a redundant copy of the camera/equip/rm so that it is available for display when a connection to VistA is not available. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "IMPORTER RAD DX CODE",
+      "dataType": "POINTER",
+      "rawType": "P78.3'",
+      "required": false,
+      "pointerTo": 78.3,
+      "helpText": "This field records the last diagnostic code used when placing a study order on the DICOM Gateway.  This location is used as a default for the next case to facilitate the ordering process. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "IMPORTER RAD DX CODE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual NAME OF THE DIAGNOSTIC CODE is copied to this field when IMPORTER RAD DX CODE is updated.   DICOM Gateway stores a redundant copy of the Radiology diagnostic code so that it is available for display when a connection to VistA is not available. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "IMPORTER RAD FILM SIZE",
+      "dataType": "POINTER",
+      "rawType": "P78.4'",
+      "required": false,
+      "pointerTo": 78.4,
+      "helpText": "This field records the last film size used when placing a study order on  the DICOM Gateway.  This film size will be used as a default for the next  case to facilitate the ordering process. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "IMPORTER RAD FILM SIZE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual Film Size name is copied to this field when IMPORTER RAD FILM SIZE field (#126) is updated.   DICOM Gateway stores a redundant copy of this Film Size name so that it is available for display when a connection to VistA is not available. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "IMPORT RAD TECH",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field records the last Radiology technician used when placing a  study order on the DICOM Gateway.  This technician will be used as the default for the next case to facilitate the ordering process. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "IMPORTER RAD TECH NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual Radiology technician name is copied to this field when the IMPORTER RAD TECH field (#128) is updated.   DICOM Gateway stores a redundant copy of the technician name, so that it is available for display when a connection to VistA is not available. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "LOCATION STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the 3 digit station number plus any modifiers. The value of this field is the same as the STATION NUMBER field (#99) of the INSTITUTION file (#4), as pointed to by the LOCATION field (#17) of this file. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "ABSTRACT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of the field is the 'path-prefix' that needs to be applied to gain access to the 'canned abstract' files.   These 'canned abstract' files are used when an actual abstract can't be created. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "IMAGE GATEWAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "This field indicates whether or not the computer on which this table is stored will operate as an Image Gateway. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "IMPORTER CPT MOD",
+      "dataType": "POINTER",
+      "rawType": "P81.3'",
+      "required": false,
+      "pointerTo": 81.3,
+      "helpText": "This field records the value of the CPT Modifier used by the Importer. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "IMPORTER CPT MOD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The actual IMPORTER CPT MOD NAME is copied to this field when the IMPORTER CPT MOD field (#133) is updated.   DICOM Gateway stores a redundant copy of the IMPORTER CPT MOD NAME so it is available for local use. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "ISSUER OF PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The is the abbreviation of the enterprise that issued the ID. The default is USVHA for the US Department of Veterans Affairs Veterans Health Administration. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "M-to-M BROKER BGND STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the status of the access and verify codes for the M-to-M Broker connection.   1 = background access/verify codes are valid  <1 = background access/verify codes are incorrect ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "MLOG MAXLOGS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the maximum number of MUMPS logs that are kept on the DICOM Gateway. These logs record information for all the transactions, DICOM associations, text processing, image processing, and so forth. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "MLOG NEW/HISTORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:Historical;N:New;",
+      "helpText": "This field indicates whether the previously created MUMPS logs will be displayed (historical) or whether the ones currently being created will be displayed as they are generated. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "M-to-M BROKER BGND STATUS TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the access and verify code for the M-to-M Broker connection were last validated. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "NUMBER MWL STAT SCREEN LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of lines that are available on the DICOM Modality Worklist Status screen.  It is used to control scrolling. ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "TRANSMIT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "2006.5636P",
+      "required": false,
+      "helpText": "These are the locations where the DICOM objects reside.  From these locations the DICOM objects will be transmitted to DICOM Store SCPs. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "DATA ELEMENT LENGTH CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "This switch controls whether or not Image Processing will reject DICOM objects that have excessively long data elements. Excessively long means greater than twice the allowable limit. ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "LAST IMAGE SCANNED BY MAGKAT",
+      "dataType": "POINTER",
+      "rawType": "P2005'I",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "This is the last image scanned by the MAGKAT utility.  The MAGKAT utility  will update this field as it processes images. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "MAGKAT SCAN DIRECTION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:NEXT;-1:REVERSE;",
+      "helpText": "This field controls the scanning direction used by MAGKAT utility.  A negative number (-1) will scan in reverse order and a '1' will scan for the next image using the LAST IMAGE SCANNED BY MAGKAT (#200) field value.   The MAGKAT utility will update this field as well as field #200 LAST  IMAGE SCANNED BY MAGKAT. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "AGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;I:IHS;",
+      "helpText": "Identifies which agency the DICOM Gateway resides in.  ",
+      "fieldNumber_": 202
+    }
+  ],
+  "fieldCount": 130,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "fileNumber": 503339.9,
+  "fileName": "VOLUNTARY SERVICE SUPPLEMENT",
+  "globalRoot": "503339.9PI",
+  "globalReference": "^ABS(503339.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP503339.2'",
+      "required": true,
+      "pointerTo": 503339.2,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF REALIGNMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EFFECT OF CHANGE",
+      "dataType": "SUBFILE",
+      "rawType": "503339.92",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503339.92,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503339.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

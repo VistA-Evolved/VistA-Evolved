@@ -1,0 +1,171 @@
+{
+  "fileNumber": 58.87,
+  "fileName": "CS CORRECTION LOG",
+  "globalRoot": "58.87",
+  "globalReference": "^PSD(58.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the correction log number for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CORRECTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time of this correction entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CORRECTED BY PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist associated with this correction action. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PHARMACY DISPENSING #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The pharmacy control number to identify and track this Controlled Substances correction entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "*P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "A pointer to the drug associated with this correction action. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NAOU",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "A pointer to the NAOU associated with this correction action. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NURSE",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the nurse who completed the Green Sheet and marked it ready for pharmacy pickup. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PROBLEM DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time when the problem was created. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQUEST #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The order request number associated with this correction action. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "GS ENTERED BY PHARM",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist who entered/completed the Green Sheet. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The quantity of the drug associated with this correction action. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TYPE OF CORRECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GREEN SHEET READY FOR PICKUP;2:DELETE EXISTING GREEN SHEETS;3:ERROR FOUND ON COMPLETED GS;4:ERROR RESOLVED ON GREEN SHEET;",
+      "helpText": "The type of correction action associated with this entry. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PHARM DISPENSING SITE",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "This field contains a pointer to the pharmacy dispensing site (vault) associated with this correction action. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PREVIOUS COMPLETION STATUS",
+      "dataType": "POINTER",
+      "rawType": "P58.83'",
+      "required": false,
+      "pointerTo": 58.83,
+      "helpText": "The completion status prior to correction action being taken. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CURRENT COMPLETED STATUS",
+      "dataType": "POINTER",
+      "rawType": "P58.83'",
+      "required": false,
+      "pointerTo": 58.83,
+      "helpText": "The completion status after this correction action has been performed. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "B", "field": },
+    {"name": "58.87", "field": .01, "type": "regular"},
+    {"name": "58.87", "field": 1, "type": "regular"},
+    {"name": "58.87", "field": 11, "type": "regular"},
+    {"name": "58.87", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "fileNumber": 18.02,
+  "fileName": "WEB SERVICE",
+  "globalRoot": "18.02",
+  "globalReference": "^XOB(18.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "User friendly name for the web service entry. The name should be prefixed with a package prefix (ex. XOBW TESTER WEB SERVICE).   The value must be unique compared to the NAME field value of the other entries in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SOAP;2:REST;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE REGISTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date the web service was registered into VistA, usually via the GENPORT^XOBWLIB or REGREST^XOBWLIB deployment time APIs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PROXY CLASS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the CacheObject class for the web service client proxy (i.e HTTP  port class).   This name should include package indicator. (Example: hwsc.TesterWebServiceHttpPort where 'hwsc' is the package indicator.)   This field should only be entered via the API $$GENPORT^XOBWD(...).   For an example of how to call the API, see the post-init for the  HealtheVet Web Services Client (HWSC) install. (Routine XOBWPST and specifically the GENPORT tag.) ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "CONTEXT ROOT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the web service context root.   This field should only be entered via the API $$GENPORT^XOBWD(...). The value of this field is derived from the wsdl file. (The 'location'  attribute of the 'wsdlsoap:address' element of the wsdl is the source.)   For an example of how to call the API, see the post-init for the  HealtheVet Web Services Client install. (Routine XOBWPST and specifically the GENPORT tag.) ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "AVAILABILITY RESOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the portion of a URL to append following the service's  context root, for availability testing. For SOAP web services this could be an additional portion of the URL to reach the  service's WSDL document, e.g., '?wsdl' (without quotes); for REST web services this could the additional portion of the URL to reach a safe resource to perform an HTTP GET against for the purpose of checking service availability. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "WSDL",
+      "dataType": "SUBFILE",
+      "rawType": "18.022",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 18.022,
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "18.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

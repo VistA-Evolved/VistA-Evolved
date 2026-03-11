@@ -1,0 +1,37 @@
+{
+  "fileNumber": 403.47,
+  "fileName": "TEAM PURPOSE",
+  "globalRoot": "403.47",
+  "globalReference": "^SD(403.47,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEAM PURPOSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The primary role/purpose of a team. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "403.47001",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 403.47001,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "403.47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

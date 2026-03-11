@@ -1,0 +1,76 @@
+{
+  "fileNumber": 7101.3,
+  "fileName": "NOIS MRU",
+  "globalRoot": "7101.3",
+  "globalReference": "^FSCD(\"MRU\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user that used the list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the user used this list. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LIST",
+      "dataType": "POINTER",
+      "rawType": "RP7107.1'",
+      "required": true,
+      "pointerTo": 7107.1,
+      "helpText": "This is the list that was used by the user. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the qualifier for the list that was last used. It may  represent a pointer to a field defined by the list. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AL", "field": },
+    {"name": "AUL1", "field": },
+    {"name": "AUL3", "field": },
+    {"name": "AUL4", "field": },
+    {"name": "AUT1", "field": },
+    {"name": "AUT2", "field": },
+    {"name": "AUTL1", "field": },
+    {"name": "AUTL2", "field": },
+    {"name": "AUTL3", "field": },
+    {"name": "AUTL4", "field": },
+    {"name": "B", "field": },
+    {"name": "7101.3", "field": .01, "type": "regular"},
+    {"name": "7101.3", "field": .01, "type": "regular"},
+    {"name": "7101.3", "field": .01, "type": "regular"},
+    {"name": "7101.3", "field": .01, "type": "regular"},
+    {"name": "7101.3", "field": 1, "type": "regular"},
+    {"name": "7101.3", "field": 1, "type": "regular"},
+    {"name": "7101.3", "field": 2, "type": "regular"},
+    {"name": "7101.3", "field": 2, "type": "regular"},
+    {"name": "7101.3", "field": 2, "type": "regular"},
+    {"name": "7101.3", "field": 3, "type": "regular"},
+    {"name": "7101.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

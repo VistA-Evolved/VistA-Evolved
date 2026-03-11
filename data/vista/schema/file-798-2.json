@@ -1,0 +1,96 @@
+{
+  "fileNumber": 798.2,
+  "fileName": "ROR SELECTION RULE",
+  "globalRoot": "798.2",
+  "globalReference": "^ROR(798.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   Selection rule name must be unique and name  spaced. Names of the rules that are used for National Registries must start with \"VA\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   Selection rules of the national registries must have this field set to \"YES\". This prevents local editing of other fields of rule definitions. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPRESSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   Enter a MUMPS expression (it may contain special macros) that implements the selection rule. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ22,9X",
+      "length": 22,
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   Enter a file/sub-file number that the selection  rule is associated with. Each selection rule can be associated with only one file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   The short description of the selection rule is  used in the reports and GUI dialogs. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "798.25",
+      "required": false,
+      "helpText": "You can enter any additional reference information related to the selection rule. The content of this field is not used by the application. ",
+      "isMultiple": true,
+      "subFileNumber": 798.25,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "SUBFILE",
+      "rawType": "798.26",
+      "required": false,
+      "helpText": "The DATA ELEMENT multiple contains a list of  additional data elements to load.    Values of all the data elements referenced in the selection rule expression are loaded automatically.   However, if the rule is implemented by an external function, you can enter the codes of all necessary data elements into this multiple. Their values will be loaded automatically and will be accessible in the function. ",
+      "isMultiple": true,
+      "subFileNumber": 798.26,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "*P80.4'",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "This is the coding system to which the code belongs. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL(\"  \"_$P($G(^(0)),U,3),,\"?30\")"}
+  ]
+}

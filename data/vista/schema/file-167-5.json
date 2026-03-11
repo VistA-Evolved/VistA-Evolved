@@ -1,0 +1,40 @@
+{
+  "fileNumber": 167.5,
+  "fileName": "ONCO RESIDUAL TUMOR VOLUME",
+  "globalRoot": "167.5",
+  "globalReference": "^ONCO(167.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the code for the entry in the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ175",
+      "length": 175,
+      "required": true,
+      "helpText": "This is the descriptive definition of the code for the entry. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "167.5", "field": .01, "type": "regular"},
+    {"name": "167.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

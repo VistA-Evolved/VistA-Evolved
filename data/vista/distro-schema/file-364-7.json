@@ -1,0 +1,153 @@
+{
+  "fileNumber": 364.7,
+  "fileName": "IB FORM FIELD CONTENT",
+  "globalRoot": "364.7P",
+  "globalReference": "^IBA(364.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FORM FIELD REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "RP364.6'",
+      "required": true,
+      "pointerTo": 364.6,
+      "helpText": "This is a pointer to the billing form field that this field is associated with. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SECURITY LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL,NO EDIT;L:LOCAL;",
+      "helpText": "This field determines whether or not editing of the entry is allowed.  For NATIONAL (N) field, no local editing is allowed.  If LOCAL (L) field is created, editing is allowed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "P364.5'",
+      "required": false,
+      "pointerTo": 364.5,
+      "helpText": "This identifies the data element that be extracted for this entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SCREEN PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is used only by screen-type forms to place a prompt on the screen for a particular field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company who has a need for other than the standard data in this field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BILL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This is the type of bill that requires this field. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PAD CHARACTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ZL:ZERO PAD ON LEFT;ZR:ZERO PAD ON RIGHT;SL:SPACE PAD ON LEFT;SR:SPACE PAD ON RIGHT;N:NO PAD REQUIRED;",
+      "helpText": "If present, this defines the character to be used to pad the DATA ELEMENT to its desired length and the orientation of the padding characters to the left or right of the data.  The default is space pad to the right. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls the required/not required status of a data element on a local screen 9 form.  If this field is 1 (YES), this data element is always required to have data (not null) in order for a bill to be authorized. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EDIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EDITABLE;D:DISPLAY ONLY;",
+      "helpText": "This field is used to control whether or not a data element on a screen is editable or for display-only purposes. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "EDIT GROUP NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the # of the edit group that the screen data element will be included with.  When this group # is selected on an edit screen, all data elements assigned to this group # on this screen will be presented for editing.  If no # is entered here, this field will not be available for editing.  This field will only apply to screen-type forms' editable data element descriptions. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FORMAT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the code that will be xecuted to format the 'raw' data element value that is returned from the execution of the DATA ELEMENT's definition. This code can assume the variable/array IBXDATA is available as input and should set this variable/array as its output.  Standard calls for data formatting have been provided.  The variables IBXPG, IBXLN, IBXCOL are the only IBX* variables that should be changed in this routine.  These represent the page, line, column as the first 3 levels of subscrip",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FORMAT CODE DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "364.73",
+      "required": false,
+      "helpText": "This field describes the function of the format code entered. ",
+      "isMultiple": true,
+      "subFileNumber": 364.73,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AINS", "field": },
+    {"name": "AINS1", "field": },
+    {"name": "AINTYP", "field": },
+    {"name": "AINTYP1", "field": },
+    {"name": "AINTYP2", "field": },
+    {"name": "ATYPE", "field": },
+    {"name": "ATYPE1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "364.7", "field": .01, "type": "regular"},
+    {"name": "364.7", "field": .01, "type": "regular"},
+    {"name": "364.7", "field": .01, "type": "regular"},
+    {"name": "364.7", "field": .01, "type": "regular"},
+    {"name": "364.7", "field": .03, "type": "regular"},
+    {"name": "364.7", "field": .05, "type": "regular"},
+    {"name": "364.7", "field": .05, "type": "regular"},
+    {"name": "364.7", "field": .06, "type": "regular"},
+    {"name": "364.7", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBA(364.5,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(364.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

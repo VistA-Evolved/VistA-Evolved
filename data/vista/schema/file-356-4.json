@@ -1,0 +1,72 @@
+{
+  "fileNumber": 356.4,
+  "fileName": "CLAIMS TRACKING NON-ACUTE CLASSIFICATIONS",
+  "globalRoot": "356.4I",
+  "globalReference": "^IBE(356.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the first 30-60 characters of the description of the non-acute classification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the external reference number by which this data is uniquely known.  This is the value that will be transmitted  in the national roll up. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FACTOR",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:SOCIAL FACTORS;2:ENVIRONMENTAL FACTORS;3:SCHEDULING;4:BED/SERVICE AVAILIBILITY;5:PRACTITIONER FACTOR;6:ADMINISTRATIVE;7:COMMUNICATION PROBLEMS;8:OTHER;",
+      "helpText": "Enter the name of the factor that best describes this classification. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DAY OR ADMISSION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ADMISSION (NON-ACUTE);2:DAY(S) OF CARE (NON ACUTE);",
+      "helpText": "Enter whether this classification for not meeting criteria is for admissions or days of care. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REASON",
+      "dataType": "SUBFILE",
+      "rawType": "356.41",
+      "required": false,
+      "helpText": "This is the long description of the non-acute classification. ",
+      "isMultiple": true,
+      "subFileNumber": 356.41,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "356.4", "field": .01, "type": "regular"},
+    {"name": "356.4", "field": .02, "type": "regular"},
+    {"name": "356.4", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(356.4,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "fileNumber": 120.5,
+  "fileName": "GMRV VITAL MEASUREMENT",
+  "globalRoot": "120.5ID",
+  "globalReference": "^GMR(120.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME VITALS TAKEN",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date/time this vital/measurement was taken by the care provider. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient for whom this vital measurement data was entered.  Pointer to the PATIENT (#2) file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VITAL TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP120.51'",
+      "required": true,
+      "pointerTo": 120.51,
+      "helpText": "This field denotes the type of measurement for this record.  Pointer to the GMRV VITAL TYPE (#120.51) file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME VITALS ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time that this record was entered. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field contains the location where this measurement was taken.  Pointer  to the HOSPITAL LOCATION (#44) file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person who edited the file entry.   Pointer to the NEW PERSON (#200) file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "RATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the numeric value associated with this vital measurement. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "SUPPLEMENTAL O2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the information of the supplemental oxygen as follows:   .5-20 l/min (liters/minute)   and/or   21-100 % of oxygen concentration For example: 4.5 l/min 40%              4.5 l/min              40 % ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENTERED IN ERROR",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates that this record was flagged as entered in error. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the name of the person responsible for entering the  record in error.  Pointer to the NEW PERSON (#200) file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REASON ENTERED IN ERROR",
+      "dataType": "SET",
+      "rawType": "120.506S",
+      "required": false,
+      "helpText": "This multiple contains a list of reasons for entering a vital measurement  in error. ",
+      "isMultiple": true,
+      "subFileNumber": 120.506,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "120.505P",
+      "required": false,
+      "helpText": "A list of qualifiers associated with this measurement. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AA01", "field": },
+    {"name": "AA02", "field": },
+    {"name": "AA03", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "T", "field": },
+    {"name": "120.5", "field": .01, "type": "regular"},
+    {"name": "120.5", "field": .01, "type": "regular"},
+    {"name": "120.5", "field": .02, "type": "regular"},
+    {"name": "120.5", "field": .02, "type": "regular"},
+    {"name": "120.5", "field": .03, "type": "regular"},
+    {"name": "120.5", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^GMRD(120.51,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(120.51,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

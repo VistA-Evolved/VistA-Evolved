@@ -1,0 +1,81 @@
+{
+  "fileNumber": 45.89,
+  "fileName": "PTF EXPANDED CODE",
+  "globalRoot": "45.89IP",
+  "globalReference": "^DIC(45.89,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP45.88'I",
+      "required": true,
+      "pointerTo": 45.88,
+      "helpText": "This fields points to PTF Expanded Code Category File. Here the flags can be found that indicate which additional  questions should be asked. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DIAGNOSIS/PROCEDURE CODE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "VI",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis or Procedure code that  requires additional processing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date after which this expanded code is NOT valid. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ABUSED SUBSTANCE DEFAULT",
+      "dataType": "POINTER",
+      "rawType": "P45.61'I",
+      "required": false,
+      "pointerTo": 45.61,
+      "helpText": "This field is a pointer to the PTF Abused Substance File and contains the default abused substance that is related to a specific PTF expanded code. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ICD VERSION",
+      "dataType": "POINTER",
+      "rawType": "P80.4'I",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "This field contains the version of the ICD Diagnosis or ICD Procedure  contained in DIAGNOSIS/PROCEDURE CODE field (.02). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This field computes the name of the diagnosis. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "ACODE", "field": },
+    {"name": "ASPL", "field": },
+    {"name": "B", "field": },
+    {"name": "45.89", "field": .01, "type": "regular"},
+    {"name": "45.89", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "45.89", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,2),1:\"\") D NAME^DICM2 W \"   \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

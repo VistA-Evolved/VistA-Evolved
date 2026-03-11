@@ -1,0 +1,85 @@
+{
+  "fileNumber": 2006.51,
+  "fileName": "DICOM DATA ELEMENT DICTIONARY",
+  "globalRoot": "2006.51",
+  "globalReference": "^MAGDICOM(2006.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The ELEMENT TAG is a the triplet {group, owner, element} that uniquely identifies each DICOM element. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description from the DICOM Data Dictionary. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VALUE REPRESENTATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AE:AE;AS:AS;AT:AT;CS:CS;DA:DA;DS:DS;DT:DT;FL:FL;FD:FD;IS:IS;LO:LO;LT:LT;OB:OB;OW:OW;PN:PN;SH:SH;SL:SL;SQ:SQ;SS:SS;ST:ST;TM:TM;UI:UI;UL:UL;US:US;NULL:NULL;UT:UT;",
+      "helpText": "The value of this field is a code for the \"value representation\" of the DICOM element. Possible values are taken from part 5, section 6 of the DICOM standard:  AE: Application Entity  AS: Age String  AT: Attribute Tag  CS: Code String  DA: Date  DS: Decimal String  DT: Date Time  FL: Floating Point  FD: Floating Point Double  IS: Integer String  LO: Long String  LT: Long Text  OB: Other Byte String  OW: Other Word String  PN: Person Name  SH: Short String  SL: Signed Long  SQ: Sequence of Items ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VALUE MULTIPLICITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Specifies the maximum number of values contained in the value field of a DICOM data element. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ENUMERATED VALUE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.514",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.514,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PERMITTED VALUES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:Enumerated List;D:Defined List;",
+      "helpText": "The value of this field provides information about the meaning of the list of possible values. When the value of this field is \"D\" (Defined list), an implementor may choose to add values to the list for their implementation. When the value of this field is \"E\" (Enumerated list), only those values specified in the DICOM standard may occur. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:Retired;",
+      "helpText": "The value of this field is a code that indicates whether or not the current entity is \"Retired\" from the DICOM Standard.   When the value of this field is blank, this entity is active. When the value of this field is equal to \"R\", this entity is retired. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,750 @@
+{
+  "fileNumber": 358.6,
+  "fileName": "IMP/EXP PACKAGE INTERFACE",
+  "globalRoot": "358.6I",
+  "globalReference": "^IBE(358.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name of the Package Interface. For interfaces returning data the name should be preceded with the namespace of the package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The entry point in the routine that should be called. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The routine that should be called. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CUSTODIAL PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text pointer to the package file. It serves only to document the custodial package of the data. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VARIABLE DATA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used in the batch printing of encounter forms. The purpose is to avoid recomputing fields whose data does not change from patient to patient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACTION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INPUT;2:DISPLAY;3:SELECTION;4:PRINT REPORT;",
+      "helpText": "                                                                      Enter 1 for INPUT if the interface accepts data input from the user and transmits the data to the appropriate package. Enter 2 for DISPLAY if the interface retrieve data for display to a form. Enter 3 for SELECTION if the interface is for building a list to display to a form. Enter 4 if the interface is for printing a report. If the ACTION TYPE is SELECTION then the data type must be a record and the first piece must be the ID",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SINGLE VALUE;2:RECORD;3:LIST OF SINGLE VALUES;4:LIST OF RECORDS;5:WORD PROCESSING;",
+      "helpText": "Only applies to selection or display interfaces, both of which retrieve data for display to a form. It is the type of format the data should be in.   A single value is a string without pieces. A record is a set of strings concatenated together with \"^\" separating the pieces. A list is an indefinite number of values, each numbered, each containing the same type of information. A word processing data type will be in FM format. If the ACTION TYPE is SELECTION then the data type must be record. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRINT COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field is used to determine what should happen if the data does not fit in the space allocated to it on the form. If answered YES the data will be printed on another page. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AVAILABLE? (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field should be set to YES if the interface is available, NO if it is not available. Interfaces that are not available are not called. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HEALTH SUMMARY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field will determine how to go about printing the report or form. It applies only to Package Interfaces of ACTION TYPE = PRINT REPORT. Health Summaries use the field HEALTH SUMMARY to determine the type of Health Summary to print. The process of printing Health Summaries dos not use the fields ENTRY POINT or ROUTINE, since all Health Summaries are printed in the same way. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TYPE OF HEALTH SUMMARY",
+      "dataType": "POINTER",
+      "rawType": "*P142'",
+      "required": false,
+      "pointerTo": 142,
+      "helpText": "  This identifies the Health Summary that should be printed when this Package Interface is invoked. It should be null unless the HEALTH SUMMARY? field #.1 is coded YES. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TOOLKIT MEMBER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  Package Interfaces that are developed for national use will be documented as being part of the toolkit. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PACKAGE INTERFACE FOR INPUT",
+      "dataType": "POINTER",
+      "rawType": "*P358.6'",
+      "required": false,
+      "pointerTo": 358.6,
+      "helpText": "Used to map scanned data to DHCP. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DYNAMIC SELECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is used to indicate whether the interface is used to build selection lists at print time. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DO NOT USE DFN AS A SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Originally, the patient DFN was used as a subscript when returning data for Package Interfaces of type output, but not for other types of interfaces. It is no longer necessary for any new Package Interface to use DFN as a subscript, but, to maintain compatibilty, output routines must set this field to YES if DFN is not to be used as a subscript. This field has no effect on other types of interfaces. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "ALLOWED OBJECT USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field applies only to package interfaces for input and is used to determine which package interfaces a particular type of form object may point to. Some combinations don't make sense. For example, it would not make sense to allow a multiple choice question to point to vitals, which is used to input data such as temperature and blood pressure. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "ASK FOR ADDITIONAL NARRATIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter whether users should be prompted for specifying the provider narrative that will be sent to PCE (and problem list) when creating a selection list.  If this is answered no and the narrative is sent to PCE then the text as it appears on the form will be used as the provider narrative.   Generally only diagnosis and clinical lexicon entries will want this field set to Yes. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ASK FOR CLINICAL LEXICON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is answered 'Yes' then users who are editing or creating selection lists based on this interface will be asked to map each entry (thought it is optional) to a clinical lexicon entry.  This is highly recommended for user who are scanning diagnosis entries and trying to  add entries to the Patients Problem list.   The primary purpose of this field is to allow sites who have built selection lists using the ICD9 Diagnosis file to map each entry to the clinical lexicon. The Problem List",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "DQ REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Field used to determine if a data qualifier is required for this input interface. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "ASK FOR CLINICAL REMINDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this package interface is for display of clinical reminders answer yes,  otherwise answer no. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "ASK FOR CPT MODIFIERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ASK FOR CPT MODIFIERS field will be used when selecting CPT codes.  If answered \"YES\" and data is a procedure, CPT Modifiers should be asked during Forms Design and Manual Data Entry. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "358.61",
+      "required": false,
+      "helpText": "Should describe the data being exchanged by the package interface. ",
+      "isMultiple": true,
+      "subFileNumber": 358.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PIECE 1 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Should be a descriptive name of the first field in the record returned by the interface. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "PIECE 1 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the first field of the record returned by the interface. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "PIECE 2 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name of the second field of the record returned by the interface routine. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "WHAT IS ITS MAXIMUM LENGTH?",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the second field of the record returned by the interface routine. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "PIECE 3 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name of the third field of the record returned by the interface routine. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "PIECE 3 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the 3rd field returned by the interface routine. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "PIECE 4 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name of the 4th field returned by the interface routine. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PIECE 4 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the 4th field returned by the interface routine. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "PIECE 5 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name of the 5th field returned by the interface routine. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PIECE 5 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the 5th field returned by the interface routine. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "PIECE 6 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name fo the 6th field returned by the interface routine. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "PIECE 6 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the 6th field returned by the interface routine. ",
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "PIECE 7 DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  A descriptive name for the 7th field returned by the package interface routine. ",
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 2.14,
+      "fieldName": "PIECE 7 MAXIMUM LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The maximum length of the 7th field returned by the interface routine. ",
+      "fieldNumber_": 2.14
+    },
+    {
+      "fieldNumber": 2.16,
+      "fieldName": "PIECE 1 RECOMMENDED HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The recommended header will be used as the default when designing a form. ",
+      "fieldNumber_": 2.16
+    },
+    {
+      "fieldNumber": 2.17,
+      "fieldName": "IS PIECE 1 DISPLAYABLE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is used only for selection type interfaces. If NO, then the value can not be displayed to the encounter form.  The first piece must contain the unique id of the selection. ",
+      "fieldNumber_": 2.17
+    },
+    {
+      "fieldNumber": 2.18,
+      "fieldName": "EXPORT SELECTIONS/CHOICES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "    Applies to selection and input routines. Determines whether selections appearing on selection lists and choices in a multiple choice field will be exported along with the form that they appear on. The import/export utility will not resolve pointers, so if the id used by the package interface is a pointer that differs between sites this field should contain NO. ",
+      "fieldNumber_": 2.18
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER LOOKUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field is used to create a KWIC index for this file. The purpose is to assist the user in locating the package interface he needs to display a particular item of data to a form. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "  This code will be executed after the PROTECTED VARIABLES are newed, but before the interface routine is called. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "  This code will be executed after the interface routine is called. The effect of the NEW done on the PROTECTED VARIABLES is still in effect. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROTECTED LOCAL VARIABLES",
+      "dataType": "SUBFILE",
+      "rawType": "358.66",
+      "required": false,
+      "helpText": "  This is a list of variables that should be newed before the entry action or calling the interface routine. It is protection against interfaces that alter or kill variables, or entry actions that do so. Note that REQUIRED VARIABLES should not also be PROTECTED VARIABLES. If an interface routine changes a required variable, however, there is a way to protect it. Supposing, for example, DFN is killed by the interface. This will protect it:      PROTECTED VARIABLE:   IBDFN      ENTRY ACTION:  S IB",
+      "isMultiple": true,
+      "subFileNumber": 358.66,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUIRED LOCAL VARIABLES",
+      "dataType": "SUBFILE",
+      "rawType": "358.67",
+      "required": false,
+      "helpText": "  The interface may require inputs. This field is a list of the required local variables. The interface will not be called unless the variables are determined to exist. ",
+      "isMultiple": true,
+      "subFileNumber": 358.67,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "PIECE 1 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "PIECE 2 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "PIECE 3 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "PIECE 4 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 8.05,
+      "fieldName": "PIECE 5 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.05
+    },
+    {
+      "fieldNumber": 8.06,
+      "fieldName": "PIECE 6 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.06
+    },
+    {
+      "fieldNumber": 8.07,
+      "fieldName": "PIECE 7 NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8.07
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PCE DIM INPUT TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Used to transform X, the identifier stored with the form object, to the form that should be passed to the PCE Device Interface Module (DIM). It may, for example, transform a code to an ien. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HELP TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This should provide some help to the user who is trying to enter a value associated with a bubble. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "VALIDATOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is used to validate codes currently on a form. The variable X should be set to the identifier that was returned by the Package Interface. For selection interfaces, the identifier is always piece 1 of the 0 node of the entry in the selection list. Xecuting this field will result in X being killed if the value is not valid. This is used by the maintanance utility, for example, to find CPT codes that have been inactivated. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "PCE DIM NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The node used to pass the data to PCE, using the PCE DEVICE INTERFACE MODULE. ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "PCE DIM PIECE, VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The piece in the PXCA node used to pass the input value. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 12.03,
+      "fieldName": "PCE DIM PIECE, NARRATIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The piece in the PCXA node used to pass the text displayed on the form. ",
+      "fieldNumber_": 12.03
+    },
+    {
+      "fieldNumber": 12.04,
+      "fieldName": "PCE DIM PIECE, HEADER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The piece on the node specified by the PCE Device Interface Module that the header is mapped to. ",
+      "fieldNumber_": 12.04
+    },
+    {
+      "fieldNumber": 12.05,
+      "fieldName": "PCE DIM PIECE, DATA QUALIFIER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The piece of the PXCA node where the data modifier belongs. ",
+      "fieldNumber_": 12.05
+    },
+    {
+      "fieldNumber": 12.06,
+      "fieldName": "PCE DIM PIECE, QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "An entry in this field indicates which piece of the array the quantity should be passed on when sending data to PCE. ",
+      "fieldNumber_": 12.06
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ALLOWABLE QUALIFIERS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "358.613V",
+      "required": false,
+      "helpText": "This mulitiple contains the list of quailifiers that may apply to the data. ",
+      "isMultiple": true,
+      "subFileNumber": 358.613,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PCE DIM OUTPUT TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This transform should set Y, the value to be passed to the PCE  Device Interface Module, to a value that is suitable for display. It may, for example, change an ien to a code. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATA DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "358.615I",
+      "required": false,
+      "helpText": "For interfaces that return records, this multiple stores information on the fields, other than the first field. ",
+      "isMultiple": true,
+      "subFileNumber": 358.615,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "ALLOW INPUT OF NARRATIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;o:OPTIONAL;r:REQUIRED;",
+      "helpText": "For input interfaces, this field determines whether a narrative is allowed by the PCE Generic Device Interface. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 16.2,
+      "fieldName": "NARRATIVE DATA TYPE",
+      "dataType": "POINTER",
+      "rawType": "P358.99'",
+      "required": false,
+      "pointerTo": 358.99,
+      "helpText": "This determines, among other things, how much space to allocate for the narrative. ",
+      "fieldNumber_": 16.2
+    },
+    {
+      "fieldNumber": 16.3,
+      "fieldName": "NARRATIVE HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used to label the narrative field. ",
+      "fieldNumber_": 16.3
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "ALLOW INPUT OF PRIMARY VALUE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;o:OPTIONAL;r:REQUIRED;",
+      "helpText": "This applies only to interfaces for input and determines whether a value, other than a narrative, can be entered. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.6,
+      "fieldName": "PRIMARY VALUE DATA TYPE",
+      "dataType": "POINTER",
+      "rawType": "P358.99'",
+      "required": false,
+      "pointerTo": 358.99,
+      "helpText": "This applies only to interfaces for input and determines, among other things, the data type of the value to be entered. ",
+      "fieldNumber_": 16.6
+    },
+    {
+      "fieldNumber": 16.7,
+      "fieldName": "PRIMARY VALUE HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used to label the primary value field. ",
+      "fieldNumber_": 16.7
+    },
+    {
+      "fieldNumber": 16.8,
+      "fieldName": "ALLOW MULTIPLIERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "For selection interfaces, this determines whether 'quantity' should be asked at form development time to pass multiple occurrences of a selection to PCE. ",
+      "fieldNumber_": 16.8
+    },
+    {
+      "fieldNumber": 16.9,
+      "fieldName": "ALLOW INPUT OF MULTIPLE CODES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter a one in this field if the users will be allowed to add more than one code to pass along to PCE when one entry is bubbled. Data in this field REQUIRES that field 17 be populated with mumps code that will allow selection of the code if the entry is edited. ",
+      "fieldNumber_": 16.9
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SELECTOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field only applies to input interfaces. It is executed as by an input transform when creating a multiple choice field. It should: 1) Kill X if an nothing is selected, otherwise set X to a value suitable for display, perhaps the code. 2) Set IBLABEL to a suitable label for the choice. 3) Set IBID to an identifier. The identifier should ideally be exportable, meaning the same from site to site. This usually means a coded value rather than an ien. The identfier should match that of a correspon",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MANUAL DATA ENTRY ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field should only be completed for input package interfaces.  This code will be executed to provide quick data entry for a user trying to input data for a form.  It is expected that the output of this field will be used to format the PXCA array prior to calling PCE to file the data for the encounter. Developers writing routines for this entry should provide a roll and scroll interface for manual entry of items only on the form. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "EXTERNAL DISPLAY VALUES",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Executable code used to translate the internal value that is to be passed to PCE into its external value for display purposes.  It is used by the data validation routines to display the external values and descriptions of the data to be passed, to the user for verification. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PASS DQ AS VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the value of the Data Qualifier shall be passed to PCE as the VALUE, this field should be set to one.  Doing so will prevent the data in the VALUE from populating the PCE DIM NODE, but instead, will allow the Data Qualifier to pass as the VALUE. This is used mostly for YES/NO Data Qualifiers, where the value may be a question, and the Data Qualifier Value, if bubbled, is the value that must be placed on the PCE DIM NODE. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PCE DIM PIECE, VARIABLE VALUE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field should be populated when the PCE DIM PIECE VALUE is not constant.  If the value of that field is dependent upon specific conditions, those conditions may be evaluated by placing the MUMPS code in this field.  Ultimately, the code should return a value that will be used as the PCE DIM PIECE VALUE.  If the return value is null, the original PCE DIM PIECE VALUE field will be used to determine the piece location to pass the VALUE on. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 76,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "358.6", "field": .01, "type": "regular"},
+    {"name": "358.6", "field": .01, "type": "regular"},
+    {"name": "358.6", "field": .04, "type": "regular"},
+    {"name": "358.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .06, "value": "W \"\""},
+    {"field": WRITE, "value": "N IBDWNAM S IBDWNAM=$E($P(^(0),U),1,40) D EN^DDIOL(IBDWNAM,\"\",\"!?0\")"},
+    {"field": WRITE1, "value": "N IBDWTYPE S IBDWTYPE=$S($P(^(0),\"^\",6)=1:\"INPUT\",$P(^(0),\"^\",6)=2:\"OUTPUT\",$P(^(0),\"^\",6)=3:\"SELECTION\",1:\"REPORT\")_$S($P(^(0),U,6)=3&'$P(^(0),\"^\",13):\"  ** NOT SCANNABLE **\",1:\"\") D EN^DDIOL(\"TYPE=\"_IBDWTYPE,\"\",\"?45\")"}
+  ]
+}

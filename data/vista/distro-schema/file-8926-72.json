@@ -1,0 +1,39 @@
+{
+  "fileNumber": 8926.72,
+  "fileName": "TIU LOINC SMD SYNONYMS",
+  "globalRoot": "8926.72",
+  "globalReference": "^TIU(8926.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the text of the Subject Matter Domain synonym. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUBJECT MATTER DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "R*P8926.2'",
+      "required": true,
+      "pointerTo": 8926.2,
+      "helpText": "This field is a reference to the LOINC Standard Subject Matter Domain to  which the synonym corresponds. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "SMD", "field": },
+    {"name": "8926.72", "field": .01, "type": "regular"},
+    {"name": "8926.72", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^TIU(8926.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8926.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,374 @@
+{
+  "fileNumber": 129.1,
+  "fileName": "LOINC",
+  "globalRoot": "129.1",
+  "globalReference": "^ETSLNC(129.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0IXO",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the unique LOINC code in numeric form. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMPONENT",
+      "dataType": "POINTER",
+      "rawType": "P129.11'",
+      "required": false,
+      "pointerTo": 129.11,
+      "helpText": "This is the name of the component or analyte measured e.g., potassium, hemoglobin, or hepatitis C antigen. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "CHALLENGE",
+      "dataType": "POINTER",
+      "rawType": "*P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains information necessary to interpret \"challenge\" (or loading or tolerance) tests. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "ADJUSTMENT",
+      "dataType": "POINTER",
+      "rawType": "*P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains calculations that adjust or correct some measured value. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "NON-PATIENT SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "*P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "The second subpart of the system distinguishes observations on the patient (or samples taken from the patient or donor) from observations on non-patient materials that relate to the patient, e.g. a blood product unit (BPU).  When the person or super system is not included in a name, it can be assumed to be the patient. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROPERTY",
+      "dataType": "POINTER",
+      "rawType": "*P129.12'I",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains the property measured - e.g., a mass concentration or enzyme activity. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIME ASPECT",
+      "dataType": "POINTER",
+      "rawType": "P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This is the point or moment in time vs. time interval, e.g., 24-hour urine. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "TIME MODIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "The second and optional subpart of the time component allows an indication of some sub-selection or integration of the measures taken over the defined period of time, so 8H^MAX heart rate would be the highest heart rate observed over 8H(Shift).  MIN, MAX, FIRST, LAST, MEAN are the possible values for this subpart.  When nothing is stored in this subpart, we assume a mean value over the time period in question. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains the specimen. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SCALE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains the data part of the test name which specifies the scale of the measure, and is a required part.  The abbreviation of the type of scale (previously called precision) should be used in the fully specified name. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "METHOD TYPE",
+      "dataType": "POINTER",
+      "rawType": "P129.13'",
+      "required": false,
+      "pointerTo": 129.13,
+      "helpText": "This is the method by which the test was performed. Methods need only be expressed as part of the name when they provide a distinction between tests that measure the same component (analyte) but which have different clinical significance or have different clinical reference ranges. For instance, whole blood glucose tested with a chemstrip might be distinguished in the method field. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CLASS",
+      "dataType": "POINTER",
+      "rawType": "P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This is an arbitrary classification of the terms for grouping related observations together.  Some examples are CHEM for Chemistry, MICRO for Microbiology, and BLDBK for Blood Bank. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Source is a field for internal use of the LOINC committee. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "UNITS",
+      "dataType": "POINTER",
+      "rawType": "P129.12'",
+      "required": false,
+      "pointerTo": 129.12,
+      "helpText": "This field contains the units of measure for the test of this specimen. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CHECK DIGIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Note: the data contained in this field contains some incorrect values due to errors in the LOINC released database. When check digit computation errors are discovered - STATUS (#20) field is marked as DEL preventing the code from being assigned. Once a LOINC has been released it is never deleted from the database.                                    This field contains the LOINC number modulo 10 check digit.  The instruction for calculating a Mod 10 check digit is as follows: (1) Take the odd dig",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEL;2:TRIAL;3:DISCOURAGED;",
+      "helpText": "This field can contain one of the following values:    (Null) This is a code with ACTIVE status.    1   This is a code that has been DELETED (DEPRECATED).    2   This is a code that is on TRIAL.     3   This is a code the use of which is DISCOURAGED. LOINC codes will never be reused nor will they be removed from the database. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE LAST CHANGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date last changed, in the format YYYYMMDD. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CHANGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Change Type Code.  DEL= Delete; ADD=add; NAM=change to Analyte/ Component (field #2); MAJ=change to name field other than #2 (#3-#7); MIN=change to field other than name. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CHANGE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ205",
+      "length": 205,
+      "required": false,
+      "helpText": "This is the reason the term was changed.  If a term has been changed, the reason for the change is detailed here. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "VERSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the LOINC version number for this code. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the SNOMED Code (future versions).  Not currently used. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CLASSTYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LABORATORY;2:CLINICAL;3:CLAIMS;4:SURVEYS;",
+      "helpText": "This field is used to indicate the source of this code. There are at least four general areas: Laboratory Class, Clinical Class, Claims Attachment and Surveys.  The selections are available on the Regenstrief RELMA class restriction window.  ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "FULLY SPECIFIED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250I",
+      "length": 250I,
+      "required": false,
+      "helpText": "This field contains the fully specified name of the LOINC code.  It has five or six major parts including: the name of the component or analyte measured, the property observed, the timing of the measurement, the type of sample, the scale of measurement, and where relevant, the method of the measurement.  The colon character, \":\", is part of the name and is used to separate the main parts of the name. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "SHORTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80I",
+      "length": 80I,
+      "required": false,
+      "helpText": "This field was introduced in LOINC version 2.07; the field is a concatenation of the fully specified LOINC name. This field may be used as the test name on reports rather than the fully specified name in the FULLY SPECIFIED NAME (#80) field. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "VA COMMON DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This field contains common display names derived from the LOINC codes to be used as a clinician-friendly display of the standard LOINC codes. Names for LOINC codes not related to lab have been created using the component axes of the LOINC code. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "LONG COMMON NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This field contains the LOINC term in a more readable format than the fully specified name. The long common names have been created via a table-driven algorithmic process. Most abbreviations and acronyms that are used in the LOINC database have been fully spelled out in English. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "EXTERNAL COPYRIGHT NOTICE",
+      "dataType": "SUBFILE",
+      "rawType": "129.101",
+      "required": false,
+      "helpText": "This is the external copyright holders copyright notice for this LOINC code. ",
+      "isMultiple": true,
+      "subFileNumber": 129.101,
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "EXAMPLE UCUM UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "Unified Code for Units of Measure (UCUM) is a code system intended to include all units of measures being contemporarily used in international science, engineering, and business. (www.unitsofmeasure.org ). This field contains example units of measures for this term expressed as UCUM units. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "REPEAT OBSERVATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This field contains data that shows repeat observations taken at the same time and/or on the same specimen. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "ACTIVATION STATUS",
+      "dataType": "DATE",
+      "rawType": "129.103DA",
+      "required": false,
+      "helpText": "This field describes the pair Activation Status and Activation Effective Date for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 129.103,
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "129.102",
+      "required": false,
+      "helpText": "This field contains free-text comments relating to the test result. ",
+      "isMultiple": true,
+      "subFileNumber": 129.102,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20I",
+      "length": 20I,
+      "required": true,
+      "helpText": "This is the VHA Unique ID (VUID), a unique meaningless integer assigned to reference terms VHA-wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "129.104DA",
+      "required": false,
+      "helpText": "This field describes the pair Status and Effective Date/Time for the VUID. ",
+      "isMultiple": true,
+      "subFileNumber": 129.104,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "VR", "field": },
+    {"name": "129.1", "field": .01, "type": "regular"},
+    {"name": "129.1", "field": .01, "type": "regular"},
+    {"name": "129.1", "field": 1, "type": "regular"},
+    {"name": "129.1", "field": 20, "type": "regular"},
+    {"name": "129.1", "field": 81, "type": "regular"},
+    {"name": "129.1", "field": 83, "type": "regular"},
+    {"name": "129.1", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 15, "value": "W \"-\",$P(^(0),U,15),\" VUID \",$P($G(^(\"VUID\")),U)"},
+    {"field": 80, "value": "W:$D(^(80)) !,\"   \",$P(^(80),U,1)"}
+  ]
+}

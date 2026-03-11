@@ -1,0 +1,39 @@
+{
+  "fileNumber": 699.84,
+  "fileName": "DISEASE EVALUATION",
+  "globalRoot": "699.84",
+  "globalReference": "^MCAR(699.84,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to store a list of possible disease follow-ups for GI and Pulmonary Endoscopies. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "G:GI;P:PULMONARY;",
+      "helpText": "This field identifies used as a screen to differentiate GI disease follow-ups from Pulmonary follow-ups. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.84", "field": .01, "type": "regular"},
+    {"name": "699.84", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

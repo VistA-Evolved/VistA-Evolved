@@ -1,0 +1,154 @@
+{
+  "fileNumber": 9.2,
+  "fileName": "HELP FRAME",
+  "globalRoot": "9.2I",
+  "globalReference": "^DIC(9.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field uniquely identifies a help frame. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "RX",
+      "required": true,
+      "helpText": "The unique name of the frame, preceded with the package prefix name, similar to option names. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short description of the frame, succinctly describing the content of the frame ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "9.21",
+      "required": false,
+      "helpText": "The actual text of the help frame, which will be displayed when the user presses question mark.  Screen breaks are indicated by a line terminating with \"..\". continuation screens, or 'related frames'. ",
+      "isMultiple": true,
+      "subFileNumber": 9.21,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RELATED FRAME",
+      "dataType": "SUBFILE",
+      "rawType": "9.22A",
+      "required": false,
+      "helpText": "This is a multiple field which contains information on the other help frames which are related to the current help frame through specific keywords.  The keywords may be selected to obtain additional information about the topic through the related help frame(s). ",
+      "isMultiple": true,
+      "subFileNumber": 9.22,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "Want to LOAD KEYWORDS (Y/N)?",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is designed for internal use.  Its input transform will invoke a routine to associate keywords with related help frames. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time that this frame was entered into the system, which is used to  track new Help frame activity. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INVOKED BY ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "9.23A",
+      "required": false,
+      "helpText": "This field is for documentation purposes.  It serves as a record of which routines reference a particular help frame. ",
+      "isMultiple": true,
+      "subFileNumber": 9.23,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "AUTHOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person who created the entry for this help frame.  This is a triggered field, it's value determined by the creator of the .01 entry. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "EDITOR",
+      "dataType": "POINTER",
+      "rawType": "9.24P",
+      "required": false,
+      "helpText": "Users who are allowed to edit this help frame, as determined by the author. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "CDJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This field is used to maintain an indication of the date on which the help frame was last modified or updated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "ENTRY EXECUTE STATEMENT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is used to include an M code statement which is executed as the user enters this help frame. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "EXIT EXECUTE STATEMENT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is used to provide an M code statement which is to be executed as the user exits the current help frame (whether moving into another help frame or back out of the current help frame). ",
+      "fieldNumber_": 10.2
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "9.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "9.2", "field": 1, "type": "regular"},
+    {"name": "9.2", "field": 4, "type": "regular"},
+    {"name": "9.2", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

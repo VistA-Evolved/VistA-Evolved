@@ -1,0 +1,199 @@
+{
+  "fileNumber": 396.9,
+  "fileName": "FORM 28-8861",
+  "globalRoot": "396.9",
+  "globalReference": "^DVB(396.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of 8861 Request for Medical Services, Chapter 31. The request date defaults to the current date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROUTING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This is the VHA facility that will provide medical services for the veteran. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the requested was completed. The value will be supplied by the system. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REGIONAL OFFICE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the Regional Office of the user that submits the 8861 request. This value is entered by the system. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the veteran to whom the request pertains. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REHAB OBJECTIVE OF VETERAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Rehabilitation Objective of Veteran states what the veteran hopes to achieve through rehabilitation. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REASON FOR REFERRAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Describe the reason for referral. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ANTICIPATED DATE OF REHAB",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the veteran is expected to achieve rehabilitation. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MEDICAL SERVICES REQUESTED",
+      "dataType": "POINTER",
+      "rawType": "RP396.918'",
+      "required": true,
+      "pointerTo": 396.918,
+      "helpText": "This is the medical service requested as the type of exam being requested. Only one item can be selected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "OTHER REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used if the Medical Service Requested is not in the list provided and you choose \"Other\" for Medical Services Requested (previous prompt). ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PREFERRED SCHEDULE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the veteran needs to be seen by. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PREFERRED SCHED DATE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used to describe why the veteran needs to be seen by the entered Preferred Schedule Date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "POINT OF CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Point of Contact is the same as the person that submits Form 8861. The POC is printed on the Status Report and would be contacted with any questions about the request. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "COMMENTS/NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "396.912",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 396.912,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NEW;P:PENDING;X:CANCELLED;C:COMPLETE;A:ALL;",
+      "helpText": "This is the status of the 8861 Request. \"A\" for \"ALL\" is only for choosing a status for the Status Report. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CONSULTS",
+      "dataType": "POINTER",
+      "rawType": "396.914PA",
+      "required": false,
+      "helpText": "This field associates the request with a record in the Request/Consultation file. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CANCELLATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the request is cancelled. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "CANCELLATION REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DUP:DUPLICATE MEDICAL REQUEST;VET:VETERAN WITHDREW MEDICAL REQUEST FOR SERVICES;ADQ:ADEQUATE MEDICAL EVIDENCE RECEIVED;DIED:VETERAN DIED;OTH:OTHER;",
+      "helpText": "This is the reason the request was cancelled. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ADDITIONAL REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is additional information for the cancelled request. ",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "396.9", "field": .01, "type": "regular"},
+    {"name": "396.9", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

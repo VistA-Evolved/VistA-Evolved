@@ -1,0 +1,118 @@
+{
+  "fileNumber": 579.3,
+  "fileName": "VDEF REQUEST QUEUE",
+  "globalRoot": "579.3",
+  "globalReference": "^VDEFHL7(579.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST QUEUE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of this Request Queue that uniquely identifies it. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUEST QUEUE WAKEUP PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "A period of time (in days, hours, minutes, and seconds) that  TaskMan uses to calculate how long to wait before it resumes processing the Request queue. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST ENTRY CHECKED OUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "IEN of the last Checked Out entry in sub-file 579.31. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ARCHIVAL PARAMETER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0OX",
+      "length": 10,
+      "required": true,
+      "helpText": "The minimum number of seconds an already processed entry in a Request Queue will be kept in the Queue for archival purposes before it is purged by the VDEF Monitor process. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CHECK-OUT TIME LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0OX",
+      "length": 10,
+      "required": true,
+      "helpText": "The maximum number of seconds that the oldest Checked Out entry in this  queue can be Checked Out for before a MailMan message is sent to the VISTA HL7 IRM account or group. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REQUEST QUEUE ENTRIES",
+      "dataType": "SUBFILE",
+      "rawType": "579.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 579.31,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FUTURE TASKMAN TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Number of the TaskMan task that was last queued up to handle this Request Queue. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SUSPENDED FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "S:SUSPENDED;R:RUNNING;",
+      "helpText": "Current status of this VDEF REquest Processor Queue. Turning the Queue  off will result in VDEF HL7 message generation for the Queue being  suspended until such time when the Queue is turned back on. NOTE: Turning  off a Request Queue will not prevent VDEF from adding requests to it.  Turning a VDEF Request Queue off for a prolonged period of time may  result in a significant number of VDEF Requests accumulating in that  Queue and causing disk space problems. If VDEF messaging is to be completel",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REQUEST PROCESS SCHEDULE",
+      "dataType": "SUBFILE",
+      "rawType": "579.32",
+      "required": false,
+      "helpText": "Define time periods when the Request Processor should not run ",
+      "isMultiple": true,
+      "subFileNumber": 579.32,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CURRENT TASKMAN TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "Taskman number of the currently running Request Processor task. ",
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "579.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

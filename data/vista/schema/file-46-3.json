@@ -1,0 +1,106 @@
+{
+  "fileNumber": 46.3,
+  "fileName": "DG VAS QUEUE",
+  "globalRoot": "46.3",
+  "globalReference": "^DGAUDIT(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is not intended to be edited manually. This field contains the  date/time the record was queued be sent to the VistA Audit Solution (VAS) external archive. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CREATE;I:INQUIRY;U:UPDATE;",
+      "helpText": "This field is not intended to be edited manually.  The value is either  C(reate), I(nquiry) or U(pdate).   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is not intended to be edited manually. The value for this field is set to the date/time the update or inquiry audit event occurred. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient for which the inquiry or update audit  event occurred. This field is not intended to be edited manually. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is not intended to be edited manually. This field contains the user performing the inquiry or update action being audited. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MENU OPT",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This field is not intended to be edited manually. This field contains the  option used to perform the action being audited. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FILENUM",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This field is not intended to be edited manually. This field contains the  file for which the inquiry or update action is being audited. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is not intended to be edited manually. This field contains the  facility at which the action being audited occurred. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "JSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4089",
+      "length": 4089,
+      "required": false,
+      "helpText": "This field is not intended to be edited manually. This contains the JSON-encoded value corresponding to the audited record.  ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "46.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

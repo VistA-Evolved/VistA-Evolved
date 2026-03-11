@@ -1,0 +1,48 @@
+{
+  "fileNumber": 741.6,
+  "fileName": "QA OCCURRENCE FINDINGS",
+  "globalRoot": "741.6I",
+  "globalReference": "^QA(741.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the code number associated with this finding. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FINDINGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the text of the finding. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field defines which review levels may choose which findings.  Valid entries for this field are: 1 (Clinical review), 2 (Peer review), C (Committee review), V (Confirmation/Validation review).  This field may contain any non-repeating combination of these codes. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "741.6", "field": .01, "type": "regular"},
+    {"name": "741.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

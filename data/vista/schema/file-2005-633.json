@@ -1,0 +1,127 @@
+{
+  "fileNumber": 2005.633,
+  "fileName": "PROJECTION X-RAY DOSE",
+  "globalRoot": "2005.633",
+  "globalReference": "^MAGV(2005.633,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique ID assigned to each PROJECTION X-RAY DOSE instance. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ESTIMATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The dosage is an estimate if the instance is not sourced from an RT object. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOTAL TIME IN FLUOROSCOPY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the total procedure time in seconds for this projection x-ray dose instance. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DOSE AREA PRODUCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the dose area product for this projection x-ray dose instance. Dose area product is defined as the air kerma at a particular location in an  x-ray beam, multiplied by the cross-sectional area of the beam at that  location. It is an approximate indication of the total amount of energy  delivered by the x-ray beam. Unit: Gy-cm2 (Gray centimeters square). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SERIES INSTANCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.63'",
+      "required": false,
+      "pointerTo": 2005.63,
+      "helpText": "This is the image series associated with this PROJECTION X-RAY DOSE instance. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DOSE (RP) TOTAL (AKE)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,9",
+      "length": 16,
+      "required": false,
+      "helpText": "Total dose related to reference point (RP) for this projection x-ray dose instance. Unit: mGy (milligray). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FLUORO DOSE (RP) TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "Calculated accumulated dose at the reference point applied during fluoroscopy for this projection x-ray dose instance. Unit: mGy (milligray). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FLUORO DOSE AREA PRODUCT TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "Total calculated Dose Area Product applied in fluoroscopy modes for this projection x-ray dose instance. Unit: Gy-cm2 (Gray centimeters square). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CINE DOSE (RP) TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "Total CINE dose related to reference point (RP) for this projection x-ray dose instance. Unit: mGy (milligray). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CINE DOSE AREA PRODUCT TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "Calculated accumulated dose at the reference point applied during CINE imaging for this projection x-ray dose instance. Unit: Gy-cm2 (Gray centimeters square). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CINE TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The amount of CINE TIME measured in seconds, represented as a decimal string in the form of xxxxxx.yyy or xxxe=-zzz for this projection x-ray dose instance. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.633", "field": .01, "type": "regular"},
+    {"name": "2005.633", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

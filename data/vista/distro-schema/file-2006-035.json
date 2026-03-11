@@ -1,0 +1,114 @@
+{
+  "fileNumber": 2006.035,
+  "fileName": "SEND QUEUE",
+  "globalRoot": "2006.035",
+  "globalReference": "^MAGQUEUE(2006.035,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2005'",
+      "required": true,
+      "pointerTo": 2005,
+      "helpText": "The value of this field is a pointer to the image file. This entry in the SEND queue is intended to cause transmission of files for the image that is indicated by this pointer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESTINATION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "The value of this field is a \"Variable Pointer\".   The pointer may reference either an entry in either File 2005.2 (Imaging Network Location) or File 2006.585 (DICOM User Application).   When pointing to File 2005.2, images will be transmitted using a host-system copy protocol; when pointing to File 2006.585, images will be transmitted using the DICOM protocol. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "ABSTRACT:ABSTRACT;FULL:FULL;BIG:BIG;TEXT:TEXT;DICOM:DICOM;",
+      "helpText": "This field identifies the kind of file that is to be transmitted. Currently 5 possible types exist (Abstract, Full, Big, Text and DICOM). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "WAITING:WAITING;SENDING:SENDING;SENT:SENT;FAILED:FAILED;",
+      "helpText": "The value of this field indicates the status of the queue-entry. Normally, an entry goes through three stages: First, the status is \"WAITING\". When the queue-processor starts working on the current file, the status will become \"SENDING\". When the file has been transmitted, the status will change to \"SENT\".   When a transmission fails, the queue processor will make a number of additional attempts to transmit the file. If all attempts remain unsuccessful, the status will be changed to \"FAILED\".   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates the relative priority of the entry in the queue. Normally, all entries have priority 500. The software may assign a low priority (250) or a high priority (750). In the future further refinement of these priorities is expected. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TIME IN",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The value of this field is a time-stamp that identifies the date and time on which the entry was added to the queue. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIME OUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a time stamp that identifies when the entry in the queue was processed (status changed to either SENT or FAILED). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MECHANISM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MS-DOS Copy;2:DICOM Send;",
+      "helpText": "The value of this field is a code that indicates how files are to be transmitted to the remote location. Possible methods of transmission are \"MS-DOS copy\" and \"DICOM copy\". ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ORIGIN",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer (to the Institution file, #4). The institution that is identified by this value is the place where the image \"comes from\". In the context of auto-routing, the image \"comes from\" the place where it is permanently stored. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the transaction to which this file belongs.   A transaction typically corresponds to a \"study\", a group of images that are to be manipulated as a unit. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "ID", "field": },
+    {"name": "2006.035", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

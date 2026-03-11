@@ -1,0 +1,246 @@
+{
+  "fileNumber": 113,
+  "fileName": "INGREDIENT",
+  "globalRoot": "113",
+  "globalReference": "^FHING(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the ingredient which is an ordered item generally and which is used in the preparation of recipes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUPPLY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short description which will be used on purchase orders. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STOCK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Federal Stock Number (with hyphens) for items obtained from VA Depots or DLA. It may be the local vendor's number for other items. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P113.2",
+      "required": false,
+      "pointerTo": 113.2,
+      "helpText": "This field indicates the current vendor from whom the item is procured. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UNIT OF PURCHASE (U/P)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a two-character abbreviation indicating the unit of purchase and is such things as CN for can, PK for package, CS for case, etc. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DIETETIC UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "RP119.1X",
+      "required": true,
+      "pointerTo": 119.1,
+      "helpText": "This is the unit of issue that dietetic personnel or supply personnel use for dispensing the item to ingredient control. It is generally a #10-can or similar description. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORDERING MULTIPLE (OF U/P)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "If the vendor requires that the unit of purchase be bought in some multiple, like 6 or 12 or 24, then that multiple is indicated here. VA Depot is the most common vendor requiring such multiples. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NO. OF ISSUE UNITS IN A U/P",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,4",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the number of Dietetic issue units in a unit of purchase. If the U/P (unit of Purchase) is a CS that contains 6 #10-cans and the Dietetic Issue unit is a #10-can then the value is 6. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRICE/UNIT OF PURCHASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the most recent price of the unit of purchase from the vendor. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REORDER LEVEL (IN U/P)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field indicates that when the on-hand quantity drops below this value (the re-order level), then additional quantities should be ordered. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ON HAND (IN U/P)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the number of issue units that are on hand. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STORAGE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P113.1'",
+      "required": false,
+      "pointerTo": 113.1,
+      "helpText": "This field indicates the storage location (File 113.1) where dietetics normally stores the item and where the stockroom requisition clerk will normally obtain it. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FOOD GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This field contains the food group designated by the VA for this ingredient item. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "RECIPE UNIT",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "LB:LB;GAL:GAL;EACH:EACH;",
+      "helpText": "This field contains LB, GAL, or EACH and is used to indicate whether weight (LB), volumetric (GAL) or each (EACH) units are to be used in recipes to indicate the quantity required of this item. Amounts are stored in that file in these units.   It is extremely important that this field NOT be changed unless it is certain that no recipes use this ingredient. Changing the field will invalidate the quantities shown in any recipe using the item. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "# OF REC UNITS/ISSUE UNIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,4",
+      "length": 9,
+      "required": true,
+      "helpText": "This field indicates the number of recipe units contained in a Dietetic Issue unit. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "INVENTORY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will indicate that inventorying of this item is desired. It is often NO for such items as condiment packs in cases of 2000 which are replenished as needed. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "THAW DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "If this is a frozen item requiring thawing before use, then the number of thaw days should be indicated. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "NUTRIENT DATA REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P112'",
+      "required": false,
+      "pointerTo": 112,
+      "helpText": "This is a pointer to the nutrient in File 112 which most closely approximates the cooked ingredient. It will be used as a default nutrient when performing a nutrient analysis of a recipe containing this ingredient. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "WEIGHT OF RECIPE UNIT IN LBS.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This value represents the weight of the recipe unit in pounds and is required in performing nutrient analyses of recipes containing this ingredient. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DATE COST LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the cost was last updated. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DATE QOH LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the quantity on hand was last updated. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "MASTER ITEM #",
+      "dataType": "POINTER",
+      "rawType": "P441",
+      "required": false,
+      "pointerTo": 441,
+      "helpText": "This field contains the Master Item number for the ingredient. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "113", "field": .01, "type": "regular"},
+    {"name": "113", "field": 2, "type": "regular"},
+    {"name": "113", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

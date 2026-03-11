@@ -1,0 +1,399 @@
+{
+  "fileNumber": 404.57,
+  "fileName": "TEAM POSITION",
+  "globalRoot": "404.57I",
+  "globalReference": "^SCTM(404.57,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Name of the Team Position. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TEAM",
+      "dataType": "POINTER",
+      "rawType": "RP404.51'X",
+      "required": true,
+      "pointerTo": 404.51,
+      "helpText": "Entry in the team file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STANDARD ROLE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP403.46'",
+      "required": true,
+      "pointerTo": 403.46,
+      "helpText": "Standard role the provider performs as part of this team.   These standard positions are defined by Central Office. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "POSSIBLE PRIMARY PRACTITIONER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Can this position be the primary care provider for a patient?   (Even if the position's principle purpose is not primary care, it still maybe able act as a primary care provider for some patients. This field indicates if that is possible.) Note: This also enables the position to be a PC Attending Position. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAX NUMBER OF PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Once the current number of assigned patients reaches this level, further assignment of this position should be avoided. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ASSOCIATED CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field is no longer updated since the release of SD*5.3*297.   during various appointing and information processes. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "*PRECEPTOR POSITION",
+      "dataType": "POINTER",
+      "rawType": "*P404.57'",
+      "required": false,
+      "pointerTo": 404.57,
+      "helpText": "This field contains the name of the Team Position that is responsible for supervising this current position.   It is an optional field. However, when indicated, this field usually contains an attending position. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BEEPER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the pager or beeper number that is used by this team position. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "CAN ACT AS PRECEPTOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "By answering 'YES', this position may be used as a preceptor position for the team. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "USER CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8930'",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "This is an entry in the USR CLASS file to which anyone assigned to the position must belong. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "POSITION DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.571",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 404.571,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DEATH MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEAM'S PATIENTS;P:POSITION'S PATIENTS;N:DO NOT SEND;",
+      "helpText": "This determines for which patients the position receives messages related to patient death. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "INPATIENT MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEAM'S PATIENTS;P:POSITION'S PATIENTS;N:DO NOT SEND;",
+      "helpText": "This determines for which patients the position receives messages related to inpatient activity. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "TEAM MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEAM'S PATIENTS;P:POSITION'S PATIENTS;N:DO NOT SEND;",
+      "helpText": "This determines for which patients the position receives messages related  to team activity such as assignment or re-assignment of a position or team to the patient. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "CONSULT MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEAM'S PATIENTS;P:POSITION'S PATIENTS;N:DO NOT SEND;",
+      "helpText": "This determines for which patients the position receives messages related to activity in clinics to which the patient is not enrolled. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "PRECEPTOR DEATH MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A yes entry triggers a mailmessage on a death entry for the preceptor of this position. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "PRECEPTOR INPATIENT MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A yes entry triggers a mailmessage on inpatient activity for the preceptor ofthis position. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "PRECEPTOR TEAM MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A yes entry triggers a mailmessage on team activity for the preceptor of this position. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PRECEPTOR CONSULT MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A yes entry triggers a mailmessage on consult activity for the preceptor of this position. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "AUTOMATIC INACTIVATION MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEAM'S PATIENTS;P:POSITION'S PATIENTS;N:DO NOT SEND;",
+      "helpText": "Determines where patient inactivation messages are sent ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PRECEPTOR INACTIVATION MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Notify Preceptor if patient is automatically inactivated ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASSOCIATED CLINICS",
+      "dataType": "POINTER",
+      "rawType": "404.575PA",
+      "required": false,
+      "helpText": "Multiple Entry of Associated Clinics. This replaces single value  used before patch SD*5.3*297 ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "CURRENT # OF PC PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This calculates the current number of Primary Care patients for this team position. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "CURRENT # OF PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of all patients (primary care & otherwise) associated with the team. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "FUTURE # OF PC PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The number of current AND future PC assignments to this team position. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "FUTURE # OF PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The number of current AND future assignments to this team position. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This indicates if the team position is active on the current date. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "CURRENT EFFECTIVE DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the most recent date (not in future) that the active status changed. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "CURRENT ACTIVATION DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the activation date of the position based on today's date:   For positions never active - this is the next date where the position is active   For positions that are active now - this is the date it became active   For positions that are currently inactive - this is the last activation date ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "CURRENT INACTIVATION DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "If it is inactive, this is the day the position became inactive.  If it is active it is the day the position will become inactive. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "CURRENT PRACTITIONER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "CURRENT PRECEPTOR POSITION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ40",
+      "length": 40,
+      "required": false,
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "CURRENT PRECEPTOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "ACTIVE PRECEPTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "ALLOW PRECEPTED CHANGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Determines if a patient assignment has been made after the date a position became precepted.  A 'NO' return flags the GUI to always require an active preceptor assignment and disables the 'can act as preceptor' and 'can act as preceptor' controls. ",
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "ALLOW PRECEPTOR CHANGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Determines if a preceptor assignment has been made after the date a position became preceptor.  A 'NO' return flags the GUI to always require an active staff assignment and disables the 'can act as preceptor' and 'can act as preceptor' controls. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 402,
+      "fieldName": "STAFF/POS INCONSISTENT REASON",
+      "dataType": "COMPUTED",
+      "rawType": "CJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is a computed field that checks for any inconsistency between the Position Role, PC assignment and the Person Class of the current active provider. The value is blank if there is not an inconsistency. ",
+      "fieldNumber_": 402
+    }
+  ],
+  "fieldCount": 37,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APRIMARY", "field": },
+    {"name": "APRIMARY1", "field": },
+    {"name": "ASCTEAM", "field": },
+    {"name": "ATMPOS", "field": },
+    {"name": "ATMPOS1", "field": },
+    {"name": "AUSR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "404.57", "field": .01, "type": "regular"},
+    {"name": "404.57", "field": .01, "type": "regular"},
+    {"name": "404.57", "field": .01, "type": "regular"},
+    {"name": "404.57", "field": .02, "type": "regular"},
+    {"name": "404.57", "field": .02, "type": "regular"},
+    {"name": "404.57", "field": .02, "type": "regular"},
+    {"name": "404.57", "field": .03, "type": "regular"},
+    {"name": "404.57", "field": .09, "type": "regular"},
+    {"name": "404.57", "field": .13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SCTM(404.51,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(404.51,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WRITE, "value": "D EN^DDIOL($$WRITETP^SCMCDD1(Y),\"\",\"?0\")"}
+  ]
+}

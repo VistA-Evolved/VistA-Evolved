@@ -1,0 +1,91 @@
+{
+  "fileNumber": 863.9,
+  "fileName": "OCX MDD CONDITION/FUNCTION",
+  "globalRoot": "863.9I",
+  "globalReference": "^OCXS(863.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATATYPE",
+      "dataType": "POINTER",
+      "rawType": "P864.1'",
+      "required": false,
+      "pointerTo": 864.1,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE GENERATOR FUNCTION",
+      "dataType": "POINTER",
+      "rawType": "P863.7'",
+      "required": false,
+      "pointerTo": 863.7,
+      "helpText": "Public function whose output is evaluation code ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARAMETER",
+      "dataType": "SUBFILE",
+      "rawType": "863.91",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.91,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "863.92",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique ID for this object. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AFUN", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "SYN", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.9", "field": .03, "type": "regular"},
+    {"name": "863.9", "field": .04, "type": "regular"},
+    {"name": "863.9", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^OCXS(864.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(864.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

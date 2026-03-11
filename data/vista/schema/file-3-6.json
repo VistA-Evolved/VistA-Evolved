@@ -1,0 +1,98 @@
+{
+  "fileNumber": 3.6,
+  "fileName": "BULLETIN",
+  "globalRoot": "3.6",
+  "globalReference": "^XMB(3.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RXF",
+      "required": true,
+      "helpText": "This field is the name of the bulletin, in the standard format of a  two character package prefix, followed by a descriptive name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the subject of the bulletin, as it will appear to the recipient. Note that it may contain windows, just as in the \"MESSAGE\" field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "3.62P",
+      "required": false,
+      "helpText": "This is a list of the mail groups to which this bulletin will be directed when triggered.  If no mail groups are defined, or they point to no users, then the bulletin is ignored. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "After this number of days, if the bulletin hasn't already been purged, it will be purged by the XMAUTOPURGE option.  If zero or null, the bulletin will not have a purge date, and will not be purged by XMAUTOPURGE. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "3.63",
+      "required": false,
+      "helpText": "This field is a description of the bulletin, for documentation purposes. It is not used by MailMan for any automatic processing. ",
+      "isMultiple": true,
+      "subFileNumber": 3.63,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "3.61A",
+      "required": false,
+      "helpText": "This holds the \"canned\" text of the bulletin which will be sent when the bulletin is fired.     Variable text may be stored in parameters at the time of firing, then inserted in the message text.  Parameter windows are defined by putting them within vertical bars, with the parameter number inside.  For example,  \"Appointment for |1| on |2| has been cancelled.\"  with parameter 1 set to \"Jones\", and parameter 2 set to \"Monday\" would generate a bulletin of \"Appointment for Jones on Monday has been ",
+      "isMultiple": true,
+      "subFileNumber": 3.61,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PARAMETER",
+      "dataType": "SUBFILE",
+      "rawType": "3.64A",
+      "required": false,
+      "helpText": "This defines the parameters, which will be used to set information into the bulletin. ",
+      "isMultiple": true,
+      "subFileNumber": 3.64,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRIORITY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If you want this bulletin to appear to the recipients as a priority message, enter 'yes'; if not, enter 'no'. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

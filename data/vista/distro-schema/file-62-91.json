@@ -1,0 +1,37 @@
+{
+  "fileNumber": 62.91,
+  "fileName": "LAB SHIPPING CONTAINER",
+  "globalRoot": "62.91",
+  "globalReference": "^LAHM(62.91,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to name containers that are used by lab to ship specimens to other testing facilities. Enter the name of containers using a standard nomenclature, such as tube, plastic, 2ml. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PACKAGING;2:PRIMARY;3:ALIQUOT;",
+      "helpText": "This field describes the type of shipping container, whether it is the original specimen container (primary), a container that the specimen is transferred for shipping purposes (aliquot) or the container which is used to ship the specimens to another facility (packaging).  ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

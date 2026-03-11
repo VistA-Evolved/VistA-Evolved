@@ -1,0 +1,65 @@
+{
+  "fileNumber": 420.18,
+  "fileName": "PRCD REQUIRED FIELDS",
+  "globalRoot": "420.18IP",
+  "globalReference": "^PRCD(420.18,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FUND",
+      "dataType": "POINTER",
+      "rawType": "RP420.14'",
+      "required": true,
+      "pointerTo": 420.14,
+      "helpText": "This is used to store FUND data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOCUMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP420.16'",
+      "required": true,
+      "pointerTo": 420.16,
+      "helpText": "This is used to store DOCUMENT TYPE data. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "RP420.17'",
+      "required": true,
+      "pointerTo": 420.17,
+      "helpText": "This is used to store DATA ELEMENT data. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATA REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;O:OPTIONAL;",
+      "helpText": "This is used to store DATA REQUIRED data. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "UNQ", "field": },
+    {"name": "UNQ2", "field": },
+    {"name": "420.18", "field": .01, "type": "regular"},
+    {"name": "420.18", "field": .01, "type": "regular"},
+    {"name": "420.18", "field": 1, "type": "regular"},
+    {"name": "420.18", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCD(420.16,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(420.16,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCD(420.17,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(420.17,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

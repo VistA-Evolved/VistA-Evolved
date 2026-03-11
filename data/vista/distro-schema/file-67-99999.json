@@ -1,0 +1,47 @@
+{
+  "fileNumber": 67.99999,
+  "fileName": "ARCHIVED LAB MONTHLY WORKLOADS",
+  "globalRoot": "67.99999",
+  "globalReference": "^LAR(67.99999,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRIMARY INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " The reporting institution for this report ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINT NAME INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reporting institution for this report ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "SUBFILE",
+      "rawType": "67.9999901A",
+      "required": false,
+      "helpText": "  This field contains what division this site is identified by. In most cases the primary and the division are one in the same. This is field becomes very important a sites which have multi-divisional status. ",
+      "isMultiple": true,
+      "subFileNumber": 67.9999901,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "67.99999", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

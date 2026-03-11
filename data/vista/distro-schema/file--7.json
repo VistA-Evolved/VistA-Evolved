@@ -1,0 +1,263 @@
+{
+  "fileNumber": .7,
+  "fileName": "MUMPS OPERATING SYSTEM",
+  "globalRoot": ".7",
+  "globalReference": "^DD(\"OS\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of a MUMPS operating system that is supported by VA FileMan. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BREAK LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "MUMPS code to enable terminal break, i.e., to allow the user to interrupt processing with <CTRL-C>. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GLOBAL LENGTH (MAX)",
+      "dataType": "NUMERIC",
+      "rawType": "RN",
+      "required": true,
+      "helpText": "Maximum allowable length of a global. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ROUTINE SIZE (MAX)",
+      "dataType": "NUMERIC",
+      "rawType": "RN",
+      "required": true,
+      "helpText": "Maximum allowable size of a routine. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CLOSING PRINCIPAL DEVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALLOWED;",
+      "helpText": "Is closing a job's principal device allowed? ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEW COMMAND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPPORTED;",
+      "helpText": "Is the NEW command supported? ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INDIVIDUAL SUBSCRIPT LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "helpText": "Maximum length of an individual subscript. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SAVE SYMBOL TABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that saves the contents of the local symbol table. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RIGHT MARGIN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Sets the $I width to X characters. If X=0, then the line in set to no wrap. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CHECK EXISTENCE OF UCI",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Returns Y'=\"\" if X is a valid UCI name. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ECHO OFF",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Turn off echo to the $I device. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ECHO ON",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Turn on echo to the $I device. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TURN OFF READ TERMINATORS",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Turns off all controls as terminators. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TURN ON READ TERMINATORS",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Turns on all controls as terminators. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "GET READ TERMINATOR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Returns in Y what terminated the last READ. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DISABLE TYPE AHEAD BUFFERING",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Turn off the TYPE-AHEAD for the device $I. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ENABLE TYPE AHEAD BUFFERING",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Allow TYPE-AHEAD for the device $I. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 419,
+      "fieldName": "MINIMUM SAFE $S",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "helpText": "The minimum value for $S that will allow routines to process successfully. ",
+      "fieldNumber_": 419
+    },
+    {
+      "fieldNumber": 1820,
+      "fieldName": "ROUTINE EXISTENCE TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that tests for the existence of a routine. ",
+      "fieldNumber_": 1820
+    },
+    {
+      "fieldNumber": 2425,
+      "fieldName": "SET $X & $Y FROM 'IOX' & 'IOY'",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code to XECUTE to move the position of the cursor to the position specified by the variables IOX and IOY. ",
+      "fieldNumber_": 2425
+    },
+    {
+      "fieldNumber": 2619,
+      "fieldName": "ZSAVE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that will save a routine to disk.  The name of the routine must be in variable X.  The source code of the routine should be stored in ^UTLITY($J,0,%Y).  Each node of the array will become a line of the routine. ",
+      "fieldNumber_": 2619
+    },
+    {
+      "fieldNumber": 2620,
+      "fieldName": "DELETE ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Delete the routine named in X from the UCI. ",
+      "fieldNumber_": 2620
+    },
+    {
+      "fieldNumber": 2621,
+      "fieldName": "LOAD ROUTINE INTO ARRAY",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Load routine X into @(DIE_\"XCNP,0)\". ",
+      "fieldNumber_": 2621
+    },
+    {
+      "fieldNumber": 2622,
+      "fieldName": "SELECT ROUTINES",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Returns the user's selection of routines in ^UTILITY($J,\"routine name\"). ",
+      "fieldNumber_": 2622
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "HIGHEST CHARACTER VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that sets into the \"Y\" variable the highest ('stop') character for the current MUMPS environment ",
+      "fieldNumber_": 21400
+    },
+    {
+      "fieldNumber": 190416,
+      "fieldName": "WRITE FROM SDP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that READs data from SDP and WRITEs it to a device.  The $I value of the SDP device should be in variable DIO and the $I value for the output device in IO.  The DLP variable should contain the open parameters of the SDP device. ",
+      "fieldNumber_": 190416
+    },
+    {
+      "fieldNumber": 190416.1,
+      "fieldName": "FIND SDP END",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MUMPS code that tests for the end of SDP. ",
+      "fieldNumber_": 190416.1
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

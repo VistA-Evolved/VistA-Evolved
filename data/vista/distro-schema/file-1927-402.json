@@ -1,0 +1,146 @@
+{
+  "fileNumber": 1927.402,
+  "fileName": "NUPA CARE PLAN IVS",
+  "globalRoot": "1927.402",
+  "globalReference": "^NUPA(1927.402,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4'",
+      "required": true,
+      "pointerTo": 1927.4,
+      "helpText": "The care plan that this IV is associated to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The location of the IV in the patient's body. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OTHER LOCATION",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4022",
+      "required": false,
+      "helpText": "The location of the IV in case it's not one of the pre-defined locations. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.4022,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the IV was inserted. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SIZE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The size of the IV. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OTHER SIZE",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4025",
+      "required": false,
+      "helpText": "The size of the IV in case it's not one of the pre-defined sizes. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.4025,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IV DISCONTINUE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the IV was discontinued. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DRESSING CHANGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the IV dressing was changed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TUBING CHANGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the IV tubing was last changed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CENTRAL;P:PERIPHERAL;D:DIALYSIS;",
+      "helpText": "Is the IV a Central Line, Peripheral Line, or Dialysis Access? ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LINE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "Type of Central Line: Implanted port - Single Lumen, Implanted port - Double Lumen, etc. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "IMPREGNATED WITH ANTISEPTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the Central Line impregnated with antiseptic and/or antibiotic? ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "POWER INJECTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the Central Line power injectable? ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.402", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^NUPA(1927.41,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1927.41,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

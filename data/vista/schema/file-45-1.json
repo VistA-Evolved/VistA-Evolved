@@ -1,0 +1,87 @@
+{
+  "fileNumber": 45.1,
+  "fileName": "SOURCE OF ADMISSION",
+  "globalRoot": "45.1I",
+  "globalReference": "^DIC(45.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PTF CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the source of admission for a PTF entry. This is a two character code in the format of one letter followed by an alpha. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the full name of the source of admission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the source of admission as it would appear on print-outs or displays. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADMIT TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P405.2'",
+      "required": true,
+      "pointerTo": 405.2,
+      "helpText": "This field contains the admission type for this source of admission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEANS TEST X FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter 'YES' if this source of admission should have the means test category of X associated with it for PTF records. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATION TYPE",
+      "dataType": "POINTER",
+      "rawType": "45.11PA",
+      "required": false,
+      "helpText": "Station type (i.e. VA facility, military facility, etc.) ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PLACE OF ADMISSION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:HOSPITAL;2:NHCU;3:DOMICILIARY;4:MILITARY HOSPITAL;5:CNH;",
+      "helpText": "This field indicates where the admission took place.  There are five possible places:           nursing home            domiciliary           hospital           military hospital           community nursing home ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "45.1", "field": .01, "type": "regular"},
+    {"name": "45.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": 11, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(45.1,11,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,11)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

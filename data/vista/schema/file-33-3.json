@@ -1,0 +1,68 @@
+{
+  "fileNumber": 33.3,
+  "fileName": "COMPACT ACT TRANSACTION LOG",
+  "globalRoot": "33.3",
+  "globalReference": "^DGCOMP(33.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ29",
+      "length": 29,
+      "required": true,
+      "helpText": "This field is the Integration Control Number (ICN), i.e., the unique patient identifier, of the patient for which the COMPACT Act Admin Eligibility status is needed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CALLING ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This field is the routine that calls DGREGEEWS. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUEST DATE TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date and time a request was made to the Enrollment and Eligibility (EE) Webservice from the DGREGEEWS routine. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATA RESPONSE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is the response received back in the variable DGRESP from the Enrollment and Eligibility (EE) Webservice. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESPONSE DATE TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date and time that the Enrollment and Eligibility (EE) Webservice sent a response back from the DGREGEEWS call. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "33.3", "field": .01, "type": "regular"},
+    {"name": "33.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

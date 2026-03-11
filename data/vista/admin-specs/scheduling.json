@@ -1,0 +1,6150 @@
+{
+  "id": "scheduling",
+  "name": "Appointment Scheduling",
+  "description": "Clinic setup, appointment types, scheduling, check-in/out",
+  "vdlManual": "pims-registration-scheduling-tm.pdf",
+  "generatedAt": "2026-03-11T04:21:11.846Z",
+  "files": {
+    "count": 5,
+    "items": [
+      {
+        "fileNumber": 44,
+        "fileName": "File #44",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 409.84,
+        "fileName": "File #409.84",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 409.85,
+        "fileName": "File #409.85",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 44.003,
+        "fileName": "File #44.003",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 409.68,
+        "fileName": "File #409.68",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 169,
+    "items": [
+      {
+        "name": "SDOE GET DIAGNOSES",
+        "tag": "GETDX",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns an array of diagnoses for an encounter. Note: For encounters before 10/1/96, only scheduling data in the OUTPATIENT DIAGNOSIS (#409.43) file may exist. It will only exist if the site required diagnoses as part of the check out process. This RPC will attempt t"
+      },
+      {
+        "name": "SDOE GET PROVIDERS",
+        "tag": "GETPRV",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a subscripted array of providers for an encounter. Note: For encounters before 10/1/96, only scheduling data in the OUTPATIENT PROVIDER (#409.44) file may exist. It will only exist if the site required provider as part of the check out process.  This RPC will"
+      },
+      {
+        "name": "SDOE GET PROCEDURES",
+        "tag": "GETCPT",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a subscripted array of CPTs for an encounter. Note: For encounters before 10/1/96, only scheduling data in the SCHEDULING VISITS  (#409.5) file may exist. It will only exist if the site required procedures as part of the check out process.  This RPC will atte"
+      },
+      {
+        "name": "SDOE ASSIGNED A PROVIDER",
+        "tag": "PRV",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one provider has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE ASSIGNED A DIAGNOSIS",
+        "tag": "DX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one diagnoses has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE ASSIGNED A PROCEDURE",
+        "tag": "CPT",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one procedure has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND PROVIDER",
+        "tag": "FINDPRV",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PRACTITIONER ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific provider is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND DIAGNOSIS",
+        "tag": "FINDDX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIAGNOSIS IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific diagnosis is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND PROCEDURE",
+        "tag": "FINDCPT",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CPT IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific procedure is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND FIRST STANDALONE",
+        "tag": "EXAE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the first the first standalone add/edit for a patient in a specified date range. Use same date for begin and end dates for specific (single) date check. Standalone encounter is an e"
+      },
+      {
+        "name": "SDOE GET PRIMARY DIAGNOSIS",
+        "tag": "GETPDX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of the primary diagnosis code (ICD) for an encounter.   Note: For encounters before 10/1/96, this RPC will always return 0. This primary diagnosis was not retrieved nor stored by the system for these 'old' encounters. "
+      },
+      {
+        "name": "SDOE FIND FIRST ENCOUNTER",
+        "tag": "EXOE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the first encounter for a patient in a specified date range. "
+      },
+      {
+        "name": "SDOE FIND LAST STANDALONE",
+        "tag": "GETLAST",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the last standalone add/edit for a patient in a specified date range. Standalone encounter is an encounter with no parent and the originating process is 'Stop Code Addition'. "
+      },
+      {
+        "name": "SDOE GET GENERAL DATA",
+        "tag": "GETGEN",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the Oth and other nodes of an Outpatient Encounter entry. "
+      },
+      {
+        "name": "SDOE PARSE GENERAL DATA",
+        "tag": "PARSE",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER DATA",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "ENCOUNTER PARSE FORMAT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will parse the data returned by the 'SDOE GET GENERAL DATA' RPC into individual field nodes.  "
+      },
+      {
+        "name": "SDOE GET ZERO NODE",
+        "tag": "GETOE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the zeroth node of an Outpatient Encounter. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR DATES",
+        "tag": "LIST",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified date range. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR PAT",
+        "tag": "LISTPAT",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified patient and specified date range. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR VISIT",
+        "tag": "LISTVST",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VISIT IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified visit. "
+      },
+      {
+        "name": "SD W/L RETRIVE FULL DATA",
+        "tag": "OUTPUT",
+        "routine": "SDWLRP1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Patient IEN (DFN)",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns a Wait List data in SDWL(409.3,DA,0). This will only  return the zero (0) node of the file. "
+      },
+      {
+        "name": "SD W/L CREATE FILE",
+        "tag": "INPUT",
+        "routine": "SDWLRP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC creates a Patient Wait List file for PCMM (GUI). "
+      },
+      {
+        "name": "SD W/L RETRIVE BRIEF",
+        "tag": "OUTPUT1",
+        "routine": "SDWLRP1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC retrieves a brief output for Wait List data for a specific  Patient. "
+      },
+      {
+        "name": "SD W/L RETRIVE MEDICAL REVIEW",
+        "tag": "OUTPUT2",
+        "routine": "SDWLRP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE DISPOSITION",
+        "tag": "OUTPUT3",
+        "routine": "SDWLRP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE INSTITUTION(#4)",
+        "tag": "OUTIN",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE CLINIC(#409.32)",
+        "tag": "OUTSC0",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE HOSP LOC(#44)",
+        "tag": "OUTSC2",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE TEAM(#404.51)",
+        "tag": "OUTST",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE TM POS(404.57)",
+        "tag": "OUTSP",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE SER/SP(409.31)",
+        "tag": "OUTSS",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L RETRIVE PERSON(200)",
+        "tag": "OUTPROV",
+        "routine": "SDWLRP2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L PRIORITY(#409.3)",
+        "tag": "SDPRIOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L REQ BY(409.3)",
+        "tag": "SDREQOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L TYPE(409.3)",
+        "tag": "SDTYOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L DISPOSITION(409.3)",
+        "tag": "SDDISOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L CURRENT STATUS(409.3)",
+        "tag": "SDSTOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L PACKAGE(409.3)",
+        "tag": "SDPACOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L NEW ENROLLEE(409.3)",
+        "tag": "SDNEOUT",
+        "routine": "SDWLRP3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L CREATE DISPOSITION",
+        "tag": "INPUTD",
+        "routine": "SDWLRP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L CREATE M/R",
+        "tag": "INPUTMR",
+        "routine": "SDWLRP1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD W/L IMPORT API",
+        "tag": "INPUT",
+        "routine": "SDWLRP4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "SD GET PATIENT APPOINTMENTS",
+        "tag": "GETAPTS",
+        "routine": "SDMRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD GET CLINIC DETAILS",
+        "tag": "GETCLN",
+        "routine": "SDMRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD GET CLINICS BY NAME",
+        "tag": "LSTCLNS",
+        "routine": "SDMRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SEARCH",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD APPOINTMENT MAKE",
+        "tag": "MAKE",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "APPDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LVL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD APPOINTMENT CHECK",
+        "tag": "CHKAPP",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD APPOINTMENT CHECK-IN",
+        "tag": "CHECKIN",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD APPOINTMENT CANCEL",
+        "tag": "CANCEL",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REMARKS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD APPOINTMENT LIST BY NAME",
+        "tag": "LSTAPPT",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SEARCH",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SD GET APPOINTMENT TYPE",
+        "tag": "GETAPPT",
+        "routine": "SDMRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TYPE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "SDEC ACCGROUP",
+        "tag": "ACCGROUP",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return active entries from the SDEC ACCESS GROUP file 409.822 "
+      },
+      {
+        "name": "SDEC ACCTYPE",
+        "tag": "ACCTYPE",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return active entries from the SDEC ACCESS TYPE file 409.823 "
+      },
+      {
+        "name": "SDEC PTLOOKRS",
+        "tag": "PTLOOKRS",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LASTSUB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "GET Patients that match the partial lookup. The partial lookup can be a partial name, Date of Birth, Chart Number, SSN, or empty which will return all patients. "
+      },
+      {
+        "name": "SDEC WAITLIST",
+        "tag": "WAITLIST",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Collect Wait List for a Given Resource "
+      },
+      {
+        "name": "SDEC UNREGEV",
+        "tag": "UNREGEV",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECEVENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECIP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECPORT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Called by client to Unregister client's interest in SDECEVENT "
+      },
+      {
+        "name": "SDEC TPBLKOV",
+        "tag": "TPBLKOV",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECSTART",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECEND",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "TYPE BLOCKS OVERLAP "
+      },
+      {
+        "name": "SDEC SPACEBAR",
+        "tag": "SPACEBAR",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECDIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECVAL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Update ^DISV with most recent lookup value SDECVAL from file SDECDIC "
+      },
+      {
+        "name": "SDEC SETFAC",
+        "tag": "SETFAC",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECFAC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Remote procedure to Set the current facility/division for a given user. "
+      },
+      {
+        "name": "SDEC SEARCHAV",
+        "tag": "SEARCHAV",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECSTRT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECEND",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECTYPES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECAMPM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECWKDY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Searches availability database for availability blocks between      SDECSTRT and SDECEND for each of the resources in SDECRES. The av blocks must be one of the types in SDECTYPES, must be  AM or PM depending on value in SDECAMPM and  must be on one of the weekdays listed in SDECWKDY. "
+      },
+      {
+        "name": "SDEC SUSRINFO",
+        "tag": "SUSRINFO",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "SCHEDULING USER INFO "
+      },
+      {
+        "name": "SDEC RESOURCE",
+        "tag": "RESOURCE",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 7,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDACT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDTYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MAXREC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LASTSUBI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns Recordset with ALL RESOURCE names. Inactive RESOURCES are NOT filtered out. "
+      },
+      {
+        "name": "SDEC RESUSER",
+        "tag": "RESUSER",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns entries from the SDEC RESOURCE USER file. "
+      },
+      {
+        "name": "SDEC RESLETRS",
+        "tag": "RESLETRS",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SDECLIST",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDLTR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDNOS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDCAN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return recordset of RESOURCES and associated LETTERS. Used in generating rebook letters for a clinic. "
+      },
+      {
+        "name": "SDEC RESLETRF",
+        "tag": "RESLETRF",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECLT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return formatted text output of the Resource's Letter - either \"LETTER  TEXT\" (also used as Reminder Letter), NO SHOW LETTER, or CLINIC  CANCELLATION LETTER. "
+      },
+      {
+        "name": "SDEC RESGRPUS",
+        "tag": "RESGRPUS",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns ADO Recordset with all ACTIVE resource group names to which user  has access based on entries in SDEC RESOURCE USER file If SDECDUZ=0 then returns all department names for current DUZ If user SDECDUZ possesses the key SDECZMGR then ALL resource group names are returned regardless of whether "
+      },
+      {
+        "name": "SDEC REGEVENT",
+        "tag": "REGEVENT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECEVENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECIP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECPORT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Called by client to inform the server of client's interest in SDECEVENT "
+      },
+      {
+        "name": "SDEC SETRBOOK",
+        "tag": "SETRBOOK",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECAPPT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Sets rebook date into appointment "
+      },
+      {
+        "name": "SDEC REBKNEXT",
+        "tag": "REBKNEXT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECTPID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "GET - find next ACCESS BLOCK in resource SDECRES after SDECSTART. "
+      },
+      {
+        "name": "SDEC REBKLIST",
+        "tag": "REBKLIST",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECLIST",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return patient appointments used in listing Re-Booked appointments. "
+      },
+      {
+        "name": "SDEC RAISEVNT",
+        "tag": "RAISEVNT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SDECEVENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECPARAM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECSIP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECSPT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Raise Event "
+      },
+      {
+        "name": "SDEC PROVCLIN",
+        "tag": "PROVCLIN",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECPRV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": " Remote procedure to return the Providers that are assigned to a given  Clinic. "
+      },
+      {
+        "name": "SDEC APPTLETR",
+        "tag": "APPTLETR",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECAPID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": " LT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Print Appointment Letter. Print appointment letter. Currently supports No-Show, Cancel by Patient,  and Cancel by Clinic. "
+      },
+      {
+        "name": "SDEC PATAPPTH",
+        "tag": "PATAPPTH",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Remote procedure to return the Patient appointment history in formatted  text. "
+      },
+      {
+        "name": "SDEC PATAPPTD",
+        "tag": "PATAPPTD",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return recordset of patient appointments used in listing a patient's appointments and generating patient letters. "
+      },
+      {
+        "name": "SDEC OVBOOK",
+        "tag": "OVBOOK",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDCL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NSDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECRES",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Check if Overbook is allowed for given Clinic and Date. "
+      },
+      {
+        "name": "SDEC NOSHOPAT",
+        "tag": "NOSHOPAT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDCL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "COLLECT NO-SHOW DATA for Patient "
+      },
+      {
+        "name": "SDEC NOSHOW",
+        "tag": "NOSHOW",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SDECAPTID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECNS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USERIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Sets appointment noshow flag in SDEC APPOINTMENT file "
+      },
+      {
+        "name": "SDEC NEWPERS",
+        "tag": "NEWPERS",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "SDCLASS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDPART",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MAXREC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LSUB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "return entries from the NEW PERSON table 200 that are 'active' AND have  PROVIDER CLASS defined. "
+      },
+      {
+        "name": "SDEC WLSET",
+        "tag": "WLSET",
+        "routine": "SDEC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "INP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Waitlist Set "
+      },
+      {
+        "name": "SDEC WLGET",
+        "tag": "WLGET",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 7,
+        "params": [
+          {
+            "name": "WLIEN1",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MAXREC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDBEG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDEND",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "LASTSUB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDTOP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Waitlist GET "
+      },
+      {
+        "name": "SDEC WLCLOSE",
+        "tag": "WLCLOSE",
+        "routine": "SDEC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "INP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": " Remove a Patient from the Wait List by setting the STATUS to CLOSED  and updating the DISPOSITION fields. "
+      },
+      {
+        "name": "SDEC SVSPALL",
+        "tag": "SVSPALL",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": " Return the IEN and NAME for all entries in the SD WL SERVICE/SPECIALTY  file "
+      },
+      {
+        "name": "SDEC PROVALL",
+        "tag": "PROVALL",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECCL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return all providers for a given clinic from the HOSPITAL LOCATION file 44 "
+      },
+      {
+        "name": "SDEC CLINALL",
+        "tag": "CLINALL",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return the IEN and NAME for all entries in the SD WL CLINIC LOCATION file "
+      },
+      {
+        "name": "SDEC IMHERE",
+        "tag": "IMHERE",
+        "routine": "SDEC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": " Returns a simple value to client.  Used to establish continued existence  of the client to the server; resets the server READ timeout. "
+      },
+      {
+        "name": "SDEC PWH",
+        "tag": "PWH",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": " Return a list of entries from the HEALTH SUMMARY PWH TYPES file. "
+      },
+      {
+        "name": "SDEC HOSPLOC",
+        "tag": "HOSPLOC",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Get HOSPITAL LOCATIONS "
+      },
+      {
+        "name": "SDEC HOLIDAY",
+        "tag": "HOLIDAY",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECBD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Remote Procedure to return data for the HOLIDAY file. "
+      },
+      {
+        "name": "SDEC HLTHSUMM",
+        "tag": "HLTHSUMM",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": " Returns the text for a Health Summary report. "
+      },
+      {
+        "name": "SDEC RESGPUSR",
+        "tag": "RESGPUSR",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns ADO Recordset with all ACTIVE GROUP/RESOURCE combinations to which user has access based on entries in SDEC RESOURCE USER file If SDECDUZ=0 then returns all ACTIVE GROUP/RESOURCE combinations for  current DUZ If user SDECDUZ possesses the key SDECZMGR then ALL ACTIVE resource group names are"
+      },
+      {
+        "name": "SDEC GETFAC",
+        "tag": "GETFAC",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECDUZ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Remote procedure to return the currently assigned facilities/divisions  for a given user. "
+      },
+      {
+        "name": "SDEC GETREGA",
+        "tag": "GETREGA",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "return basic reg info/demographics for given patient "
+      },
+      {
+        "name": "SDEC ACCGPTYG",
+        "tag": "ACCGPTYG",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Get access group types "
+      },
+      {
+        "name": "SDEC EHRPT",
+        "tag": "EHRPT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECWID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECDFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Raise patient selection event to EHR "
+      },
+      {
+        "name": "SDEC EDITAPPT",
+        "tag": "EDITAPPT",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SDECAPTID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECNOTE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECLEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Edit appointment (only 'note text' can be edited.) "
+      },
+      {
+        "name": "SDEC DELRU",
+        "tag": "DELRU",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Delete Resource User from SDEC RESOURCE USER file "
+      },
+      {
+        "name": "SDEC DELRESGP",
+        "tag": "DELRESGP",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECGRP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Deletes entry name SDECGRP from SDEC RESOURCE GROUP file "
+      },
+      {
+        "name": "SDEC DELRGI",
+        "tag": "DELRGI",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECIEN1",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Deletes entry SDECIEN1 from entry SDECIEN in the SDEC RESOURCE GROUP file. "
+      },
+      {
+        "name": "SDEC DELAGI",
+        "tag": "DELAGI",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SDECIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDECIEN1",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Delete entry with the given Access Group and Access Type from the SDEC  ACCESS GROUP TYPE file. "
+      },
+      {
+        "name": "SDEC DELAG",
+        "tag": "DELAG",
+        "routine": "SDEC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SDECGRP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Deletes entry having IEN SDECGRP from SDEC ACCESS GROUP file. Also deletes all entries in SDEC ACCESS GROUP TYPE that point to this  group. Return recordset containing error message or \"\" if no error. "
+      },
+      {
+        "name": "SDES SET APPT CHECK-IN STEP",
+        "tag": "SETAPPTCKNSTEP",
+        "routine": "SDESCKNSTEP",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "SET CHECK-IN STATUS FOR PATIENT IN 409.843   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES SET CHECK-IN STEP",
+        "tag": "SETCKNSTEP",
+        "routine": "SDESCKNSTEP",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CREATE NEW STATUS IN FILE 409.842   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES EDIT CHECK-IN STEP",
+        "tag": "EDITCKNSTEP",
+        "routine": "SDESCKNSTEP",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "EDIT STATUS ENTRY IN 409.842   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET CHECK-IN STEP",
+        "tag": "GETCKNSTEP",
+        "routine": "SDESCKNSTEP",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "GET STATUS ENTRY FROM 409.842   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET CHECK-IN STEPS",
+        "tag": "GETCKNSTEPS",
+        "routine": "SDESCKNSTEP",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "GET ALL STATUS ENTRIES IN 409.842   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPTS BY RESOURCE",
+        "tag": "APPTBYRESOURCE",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "RESIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDBEG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDEND",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "For a given clinic and date range, return general appointment data in JSON format   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET INSURANCE VERIFY REQ",
+        "tag": "INSURVERIFYREQ",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "DETERMINE IF A PATIENT'S INSURANCE NEEDS VERIFIED.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT REQ BY IEN",
+        "tag": "GETREQBYREQIEN",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ARIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get a specific appointment request based on IEN (409.85)   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT REQ BY PATIENT",
+        "tag": "GETREQSBYDFN",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of appointment requests based on patient DFN   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES DISPOSITION APPT REQ",
+        "tag": "DISPOSITION",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "ARIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DISP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DISPBY",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DISPDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PATIENT-ENTERED COMMENTS",
+            "type": "LIST",
+            "required": false
+          }
+        ],
+        "description": "Dispositioning/closing an appointment request   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE APPT REQ",
+        "tag": "CREATEREQUEST",
+        "routine": "SDESCREATEAPPREQ",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "REQUEST",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Creates new appointment request entry in File 409.85   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES EDIT APPT REQ",
+        "tag": "EDITREQUEST",
+        "routine": "SDESEDITAPPTREQ",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "REQUEST",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Allows editing of appointment requests.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES SEARCH CLINIC",
+        "tag": "CLINICRSCSEARCH",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SEARCHSTRING",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "GIVEN A STRING, RETURNS MATCHING CLINIC IENS AND NAMES.   FIRST 50 RESULTS.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE APPT BLK AND MOVE",
+        "tag": "BLOCKANDMOVE",
+        "routine": "SDES2SDECBLKMOVE",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "APPTIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SDRES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "APPTDT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "APPOINTMENT BLOCK AND MOVE.  THIS WILL MOVE AN APPOINTMENT TO A NEW CLINIC AND DATE/TIME, CANCEL THE ORIGINAL APPOINTMENT AND KEEP THE ORIGINAL SLOT BLOCKED SO IT CAN NOT BE REBOOKED.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES INACTIVATE/ZZ CLINIC",
+        "tag": "JSONINACTCLN",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "SDES RPC to INACTIVATE clinic from HOSPITAL LOCATION file (44) - single IEN   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET CLIN AVAILABILITY",
+        "tag": "GETCLAVAILABLTY",
+        "routine": "SDESCLINICAVAIL",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STARTDATETIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ENDDATETIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns available appointment slots within a given timeframe for a given clinic in JSON format.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE CLIN AVAILABILITY",
+        "tag": "SETCLINAVAIL",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "SDCLINIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIMES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SLOTS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Set the clinic availability.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CANCEL CLIN AVAILABILITY",
+        "tag": "CANCLAVAIL",
+        "routine": "SDESCCAVAIL",
+        "returnType": "ARRAY",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FULLPARTIAL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STARTDATETIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ENDDATETIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CANCELRSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Cancel Clinic Availability.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET USRPROFILE",
+        "tag": "GETUSRDTL",
+        "routine": "SDESGETUD",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "SECID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "SDES RPC to return IEN, username, options, and keys for given user.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES EDIT CLINIC AVAILABILITY",
+        "tag": "SETCLINAVAIL",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "SDCLINIC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIMES",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SLOTS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CREATE NEW SCHEDULING PATTERN FOR A CLINIC THAT HAS AN EXISTING PATTERN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET RECALL BY IEN",
+        "tag": "GETRECALLBYIEN",
+        "routine": "SDESGETRECALL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a single recall based on the IEN that is passed in.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET RECALLS BY DFN",
+        "tag": "GETRECALLSBYDFN",
+        "routine": "SDESGETRECALL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of recall requests based on patient DFN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES DISPOSITION RECALL REQ",
+        "tag": "DISPRECALL",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "RECALLIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "COMMENTS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "DISPOSITION and DELETE an entry from the RECALL REMINDERS file (403.5).  During the deletion of the entry, the new-style xref in 403.5 will  trigger the move of the data from 403.5 to the RECALL REMINDERS REMOVED  file (403.56).   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET STOPCD DETAIL",
+        "tag": "GETSTOPCODE",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLIN STOPCODE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC TO READ FROM CLINIC STOP FILE 40.7   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET PATCH NUMBER",
+        "tag": "GETPATCHNUM",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the last patch number that was installed on the system and the  date it was installed.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET USER PROFILE BY DUZ",
+        "tag": "GETUSRDTLDUZ",
+        "routine": "SDESGETUD",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "USER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC to get User Profile by DUZ.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES PRINT PATIENT APPTS",
+        "tag": "PRINTPATAPPTS",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Print All of a given patients appointments for the a given time range, if  time range not provided, will default to begin date of today (now) and  then 90 days from begin date.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET MISSION ACT ELIG",
+        "tag": "GETMISSIONELG",
+        "routine": "SDESMISSIONELG",
+        "returnType": "ARRAY",
+        "paramCount": 7,
+        "params": [
+          {
+            "name": "APPTREQIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "APPTREQTYP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "APPTDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FILEENTRYDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Create an RPC to calculate whether patient is mission act eligible based  on their appt request IEN, PID, and selected appointment date.   Use stop code to determine primary care vs specialty-verify stop codes  that are primary care.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET INSURANCE VERIFY LIST",
+        "tag": "INSURINDICATORS",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFNS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Given a list of Patient Data File Numbers (DFNs), return a list of  indicators.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE APPOINTMENTS",
+        "tag": "CREATEAPPTWRAPPR",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "APPTARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC creates an appointment entry in File 409.84, File 44, and File 2.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET CONSULTS BY IEN",
+        "tag": "GETCONSULTBYIEN",
+        "routine": "SDESGETCONSULTS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CONSULTIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns one ACTIVE or PENDING CONSULT for a patient in JSON format for   the Internal Entry Value (IEN) passed in.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET CONSULTS BY DFN",
+        "tag": "GETCONSULTSBYDFN",
+        "routine": "SDESGETCONSULTS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC returns list of Active or Pending Consults/Procedures by Patient DFN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT REQ LIST BY DFN",
+        "tag": "GETREQLISTBYDFN",
+        "routine": "SDESGETREQWRAPPR",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return all appointment requests, of all types (appt req,  consult, recall) based on a patient DFN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT CHECK-IN STEPS 2",
+        "tag": "GETAPPTCKNSTEPS",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get all statuses associated with an appointment IEN   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT CHECK-IN STEP 2",
+        "tag": "GETAPPTCKNSTEP",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns status if match is found in 409.843   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET PATIENT FLAGS",
+        "tag": "GETFLAGS",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRACKINGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return fugitive/felon flag and all the active National and  Local flags assigned to the given patient.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT REQ BY PAT ALL",
+        "tag": "GETREQSBYDFNALL",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STARTDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ENDDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of appointment requests based on patient DFN regardless of  status, with optional date range.    Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET APPT REQ BY PAT OPEN",
+        "tag": "GETREQSBYDFNOPEN",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of appointment requests with a status of Open based on patient DFN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES ADD PRIV USER",
+        "tag": "ADDUSR",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USERIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Add a privileged user to Hospital Location #44   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES DELETE PRIV USER",
+        "tag": "RMVUSR",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USERIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Delete a Privileged User from Hospital Location #44   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET DIVISION LIST",
+        "tag": "GETDIVISIONLIST",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "INP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRACKINGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns a list of division, given search the search text  provided. The division list comes from the MEDICAL CENTER DIVISION file  (#40.8).   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES READ PRIV USERS",
+        "tag": "RTNAUSR",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns all privileged users from Hospital Location file #44   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES DELETE PRIV USERS",
+        "tag": "RMVAUSR",
+        "routine": "SDES",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "CLINICIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "deletes all Privileged users from Hospital Location #44   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES SEARCH PRIVILEGED USER",
+        "tag": "SEARCHPRIVUSER",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USERNAMETOSEARCH",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC that allows users to search a person's name either partially or  fully. The RPC will perform a search that matches the search criteria  (3-35 characters), and then, retrieves and returns a list of ACTIVE users  from the NEW PERSON File #200 regardless if they are already a privileged  user "
+      },
+      {
+        "name": "SDES SEARCH PROVIDERS",
+        "tag": "PROVIDERSEARCH",
+        "routine": "SDESPROVSEARCH",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PROVIDERTOSEARCH",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RETURN ",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "Retrieve list of active providers with a given string.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET LETTER TYPES",
+        "tag": "GETLETTERTYPES",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns a list of the letter types from the LETTER TYPE file  (#407.6).   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET LETTERS BY TYPE",
+        "tag": "GETLETTERSBYTYPE",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TEXT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BRIEF",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EASTRCKNGNMBR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will retrieve a list of letters from the LETTER file ($407.5), given the letter type (required), and text to match (optional).   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES GET LETTER BY IEN",
+        "tag": "GETLETTERBYIEN",
+        "routine": "SDES2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EAS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns the full letter information from the LETTER file  (#407.5), given the letter IEN.   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE WALKIN APPT",
+        "tag": "CREATEWALKIN",
+        "routine": "SDESCRTWALKIN",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "WALKINARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Creates appointment request, appointment, and does check-in for walk-in  appointments.    Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDES CREATE VET REQ SCHED APPT",
+        "tag": "CREATEREQANDAPPT",
+        "routine": "SDESREQAPPCREATE",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "REQUESTARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC performs the following events: 1. Creates a NEW APPOINTMENT REQUEST in File #409.85, 2. Creates an appointment entry in File 409.84, File 44, and File 2, 3. Dispositions/Closes the appointment request in File #409.85   Can only be invoked by Acheron "
+      },
+      {
+        "name": "SDOE GET DIAGNOSES",
+        "tag": "GETDX",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns an array of diagnoses for an encounter. Note: For encounters before 10/1/96, only scheduling data in the OUTPATIENT DIAGNOSIS (#409.43) file may exist. It will only exist if the site required diagnoses as part of the check out process. This RPC will attempt t"
+      },
+      {
+        "name": "SDOE GET PROVIDERS",
+        "tag": "GETPRV",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a subscripted array of providers for an encounter. Note: For encounters before 10/1/96, only scheduling data in the OUTPATIENT PROVIDER (#409.44) file may exist. It will only exist if the site required provider as part of the check out process.  This RPC will"
+      },
+      {
+        "name": "SDOE GET PROCEDURES",
+        "tag": "GETCPT",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a subscripted array of CPTs for an encounter. Note: For encounters before 10/1/96, only scheduling data in the SCHEDULING VISITS  (#409.5) file may exist. It will only exist if the site required procedures as part of the check out process.  This RPC will atte"
+      },
+      {
+        "name": "SDOE ASSIGNED A PROVIDER",
+        "tag": "PRV",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one provider has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE ASSIGNED A DIAGNOSIS",
+        "tag": "DX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one diagnoses has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE ASSIGNED A PROCEDURE",
+        "tag": "CPT",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether at least one procedure has been associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND PROVIDER",
+        "tag": "FINDPRV",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PRACTITIONER ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific provider is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND DIAGNOSIS",
+        "tag": "FINDDX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIAGNOSIS IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific diagnosis is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND PROCEDURE",
+        "tag": "FINDCPT",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CPT IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a boolean indicator on whether a specific procedure is associated with an encounter. "
+      },
+      {
+        "name": "SDOE FIND FIRST STANDALONE",
+        "tag": "EXAE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the first the first standalone add/edit for a patient in a specified date range. Use same date for begin and end dates for specific (single) date check. Standalone encounter is an e"
+      },
+      {
+        "name": "SDOE GET PRIMARY DIAGNOSIS",
+        "tag": "GETPDX",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of the primary diagnosis code (ICD) for an encounter.   Note: For encounters before 10/1/96, this RPC will always return 0. This primary diagnosis was not retrieved nor stored by the system for these 'old' encounters. "
+      },
+      {
+        "name": "SDOE FIND FIRST ENCOUNTER",
+        "tag": "EXOE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the first encounter for a patient in a specified date range. "
+      },
+      {
+        "name": "SDOE FIND LAST STANDALONE",
+        "tag": "GETLAST",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SEARCH FLAGS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the internal entry number of an OUTPATIENT ENCOUNTER file (#409.68) entry for the last standalone add/edit for a patient in a specified date range. Standalone encounter is an encounter with no parent and the originating process is 'Stop Code Addition'. "
+      },
+      {
+        "name": "SDOE GET GENERAL DATA",
+        "tag": "GETGEN",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the Oth and other nodes of an Outpatient Encounter entry. "
+      },
+      {
+        "name": "SDOE PARSE GENERAL DATA",
+        "tag": "PARSE",
+        "routine": "SDOERPC",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ENCOUNTER DATA",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "ENCOUNTER PARSE FORMAT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will parse the data returned by the 'SDOE GET GENERAL DATA' RPC into individual field nodes.  "
+      },
+      {
+        "name": "SDOE GET ZERO NODE",
+        "tag": "GETOE",
+        "routine": "SDOERPC",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ENCOUNTER IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns the zeroth node of an Outpatient Encounter. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR DATES",
+        "tag": "LIST",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified date range. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR PAT",
+        "tag": "LISTPAT",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "BEGIN DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "END DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified patient and specified date range. "
+      },
+      {
+        "name": "SDOE LIST ENCOUNTERS FOR VISIT",
+        "tag": "LISTVST",
+        "routine": "SDOERPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "VISIT IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) returns a list of Outpatient Encounters for a specified visit. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 63,
+    "items": [
+      {
+        "name": "SD INACTIVATE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD REACT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD SDCLK",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD CANCEL APPOINTMENT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD AMB PROC CPT GROUP EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD DISPLAY AVAIL REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD NOSHOW REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD AMB PROC MANAGEMENT REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD PARM PARAMETERS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD VISIT REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD SHARING AGREEMENT UPDATE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST MENU",
+        "type": "menu",
+        "securityKey": "SDWL MENU",
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST ENTER/EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST DISPOSITION ENTRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST INQUIRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST REPORTS MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST OVERDUE REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST PRM CARE/TEAM",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST PAR ENTER/EDIT",
+        "type": "run-routine",
+        "securityKey": "SDWL PARAMETER",
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST APPT REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST STAT REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST GUI",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST ENROLL REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST TRANS TO AAC",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST CLEANUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD CLN STOP CODE REP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST REOPEN ENTRIES",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD EWL BACKGROUND JOB",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SD WAIT LIST UTILITIES",
+        "type": "menu",
+        "securityKey": "SDWL MENU",
+        "displayText": ""
+      },
+      {
+        "name": "SD IMO EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC IDX REFRESH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC ACCESS BLOCK MAINTENANCE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC REPORT DATA",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC INITIAL CLEANUP UTILITY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC REQ REOPENED BY SDCANCEL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC NO RES APPT FIX",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC NO RES APPT AUTO FIX",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC NULL RESOURCE",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC MISSING RESOURCE",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC RESOURCE EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC APPOINTMENT INQUIRY",
+        "type": "inquire",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC RESOURCE INQUIRY",
+        "type": "inquire",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC ENCOUNTER INQUIRY",
+        "type": "inquire",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC APPOINTMENT EDIT",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC RESOURCE CREATE",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC NO RES APPT REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC AUDIT REPORT JOB",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC COMPILE AUDIT REPORT",
+        "type": "run-routine",
+        "securityKey": "SDECZMGR",
+        "displayText": ""
+      },
+      {
+        "name": "SDEC RELEASE LOCKS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC PRINT AUDIT REPORT",
+        "type": "print",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC APPT-ENC STATUS LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC HELP PANE EDIT (LOCAL)",
+        "type": "edit",
+        "securityKey": "SDEC HELP",
+        "displayText": ""
+      },
+      {
+        "name": "SDEC SETTINGS REMOTE UPDATE",
+        "type": "server",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC PENDING RTC - FULL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC PENDING RTC - DATE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC CANCEL COMMENTS - LOCAL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC RECALL REMINDERS CLEANUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC MRTC CHILD CLEANUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC DECEASED RECORD CLEANUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDEC DECEASED RECORD REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDES HASH ALL CLINICS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDES STUCK ORDER CLEANUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SDES OPEN VET REQUESTS RPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 312,
+    "items": [
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET DIAGNOSES",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PROVIDERS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PROCEDURES",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A PROVIDER",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A PROCEDURE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND PROVIDER",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PRACTITIONER ID:",
+        "rpcName": "SDOE FIND PROVIDER",
+        "paramName": "PRACTITIONER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIAGNOSIS IEN:",
+        "rpcName": "SDOE FIND DIAGNOSIS",
+        "paramName": "DIAGNOSIS IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND PROCEDURE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CPT IEN:",
+        "rpcName": "SDOE FIND PROCEDURE",
+        "paramName": "CPT IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PRIMARY DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET GENERAL DATA",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER DATA:",
+        "rpcName": "SDOE PARSE GENERAL DATA",
+        "paramName": "ENCOUNTER DATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER PARSE FORMAT:",
+        "rpcName": "SDOE PARSE GENERAL DATA",
+        "paramName": "ENCOUNTER PARSE FORMAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET ZERO NODE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR DATES",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR DATES",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VISIT IEN:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR VISIT",
+        "paramName": "VISIT IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Patient IEN (DFN):",
+        "rpcName": "SD W/L RETRIVE FULL DATA",
+        "paramName": "Patient IEN (DFN)",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SD GET PATIENT APPOINTMENTS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE:",
+        "rpcName": "SD GET PATIENT APPOINTMENTS",
+        "paramName": "DATE",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "SD GET CLINIC DETAILS",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH:",
+        "rpcName": "SD GET CLINICS BY NAME",
+        "paramName": "SEARCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START:",
+        "rpcName": "SD GET CLINICS BY NAME",
+        "paramName": "START",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NUMBER:",
+        "rpcName": "SD GET CLINICS BY NAME",
+        "paramName": "NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPDATE:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "APPDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYPE:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LEN:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "LEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LVL:",
+        "rpcName": "SD APPOINTMENT MAKE",
+        "paramName": "LVL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "SD APPOINTMENT CHECK",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SD APPOINTMENT CHECK",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE:",
+        "rpcName": "SD APPOINTMENT CHECK",
+        "paramName": "DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LEN:",
+        "rpcName": "SD APPOINTMENT CHECK",
+        "paramName": "LEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SD APPOINTMENT CHECK-IN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE:",
+        "rpcName": "SD APPOINTMENT CHECK-IN",
+        "paramName": "DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "SD APPOINTMENT CHECK-IN",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYPE:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REMARKS:",
+        "rpcName": "SD APPOINTMENT CANCEL",
+        "paramName": "REMARKS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH:",
+        "rpcName": "SD APPOINTMENT LIST BY NAME",
+        "paramName": "SEARCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START:",
+        "rpcName": "SD APPOINTMENT LIST BY NAME",
+        "paramName": "START",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NUMBER:",
+        "rpcName": "SD APPOINTMENT LIST BY NAME",
+        "paramName": "NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYPE:",
+        "rpcName": "SD GET APPOINTMENT TYPE",
+        "paramName": "TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECP:",
+        "rpcName": "SDEC PTLOOKRS",
+        "paramName": "SDECP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECC:",
+        "rpcName": "SDEC PTLOOKRS",
+        "paramName": "SDECC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LASTSUB:",
+        "rpcName": "SDEC PTLOOKRS",
+        "paramName": "LASTSUB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC WAITLIST",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECEVENT:",
+        "rpcName": "SDEC UNREGEV",
+        "paramName": "SDECEVENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIP:",
+        "rpcName": "SDEC UNREGEV",
+        "paramName": "SDECIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECPORT:",
+        "rpcName": "SDEC UNREGEV",
+        "paramName": "SDECPORT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECSTART:",
+        "rpcName": "SDEC TPBLKOV",
+        "paramName": "SDECSTART",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECEND:",
+        "rpcName": "SDEC TPBLKOV",
+        "paramName": "SDECEND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC TPBLKOV",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDIC:",
+        "rpcName": "SDEC SPACEBAR",
+        "paramName": "SDECDIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECVAL:",
+        "rpcName": "SDEC SPACEBAR",
+        "paramName": "SDECVAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC SETFAC",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECFAC:",
+        "rpcName": "SDEC SETFAC",
+        "paramName": "SDECFAC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECSTRT:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECSTRT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECEND:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECEND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECTYPES:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECTYPES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECAMPM:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECAMPM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECWKDY:",
+        "rpcName": "SDEC SEARCHAV",
+        "paramName": "SDECWKDY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC SUSRINFO",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDACT:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "SDACT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDTYPE:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "SDTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MAXREC:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "MAXREC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LASTSUBI:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "LASTSUBI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDIEN:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "SDIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECP:",
+        "rpcName": "SDEC RESOURCE",
+        "paramName": "SDECP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECLIST:",
+        "rpcName": "SDEC RESLETRS",
+        "paramName": "SDECLIST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDLTR:",
+        "rpcName": "SDEC RESLETRS",
+        "paramName": "SDLTR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDNOS:",
+        "rpcName": "SDEC RESLETRS",
+        "paramName": "SDNOS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCAN:",
+        "rpcName": "SDEC RESLETRS",
+        "paramName": "SDCAN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC RESLETRF",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECLT:",
+        "rpcName": "SDEC RESLETRF",
+        "paramName": "SDECLT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC RESGRPUS",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECEVENT:",
+        "rpcName": "SDEC REGEVENT",
+        "paramName": "SDECEVENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIP:",
+        "rpcName": "SDEC REGEVENT",
+        "paramName": "SDECIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECPORT:",
+        "rpcName": "SDEC REGEVENT",
+        "paramName": "SDECPORT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECAPPT:",
+        "rpcName": "SDEC SETRBOOK",
+        "paramName": "SDECAPPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDATE:",
+        "rpcName": "SDEC SETRBOOK",
+        "paramName": "SDECDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDATE:",
+        "rpcName": "SDEC REBKNEXT",
+        "paramName": "SDECDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC REBKNEXT",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECTPID:",
+        "rpcName": "SDEC REBKNEXT",
+        "paramName": "SDECTPID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECLIST:",
+        "rpcName": "SDEC REBKLIST",
+        "paramName": "SDECLIST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECEVENT:",
+        "rpcName": "SDEC RAISEVNT",
+        "paramName": "SDECEVENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECPARAM:",
+        "rpcName": "SDEC RAISEVNT",
+        "paramName": "SDECPARAM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECSIP:",
+        "rpcName": "SDEC RAISEVNT",
+        "paramName": "SDECSIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECSPT:",
+        "rpcName": "SDEC RAISEVNT",
+        "paramName": "SDECSPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECPRV:",
+        "rpcName": "SDEC PROVCLIN",
+        "paramName": "SDECPRV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECAPID:",
+        "rpcName": "SDEC APPTLETR",
+        "paramName": "SDECAPID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": " LT:",
+        "rpcName": "SDEC APPTLETR",
+        "paramName": " LT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC PATAPPTH",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC PATAPPTD",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCL:",
+        "rpcName": "SDEC OVBOOK",
+        "paramName": "SDCL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NSDT:",
+        "rpcName": "SDEC OVBOOK",
+        "paramName": "NSDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECRES:",
+        "rpcName": "SDEC OVBOOK",
+        "paramName": "SDECRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC NOSHOPAT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCL:",
+        "rpcName": "SDEC NOSHOPAT",
+        "paramName": "SDCL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECAPTID:",
+        "rpcName": "SDEC NOSHOW",
+        "paramName": "SDECAPTID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECNS:",
+        "rpcName": "SDEC NOSHOW",
+        "paramName": "SDECNS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USERIEN:",
+        "rpcName": "SDEC NOSHOW",
+        "paramName": "USERIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDATE:",
+        "rpcName": "SDEC NOSHOW",
+        "paramName": "SDECDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCLASS:",
+        "rpcName": "SDEC NEWPERS",
+        "paramName": "SDCLASS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDPART:",
+        "rpcName": "SDEC NEWPERS",
+        "paramName": "SDPART",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MAXREC:",
+        "rpcName": "SDEC NEWPERS",
+        "paramName": "MAXREC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LSUB:",
+        "rpcName": "SDEC NEWPERS",
+        "paramName": "LSUB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INP:",
+        "rpcName": "SDEC WLSET",
+        "paramName": "INP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "WLIEN1:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "WLIEN1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MAXREC:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "MAXREC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDBEG:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "SDBEG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDEND:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "SDEND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "LASTSUB:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "LASTSUB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDTOP:",
+        "rpcName": "SDEC WLGET",
+        "paramName": "SDTOP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INP:",
+        "rpcName": "SDEC WLCLOSE",
+        "paramName": "INP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECCL:",
+        "rpcName": "SDEC PROVALL",
+        "paramName": "SDECCL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECBD:",
+        "rpcName": "SDEC HOLIDAY",
+        "paramName": "SDECBD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC HLTHSUMM",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC RESGPUSR",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDUZ:",
+        "rpcName": "SDEC GETFAC",
+        "paramName": "SDECDUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDEC GETREGA",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECWID:",
+        "rpcName": "SDEC EHRPT",
+        "paramName": "SDECWID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECDFN:",
+        "rpcName": "SDEC EHRPT",
+        "paramName": "SDECDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECAPTID:",
+        "rpcName": "SDEC EDITAPPT",
+        "paramName": "SDECAPTID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECNOTE:",
+        "rpcName": "SDEC EDITAPPT",
+        "paramName": "SDECNOTE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECLEN:",
+        "rpcName": "SDEC EDITAPPT",
+        "paramName": "SDECLEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIEN:",
+        "rpcName": "SDEC DELRU",
+        "paramName": "SDECIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECGRP:",
+        "rpcName": "SDEC DELRESGP",
+        "paramName": "SDECGRP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIEN:",
+        "rpcName": "SDEC DELRGI",
+        "paramName": "SDECIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIEN1:",
+        "rpcName": "SDEC DELRGI",
+        "paramName": "SDECIEN1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIEN:",
+        "rpcName": "SDEC DELAGI",
+        "paramName": "SDECIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECIEN1:",
+        "rpcName": "SDEC DELAGI",
+        "paramName": "SDECIEN1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDECGRP:",
+        "rpcName": "SDEC DELAG",
+        "paramName": "SDECGRP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES SET APPT CHECK-IN STEP",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "SDES SET APPT CHECK-IN STEP",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES SET APPT CHECK-IN STEP",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "SDES SET CHECK-IN STEP",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES SET CHECK-IN STEP",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES EDIT CHECK-IN STEP",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "SDES EDIT CHECK-IN STEP",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES EDIT CHECK-IN STEP",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES GET CHECK-IN STEP",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET CHECK-IN STEP",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET CHECK-IN STEPS",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RESIEN:",
+        "rpcName": "SDES GET APPTS BY RESOURCE",
+        "paramName": "RESIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDBEG:",
+        "rpcName": "SDES GET APPTS BY RESOURCE",
+        "paramName": "SDBEG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDEND:",
+        "rpcName": "SDES GET APPTS BY RESOURCE",
+        "paramName": "SDEND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPTS BY RESOURCE",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET INSURANCE VERIFY REQ",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET INSURANCE VERIFY REQ",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARIEN:",
+        "rpcName": "SDES GET APPT REQ BY IEN",
+        "paramName": "ARIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT REQ BY IEN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET APPT REQ BY PATIENT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT REQ BY PATIENT",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ARIEN:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "ARIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DISP:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "DISP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DISPBY:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "DISPBY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DISPDT:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "DISPDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT-ENTERED COMMENTS:",
+        "rpcName": "SDES DISPOSITION APPT REQ",
+        "paramName": "PATIENT-ENTERED COMMENTS",
+        "paramType": "LIST",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQUEST:",
+        "rpcName": "SDES CREATE APPT REQ",
+        "paramName": "REQUEST",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQUEST:",
+        "rpcName": "SDES EDIT APPT REQ",
+        "paramName": "REQUEST",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCHSTRING:",
+        "rpcName": "SDES SEARCH CLINIC",
+        "paramName": "SEARCHSTRING",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTIEN:",
+        "rpcName": "SDES CREATE APPT BLK AND MOVE",
+        "paramName": "APPTIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDRES:",
+        "rpcName": "SDES CREATE APPT BLK AND MOVE",
+        "paramName": "SDRES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTDT:",
+        "rpcName": "SDES CREATE APPT BLK AND MOVE",
+        "paramName": "APPTDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES CREATE APPT BLK AND MOVE",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES INACTIVATE/ZZ CLINIC",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES INACTIVATE/ZZ CLINIC",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES GET CLIN AVAILABILITY",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STARTDATETIME:",
+        "rpcName": "SDES GET CLIN AVAILABILITY",
+        "paramName": "STARTDATETIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENDDATETIME:",
+        "rpcName": "SDES GET CLIN AVAILABILITY",
+        "paramName": "ENDDATETIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET CLIN AVAILABILITY",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCLINIC:",
+        "rpcName": "SDES CREATE CLIN AVAILABILITY",
+        "paramName": "SDCLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATES:",
+        "rpcName": "SDES CREATE CLIN AVAILABILITY",
+        "paramName": "DATES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIMES:",
+        "rpcName": "SDES CREATE CLIN AVAILABILITY",
+        "paramName": "TIMES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SLOTS:",
+        "rpcName": "SDES CREATE CLIN AVAILABILITY",
+        "paramName": "SLOTS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES CREATE CLIN AVAILABILITY",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FULLPARTIAL:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "FULLPARTIAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STARTDATETIME:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "STARTDATETIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENDDATETIME:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "ENDDATETIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CANCELRSN:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "CANCELRSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES CANCEL CLIN AVAILABILITY",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SECID:",
+        "rpcName": "SDES GET USRPROFILE",
+        "paramName": "SECID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET USRPROFILE",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SDCLINIC:",
+        "rpcName": "SDES EDIT CLINIC AVAILABILITY",
+        "paramName": "SDCLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATES:",
+        "rpcName": "SDES EDIT CLINIC AVAILABILITY",
+        "paramName": "DATES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIMES:",
+        "rpcName": "SDES EDIT CLINIC AVAILABILITY",
+        "paramName": "TIMES",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SLOTS:",
+        "rpcName": "SDES EDIT CLINIC AVAILABILITY",
+        "paramName": "SLOTS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES EDIT CLINIC AVAILABILITY",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES GET RECALL BY IEN",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET RECALL BY IEN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET RECALLS BY DFN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET RECALLS BY DFN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RECALLIEN:",
+        "rpcName": "SDES DISPOSITION RECALL REQ",
+        "paramName": "RECALLIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "SDES DISPOSITION RECALL REQ",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "COMMENTS:",
+        "rpcName": "SDES DISPOSITION RECALL REQ",
+        "paramName": "COMMENTS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES DISPOSITION RECALL REQ",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLIN STOPCODE:",
+        "rpcName": "SDES GET STOPCD DETAIL",
+        "paramName": "CLIN STOPCODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER IEN:",
+        "rpcName": "SDES GET USER PROFILE BY DUZ",
+        "paramName": "USER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET USER PROFILE BY DUZ",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES PRINT PATIENT APPTS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE:",
+        "rpcName": "SDES PRINT PATIENT APPTS",
+        "paramName": "BEGIN DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE:",
+        "rpcName": "SDES PRINT PATIENT APPTS",
+        "paramName": "END DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES PRINT PATIENT APPTS",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTREQIEN:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "APPTREQIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PID:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "PID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTREQTYP:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "APPTREQTYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTDATE:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "APPTDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FILEENTRYDATE:",
+        "rpcName": "SDES GET MISSION ACT ELIG",
+        "paramName": "FILEENTRYDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFNS:",
+        "rpcName": "SDES GET INSURANCE VERIFY LIST",
+        "paramName": "DFNS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "APPTARRAY:",
+        "rpcName": "SDES CREATE APPOINTMENTS",
+        "paramName": "APPTARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CONSULTIEN:",
+        "rpcName": "SDES GET CONSULTS BY IEN",
+        "paramName": "CONSULTIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET CONSULTS BY IEN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET CONSULTS BY DFN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET CONSULTS BY DFN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET APPT REQ LIST BY DFN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT REQ LIST BY DFN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES GET APPT CHECK-IN STEPS 2",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT CHECK-IN STEPS 2",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES GET APPT CHECK-IN STEP 2",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "SDES GET APPT CHECK-IN STEP 2",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT CHECK-IN STEP 2",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET PATIENT FLAGS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRACKINGNMBR:",
+        "rpcName": "SDES GET PATIENT FLAGS",
+        "paramName": "EASTRACKINGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET APPT REQ BY PAT ALL",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT REQ BY PAT ALL",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STARTDATE:",
+        "rpcName": "SDES GET APPT REQ BY PAT ALL",
+        "paramName": "STARTDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENDDATE:",
+        "rpcName": "SDES GET APPT REQ BY PAT ALL",
+        "paramName": "ENDDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "SDES GET APPT REQ BY PAT OPEN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET APPT REQ BY PAT OPEN",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES ADD PRIV USER",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USERIEN:",
+        "rpcName": "SDES ADD PRIV USER",
+        "paramName": "USERIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES DELETE PRIV USER",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USERIEN:",
+        "rpcName": "SDES DELETE PRIV USER",
+        "paramName": "USERIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INP:",
+        "rpcName": "SDES GET DIVISION LIST",
+        "paramName": "INP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRACKINGNMBR:",
+        "rpcName": "SDES GET DIVISION LIST",
+        "paramName": "EASTRACKINGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES READ PRIV USERS",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINICIEN:",
+        "rpcName": "SDES DELETE PRIV USERS",
+        "paramName": "CLINICIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USERNAMETOSEARCH:",
+        "rpcName": "SDES SEARCH PRIVILEGED USER",
+        "paramName": "USERNAMETOSEARCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROVIDERTOSEARCH:",
+        "rpcName": "SDES SEARCH PROVIDERS",
+        "paramName": "PROVIDERTOSEARCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RETURN :",
+        "rpcName": "SDES SEARCH PROVIDERS",
+        "paramName": "RETURN ",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET LETTER TYPES",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYPE:",
+        "rpcName": "SDES GET LETTERS BY TYPE",
+        "paramName": "TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TEXT:",
+        "rpcName": "SDES GET LETTERS BY TYPE",
+        "paramName": "TEXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BRIEF:",
+        "rpcName": "SDES GET LETTERS BY TYPE",
+        "paramName": "BRIEF",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EASTRCKNGNMBR:",
+        "rpcName": "SDES GET LETTERS BY TYPE",
+        "paramName": "EASTRCKNGNMBR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "SDES GET LETTER BY IEN",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EAS:",
+        "rpcName": "SDES GET LETTER BY IEN",
+        "paramName": "EAS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "WALKINARRAY:",
+        "rpcName": "SDES CREATE WALKIN APPT",
+        "paramName": "WALKINARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REQUESTARRAY:",
+        "rpcName": "SDES CREATE VET REQ SCHED APPT",
+        "paramName": "REQUESTARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET DIAGNOSES",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PROVIDERS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PROCEDURES",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A PROVIDER",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE ASSIGNED A PROCEDURE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND PROVIDER",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PRACTITIONER ID:",
+        "rpcName": "SDOE FIND PROVIDER",
+        "paramName": "PRACTITIONER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIAGNOSIS IEN:",
+        "rpcName": "SDOE FIND DIAGNOSIS",
+        "paramName": "DIAGNOSIS IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE FIND PROCEDURE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CPT IEN:",
+        "rpcName": "SDOE FIND PROCEDURE",
+        "paramName": "CPT IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND FIRST STANDALONE",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET PRIMARY DIAGNOSIS",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND FIRST ENCOUNTER",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SEARCH FLAGS:",
+        "rpcName": "SDOE FIND LAST STANDALONE",
+        "paramName": "SEARCH FLAGS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET GENERAL DATA",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER DATA:",
+        "rpcName": "SDOE PARSE GENERAL DATA",
+        "paramName": "ENCOUNTER DATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER PARSE FORMAT:",
+        "rpcName": "SDOE PARSE GENERAL DATA",
+        "paramName": "ENCOUNTER PARSE FORMAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ENCOUNTER IEN:",
+        "rpcName": "SDOE GET ZERO NODE",
+        "paramName": "ENCOUNTER IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR DATES",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR DATES",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BEGIN DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "BEGIN DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "END DATE/TIME:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "END DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR PAT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VISIT IEN:",
+        "rpcName": "SDOE LIST ENCOUNTERS FOR VISIT",
+        "paramName": "VISIT IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 1927.24,
+  "fileName": "NUPA ASSESSMENT INTERVENTIONS",
+  "globalRoot": "1927.24",
+  "globalReference": "^NUPA(1927.24,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A nursing intervention for a problem. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "RP1927.2'",
+      "required": true,
+      "pointerTo": 1927.2,
+      "helpText": "The problem that this intervention is related to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The order in which this intervention will display. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines whether the intervention can be displayed.  Never delete an  intervention using Fileman. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.24", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

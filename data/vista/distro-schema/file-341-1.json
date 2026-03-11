@@ -1,0 +1,67 @@
+{
+  "fileNumber": 341.1,
+  "fileName": "AR EVENT TYPE",
+  "globalRoot": "341.1",
+  "globalReference": "^RC(341.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The name of an event describes the type of event the occurred to a debtor's account. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0XI",
+      "length": 2,
+      "required": false,
+      "helpText": "The event number is how the AR package determines what type of event exists.  Since various files and functionality are driven by different types of events, the AR package uses this field to determine what action to take.   This field should NEVER be edited. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PAYMENT;2:NOTIFICATION;",
+      "helpText": "Events are categorized by the Category field.  This allows different event types to be associated with each other.  For example, there are many different types of payment events (Cash, Check, Credit Card, etc.) that are separate events, buy these events are categorized as 'Payments'. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "INPUT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The input template field identifies an input template in file 341.  This allows the AR package to have a 'generic' enter module for entering AR events into file 341. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PRINT TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The print template field identifies a print template in file 341.  This allows the AR package to have a 'generic' print module for printing and displaying AR events in file 341. ",
+      "fieldNumber_": 1.02
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "341.1", "field": .01, "type": "regular"},
+    {"name": "341.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

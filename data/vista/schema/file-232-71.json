@@ -1,0 +1,87 @@
+{
+  "fileNumber": 232.71,
+  "fileName": "EDP WORKSHEET SECTION",
+  "globalRoot": "232.71",
+  "globalReference": "^EDPB(232.71,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the worksheet section. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY PLUGIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TASK TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:None;1:Checkbox;2:Timed;",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INITIALLY OPEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:False;1:True;",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMPONENTS",
+      "dataType": "POINTER",
+      "rawType": "232.711PA",
+      "required": false,
+      "helpText": "This multiple holds all of the components for the section. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROLES",
+      "dataType": "POINTER",
+      "rawType": "232.712P",
+      "required": false,
+      "helpText": "This field holds the roles for this section. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "232.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

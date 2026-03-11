@@ -1,0 +1,378 @@
+{
+  "fileNumber": 161.2,
+  "fileName": "FEE BASIS VENDOR",
+  "globalRoot": "161.2I",
+  "globalReference": "^FBAAV(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Name of the private vendor/provider providing fee services. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SPECIALTY CODE",
+      "dataType": "POINTER",
+      "rawType": "P161.6'",
+      "required": false,
+      "pointerTo": 161.6,
+      "helpText": "The specialty code which describes this vendors area of expertise  (ie Dermatology, Anesthesiology, Neurology). Valid codes are documented in M-1, Part I, chapter 18, Appendix A. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "NUMBER OF CNH BEDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Indicates the number of Contract Nursing Home Beds for this vendor. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFOX",
+      "required": true,
+      "helpText": "Provider's Federal ID Tax number. The first 9 characters of the ID number must be numeric. If the ID number is 11 characters long the 10th and 11th characters may be alphanumeric. An ID number of '000000000' is not valid. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First line of vendor's street address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second line of vendor's street address. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "City in which the vendor's mailing address is located. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "State in which the vendor's mailing address is located. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Zip Code in which the vendor's mailing address is located. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.18,
+      "fieldName": "MAIL ROUTE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will eventually be populated with the Postal Service mail router. ",
+      "fieldNumber_": 5.18
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "COUNTY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0XO",
+      "length": 4,
+      "required": true,
+      "helpText": "The County in which the vendor is located. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TYPE OF VENDOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PUBLIC HOSPITAL;2:PHYSICIAN;3:PHARMACY;4:PROSTHETICS;5:TRAVEL;6:RADIOLOGY;7:LABORATORY;8:OTHER;9:PRIVATE HOSPITAL;10:FEDERAL HOSPITAL;",
+      "helpText": "Identifies the type of services this vendor provides.   (ie HOSPITAL, PHYSICIAN, OR PHARMACY) ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PART CODE",
+      "dataType": "POINTER",
+      "rawType": "RP161.81'",
+      "required": true,
+      "pointerTo": 161.81,
+      "helpText": "This field is a pointer to the Participation code file which is a description of the type of vendor. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CHAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a number that pharmacies use to identify multiple stores in the chain. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AUSTIN DELETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "  This is a flag that is set by the fee software when a delete vendor master record adjustment is transmitted to Austin. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE LAST CORRECTION TO AUSTIN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the date the last master record adjustment was sent to Austin for this vendor. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "DATE LAST UPDATE FROM AUSTIN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the last master record adjustment was received from Austin for this vendor.    This field is updated as the record is processed by the server. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE OF AUSTIN DELETE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that a delete master record transaction was sent to Austin, for this vendor. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "STATION AFFECTING LAST CHANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the station number that made the last change to the vendor.  If the station number is set to '000', that means the change was picked up off the 'VLOG' file in Austin and affected by a non-fee system. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows the user to enter the telephone number of the vendor. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "INSPECTED/ACCREDITED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INSPECTED BY VA;A:ACCREDITED BY JCAH;B:BOTH INSPECTED AND ACCREDITED;",
+      "helpText": "This field allows the user to track the status of the CNH as of the last assesment. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CERTIFIED MEDICARE/MEDICAID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NOT CERTIFIED FOR EITHER;2:CERTIFIED FOR MEDICARE;3:CERTIFIED FOR MEDICAID;4:CERTIFIED FOR BOTH;",
+      "helpText": "Indicates that the Nursing Home has been certified by Medicare/Medicaid. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE OF LAST ASSESSMENT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the nursing home was last evaluated by either a partial or full VA team. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MEDICARE ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Medicare Provider ID number assigned to this vendor. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows the user to enter the fax number of the vendor. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "BUSINESS TYPE (FPDS)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SMALL BUSINESS;2:LARGE BUSINESS;3:OUTSIDE U.S.;4:OTHER ENTITIES;",
+      "helpText": "Business type for FPDS reporting purposes. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SOCIOECONOMIC GROUP (FPDS)",
+      "dataType": "POINTER",
+      "rawType": "161.225P",
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "AUSTIN NAME FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is populated by the software.  It reflects the vendor name as it is on the centralized Austin databases. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "PRICER EXEMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "There are certain vendors that are exempt from the medicare payment methodology and are paid at a percentage of what is claimed. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "1099 VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is a flag that tells the central vendor unit is Austin whether or not a 1099 tax form should be sent to the vendor.  At this time a decision from finance is that all Fee vendors are 1099 vendors. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 30.04,
+      "fieldName": "FMS VENDOR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:commercial;I:individual;F:federal;",
+      "helpText": "This field is sent with other vendor data to let the central vendorizing unit know the type of vendor for the FMS vendor table. ",
+      "fieldNumber_": 30.04
+    },
+    {
+      "fieldNumber": 30.05,
+      "fieldName": "PROVIDER CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:both;V:vendor only;P:provider only;",
+      "helpText": "This flag is a mandatory field on the FMS vendor table. Choices are V for VENDOR ONLY, P for PROVIDER ONLY or B for both.  All Fee vendors are classified as both. ",
+      "fieldNumber_": 30.05
+    },
+    {
+      "fieldNumber": 30.06,
+      "fieldName": "TAX ID/SSN FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "T:TAX ID NUMBER;S:SSN NUMBER;",
+      "helpText": "This field will be populated and sent to central vendorizing unit to notify the IRS if the 'ID NUMBER' is a Tax ID number or the vendor's SSN number. ",
+      "fieldNumber_": 30.06
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DATE/TIME OF LAST NPI CHANGE",
+      "dataType": "DATE",
+      "rawType": "161.24DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 161.24,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41.01,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Unique National Provider Identifier.  A unique integer assigned to  providers by CMS. This is the current, active, NPI. ",
+      "fieldNumber_": 41.01
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TAXONOMY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Vendor's Taxonomy code. This value must be 10 characters. ",
+      "fieldNumber_": 42
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "B", "field": },
+    {"name": "BS", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "NPI", "field": },
+    {"name": "NPIHISTORY", "field": },
+    {"name": "161.2", "field": .01, "type": "regular"},
+    {"name": "161.2", "field": 1, "type": "regular"},
+    {"name": "161.2", "field": 1, "type": "regular"},
+    {"name": "161.2", "field": 1, "type": "regular"},
+    {"name": "161.2", "field": 1, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "161.2", "field": 8, "type": "regular"},
+    {"name": "161.2", "field": 12, "type": "regular"},
+    {"name": "161.2", "field": 30.01, "type": "regular"},
+    {"name": "161.2", "field": 41.01, "type": "regular"},
+    {"name": "161.2", "field": 41.01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""},
+    {"field": 6, "value": "W \"\""},
+    {"field": 7, "value": "W \"\""},
+    {"field": 8, "value": "W \"\""},
+    {"field": WRITE, "value": "D ^FBVDISP"}
+  ]
+}

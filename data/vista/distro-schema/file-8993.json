@@ -1,0 +1,89 @@
+{
+  "fileNumber": 8993,
+  "fileName": "XULM LOCK DICTIONARY",
+  "globalRoot": "8993",
+  "globalReference": "^XLM(8993,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCK TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "Enter the locked data structure as set in the LOCK command, except:   1) If the lock is on a global data structure, enter a space before      the '^'.   2) If an array subscript is a variable, enter a legal variable name.     In examples 2-4, note that a space is necessary before the '^' of the global reference.     Example 1:    If the lock is on the local variable 'DPT', enter 'DPT'.     Example 2:    If the lock is on the entire ^DPT global, enter ' ^DPT'.       Example 3:    If the lock is o",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the package for which the lock is set.  Locks usually are used to control access to a package's data.   ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "GLOBAL LOCK?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Both local and global variables maybe locked.  This field explicitly identifies which type of variable the lock applies to. Global variables start with '^'.   ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PARTIAL MATCH ALLOWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to YES, then a lock that has additional subscripts will be considered a match to this template as long as the first parts match.  A partial match will be allowed only if no full match exists.  For example, for the input template ^DPT(DFN), the lock on ^DPT(<dfn>,0) will be considered a match if this field is set to YES.   ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARRAY SUBSCRIPTS",
+      "dataType": "SUBFILE",
+      "rawType": "8993.02I",
+      "required": false,
+      "helpText": "This multiple has an entry for each subscript in the locked data structure.  For example, a lock on ^DPT(<ien>,0) has two subscripts so should have two entries in this multiple.  ",
+      "isMultiple": true,
+      "subFileNumber": 8993.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPUTABLE FILE REFERENCES",
+      "dataType": "POINTER",
+      "rawType": "8993.03P",
+      "required": false,
+      "helpText": "This multiple provides information about the VistA files referenced by the locked data structure.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USAGE",
+      "dataType": "SUBFILE",
+      "rawType": "8993.04",
+      "required": false,
+      "helpText": "This field should describe how the lock is used and what its purpose is.  ",
+      "isMultiple": true,
+      "subFileNumber": 8993.04,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "8993", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W:$P($G(^(1)),\"^\",2) \"^\" W $E(^(0),1,245)"}
+  ]
+}

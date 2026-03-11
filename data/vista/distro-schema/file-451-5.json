@@ -1,0 +1,36 @@
+{
+  "fileNumber": 451.5,
+  "fileName": "TYPE OF WORK",
+  "globalRoot": "451.5",
+  "globalReference": "^PRSN(451.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORK CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Work Code is a 2 letter code that reflects the type of work  that a nurse performs inside or outside of defined tour time. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WORK DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Work Description is the explanatory text of the Work Code. Each Work  Description is designated by a 2 character code. For example, Direct Care  is DC, Light Duty is LD, etc. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "451.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

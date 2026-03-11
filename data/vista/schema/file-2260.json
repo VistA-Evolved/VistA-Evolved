@@ -1,0 +1,2859 @@
+{
+  "fileNumber": 2260,
+  "fileName": "ASISTS ACCIDENT REPORTING",
+  "globalRoot": "2260",
+  "globalReference": "^OOPS(2260,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The case number is automatically assigned when a stub record is created. It is composed of the Fiscal Year concatenated with a 5 digit sequential number.  Amended cases will have a alphabetic suffix appended to the  original case number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PERSON INVOLVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the employee, volunteer, contractor or other person that was involved in the incident, sustaining an injury or illness. Use the same convention for entering a name as used when entering an employee: LAST,FIRST. John Doe would be entered as DOE,JOHN. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PERSONNEL STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:Employee;2:Volunteer;3:Contractor;4:Visitor;5:Other;6:Non-PAID Employee;7:Medical Student;8:Nursing Student;9:Other Student;10:Resident Physician;",
+      "helpText": "The personnel status of the individual involved in the incident is either employee, volunteer, contractor, visitor or other.  Non-PAID Employee includes students and residents. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF INCIDENT",
+      "dataType": "POINTER",
+      "rawType": "RP2261.2'",
+      "required": true,
+      "pointerTo": 2261.2,
+      "helpText": "This is the critical tracking issue that best characterizes the type of injury sustained. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME OF OCCURRENCE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "If this is an injury, this is the date and time the incident happened. If this is an illness, this is the date the employee first became aware of the disease or illness. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXOa",
+      "required": false,
+      "helpText": "This is the Social Security Number of the person involved in this incident. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date of birth of the person involved in this incident. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Male;2:Female;",
+      "helpText": "This is the sex of the person involved in this incident. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HOME STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the home street address of the person involved in this incident. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city where this person resides. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the State in which this person resides. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code for this person's home address. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "HOME PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the home phone number of the person involved in this incident. Enter the Area Code and number separated by hyphens or spaces.  E.g., 123-122-3456   or  123 122 3456 ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "STATION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the station number where the incident took place. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COST CENTER/ORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's cost center/organization code. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's occupation series code. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "GRADE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's grade as of the date of injury. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STEP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's step as of the date of injury. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "EDUCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's education level. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "HEPATITIS B",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "In cases of bodily fluid exposure (including needlesticks and sharps), this shows whether or not a test for Hepatitis B was done as a result of the exposure. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "HEPATITIS C",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "In cases of bodily fluid exposure (including needlesticks and sharps), this shows whether or not a test for Hepatitis C was done as a result of the exposure. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "In cases of bodily fluid exposure (including needlesticks and sharps), this shows whether or not a test for HIV was done as a result of the exposure. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "OTHER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "In cases of bodily fluid exposure (including needlesticks and sharps), this shows whether or not a test other than Hepatitis B, Hepatitis C, or HIV was done as a result of the exposure. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DATE ORDERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "In cases of bodily fluid exposure (including needlesticks and sharps), this shows the date ordered for lab tests. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DATE DRAWN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "For bodily fluid exposures, this is the date the tests were done. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FOLLOW-UP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date follow-up should take place. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "GENERAL SETTING OF INCIDENT",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "P:Patient care setting;N:Non-patient care setting;U:Unknown;",
+      "helpText": "This shows whether the incident took place in a patient care or non-patient care setting. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "LOCATION OF INJURY",
+      "dataType": "POINTER",
+      "rawType": "R*P2261.4'",
+      "required": true,
+      "pointerTo": 2261.4,
+      "helpText": "This is the general location, either a patient care or non-patient care type setting, where the incident took place. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DESCRIPTION OF INCIDENT",
+      "dataType": "SUBFILE",
+      "rawType": "2260.028",
+      "required": false,
+      "helpText": "This information fully narrates the accident or incident.  It explains what led up to the accident, how the accident happened, equipment failures, material defects, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 2260.028,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "CHARACTERIZATION OF INJURY",
+      "dataType": "POINTER",
+      "rawType": "P2261'",
+      "required": false,
+      "pointerTo": 2261,
+      "helpText": "This is the general description of the injury. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 29.5,
+      "fieldName": "MEDICAL EMERGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Normal Operations (No Emergency);2:Medical Emergency;3:Clean-up Following Medical Emergency;",
+      "helpText": "Enter the response that best describes how the incident is related to a medical emergency. ",
+      "fieldNumber_": 29.5
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "BODY PART MOST AFFECTED",
+      "dataType": "POINTER",
+      "rawType": "*P2261.1'X",
+      "required": false,
+      "pointerTo": 2261.1,
+      "helpText": " Enter the body part most affected by the injury.  ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 30.1,
+      "fieldName": "ADDITIONAL BODY PART AFFECTED",
+      "dataType": "POINTER",
+      "rawType": "*P2261.1'X",
+      "required": false,
+      "pointerTo": 2261.1,
+      "helpText": " Enter an additional body part that was affected by the injury.  ",
+      "fieldNumber_": 30.1
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SIDE OF BODY AFFECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Left;R:Right;B:Both;N:NA;",
+      "helpText": "This is the side of the body most affected by the injury. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DUTY RETURNED TO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Full duty;L:Light duty;",
+      "helpText": "The employee returned to either light or full duty. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LOST TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "The employee did or did not lose time due to the injury. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "PATIENT SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:Identifiable;U:Unidentifiable;N:NA;",
+      "helpText": "This defines whether or not the source patient of the body fluid exposure (including needlestick and sharps) is identifiable. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "CONTAMINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "This states whether or not the needle or sharp was contaminated. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "PURPOSE OF SHARP OBJECT",
+      "dataType": "POINTER",
+      "rawType": "P2261.5'",
+      "required": false,
+      "pointerTo": 2261.5,
+      "helpText": "The sharp item was originally used for this purpose. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "ACTIVITY AT TIME OF INJURY",
+      "dataType": "POINTER",
+      "rawType": "P2261.6'",
+      "required": false,
+      "pointerTo": 2261.6,
+      "helpText": "This is the activity when the injury occurred. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "OBJECT CAUSING INJURY",
+      "dataType": "POINTER",
+      "rawType": "*P2261.7'X",
+      "required": false,
+      "pointerTo": 2261.7,
+      "helpText": "This is the device or item that caused the injury. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "AREA EXPOSED TO BODILY FLUID",
+      "dataType": "SET",
+      "rawType": "2260.039SA",
+      "required": false,
+      "helpText": "This is a description of the exposed body parts.  ",
+      "isMultiple": true,
+      "subFileNumber": 2260.039,
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PERSONAL PROTECTIVE EQUIPMENT",
+      "dataType": "POINTER",
+      "rawType": "2260.01PA",
+      "required": false,
+      "helpText": "This is a description of the protective items worn at the time of the exposure. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "BODILY FLUID EXPOSURE SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P2261.8'",
+      "required": false,
+      "pointerTo": 2261.8,
+      "helpText": "This explains how the exposure happened. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "EQUIPMENT/DEVICE FAILURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If there was an equipment, device or product failure, this is the type of equipment and manufacturer name. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 42.5,
+      "fieldName": "EQUIP/DEVICE FAILURE OCCURRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "Indicates whether there was an equipment or device product failure involved with the incident.  If yes, user will be prompted to enter comments. ",
+      "fieldNumber_": 42.5
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "SAFETY DESIGN DEVICE USED",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This states whether or not a safety device was used. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the supervisor completing the information on the Report of Accident (2162). ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "SUPERVISOR ELECTRONIC SIG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's electronic signature. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "SUPERVISOR SIGNATURE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the supervisor signed the 2162. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "SUBFILE",
+      "rawType": "2260.047",
+      "required": false,
+      "helpText": "This is a statement of any corrective action that was taken to prevent further incidents of this kind. ",
+      "isMultiple": true,
+      "subFileNumber": 2260.047,
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "SAFETY OFFICER NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the safety officer. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "SAFETY OFF. ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the safety officer's electronic signature. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SAFETY OFF. DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the safety officer's signature. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "CASE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Open;1:Closed;2:Deleted;3:Replaced by amendment;",
+      "helpText": "This is the status of the case. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "INJURY/ILLNESS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Injury;2:Illness/disease;",
+      "helpText": "If the employee is relating the condition to a single incident, then select Injury (CA-1).  If the employee is relating the condition to more than one incident or more than a single shift, then select Illness (CA-2). ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": " Enter the name of the supervisor of the person involved.  ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.1,
+      "fieldName": "SECONDARY SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": " Enter the name of the secondary supervisor of the person involved.  ",
+      "fieldNumber_": 53.1
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "NEEDS XMIT TO NDB",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date that the case was determined to be valid for transmission to NDB. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "SAFETY OFF. COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "2260.055",
+      "required": false,
+      "helpText": "These are comments from the safety officer about this case. ",
+      "isMultiple": true,
+      "subFileNumber": 2260.055,
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PERSON ENTERING STUB RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is automatically populated when the 2162 Incicent report is created and saved.  Data entry for this field is not possible through the ASISTS package.  The internal value for this field is a pointer to the  NEW PERSON File (#200).  The external value (Name) is displayed on the PRINT REPORT OF ACCIDENT Report. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "DATE TRANSMITTED TO NDB",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "  The value in this field will be the last time the closed case 2162 data  was transmitted to the NDB. If the case is closed, transmitted, then  re-opened, this field is 'blanked' so that retransmission will be triggered. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "REASON FOR DELETION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the reason the case is being deleted. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "TRANSMITTED TO NDB",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "EMP RETIREMENT COVERAGE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CSRS;2:FERS;3:OTHER;",
+      "helpText": "This is the type of retirement coverage the employee has.  If the type of Coverage is 'Other' then the user will be prompted to enter a description for that coverage in field, EMP RETIREMENT COVERAGE DESC (#61). This field will be used for the CA1 and CA2. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "EMP RETIREMENT COVERAGE DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will need to be answered if the response to EMP RETIREMENT COVERAGE (field #60) is 'OTHER'.  The response to this field should be a description of the type of other retirement coverage the employee has. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "NOI CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263.3'",
+      "required": false,
+      "pointerTo": 2263.3,
+      "helpText": "Enter the NOI Code from the ASISTS DOL NATURE OF INJURY CODE Table that best describes the Injury/Illness.  This field is required prior to the  electronic transmission of the CA1/CA2. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "PAY PLAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employees Pay Plan.  This field is the Type of Pay  used in the transmission of CA1/CA2 claims to DOL (Department of Labor). ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "DATE TRANSMITTED TO WCMIS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the completed CA1 or CA2 claim was electronically transmitted to the Austin Automation Center (AAC).  A Workers Compensation employee must verify the record prior to it being eligible for sending. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "TRANSMIT TO WCMIS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the Worker's Compensation employee who has signed the CA1 or CA2 signifying that the claim is complete and is ready to be transmitted to the Austin Automation Center (AAC). ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "WC ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the Worker's Compensation employee who has approved the CA1/CA2 claim for electronic transmission to DOL (Department of Labor). ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "WC DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date that the Worker's Compensation employee signed the CA1/CA2 claim, approving the electronic transmission to DOL (Department of Labor). ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "OWCP CHARGEBACK CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263.6'",
+      "required": false,
+      "pointerTo": 2263.6,
+      "helpText": "This is the OWCP Chargeback code required by DOL (Department of Labor) for the electronic submission of a CA1/CA2 claim. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "EMPLOYEE BILL OF RIGHTS OK",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Indicate your reading and understanding of the Employee Bill of Rights. If you do not understand the Bill of Rights, select No, and contact  your facility's Workers Compensation representative for assistance. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "EMPLOYEE CONSENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "If it is acceptable with you to allow the local bargaining unit to  review the details of your case, select Yes, otherwise select No,  and the details of your case WILL NOT be provided to the local  bargaining unit.  This review is for accident and occupational  illness tracking purposes only.   ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "OWCP DISTRICT OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P2262.1'",
+      "required": false,
+      "pointerTo": 2262.1,
+      "helpText": "This is the OWCP District Office that the CA1/CA2 claim will be forwarded to upon completion of the claim. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the validation code for the verification for the Employees electronic signature. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the version number used to encode the Employee's Electronic Signature Code. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "NAME OF SAFETY OFFICER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the Safety Officer who is giving their approval that the Workers' Compensation personnel can electronically sign for the employee.  This is because the employee is not able to sign for themselves. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "SAFETY OFFICER ELEC. SIGN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the Safety Officer who is approving the Workers' Compensation personnel to sign electronically for the employee ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "SAFETY OFF. ELEC. SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Safety Officer electronically signed the claim giving their approval that the Workers' Compensation personnel could electronically sign the claim for the employee. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "EMPLOYEE HEALTH NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the Employee Health representative who is giving their approval for the Workers' Compensation personnel to electronically sign the claim for the employee. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "EMP HEALTH ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the Employee Health representative who is giving their approval that the Workers' Compensation personnel may electronically sign the claim for the employee.  This is because the employee is not able to electronically sign for themself. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "EMP HEALTH ELECT SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Employee Health Representative electronically signed the claim giving their approval that the Workers' Compensation personnel could electronically sign the claim for the employee. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "BRAND",
+      "dataType": "POINTER",
+      "rawType": "P2262.3",
+      "required": false,
+      "pointerTo": 2262.3,
+      "helpText": "This is the manufacturer of the device that was being used at the time the incident occurred. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "DEVICE SIZE",
+      "dataType": "POINTER",
+      "rawType": "*P2262.2'X",
+      "required": false,
+      "pointerTo": 2262.2,
+      "helpText": "Enter the DEVICE SIZE of the object that caused the injury. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "SAFETY CHARACTERISTICS",
+      "dataType": "POINTER",
+      "rawType": "P2261.9'",
+      "required": false,
+      "pointerTo": 2261.9,
+      "helpText": "Enter the appropriate ENGINEERED SAFETY CHARACTERISTICS. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "SAFETY DEVICE NOT USED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the reason that a safety device was not used during this incident. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is the individual's service area at the time of the incident. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "INJ PRIOR TO SAFE DEV ENGAGED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the safety device on the object that caused  the injury engaged before the injury occurred. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "INCLUDE ON OSHA LOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the ASISTS case filed should appear on the  Log of Federal Occupational Injuries and Illnesses.  A Yes response will indicate to include the claim, a No response will exclude it from the report. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "FATALITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the incident that is being reported on this claim resulted in a fatality.  A Yes response will indicate that a fatality resulted, a No response will indicate that a fatality did not occur. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "DATE/TIME STUB CREATED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field will capture the Date and Time that the initial Stub record (Create Accident/Illness Report) was filed in the system. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "INCIDENT OUTCOME",
+      "dataType": "DATE",
+      "rawType": "2260.095DA",
+      "required": false,
+      "helpText": "This subfile contains information regarding the employees ability to work as a result of the incident. ",
+      "isMultiple": true,
+      "subFileNumber": 2260.095,
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "HOME PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the home phone number of the person involved in the incident. Enter the Area Code and number separated by hyphens or spaces.  E.g., 123-122-3456   or  123 122 3456 (Injury) ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "GRADE/LEVEL DATE OF INJURY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's grade/level at the time of the injury. (Injury) ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "STEP AS OF DATE OF INJURY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's step at the time of the injury. (Injury) ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "EMPLOYEE STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's street address. (Injury) ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "EMPLOYEE CITY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city where the employee lives. (Injury) ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "EMPLOYEE STATE ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the employee's state address. (Injury) ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "EMPLOYEE ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the employee's Zip code. (Injury) ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "DEPENDENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Wife, Husband;2:Children under 18;3:Other;4:Wife, Husband + Children under 18;5:Wife, Husband + Other;6:Children under 18 + Other;7:Wife, Husband + Children under 18 + Other;",
+      "helpText": "These are the employee's dependents. (Injury) ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "PLACE WHERE INJURY OCCURRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of where the injury occurred, e.g., 2nd floor, x-ray, cafeteria, etc. (Injury) ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "DATE/TIME INJURY OCCURRED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the injury occurred. (Injury) ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "DATE OF THIS NOTICE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the employee completed the Federal Employee's Notice of Traumatic Injury and Claim for Continuation of Pay/Compensation (CA-1). (Injury) ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the employee's occupation. (Injury) ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "CAUSE OF INJURY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of what happened and why. (Injury) ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "NATURE OF INJURY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a description of the injury and the part of the body affected, e.g., fracture of left leg. (Injury) ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "REQUEST PAY OR LEAVE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "COP:Continuation of regular pay;L:Sick and/or annual leave;",
+      "helpText": "This is the employee's choice of either continuing regular pay (COP) or taking sick or annual leave (L). If you (the employee) are disabled for work as a result of this injury and file CA-1 within thirty days of the injury, you are entitled to receive continuation of pay (COP) from your employing agency.  COP is paid for up to 45 days of disability, and is not charged against sick or annual leave. You may elect sick or annual leave if you wish, but compensation from OWCP may not be claimed durin",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "NAME OF WITNESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person who witnessed the incident. (Injury) ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "WITNESS ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This is the street address of the witness. Form CA-1 item 16.  ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 116.1,
+      "fieldName": "WITNESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This is the city address of the witness. Form CA-1 item 16.  ",
+      "fieldNumber_": 116.1
+    },
+    {
+      "fieldNumber": 116.2,
+      "fieldName": "WITNESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": " This is the state address of the witness. Form CA-1 item 16.  ",
+      "fieldNumber_": 116.2
+    },
+    {
+      "fieldNumber": 116.3,
+      "fieldName": "WITNESS ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This is the zip code of the witness. Form CA-1 item 16.  ",
+      "fieldNumber_": 116.3
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "DATE OF WITNESS SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the witness signed the statement of witness on the CA-1. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "STATEMENT OF WITNESS",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0118",
+      "required": false,
+      "helpText": "This is the statement of the witness that describes what the witness saw, heard, or knows about the injury. ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0118,
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "NAME OF EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the employee injured during the incident. (Injury) ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "EMPLOYEE ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the employee. (Injury) ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "EMPLOYEE DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the employee electronically signed his/her statement. (Injury) ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "OCCUPATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's occupation code. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263'",
+      "required": false,
+      "pointerTo": 2263,
+      "helpText": "This is the type code for this injury.  It stands for the action and is used along with the source code which stands for the object or substance to form a brief description of how the incident occurred. (Injury) ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "SOURCE CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263.1'",
+      "required": false,
+      "pointerTo": 2263.1,
+      "helpText": "This is the source code for this injury.  It stands for the object or substance and is used along with the type code, which stands for the action, to form a brief description of how the incident occurred. (Injury) ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "WITNESS NAME",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0125A",
+      "required": false,
+      "helpText": "This is the name of the person who witnessed the incident and is willing to provide their name, address and a statement describing what occurred. (Injury) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0125,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "CAUSE OF INJURY CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263.2'",
+      "required": false,
+      "pointerTo": 2263.2,
+      "helpText": "The Cause of Injury Code that best matches the Cause of Injury description entered by the Claimant.  This field is required prior to the electronic transmission of the CA1/CA2 to DOL (Department of Labor). ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "AGENCY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the reporting agency (office) to which correspondence from OWCP should be sent. (Injury) ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "AGENCY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the reporting agency. (Injury) ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "AGENCY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city address of the reporting agency. (Injury) ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "AGENCY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address of the reporting agency. (Injury) ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "AGENCY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code for the reporting agency. (Injury) ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "OWCP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a four digit (or four digit plus two letter) code used by OWCP to identify the employing agency.  The proper code may be obtained from your Human Resources Management or compensation office, or by contacting OWCP. (Injury) ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "OSHA SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Occupational Safety and Health Administration (OSHA) Site Code for the reporting agency. (Injury) ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "REGULAR HRS FROM TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "At the time of the incident, this is the employee's regular working start time. (Injury) ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "REGULAR HRS TO TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "At the time of the incident, this is the employee's regular working stop time. (Injury) ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "REGULAR WORK SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "At the time of the incident, this was the work schedule for the employee. Examples: For Monday through Friday, enter     2-6 For Sunday, Wednesday through Saturday, enter    1,4-7 or 1,4,5,6,7  (Injury) ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "DATE OF INJURY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the employee was injured. (Injury) ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "DATE/TIME WORK STOPPED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the employee stopped work due to the injury. (Injury) ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "DATE PAY STOPPED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the employee's pay stopped. (Injury) ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "DATE 45 DAY PERIOD BEGAN",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the 45 day period began for COP. (Injury) ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "DATE/TIME RETURNED TO WORK",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the employee returned to work. (Injury) ",
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "INJURED PERFORMING DUTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This is a Yes/No statement of whether the employee was injured while in the performance of duty. (Injury) ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "NOT INJURED PERFORMING JOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is short description of why the injury was not incurred while the employee was in performance of duty. (Injury) ",
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 148,
+      "fieldName": "INJURY CAUSED BY EMPLOYEE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "The injury was caused (Yes) or not caused (No) by the employee's willful misconduct, intoxication, or intent to injure self or another. (Injury) ",
+      "fieldNumber_": 148
+    },
+    {
+      "fieldNumber": 149,
+      "fieldName": "CAUSED BY EMPLOYEE EXPLAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short explanation of why the employee caused the injury through willful misconduct, intoxication, or intent to injure. (Injury) ",
+      "fieldNumber_": 149
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "INJURY CAUSED BY 3RD PARTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "The injury was caused (Yes) or was not caused (No) by a third party. (Injury) ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "3RD PARTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the injury was caused by someone other than the injured employee, this is the name of that third party. (Injury) ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "3RD PARTY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the third party. (Injury) ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "3RD PARTY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city address of the third party. (Injury) ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "3RD PARTY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address of the third party. (Injury) ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "3RD PARTY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third party's Zip code. (Injury) ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "PHYSICIAN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the physician who first provided medical care to the employee. (Injury) ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "PHYSICIAN ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the physician's street address. (Injury) ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "PHYSICIAN CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the physician's city address. (Injury) ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "PHYSICIAN STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the physician's state address. (Injury) ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "PHYSICIAN ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the physician's Zip code. (Injury) ",
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "FIRST DATE MEDICAL CARE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the first date the employee received medical care for the injury. (Injury) ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "DISABLED FOR WORK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This states whether or not medical reports show employee is disabled for work. (Injury) ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "SUPERVISOR AGREE/DISAGREE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "The supervisor's knowledge of the facts about this injury agree (Yes) or disagree (No) with statements of the employee and/or witness. (Injury) ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "SUPERVISOR NOT AGREE EXPLAIN",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0164",
+      "required": false,
+      "helpText": "This is why the supervisor does not agree with the statements of the employee and/or witness regarding the injury. (Injury) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0164,
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "REASON AGENCY CONTROVERTS COP",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0165",
+      "required": false,
+      "helpText": "This is a detailed reason why the employing agency controverts continuation of pay. (Injury) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0165,
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 165.1,
+      "fieldName": "AGENCY CONTROVERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will be used by the Worker's Compensation Specialist to indicate whether the Agency controverts the claim. (Injury) ",
+      "fieldNumber_": 165.1
+    },
+    {
+      "fieldNumber": 165.2,
+      "fieldName": "AGENCY DISPUTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will be completed by the Worker's Compensation specialist to  indicate whether the Agency disputes the claim. (Injury) ",
+      "fieldNumber_": 165.2
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "PAY RATE DOLLAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of the pay rate when the employee stopped work. (Injury) ",
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 167,
+      "fieldName": "PAY RATE PER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WEEKLY;2:BI-WEEKLY;6:DAILY;H:HOURLY;A:ANNUAL;",
+      "helpText": "This is the rate at which the employee was receiving the pay when the employee stopped work. (Injury) ",
+      "fieldNumber_": 167
+    },
+    {
+      "fieldNumber": 168,
+      "fieldName": "SUPERVISOR EXCEPTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's exception to any of the information provided on the CA-1. (Injury) ",
+      "fieldNumber_": 168
+    },
+    {
+      "fieldNumber": 169,
+      "fieldName": "NAME OF SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the supervisor completing the supervisor's portion of the CA-1. (Injury) ",
+      "fieldNumber_": 169
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "SUPERVISOR ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's electronic signature. (Injury) ",
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "SUPERVISOR DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the supervisor signed the CA-1. (Injury) ",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "SUPERVISOR TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's title. (Injury) ",
+      "fieldNumber_": 172
+    },
+    {
+      "fieldNumber": 173,
+      "fieldName": "SUPERVISOR OFFICE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's office phone number. (Injury) ",
+      "fieldNumber_": 173
+    },
+    {
+      "fieldNumber": 173.1,
+      "fieldName": "SUPERVISOR PHONE EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is available so that the Supervisor's office phone extension can  be entered for a CA1. (Injury) ",
+      "fieldNumber_": 173.1
+    },
+    {
+      "fieldNumber": 174,
+      "fieldName": "FILING INSTRUCTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No lost time and no medical expenses;2:No lost time, medical expenses incurred;3:Lost time covered by leave LWOP or COP;4:First aid injury;",
+      "helpText": "These are the filing instructions for the CA-1: 1. No lost time and no medical expense: Place this form in employee's medical folder(SF-66-D).  2. No lost time, medical expense incurred or expected: forward this form to OWCP.  3. Lost time covered by leave, LWOP, or COP: forward this form to OWCP.  4. First Aid Injury. (Injury) ",
+      "fieldNumber_": 174
+    },
+    {
+      "fieldNumber": 175,
+      "fieldName": "DATE NOTICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the supervisor received notice that the employee filed a CA-1. (Injury) ",
+      "fieldNumber_": 175
+    },
+    {
+      "fieldNumber": 176,
+      "fieldName": "EMPLOYEE DUTY STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station where the employee works. (Injury) ",
+      "fieldNumber_": 176
+    },
+    {
+      "fieldNumber": 177,
+      "fieldName": "DUTY STATION ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the duty station street address. (Injury) ",
+      "fieldNumber_": 177
+    },
+    {
+      "fieldNumber": 178,
+      "fieldName": "DUTY STATION CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the duty station city address. (Injury) ",
+      "fieldNumber_": 178
+    },
+    {
+      "fieldNumber": 179,
+      "fieldName": "DUTY STATION STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the duty station state address. (Injury) ",
+      "fieldNumber_": 179
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "DUTY STATION ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the duty station's Zip code. (Injury) ",
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 181,
+      "fieldName": "ZIP CODE WHERE INJURY OCCURRED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip Code of the location where the injury occurred and is used on the CA1 only. (Injury) ",
+      "fieldNumber_": 181
+    },
+    {
+      "fieldNumber": 182,
+      "fieldName": "PHYSICIAN TITLE",
+      "dataType": "POINTER",
+      "rawType": "P2263.5'",
+      "required": false,
+      "pointerTo": 2263.5,
+      "helpText": "This is the appropriate title for the Physician who first saw the employee This field is used for CA1 claims. (Injury) ",
+      "fieldNumber_": 182
+    },
+    {
+      "fieldNumber": 183,
+      "fieldName": "INJURY OCCURRED ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address where the injury occurred.  Generally, this will be the same address as the duty station street address. (Injury) ",
+      "fieldNumber_": 183
+    },
+    {
+      "fieldNumber": 184,
+      "fieldName": "INJURY OCCURRED CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the City portion of the address where the injury occurred.  Generally, this will be the same as the individual's duty station city. (Injury) ",
+      "fieldNumber_": 184
+    },
+    {
+      "fieldNumber": 185,
+      "fieldName": "INJURY OCCURRED STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the State portion of the address where the injury occurred.  Generally, this will be the same as the individual's duty station state. (Injury) ",
+      "fieldNumber_": 185
+    },
+    {
+      "fieldNumber": 199,
+      "fieldName": "WORKER'S COMP EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether one of the following fields was edited by the Worker's Compensation Personnel in preparation for sending the claim to DOL (Department of Labor):  INJURED PERFORMING DUTY (#146), NOT INJURED PERFORMING DUTY (#147), INJURY CAUSED BY EMPLOYEE (#148), INJURY CAUSED BY EMPLOYEE EXPLAIN (#149), SUPERVISOR AGREE/DISAGREE (#163), SUPERVISOR NOT AGREE EXPLAIN (#164), and REASON AGENCY CONTROVERTS COP (#165). (Injury) ",
+      "fieldNumber_": 199
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "HOME PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the home phone number of the person involved in this incident. Enter the Area Code and number separated by hyphens or spaces.  E.g., 123-122-3456   or  123 122 3456 (Illness/disease) ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "GRADE AS OF LAST EXPOSURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's grade as of the date of last exposure. (Illness/disease) ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "STEP AS OF DATE OF ILL.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's step as of date of last exposure. (Illness/disease) ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "EMPLOYEE STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's street address. (Illness/disease) ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "EMPLOYEE CITY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's city address. (Illness/disease) ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "EMPLOYEE STATE ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the employee's state address. (Illness/disease) ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "EMPLOYEE ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the employee's Zip code. (Illness/disease) ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "DEPENDENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Wife, Husband;2:Children under 18;3:Other;4:Wife, Husband + Children under 18;5:Wife, Husband + Other;6:Children under 18 + Other;7:Wife, Husband + Children under 18 + Other;",
+      "helpText": "These are the employee's dependents. (Illness/disease) ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "EMPLOYEE OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the employee's occupation. (Illness/disease) ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "ILLNESS OCCURRED (LOCATION)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the location where the employee worked when the disease or illness occurred. (Illness/disease) ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "ILLNESS OCCURRED ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the location where the illness occurred. (Illness/disease) ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "ILLNESS OCCURRED CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the location where the illness occurred. (Illness/disease) ",
+      "fieldNumber_": 211
+    },
+    {
+      "fieldNumber": 212,
+      "fieldName": "ILLNESS OCCURRED STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the location's state where the illness occurred. (Illness/disease) ",
+      "fieldNumber_": 212
+    },
+    {
+      "fieldNumber": 213,
+      "fieldName": "ILLNESS OCCURRED ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the location's zip code where the illness occurred. (Illness/disease) ",
+      "fieldNumber_": 213
+    },
+    {
+      "fieldNumber": 214,
+      "fieldName": "DATE FIRST AWARE OF ILLNESS",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date you (the employee) were first aware of the disease or illness. (Illness/disease) ",
+      "fieldNumber_": 214
+    },
+    {
+      "fieldNumber": 215,
+      "fieldName": "DATE FIRST REALIZED CAUSE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date you (the employee) first realized the disease or illness was caused by your employment. (Illness/disease) ",
+      "fieldNumber_": 215
+    },
+    {
+      "fieldNumber": 216,
+      "fieldName": "RELATIONSHIP OF ILLNESS TO EMP",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0216",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2260.0216,
+      "fieldNumber_": 216
+    },
+    {
+      "fieldNumber": 217,
+      "fieldName": "NATURE OF DISEASE/ILLNESS",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0217",
+      "required": false,
+      "helpText": "This is a complete description of the disease or illness.  Specify the left or right side if applicable (e.g., rash on left leg; carpal tunnel syndrome, right wrist). (Illness/disease) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0217,
+      "fieldNumber_": 217
+    },
+    {
+      "fieldNumber": 218,
+      "fieldName": "CLAIM NOT FILED",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0218",
+      "required": false,
+      "helpText": "If this notice and claim was not filed with the employing agency within 30 days after the date you first realized the disease or illness was caused or aggravated by your employment, this is your (the employee's) explanation of the reason for the delay. (Illness/disease) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0218,
+      "fieldNumber_": 218
+    },
+    {
+      "fieldNumber": 219,
+      "fieldName": "EMPLOYEE STATEMENT DELAYED",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0219",
+      "required": false,
+      "helpText": "If a separate narrative statement containing the following information will not be submitted with this form, explain the reason for the delay:   a) A detailed history of the disease or illness from the date it started.   b) Complete details of the conditions of employment which are believed to be responsible for the disease or illness.   c) A description of specific exposures to substances or stressful conditions causing the disease or illness, including locations where exposure or stress occurr",
+      "isMultiple": true,
+      "subFileNumber": 2260.0219,
+      "fieldNumber_": 219
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "MEDICAL REPORT DELAYED",
+      "dataType": "SUBFILE",
+      "rawType": "2260.02",
+      "required": false,
+      "helpText": "If medical reports containing the information listed here are not submitted with this form, explain the reason for the delay.   a) Dates of examination or treatment. b) History given to the physician by the employee. c) Detailed description of the physician's findings. d) Results of x-rays, laboratory tests, etc. e) Diagnosis. f) Clinical course of treatment. g) Physician's opinion as to whether the disease or illness was caused or aggravated by the employment, along with an explanation of the b",
+      "isMultiple": true,
+      "subFileNumber": 2260.02,
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 221,
+      "fieldName": "NAME OF EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 221
+    },
+    {
+      "fieldNumber": 222,
+      "fieldName": "EMPLOYEE ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is your (the employee's) electronic signature.   (Illness/disease) ",
+      "fieldNumber_": 222
+    },
+    {
+      "fieldNumber": 223,
+      "fieldName": "DATE OF EMPLOYEE SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date you (the employee) signed the notice/claim for compensation. (Illness/disease) ",
+      "fieldNumber_": 223
+    },
+    {
+      "fieldNumber": 224,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 224
+    },
+    {
+      "fieldNumber": 225,
+      "fieldName": "OWCP USE NOI CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 225
+    },
+    {
+      "fieldNumber": 226,
+      "fieldName": "TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263'",
+      "required": false,
+      "pointerTo": 2263,
+      "helpText": "This is the Type code for this claim.  The Type code stands for an action and is associated with the Source code which is an object or substance. Both are used to summarize the incident. (Illness/disease) ",
+      "fieldNumber_": 226
+    },
+    {
+      "fieldNumber": 227,
+      "fieldName": "SOURCE CODE",
+      "dataType": "POINTER",
+      "rawType": "P2263.1'",
+      "required": false,
+      "pointerTo": 2263.1,
+      "helpText": "This is the Source code for this claim.  It is the object or substance that is used along with the Type code which is an action.  Both are used to summarize the incident. (Illness/disease) ",
+      "fieldNumber_": 227
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "AGENCY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the agency name of the station reporting the incident. (Illness/disease) ",
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 231,
+      "fieldName": "AGENCY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the agency reporting the incident. (Illness/disease) ",
+      "fieldNumber_": 231
+    },
+    {
+      "fieldNumber": 232,
+      "fieldName": "AGENCY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city address of the agency reporting the incident. (Illness/disease) ",
+      "fieldNumber_": 232
+    },
+    {
+      "fieldNumber": 233,
+      "fieldName": "AGENCY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address of the agency reporting the incident. (Illness/disease) ",
+      "fieldNumber_": 233
+    },
+    {
+      "fieldNumber": 234,
+      "fieldName": "AGENCY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code of the agency reporting the incident. (Illness/disease) ",
+      "fieldNumber_": 234
+    },
+    {
+      "fieldNumber": 235,
+      "fieldName": "OWCP AGENCY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a four digit (or four digit plus two letter) code used by the OWCP to identify the employing agency.  The proper code may be obtained from your personnel or compensation office, or by contacting OWCP. (Illness/disease) ",
+      "fieldNumber_": 235
+    },
+    {
+      "fieldNumber": 236,
+      "fieldName": "OSHA SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Occupational Safety and Health Administration (OSHA) Site code for the reporting agency. (Illness/disease) ",
+      "fieldNumber_": 236
+    },
+    {
+      "fieldNumber": 237,
+      "fieldName": "EMPLOYEE DUTY STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the agency/site where the employee actually works. (Illness/disease) ",
+      "fieldNumber_": 237
+    },
+    {
+      "fieldNumber": 238,
+      "fieldName": "DUTY STATION ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the address of the site where the employee works. (Illness/disease) ",
+      "fieldNumber_": 238
+    },
+    {
+      "fieldNumber": 239,
+      "fieldName": "DUTY STATION CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city where the employee works. (Illness/disease) ",
+      "fieldNumber_": 239
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "DUTY STATION STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address for where the employee works. (Illness/disease) ",
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 241,
+      "fieldName": "DUTY STATION ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code for the employee's duty station. (Illness/disease) ",
+      "fieldNumber_": 241
+    },
+    {
+      "fieldNumber": 242,
+      "fieldName": "REGULAR HRS FROM TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This the time the employee generally starts work. (Illness/disease) ",
+      "fieldNumber_": 242
+    },
+    {
+      "fieldNumber": 243,
+      "fieldName": "REGULAR HRS TO TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the time the employee generally stops work. (Illness/disease) ",
+      "fieldNumber_": 243
+    },
+    {
+      "fieldNumber": 244,
+      "fieldName": "REGULAR WORK SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "At the time of the incident, this was the work schedule for the employee. Examples: For Monday through Friday, enter     2-6 For Sunday, Wednesday through Saturday, enter    1,4-7 or 1,4,5,6,7 (Illness/disease) ",
+      "fieldNumber_": 244
+    },
+    {
+      "fieldNumber": 245,
+      "fieldName": "NAME OF PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the physician first providing medical care for the employee. (Illness/disease) ",
+      "fieldNumber_": 245
+    },
+    {
+      "fieldNumber": 246,
+      "fieldName": "PHYSICIAN ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the physician providing medical care. (Illness/disease) ",
+      "fieldNumber_": 246
+    },
+    {
+      "fieldNumber": 247,
+      "fieldName": "PHYSICIAN CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city address of the physician providing medical care. (Illness/disease) ",
+      "fieldNumber_": 247
+    },
+    {
+      "fieldNumber": 248,
+      "fieldName": "PHYSICIAN STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address of the physician providing medical care. (Illness/disease) ",
+      "fieldNumber_": 248
+    },
+    {
+      "fieldNumber": 249,
+      "fieldName": "PHYSICIAN ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code for the physician's address. (Illness/disease) ",
+      "fieldNumber_": 249
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "FIRST DATE MEDICAL CARE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the employee first received medical care for the condition. (Illness/disease) ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 251,
+      "fieldName": "DISABLED FOR WORK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This states whether or not (Yes or No) the medical reports show that the employee is disabled for work. (Illness/disease) ",
+      "fieldNumber_": 251
+    },
+    {
+      "fieldNumber": 252,
+      "fieldName": "DATE NOTICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the employee first reported the condition to the supervisor. (Illness/disease) ",
+      "fieldNumber_": 252
+    },
+    {
+      "fieldNumber": 253,
+      "fieldName": "DATE/TIME WORK STOPPED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the employee stopped work due to the condition. (Illness/disease) ",
+      "fieldNumber_": 253
+    },
+    {
+      "fieldNumber": 254,
+      "fieldName": "DATE/TIME PAY STOPPED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the employee's pay stopped. (Illness/disease) ",
+      "fieldNumber_": 254
+    },
+    {
+      "fieldNumber": 255,
+      "fieldName": "DATE OF LAST EXPOSURE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the employee was last exposed to conditions alleged to have caused the disease or illness. (Illness/disease) ",
+      "fieldNumber_": 255
+    },
+    {
+      "fieldNumber": 256,
+      "fieldName": "DATE/TIME RETURNED TO WORK",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the employee returned to work. (Illness/disease) ",
+      "fieldNumber_": 256
+    },
+    {
+      "fieldNumber": 257,
+      "fieldName": "WORK DUTY CHANGED",
+      "dataType": "SUBFILE",
+      "rawType": "2260.0257",
+      "required": false,
+      "helpText": "If the work assignment changed when the employee returned to work, this is a description of the employee's new duties. (Illness/disease) ",
+      "isMultiple": true,
+      "subFileNumber": 2260.0257,
+      "fieldNumber_": 257
+    },
+    {
+      "fieldNumber": 258,
+      "fieldName": "INJURY CAUSED BY 3RD PARTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This states whether or not (Yes or No) the injury was caused by a third party. (Illness/disease) ",
+      "fieldNumber_": 258
+    },
+    {
+      "fieldNumber": 259,
+      "fieldName": "3RD PARTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the third party causing the injury. (Illness/disease) ",
+      "fieldNumber_": 259
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "3RD PARTY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the third party causing the injury. (Illness/disease) ",
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 261,
+      "fieldName": "3RD PARTY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city address of the third party causing the injury. (Illness/disease) ",
+      "fieldNumber_": 261
+    },
+    {
+      "fieldNumber": 262,
+      "fieldName": "3RD PARTY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state address of the third party causing the injury. (Illness/disease) ",
+      "fieldNumber_": 262
+    },
+    {
+      "fieldNumber": 263,
+      "fieldName": "3RD PARTY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Zip code address for the third party that caused the injury. (Illness/disease) ",
+      "fieldNumber_": 263
+    },
+    {
+      "fieldNumber": 264,
+      "fieldName": "SUPERVISOR EXCEPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the supervisor has any exceptions to the information provided on the claim, they are stated here. (Illness/disease) ",
+      "fieldNumber_": 264
+    },
+    {
+      "fieldNumber": 265,
+      "fieldName": "NAME OF SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the supervisor completing this notice/claim. (Illness/disease) ",
+      "fieldNumber_": 265
+    },
+    {
+      "fieldNumber": 266,
+      "fieldName": "SUPERVISOR ELECT. SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the supervisor. (Illness/disease) ",
+      "fieldNumber_": 266
+    },
+    {
+      "fieldNumber": 267,
+      "fieldName": "SUPERVISOR DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the supervisor signs the notice/claim. (Illness/disease) ",
+      "fieldNumber_": 267
+    },
+    {
+      "fieldNumber": 268,
+      "fieldName": "SUPERVISOR TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the title of the supervisor signing the notice/claim. (Illness/disease) ",
+      "fieldNumber_": 268
+    },
+    {
+      "fieldNumber": 269,
+      "fieldName": "SUPERVISOR PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the supervisor's office phone number. (Illness/disease) ",
+      "fieldNumber_": 269
+    },
+    {
+      "fieldNumber": 269.1,
+      "fieldName": "SUPERVISOR PHONE EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is available so that the Supervisor's office phone extension can be entered for a CA2. (Illness/disease) ",
+      "fieldNumber_": 269.1
+    },
+    {
+      "fieldNumber": 270,
+      "fieldName": "PHYSICIAN TITLE",
+      "dataType": "POINTER",
+      "rawType": "P2263.5'",
+      "required": false,
+      "pointerTo": 2263.5,
+      "helpText": "This is the appropriate title for the Physician who first saw the employee. This is the field to be used for a CA2 claim. (Illness/disease) ",
+      "fieldNumber_": 270
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This is a Yes/No field that will indicate if the employee is also a veteran. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "RECEIVE VETERAN BENEFITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This is a Yes/No field that will indicate whether the employee filing the CA-7 claim is receiving military benefits. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "PENDING DISABILITY CLAIM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This is a Yes/No field that will indicate whether the user has a claim pending review. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "VBA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the employee is a veteran, this field will contain their veteran's benefit number (VBA number). ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "MILITARY CLAIM BODY PARTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the parts of the employee's body that are involved in the claim. ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "CONDITION ACCEPTED IN CLAIM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the condition that the employee accepted in the claim. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "EMP NAME OF DUAL BENEFIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will contain the pointer to the New Person file (#200) of the employee who signed the Dual Benefits Form. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "EMP DUAL BENEFITS E-SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the employee's encrypted electronic signature.  ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "EMP DUAL BENEFIT SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date that the employee electronically signed the Dual Benefit Form. ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "WC NAME FOR DUAL BENEFIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the pointer to the New Person file (#200) for the Workers' Compensation specialist who electronically signed the Dual Benefits Form. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 313,
+      "fieldName": "WC DUAL BENEFITS E-SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the electronic signature for the Workers' Compensation  Specialist's who signed the Dual Benefits Form. ",
+      "fieldNumber_": 313
+    },
+    {
+      "fieldNumber": 314,
+      "fieldName": "WC DUAL BENEFITS SIGN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the Workers' Compensation Specialist  electronically signed the Dual Benefits Form. ",
+      "fieldNumber_": 314
+    },
+    {
+      "fieldNumber": 330,
+      "fieldName": "OWCP SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a 2 character extension for the OWCP Chargeback code.  It provides flexibility to the facility to further identify the station although the extension is not required.  ",
+      "fieldNumber_": 330
+    },
+    {
+      "fieldNumber": 331,
+      "fieldName": "OWCP CODE (6 CHARACTER)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field combines the OWCP Chargeback code (table driven - ASISTS OWCP CHARGEBACK CODES File (#2263.6) with the 2 character, free text OWCP suffix for the purpose of transmitting the claim to the Department of Labor and running reports based on the further chargeback code designation. ",
+      "fieldNumber_": 331
+    },
+    {
+      "fieldNumber": 332,
+      "fieldName": "AGENCY CONTROVERTS CODE",
+      "dataType": "POINTER",
+      "rawType": "P2262.4'",
+      "required": false,
+      "pointerTo": 2262.4,
+      "helpText": "This field contains the reason for controverts code that must be used when a case has a reason for controvert code entered. ",
+      "fieldNumber_": 332
+    },
+    {
+      "fieldNumber": 333,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the incident resulted in a fatality, this field contains the date of  the death. ",
+      "fieldNumber_": 333
+    },
+    {
+      "fieldNumber": 334,
+      "fieldName": "ILLNESS TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:Skin disorder;3:Respiratory condition;4:Poisoning;5:Hearing loss;6:All other illnesses;",
+      "helpText": "This is the category of the Illness or Disease for the incident  and is used in completing the OSHA 300 Log. ",
+      "fieldNumber_": 334
+    },
+    {
+      "fieldNumber": 335,
+      "fieldName": "TIME WORK BEGAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the time that the individual involved in the incident began work on the date of the incident. ",
+      "fieldNumber_": 335
+    },
+    {
+      "fieldNumber": 336,
+      "fieldName": "HIRE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date (Service Computation Date) that the individual involved  in the incident first began working. ",
+      "fieldNumber_": 336
+    },
+    {
+      "fieldNumber": 337,
+      "fieldName": "PRIVACY CASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the incident should be treated as a 'privacy case'.  If so, restrictions on how the name is displayed are in place. ",
+      "fieldNumber_": 337
+    },
+    {
+      "fieldNumber": 338,
+      "fieldName": "NON VA ER TREATMENT RCVD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This Yes/No field is used to indicate whether the individual involved in the incident was treated at a non-VA emergency treatment center. ",
+      "fieldNumber_": 338
+    },
+    {
+      "fieldNumber": 339,
+      "fieldName": "HOSPITALIZED AS INPATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This Yes/No field is used to indicate if the individual involved in the  incident was admitted to as an inpatient to a medical center. ",
+      "fieldNumber_": 339
+    },
+    {
+      "fieldNumber": 340,
+      "fieldName": "TREATING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the physician who first treated the individual involved in the incident. ",
+      "fieldNumber_": 340
+    },
+    {
+      "fieldNumber": 341,
+      "fieldName": "TREATED AT DIFFERENT FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This Yes/No field is used to indicate whether the individual involved in the incident was treated at a non-VA treatment center. ",
+      "fieldNumber_": 341
+    },
+    {
+      "fieldNumber": 342,
+      "fieldName": "OTHER FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the facility if the individual involved in the  incident was treated at a different facility. ",
+      "fieldNumber_": 342
+    },
+    {
+      "fieldNumber": 343,
+      "fieldName": "OTHER FACILITY STREET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the facility if the individual involved  in the incident was treated at a different facility. ",
+      "fieldNumber_": 343
+    },
+    {
+      "fieldNumber": 344,
+      "fieldName": "OTHER FACILITY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city portion of the address of the facility if the  individual involved in the incident was treated at a different facility. ",
+      "fieldNumber_": 344
+    },
+    {
+      "fieldNumber": 345,
+      "fieldName": "OTHER FACILITY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state portion of the address of the facility if the  individual involved in the incident was treated at a different facility. ",
+      "fieldNumber_": 345
+    },
+    {
+      "fieldNumber": 346,
+      "fieldName": "OTHER FACILITY ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code portion of the address of the facility if the  individual involved in the incident was treated at a different facility. ",
+      "fieldNumber_": 346
+    },
+    {
+      "fieldNumber": 347,
+      "fieldName": "REASON FOR DISPUTE CODE",
+      "dataType": "POINTER",
+      "rawType": "P2262.8'",
+      "required": false,
+      "pointerTo": 2262.8,
+      "helpText": "This is the high level reason that the agency is disputing the CA-1. ",
+      "fieldNumber_": 347
+    },
+    {
+      "fieldNumber": 348,
+      "fieldName": "LOCATION DETAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the optional location detail where the injury occurred. ",
+      "fieldNumber_": 348
+    },
+    {
+      "fieldNumber": 349,
+      "fieldName": "LOSS OF CONSCIOUSNESS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the individual lost consciousness as a result of the incident or not. ",
+      "fieldNumber_": 349
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "PRESCRIPTION STRGTH MEDS GIVEN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "This field indicates if the individual involved in the incident was given or ordered prescription strength medication. ",
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 351,
+      "fieldName": "NON-SCRIPT MEDS AT SCRIPT DOSE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "This field will indicate whether the individual involved in the incident was given or ordered non-prescription medication as prescription strength. (such as Motrin). ",
+      "fieldNumber_": 351
+    },
+    {
+      "fieldNumber": 352,
+      "fieldName": "INITIAL RETURN TO WORK STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FULL DUTY;A:DAYS AWAY WORK;J:Job Transfer/Restriction;",
+      "helpText": "This field will indicate the initial return to work status of the  individual involved in the incident.  This work status may change. ",
+      "fieldNumber_": 352
+    },
+    {
+      "fieldNumber": 353,
+      "fieldName": "DUAL REFUSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 353
+    },
+    {
+      "fieldNumber": 354,
+      "fieldName": "WEATHER FACTOR",
+      "dataType": "POINTER",
+      "rawType": "P2261.21'",
+      "required": false,
+      "pointerTo": 2261.21,
+      "helpText": "This field contains the weather condition at the time of the incident. ",
+      "fieldNumber_": 354
+    },
+    {
+      "fieldNumber": 355,
+      "fieldName": "SOURCE OF INCIDENT",
+      "dataType": "POINTER",
+      "rawType": "P2261.22'",
+      "required": false,
+      "pointerTo": 2261.22,
+      "helpText": "This field is the most relevant source of the Incident. ",
+      "fieldNumber_": 355
+    },
+    {
+      "fieldNumber": 356,
+      "fieldName": "CAUSE OF INCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:Equipment or Environment;BA:Person;CA:Nature;FA:Cause Unknown;",
+      "helpText": "This is the most probable cause of the accident ",
+      "fieldNumber_": 356
+    },
+    {
+      "fieldNumber": 357,
+      "fieldName": "ADDITIONAL CAUSE OF INCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:Equipment or Environment;BA:Person;CA:Nature;ZZ:No additional Cause;",
+      "helpText": "This field will contain the secondary cause of the incident. ",
+      "fieldNumber_": 357
+    },
+    {
+      "fieldNumber": 358,
+      "fieldName": "PREVENTIVE METHOD",
+      "dataType": "POINTER",
+      "rawType": "P2261.24'",
+      "required": false,
+      "pointerTo": 2261.24,
+      "helpText": "This field contains the most likely way to have prevented the incident. ",
+      "fieldNumber_": 358
+    },
+    {
+      "fieldNumber": 359,
+      "fieldName": "STATUS OF CORRECTIVE ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Taken;B:Requested and Anticipated;C:Requested;D:None;",
+      "helpText": "This field contains the status of any recommended corrective action to be taken. ",
+      "fieldNumber_": 359
+    },
+    {
+      "fieldNumber": 360,
+      "fieldName": "SEVERITY OF INJURY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Treatment Required;2:First Aid Only;3:Medical Treatment;4:Disabling Injury;5:Fatality;",
+      "helpText": "This field indicates how devastating the injury was to the individual. ",
+      "fieldNumber_": 360
+    },
+    {
+      "fieldNumber": 384,
+      "fieldName": "OSHA 300 COLUMN F",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain a brief description of the incident that will be used to populate column F of the OSHA 300 Log report. ",
+      "fieldNumber_": 384
+    }
+  ],
+  "fieldCount": 297,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AN", "field": },
+    {"name": "ANC", "field": },
+    {"name": "AW", "field": },
+    {"name": "AWC", "field": },
+    {"name": "B", "field": },
+    {"name": "BS5", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "SSN", "field": },
+    {"name": "2260", "field": .01, "type": "regular"},
+    {"name": "2260", "field": .01, "type": "regular"},
+    {"name": "2260", "field": 1, "type": "regular"},
+    {"name": "2260", "field": 2, "type": "regular"},
+    {"name": "2260", "field": 4, "type": "regular"},
+    {"name": "2260", "field": 5, "type": "regular"},
+    {"name": "2260", "field": 5, "type": "regular"},
+    {"name": "2260", "field": 13, "type": "regular"},
+    {"name": "", "field": 51, "type": "regular"},
+    {"name": "2260", "field": 54, "type": "regular"},
+    {"name": "2260", "field": 57, "type": "regular"},
+    {"name": "", "field": 57, "type": "regular"},
+    {"name": "", "field": 59, "type": "regular"},
+    {"name": "2260", "field": 66, "type": "regular"},
+    {"name": "2260", "field": 67, "type": "regular"},
+    {"name": "2260", "field": 88, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"   \",$E($P(^(0),U,5),4,5)_\"-\"_$E($P(^(0),U,5),6,7)_\"-\"_$E($P(^(0),U,5),2,3)"},
+    {"field": WRITE1, "value": "D:$G(UNION)'=\"Y\" EN^DDIOL($P(^(0),U,2),\"\",\"?3\")"}
+  ]
+}

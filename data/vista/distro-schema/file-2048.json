@@ -1,0 +1,61 @@
+{
+  "fileNumber": 2048,
+  "fileName": "ANRV PATIENT REVIEW",
+  "globalRoot": "2048",
+  "globalReference": "^ANRV(2048,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE OF OUTCOME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:Incomplete;O:Other;C:Complete;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:PRE OUTCOME;O:POST OUTCOME;A:ANNUAL OUTCOME;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SECTION",
+      "dataType": "POINTER",
+      "rawType": "2048.01P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2048", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

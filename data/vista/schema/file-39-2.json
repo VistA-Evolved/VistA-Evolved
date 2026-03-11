@@ -1,0 +1,36 @@
+{
+  "fileNumber": 39.2,
+  "fileName": "EMBOSSING DATA",
+  "globalRoot": "39.2",
+  "globalReference": "^DIC(39.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This field contains the name of the data item to be printed on the data card.  Data item names must be between 3 and 30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MUMPS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the MUMPS code associated with the data item to be printed on the data card.  This code must be between 1 and 250 characters. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "39.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

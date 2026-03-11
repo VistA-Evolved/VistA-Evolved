@@ -1,0 +1,75 @@
+{
+  "fileNumber": 2006.031,
+  "fileName": "IMAGE BACKGROUND QUEUE POINTER",
+  "globalRoot": "2006.031",
+  "globalReference": "^MAGQUEUE(2006.031,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the queue holding the entry. The entry is controlled by the Imaging interfaces and should not be entered directly by any user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This field references the site parameter file.  The Site parameter entry  defines all of the attributes of Vista Imaging local area network.  This  includes facility user preferences, network write locations, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUEUE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2006.03'",
+      "required": false,
+      "pointerTo": 2006.03,
+      "helpText": "Pointer to the entry in the queue. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field provides a count of the queue entries that have yet to be  processed in the Queue file (#2006.03) for each queue type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUEUE TYPE TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This value is the total number of queues in the queue partition of this  type for this local area Vista Imaging network.  This value can be used  in conjunction with the Queue Count field (#2) to determine the number of queues in the failed queue partition.  i.e. Queue Type Total - Queue  Count = failed queues (for this \"PLACE\" and this queue type).. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST_QUEUE_PROCESSED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the latest date and time that this queue was processed.  It is updated at the completion of the BP Queue process.  ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MAG(2006.1,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2006.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

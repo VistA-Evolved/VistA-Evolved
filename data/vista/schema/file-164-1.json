@@ -1,0 +1,170 @@
+{
+  "fileNumber": 164.1,
+  "fileName": "ICD-O-2 MORPHOLOGY",
+  "globalRoot": "164.1I",
+  "globalReference": "^ONCO(164.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FREE TEXT FIELD RECORDING NAMES. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR THE MORHPHOLOGY CODES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SUBFILE",
+      "rawType": "164.11A",
+      "required": false,
+      "helpText": "FREE TEXT FIELD RECORDING TYPE OF CODE. ",
+      "isMultiple": true,
+      "subFileNumber": 164.11,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ICDO-SITE",
+      "dataType": "POINTER",
+      "rawType": "P164.08",
+      "required": false,
+      "pointerTo": 164.08,
+      "helpText": "POINTS TO THE ICDO SITE FILE. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TOPOGRAPHY",
+      "dataType": "POINTER",
+      "rawType": "P164'",
+      "required": false,
+      "pointerTo": 164,
+      "helpText": "POINTS TO THE TOPOGRAPHY FILE. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "TN-CODES",
+      "dataType": "POINTER",
+      "rawType": "P164.1'",
+      "required": false,
+      "pointerTo": 164.1,
+      "helpText": "POINTS TO THE FILE CONTAINING THE T AND N CODES. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "T-CLASS ENCODING",
+      "dataType": "SUBFILE",
+      "rawType": "164.16",
+      "required": false,
+      "helpText": "FREE TEXT FIELD RECORDING THE TUMOR CLASS ENCODING SCHEME. ",
+      "isMultiple": true,
+      "subFileNumber": 164.16,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "EXTENSION CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for this topography in the first edition of SEER Extent of Disease Codes and  Coding Instructions. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.01,
+      "fieldName": "EXTENSION CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for this topography in the second edition of SEER Extent of Disease Codes and  Coding Instructions. ",
+      "fieldNumber_": 43.01
+    },
+    {
+      "fieldNumber": 43.02,
+      "fieldName": "EXTENSION CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": " This field identifies the set of codes used to characterize extension for this topography in the third edition of SEER Extent of Disease Codes and  Coding Instructions.  ",
+      "fieldNumber_": 43.02
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LYMPH NODE CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node involvement for this topography in the first edition of SEER Extent of Disease Codes and  Coding Instructions. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.01,
+      "fieldName": "LYMPH NODE CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node involvement for this topography in the second edition of SEER Extent of Disease Codes and  Coding Instructions. ",
+      "fieldNumber_": 53.01
+    },
+    {
+      "fieldNumber": 53.02,
+      "fieldName": "LYMPH NODE CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": " This field identifies the set of codes used to characterize lymph nodes for this topography in the third edition of SEER Extent of Disease Codes and Coding Instructions.  ",
+      "fieldNumber_": 53.02
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "CELL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Non-Hodgkin's lymphoma;2:Hodgkin's disease;3:Carcinoma;4:Adenocarcinoma;",
+      "helpText": "This field contains a code indicating the type of cell involved. ",
+      "fieldNumber_": 71
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "164.1", "field": .01, "type": "regular"},
+    {"name": "164.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

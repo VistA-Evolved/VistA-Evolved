@@ -1,0 +1,54 @@
+{
+  "fileNumber": 860.9,
+  "fileName": "ORDER CHECK NATIONAL TERM",
+  "globalRoot": "860.9",
+  "globalReference": "^OCXS(860.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,5",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCAL TERM TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "860.91IA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 860.91,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCAL TERM SCREEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is standard MUMPS code for screening what file entries are displayed as local terms that can be mapped to the national terms. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "860.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

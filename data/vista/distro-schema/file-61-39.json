@@ -1,0 +1,69 @@
+{
+  "fileNumber": 61.39,
+  "fileName": "LABORATORY INSTRUMENT CODE",
+  "globalRoot": "61.39",
+  "globalReference": "^LAB(61.39,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORGANISM CODE",
+      "dataType": "SUBFILE",
+      "rawType": "61.391",
+      "required": false,
+      "helpText": "Contains the code from the instrument that identifies an organism. ",
+      "isMultiple": true,
+      "subFileNumber": 61.391,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ANTIBIOTIC CODE",
+      "dataType": "SUBFILE",
+      "rawType": "61.392",
+      "required": false,
+      "helpText": "Contains the instrument code that identifies the antibiotic. ",
+      "isMultiple": true,
+      "subFileNumber": 61.392,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEST CODE",
+      "dataType": "SUBFILE",
+      "rawType": "61.393",
+      "required": false,
+      "helpText": "May be used to hold instrument test/procedure codes ",
+      "isMultiple": true,
+      "subFileNumber": 61.393,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SNOMED CODE",
+      "dataType": "SUBFILE",
+      "rawType": "61.394",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 61.394,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "61.39", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

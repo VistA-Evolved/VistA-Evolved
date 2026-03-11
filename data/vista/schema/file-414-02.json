@@ -1,0 +1,152 @@
+{
+  "fileNumber": 414.02,
+  "fileName": "DYNAMED IFCAP INTERFACE AUDIT",
+  "globalRoot": "414.02",
+  "globalReference": "^PRCV(414.02,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DM DOC ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is DynaMed's unique number associated with each item that is sent on  a request order from DynaMed.   It is composed of 1 digit for Year concatenated with 3 digit Julian Date and a dash, concatenated with 4 digit Sequential Number and a dash, concatenated up to 6 characters for the stockroom(ex YDDD-9999-CCCCCC).   This number is provided by DynaMed, a user's input is not required. DynaMed allows 16 characters maximum. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "P441'",
+      "required": false,
+      "pointerTo": 441,
+      "helpText": "An item's Internal Entry Number(IEN) is stored in this field. It is updated when RIL record is built in IFCAP. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "A vendor's Internal Entry Number(IEN) is stored in this field. It is  populated when a RIL record is built in IFCAP for DynaMed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user's DUZ, who entered the transaction is placed in this field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RIL#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a reference to RIL File 410.3, field .01 'Entry Number'. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE/TIME CREATED IN IFCAP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field refers to Date and Time stamp when a transaction was created in IFCAP.  (ex. A transaction can be from REPETITIVE ITEM LIST (RIL) File #410.3 or CONTROL POINT ACTIVITY (CPA) File #410) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME CREATED IN DYNAMED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This time stamp refers to date & time when a Requisition was created in  DynaMed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "2237#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the reference to entry made in CONTROL POINT ACTIVITY  File #410, field .01 'Transaction Number'. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE/TIME REMOVED FROM IFCAP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date and time will inform when a transaction (such as RIL or 2237) was deleted from IFCAP. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WHO DELETED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will hold the DUZ of the person who deleted the transaction  containing this DM DOC ID from a file (ex. 410, 410.3 or 442). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PC ORDER#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will hold a Purchase Card Order external number that is  PROCUREMENT & ACCOUNTIN G TRANSACTIONS File #442, field's .01 value.   It is only meant for orders related to Purchase Card. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RECEIVING",
+      "dataType": "DATE",
+      "rawType": "414.021DA",
+      "required": false,
+      "helpText": "This multiple is used to hold details about Receiving. ",
+      "isMultiple": true,
+      "subFileNumber": 414.021,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE NEEDED BY",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field is provided by DynaMed, it is this date that DynaMed  anticipates receiving an item. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ENTERED BY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the user who entered this requisition in DynaMed in the format Family(Last),Given(First).  This name corresponds to the data in the ENTERED BY field #3.   The value must be 1-35 characters in length and should contain only  uppercase alpha characters. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "414.02", "field": 4, "type": "regular"},
+    {"name": "414.02", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

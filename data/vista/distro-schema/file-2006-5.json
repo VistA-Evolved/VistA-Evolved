@@ -1,0 +1,89 @@
+{
+  "fileNumber": 2006.5,
+  "fileName": "PACS MESSAGE",
+  "globalRoot": "2006.5",
+  "globalReference": "^MAGDHL7(2006.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Enter the date the message is being entered into this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Type of HL7 message transmitted. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TIME MESSAGE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date and time the message was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE SEGMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.502",
+      "required": false,
+      "helpText": "This word process field will contain the entire HL7 message segments pertaining to one message entry.  ",
+      "isMultiple": true,
+      "subFileNumber": 2006.502,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The HL7 message pertains to this patient. Will be updated by the DICOM Text gateway after it processes the message into a DICOM file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SENT PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This HL7 message was sent by this protocol (Patient Demographics, Order Entry, etc.). Will be updated by the DICOM Text Gateway after it processes the message into a DICOM file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUEUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this field is set, it will indicate that a request has been made to resend the information to the PACS Vendor or a Modality Worklist requestor. Process will be updated by the DICOM Text Gateway.  ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2006.5", "field": .01, "type": "regular"},
+    {"name": "2006.5", "field": .03, "type": "regular"},
+    {"name": "2006.5", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

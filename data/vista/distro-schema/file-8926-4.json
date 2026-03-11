@@ -1,0 +1,72 @@
+{
+  "fileNumber": 8926.4,
+  "fileName": "TIU LOINC SETTING",
+  "globalRoot": "8926.4",
+  "globalReference": "^TIU(8926.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SETTING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the LOINC SETTING axis, which characterizes the place where the  service was provided.  (e.g., Cardiology Clinic, Emergency Department,  etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ALTERNATE EXPRESSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an alternate expression for the Setting.   NOTE: These terms are for the initial mapping process only. The mapping process is a one time exercise until all existing active titles are mapped to a standard title. This field will NOT be used to deploy data thru MFS. This field will not be updated after the initial installation. The alternate expression does not have to be stored in VISTA separately from the standard title. It will be stored in the terminology server. The look up and search ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "8926.499DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 8926.499,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "KWIC", "field": },
+    {"name": "8926.4", "field": .01, "type": "regular"},
+    {"name": "8926.4", "field": .01, "type": "regular"},
+    {"name": "8926.4", "field": .02, "type": "regular"},
+    {"name": "8926.4", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

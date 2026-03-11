@@ -1,0 +1,37 @@
+{
+  "fileNumber": 50.4,
+  "fileName": "DRUG ELECTROLYTES",
+  "globalRoot": "50.4I",
+  "globalReference": "^PS(50.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is the name of the anion/cation (e.g., SODIUM, POTASSIUM, etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONCENTRATION UNITS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:MEQ/ML;2:MCG/ML;3:MG/ML;4:MM/ML;5:UNITS/ML;6:IU/ML;7:MMOL/ML;",
+      "helpText": "This is the concentration unit in which this electrolyte drug is  dispensed. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",\"\" S %=$C(59)_$S($D(^DD(50.4,1,0)):$P(^(0),U,3),1:\"\") W @(\"$E(\"_DIC_\"Y,0),0)\"),$P($P(%,$C(59)_$P(^(0),U,2)_\":\",2),$C(59),1)"}
+  ]
+}

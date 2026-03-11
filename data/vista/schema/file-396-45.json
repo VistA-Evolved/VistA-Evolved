@@ -1,0 +1,112 @@
+{
+  "fileNumber": 396.45,
+  "fileName": "2507 EXAM CONTRACTORS",
+  "globalRoot": "396.45",
+  "globalReference": "^DVB(396.45,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the external Contractor (or Company) who can perform  2507 exams for patients outside of a VA clinic/hospital. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This field indicates the current status of the Contractor (or Company)  for performing 2507 exams for patients outside of a VA clinic/hospital. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the email address for the Contractor (or Company),  which identifies where the patient's 2507 exam(s) should be sent. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REMOTE CONTRACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the IEN value for the Contractor entry (File #396.45)  on the CLAIMS system. This IEN value will be used to query and retrieve  the SFTP connection information for the Contractor.   The CLAIMS system is a mock VistA system utilized by CAPRI and other  applications as the central user authentication system. The Broker  Security Enhancements (BSE) will be used to call back into this account  to retrieve the SFTP information for the contractor, so that the  individual sites won't ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field stores the User Name for connecting to the Contractor's SFTP  server for retrieving completed and transmitting new 2507 exams.   NOTE: This field will be encrypted in the Input Transform, so that the  contents cannot be easily seen. All Contractor SFTP information should be  treated as confidential. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field stores the Password for connecting to the Contractor's SFTP  Server for retrieving completed and transmitting new 2507 exams.   NOTE: This field will be encrypted in the Input Transform, so that the  contents cannot be easily seen. All Contractor SFTP information should be  treated as confidential. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This fields stores the Domain Name/IP Address (URL) which identifies the  location of the Contractor's SFTP Server. All Contractor SFTP information  should be treated as confidential. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field stores the PORT value used to connect to the Contractor's SFTP  Server for retrieving completed and transmitting new 2507 requests. All  Contractor SFTP information should be treated as confidential. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "DEFAULT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the DEFAULT PATH to the root folders  (DOWNLOAD/ARCHIVED/UPLOAD) on the Contractor's SFTP Server. This path  will be prefixed to one of the root folders when a connection is  established. All Contractor SFTP information should be treated as  confidential. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "VLER ENABLED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to determine if the contractor is VLER enabled. ",
+      "fieldNumber_": 105
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "396.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

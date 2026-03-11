@@ -1,0 +1,49 @@
+{
+  "fileNumber": 409.87,
+  "fileName": "SDEC CONSULT PID HISTORY",
+  "globalRoot": "409.87",
+  "globalReference": "^SDEC(409.87,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONSULT IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0",
+      "length": 11,
+      "required": true,
+      "helpText": "This is the IEN of the Consult from ^GMR(123 that is linked to an  appointment(s) in 409.84. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient associated with the consult. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PID",
+      "dataType": "DATE",
+      "rawType": "409.871DA",
+      "required": false,
+      "helpText": "This subfile tracks the PID History of Consults linked to SDEC  appointments. ",
+      "isMultiple": true,
+      "subFileNumber": 409.871,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.87", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "fileNumber": 440.4,
+  "fileName": "MANUFACTURER",
+  "globalRoot": "440.4",
+  "globalReference": "^PRC(440.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the user selected Internal Entry Number (IEN) for this entry  and serves as an entry identification number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the manufacturer's name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DUNS NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the manufacturer's numeric identifier assigned by Dun & Bradstreet. DUNS is the acronym for Data Universal Numbering System. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field flags an entry as inactive and can be used in fields referencing this file to restrict selection of inactive entries. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "440.4", "field": .01, "type": "regular"},
+    {"name": "440.4", "field": .01, "type": "regular"},
+    {"name": "440.4", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

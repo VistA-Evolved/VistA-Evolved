@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2006.033,
+  "fileName": "OFFLINE IMAGES",
+  "globalRoot": "2006.033",
+  "globalReference": "^MAGQUEUE(2006.033,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILENAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of file that is offline ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "JUKEBOX PLATTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Platter where offline file resides ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.033", "field": .01, "type": "regular"},
+    {"name": "2006.033", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

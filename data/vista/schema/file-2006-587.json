@@ -1,0 +1,110 @@
+{
+  "fileNumber": 2006.587,
+  "fileName": "DICOM TRANSMIT DESTINATION",
+  "globalRoot": "2006.587",
+  "globalReference": "^MAG(2006.587,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVICE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that specifies the name of the service that is called for the application described in the current entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE PROVIDER AE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the equipment being called for the application that is described in the current entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the TCP/IP address of the called application entity. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PORT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port number to which the equipment connects calls the application that is described in this entry.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GATEWAY SYSTEM TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a text that identifies the computer that communicates with this service class provider.   Note that each VistA DICOM Gateway computer has its own copy of ^MAGDICOM, in which its station-parameters are stored. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "GATEWAY AE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the VistA DICOM Gatewat from which the application is called that is described in the current entry. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "GATEWAY LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer to the Institution file (#4). This value identifies the institution where this DICOM Gateway computer resides. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SERVICE TYPE",
+      "dataType": "SET",
+      "rawType": "2006.5871SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5871,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SCP TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider Type as entered in the SCU_LIST.DIC file. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.587", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

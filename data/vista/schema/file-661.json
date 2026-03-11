@@ -1,0 +1,90 @@
+{
+  "fileNumber": 661,
+  "fileName": "PROS ITEM MASTER",
+  "globalRoot": "661IOP",
+  "globalReference": "^RMPR(661,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP441'O",
+      "required": true,
+      "pointerTo": 441,
+      "helpText": "This is the IFCAP Item Master Number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AMIS ADMIN NEW CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P663'",
+      "required": true,
+      "pointerTo": 663,
+      "helpText": "Enter the AMIS code to be reported on New Items.  This should always be numeric. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AMIS ADMIN REPAIR CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "Enter the AMIS code to be reported on Repair Items.  This should always start with an \"R.\" ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AMIS ORTHOTIC NEW CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field holds the Orthotics Lab AMIS code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AMIS ORTHOTICS REPAIR CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field holds the Restoration Lab AMIS code. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AMIS RESTORATION NEW CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field holds the Shoe Lab AMIS code. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "AMIS RESTORATIONS REPAIR CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field hold the AMIS Restorations Repair Code. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "661", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .01, "value": "W \"  \""}
+  ]
+}

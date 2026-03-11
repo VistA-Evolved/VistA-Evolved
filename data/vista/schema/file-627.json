@@ -1,0 +1,88 @@
+{
+  "fileNumber": 627,
+  "fileName": "DSM3",
+  "globalRoot": "627I",
+  "globalReference": "^DIC(627,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This number is the official DSM 3 diagnosis number. It has been placed in the field which reflects the internal entry number. Added diagnoses should follow this. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "*NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the official name of the DSM 3 diagnosis. It should be in caps and lower case. A few long names are abbreviated to avoid screen wraparound on display at lookup. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*ICDA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the International Classification of Diseases code number for the DSM 3 diagnosis. Not currently displayed to users, it will be available to MAS if they need to use the ICDA code for their statistics. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "*DSMIII SPECIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the DSM 3 code number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*KEYWORD FRAGMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains, in capital letters, the KEY words describing the  diagnosis. The multiple keyword fragment lookup allows looking up that diagnosis by several keywords (including synonyms). For example, 'HEROIN' will work as well as 'OPIATE' for looking up opiate dependency. One can look up this diagnosis by typing keyword fragments separated by blank spaces:  e.g. 'HER DEP' or 'OPIA DEP'. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*NUMERIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is pulled from the ICDA number. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DSM DISORDER IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the new IEN in the DSM (627.7) file. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "627", "field": .01, "type": "regular"},
+    {"name": "627", "field": 1, "type": "regular"},
+    {"name": "627", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

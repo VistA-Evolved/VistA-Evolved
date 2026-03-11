@@ -1,0 +1,111 @@
+{
+  "fileNumber": 839.01,
+  "fileName": "PCE DEVICE INTERFACE MODULE ERRORS",
+  "globalRoot": "839.01D",
+  "globalReference": "^PX(839.01,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ERROR NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Date and Time that the entry is made in to this file.  Thus it is the Date and Time that processing of PXCA was taking place and had the errors. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P9000001'",
+      "required": false,
+      "pointerTo": 9000001,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is a pointer to the Visit that had the error(s) in populating the Visit and/or V-File(s).  If the Visit was not created then this field is empty. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME CORRECTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and Time that the error correction for this error was completed.  i.e. All of the errors were taken care of and there is no more correction that needs to be done. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME LAST LOOKED AT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time of the last time somebody ran the error fixing routine on this error. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "RP839.7'",
+      "required": true,
+      "pointerTo": 839.7,
+      "helpText": "This is the source of the data being collected.  e ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ERROR VARIABLE",
+      "dataType": "SUBFILE",
+      "rawType": "839.011A",
+      "required": false,
+      "helpText": "This holds the PXKERROR array which tells which data item caused the error. ",
+      "isMultiple": true,
+      "subFileNumber": 839.011,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "PXCA VARIABLE",
+      "dataType": "SUBFILE",
+      "rawType": "839.012A",
+      "required": false,
+      "helpText": "This holds the PXCA array that has the error. ",
+      "isMultiple": true,
+      "subFileNumber": 839.012,
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "839.01", "field": .01, "type": "regular"},
+    {"name": "839.01", "field": .02, "type": "regular"},
+    {"name": "839.01", "field": .03, "type": "regular"},
+    {"name": "839.01", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

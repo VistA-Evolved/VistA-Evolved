@@ -1,0 +1,68 @@
+{
+  "fileNumber": 421.1,
+  "fileName": "MULTIPLE DISTRIBUTION",
+  "globalRoot": "421.1",
+  "globalReference": "^PRCF(421.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transaction number used by the Funds Distribution module to distribute funds to multiple control points (multiple distribution). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the transaction date. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CONTROL POINT",
+      "dataType": "SUBFILE",
+      "rawType": "421.14",
+      "required": false,
+      "helpText": "This is the control point. ",
+      "isMultiple": true,
+      "subFileNumber": 421.14,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "421.15",
+      "required": false,
+      "helpText": "This is the description of transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 421.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who entered the transaction. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "421.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

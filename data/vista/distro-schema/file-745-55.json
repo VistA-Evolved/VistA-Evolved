@@ -1,0 +1,58 @@
+{
+  "fileNumber": 745.55,
+  "fileName": "QAC SERVICE/DISCIPLINE",
+  "globalRoot": "745.55",
+  "globalReference": "^QA(745.55,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the service/discipline involved with this issue code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter an abbreviation fo the service/discipline. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISCIPLINE",
+      "dataType": "POINTER",
+      "rawType": "RP745.5'",
+      "required": true,
+      "pointerTo": 745.5,
+      "helpText": "Corresponds to entries in Contact Discipline file (#745.5). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "745.553",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 745.553,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "745.55", "field": .01, "type": "regular"},
+    {"name": "745.55", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

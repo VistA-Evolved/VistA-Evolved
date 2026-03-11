@@ -1,0 +1,39 @@
+{
+  "fileNumber": 392.9,
+  "fileName": "BT PATIENT ALTERNATE INCOME",
+  "globalRoot": "392.9",
+  "globalReference": "^DGBT(392.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BT PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Beneficiary Travel Patient associated with Alternate Income. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALTERNATE INCOME",
+      "dataType": "DATE",
+      "rawType": "392.91DA",
+      "required": false,
+      "helpText": "This is a multiple containing alternate income date, alternate income  amount, alternate income reason, and alternate income expiration date. ",
+      "isMultiple": true,
+      "subFileNumber": 392.91,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

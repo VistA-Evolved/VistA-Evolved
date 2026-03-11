@@ -1,0 +1,343 @@
+{
+  "fileNumber": 441,
+  "fileName": "ITEM MASTER",
+  "globalRoot": "441Is",
+  "globalReference": "^PRC(441,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0X",
+      "length": 6,
+      "required": true,
+      "helpText": "This is the item number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the short description of the item. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CASE CART/TRAY/INSTRUMENT KIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PURCHASEABLE;S:CASE CART/TRAY/INSTRUMENT KIT;",
+      "helpText": "This field indicates whether an item is a case cart or instrument kit. Case cart and instrument kits should not be purchased from outside of the hospital. This is the purchaseable item indicator. 'P' stands for items purchased outside the hospital. 'S' stands for a set/pack assembled in hospital from purchased items. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "441.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 441.05,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "441.02",
+      "required": false,
+      "helpText": "This is the description of the item. ",
+      "isMultiple": true,
+      "subFileNumber": 441.02,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FCP",
+      "dataType": "SUBFILE",
+      "rawType": "441.03A",
+      "required": false,
+      "helpText": "This is the fund control point. ",
+      "isMultiple": true,
+      "subFileNumber": 441.03,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FSC",
+      "dataType": "POINTER",
+      "rawType": "RP441.2'X",
+      "required": true,
+      "pointerTo": 441.2,
+      "helpText": "This is the federal supply classification. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field lists the Item Name Code for this item. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the National Stock Number for the item. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "NSN VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  The date that the National Stock Number was verified. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "441.01IP",
+      "required": false,
+      "helpText": "This is the vendor for the item. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HAZARDOUS MATERIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HM:HAZARDOUS MATERIAL;",
+      "helpText": "This is a flag to state if this ITEM is hazardous. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST VENDOR ORDERED",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This is the last vendor ordered. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MANDATORY SOURCE",
+      "dataType": "POINTER",
+      "rawType": "*P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This is the mandatory source for an item. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "BOC",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the BOC for this item. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SET/PACK ASSEMBLED BY",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "When a Set/Pack type item is added to this file (by the Generic Inventory Package), the Inventory point that added the item is stuffed into this field by the program.  It is then used as a screen to keep other inventory points from changing the data associated with the item. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE ITEM CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the item was created. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the item. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "INACTIVATED ITEM?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVATED;",
+      "helpText": "This is the set of codes for an inactivated item. This field is set to '1' by option to inactivate an item. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "REPLACEMENT ITEM",
+      "dataType": "POINTER",
+      "rawType": "P441'",
+      "required": false,
+      "pointerTo": 441,
+      "helpText": "This is the replacement item for an inactivated item. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the item was inactivated. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "INACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who inactivated the item. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "MFG PART NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Manufacturer's Part Number (#). ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FOOD GROUP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Meat, Fish, Poultry, Eggs & Convenience Entrees;2:Milk, Milk Products;3:Fruits, Vegetables;4:Bread, Flour, Cereal, etc.;5:Commercial Nutritional Products, Tube feedings & supplements;6:Miscellaneous, Foods;",
+      "helpText": "     This is the catalog food group returned from ISMS by a catalog request. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SKU",
+      "dataType": "POINTER",
+      "rawType": "P420.5'",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "This is the Stock Keeping Unit of Measure. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DRUG TYPE CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:NARCOTIC;L:CONTROLLED SUBSTANCE;D:OTHER DRUGS;",
+      "helpText": "This is the set of drug type codes (Narcotic, Controlled substance, or Other) which will appear on the LOG code sheet. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "REUSABLE ITEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "This field is used for case carts/instrument kits.  If an item is a reusable item (field set to YES), the item will not be charged to the inventory point during the ordering and posting process. Also, reusable items will not increment/decrement the quantity on-hand when assembling or disassembling case carts or instrument kits.   If the field is not set to YES, the item is treated as a disposable item. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SIC CODE",
+      "dataType": "POINTER",
+      "rawType": "P444.2'",
+      "required": false,
+      "pointerTo": 444.2,
+      "helpText": "The Standard Industrial Classification coding system categorizes organizations by type of economic activity.  The SIC code is used in the Request for Quotation (RFQ) module to direct requests to the appropriate group of potential vendors. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PRE_NIF LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "441.06",
+      "required": false,
+      "helpText": "This field stores the value of the DESCRIPTION field (#.1) prior to the overwriting of that field's value with the value from the National Item File (NIF) database.  This field MUST NOT be edited.  It is for historical record only.   ",
+      "isMultiple": true,
+      "subFileNumber": 441.06,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "NIF ITEM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the Item Number assigned to this item in the National Item File (NIF). This field is populated by a feed from the NIF and must not be user edited. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PRE_NIF SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field  stores the value of the SHORT DESCRIPTION field (#.05) prior to that field's overwrite with the value of the Brief Item Description from the National Item File (NIF). This field must not be edited.  It is for historical record only. ",
+      "fieldNumber_": 52
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "BB", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "I", "field": },
+    {"name": "441", "field": .01, "type": "regular"},
+    {"name": "441", "field": .05, "type": "regular"},
+    {"name": "441", "field": .05, "type": "regular"},
+    {"name": "441", "field": 5, "type": "regular"},
+    {"name": "441", "field": 5, "type": "regular"},
+    {"name": "441", "field": 5, "type": "regular"},
+    {"name": "441", "field": 16, "type": "regular"},
+    {"name": "441", "field": 51, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .05, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"},
+    {"field": Z, "value": "W:$P($G(^(0)),U,15)>0 \"   NIF#\"_$P($G(^(0)),U,15)"},
+    {"field": Z0, "value": "S Z9=$S('$D(^(3)):1,'^(3):1,1:0) I 'Z9 W *7,\"   **** THIS ITEM IS INACTIVE\" W:$P($G(^(3)),U,4)>0 \", USE ITEM NUMBER \"_$P($G(^(3)),U,4) W \" ****\""},
+    {"field": Z1, "value": "I $D(PRCSV),Z9,$D(^(2,+PRCSV,0)) W \"   \" S Z=\"U/P: \"_$S($P(^(0),U,8):$P(^(0),U,8)_\"/\",1:\"\")_$S($D(^PRCD(420.5,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\") W:Z'=\"U/P: \" Z K Z"},
+    {"field": Z2, "value": "W:Z9 @(\"$E(\"_DIC_\"Y,0),0)\") K Z9"}
+  ]
+}

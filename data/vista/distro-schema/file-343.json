@@ -1,0 +1,47 @@
+{
+  "fileNumber": 343,
+  "fileName": "AR FORM LETTER",
+  "globalRoot": "343I",
+  "globalReference": "^RC(343,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The AR form letter name identifies the Form Letter number.  Follow-up letters are sent to debtor's based on the bill(s) existing for the debtor.  When a certain bill is to be generated, the AR package will print the appropriate letter to be attached to the bill.   The name of the letter SHOULD NEVER be edited as the AR package looks for letters based on the name.  If the name is changed, then this will cause the letter not to be generated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIN FORM BODY",
+      "dataType": "SUBFILE",
+      "rawType": "343.01",
+      "required": false,
+      "helpText": "The Main Body of the letter is stored as a word-processing field so that it can be edited by the user.  All letters have a 'header' and 'trailer' that follow the main body that is not editable. ",
+      "isMultiple": true,
+      "subFileNumber": 343.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The description of the letter gives a brief over-view of the purpose of the letter and the conditions that letter should be printed. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "343", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(2)) \"   \",$P(^(2),U,1)"}
+  ]
+}

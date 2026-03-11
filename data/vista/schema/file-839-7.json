@@ -1,0 +1,72 @@
+{
+  "fileNumber": 839.7,
+  "fileName": "PCE DATA SOURCE",
+  "globalRoot": "839.7",
+  "globalReference": "^PX(839.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ64",
+      "length": 64,
+      "required": true,
+      "helpText": "A unique data source identifier.  The working rule is that there will be one entry in this file for each unique   <data_source/sending_application/version> -tuple. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INTERFACE DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SEND SCHEDULING BULLETINS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SEND;0:DON'T SEND;",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "839.7101",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 839.7101,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 355.98,
+  "fileName": "IB ALTERNATE PRIMARY ID TYPE",
+  "globalRoot": "355.98",
+  "globalReference": "^IBA(355.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRIMARY ID TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This ID Type designates the type of claims which are processed by a different Administration Contractor than normal claims. It determines which Alternate  Institutional or Professional Payer Primary ID will  be transmitted. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

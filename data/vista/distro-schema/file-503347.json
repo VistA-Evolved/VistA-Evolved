@@ -1,0 +1,26 @@
+{
+  "fileNumber": 503347,
+  "fileName": "POST/CHAPTER/UNIT",
+  "globalRoot": "503347",
+  "globalReference": "^ABS(503347,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503347", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

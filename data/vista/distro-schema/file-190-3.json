@@ -1,0 +1,146 @@
+{
+  "fileNumber": 190.3,
+  "fileName": "RECORD MOVEMENT HISTORY",
+  "globalRoot": "190.3P",
+  "globalReference": "^RTV(190.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP190'I",
+      "required": true,
+      "pointerTo": 190,
+      "helpText": "This identifies the movements of a record in terms of the entity of the record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME RECORD WAS REQUESTED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This identifies the date, time of the request which lead to the movement of the record. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER THAT REQUESTED RECORD",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system that requested the record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME RECORD WAS NEEDED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This identifies the date, time the record was needed to distinguish from the time it was requested. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BORROWER",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9IX",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This points to the entry in the Borrower file who was charged with the  record. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME CHARGED TO BORROWER",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This identifies the date, time the record was charged to the borrower. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER THAT CHARGED RECORD",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system who charged out the record. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TYPE OF MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "R*P195.3'I",
+      "required": true,
+      "pointerTo": 195.3,
+      "helpText": "This defines the different types of actions that can be carried out on a record. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE/TIME OF NEXT MOVEMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This identifies the date, time of the next movement which is known to the system to aid in tracking the movement. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "USER RESPON FOR NEXT MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system who was connected with the next movement of the record. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ASSOCIATED BORROWER",
+      "dataType": "POINTER",
+      "rawType": "*P195.9IX",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This links a borrower area with another borrower for purposes of more fully describing the location of the record. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SELECTION BY BARCODE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This validates the movement in the system since the selection by barcode defines an error free identification of the movement. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "# DAYS CHARGED TO MOVEMENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This describes the time span involved in the movement to group record  movements for system management. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "190.3", "field": .01, "type": "regular"},
+    {"name": "190.3", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

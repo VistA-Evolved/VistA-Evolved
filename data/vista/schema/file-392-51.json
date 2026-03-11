@@ -1,0 +1,46 @@
+{
+  "fileNumber": 392.51,
+  "fileName": "BENEFICIARY TRAVEL DASHBOARD AUDIT",
+  "globalRoot": "392.51",
+  "globalReference": "^DGBT(392.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUDIT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time of action. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The VistA user who took the action. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Action taken within the Beneficiary Travel Dashboard applications. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "392.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

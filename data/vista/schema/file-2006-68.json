@@ -1,0 +1,70 @@
+{
+  "fileNumber": 2006.68,
+  "fileName": "MAGJ USER DATA",
+  "globalRoot": "2006.68",
+  "globalReference": "^MAG(2006.68,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The User Data entry name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user;   pointer the New Person file (200) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "USER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Non-Radiology;1:Rad Tech;2:Resident Radiologist;3:Staff Radiologist;9:sysAdmin;",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VR-WS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.682A",
+      "required": false,
+      "helpText": "Vistarad workstation preferences stored under this node. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.682,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VR-HP",
+      "dataType": "SUBFILE",
+      "rawType": "2006.683A",
+      "required": false,
+      "helpText": "Hanging Protocols, templates, and related data stored under this node. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.683,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "2006.68", "field": .01, "type": "regular"},
+    {"name": "2006.68", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "fileNumber": .9,
+  "fileName": "META DATA DICTIONARY",
+  "globalRoot": ".9I",
+  "globalReference": "^DDD(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ150",
+      "length": 150,
+      "required": true,
+      "helpText": "The NAME is a unique combination of FILENAME_FIELDNAME used to map file data structures. Examples: NEW PERSON_DEFINED FORMATS FOR LM NEW PERSON_DEFINED FORMATS FOR LM_DEFAULT ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LOOKUP TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the FIELD (LABEL).   Built by the DDD routine. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA DICTIONARY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ22,6",
+      "length": 22,
+      "required": false,
+      "helpText": "The number of the FILE in which the FIELD is found.   Built by the DDD routine. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ18,6",
+      "length": 18,
+      "required": false,
+      "helpText": "The number of the FIELD in the relevant FileMan File. Built by the DDD routine. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Not yet used. If this flag were set (to \"1\") it would indicate that this entry in the  Meta-Data-Dictionary is actually an ENTRY in a data file, not a FIELD. This might be useful in the future if the Meta-Data-Dictionary were used  as a kind of \"Google search\" on items of interest other than field names. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OBJECT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ150",
+      "length": 150,
+      "required": false,
+      "helpText": "The OBJECT NAME is the NAME field (.01) converted to camel case notation. The OBJECT NAME will be used to connect to data files and fields. Examples: newPerson.definedFormatsForLm newPerson.definedFormatsForLm.default ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the most recent date/time that ^DDD ran and updated this record. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".901",
+      "required": false,
+      "helpText": "Contains the text of the HELP-PROMPT and DESCRIPTION of the Field, if available. Built by the DDD routine. ",
+      "isMultiple": true,
+      "subFileNumber": .901,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 9.6,
+      "fieldName": "BUILD(S)",
+      "dataType": "COMPUTED",
+      "rawType": "Cm",
+      "required": false,
+      "helpText": "This multiple computed field returns, from the BUILD File (9.6) a list of  all the KIDS Builds that have explicitly transported this data field on  this system. ",
+      "fieldNumber_": 9.6
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This computed field retrieves the DATA TYPE (SET, POINTER, or whatever)  of the FIELD. ",
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AFF", "field": },
+    {"name": "AFF2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": ".9", "field": .01, "type": "regular"},
+    {"name": ".9", "field": .02, "type": "regular"},
+    {"name": ".9", "field": .03, "type": "regular"},
+    {"name": ".9", "field": .04, "type": "regular"},
+    {"name": ".9", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WDI.03, "value": "W \"    \",$P(^(0),U,3)_\",\",$P(^(0),U,4)"}
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "fileNumber": 351.71,
+  "fileName": "IB DM EXTRACT DATA",
+  "globalRoot": "351.71",
+  "globalReference": "^IBE(351.71,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the month/year corresponding to the extracted data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ON STANDBY;2:STARTED;3:COMPLETED;",
+      "helpText": "This is the current status of the data extraction process for this file entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "START RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the extraction process for this file entry started. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "END RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the extraction process for this file entry ended. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXTRACT MESSAGE SENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field, if set to YES, means that a mail message containing the DM extract data for this entry was transmitted to the FORUM mail group. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the number that identifies the mail message sent with the extracted information. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT",
+      "dataType": "POINTER",
+      "rawType": "351.711P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "351.71", "field": .01, "type": "regular"},
+    {"name": "351.71", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

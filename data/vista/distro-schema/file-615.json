@@ -1,0 +1,38 @@
+{
+  "fileNumber": 615,
+  "fileName": "MH CLINICAL FILE",
+  "globalRoot": "615P",
+  "globalReference": "^YS(615,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This name points to the Patient file. It is the name of the patient for whom the problem list is being made. To search data bases, or to print out problem lists by ward or clinic, use the 'Problist' name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "615.01PA",
+      "required": false,
+      "helpText": "This is the name of the problem category used in the Mental Health package. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "615", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

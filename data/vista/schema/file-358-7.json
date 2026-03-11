@@ -1,0 +1,99 @@
+{
+  "fileNumber": 358.7,
+  "fileName": "IMP/EXP FORM LINE",
+  "globalRoot": "358.7",
+  "globalReference": "^IBE(358.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name given to the line. Lines should be given names that will allow them to be identifies, such as V(1,1), meaning a vertical line starting at coordinates (1,1). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LINE STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "  The column, relative to the block, that the line should begin at. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LINE STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "  The row, relative to the block, that the line should begin at. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ORIENTATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "H:HORIZONTAL;V:VERTICAL;",
+      "helpText": "  The direction the line goes in. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "  The length of the line. For horizontal lines the length is in terms of characters. For vertical lines it is in terms of rows. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP358.1'",
+      "required": true,
+      "pointerTo": 358.1,
+      "helpText": "  The block the line appears in. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMBER OF LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LINE SPACING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "s:SINGLE;d:DOUBLE;t:TRIPLE;",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "358.7", "field": .01, "type": "regular"},
+    {"name": "358.7", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \" STARTING COL=\",$P(^(0),U,2)+1"},
+    {"field": .03, "value": "W \" STARTING ROW=\",$P(^(0),U,3)+1"},
+    {"field": .06, "value": "W \"\""}
+  ]
+}

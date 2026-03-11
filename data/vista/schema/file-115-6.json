@@ -1,0 +1,131 @@
+{
+  "fileNumber": 115.6,
+  "fileName": "ENCOUNTER TYPES",
+  "globalRoot": "115.6s",
+  "globalReference": "^FH(115.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text of the name of the encounter type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INITIAL TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the time units for an initial encounter of this type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FOLLOW-UP TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This value, if defined, is the time units for a follow-up encounter of this type. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASK EVENT LOCATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if YES, means that the event location will be asked whenever an encounter of this type is entered into the Encounter file (115.7). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INDIVIDUAL/GROUP/BOTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INDIVIDUAL;G:GROUP;B:BOTH;",
+      "helpText": "This field indicates whether the encounter type is an individual one, a group one, or can be both. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ASK PATIENT NAME(S)?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, means that the clinician will be prompted for patient names when an encounter of this type is entered into the Encounter file (115.7). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ASK # COLLATERALS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, means that the clinician will be prompted for the number of collaterals associated with each patient when an encounter of this type is entered into the Encounter file (115.7). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ASK FOR PATIENT COMMENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, means that the clinician will be prompted for a comment to be associated with each patient when an encounter of this type is entered into the Encounter file (115.7). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:Screening;A:Assessment;E:Pat. Education;C:Community;N:Nutrition Inv.;F:Food Svc.;X:Administrative;",
+      "helpText": "The is the category of the Encounter Type. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will prohibit further selection of this encounter type by dietetic personnel. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "IDENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is pre-set for some encounter types to uniquely identify them for tabulation and other purposes. The number has no meaning. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "115.6", "field": .01, "type": "regular"},
+    {"name": "115.6", "field": 99, "type": "regular"},
+    {"name": "115.6", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

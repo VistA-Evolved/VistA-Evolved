@@ -106,5 +106,8 @@ data/platform.db
 data/platform.db-wal
 data/platform.db-shm
 
+# VDL manuals (downloaded PDFs, not committed)
+data/vista/vdl-manuals/
+
 # Phase 134: DR backup artifacts
 /backups/

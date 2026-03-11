@@ -1,0 +1,96 @@
+{
+  "fileNumber": 366.2,
+  "fileName": "IB INSURANCE CONSISTENCY ELEMENTS",
+  "globalRoot": "366.2",
+  "globalReference": "^IBCN(366.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the inconsistency. This  number is used by the consistency checker routines to determine what  action needs to be taken. Entries in this file must not be added nor  altered in any way as this would cause the consistency checker  functionality to act incorrectly. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the inconsistency that will be reported  when utilizing various insurance and consistency checker options.  This  name will appear on the screen and in a mail message should the  inconsistency not be reported. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text for this inconsistency.  This text will display on the  inconsistent data reports. It describes how the inconsistency occurs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KEY REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO KEY REQUIRED;1:ELIGIBILITY VERIFIED;2:MONEY VERIFIED;3:SERVICE VERIFIED;4:KEY ALWAYS REQUIRED;5:IB SUPERVISOR KEY REQUIRED;",
+      "helpText": "This is the type of key required to be able to edit the field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SET INSURANCE DR STRING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the data required to clean up this inconsistency requires editing of  data that is related to INSURANCE, this field should be answered yes. For  example, if the inconsistency is 'INSURANCE TYPE' this field would be yes  because this prompt is required in order to select a patient's INSURANCE.  If this field is answered yes, all INSURANCE-related questions will also  be asked.   Data in this field must not be altered in any way or it could cause  inaccurate patient data to be entered on your s",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHECK/DON'T CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CHECK;1:DON'T CHECK;",
+      "helpText": "Answer '0' if you want to check this inconsistency locally or '1' if you  wish to ignore it whenever found.   Most checks provide the ability for them to be turned off locally, however, there are some consistency checks ('INSURANCE TYPE', for example) which will always be turned on regardless of how this prompt is answered.   This field can be edited at the site level.   The consistency checks that will always be on are 'INSURANCE PROMPT  UNANSWERED'. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "USE FOR HL7 CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates if the element is to be used for HL7 check. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "366.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 366.21,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

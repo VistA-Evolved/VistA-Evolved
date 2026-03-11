@@ -1,0 +1,55 @@
+{
+  "fileNumber": 131.3,
+  "fileName": "SPECIAL EQUIPMENT",
+  "globalRoot": "131.3",
+  "globalReference": "^SRO(131.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the special equipment for this operative procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of the special equipment. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates the entry inactive and will prevent its selection and use by users of the Surgery Package. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SURGICAL SPECIALTIES",
+      "dataType": "POINTER",
+      "rawType": "131.34PA",
+      "required": false,
+      "helpText": "This field documents the assigned local specialty(ies). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "131.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

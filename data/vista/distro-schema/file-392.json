@@ -1,0 +1,822 @@
+{
+  "fileNumber": 392,
+  "fileName": "BENEFICIARY TRAVEL CLAIM",
+  "globalRoot": "392ID",
+  "globalReference": "^DGBT(392,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Claim DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Enter the date/time of the Bene Travel Claim. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the patient that is related to this Bene Travel Claim. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "P8'X",
+      "required": false,
+      "pointerTo": 8,
+      "helpText": "This field contains the eligibililty of the patient for this Bene Travel Claim. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SC PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the SC percentage of this patient related to this Bene Travel Claim. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CERTIFICATION DATE",
+      "dataType": "POINTER",
+      "rawType": "*P392.2'",
+      "required": false,
+      "pointerTo": 392.2,
+      "helpText": "This field contains the Beneficiary Travel Certification date. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACCOUNT",
+      "dataType": "POINTER",
+      "rawType": "R*P392.3'",
+      "required": true,
+      "pointerTo": 392.3,
+      "helpText": "This field is a pointer to the Beneficiary Travel Account file and contains the account number assigned to an individual beneficiary travel claim. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CARRIER",
+      "dataType": "POINTER",
+      "rawType": "RP440'",
+      "required": true,
+      "pointerTo": 440,
+      "helpText": "This field points to the Vendor File and contains the Carrier providing  services for this Bene Travel Claim. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MOST ECON. COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the most economical cost amount (whatever cost less)  for this Bene Travel Claim. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEDUCTIBLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2X",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the deductible amount applied to this Bene Travel Claim. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "AMOUNT PAYABLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the amount payable (cost minus any applied deductible)  for this Bene Travel Claim. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This field contains the medical center division related to this Bene Travel  Claim. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "WHO ENTERED INTO FILE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user who first entered this patient into the Beneficiary Travel Claim file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE ENTERED INTO THE FILE",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "The date this beneficiary travel claim was entered into this file. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COREFLS CARRIER",
+      "dataType": "POINTER",
+      "rawType": "P392.31'O",
+      "required": false,
+      "pointerTo": 392.31,
+      "helpText": "This field contains the COREFLS Carrier for this Bene Travel Claim. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PLACE OF DEPARTURE [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the first line of the address for the place of  departure for this Bene Travel Claim. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PLACE OF DEPARTURE [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the second line of the address for the place of  departure for this Bene Travel Claim. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PLACE OF DEPARTURE [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the third line of the address for the place of  departure for this Bene Travel Claim. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CITY OF DEPARTURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the name of the city in the address for the place of  departure for this Bene Travel Claim. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 24.1,
+      "fieldName": "STATE OF DEPARTURE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field points to the State File and uses this for the state in the  address for the place of departure for this Bene Travel Claim. ",
+      "fieldNumber_": 24.1
+    },
+    {
+      "fieldNumber": 24.2,
+      "fieldName": "ZIP CODE/DEPARTURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the 5-digit zip code used in the address for the place of departure for this Bene Travel Claim. ",
+      "fieldNumber_": 24.2
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DESTINATION [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the first line of the address for place of destination  for this Bene Travel Claim. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DESTINATION [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the second line of the address for the place of  destination for this Bene Travel Claim. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DESTINATION [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the third line of the address for the place of  destination for this Bene Travel Claim. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CITY OF DESTINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the name of the city in the address for the place of  destination for this Bene Travel Claim. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 28.1,
+      "fieldName": "STATE OF DESTINATION",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field points the the STATE file and contains the state used in the  address for the place of destination for this Bene Travel Claim. ",
+      "fieldNumber_": 28.1
+    },
+    {
+      "fieldNumber": 28.2,
+      "fieldName": "ZIP CODE/DESTINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the 5-digit zip code used in the address for the  place of destination for this Bene Travel Claim. ",
+      "fieldNumber_": 28.2
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ONE WAY/ROUND TRIP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ONE WAY;2:ROUND TRIP;",
+      "helpText": "This field indicates one way or round trip for this Bene Travel Claim. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "MILEAGE/ONE WAY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This field contains the one way mileage for this Bene Travel Calim. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TOTAL MILEAGE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a numeric field containing the total mileage entered for a specific beneficiary travel claim. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "MEALS & LODGING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains meals and lodging costs for this Bene Travel Claim. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "FERRY, BRIDGES, ETC.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains ferry, bridges, etc. costs for this Bene Travel Claim. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "AUTHORIZING PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field points the person file to indicate who the authorizing person  responsible for this Bene Travel Claim. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "ATTENDANT/PAYEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the 'Last, First Middle' name format of the  attendent/payee of this Bene Travel Claim. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "C&P REVIEW VISIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this is a C&P review visit and should be  paid at the C&P review visit mileage rate as indicated in the BT  parameters for this Bene Travel Claim. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.1,
+      "fieldName": "BT CLAIM ELIGIBILITY CODE",
+      "dataType": "POINTER",
+      "rawType": "P392.41'",
+      "required": false,
+      "pointerTo": 392.41,
+      "helpText": "This is the reason patient is eligible for BT. ",
+      "fieldNumber_": 43.1
+    },
+    {
+      "fieldNumber": 43.2,
+      "fieldName": "BT CLAIM ELIGIBILITY ADDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is additional information or explanation if 'Other Eligibility Reason' was entered in the BT CLAIM ELIGIBILITY CODE (#43.1) field.  ",
+      "fieldNumber_": 43.2
+    },
+    {
+      "fieldNumber": 43.4,
+      "fieldName": "SC APPOINTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains 1(Yes) or 0(No) on whether or not the patients  appointment was a SC appointment. ",
+      "fieldNumber_": 43.4
+    },
+    {
+      "fieldNumber": 43.5,
+      "fieldName": "QUALIFIED APPOINTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The field will contain the a 1(yes) or 0(no) on whether or not the patients appointment was a qualified appointment for BT reimburstment. ",
+      "fieldNumber_": 43.5
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "MODE OF TRANSPORTATION",
+      "dataType": "POINTER",
+      "rawType": "RP392.43'",
+      "required": true,
+      "pointerTo": 392.43,
+      "helpText": "This field indicates the mode of transportation used for this Beneficiary Travel Claim.  ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DENIAL LETTER ISSUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Field indicates whether or not a BT claim denial letter was issued. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 45.1,
+      "fieldName": "DENIAL LETTER ISSUED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the BT claim was denied and letter was issued. ",
+      "fieldNumber_": 45.1
+    },
+    {
+      "fieldNumber": 45.2,
+      "fieldName": "CLAIM DENIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will inform whether a claim has been approved or denied.  ",
+      "fieldNumber_": 45.2
+    },
+    {
+      "fieldNumber": 45.3,
+      "fieldName": "DATE CLAIM DENIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the claim was denied.  ",
+      "fieldNumber_": 45.3
+    },
+    {
+      "fieldNumber": 45.4,
+      "fieldName": "CLAIM DENIED REASON",
+      "dataType": "POINTER",
+      "rawType": "P392.8'",
+      "required": false,
+      "pointerTo": 392.8,
+      "helpText": "Reason claim was denied. ",
+      "fieldNumber_": 45.4
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains remarks related to this Beneficiary Travel Claim. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "BUS PASS OR TICKET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PASS;T:TICKET;",
+      "helpText": "This field stores the type of ticket that the veteran used when riding the bus.  The type of ticket determines how the veteran is reimbursed. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "BUS PASS EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field holds the expiration date of the bus pass and can only be  filled in if the BUS PASS OR TICKET (#52) field is set to pass.  The bus pass expiration date can't before the claim date. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "COMMON CARRIER DATE REIMBURSED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field holds the date of reimbursement for use of common carrier transportation. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "COMMON CARRIER FEE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the amount charged for use of the common carrier transportation. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 55.1,
+      "fieldName": "COMMON CARRIER REQUIRED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Field is used to indicate whether or not the use of a common  carrier was best or only way to travel to a VA medical center. ",
+      "fieldNumber_": 55.1
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "TYPE OF CLAIM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MILEAGE;S:SPECIAL MODE;",
+      "helpText": "This field indicates what type of claim this is. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "SPECIAL MODE OF TRANSPORTATION",
+      "dataType": "POINTER",
+      "rawType": "RP392.42'",
+      "required": true,
+      "pointerTo": 392.42,
+      "helpText": "This is the type of Special Mode of Transportation. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The field contains the invoice number from the vendor who provided the special mode of transportation for the patient. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "DATE INVOICE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the invoice was received by the VA from either the  patient or the vendor for the special mode transportation. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "TOTAL INVOICE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the total of all charges by a vendor for the  transportation of the patient by special mode. This includes all cost  and special add-on fees. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "BASE RATE FEE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the base rate fee if any, charged by the vendor for  transporting the patient by special mode. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "MILEAGE FEE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the per mile amount charged by the vendor for transporting  the patient by special mode. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "NO SHOW/NO LOAD FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "Vendor's charge for a no-show patient. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "WAIT TIME FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the fee charged by the vendor to wait for the patient. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "EXTRA CREW FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the fee charged by the vendor when extra crew is provided by the  vendor to transport the patient by special mode. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "SPECIAL EQUIPMENT FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the fee charged by the vendor to provide special equipment during the  special mode transportation. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "SPECIAL MODE RT/ONE-WAY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:ROUND TRIP;O:ONE WAY;",
+      "helpText": "This field indicates whether the special mode transportation was  round trip or one way. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "SPECIAL MODE TOTAL MILES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the total mileage for the special mode transportation  trip. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "OTHER SM TRANSPORTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Other types of special mode transportation used when 'OTHER' is selected  from the SPECIAL MODE OF TRANSPORTATION (#57) field. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "PRE-AUTHORIZED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the  transportation for the Special Mode trip was pre-authorized. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "SPECIAL MODE VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP440'",
+      "required": true,
+      "pointerTo": 440,
+      "helpText": "This is the vendor who supplied the special mode transportation for the patient. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "SPECIAL MODE OTHER REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is any additional information   about the special mode of transportation claim. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "SP MODE DEPARTURE ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Line one of the address the patient departed from for this claim. It defaults to line one of the patient's home address. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "SP MODE DEPARTURE ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the departure address of the patient. It defaults to  the patient's 2nd line of their home address. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "SP MODE DEPARTURE CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city the patient departed from for this claim. It  defaults to the patient's home address city. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "SP MODE DEPARTURE STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state from which the patient departed for the  claim. It defaults to the state from the patient's home address. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "SP MODE DEPARTURE ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the patient's departure ZIP code for this claim. It  defaults to the ZIP code from the patient's home address. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "SP MODE DESTINATION 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is line one of the destination address. It defaults  to the site's address. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "SP MODE DESTINATION 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is line 2 of the destination address. It defaults to the  site's address line 2. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "SP MODE DESTINATION 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the third line of the site's address. It defaults to  the site's address line 3. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "SP MODE DESTINATION CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city the site is located in. It defaults to  the site's city. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "SP MODE DESTINATION STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the destination state of the site. It defaults to  the site's state. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "SP MODE DESTINATION ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the destination ZIP code of the site. It defaults  to the site's ZIP code. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "PRE-AUTHORIZED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is User who PRE-AUTHORIZED the Claim. By default it's user who  entered the claim. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "SPECIAL MODE CLAIM AUTHORIZED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether Special Mode transportation is authorized or denied.  ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "DATE/TIME AUTHORIZED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the travel was authorized if not a  pre-authorized trip. ",
+      "fieldNumber_": 86
+    }
+  ],
+  "fieldCount": 81,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACTP", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADENIED", "field": },
+    {"name": "AE", "field": },
+    {"name": "AFLS", "field": },
+    {"name": "AI", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "392", "field": .01, "type": "regular"},
+    {"name": "392", "field": 2, "type": "regular"},
+    {"name": "392", "field": 2, "type": "regular"},
+    {"name": "392", "field": 3, "type": "regular"},
+    {"name": "392", "field": 6, "type": "regular"},
+    {"name": "392", "field": 6, "type": "regular"},
+    {"name": "392", "field": 7, "type": "regular"},
+    {"name": "392", "field": 9, "type": "regular"},
+    {"name": "392", "field": 13, "type": "regular"},
+    {"name": "392", "field": 14, "type": "regular"},
+    {"name": "", "field": 21, "type": "regular"},
+    {"name": "", "field": 22, "type": "regular"},
+    {"name": "", "field": 25, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"},
+    {"name": "", "field": 44, "type": "regular"},
+    {"name": "392", "field": 45.2, "type": "regular"},
+    {"name": "", "field": 52, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 6, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGBT(392.3,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(392.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

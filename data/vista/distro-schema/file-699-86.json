@@ -1,0 +1,29 @@
+{
+  "fileNumber": 699.86,
+  "fileName": "SURVEILLANCE",
+  "globalRoot": "699.86",
+  "globalReference": "^MCAR(699.86,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a list of possible surveillances which can be used as an indication for procedure for GI Endoscopies. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.86", "field": .01, "type": "regular"},
+    {"name": "699.86", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

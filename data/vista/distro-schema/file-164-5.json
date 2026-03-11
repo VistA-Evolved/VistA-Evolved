@@ -1,0 +1,69 @@
+{
+  "fileNumber": 164.5,
+  "fileName": "SEER CODE SET",
+  "globalRoot": "164.5I",
+  "globalReference": "^ONCO(164.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the topographical and/or histo-morphological description of the type of cancer to which this set of codes applies. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CODE SET TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EXTENSION;L:LYMPH NODES;S:SURGERY;",
+      "helpText": "This field identifies whether the codes apply to extension, lymph nodes,  or surgery. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FIRST EDITION;2:SECOND EDITION;3:THIRD EDITION;",
+      "helpText": "This field identifies the edition of the appropriate manual that contains this set of codes. The appropriate manuals are SEER Extent of Disease  Codes (for extension and lymph node codes) and SEER Coding Instructions  (for surgery codes). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NEXT EDITION CODE SET",
+      "dataType": "POINTER",
+      "rawType": "P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field points to the record that contains the set of codes that supersedes this set. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CODE/DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "164.54A",
+      "required": false,
+      "helpText": "This multiple contains the codes and descriptions for this set. ",
+      "isMultiple": true,
+      "subFileNumber": 164.54,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "164.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(164.5,.1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(164.5,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

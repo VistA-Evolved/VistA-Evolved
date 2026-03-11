@@ -1,0 +1,58 @@
+{
+  "fileNumber": 601.712,
+  "fileName": "MH TEST/SURVEY SPEC",
+  "globalRoot": "601.712",
+  "globalReference": "^YTT(601.712,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "This references the instrument to which the associated specifications  apply. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is updated each time a specification is edited with the  current date/time. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTRY CHECKSUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This contains the 32-bit checksum (unsigned integer).  It is calculated  whenever the entry specification for the instrument is edited. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENTRY SPECIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "601.7121",
+      "required": false,
+      "helpText": "This contains the specification used by MHA Web to present an instrument  to the user.  It contains questions, responses, and skip logic rules.   The specification document is in JSON format. ",
+      "isMultiple": true,
+      "subFileNumber": 601.7121,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.712", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

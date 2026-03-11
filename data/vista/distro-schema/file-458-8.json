@@ -1,0 +1,67 @@
+{
+  "fileNumber": 458.8,
+  "fileName": "RECESS TRACKING",
+  "globalRoot": "458.8",
+  "globalReference": "^PRST(458.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NURSE",
+      "dataType": "POINTER",
+      "rawType": "RP450'",
+      "required": true,
+      "pointerTo": 450,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FISCAL YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the fiscal year during which the 9-month AWS is effective. The fiscal year for 2006 (FY06, sometimes written FY05-06) is from October 1, 2005 through September 30, 2006.  However, the fiscal year for purposes of the 9-month AWS will be governed also by complete pay  periods, since the nurses normal hours=80 and duty basis = part-time,  must be in effect for the entire pay period. Thus some 9-month AWS fiscal years may have 50, 52 or 54 weeks.  The fiscal year is defined as the 12 months ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "AWS START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECESS WEEKS",
+      "dataType": "SUBFILE",
+      "rawType": "458.82",
+      "required": false,
+      "helpText": "This multiple contains each recess week and the hours associated with  that week. ",
+      "isMultiple": true,
+      "subFileNumber": 458.82,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTER/EDIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "458.83D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 458.83,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "458.8", "field": .01, "type": "regular"},
+    {"name": "458.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(3)) \"   \",$P(^(3),U,1)"}
+  ]
+}

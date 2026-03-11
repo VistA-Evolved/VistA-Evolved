@@ -1,0 +1,1036 @@
+{
+  "fileNumber": 355.33,
+  "fileName": "INSURANCE VERIFICATION PROCESSOR",
+  "globalRoot": "355.33",
+  "globalReference": "^IBA(355.33,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date this entry is added to the buffer file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user of the source package that entered this insurance entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE OF INFORMATION",
+      "dataType": "POINTER",
+      "rawType": "P355.12'O",
+      "required": false,
+      "pointerTo": 355.12,
+      "helpText": "This is the source by which this insurance information was obtained. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ENTERED;A:ACCEPTED;R:REJECTED;",
+      "helpText": "This is the status of this insurance entry.    E - Entered Locally but not yet processed    A - Processed and Accepted, data moved to Insurance files    R - Processed and Rejected, data Not moved to Insurance files    When an entry is processed most of the data is deleted from the Insurance Buffer file.  Entries with a status of Accepted or Rejected will only have stub entries in this file for reporting and tracking purposes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date authorized insurance personnel either accepted or rejected the information in this entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROCESSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the insurance user who accepted or rejected this entry. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NEW COMPANY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates if this buffer entry resulted in a new Insurance Company being created.  This will only be Yes if the buffer entry was accepted and a new Insurance Company entry was added to the Insurance Company File. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NEW GROUP/PLAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates if this buffer entry resulted in a new Group/Plan being created.  This will only be Yes if the buffer entry was accepted and a new Group/Plan entry was added to the Group Insurance Plan file. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NEW POLICY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates if this buffer entry resulted in a new Patient Insurance Policy being created.  This will only be Yes if the buffer entry was accepted and a new Policy entry was added for this patient. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date insurance personnel verified this insurance information is correct.  This will only be used if the verification step was completed separately from the acceptance step of the process. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the insurance user that verified this insurance information is correct.  This should only be entered if the entry is verified before it is accepted. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "IIV STATUS",
+      "dataType": "POINTER",
+      "rawType": "P365.15'",
+      "required": false,
+      "pointerTo": 365.15,
+      "helpText": "This field is a pointer to the IIV STATUS TABLE file.  This identifies the visual symbol that should appear in the IIV status column in  the insurance buffer listing of entries.  The symbols appear next to the  patient name to indicate the current stage within the electronic  verification process. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "OVERRIDE FRESHNESS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The presence of this flag will alert the Buffer extract process and also the process that electronically transmits the insurance verification request, that this buffer entry should get transmitted and sent to the Payer - bypassing the National Insurance Cache. This is regardless of the freshness date or of any other data elements.  This flag trumps everything else in the electronic verification process. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "REMOTE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the remote location from where this insurance information was  gathered from.  This field is optional and will only be completed if the  information came from a remote facility. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "IIV PROCESSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date/time field is automatically updated when a response is received using the electronic insurance eligibility communications via the IIV software. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REAL TIME VERIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag that indicates if Real Time Verification processed and verified this insurance buffer entry. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "BPS RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.03'",
+      "required": false,
+      "pointerTo": 9002313.03,
+      "helpText": "This is the payer's response to an Eligibility Inquiry. When an ePharmacy Eligibility Inquiry transaction is sent to the payer, the payer responds with an NCPDP Eligibility Response transaction through the ECME engine. This response is stored by default in the BPS RESPONSES file. When this happens an insurance buffer entry is also created. This field links the buffer entry with the BPS Response entry. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Service date to be included in eIV inquiry. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "ASSOCIATED IMAGE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates if a buffer entry contains an associated image. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "INSURANCE COMPANY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the name of the Insurance Carrier that provides coverage for this patient. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number at which this insurance company can be reached. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "BILLING PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The insurance carriers phone number where inquires about patient billing should be made. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "PRECERTIFICATION PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this company requires pre-certification of insurance coverage to be completed prior to a patient being treated then enter the phone number of the pre-cert office. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "REIMBURSE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:WILL REIMBURSE;*:WILL REIMBURSE IF TREATED UNDER VAR 6046(C) OR VAR 6060.2(A);**:DEPENDS ON POLICY, CHECK WITH COMPANY;N:WILL NOT REIMBURSE;",
+      "helpText": "Choose from the available list of choices the appropriate code denoting whether or not and under which circumstances this insurance carrier will reimburse the Dept of Veterans Affairs for care received. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 21.01,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the first line of the insurance company's mailing address street. ",
+      "fieldNumber_": 21.01
+    },
+    {
+      "fieldNumber": 21.02,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the insurance company's mailing address street is longer than 1 line, enter the second line here. ",
+      "fieldNumber_": 21.02
+    },
+    {
+      "fieldNumber": 21.03,
+      "fieldName": "STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the insurance company's mailing address street is longer than 2 lines, enter the third line here. ",
+      "fieldNumber_": 21.03
+    },
+    {
+      "fieldNumber": 21.04,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the insurance company's mailing address city. ",
+      "fieldNumber_": 21.04
+    },
+    {
+      "fieldNumber": 21.05,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the insurance company's mailing address state. ",
+      "fieldNumber_": 21.05
+    },
+    {
+      "fieldNumber": 21.06,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the insurance company's mailing address zip code. ",
+      "fieldNumber_": 21.06
+    },
+    {
+      "fieldNumber": 40.01,
+      "fieldName": "IS THIS A GROUP POLICY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Some policies are individual policies and are specific to a patient. Many policies are group plans that cover many patients. ",
+      "fieldNumber_": 40.01
+    },
+    {
+      "fieldNumber": 40.02,
+      "fieldName": "*GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name that the insurance company uses to identify this plan.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 40.02
+    },
+    {
+      "fieldNumber": 40.03,
+      "fieldName": "*GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number or code which the insurance company uses to identify this plan.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 40.03
+    },
+    {
+      "fieldNumber": 40.04,
+      "fieldName": "UTILITZATION REVIEW REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this is answered Yes, then the UR staff will be required to follow-up on all billable cases.  If this is answered No then UR follow-up will be considered optional. ",
+      "fieldNumber_": 40.04
+    },
+    {
+      "fieldNumber": 40.05,
+      "fieldName": "PRECERTIFICATION REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if this plan requires all non-emergent admissions to be pre-certified. ",
+      "fieldNumber_": 40.05
+    },
+    {
+      "fieldNumber": 40.06,
+      "fieldName": "AMBULATORY CARE CERTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if this plan requires certification of ambulatory procedures. This may include Ambulatory Surgeries, CAT Scans, MRI, non-invasive procedures, etc. ",
+      "fieldNumber_": 40.06
+    },
+    {
+      "fieldNumber": 40.07,
+      "fieldName": "EXCLUDE PREEXISTING CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if the plan does not cover any pre-existing conditions the patient may have, otherwise enter No. ",
+      "fieldNumber_": 40.07
+    },
+    {
+      "fieldNumber": 40.08,
+      "fieldName": "BENEFITS ASSIGNABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if assignment of benefits is allowed by this plan. ",
+      "fieldNumber_": 40.08
+    },
+    {
+      "fieldNumber": 40.09,
+      "fieldName": "TYPE OF PLAN",
+      "dataType": "POINTER",
+      "rawType": "*P355.1'",
+      "required": false,
+      "pointerTo": 355.1,
+      "helpText": "Select the Type of Plan that best describes this plan.  The Type of Plan may be used to determine if reimbursement for claims from the insurance carrier is appropriate. ",
+      "fieldNumber_": 40.09
+    },
+    {
+      "fieldNumber": 40.1,
+      "fieldName": "BANKING IDENTIFICATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Banking Identification Number (BIN). Used for NCPDP transmissions. ",
+      "fieldNumber_": 40.1
+    },
+    {
+      "fieldNumber": 40.11,
+      "fieldName": "PROCESSOR CONTROL NUMBER (PCN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Processor Control Number (PCN). Used for NCPDP transmissions. ",
+      "fieldNumber_": 40.11
+    },
+    {
+      "fieldNumber": 60.01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient covered by this insurance policy. ",
+      "fieldNumber_": 60.01
+    },
+    {
+      "fieldNumber": 60.02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date this policy went into effect for this patient. ",
+      "fieldNumber_": 60.02
+    },
+    {
+      "fieldNumber": 60.03,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If this insurance policy coverage expires for this patient on a specified date, enter that date, otherwise leave this blank. ",
+      "fieldNumber_": 60.03
+    },
+    {
+      "fieldNumber": 60.04,
+      "fieldName": "*SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the Subscriber's Primary ID number.  This number is assigned by the payer and can be found on the subscriber's insurance card.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 60.04
+    },
+    {
+      "fieldNumber": 60.05,
+      "fieldName": "WHOSE INSURANCE",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "v:VETERAN;s:SPOUSE;o:OTHER;p:PATIENT;",
+      "helpText": "Enter 'v' if this insurance policy is held by the veteran, 's' if the veterans spouse holds the policy, or 'o' if anyone else is the policy holder. ",
+      "fieldNumber_": 60.05
+    },
+    {
+      "fieldNumber": 60.06,
+      "fieldName": "PT. RELATIONSHIP TO INSURED",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "01:PATIENT;02:SPOUSE;03:NATURAL CHILD;08:EMPLOYEE;09:DO NOT USE;11:ORGAN DONOR;15:INJURED PLANTIFF;18:DO NOT USE;32:MOTHER;33:FATHER;34:SIGNIFICANT OTHER;35:LIFE PARTNER;36:OTHER RELATIONSHIP;",
+      "helpText": "Enter the code which best describes the patient's relationship to the person who holds this policy (or insured). ",
+      "fieldNumber_": 60.06
+    },
+    {
+      "fieldNumber": 60.07,
+      "fieldName": "*NAME OF INSURED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the name of the individual for which this policy was issued.  If the Patients Relationship to the Insured is 'Patient' then this name will  default to the patients name via input transform.   This field is scheduled for deletion in May 2015. ",
+      "fieldNumber_": 60.07
+    },
+    {
+      "fieldNumber": 60.08,
+      "fieldName": "INSURED'S DOB",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the policy holder's (insured's) Date of Birth.  This is not needed if the patient is not the policy holder since the patient's DOB is stored elsewhere. ",
+      "fieldNumber_": 60.08
+    },
+    {
+      "fieldNumber": 60.09,
+      "fieldName": "INSURED'S SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the policy holders (insured's) social security number.  This only needs to be entered if it is different than the Subscriber Id number and the insured is not the patient. ",
+      "fieldNumber_": 60.09
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "PRIMARY CARE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's Primary Care Provider within their managed care network that referred the patient to the VA.  In some cases if the patients PC Provider refers the patient to the VA their HMO will reimburse. ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 60.11,
+      "fieldName": "PRIMARY PROVIDER PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the patients non-VA primary care provider that may refer the patient to the VA for care. ",
+      "fieldNumber_": 60.11
+    },
+    {
+      "fieldNumber": 60.12,
+      "fieldName": "COORDINATION OF BENEFITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "Enter '1' if this is the patient's primary insurance policy.  Enter '2' if this policy is secondary to (billed after) the primary policy. Enter '3' if this policy is tertiary or billed after the secondary policy. ",
+      "fieldNumber_": 60.12
+    },
+    {
+      "fieldNumber": 60.13,
+      "fieldName": "INSURED'S SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "This field is used in insurance billing to help verify the policy coverage when the bill is submitted to the carrier. If the patient is the policy holder, this value should match the patient's sex.  If the patient's spouse or other relative is the policy holder, the appropriate value should be determined and entered. ",
+      "fieldNumber_": 60.13
+    },
+    {
+      "fieldNumber": 60.14,
+      "fieldName": "PT. RELATIONSHIP - HIPAA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:SPOUSE;18:SELF;19:CHILD;20:EMPLOYEE;29:SIGNIFICANT OTHER;32:MOTHER;33:FATHER;39:ORGAN DONOR;41:INJURED PLAINTIFF;53:LIFE PARTNER;G8:OTHER RELATIONSHIP;",
+      "helpText": "Select the HIPAA relationship code that describes the relationship this patient has to the holder of this insurance policy. If the policy belongs to the patient enter '18' for SELF. If the policy belongs to the spouse enter '01' for SPOUSE, etc. ",
+      "fieldNumber_": 60.14
+    },
+    {
+      "fieldNumber": 60.15,
+      "fieldName": "PHARMACY RELATIONSHIP CODE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.19'",
+      "required": false,
+      "pointerTo": 9002313.19,
+      "helpText": "This is the relationship of the patient to the cardholder.   Code  Description ----  -----------  0    Not Specified  1    Cardholder - The individual that is enrolled in and receives       benefits from a health plan  2    Spouse - Patient is the husband/wife/partner of the cardholder  3    Child - Patient is a child of the cardholder  4    Other - Relationship to cardholder is not precise ",
+      "fieldNumber_": 60.15
+    },
+    {
+      "fieldNumber": 60.16,
+      "fieldName": "PHARMACY PERSON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code that is assigned by the payer to identify the patient. The payer may use a unique person code to identify each specific person on the pharmacy insurance policy. This code may also describe the patient's relationship to the cardholder.   Enrollment Standard Examples:     001 = Cardholder   002 = Spouse   003 - 999 = Dependents and Others (including second spouses, etc.) ",
+      "fieldNumber_": 60.16
+    },
+    {
+      "fieldNumber": 61.01,
+      "fieldName": "ESGHP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if this policy is part of a plan that is sponsored or provided by the insured's (policy holder's) current or past employer. ",
+      "fieldNumber_": 61.01
+    },
+    {
+      "fieldNumber": 61.02,
+      "fieldName": "SPONSORING EMPLOYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this is an Employer Sponsored Group Health Plan then enter the name of the employer that sponsors the plan. ",
+      "fieldNumber_": 61.02
+    },
+    {
+      "fieldNumber": 61.03,
+      "fieldName": "EMPLOYMENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL TIME;2:PART TIME;3:NOT EMPLOYED;4:SELF EMPLOYED;5:RETIRED;6:ACTIVE MILITARY;9:UNKNOWN;",
+      "helpText": "If this plan is an Employer Sponsored Group Health Plan then enter the  policy holders employment status with the sponsoring employer. ",
+      "fieldNumber_": 61.03
+    },
+    {
+      "fieldNumber": 61.04,
+      "fieldName": "RETIREMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this plan is an Employer Sponsored Group Health Plan then enter the date the insured retired from the employer that sponsors the plan. ",
+      "fieldNumber_": 61.04
+    },
+    {
+      "fieldNumber": 61.05,
+      "fieldName": "SEND BILL TO EMPLOYER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent first to them for pre-processing, rather than the insurance company, then enter Yes. You will then be able to enter an address that these bills should be sent to.  If the employer does not require this then the bills will be sent directly to the insurance company. ",
+      "fieldNumber_": 61.05
+    },
+    {
+      "fieldNumber": 61.06,
+      "fieldName": "EMPLOYER CLAIMS STREET LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the first line of the street address of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.06
+    },
+    {
+      "fieldNumber": 61.07,
+      "fieldName": "EMPLOYER CLAIMS STREET LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the second line of the street address of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.07
+    },
+    {
+      "fieldNumber": 61.08,
+      "fieldName": "EMPLOYER CLAIMS STREET LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the third line of the street address of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.08
+    },
+    {
+      "fieldNumber": 61.09,
+      "fieldName": "EMPLOYER CLAIMS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.09
+    },
+    {
+      "fieldNumber": 61.1,
+      "fieldName": "EMPLOYER CLAIMS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the State of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.1
+    },
+    {
+      "fieldNumber": 61.11,
+      "fieldName": "EMPLOYER CLAIMS ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the zip code of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.11
+    },
+    {
+      "fieldNumber": 61.12,
+      "fieldName": "EMPLOYER CLAIMS PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number of the sponsoring employers claims office if this is an Employer Sponsored Group Health Plan and the sponsoring employer requires claims against the policy be sent to them for pre-processing. ",
+      "fieldNumber_": 61.12
+    },
+    {
+      "fieldNumber": 62.01,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's primary ID number for this insurance company. Enter this field when the patient and the subscriber are different and the patient has a unique ID number. ",
+      "fieldNumber_": 62.01
+    },
+    {
+      "fieldNumber": 62.02,
+      "fieldName": "SUBSCRIBER ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, line 1. ",
+      "fieldNumber_": 62.02
+    },
+    {
+      "fieldNumber": 62.03,
+      "fieldName": "SUBSCRIBER ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, line 2. ",
+      "fieldNumber_": 62.03
+    },
+    {
+      "fieldNumber": 62.04,
+      "fieldName": "SUBSCRIBER ADDRESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, city. ",
+      "fieldNumber_": 62.04
+    },
+    {
+      "fieldNumber": 62.05,
+      "fieldName": "SUBSCRIBER ADDRESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Subscriber address, state. ",
+      "fieldNumber_": 62.05
+    },
+    {
+      "fieldNumber": 62.06,
+      "fieldName": "SUBSCRIBER ADDRESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, zip code. ",
+      "fieldNumber_": 62.06
+    },
+    {
+      "fieldNumber": 62.07,
+      "fieldName": "SUBSCRIBER ADDRESS COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, country code. ",
+      "fieldNumber_": 62.07
+    },
+    {
+      "fieldNumber": 62.08,
+      "fieldName": "SUBSCRIBER ADDRESS SUBDIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Subscriber address, country subdivision code. ",
+      "fieldNumber_": 62.08
+    },
+    {
+      "fieldNumber": 62.09,
+      "fieldName": "SUBSCRIBER PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the phone number of the policyholder. ",
+      "fieldNumber_": 62.09
+    },
+    {
+      "fieldNumber": 80.01,
+      "fieldName": "INQ SERVICE TYPE CODE 1",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "First Service Type Code to be sent with eIV insurance inquiry. ",
+      "fieldNumber_": 80.01
+    },
+    {
+      "fieldNumber": 80.02,
+      "fieldName": "INQ SERVICE TYPE CODE 2",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Second Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.02
+    },
+    {
+      "fieldNumber": 80.03,
+      "fieldName": "INQ SERVICE TYPE CODE 3",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Third Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.03
+    },
+    {
+      "fieldNumber": 80.04,
+      "fieldName": "INQ SERVICE TYPE CODE 4",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Fourth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.04
+    },
+    {
+      "fieldNumber": 80.05,
+      "fieldName": "INQ SERVICE TYPE CODE 5",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Fifth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.05
+    },
+    {
+      "fieldNumber": 80.06,
+      "fieldName": "INQ SERVICE TYPE CODE 6",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Sixth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.06
+    },
+    {
+      "fieldNumber": 80.07,
+      "fieldName": "INQ SERVICE TYPE CODE 7",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Seventh Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.07
+    },
+    {
+      "fieldNumber": 80.08,
+      "fieldName": "INQ SERVICE TYPE CODE 8",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Eighth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.08
+    },
+    {
+      "fieldNumber": 80.09,
+      "fieldName": "INQ SERVICE TYPE CODE 9",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Ninth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.09
+    },
+    {
+      "fieldNumber": 80.1,
+      "fieldName": "INQ SERVICE TYPE CODE 10",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Tenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.1
+    },
+    {
+      "fieldNumber": 80.11,
+      "fieldName": "INQ SERVICE TYPE CODE 11",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Eleventh Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.11
+    },
+    {
+      "fieldNumber": 80.12,
+      "fieldName": "INQ SERVICE TYPE CODE 12",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Twelfth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.12
+    },
+    {
+      "fieldNumber": 80.13,
+      "fieldName": "INQ SERVICE TYPE CODE 13",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Thirteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.13
+    },
+    {
+      "fieldNumber": 80.14,
+      "fieldName": "INQ SERVICE TYPE CODE 14",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Fourteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.14
+    },
+    {
+      "fieldNumber": 80.15,
+      "fieldName": "INQ SERVICE TYPE CODE 15",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Fifteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.15
+    },
+    {
+      "fieldNumber": 80.16,
+      "fieldName": "INQ SERVICE TYPE CODE 16",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Sixteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.16
+    },
+    {
+      "fieldNumber": 80.17,
+      "fieldName": "INQ SERVICE TYPE CODE 17",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Seventeenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.17
+    },
+    {
+      "fieldNumber": 80.18,
+      "fieldName": "INQ SERVICE TYPE CODE 18",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Eighteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.18
+    },
+    {
+      "fieldNumber": 80.19,
+      "fieldName": "INQ SERVICE TYPE CODE 19",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Nineteenth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.19
+    },
+    {
+      "fieldNumber": 80.2,
+      "fieldName": "INQ SERVICE TYPE CODE 20",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Twentieth Service Type Code to be sent with eIV Insurance Inquiry. ",
+      "fieldNumber_": 80.2
+    },
+    {
+      "fieldNumber": 90.01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name that the insurance company uses to identify this plan. ",
+      "fieldNumber_": 90.01
+    },
+    {
+      "fieldNumber": 90.02,
+      "fieldName": "GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the number or code which the insurance company uses to identify this plan. ",
+      "fieldNumber_": 90.02
+    },
+    {
+      "fieldNumber": 90.03,
+      "fieldName": "SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the Subscriber's Primary ID number. This number is assigned by the payer and can be found on the subscriber's insurance card. ",
+      "fieldNumber_": 90.03
+    },
+    {
+      "fieldNumber": 91.01,
+      "fieldName": "NAME OF INSURED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name of the individual for which this policy was issued. If  the Patient Relationship to the Insured is 'Patient' then this name will  default to the patient name via input transform. ",
+      "fieldNumber_": 91.01
+    }
+  ],
+  "fieldCount": 102,
+  "crossReferences": [
+    {"name": "AEST", "field": },
+    {"name": "AEST1", "field": },
+    {"name": "AFST", "field": },
+    {"name": "AFST1", "field": },
+    {"name": "AFST2", "field": },
+    {"name": "AI", "field": },
+    {"name": "AI1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "355.33", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "355.33", "field": .01, "type": "regular"},
+    {"name": "355.33", "field": .01, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"},
+    {"name": "355.33", "field": .04, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "355.33", "field": .05, "type": "regular"},
+    {"name": "", "field": .1, "type": "regular"},
+    {"name": "355.33", "field": .1, "type": "regular"},
+    {"name": "355.33", "field": .17, "type": "regular"},
+    {"name": "355.33", "field": 20.01, "type": "regular"},
+    {"name": "", "field": 20.01, "type": "regular"},
+    {"name": "", "field": 40.02, "type": "regular"},
+    {"name": "", "field": 40.02, "type": "regular"},
+    {"name": "", "field": 40.03, "type": "regular"},
+    {"name": "", "field": 40.03, "type": "regular"},
+    {"name": "355.33", "field": 60.01, "type": "regular"},
+    {"name": "", "field": 60.01, "type": "regular"},
+    {"name": "355.33", "field": 60.02, "type": "regular"},
+    {"name": "", "field": 60.04, "type": "regular"},
+    {"name": "", "field": 60.04, "type": "regular"},
+    {"name": "355.33", "field": 60.06, "type": "regular"},
+    {"name": "", "field": 60.06, "type": "regular"},
+    {"name": "", "field": 60.06, "type": "regular"},
+    {"name": "", "field": 60.07, "type": "regular"},
+    {"name": "", "field": 60.08, "type": "regular"},
+    {"name": "", "field": 60.14, "type": "regular"},
+    {"name": "", "field": 62.01, "type": "regular"},
+    {"name": "", "field": 90.01, "type": "regular"},
+    {"name": "", "field": 90.01, "type": "regular"},
+    {"name": "", "field": 90.02, "type": "regular"},
+    {"name": "", "field": 90.02, "type": "regular"},
+    {"name": "", "field": 90.03, "type": "regular"},
+    {"name": "", "field": 90.03, "type": "regular"},
+    {"name": "", "field": 91.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

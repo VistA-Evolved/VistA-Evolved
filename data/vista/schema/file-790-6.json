@@ -1,0 +1,38 @@
+{
+  "fileNumber": 790.6,
+  "fileName": "WV LETTER",
+  "globalRoot": "790.6",
+  "globalReference": "^WV(790.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LETTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the generic sample letter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LETTER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "790.61",
+      "required": false,
+      "helpText": "This field stores the body of the generic or sample notification letter. ",
+      "isMultiple": true,
+      "subFileNumber": 790.61,
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "790.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "fileNumber": 704.005,
+  "fileName": "CP_MOVEMENT_AUDIT",
+  "globalRoot": "704.005",
+  "globalReference": "^MDC(704.005,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is the identifier of the patient involved in the patient  movement event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE_TIME_OF_EVENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date/time of the patient movement event. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field identifies the DIVISION per the patient movement event. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This field identifies the WARD per the patient movement event. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BED",
+      "dataType": "POINTER",
+      "rawType": "P405.4'",
+      "required": false,
+      "pointerTo": 405.4,
+      "helpText": "This field identifies the room-BED per the patient movement event. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MESSAGE_TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This indicates the HL7 MESSAGE TYPE.  The value here can be 'ADT' to  indicate an admission/discharge/transfer type message. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EVENT_TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This indicates the HL7 message EVENT TYPE.  The value here can be 'A01' to indicate an Admit/visit notification EVENT TYPE. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PIMS_EVENT_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a copy of the internal entry number (ien) of the PATIENT MOVEMENT  file (#405) entry which correlates to this CP_MOVEMENT_AUDIT file entry.   If a movement is deleted, the corresponding entry from the patient  movement file is deleted as well.  This prevents this field from being an  actual pointer.  This IEN is used only for troubleshooting purposes. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACCEPTED_BY_QUEUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the HL7 message has been queued. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "QUEUE_ERROR_MSG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the error message, if an error message is returned by  the message queueing process. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "A08_TARGET",
+      "dataType": "POINTER",
+      "rawType": "P704.006'",
+      "required": false,
+      "pointerTo": 704.006,
+      "helpText": "This field contains a reference to the CP_PROTOCOL_LOCATION to use if the  EVENT_TYPE (#.07) for this movement is \"A08\".  The information will later  be used by the dynamic addressing function of HL7 to ensure that the  outbound ADT message is sent to the correct location. ",
+      "fieldNumber_": .21
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "704.005", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

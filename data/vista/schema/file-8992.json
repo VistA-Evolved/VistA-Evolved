@@ -1,0 +1,80 @@
+{
+  "fileNumber": 8992,
+  "fileName": "ALERT",
+  "globalRoot": "8992",
+  "globalReference": "^XTV(8992,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECIPIENT",
+      "dataType": "POINTER",
+      "rawType": "RP200'XI",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SURROGATE FOR ALERTS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field may contain a pointer to the NEW PERSON file who has been designated as a SURROGATE recipient.  That individual will receive alerts designated for the current user during the period of time specified by the entries in SURROGATE START DATE/TIME field [#.03] and the SURROGATE END DATE/TIME field [#.04] or, if one or both of those fields is not specified, until the SURROGATE entry is removed.  If the SURROGATE END DATE/TIME field [#.04] is populated, the SURROGATE data will be removed au",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SURROGATE START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field may contain a date and time which will specify when forwarding of alerts to the SURROGATE specified in field #.02 will begin.  If there is no entry in this field, and field #.02 is populated, alerts will be sent to the surrogate immediately. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SURROGATE END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field may contain a date and time.  If data is present, it indicates the time at which sending of alerts to the individual specified in the SURROGATE field (#.02) should be terminated.  If no data is present, and the SURROGATE field is populated, then alerts will be sent to the SURROGATE until that entry is removed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALERT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "8992.01DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8992.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SURROGATE",
+      "dataType": "DATE",
+      "rawType": "8992.02D",
+      "required": false,
+      "helpText": "This field is a multiple based on the start date/time for a surrogate relationship.  This will permit multiple surrogate relationships to be  scheduled.   Since a start date/time for the surrogate relationship is required, if  the user does not enter one, then the NOW as the current date/time will  be used. ",
+      "isMultiple": true,
+      "subFileNumber": 8992.02,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AXQA", "field": },
+    {"name": "AXQAN", "field": },
+    {"name": "B", "field": },
+    {"name": "8992", "field": .01, "type": "regular"},
+    {"name": "8992", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

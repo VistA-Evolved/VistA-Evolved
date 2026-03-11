@@ -1,0 +1,71 @@
+{
+  "fileNumber": 423.6,
+  "fileName": "ISMS/FMS TRANS",
+  "globalRoot": "423.6",
+  "globalReference": "^PRCF(423.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the ISMS transaction ID. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION",
+      "dataType": "SUBFILE",
+      "rawType": "423.61A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 423.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TASK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the last TASKMAN job that was entered for this ISMS transaction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NSN STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P442.3'",
+      "required": false,
+      "pointerTo": 442.3,
+      "helpText": "This field is used to notify a PPM clerk that there are incomming items to enter into file 441. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WAREHOUSE STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P442.3'",
+      "required": false,
+      "pointerTo": 442.3,
+      "helpText": "This is the warehouse status. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "423.6", "field": .01, "type": "regular"},
+    {"name": "423.6", "field": 3, "type": "regular"},
+    {"name": "423.6", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

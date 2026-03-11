@@ -1,0 +1,174 @@
+{
+  "fileNumber": 601.84,
+  "fileName": "MH ADMINISTRATIONS",
+  "globalRoot": "601.84",
+  "globalReference": "^YTT(601.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ADMINISTRATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the unique identifier for this administration record. It is the  IEN. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the NAME field (#.01) of the PATIENT file (#2). This specifies the patient attached to this specific administration. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "A pointer to NAME field (#.01) of the MH TESTS AND SURVEYS file (#601.71), it specifies a particular instrument. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE GIVEN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the patient started the instrument. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE SAVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date last edited, ie last time test was worked on for this administration. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who ordered the test. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ADMINISTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Clerk who actually entered the information or started the patient in  front of the computer. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SIGNED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Has administration been signed by the orderer or administrator. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IS COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Boolean specifying if test is complete. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NUMBER OF QUESTIONS ANSWERED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number of answers entered. If less than in MH Instrument CONTENT for  this instrument, it is incomplete. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "601.841",
+      "required": false,
+      "helpText": "Place for orderer or administrator to make free text comments. ",
+      "isMultiple": true,
+      "subFileNumber": 601.841,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:Successfully added to db;T:Transmitted, not yet added;E:Error;",
+      "helpText": "Used to indicate success or failure in transmission to the Mental Health National DataBase. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSMISSION TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Time of last transmission status. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Associates an administration to a Hospital Location. Pointer to the NAME  field (#.01) of the HOPSITAL LOCATION file (#44). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SCORING REVISION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the revision level of the scoring fields/routines when the administration was last scored.  This is used to indicate if the instrument needs to be re-scored due to updates/fixes to scoring for the instrument. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AL", "field": },
+    {"name": "AO", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "601.84", "field": .01, "type": "regular"},
+    {"name": "601.84", "field": 1, "type": "regular"},
+    {"name": "601.84", "field": 5, "type": "regular"},
+    {"name": "601.84", "field": 11, "type": "regular"},
+    {"name": "601.84", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 697.1,
+  "fileName": "REFERRING PHYSICIAN/AGENCY",
+  "globalRoot": "697.1",
+  "globalReference": "^MCAR(697.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a list of non-site physicians or referring agencies that refer a patient to the VA site for a Catheterization.  This list is LAYGO. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "697.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

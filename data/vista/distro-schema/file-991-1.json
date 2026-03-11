@@ -1,0 +1,103 @@
+{
+  "fileNumber": 991.1,
+  "fileName": "CIRN HL7 EXCEPTION LOG",
+  "globalRoot": "991.1",
+  "globalReference": "^RGHL7(991.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0X",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the internal entry number (IEN) of this HL7 exception. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This the date/time the message processing started. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the message processing completed. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "COMPLETION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SUCCESS;1:FAILURE;",
+      "helpText": "This is the completion status for this message. '0' for Success, '1' for Failure (processing aborted). ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXCEPTION",
+      "dataType": "SUBFILE",
+      "rawType": "991.12",
+      "required": false,
+      "helpText": "This is a multiple field that holds exception data. ",
+      "isMultiple": true,
+      "subFileNumber": 991.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0X",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the internal entry number (IEN) of the HL7 message. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PARAMETER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field that holds up to 250 characters. For outbound messages, this is the event stub.  For inbound messages, this is the entry point for the message processor. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EVENT CLASS",
+      "dataType": "POINTER",
+      "rawType": "P995'",
+      "required": false,
+      "pointerTo": 995,
+      "helpText": "This is a pointer to the CIRN EVENT ASSOCIATION file (#995). ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADFN", "field": },
+    {"name": "ASTAT", "field": },
+    {"name": "B", "field": },
+    {"name": "HL7", "field": },
+    {"name": "991.1", "field": .01, "type": "regular"},
+    {"name": "991.1", "field": 1.5, "type": "regular"},
+    {"name": "991.1", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

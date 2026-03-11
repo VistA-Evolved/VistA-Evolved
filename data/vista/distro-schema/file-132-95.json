@@ -1,0 +1,49 @@
+{
+  "fileNumber": 132.95,
+  "fileName": "ANESTHESIA SUPERVISOR CODES",
+  "globalRoot": "132.95",
+  "globalReference": "^SRO(132.95,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the name of the Anesthesia Supervisor Code.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the code corresponding to the principal anesthetist's level of supervision.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "132.952",
+      "required": false,
+      "helpText": "This is a description of the anesthesia supervisor code.   ",
+      "isMultiple": true,
+      "subFileNumber": 132.952,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "132.95", "field": .01, "type": "regular"},
+    {"name": "132.95", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

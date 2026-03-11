@@ -1,0 +1,103 @@
+{
+  "fileNumber": 405.1,
+  "fileName": "FACILITY MOVEMENT TYPE",
+  "globalRoot": "405.1I",
+  "globalReference": "^DG(405.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number for this facility movement type.  This number is assigned by the system sequentially with each new entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the movement type.  This name will be displayed on many of the bed control outputs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP405.3'I",
+      "required": true,
+      "pointerTo": 405.3,
+      "helpText": "Enter the type of transaction (admission, transfer, discharge, check-in lodger, check-out lodger, or specialty change) for this movement type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MOVEMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P405.2'",
+      "required": true,
+      "pointerTo": 405.2,
+      "helpText": "Enter the MAS MOVEMENT TYPE you wish this local movement type to be associated with.  All entries in this file must point to an entry in the MAS MOVEMENT TYPE file.  This field is used to determine the flow of many ADT functions. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "Enter 1 if this movement type may be selected by users at your site. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASK SPECIALTY AT MOVEMENT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Do you want the user to be asked to add/edit a treating specialty movement when this type of movement is entered/edited? ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the PRINT NAME.  It will be printed on the extended patient inquiry, extended bed control, as well as other bed control options.  If it is not defined, the NAME field will be used in an abbreviated format.  This field will also be used for look-up. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CAN ONLY FOLLOW MOVEMENT(S)",
+      "dataType": "POINTER",
+      "rawType": "405.11PA",
+      "required": false,
+      "helpText": "This multiple contains all other movement types which this entry can follow.  For admissions and check-in lodger movements, this multiple will be blank as they can not follow anything.  The multiple will never contain a discharge or a check-out lodger movement as nothing can follow those movements.  The 'Can Only Follow' syntax relates to one episode, either a lodger stay or an inpatient admission. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "AM", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "405.1", "field": .01, "type": "regular"},
+    {"name": "405.1", "field": .02, "type": "regular"},
+    {"name": "405.1", "field": .03, "type": "regular"},
+    {"name": "405.1", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(405.3,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(405.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(405.1,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "fileNumber": 7105.8,
+  "fileName": "NOIS WORK GROUP",
+  "globalRoot": "7105.8",
+  "globalReference": "^FSC(\"PACKG\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the work group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7105.81",
+      "required": false,
+      "helpText": "These are the synonyms for the package group. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available on any call where the package has this work group associated with it. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "P7105.9'",
+      "required": false,
+      "pointerTo": 7105.9,
+      "helpText": "This is the type of work group for this entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short name used by this work group. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7105.899",
+      "required": false,
+      "helpText": "These are the names for this work group used by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.899,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "7105.8", "field": .01, "type": "regular"},
+    {"name": "7105.8", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

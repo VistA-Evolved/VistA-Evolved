@@ -1,0 +1,1517 @@
+{
+  "fileNumber": 160,
+  "fileName": "ONCOLOGY PATIENT",
+  "globalRoot": "160V",
+  "globalReference": "^ONCO(160,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This field identifies the patient by establishing a pointer to either the VA Patient File, or, for non-VA patients, to the Referral File.  Enter the patient's name to see if it is already on file.  If not, you will need to enter the name, along with other identifiers, into the appropriate file. Contact your MAS representative if you have difficulty entering a new patient into the VA Patient File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "LAST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Identifies the last name of the patient.  For further information see FORDS page 39. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .012,
+      "fieldName": "FIRST-LAST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25X",
+      "length": 25X,
+      "required": false,
+      "helpText": "RECORD THE PATIENT'S FIRST AND LAST NAME. ",
+      "fieldNumber_": .012
+    },
+    {
+      "fieldNumber": .013,
+      "fieldName": "C'LASTNAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "RECORD PATIENT'S LAST NAME IF IT CONTAINS A C'. ",
+      "fieldNumber_": .013
+    },
+    {
+      "fieldNumber": .014,
+      "fieldName": "SALUTATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Looks at sex field, and determines how letter should be addressed. ",
+      "fieldNumber_": .014
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "MIDDLE NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ14",
+      "length": 14,
+      "required": false,
+      "helpText": "Identifies the middle name or middle initial of the patient.  For further information see FORDS page 41. ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS 1",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "RECORD FIRST LINE OF PATIENT'S ADDRESS. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "RECORD 2ND LINE OF PATIENT'S ADDRESS. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS 3",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "RECORD 3RD LINE OF PATIENT'S ADDRESS. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "RECORD THE PATIENT'S STATE OF RESIDENCE. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "RECORD THE PATIENT'S RESIDENCE ZIP CODE. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "COUNTY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "Computes the patient's current COUNTY of residence. COUNTY is derived from COUNTY (2,.117). ",
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .118,
+      "fieldName": "ZIP-COUNTY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "THIS IS A COMPUTED FIELD THAT BRINGS UPS THE COUNTY OF RESIDENCE COMPUTED FROM ZIP CODE. ",
+      "fieldNumber_": .118
+    },
+    {
+      "fieldNumber": .119,
+      "fieldName": "PATIENT ADDRESS - CURRENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Identifies the patient's current address (number and street).  For further information see FORDS page 49. ",
+      "fieldNumber_": .119
+    },
+    {
+      "fieldNumber": .1191,
+      "fieldName": "PATIENT ADDRESS - CURRENT SUPP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Provides the ability to store additional address information such as the name of a place or facility (ie, a nursing home or name of an apartment complex).  For further information see FORDS page 50. ",
+      "fieldNumber_": .1191
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "CTY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the patient's county, retrieved from the PATIENT file (#2).  If the ONCOLOGY PATIENT file is pointing to the REFERRAL file (#67), the CTY value will be null. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "TELEPHONE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Records the current telphone number with area code for the patient.  For further information see FORDS page 55. ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CONTACTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "THIS IS A COMPUTED FIELD FOR THE PATIENT'S CONTACTS. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "NOK-INFO",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "THIS FIELD CONTAINS INFORMATION FOR THE PATIENT'S NEXT OF KIN. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .211,
+      "fieldName": "NOK2-INFO",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "THIS FIELD CONTAINS INFORMATION RELATED TO THE PATIENT'S 2ND NEXT OF KIN. ",
+      "fieldNumber_": .211
+    },
+    {
+      "fieldNumber": .212,
+      "fieldName": "RELATIVE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "THIS FIELD CONTAINS INFORMATION REGARDING THE NEXT OF KIN RELATIONSHIP TO THE PATIENT. ",
+      "fieldNumber_": .212
+    },
+    {
+      "fieldNumber": .213,
+      "fieldName": "RELATIVE-2",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "THIS FIELD CONTAINS INFORMATION REGARDING THE 2ND NEXT OF KIN RELATIONSHIP TO THE PATIENT. ",
+      "fieldNumber_": .213
+    },
+    {
+      "fieldNumber": .214,
+      "fieldName": "NOK",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the patient's next of kin, retrieved from either the PATIENT File (#2) or the REFERRAL File (#67). ",
+      "fieldNumber_": .214
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALIAS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "COMPUTED FIELD BRINGING OVER ANY ALIAS LISTED IN THE MAS FILE FOR THE PATIENT. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "Records the patient's Social Security number.  For further information see FORDS page 37. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "CSSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "COMPUTED SOCIAL SECURITY NUMBER. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DOB",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Identifies the date of birth of the patient.  For further information see FORDS page 57. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "DATE OF BIRTH (FILEMAN FORMAT)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "Identifies the date of birth of the patient in internal FileMan format. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEDICAL RECORD NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "Records the medical record number usually assigned by the reporting facility's health information management (HIM) department.  For further information see FORDS page 36. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "TERMINAL DIGIT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "COMPUTED FIELD TAKING THE LAST TWO DIGITS FROM THE PATIENT'S SOCIAL SECURITY NUMBER. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REGIONAL NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Regional data set - One number per patient - Can be left blank. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CENTRAL NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The case number is issued by the SEER participant to identify the person. Each computer record pertaining to the same person must have an identical case number.  It uses eight digits with leading zeros as necessary. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PLACE OF BIRTH",
+      "dataType": "POINTER",
+      "rawType": "RP165.2'",
+      "required": true,
+      "pointerTo": 165.2,
+      "helpText": " Records the patient's place of birth.  For further information see FORDS page 56. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RACE 1",
+      "dataType": "POINTER",
+      "rawType": "R*P164.46'",
+      "required": true,
+      "pointerTo": 164.46,
+      "helpText": " Identifies the primary race of the person.  For further information see FORDS page 59. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "RACE 2",
+      "dataType": "POINTER",
+      "rawType": "P164.46'",
+      "required": false,
+      "pointerTo": 164.46,
+      "helpText": " Identifies the patient's race.  For further information see FORDS page 61. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "RACE 3",
+      "dataType": "POINTER",
+      "rawType": "P164.46'",
+      "required": false,
+      "pointerTo": 164.46,
+      "helpText": " Identifies the patient's race.  For further information see FORDS page 62.  ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "RACE 4",
+      "dataType": "POINTER",
+      "rawType": "P164.46'",
+      "required": false,
+      "pointerTo": 164.46,
+      "helpText": " Identifies the patient's race.  For further information see FORDS page 63. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 8.4,
+      "fieldName": "RACE 5",
+      "dataType": "POINTER",
+      "rawType": "P164.46'",
+      "required": false,
+      "pointerTo": 164.46,
+      "helpText": " Identifies the patient's race.  For further information see FORDS page 64. ",
+      "fieldNumber_": 8.4
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SPANISH ORIGIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Non-Spanish, non-Hispanic;1:Mexican;2:Puerto Rican;3:Cuban;4:South/Central American;5:Other specified Spanish/Hispanic;6:Spanish, Hispanic, Latino, NOS;7:Spanish surname only;8:Dominican Republic;9:Unknown/not stated;",
+      "helpText": " Identifies persons of Spanish or Hispanic origin.  NOTE: Code 8 (Dominican Republic) is for use with patients who       were diagnosed with cancer on January 1, 2005, or later.  For further information see FORDS page 65. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Male;2:Female;3:Other (intersex, disorders of sexual development/DSD);4:Transsexual, NOS;5:Transsexual, natal male;6:Transsexual, natal female;9:Not stated;",
+      "helpText": " Identifies the sex of the patient.  For further information see FORDS page 66. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LRDFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "COMPUTED FIELD WITH THE LABORATORY DATA FILE NUMBER. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CURRENT OCCUPATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the current occupation of the patient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RELIGION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "THE PATIENT'S RELIGION. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MARITAL STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "COMPUTED FIELD LISTING THE PATIENT'S MARTIAL STATUS. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Dead;1:Alive;",
+      "helpText": "Record whether the patient is alive or dead. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.1,
+      "fieldName": "LAST FOLLOW-UP CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P165",
+      "required": false,
+      "pointerTo": 165,
+      "helpText": "RECORDS THE PATIENT'S LAST FOLLOW-UP CONTACT. ",
+      "fieldNumber_": 15.1
+    },
+    {
+      "fieldNumber": 15.2,
+      "fieldName": "FOLLOW-UP STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Inactive;1:Active;8:LTF;",
+      "helpText": "RECORDS THE PATIENT'S FOLLOW UP STATUS. ",
+      "fieldNumber_": 15.2
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE LAST CONTACT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "RECORDS THE PATIENT'S LAST DATE OF CONTACT. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TOTAL PRIMARIES FOR PATIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": " This field will display a division specific count of a patient's primaries.  ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18.9,
+      "fieldName": "CAUSE OF DEATH/CANCER",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "D:Directly related;I:Indirectly related;N:Not related;U:Unknown;",
+      "helpText": "This field contains a code indicating whether the patient died as a result of cancer. ",
+      "fieldNumber_": 18.9
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CAUSE OF DEATH",
+      "dataType": "POINTER",
+      "rawType": "P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": " Record the CAUSE OF DEATH listed on the death certificate.  Central registries are the primary users of this data item.  Use the underlying CAUSE OF DEATH (ICD code) identified by state health department.  ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "STATE DEATH CERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "7777:State death certificate or listing not available;7797:State death cert available, cause of death not coded;",
+      "helpText": "This field stores special CAUSE OF DEATH values which are not ICD codes. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ICD REVISION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Patient alive at last follow-up;8:ICDA-8;9:ICD-9;",
+      "helpText": "This information will be provided by the central registry when backloading cases.  It refers to which ICD coding scheme (see Field 19 'Cause of Death') used to code the cause of death. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PLACE OF DEATH",
+      "dataType": "POINTER",
+      "rawType": "P165.2'",
+      "required": false,
+      "pointerTo": 165.2,
+      "helpText": " Enter the place of death.  ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22.9,
+      "fieldName": "AUTOPSY",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:Patient alive;1:Autopsy performed;2:No autopsy performed;9:Patient expired, unknown if autopsy performed;",
+      "helpText": "This field contains a code indicating (if known) whether a post-mortem examination was performed on the patient. ",
+      "fieldNumber_": 22.9
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "AUTOPSY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DOX",
+      "required": false,
+      "helpText": "RECORD THE DATE AND TIME OF AUTOPSY. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "AUTOPSY #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORD THE AUTOPSY SEQUENCE NUMBER, USUALLY STATED AS  A-90-XXXX. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 24.5,
+      "fieldName": "CARE CENTER AT DEATH",
+      "dataType": "POINTER",
+      "rawType": "P160.19O",
+      "required": false,
+      "pointerTo": 160.19,
+      "helpText": "Facility caring for patient at the time of death. ",
+      "fieldNumber_": 24.5
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COMORBIDITY/COMPLICATION #1",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  When this item is extracted for       export a blank value will be converted to \"00000\" as per       the NAACCR instructions.    DO NOT record any neoplasms (ICD",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.1,
+      "fieldName": "COMORBIDITY/COMPLICATION #2",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.1
+    },
+    {
+      "fieldNumber": 25.2,
+      "fieldName": "COMORBIDITY/COMPLICATION #3",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.2
+    },
+    {
+      "fieldNumber": 25.3,
+      "fieldName": "COMORBIDITY/COMPLICATION #4",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.3
+    },
+    {
+      "fieldNumber": 25.4,
+      "fieldName": "COMORBIDITY/COMPLICATION #5",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.4
+    },
+    {
+      "fieldNumber": 25.5,
+      "fieldName": "COMORBIDITY/COMPLICATION #6",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.5
+    },
+    {
+      "fieldNumber": 25.6,
+      "fieldName": "COMORBIDITY/COMPLICATION #7",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.          DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).          DO NOT record ",
+      "fieldNumber_": 25.6
+    },
+    {
+      "fieldNumber": 25.7,
+      "fieldName": "COMORBIDITY/COMPLICATION #8",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.7
+    },
+    {
+      "fieldNumber": 25.8,
+      "fieldName": "COMORBIDITY/COMPLICATION #9",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.8
+    },
+    {
+      "fieldNumber": 25.9,
+      "fieldName": "COMORBIDITY/COMPLICATION #10",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer.  Both are considered secondary diagnoses.   DO NOT record any neoplasms (ICD-CM codes 140-239.9) listed as secondary diagnoses for this data item.   DO NOT record causes of injury and poisoning unrelated to the patient's medical care (ICD-CM codes E800-E869.9, E880-E929.9, or E950-E999).   DO NOT record the following ",
+      "fieldNumber_": 25.9
+    },
+    {
+      "fieldNumber": 25.91,
+      "fieldName": "SECONDARY DIAGNOSIS #1",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "  Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  When this item is extracted for       export a blank value will be converted to \"0000000\" as per       the NAACCR instructions.  ",
+      "fieldNumber_": 25.91
+    },
+    {
+      "fieldNumber": 25.92,
+      "fieldName": "SECONDARY DIAGNOSIS #2",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.92
+    },
+    {
+      "fieldNumber": 25.93,
+      "fieldName": "SECONDARY DIAGNOSIS #3",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.93
+    },
+    {
+      "fieldNumber": 25.94,
+      "fieldName": "SECONDARY DIAGNOSIS #4",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.94
+    },
+    {
+      "fieldNumber": 25.95,
+      "fieldName": "SECONDARY DIAGNOSIS #5",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.95
+    },
+    {
+      "fieldNumber": 25.96,
+      "fieldName": "SECONDARY DIAGNOSIS #6",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.96
+    },
+    {
+      "fieldNumber": 25.97,
+      "fieldName": "SECONDARY DIAGNOSIS #7",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.97
+    },
+    {
+      "fieldNumber": 25.98,
+      "fieldName": "SECONDARY DIAGNOSIS #8",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.98
+    },
+    {
+      "fieldNumber": 25.99,
+      "fieldName": "SECONDARY DIAGNOSIS #9",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.99
+    },
+    {
+      "fieldNumber": 25.9901,
+      "fieldName": "SECONDARY DIAGNOSIS #10",
+      "dataType": "POINTER",
+      "rawType": "*P80'O",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "Records the patient's preexisting medical conditions, factors influencing health status, and/or complications during the patient's hospital stay for the treatment of this cancer using ICD-10-CM codes. All are considered secondary diagnoses.   NOTE: If no comorbid conditions or complications were documented,       leave this field blank.  ",
+      "fieldNumber_": 25.9901
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DUE FOLLOW-UP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "RECORDS THE DATE OF THE NEXT SCHEDULED FOLLOW UP. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DATE@TIME OF DEATH",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "RECORD THE DATE AND TIME OF DEATH. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 29.1,
+      "fieldName": "DOD",
+      "dataType": "DATE",
+      "rawType": "DCJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "COMPUTED FIELD FOR DATE OF DEATH. ",
+      "fieldNumber_": 29.1
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PATH/AUTOPSY (GROSS & MICRO)",
+      "dataType": "SUBFILE",
+      "rawType": "160.031",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR ENTERING ANY SUPPORTING INFORMATION ON THE PATHOLOGY AT AUTOPSY. ",
+      "isMultiple": true,
+      "subFileNumber": 160.031,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DESC",
+      "dataType": "COMPUTED",
+      "rawType": "CXJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "SUSPENSE COMPUTED FIELD. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33.1,
+      "fieldName": "SUSPENSE ADMIT DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field displays the patient's admission date. ",
+      "fieldNumber_": 33.1
+    },
+    {
+      "fieldNumber": 33.2,
+      "fieldName": "SUSPENSE DISCHARGE DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field displays the patient's discharge date. ",
+      "fieldNumber_": 33.2
+    },
+    {
+      "fieldNumber": 33.3,
+      "fieldName": "SUSPENSE EPISODE OF CARE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field records the episode of care leading to this suspense entry. ",
+      "fieldNumber_": 33.3
+    },
+    {
+      "fieldNumber": 33.6,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "RECORDS PRECEDENCE STRUCTURE. ",
+      "fieldNumber_": 33.6
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "LAST EPISODE of CARE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field records the last episode of care. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.1,
+      "fieldName": "LAST ADMIT DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computes last admission date. ",
+      "fieldNumber_": 34.1
+    },
+    {
+      "fieldNumber": 34.2,
+      "fieldName": "LAST DISCHARGE DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computes last discharge date. ",
+      "fieldNumber_": 34.2
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LOST TO FOLLOWUP",
+      "dataType": "COMPUTED",
+      "rawType": "BCX",
+      "required": false,
+      "helpText": "COMPUTED FOR FOR PATIENTS THAT ARE LOST TO FOLLOW UP, OCCURS WHEN THE PATIENTS LAST FOLLOW UP ATTEMPT/CONTACT IS OVER 15 MONTHS. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "MONTHS DELINQUENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "COMPUTED FOR GIVEN TIME FRAME THE PATIENT FOLLOW UP IS DELINQUENT. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TOBACCO HISTORY",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;0:Never used;1:Cigarette smoker, current;2:Cigar/Pipe smoker, current;3:Snuff/Chew/Smokeless, current;4:Combination use, current;5:Previous use;9:Unknown;",
+      "helpText": " Code the patient's past or current use of tobacco.  ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ALCOHOL HISTORY",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;0:No history of alcohol use;1:Current use of alcohol;2:Past history of alcohol use;9:Alcohol usage unknown;",
+      "helpText": " Code the patient's past or current consumption of alcoholic beverages including wine or beer.  ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "TOBACCO USAGE",
+      "dataType": "SET",
+      "rawType": "160.02SA",
+      "required": false,
+      "helpText": "DESCRIBES PATIENT TOBACCO USE. ",
+      "isMultiple": true,
+      "subFileNumber": 160.02,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "ALCOHOL USAGE",
+      "dataType": "SET",
+      "rawType": "160.041SA",
+      "required": false,
+      "helpText": "DESCRIBES PATIENT ALCOHOL USE. ",
+      "isMultiple": true,
+      "subFileNumber": 160.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "OCCUPATION",
+      "dataType": "SUBFILE",
+      "rawType": "160.042A",
+      "required": false,
+      "helpText": "  Information about the patient's usual occupation, also known as usual  type of job or work. ",
+      "isMultiple": true,
+      "subFileNumber": 160.042,
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "FAMILY HISTORY OF CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;9:Unknown;",
+      "helpText": " FAMILY HISTORY OF CANCER records whether the patient has a family history of any reportable malignancy. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "FAMILY MEMBER WITH CANCER",
+      "dataType": "SET",
+      "rawType": "160.044SA",
+      "required": false,
+      "helpText": "Multiple for family members with cancer. ",
+      "isMultiple": true,
+      "subFileNumber": 160.044,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "TODAY'S DATE",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "TODAY IS... TODAY'S DATE. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "HISTORY-FOLLOWUP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "COMPUTES A REPORT OF THE PATIENTS FOLLOW UP HISTORY. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "EMPLOYMENT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This field indicates the patient's employment status. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": " Record if the patient was exposed to Agent Orange.  ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "ICD-O TOPOGRAPHY LIST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field displays a list of the patient's ICD-O topographies.  It was created for use by the PHYSICIAN DOT MATRIX and PHYSICIAN LASER PRINTER   form letters in the FOLLOW-UP FORM LETTER file (165.1).  ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": " Record if the patient was exposed to Ionizing Radiation.  ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PERSIAN GULF SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in the Persian Gulf. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "CHEMICAL EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": " Record if the patient was exposed to chemicals.  ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LAB CASEFINDING REPORT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "PRINTS A REPORT OF CASES FOUND THRU THE AUTOMATIC CASEFINDING OPTION FOR LABORATORY. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PTF CASEFINDING REPORT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "PRINTS A REPORT OF CASES FOUND THRU THE AUTOMATIC CASEFINDING OPTION FOR THE MAS PATIENT TREATMENT FILE (PTF). ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "LEBANON SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Lebanon. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "SOMALIA SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Somalia. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "RADIOLOGY CASEFINDING REPORT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "REPORTS THE FINDINGS OF OPTION: RADIOLOGY CASEFINDING. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "NO PRIMARY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1X",
+      "length": 1X,
+      "required": false,
+      "helpText": "A COMPUTED FIELD STATING THAT THE PATIENT HAS NOT HAD A PRIMARY TUMOR ENTERED INTO THE FILE. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PID#",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "COMPUTED FIELD FOR PATIENT IDENTIFICATION NUMBER. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ASBESTOS EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": " Record if the patient was exposed to asbestos.  ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "VIETNAM SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Vietnam. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "GRENADA SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Grenada. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "PANAMA SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Panama. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "YUGOSLAVIA SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Yugoslavia. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "IRAQ (OIF) SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Iraq (OIF). ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "AFGHANISTAN (OEF) SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;U:Unknown;",
+      "helpText": "Record if the patient served in Afghanistan (OEF). ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "BRANCH OF SERVICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Computes the SERVICE BRANCH [LAST] (#2,.325) value for this patient. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "CLASS CATEGORY",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "helpText": "This field will compute a value of either 0 or 1.   0 = All ONCOLOGY PRIMARY (#165.5) records for this patient have a CLASS      CATEGORY (#165.5,.042) value of 0 (NONANALYTIC).   1 = At least one ONCOLOGY PRIMARY (#165.5) record for this patient has a      CLASS CATEGORY (#165.5,.042) value of 1 (ANALYTIC).   The default value is 0. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 69.1,
+      "fieldName": "ANALYTIC REQUIRING FOLLOWUP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field will compute a value of either 0 or 1.   0 = All ONCOLOGY PRIMARY (#165.5) records for this patient have a      CLASS OF CASE (#165.5,.04) value of \"00\" or greater than \"22\",      meaning either Analytic (\"30\" and above) or NOT Requiring       Follow-up (\"00\").   1 = At least one ONCOLOGY PRIMARY (#165.5) record for this patient has      a CLASS OF CASE (#165.5,.04) value in the range \"10\" thru \"22\",       meaning Analytic cases Requiring Follow-Up.   The default value is 0. ",
+      "fieldNumber_": 69.1
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "MULTIPLE TUMOR STATUS (DEATH)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field allows for the display of all tumor statuses for expired patients having multiple primaries. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "SUSPENSE",
+      "dataType": "DATE",
+      "rawType": "160.075DA",
+      "required": false,
+      "helpText": " This multiple field stores the SUSPENSE data for each division where the patient is on SUSPENSE.  ",
+      "isMultiple": true,
+      "subFileNumber": 160.075,
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SITE & DATE DX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "COMPUTED FIELD WITH VALUES OF SITE AND DATE OF DIAGNOSIS. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "DOCUMENT",
+      "dataType": "SET",
+      "rawType": "160.05SA",
+      "required": false,
+      "helpText": "RECORDS SOURCE DOCUMENT. ",
+      "isMultiple": true,
+      "subFileNumber": 160.05,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "FOLLOW-UP",
+      "dataType": "DATE",
+      "rawType": "160.04IDA",
+      "required": false,
+      "helpText": " FOLLOW-UP of cancer patients provides the following data needed for survival analysis:  the vital status of the patient, the date the vital status was determined, and the underlying cause of death, if the person has died.  SEER requires that this information be updated annually for living patients.  ",
+      "isMultiple": true,
+      "subFileNumber": 160.04,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "FOLLOW-UP ATTEMPTS",
+      "dataType": "DATE",
+      "rawType": "160.06DA",
+      "required": false,
+      "helpText": "RECORDS THE DATE AND TIME A FOLLOW UP ATTEMPT IS MADE. ",
+      "isMultiple": true,
+      "subFileNumber": 160.06,
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 420,
+      "fieldName": "FOLLOW-UP CONTACT",
+      "dataType": "SET",
+      "rawType": "160.03S",
+      "required": false,
+      "helpText": "RECORDS THE CONTACT TYPE FOR A FOLLOW UP ATTEMPT. ",
+      "isMultiple": true,
+      "subFileNumber": 160.03,
+      "fieldNumber_": 420
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "HOSPITAL NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "THE NAME OF THE INSTITUTION RENDERING CARE. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1000.1,
+      "fieldName": "C. HOSPITAL NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "COMPUTED FIELD CENTERING THE INSTITUTION NAME. ",
+      "fieldNumber_": 1000.1
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "HOSPITAL STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the street address of the hospital. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1001.1,
+      "fieldName": "C. HOSPITAL STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the hospital street address centered for display. ",
+      "fieldNumber_": 1001.1
+    },
+    {
+      "fieldNumber": 1002,
+      "fieldName": "HOSPITAL CITY,ST ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "COMPUTED FIELD LISTING THE INSTITUTIONS' NAME, CITY, STATE AND ZIP CODE. ",
+      "fieldNumber_": 1002
+    },
+    {
+      "fieldNumber": 1002.1,
+      "fieldName": "C. HOSPITAL CITY,ST ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the city, state, and ZIP Code of the hospital centered for display. ",
+      "fieldNumber_": 1002.1
+    },
+    {
+      "fieldNumber": 1003,
+      "fieldName": "STATE HOSPITAL NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "RECORDS THE IDENTIFICATION NUMBER ASSIGNED TO THE INSTITUTION BY THE STATE. ",
+      "fieldNumber_": 1003
+    },
+    {
+      "fieldNumber": 1004,
+      "fieldName": "Tumor Registrar",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "COMPUTED FIELD FOR THE NAME OF THE TUMOR REGISTRAR ACCESSIONING CASES. ",
+      "fieldNumber_": 1004
+    },
+    {
+      "fieldNumber": 1004.5,
+      "fieldName": "TR PHONE NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "THE TUMOR REGISTRARS TELEPHONE NUMBER. ",
+      "fieldNumber_": 1004.5
+    },
+    {
+      "fieldNumber": 1005,
+      "fieldName": "CONVERTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If this field is \"YES\" it means that this Record has had the pointer in field 24.5 converted from a pointer to the ONCOLOGY CONTACT File (165) to a pointer to the new ACOS NUMBER file (160.19) already, and should not be converted. ",
+      "fieldNumber_": 1005
+    },
+    {
+      "fieldNumber": 1006,
+      "fieldName": "SOURCE COMORBIDITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NA;1:Facility face sheet;2:Linkage to facility/hosp discharge data set;3:Linkage to Medicare/Medicaid data set;4:Linkage with another claims data set;5:Combination of two or more sources above;9:Other source;",
+      "helpText": "This data item is the record of the data source from which  comorbidities/complications were collected.  It refers back to standard  NAACCR data item # 3110, 3120, 3130, 3140, 3150, 3160, 3161, 3162, 3163, and 3164. ",
+      "fieldNumber_": 1006
+    },
+    {
+      "fieldNumber": 1007,
+      "fieldName": "TOBACCO USE CIGARETTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Never used;1:Current user;2:Former user, quit within 1 year of DATE DX;3:Former user, quit > 1 year prior to DATE DX;4:Former user, unknown when quit;9:Unknown/not stated/no smoking specifics;",
+      "helpText": "  Records the patient's past or current use of cigarettes. ",
+      "fieldNumber_": 1007
+    },
+    {
+      "fieldNumber": 1008,
+      "fieldName": "TOBACCO USE OTHER SMOKE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Never used;1:Current user;2:Former user, quit within 1 year of DATE DX;3:Former user, quit > 1 year prior to DATE DX;4:Former user, unknown when quit;9:Unknown/not stated/no smoking specifics;",
+      "helpText": "  Records the patient's past or current use of smoking tobacco products other than cigarettes (e.g. pipes, cigars, kreteks).   NOTE: For recording smokeless tobacco product use, see       TOBACCO USE SMOKELESS. ",
+      "fieldNumber_": 1008
+    },
+    {
+      "fieldNumber": 1009,
+      "fieldName": "TOBACCO USE SMOKELESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Never used;1:Current user;2:Former user, quit within 1 year of DATE DX;3:Former user, quit > 1 year prior to DATE DX;4:Former user, unknown when quit;9:Unknown/not stated/no smoking specifics;",
+      "helpText": "  Records the patient's past or current use of smokeless tobacco products (e.g. chewing tobacco, snuff, etc.). ",
+      "fieldNumber_": 1009
+    },
+    {
+      "fieldNumber": 1010,
+      "fieldName": "TOBACCO USE, NOS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Never used;1:Current user;2:Former user, quit within 1 year of DATE DX;3:Former user, quit > 1 year prior to DATE DX;4:Former user, unknown when quit;9:Unknown/not stated/no smoking specifics;",
+      "helpText": "  Records the patient's past or current use of tobacco, NOS (not  otherwise specified). ",
+      "fieldNumber_": 1010
+    },
+    {
+      "fieldNumber": 1011,
+      "fieldName": "HEIGHT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Computes patient's height value from the GMRV VITAL MEASUREMENT (#120.5) file via the supported IA #1120 GMRVUTL. ",
+      "fieldNumber_": 1011
+    },
+    {
+      "fieldNumber": 1012,
+      "fieldName": "WEIGHT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "helpText": "Computes patient's weight value from the GMRV VITAL MEASUREMENT (#120.5) file via the supported IA #1120 GMRVUTL. ",
+      "fieldNumber_": 1012
+    }
+  ],
+  "fieldCount": 148,
+  "crossReferences": [
+    {"name": "AACP", "field": },
+    {"name": "AAPC", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACP", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADX", "field": },
+    {"name": "AE", "field": },
+    {"name": "AFS", "field": },
+    {"name": "APC", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CN", "field": },
+    {"name": "D", "field": },
+    {"name": "160", "field": .01, "type": "regular"},
+    {"name": "160", "field": 6, "type": "regular"},
+    {"name": "160", "field": 15, "type": "regular"},
+    {"name": "160", "field": 15.1, "type": "regular"},
+    {"name": "160", "field": 15.2, "type": "regular"},
+    {"name": "", "field": 19, "type": "regular"},
+    {"name": "160", "field": 27, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

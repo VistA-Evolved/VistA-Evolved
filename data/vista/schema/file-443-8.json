@@ -1,0 +1,48 @@
+{
+  "fileNumber": 443.8,
+  "fileName": "LOCAL PROCUREMENT REASON CODES",
+  "globalRoot": "443.8I",
+  "globalReference": "^PRC(443.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0XI",
+      "length": 2,
+      "required": true,
+      "helpText": "  The code for the reason for local procurement. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The brief explaination of what code means. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "443.82",
+      "required": false,
+      "helpText": "  The description of the local procurement code. ",
+      "isMultiple": true,
+      "subFileNumber": 443.82,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "443.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "fileNumber": 301.92,
+  "fileName": "IVM DEMOGRAPHIC UPLOAD FIELDS",
+  "globalRoot": "301.92",
+  "globalReference": "^IVM(301.92,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DHCP FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This field contains the DHCP field name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HL7 LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ10",
+      "length": 10,
+      "required": true,
+      "helpText": "  This field contains HL7 segment name concatenated with seq number of HL7 segment and if applicable concatenated with piece of field(ex. city of ADDRESS would be PID113). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "UPLOADABLE DEMOGRAPHIC FIELD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A value of one indicates that the demographic field received from the IVM Center may be uploaded.  A value of 0 indicates that the demographic field received from the IVM Center may not be uploaded and may be displayed as information only. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DHCP FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This field contains a pointer to the FILE (#1) file.  This field will be used to indentify the global location of the IVM demographic upload field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DHCP FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the field number location of the DHCP field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TRANSFORM IVM DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine whether the demographic element is stored in an internal format which would need to be transformed before being displayed to the user. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TRANSFORM DHCP DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine if demographic data extracted from DHCP needs to undergo an additional output transform. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ADDRESS FIELD?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to flag whether the field is part of a full address. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be set when the field is no longer part of the IVM Demographic Upload. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DHCP LOCATION LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DHCP OUTPUT LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This executable logic is used to extract DHCP data in a display-ready format. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "301.92", "field": .01, "type": "regular"},
+    {"name": "301.92", "field": .02, "type": "regular"},
+    {"name": "301.92", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

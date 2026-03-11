@@ -1,0 +1,228 @@
+{
+  "fileNumber": 344.1,
+  "fileName": "AR DEPOSIT",
+  "globalRoot": "344.1I",
+  "globalReference": "^RCY(344.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TICKET #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Deposit Ticket Number as assigned by Dept. of Treasury.   The Pre-Lookup (D LOOKUP^RCDPUDEP) places the following limits on entering Deposit Ticket Number data when entered via the appropriate  user option:       Limited to 7 characters in the format of one alpha character      followed by six digits.   Ticket Deposit Numbers of 9 digits is limited to Lockbox Automated Deposit Process. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*DATE PRESENTED TO BANK",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "*****  This field is no longer used. ***** ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BANK DEPOSIT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date deposit was actually recorded by bank or financial institution. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AMOUNT OF DEPOSIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2O",
+      "length": 10,
+      "required": false,
+      "helpText": "This field is used for display purposes only.  It is the total dollars for all receipts under the deposit.  The field is populated when the deposit is confirmed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BANK TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Number assigned by financial institution to track the deposit. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OPENED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User that opened/created deposit ticket. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME OPENED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the AR DEPOSIT ticket was created and made available for Receipts to be associated to this deposit ticket. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "*DEPOSITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "*****  This field is no longer used. ***** ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "*DATE/TIME DEPOSITED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "*****  This field is no longer used. ***** ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CONFIRMED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User which confirmed deposit was made by bank and transmits FMS document. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DATE/TIME CONFIRMED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "System date/time deposit was confirmed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPEN;2:DEPOSITED(not used);3:CONFIRMED;4:PROCESSED(not used);5:VOID(not used);",
+      "helpText": "This field stores the status of the deposit.  A deposit which is opened can have new receipts added to it.  A confirmed deposit cannot be changed. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BANK",
+      "dataType": "POINTER",
+      "rawType": "*P342.1'",
+      "required": false,
+      "pointerTo": 342.1,
+      "helpText": "Name of bank/financial institution that deposit was made to. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "AGENCY LOCATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ALC assigned by Financial Management. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "*START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "*****  This field is no longer used. ***** ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "*END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "*****  This field is no longer used. ***** ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "AGENCY TITLE",
+      "dataType": "POINTER",
+      "rawType": "*P342.1'",
+      "required": false,
+      "pointerTo": 342.1,
+      "helpText": "Pointer name of the AR group established for deposits. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "TOTAL AMOUNT OF RECEIPTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Total amount of all receipts associated with a deposit. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "344.11",
+      "required": false,
+      "helpText": "This field stores comments by the user that better described the deposit ticket.  For example, the appropriation and dollar amount deposited to each appropriation could be documented within this word-processing field. ",
+      "isMultiple": true,
+      "subFileNumber": 344.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "TOTAL RECEIPTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Total number of receipts associated with a deposit. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "FMS DOCUMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the FMS document number used to create the CR code sheets for this deposit. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADOC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "344.1", "field": .01, "type": "regular"},
+    {"name": "344.1", "field": .12, "type": "regular"},
+    {"name": "344.1", "field": 1, "type": "regular"},
+    {"name": "344.1", "field": 200, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": WR1, "value": "W \"   \",$E($P(^(0),U,7),4,5)_\"-\"_$E($P(^(0),U,7),6,7)_\"-\"_$E($P(^(0),U,7),2,3)"},
+    {"field": WR2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WR3, "value": "W \"   $\",$J($P(^(0),U,4),1,2)"},
+    {"field": WR4, "value": "W \"  \",$P($P($P(^DD(344.1,.12,0),U,3,99),\";\",$P($G(^RCY(344.1,Y,0)),U,12)),\":\",2)"}
+  ]
+}

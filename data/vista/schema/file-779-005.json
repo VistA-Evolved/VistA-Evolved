@@ -1,0 +1,44 @@
+{
+  "fileNumber": 779.005,
+  "fileName": "HL7 MESSAGE STRUCTURE CODE",
+  "globalRoot": "779.005",
+  "globalReference": "^HL(779.005,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the abstract message structure code defined by HL7 Table 0354 - Message Structure, which is the third component in MSH-9-message type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "List the various HL7 trigger events that use the particular abstract message structure definition. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "779.0053P",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.005", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

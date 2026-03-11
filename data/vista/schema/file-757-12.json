@@ -1,0 +1,64 @@
+{
+  "fileNumber": 757.12,
+  "fileName": "SEMANTIC TYPE",
+  "globalRoot": "757.12I",
+  "globalReference": "^LEX(757.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UNIQUE IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The unique identifier is used for file maintenance. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTIVE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Full title (textual description, mixed case) representing a semantical type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "Three character mnemonic representing the semantical class for which this semantical type belongs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSOCIATED CODING SYSTEMS",
+      "dataType": "SUBFILE",
+      "rawType": "757.123",
+      "required": false,
+      "helpText": "This multiple field contains all of the classification systems (i.e., ICD, CPT, DSM) which have terms included in this semantical type. ",
+      "isMultiple": true,
+      "subFileNumber": 757.123,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "757.12", "field": .01, "type": "regular"},
+    {"name": "757.12", "field": 1, "type": "regular"},
+    {"name": "757.12", "field": 1, "type": "regular"},
+    {"name": "757.12", "field": 2, "type": "regular"},
+    {"name": "757.12", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

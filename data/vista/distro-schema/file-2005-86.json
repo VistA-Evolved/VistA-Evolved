@@ -1,0 +1,84 @@
+{
+  "fileNumber": 2005.86,
+  "fileName": "IMAGE ACTIONS",
+  "globalRoot": "2005.86",
+  "globalReference": "^MAG(2005.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the image action to take place. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The processing of actions can be turned off/on. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The tag of the routine that will be called to process the action. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The routine that will be called to process the action. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A Description of the Action. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "2005.865P",
+      "required": false,
+      "helpText": "Certain Types of images can have actions performed when an entry is made in the IMAGE File.  An example is Copying Means Tests Documents to H.E.C. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EXPORT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This is the export location to which an image may be exported. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ATYPE", "field": },
+    {"name": "B", "field": },
+    {"name": "2005.86", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

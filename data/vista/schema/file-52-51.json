@@ -1,0 +1,173 @@
+{
+  "fileNumber": 52.51,
+  "fileName": "PHARMACY EXTERNAL INTERFACE",
+  "globalRoot": "52.51",
+  "globalReference": "^PS(52.51,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX #",
+      "dataType": "POINTER",
+      "rawType": "RP52",
+      "required": true,
+      "pointerTo": 52,
+      "helpText": "This field is the pointer to the Prescription file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is the pointer to the Patient file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time of the transmission to the External Interface. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the pointer to File 200. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REPRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REPRINT;",
+      "helpText": "This indicates whether the label was a Reprint. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SITE PARAMETER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores external interface site parameter. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISPENSE DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the External Interface device. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:REGULAR FILL;P:PARTIAL FILL;",
+      "helpText": "This indicates whether the Fill was a regular or partial fill. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FILL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This indicates which fill was being printed. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE SERVER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Message Server ID of the Transmission. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CLIENT SERVER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Client Server ID of the Transmission. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ERROR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Error Code for an Unsuccessful Transmission. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are Comments for a Transmission. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROCESSING;2:PROCESSED;3:PROCESS FAILED;4:RESUBMISSION;",
+      "helpText": "This is the Status of the Transmission. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This is the Division where the label information was submitted. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC1", "field": },
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "AS", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "B", "field": },
+    {"name": "52.51", "field": .01, "type": "regular"},
+    {"name": "52.51", "field": 3, "type": "regular"},
+    {"name": "52.51", "field": 3, "type": "regular"},
+    {"name": "52.51", "field": 4, "type": "regular"},
+    {"name": "52.51", "field": 10, "type": "regular"},
+    {"name": "52.51", "field": 15, "type": "regular"},
+    {"name": "52.51", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

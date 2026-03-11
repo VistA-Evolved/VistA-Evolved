@@ -1,0 +1,229 @@
+{
+  "id": "surgery",
+  "name": "Surgery",
+  "description": "Surgical cases, anesthesia, operative reports",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.895Z",
+  "files": {
+    "count": 4,
+    "items": [
+      {
+        "fileNumber": 130,
+        "fileName": "File #130",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 131,
+        "fileName": "File #131",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 136,
+        "fileName": "File #136",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 137,
+        "fileName": "File #137",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 0,
+    "items": []
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "SR GECS BATCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS BATCH EDIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS BATCHES STATUS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS BATCHES WAITING TRANS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS CODE EDIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS CREATE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS DELETE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS KEYPUNCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS PURGE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS READY FOR BATCHING LIS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS REBATCH",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS RETRANSMIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS REVIEW CODE SHEET",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS TRANSMIT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS MAINTENANCE USER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS REPORTS MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS USER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS TRANSMIT USER",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR GECS MAIN MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR STAFFING REPORTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR MANAGE REPORTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR ANESTH REPORTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR CPT ACCURACY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR OR UTIL",
+        "type": "menu",
+        "securityKey": "SRCOORD",
+        "displayText": ""
+      },
+      {
+        "name": "SR OR UTL1",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR UTIL EDIT ROOM",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR CPT REPORTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR UPDATE SCHEDULE DEVICE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR NO ASSESSMENT REASON",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "SR OR HOURS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 0,
+    "items": []
+  }
+}

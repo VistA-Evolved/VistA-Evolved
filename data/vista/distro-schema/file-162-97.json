@@ -1,0 +1,48 @@
+{
+  "fileNumber": 162.97,
+  "fileName": "FEE BASIS CPT RVU",
+  "globalRoot": "162.97",
+  "globalReference": "^FB(162.97,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE-MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Answer must be a valid CPT code/modifier combination.  This is a table file and should not be changed at the station level without direction from IRM Field Office.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CONVERSION CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P162.99'",
+      "required": false,
+      "pointerTo": 162.99,
+      "helpText": "This field is a pointer to an entry in the HCFA conversion file. It classifies codes so, a conversion factor may be determined during the calculation of payment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALENDAR YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "162.971A",
+      "required": false,
+      "helpText": "For each service rendered there are a set of relative value units by calendar year.  These RVUs are established by Health Care Finance Administration. ",
+      "isMultiple": true,
+      "subFileNumber": 162.971,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "162.97", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

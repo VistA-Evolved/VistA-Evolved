@@ -1,0 +1,135 @@
+{
+  "fileNumber": 57.1,
+  "fileName": "PHARMACY QUICK ORDER",
+  "globalRoot": "57.1",
+  "globalReference": "^PS(57.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " The name of the quick order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P101'",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "  This is the protocol that has been created to allow selection of this quick order. A quick order may not be modified if a protocol has been assigned to it. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:IV FLUID;2:INPATIENT MEDICATION;",
+      "helpText": "This is the type of order (IV Fluid or Inpatient Medication) that will be created when the quick order is used. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRIMARY DRUG",
+      "dataType": "POINTER",
+      "rawType": "*P50.3'",
+      "required": false,
+      "pointerTo": 50.3,
+      "helpText": "  This is the name of a drug used by this site. Primary drug is used to allow order entry to be easier for no-pharmacy personnel and for display. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MED ROUTE",
+      "dataType": "POINTER",
+      "rawType": "*P51.2'",
+      "required": false,
+      "pointerTo": 51.2,
+      "helpText": "  This is the route of administration for this medication. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is the frequency (ONLY) with which the doses are to be administered. Several forms of entry are acceptable, such as Q6H, 09-12-15, STAT, QOD, and MO-WE-FR@AD, where MO-WE-FR are days of the weeks, and AD is the admin. times. The schedule will show on the MAR, labels, etc. No more than ONE space (Q3H 4 or Q8H PRN) in the schedule is acceptable. If the letters PRN are found as part of the schedule, no admin. times will print on the MAR or labels, and the PICK LIST will always show a count o",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PROVIDER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "57.16",
+      "required": false,
+      "helpText": "     This is used to allow provider comments to be \"pre-entered\" for the quick order. Text entered here will be included in the order created and may be edited before the order is accepted. ",
+      "isMultiple": true,
+      "subFileNumber": 57.16,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADDITIVE",
+      "dataType": "POINTER",
+      "rawType": "57.17PA",
+      "required": false,
+      "helpText": " This is the additive(s) to be included in the IV order. This is a pointer to the IV ADDITIVES file (52.6). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOLUTION",
+      "dataType": "POINTER",
+      "rawType": "57.18PA",
+      "required": false,
+      "helpText": "The solution to be included in this IV order. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DOSAGE ORDERED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the amount of the medication the patient is to receive as one dose for this order.  This should be an amount with a unit of measure, such '500MG' or '50CC'.  THIS SHOULD NOT BE THE NUMBER OF TABLETS, ETC. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INFUSION RATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  Enter the rate at which the infusion is to take place.  This value, in  conjunction with the total volume of the hyperal or the admixture type, is  used to determine the time covered by one bag; hence the system can predict the bags needed during a specified time of coverage. This field is free text for IVPB's.  For LVP's you must enter a number that will represent the infusion rate.  You may also specify the # of bags per day that will be needed.      Example:        125 = 125 ml/hr (IV syste",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROVIDER COMMENTS PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DON'T PROMPT FOR PROVIDER COMMENTS;",
+      "helpText": "This field will indicate whether to prompt for the provider comments during the order entry process of this quick order. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "57.1", "field": .01, "type": "regular"},
+    {"name": "57.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

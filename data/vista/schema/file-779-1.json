@@ -1,0 +1,138 @@
+{
+  "fileNumber": 779.1,
+  "fileName": "HLO SYSTEM PARAMETERS",
+  "globalRoot": "779.1",
+  "globalReference": "^HLD(779.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The domain name for this system.  It will be used to populate component 2 of the Sending Facility field of the HL7 message headers. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRODUCTION ID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:production;T:training;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAXIMUM STRING LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This parameter determines the maximum length for strings that HLO will create when messages are being built.  It doesn't apply to servers, as the size of input buffer used by TCP/IP determines the maximum string length created by a single read. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BUFFER SIZE FOR HL7 (BYTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BUFFER SIZE FOR USER (BYTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NORMAL MSG RETENTION (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field controls how many days successful messages are retained after being fully processed before they are purged.   The application may specify a longer time to retain its messages, which would override the time specified here.   ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BAD MESSAGE RETENTION (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field controls the purging of HL7 messages that do not complete successfully.  The period should be reasonably long to allow investigation, but because of the high daily volume of messages purging must occur as quickly as practical.  ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HLO ON/OFF SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HLO STANDARD LISTENER",
+      "dataType": "POINTER",
+      "rawType": "*P870'",
+      "required": false,
+      "pointerTo": 870,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "HLO RECOUNT ON/OFF FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "UNSENT MSG RETENTION (DAYS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BOX-VOLUME PAIR",
+      "dataType": "POINTER",
+      "rawType": "P14.7'",
+      "required": false,
+      "pointerTo": 14.7,
+      "helpText": "The BOX-VOLUME PAIR parameter allows a site to specify which CPU and volume set the HLO processes should run on.  This parameter only controls procesess started by the HLO Process Manager by calling the Taskmanager APIs.  This parameter is optional.  For VMS sites, this parameter generally does NOT control what node to run the listener on, because VMS sites should use VMS TCPIP Services for their listener.  For Cache/NT sites using a load balancer, this parameter can be used to specify what node",
+      "fieldNumber_": .13
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

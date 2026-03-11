@@ -1,0 +1,87 @@
+{
+  "fileNumber": 161.23,
+  "fileName": "FEE BASIS CNH AUTHORIZATION RATE",
+  "globalRoot": "161.23D",
+  "globalReference": "^FBAA(161.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FROM DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the beginning date of the authorization rate. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TO DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the ending date for this patients care at a given rate. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ASSOCIATED 7078",
+      "dataType": "POINTER",
+      "rawType": "RP162.4'",
+      "required": true,
+      "pointerTo": 162.4,
+      "helpText": "This field holds the pointer to file 162.4, 7078 FILE. The field is populated by the system. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP161'",
+      "required": true,
+      "pointerTo": 161,
+      "helpText": "The name of the Fee Basis Patient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PER DIEM RATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the dollar amount for this patient's care for a given timeframe. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CONTRACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the contract number associated with this authorization period as listed in the FEE Basis CNH Contract file. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADR1", "field": },
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.23", "field": .01, "type": "regular"},
+    {"name": "161.23", "field": .02, "type": "regular"},
+    {"name": "161.23", "field": .03, "type": "regular"},
+    {"name": "161.23", "field": .03, "type": "regular"},
+    {"name": "161.23", "field": .04, "type": "regular"},
+    {"name": "161.23", "field": .05, "type": "regular"},
+    {"name": "161.23", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

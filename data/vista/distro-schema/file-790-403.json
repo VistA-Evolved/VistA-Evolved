@@ -1,0 +1,48 @@
+{
+  "fileNumber": 790.403,
+  "fileName": "WV NOTIFICATION TYPE",
+  "globalRoot": "790.403",
+  "globalReference": "^WV(790.403,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains types of notifications which indicate how patients were informed about test and procedure results, and treatment needs.  For example, contact PHN (primary health nurse), conversation with patient, consult, or 2nd phone call. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINTABLE (EG.,LETTER)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field stores a code (0 = No, 1 = Yes) that indicates if this notification type will be printed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores an abbreviation or short synonym for the notification type.  For example, \"LF\" for \"Letter, First\".  New synonyms may be entered or edited by the case manager. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "790.403", "field": .01, "type": "regular"},
+    {"name": "790.403", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

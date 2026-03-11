@@ -1,0 +1,136 @@
+{
+  "fileNumber": 661.63,
+  "fileName": "PROSTHETIC TRANSACTION PATIENT ISSUE",
+  "globalRoot": "661.63",
+  "globalReference": "^RMPR(661.63,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INVENTORY TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "RP661.6'",
+      "required": true,
+      "pointerTo": 661.6,
+      "helpText": "This field points to the Prosthetic Inventory Transaction file (661.6). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "This field points to the patient 2319 file (660). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONVERSION POINTER",
+      "dataType": "POINTER",
+      "rawType": "P661.2'",
+      "required": false,
+      "pointerTo": 661.2,
+      "helpText": "This field is only updated by the Old to New PIP file conversion utility (RMPRPIUG). It saves the pointer to the old 661.2 Inventory Transaction file which is held in file 660. Should a conversion ever need to be reversed then the 660 file should be re-populated with this value (see RMPRPIXZ). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The HCPCS that is being issued to patient. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is an HCPCS item issued to patient. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE&TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the item was received in the inventory. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the station where the patient belongs. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P661.5'",
+      "required": false,
+      "pointerTo": 661.5,
+      "helpText": "This is where the HCPCS/ITEM was located prior to issueing to patient. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This is a pointer to the Vendor file #440. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the cost of an item being issued to patient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P420.5'",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "This is a pointer to Unit of Issue file #420.5. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a quantity of item issued to patient. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "661.63", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

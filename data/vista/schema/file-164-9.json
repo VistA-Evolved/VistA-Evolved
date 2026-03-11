@@ -1,0 +1,38 @@
+{
+  "fileNumber": 164.9,
+  "fileName": "WHO HISTOLOGICAL CLASSIFICATION",
+  "globalRoot": "164.9",
+  "globalReference": "^ONCO(164.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field contains the WHO Histological Classification of Intracranial/ CNS Tumors codes.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field contains the WHO Histological Classification of Intracranial/CNS Tumors code descriptions.  ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.9", "field": .01, "type": "regular"},
+    {"name": "164.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

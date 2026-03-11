@@ -1,0 +1,74 @@
+{
+  "fileNumber": 704.116,
+  "fileName": "OBS_SET",
+  "globalRoot": "704.116",
+  "globalReference": "^MDC(704.116,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SET_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This value is the Global Unique IDentifier (GUID) for this entry. This  value is maintained nationally and is the same throughout the enterprise. A sample SET ID could be \"{2E0C516D-3858-4A1F-A2F3-BF0AB9E3A7FC}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTERED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is the date/time this set (#.01) was created.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the person (file #200) that created this set  (#.01).   ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PUBLIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "(Future use - indicate whether or not this set is used by other  applications/public.) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the user supplied COMMENT about the purpose of this set (.01). A sample COMMENT could be \"Auto-Generated Set\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .911,
+      "fieldName": "COUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of observations assigned to this set (#.01). ",
+      "fieldNumber_": .911
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "fileNumber": 655,
+  "fileName": "SOCIAL WORK PATIENT",
+  "globalRoot": "655OP",
+  "globalReference": "^SOWK(655,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Name of the social work patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .99,
+      "fieldName": "RCH",
+      "dataType": "POINTER",
+      "rawType": "655.02P",
+      "required": false,
+      "helpText": "The following fields will contain historical data for RCH patients. ",
+      "fieldNumber_": .99
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE PLACED IN RCH PROGRAM",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will be used to show the date the patient was placed in the RCH program. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE REMOVED FROM RCH PROGRAM",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "If patient is flagged as being removed from the RCH program, this field will hold the date removed from program. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REMOVED FROM RCH PROGRAM ?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags the patient as being removed or not removed from RCH program. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HIGH RISK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to flag patients should they be found to be a possible high-risk case.  This field is set when the High-Risk Screening Profile is run.  This field is set if a patient meets one or more criteria of the screening profile. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SEEN BY SWS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate if the patient was seen by the Social Work Service after being flagged as a possible high-risk patient. This field is set after a case has been opened for a possible high-risk patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FALSE HIGH-RISK",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "F:FALSE HIGH-RISK;",
+      "helpText": "This field is used to indicate that the patient was not a high-risk case.  Not to be set directly with VA FileMan. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "H", "field": },
+    {"name": "655", "field": .01, "type": "regular"},
+    {"name": "655", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

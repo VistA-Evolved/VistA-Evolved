@@ -1,0 +1,118 @@
+{
+  "fileNumber": 116.2,
+  "fileName": "PRODUCTION DIET",
+  "globalRoot": "116.2",
+  "globalReference": "^FH(116.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a production diet. This is a diet that is prepared in the kitchen (as compared to a clinical diet modification which is ordered). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a simple two-character code for the diet and is used extensively in the production summary listings. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "# DAYS TO REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the number of days after which a patient on this Production Diet should be reviewed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the order in which this production diet will appear in lists, from low print orders to high. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "PRINT ON DAILY MENU?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will result in the Production Diet being listed on the Daily Menu sheets. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TALLY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "In recoding diets, this is the order in which the clinical 'default production diets' will be matched against this production diet. Recoding will occur as soon as a match occurs. Therefore, this field can be conceptualized as representing the relative importance of the production diet. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IS THIS A COMBO DIET?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, indicates that this production diet is a combination of other production diets (e.g., both low sodium and calorie restricted). Since ALL production diets in a combo must match the 'default production diets' of a  clinical order, such combo production diets should have a tally order less than any of the individual production diets contained in the combo. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SINGULAR PRODUCTION DIETS",
+      "dataType": "POINTER",
+      "rawType": "116.211P",
+      "required": false,
+      "helpText": "This multiple contains a list of the production diets which constitute the combo production diet. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will prohibit further selection of this Production Diet. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AO", "field": },
+    {"name": "AP", "field": },
+    {"name": "AR", "field": },
+    {"name": "AR1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "116.2", "field": .01, "type": "regular"},
+    {"name": "116.2", "field": 1, "type": "regular"},
+    {"name": "116.2", "field": 7, "type": "regular"},
+    {"name": "116.2", "field": 8, "type": "regular"},
+    {"name": "116.2", "field": 8, "type": "regular"},
+    {"name": "116.2", "field": 99, "type": "regular"},
+    {"name": "116.2", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

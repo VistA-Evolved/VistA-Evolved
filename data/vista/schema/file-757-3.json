@@ -1,0 +1,95 @@
+{
+  "fileNumber": 757.3,
+  "fileName": "LOOK-UP SCREENS",
+  "globalRoot": "757.3",
+  "globalReference": "^LEX(757.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTIVE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive title indicating the purpose of the screen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "This string takes the form of a valid IF statement without an action to perform. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF SCREEN",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "U:USER PREFERENCE SCREEN;A:APPLICATION DEFINED SCREEN;",
+      "helpText": "This is a flag used by the Lexicon to differentiate between screens defined for users and screens defined specifically for an application.  This flag also controls how an entry is indexed.     U - User screen   A - Application screen   This field is populated by DB Integration Agreement only. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION IDENTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIX",
+      "required": false,
+      "helpText": "This is the application namespace (where type of screen = \"A\") for which the screen was developed.   This field is populated by DB Integration Agreement only. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPLICATION FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,8",
+      "length": 19,
+      "required": false,
+      "helpText": "This is the file number where an application will store the pointer to the Expressions file (#757.01).  This field should only contain data if the  screen has been defined as the default screen for the application. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "757.305",
+      "required": false,
+      "helpText": "Basic description of the intended use of the filter/screen. ",
+      "isMultiple": true,
+      "subFileNumber": 757.305,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACCEPTABLE VOCABULARIES",
+      "dataType": "SUBFILE",
+      "rawType": "757.36",
+      "required": false,
+      "helpText": "Not all screens (filters) will work with all vocabularies.  For example, the \"Nursing Diagnosis only\" screen used on the Dental vocabulary will result in \"No matches found\".  This is a list of the vocabularies (the vocabulary mnemonic) which the screen will work successfully with. ",
+      "isMultiple": true,
+      "subFileNumber": 757.36,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "APPS", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "757.3", "field": .01, "type": "regular"},
+    {"name": "757.3", "field": .01, "type": "regular"},
+    {"name": "757.3", "field": .01, "type": "regular"},
+    {"name": "757.3", "field": 1, "type": "regular"},
+    {"name": "757.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

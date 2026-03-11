@@ -1,0 +1,86 @@
+{
+  "fileNumber": 800001.5,
+  "fileName": "HMP ACTIVITY",
+  "globalRoot": "800001.5",
+  "globalReference": "^HMP(800001.5,\"PTAPPT\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The PATIENT File (#2) DFN of an eHMP subscribed patient with appointments. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPOINTMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date.time of a patient's appointment. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPOINTMENT STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the status of a patient's appointment. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE RECORD CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date.time of creation of the activity record. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE RECORD RETREIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date.time that activity data was retrieved from VistA. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HMP PROCESS FLAG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is a system HMP Process Flag indicating an activity was processed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "JSON MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a JSON message indicating the status of the corresponding patient activity record. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "HMP", "field": },
+    {"name": "800001.5", "field": .01, "type": "regular"},
+    {"name": "800001.5", "field": 6, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

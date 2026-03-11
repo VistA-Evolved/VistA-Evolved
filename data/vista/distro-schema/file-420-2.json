@@ -1,0 +1,71 @@
+{
+  "fileNumber": 420.2,
+  "fileName": "BUDGET OBJECT CODE",
+  "globalRoot": "420.2s",
+  "globalReference": "^PRCD(420.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the budget object code, a space and the budget object code name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DEACTIVATED BOC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is the deactivated sub-account. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "DEACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person deactivating this sub-account. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "DATE/TIME DEACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this sub-account was deactivated. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "420.21",
+      "required": false,
+      "helpText": "This is the description of this sub-account. ",
+      "isMultiple": true,
+      "subFileNumber": 420.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "420.2", "field": .01, "type": "regular"},
+    {"name": "420.2", "field": .01, "type": "regular"},
+    {"name": "420.2", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

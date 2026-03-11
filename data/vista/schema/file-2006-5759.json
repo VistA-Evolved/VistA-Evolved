@@ -1,0 +1,63 @@
+{
+  "fileNumber": 2006.5759,
+  "fileName": "OUTSIDE IMAGING LOCATION",
+  "globalRoot": "2006.5759",
+  "globalReference": "^MAGD(2006.5759,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMAGING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P79.1'",
+      "required": true,
+      "pointerTo": 79.1,
+      "helpText": "This is the 'No Credit' Radiology location to be used by the DICOM Gateways to collect imported 'outside' images and place or update a Radiology order on VistA.   The field has a screen to only allow entries that have been defined as 'No Credit' in Radiology's IMAGING LOCATION file (#79.1). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGING TYPE",
+      "dataType": "POINTER",
+      "rawType": "P79.2'",
+      "required": false,
+      "pointerTo": 79.2,
+      "helpText": "The value of this field is the associated imaging type (e.g. VASCULAR LAB) for the outside imaging location.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "The value for this field is the hospital location (e.g. Radiology clinic) pertaining to the outside imaging location. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The value of this field is the institution related to the outside imaging location. Within a consolidated database, an institution could be an Outpatient clinic. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.5759", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "2006.5759", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

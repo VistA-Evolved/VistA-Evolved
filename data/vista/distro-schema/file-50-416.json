@@ -1,0 +1,107 @@
+{
+  "fileNumber": 50.416,
+  "fileName": "DRUG INGREDIENTS",
+  "globalRoot": "50.416",
+  "globalReference": "^PS(50.416,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFaX",
+      "required": true,
+      "helpText": "This is the drug ingredient name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DRUG IDENTIFIER",
+      "dataType": "SUBFILE",
+      "rawType": "50.4161A",
+      "required": false,
+      "helpText": "This field contains products from the National Drug file which contain this ingredient. ",
+      "isMultiple": true,
+      "subFileNumber": 50.4161,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY INGREDIENT",
+      "dataType": "POINTER",
+      "rawType": "P50.416a",
+      "required": false,
+      "pointerTo": 50.416,
+      "helpText": "This is the primary ingredient. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when this drug ingredient was made inactive. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "50.4164",
+      "required": false,
+      "helpText": "This multiple stores the coding system(s) associated with the codes  identifying this Drug Ingredients. ",
+      "isMultiple": true,
+      "subFileNumber": 50.4164,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "50.4169DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 50.4169,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "APD", "field": },
+    {"name": "APS", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "P", "field": },
+    {"name": "50.416", "field": .01, "type": "regular"},
+    {"name": "50.416", "field": .01, "type": "regular"},
+    {"name": "50.416", "field": .01, "type": "regular"},
+    {"name": "50.416", "field": 2, "type": "regular"},
+    {"name": "50.416", "field": 2, "type": "regular"},
+    {"name": "50.416", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

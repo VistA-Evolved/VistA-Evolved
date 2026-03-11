@@ -1,0 +1,37 @@
+{
+  "fileNumber": 355.13,
+  "fileName": "INSURANCE FILING TIME FRAME",
+  "globalRoot": "355.13",
+  "globalReference": "^IBE(355.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The standard filing time frame that applies to the insurance.  These are the maximum amount of time from the date of service that the insurance  allows for submitting claims. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This identifies those Standard Filing Time Frames that require a numeric  value to complete the time frame.  For example: the time frame of Month(s)  requires a value to identify the number of months. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

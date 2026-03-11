@@ -1,0 +1,57 @@
+{
+  "fileNumber": 811.7,
+  "fileName": "REMINDER CATEGORY",
+  "globalRoot": "811.7",
+  "globalReference": "^PXRMD(811.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Reminder Category. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.71",
+      "required": false,
+      "helpText": "This is the description of the Reminder Category. ",
+      "isMultiple": true,
+      "subFileNumber": 811.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INDIVIDUAL REMINDERS",
+      "dataType": "POINTER",
+      "rawType": "811.72P",
+      "required": false,
+      "helpText": "This is the list of reminders that are in this category. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUB-CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "811.701P",
+      "required": false,
+      "helpText": "This multiple allows you to include already existing categories as part of a new category. Sub-categories are always listed after individual reminders. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACP", "field": },
+    {"name": "811.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

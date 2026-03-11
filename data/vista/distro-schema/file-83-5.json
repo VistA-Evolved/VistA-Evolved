@@ -1,0 +1,62 @@
+{
+  "fileNumber": 83.5,
+  "fileName": "DRG DIAGNOSIS",
+  "globalRoot": "83.5",
+  "globalReference": "^ICDD(83.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "A Diagnosis code that affects DRG calculations.  Only one record per  Diagnosis is necessary, all criteria and associations are date versioned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ATTRIBUTES",
+      "dataType": "DATE",
+      "rawType": "83.5001D",
+      "required": false,
+      "helpText": "The attributes are various characteristics of the Diagnosis code specific  to the DRG assignment.  There can be only one record of attributes  active for a date range.  Each version that modifies any of the attributes  will have a separate date based record of attributes. ",
+      "isMultiple": true,
+      "subFileNumber": 83.5001,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MDC CODE SET",
+      "dataType": "DATE",
+      "rawType": "83.5002D",
+      "required": false,
+      "helpText": "This is the list of all MDC Code Sets the Diagnosis has been assigned to.  Each Diagnosis may be assigned to multiple Code Sets and they may change  by version or date range. ",
+      "isMultiple": true,
+      "subFileNumber": 83.5002,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "HAC CODE SET",
+      "dataType": "DATE",
+      "rawType": "83.5003D",
+      "required": false,
+      "helpText": "This is the list of all HAC Code Sets the Diagnosis has been assigned to.  Each Diagnosis may be assigned to multiple HAC Code Sets and they may  change by version or date range. ",
+      "isMultiple": true,
+      "subFileNumber": 83.5003,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ASC", "field": },
+    {"name": "B", "field": },
+    {"name": "83.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

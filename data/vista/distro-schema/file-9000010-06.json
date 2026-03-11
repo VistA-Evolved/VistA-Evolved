@@ -1,0 +1,149 @@
+{
+  "fileNumber": 9000010.06,
+  "fileName": "V PROVIDER",
+  "globalRoot": "9000010.06IP",
+  "globalReference": "^AUPNVPRV(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the provider giving patient care at this encounter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "Patient Name. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "R*P9000010'I",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "The encounter entry in the Visit file where the provider gave clinical care to the patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRIMARY/SECONDARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;",
+      "helpText": "This field indicates the provider was the primary or secondary care giver for the encounter.  The primary provider is usually the physician responsible for the patients care at THIS PARTICULAR encounter, where clinical decisions were being made.  The primary provider for this encounter may or may not be the \"Primary Care Provider\" for this patient for overall care.    Secondary providers are those providers, who were also providing care where clinical decisions were being made.  This may be nurs",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OPERATING/ATTENDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ATTENDING;O:OPERATING;",
+      "helpText": "A Provider may be furthur identified as the \"Attending\" provider or an \"Operating\" provider for the encounter. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PERSON CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8932.1'",
+      "required": false,
+      "pointerTo": 8932.1,
+      "helpText": "This is the class of the provider at the time of the encounter. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the provider had the encounter with the patient. This date and time may be different from the visit date and time. For example, for clinic appointment visits, the visit date and time is the date and time of the appointment, not the time the provider performed the clinical event.    The date may be an imprecise date.                                 Date and time may be within 30 days before or after the visit date, with the restriction the date cannot be a future date. ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any original provider data is being edited. ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is populated automatically by the PCE filing logic.  The formt of the field is as follows:  Pointer to PCE data source file_\"-\"_A for Add or E for Edit_\"-\"DUZ of the persion who entered the data_\";\"... ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a comment related to the patient's provider.  The provider may enter this manually via the PCE User Interface. ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ELECTONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9000010.06", "field": .01, "type": "regular"},
+    {"name": "9000010.06", "field": .02, "type": "regular"},
+    {"name": "9000010.06", "field": .03, "type": "regular"},
+    {"name": "9000010.06", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

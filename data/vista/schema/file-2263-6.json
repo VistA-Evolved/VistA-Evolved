@@ -1,0 +1,67 @@
+{
+  "fileNumber": 2263.6,
+  "fileName": "ASISTS OWCP CHARGEBACK CODES",
+  "globalRoot": "2263.6",
+  "globalReference": "^OOPS(2263.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OWCP CHARGEBACK CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the OWCP Chargeback code that identifies the facility that the claim should be charged to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VA STATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VA Station Name as defined by the WC/MIS database at the AAC (Austin Automation Center) and is used in conjunction with the OWCP Chargeback Code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VA STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the corresponding or matching VA Station number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VA REGION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This the VA Region for the identified Station ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VA ORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VA Organization identifier for the related Station. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2263.6", "field": .01, "type": "regular"},
+    {"name": "2263.6", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

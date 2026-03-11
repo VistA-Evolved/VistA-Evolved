@@ -1,0 +1,63 @@
+{
+  "fileNumber": 430.7,
+  "fileName": "AR DEBT COLLECTOR DATA",
+  "globalRoot": "430.7",
+  "globalReference": "^PRCA(430.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPORT MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Month/Year of the report.  It will be the accounting  month/year that was transmitted to AITC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the starting date of the report month.  It will be the start of the accounting month that was transmitted to AITC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REPORT END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the accounting month ended.  It is the accounting month of data that was sent to the AITC. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE REPORT UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time the report was updated (or initially added). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AR BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "430.71P",
+      "required": false,
+      "helpText": "This multiple contains all the AR Bills that were included in the  documents sent to AITC. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "430.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

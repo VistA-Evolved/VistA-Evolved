@@ -1,0 +1,157 @@
+{
+  "fileNumber": 348.1,
+  "fileName": "BAD DEBT ALLOWANCE",
+  "globalRoot": "348.1",
+  "globalReference": "^RC(348.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SGL ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Standard General Ledger (SGL) Account. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COLLECTION %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This is calculated by Total Principal Payments for bills in base period/ Total bill amount for bills in base period. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "WRITE-OFF %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This is calculated by Total Write-offs for bills in base period/ Total bill amout for bills in base period. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CONTRACTUAL ADJUSTMENT %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This is calculated by Total Contract Adjustments for bills in base period/ Total bill amount for bills in base period. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CANCELLATION %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This is calculated by Total Decrease Adjustments for bills in base period/ Total bill amount for bills in base period. Note:  Contract adjustments and Write-offs not included here. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PENDING DISPOSITION %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This is calculated by summing fields .02,.03,.04, and .05 and subtracting the total from 100. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PREV. WO EST.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This field will hold the previous months esitmated amount (which is also the end of the month running balance) for write-offs. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CURRENT EST. WRITE-OFF AMT.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the estimated write-off amount for the current month. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PREV. CA EST.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This field will hold the previous months esitmated amount (which is also the end of the month running balance) for contract adjustments. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CURRENT EST. CONT. ADJ. AMT.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the estimated contract adjustment amount for the current month. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CONT. ADJ. CODESHEET AMT.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This field is the amount sent on the allowance document (SV27) to FMS.  It is calculated by adding the current monthly estimate (#.1) and the actual contract adjustment amount (#.14) and subtracting the previous estimate amount (#.09). ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "WRITE OFF CODESHEET AMT.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This field is the amount sent on the allowance document (SV23) to FMS.  It is calculated by adding the current monthly estimate (#.08) and the actual contract adjustment amount (#.13) and subtracting the previous estimate amount (#.07). ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CURR. ACT. WO AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the write-off amount that was calculated by the FMS data collector on the 1st of the month. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CURR. ACT. CA AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the amount of contract adjustments that were calculated on the 1st of the month by the FMS data collector. ",
+      "fieldNumber_": .14
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "348.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

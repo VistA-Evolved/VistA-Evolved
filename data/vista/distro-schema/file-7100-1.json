@@ -1,0 +1,37 @@
+{
+  "fileNumber": 7100.1,
+  "fileName": "NOIS COUNTER",
+  "globalRoot": "7100.1D",
+  "globalReference": "^FSCD(\"COUNT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is an entry of the year and month set by the NOIS routines to create a NOIS reference number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a sequence number of NOIS calls logged for the month and year in the MONTH field.  This number is used to create a NOIS reference number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7100.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

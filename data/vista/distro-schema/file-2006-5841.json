@@ -1,0 +1,88 @@
+{
+  "fileNumber": 2006.5841,
+  "fileName": "TELEREADER ACQUISITION SERVICE",
+  "globalRoot": "2006.5841",
+  "globalReference": "^MAG(2006.5841,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP123.5'",
+      "required": true,
+      "pointerTo": 123.5,
+      "helpText": "The name of the CONSULT service or specialty to be added to the TeleReader unread list. Example:  Hematology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "P123.3'",
+      "required": false,
+      "pointerTo": 123.3,
+      "helpText": "A specific CONSULT based procedure associated with a given service. Example: Bone Marrow Biopsy. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIALTY INDEX",
+      "dataType": "POINTER",
+      "rawType": "RP2005.84'",
+      "required": true,
+      "pointerTo": 2005.84,
+      "helpText": "Specialty/Subspecialty for the unread list items  associated with a given service. Example: Hematology, Lab ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCEDURE INDEX",
+      "dataType": "POINTER",
+      "rawType": "RP2005.85'",
+      "required": true,
+      "pointerTo": 2005.85,
+      "helpText": "Procedure/Event for the unread list items associated with a given service. Example:  C&P Exam ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACQUISITION SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "VistA site that takes the images associated   with a consult and captures them into the VistA system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "UNREAD LIST CREATION TRIGGER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:Create/Update with every acquired image;O:Create when request is ordered;F:Create when consult is forwarded to IFC;",
+      "helpText": "The action that places a specific Consult on the unread list. The most commonly used option is \"Create/Update with every acquired image\". ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIU NOTE FILE",
+      "dataType": "POINTER",
+      "rawType": "RP8925.1'",
+      "required": true,
+      "pointerTo": 8925.1,
+      "helpText": "The title of a note for images associated with a given consult that has been read and resulted. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5841", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

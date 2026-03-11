@@ -1,0 +1,37 @@
+{
+  "fileNumber": 601.4,
+  "fileName": "INCOMPLETE PSYCH TEST PATIENT",
+  "globalRoot": "601.4",
+  "globalReference": "^YTD(601.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Patient's name for which this is an incomplete test record.  Actually stored is a pointer value to the PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "601.41P",
+      "required": false,
+      "helpText": "This is a multiple valued field with subfields. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

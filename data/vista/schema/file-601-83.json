@@ -1,0 +1,62 @@
+{
+  "fileNumber": 601.83,
+  "fileName": "MH INSTRUMENTRULES",
+  "globalRoot": "601.83",
+  "globalReference": "^YTT(601.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the unique record identifier. It is the IEN. Numbers under 100,000 belong to the national database and should not be edited locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "InstrumentID",
+      "dataType": "POINTER",
+      "rawType": "RP601.71'",
+      "required": true,
+      "pointerTo": 601.71,
+      "helpText": "Used to associate a rule with an instrument, this is a pointer to NAME field (#.01) of the MH TESTS AND SURVEYS file (#601.71). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QuestionID",
+      "dataType": "POINTER",
+      "rawType": "P601.72'",
+      "required": false,
+      "pointerTo": 601.72,
+      "helpText": "Used to associate the rule to a question, this is a pointer to  QUESTION NUMBER field (#.01) of the MH QUESTIONS file (#601.72). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RuleID",
+      "dataType": "POINTER",
+      "rawType": "RP601.82'",
+      "required": true,
+      "pointerTo": 601.82,
+      "helpText": "Specifies which rule is applicable for a question in an instrument. It is  a pointer to the RULE ID field (#.01) of the MH RULES file (#601.82). ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "601.83", "field": .01, "type": "regular"},
+    {"name": "601.83", "field": 1, "type": "regular"},
+    {"name": "601.83", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 8994.5,
+  "fileName": "REMOTE APPLICATION",
+  "globalRoot": "8994.5",
+  "globalReference": "^XWB(8994.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the NAME of the REMOTE GUI APPLICATION for which the data in this  entry pertains. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CONTEXTOPTION",
+      "dataType": "POINTER",
+      "rawType": "RP19'",
+      "required": true,
+      "pointerTo": 19,
+      "helpText": "The name of the context (Client/Server or B-type) option that the  application users will need that will be added as a secondary menu item.   The user is signed on as a visitor and given the Context Option specified in this field as a secondary menu option.  The application still needs to set the Context Option using the CreateContext method, but the visitor has it as a valid option so that it can be used. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "APPLICATIONCODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the application's hashed value for a security phrase and is described below.   Security Phrase   The security phrase is an application's entry into the REMOTE APPLICATION  file (#8994.5) for accessing the information necessary to permit the  application to enroll a remote user.  Create a security phrase, case  sensitive, in programmer mode using the following command (assuming the security phrase is \"My Special Phrase\"):      W $$SHAHASH^XUSHSH(256,\"My Special Phrase\",\"B\")   The resultin",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALLBACKTYPE",
+      "dataType": "SET",
+      "rawType": "8994.51S",
+      "required": false,
+      "helpText": "This is a multiple field.  It may contain multiple values describing  mechanisms by which the remote site can contact the application's  authenticating site to obtain the demographic information.    It consists of the following subfields:      .01 CALLBACKTYPE    .02 CALLBACKPORT    .03 CALLBACKSERVER    .04 URLSTRING ",
+      "isMultiple": true,
+      "subFileNumber": 8994.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8994.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "fileNumber": 9.9,
+  "fileName": "PATCH MONITOR",
+  "globalRoot": "9.9",
+  "globalReference": "^XPD(9.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATCH NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the patch as it comes in the mail message.    Examples: RMIM*1*1           DG*5.3*211 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF RECEIPT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the patch was received in-house. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "m:MANDATORY;e:EMERGENCY;",
+      "helpText": "The priority assigned to this patch.  Typical is \"mandatory\". ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the package for which the patch was issued.   This field must be free text because of the possibility of having a patch  issued for a new package without the package having been installed yet. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the sequence number assigned to the patch by the National Patch  Module. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PACKAGE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the version of the parent package for which a patch is sent.  It  is determined from the patch information in the message. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PATCH SUBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the subject of the patch. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INSTALL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The installation information may or may not be in the INSTALL file for a  patch.  This may be because of:           a.  The package is new and may not yet be loaded             but already has patches issued.         b.  The patch is a non-kids patch for executables, etc. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COMPLIANCE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date by which the patch must be installed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE INSTALLED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ",
+      "required": false,
+      "helpText": "This is a computed field, driven by a mumps routine XTPMKPCF.  This is a  special routine to calculate the date installed from the INSTALL file.   It reads the index backwards to find the last installed version by taking the $O(^XPD(9.7,\"B\",[INSTALL NAME],9999999999),-1).   This is done because there may be several test versions on file in  INSTALL file which may affect the true installation date determination. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INSTALLED BY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is a computed field driven also by the routine AWBCKPCF at entry  point WHO.  It tells who installed the patch. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NON-KIDS PATCH?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field determines what happens in various areas of the package.  A  patch can be KIDs or non-KIDs.  The data on a patch record can be either  NULL (KIDs patch) or 1 (Non-KIDs patch).  The field can actually be only  set to a 1 or the information deleted (NULL). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NON-KIDS INSTALL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Non-KIDs patches are those which do not have an accompanying KIDs install  in the Packman message because:   It may have an accompanying host file (too large for a mail message) or   It may be a patch message referring to a .zip, .exe or other file which will not put an entry into the INSTALL file.   Because of this, there is no install record to extract the install date  and it must be entered (i.e., completed) by filling in this field. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NON-KIDS PATCH COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to file 200 to record who completed the non-KIDs patch. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "9.9", "field": .01, "type": "regular"},
+    {"name": "9.9", "field": 1, "type": "regular"},
+    {"name": "9.9", "field": 8, "type": "regular"},
+    {"name": "9.9", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

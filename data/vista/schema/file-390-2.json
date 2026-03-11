@@ -1,0 +1,136 @@
+{
+  "fileNumber": 390.2,
+  "fileName": "MARITAL/RELIGION MAPPING",
+  "globalRoot": "390.2I",
+  "globalReference": "^XTMP(\"DGTMP\",390.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field holds the MARITAL/RELIGION field number. It is a number between 1 and 999 with 0 decimal places. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "11:MARITAL STATUS;13:RELIGION;",
+      "helpText": "This field holds the file type, '11' for MARITAL, '13' for RELIGION. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STANDARD?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicate, in this field, whether or not the entry is standard.  '0' for No, '1' for Yes. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RELIGION",
+      "dataType": "POINTER",
+      "rawType": "P13'",
+      "required": false,
+      "pointerTo": 13,
+      "helpText": "This field holds the non-standard RELIGION entry to be mapped to a standard entry. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MARITAL STATUS",
+      "dataType": "POINTER",
+      "rawType": "P11'",
+      "required": false,
+      "pointerTo": 11,
+      "helpText": "This field holds the non-standard MARITAL STATUS entry to be mapped to a standard entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STANDARD RELIGION",
+      "dataType": "POINTER",
+      "rawType": "*P13'",
+      "required": false,
+      "pointerTo": 13,
+      "helpText": "This field holds the Standard RELIGION entry to map to. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STANDARD MARITAL STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P11'",
+      "required": false,
+      "pointerTo": 11,
+      "helpText": "This field holds the standard MARITAL STATUS entry to map to. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NEW STANDARD ENTRY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicate in this field,  whether or not the entry is a standard entry. '0' for No, '1' for Yes. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds a count number between 0 and 9999999, with 0 decimal digits. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ENTRY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Computed field, entry to convert. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CONVERT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Computed field to convert entry. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "390.2", "field": .01, "type": "regular"},
+    {"name": "390.2", "field": .04, "type": "regular"},
+    {"name": "390.2", "field": .04, "type": "regular"},
+    {"name": "390.2", "field": .05, "type": "regular"},
+    {"name": "390.2", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR1, "value": "NEW N0,X S N0=$G(^XTMP(\"DGTMP\",390.2,Y,0)) S X=$S($P(N0,\"^\",4)]\"\":$P($G(^DIC(13,+$P(N0,\"^\",4),0)),\"^\"),1:$P($G(^DIC(11,+$P(N0,\"^\",5),0)),\"^\")) W X"}
+  ]
+}

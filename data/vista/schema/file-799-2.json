@@ -1,0 +1,71 @@
+{
+  "fileNumber": 799.2,
+  "fileName": "ROR METADATA",
+  "globalRoot": "799.2",
+  "globalReference": "^ROR(799.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ22,9X",
+      "length": 22,
+      "required": true,
+      "helpText": "The value of this field is the number of the (sub)file that can be searched for new data by the registry update process and is a part of the file-processing tree. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "*P799.2'X",
+      "required": false,
+      "pointerTo": 799.2,
+      "helpText": "This field holds the number of the (sub)file that is a parent of the current file in the file-processing tree. You can choose only from the files that have descriptors in the ROR METADATA file. However, the current record cannot be selected as the parent of itself.   Leave this field empty for the \"root\" file (the  PATIENT file (#2) most probably).   See the technical description of the field for  more information. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "SUBFILE",
+      "rawType": "799.22I",
+      "required": false,
+      "helpText": "This multiple stores a list of data elements  supported by the search engine. These elements can be referenced by selection rules associated with the file.   Records of the multiple are uniquely identified by the data element name (the primary key \"B\" and the uniqueness index \"B\" are used for this purpose). ",
+      "isMultiple": true,
+      "subFileNumber": 799.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "API",
+      "dataType": "SUBFILE",
+      "rawType": "799.23I",
+      "required": false,
+      "helpText": "This multiple stores descriptors of the APIs that are used to load values of the search fields.   Codes of the APIs are unique only in the file context. For example, the definition of any file can have a descriptor of the API #2.   Internal entry numbers of the records in this  multiple are equal to the codes of the APIs. ",
+      "isMultiple": true,
+      "subFileNumber": 799.23,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "799.25",
+      "required": false,
+      "helpText": "You can enter any additional reference information related to the file definition. The content of this field is not used by the application. ",
+      "isMultiple": true,
+      "subFileNumber": 799.25,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "799.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N RORMSG D EN^DDIOL($$GET1^DID(Y,,,\"NAME\",,\"RORMSG\"),,\"?30\")"}
+  ]
+}

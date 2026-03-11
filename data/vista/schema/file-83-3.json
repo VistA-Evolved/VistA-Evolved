@@ -1,0 +1,103 @@
+{
+  "fileNumber": 83.3,
+  "fileName": "DRG MDC CATEGORY CODE SETS",
+  "globalRoot": "83.3",
+  "globalReference": "^ICDD(83.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MDC CODE SET ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "The Code Set ID is an assigned number that provides a unique identifier  for the Set. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MDC-CAT",
+      "dataType": "POINTER",
+      "rawType": "P83'",
+      "required": false,
+      "pointerTo": 83,
+      "helpText": "The MDC-Category this Code Set is assigned to.  Each Code Set is assigned  to one MDC-Category that defines the related care but may be assigned to  multiple DRGs within that MDC-Category. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "DX:DIAGNOSIS;PR:PROCEDURE;",
+      "helpText": "The primary definition of the Code Set is which type of codes it contains,  either Diagnosis or Procedures.  This identifies the location of the list  of specific codes contained within the set. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SET TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINCIPAL;S:SECONDARY;",
+      "helpText": "Type of Diagnosis as related to the care provided.  A diagnosis may be  either the Principal Diagnosis or one of the Secondary Diagnosis.  The  assignment to the record of care will affect if the Diagnosis satisfies a  Code Set.  A Diagnosis assigned to a stay as a Secondary Diagnosis cannot  satisfy a Code Set of Set Type Principal. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SPECIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EXCEPT;2:ONLY;",
+      "helpText": "Special circumstances that are required for the codes in the set to  satisfy the Set criteria.      EXCEPT - no codes in the set may be assigned to the patient record ONLY - only codes in the set may be assigned to the patient record     Note these conditions are specific to the Code Type of the Set.  Requiring  Only a certain set of Diagnosis does not restrict the Procedures assigned. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPUTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ANY O.R.;2:NO O.R.;3:NO SDX;4:LNK CNT;5:LNK CDN;6:LNK MLT;",
+      "helpText": "The Computed Set is a generic place holder for special processing and not  directly related to individual codes.  No Set identified as Computed will  have Codes assigned.     ANY O.R. - Patient record must have an Operating Room Procedure assigned NO O.R. - Patient record must not have a Operating Room Procedure assigned NO SDX - Patient record has no Secondary Diagnosis assigned    LNK CNT - Link to group of Sets where the count of codes are relevant LNK CDN - Link to group of Sets that define ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LINKED SETS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifier for a specific group of linked sets.  All Code Sets related to  the group must have this field set identically.  The LNK Computed Code Set  that defines the type of processing and the Codes Sets assigned the codes  require this field to match.  Only the LNK Computed Code Set is assigned  to the MDC Case to trigger the special processing. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CODE SET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the specific medical area the codes in the set relate to.   This is an optional descriptive field that may or may not match one of  the DRG Case/Set Names.   ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "ACSC", "field": },
+    {"name": "ACSL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "83.3", "field": .01, "type": "regular"},
+    {"name": "83.3", "field": .02, "type": "regular"},
+    {"name": "83.3", "field": .06, "type": "regular"},
+    {"name": "83.3", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICDD(83,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(83,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(83.3,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

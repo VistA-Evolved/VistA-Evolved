@@ -1,0 +1,28 @@
+{
+  "fileNumber": 634.5,
+  "fileName": "HBHC PSEUDO SSN ERROR(S)",
+  "globalRoot": "634.5P",
+  "globalReference": "^HBHC(634.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient name in Patient (2) file.  This patient record contains a pseudo social security number, which is invalid for HBHC purposes.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

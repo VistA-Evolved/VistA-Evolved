@@ -1,0 +1,359 @@
+{
+  "fileNumber": 404.98,
+  "fileName": "SCHEDULING CONVERSION SPECIFICATION TEMPLATE",
+  "globalRoot": "404.98",
+  "globalReference": "^SD(404.98,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the CST number.  It is the primary key to this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ENCOUNTER;",
+      "helpText": "This field contains the type of template entry.   (Currently, only the 'ENCOUNTER' type is used.) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the user specified start date for encounters to be converted by this CST. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the user specified end date for encounters to be converted by this CST. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST LOG EVENT",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:ESTIMATE;1:CONVERT;2:RE-CONVERT;3:CANCEL;",
+      "helpText": "This field contains the last event logged for this CST. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BULLETIN UPON COMPLETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a user requested a bulletin to be sent at the completion of a specified event. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LAST LOG EVENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PENDING;2:STARTED;3:STOPPED;4:RE-STARTED;5:COMPLETED;6:QUEUED;7:CANCELED;",
+      "helpText": "This field is triggered by the EVENT field of the CST EVENT sub-file. It contains the last event status for this CST. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST LOG REQUEST ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SCHEDULE;2:STOP;3:RE-START;",
+      "helpText": "This field contains the last action request for this CST. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CONVERSION CANCELED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates that the CST has been canceled when set to 'YES'. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LAST ENTRY PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0I",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the last entry converted by the CST. If the conversion process is interrupted or stopped, this field is used to determine where to re-start the CST.   For the 'Encounter' type CST, this field will be the Outpatient Encounter IEN of the last entry successfully converted.  This field is not filled in until all processing of the encounter has taken place. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "NUMBER OF ENTRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0I",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the number of entries converted by this CST. It is incremented each time an entry is successfully converted. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "TASK #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field contains the TaskMan task number of current event for this CST. If the task is completed or stopped this field is deleted. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "VOLUME SET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to determine if the last TaskMan task number assigned is active so more than one conversion job doesn't run at a time for the CST.  This value is used as input to STAT^%ZTLOAD. The results are used to determine if the task is active or not. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "TOTAL ERRORS LOGGED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The total # of errors logged for this CST.  This number is reset on reconvert to 0. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "NUMBER OF ADD/EDITS FOUND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the total number of add/edits found by the estimator for this CST. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "NUMBER OF ANCILLARIES FOUND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of ancillaries visits associated with appointments found by the estimator for this CST. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "NUMBER OF APPOINTMENTS FOUND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This field contains the number of appointments found by the estimator for this CST. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "NUMBER OF CREDIT STOPS FOUND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of credit stops associated with appointments  found by the estimator for this CST. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "NUMBER OF DISPOSITIONS FOUND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of dispositions found by the estimator for this CST. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "RECORDS NOT CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the total # of records not converted by this CST due to errors or missing data. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "NUMBER OF ENCOUNTERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of records that will be created in the OUTPATIENT ENCOUNTER (#409.68) file by this CST, as determined by the estimator. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "NUMBER OF VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of records that will be created in the VISIT (#9000010) file by this CST, as determined by the estimator. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "NUMBER OF V PROVIDERs",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of PCE provider records that will be created in the V PROVIDER (#9000010.06) file by this CST, as determined by the estimator. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "NUMBER OF V POVs",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of PCE diagnosis records that will be created in the V POV (#9000010.07) file by this CST, as determined by the estimator. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "NUMBER OF V CPTs",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the number of PCE procedure records that will be created in the V CPT (#9000010.18) file by this CST, as determined by the estimator. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "REQUEST LOG",
+      "dataType": "DATE",
+      "rawType": "404.9825DAI",
+      "required": false,
+      "helpText": "This sub-file contains the request action log for events executed for this CST. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9825,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ERROR LOG",
+      "dataType": "SUBFILE",
+      "rawType": "404.985",
+      "required": false,
+      "helpText": "This field contains any errors encountered while processing the CST events. ",
+      "isMultiple": true,
+      "subFileNumber": 404.985,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "EVENT LOG",
+      "dataType": "DATE",
+      "rawType": "404.9875DAI",
+      "required": false,
+      "helpText": "This sub-file contains information about the events which took place for this CST. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9875,
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "SCE GLOBAL ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This computed field provides an estimate on how much disk space will be required for OUTPATIENT ENCOUNTER (#409.68)records created or modified by this CST.  The records are stored in the ^SCE global.   The formula used is the following:    NUMBER OF ENCOUNTERS TO BE CREATED * SCE BLOCKS PER NEW RECORD                                 +   ((NUMBER OF VISITS TO BE CREATED - NUMBER OF ENOCUNTERS TO BE CREATED)                                      * SCE BLOCKS PER UPDATED RECORD) ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "AUPNVSIT GLOBAL ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This computed field provides an estimate on how much disk space will be required for VISIT (#9000010) records created by this CST.  The records are stored in the ^AUPNVSIT global.   The formula used is the following:       NUMBER OF VISITS TO BE CREATED * AUPNVSIT BLOCKS PER NEW RECORD  ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "AUPNVPRV GLOBAL ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This computed field provides an estimate on how much disk space will be required for V PROVIDER (#9000010.06) records created by this CST.  The records are stored in the ^AUPNVPRV global.   The formula used is the following:       NUMBER OF V PROVIDERs TO BE CREATED * AUPNVPRV BLOCKS PER NEW RECORD  ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "AUPNVPOV GLOBAL ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This computed field provides an estimate on how much disk space will be required for V POV (#9000010.07) records created by this CST.  The records are stored in the ^AUPNVPOV global.   The formula used is the following:       NUMBER OF V POVs TO BE CREATED * AUPNVPOV BLOCKS PER NEW RECORD  ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "AUPNVCPT GLOBAL ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This computed field provides an estimate on how much disk space will be required for V CPT (#9000010.18) records created by this CST.  The records are stored in the ^AUPNVCPT global.   The formula used is the following:       NUMBER OF V CPTs TO BE CREATED * AUPNVCPT BLOCKS PER NEW RECORD  ",
+      "fieldNumber_": 211
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "AIX1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "TYP", "field": },
+    {"name": "404.98", "field": .01, "type": "regular"},
+    {"name": "404.98", "field": .02, "type": "regular"},
+    {"name": "404.98", "field": .03, "type": "regular"},
+    {"name": "404.98", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(404.98,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": .04, "value": "W \"   \",$E($P(^(0),U,4),4,5)_\"-\"_$E($P(^(0),U,4),6,7)_\"-\"_$E($P(^(0),U,4),2,3)"}
+  ]
+}

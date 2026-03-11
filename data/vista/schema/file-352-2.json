@@ -1,0 +1,51 @@
+{
+  "fileNumber": 352.2,
+  "fileName": "NON-BILLABLE DISPOSITIONS",
+  "globalRoot": "352.2P",
+  "globalReference": "^IBE(352.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISPOSITION",
+      "dataType": "POINTER",
+      "rawType": "RP37'",
+      "required": true,
+      "pointerTo": 37,
+      "helpText": "This field is a pointer to the DISPOSITION (#37) file, and identifies the disposition which is being established as either billable or non-billable for Means Test billing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which Means Test billing for this disposition should be activated or ignored. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IGNORE MEANS TEST BILLING?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine whether Means Test billing should be activated or ignored, as of the EFFECTIVE DATE (field #.02).   Please note that you only need an entry in this file for a disposition for which you would like Means Test billing to be IGNORED. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "352.2", "field": .01, "type": "regular"},
+    {"name": "352.2", "field": .01, "type": "regular"},
+    {"name": "352.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

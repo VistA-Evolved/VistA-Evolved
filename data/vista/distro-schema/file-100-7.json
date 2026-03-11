@@ -1,0 +1,48 @@
+{
+  "fileNumber": 100.7,
+  "fileName": "OE/RR EPCS PARAMETERS",
+  "globalRoot": "100.7",
+  "globalReference": "^ORD(100.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P4'Xa",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The site for which the parameter values apply. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENABLE EPCS?",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Stores whether ePCS is enabled for the selected site or not. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENABLED USERS",
+      "dataType": "POINTER",
+      "rawType": "100.71P",
+      "required": false,
+      "helpText": "Users for which ePCS is enabled. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "100.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

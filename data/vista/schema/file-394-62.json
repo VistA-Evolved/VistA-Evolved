@@ -1,0 +1,127 @@
+{
+  "fileNumber": 394.62,
+  "fileName": "VAQ - DATA",
+  "globalRoot": "394.62",
+  "globalReference": "^VAT(394.62,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Data",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "  Incrementing number (used to uniquely identify each value). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Segment",
+      "dataType": "POINTER",
+      "rawType": "P394.71'",
+      "required": false,
+      "pointerTo": 394.71,
+      "helpText": "Data segment to which the information belongs. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "File Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ20,9",
+      "length": 20,
+      "required": false,
+      "helpText": "File number from which the information came. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "Field Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ20,9",
+      "length": 20,
+      "required": false,
+      "helpText": "Field number from which the information came. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "Display Ready",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to 'YES' if the segment is being stored in display ready format.  Set to 'NO' if segment is being stored as individual pieces of information. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Value",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Information that was stored in the specified field of the specified file. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Identifier",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field uniquely identifies the \"master\" value (to whom the information pertains). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "Sequence Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Sequencing number used when more than one value came from the same file/field. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "Transaction Number",
+      "dataType": "POINTER",
+      "rawType": "P394.61'",
+      "required": false,
+      "pointerTo": 394.61,
+      "helpText": "Transaction from which the information came. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "Displayable Segment",
+      "dataType": "SUBFILE",
+      "rawType": "394.625",
+      "required": false,
+      "helpText": "Segment in display ready format. ",
+      "isMultiple": true,
+      "subFileNumber": 394.625,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AF1", "field": },
+    {"name": "AF2", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "394.62", "field": .01, "type": "regular"},
+    {"name": "394.62", "field": .02, "type": "regular"},
+    {"name": "394.62", "field": .02, "type": "regular"},
+    {"name": "394.62", "field": .05, "type": "regular"},
+    {"name": "394.62", "field": 40, "type": "regular"},
+    {"name": "394.62", "field": 40, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

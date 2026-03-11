@@ -1,0 +1,68 @@
+{
+  "fileNumber": 6925.2,
+  "fileName": "PROJECT STATUS",
+  "globalRoot": "6925.2I",
+  "globalReference": "^ENG(6925.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains name of a valid project status. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for a valid project status. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FUNDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used during the Minor Design/Minor Miscellaneous Prioritization Methodology.  On the Scoring Sheet, are listed the funded Major and Minor Program projects which are dependent upon this currently evaluated project.  Hence a flag was needed to indicate which statuses Construction Managers consider funded. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SORT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPLICABLE PROGRAMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a comma delimited list of applicable programs. The list entered here will determine the choices displayed during project editing. (Examples: MA,MI or NR,SL,LE) ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6925.2", "field": .01, "type": "regular"},
+    {"name": "6925.2", "field": 1, "type": "regular"},
+    {"name": "6925.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

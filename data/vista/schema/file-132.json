@@ -1,0 +1,55 @@
+{
+  "fileNumber": 132,
+  "fileName": "SURGERY POSITION",
+  "globalRoot": "132",
+  "globalReference": "^SRO(132,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Surgery Position.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*MAJOR POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field has been marked for deletion in the next release of the Surgery software.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code corresponding to the name of the Surgery Position.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to inactivate this file entry and to prevent its selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "132", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

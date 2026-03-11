@@ -1,0 +1,943 @@
+{
+  "fileNumber": 727.809,
+  "fileName": "UNIT DOSE LOCAL EXTRACT",
+  "globalRoot": "",
+  "globalReference": "^ECX(727.809,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the medical center division where the extract was performed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "An identifying number for the patient at the local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's social security number. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;A:ASIH (OTHER FACILITY);",
+      "helpText": "Indicates the patient's status for this extract entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the Unit Dose  event (dispense or return) occurred. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VA DRUG CLASSIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA Drug Classification for the item in this order. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Drug quantity dispensed in the unit of issue for that drug.  Unit of issue may vary from product to product and site to site. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Current ward where the patient is located when patient is an inpatient. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The provider assigned to this patient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "VA pharmacy supply cost of drug dispensed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MOVEMENT FILE #",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Current patient movement record associated with this extract record. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PTF CODE of the treating specialty associated with this extract record. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the National Drug Code for the drug/supply item in this order. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NEW FEEDER KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code that uniquely identifies a DSS drug/supply product. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DEA, SPECIAL HDLG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INVESTIGATIONAL;1:SCHEDULE 1 ITEM;2:SCHEDULE 2 ITEM;3:SCHEDULE 3 ITEM;4:SCHEDULE 4 ITEM;5:SCHEDULE 5 ITEM;",
+      "helpText": "Indicates if the drug in this record is Investigational, or Schedule 1-5. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "UDP TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Time that the drug was dispensed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8O",
+      "length": 8O,
+      "required": false,
+      "helpText": "This 8-character numeric string represents the date on which the  patient's admission occurred. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ADMISSION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6O",
+      "length": 6O,
+      "required": false,
+      "helpText": "Time of day at which the patient admission occurred. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PLACEHOLD MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as MASTER PATIENT INDEX, is no longer needed. The name has been changed to PLACEHOLD MPI and its value will be set to null. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as DSS PRODUCT DEPARTMENT, is no longer needed.  The name has been changed to PLACEHOLDER and its value will be set to null. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:GEN. PRRTP;T:PTSD PRRTP;S:DOM. PRRTP;H:HOMELESS CWT/TR;A:SA CWT/TR;D:DOMICILIARY;B:PTSD CWT/TR;C:GEN. CWT/TR;",
+      "helpText": "Indicates if the patient is admitted to either a RRTP, PRRTP, or SARRTP at the time care is provided. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "Indicates if patient is considered to be an observation patient. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique number assigned to each encounter within DSS. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the division/facility where the work was performed. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PLACEHOLD MEANS TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field, previously known as MEANS TEST, is no longer needed. The name  has been changed to PLACEHOLD MEANS TEST and its value will be set to  null. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Appropriate eligibility code based on veteran or non-veteran status. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient's date of birth. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Patient's gender. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The state in which the patient resides. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "COUNTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The county in which the patient resides. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ZIP+4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The ZIP code for where the patient resides.  The 5-character ZIP code is  provided if ZIP+4 is not available. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Patient's veteran status. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The period of service that best classifies the patient based on eligibility code. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "POW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UKNOWN;",
+      "helpText": "Indicates if patient was confined as a Prisoner of War. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "POW LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P22'",
+      "required": false,
+      "pointerTo": 22,
+      "helpText": "If POW Status is indicated, then this is the POW confinement location/period.     1      WORLD WAR I  2      WORLD WAR II - EUROPE  3      WORLD WAR II - PACIFIC  4      KOREAN  5      VIETNAM  6      OTHER ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "RADIATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;1:NO RADIATION;2:HIROSHIMA/NAGASAKI;3:ATMOSPHERIC NUCLEAR TESTING;4:H/N AND ATMOSPHERIC TESTING;5:UNDERGROUND NUCLEAR TESTING;6:EXPOSURE AT NUCLEAR FACILITY;7:OTHER;",
+      "helpText": "Indicates if patient claims exposure to ionizing radiation. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "AGENT ORANGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Indicates whether patient was exposed to Agent Orange. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "AGENT ORANGE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This field indicates the location where the patient was exposed to Agent  Orange. Values are:     \"B\" = BLUE WATER NAVY     \"K\" = KOREAN DMZ     \"V\" = VIETNAM     \"T\" = THAILAND(U.S. OR ROYAL THAI MIL BASE)     \"L\" = LAOS     \"C\" = CAMBODIA(MIMOT OR KREK,KAMPONG CHAM)     \"G\" = GUAM, AMERICAN SAMOA, OR TERRITORIAL WATERS     \"J\" = JOHNSTON ATOLL     \"O\" = OTHER ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PURPLE HEART INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether or not a patient is a Purple Heart recipient. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "MST STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes, screened reports MST;N:Screened, does not report MST;D:Screened, declines to answer;U:Unknown, not screened;",
+      "helpText": "Indicates the Military Sexual Trauma (MST) status of a patient on the date of the encounter. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CNH STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:YES;NO:NO;",
+      "helpText": "This field is used to indicate whether a patient is currently in  a contract nursing home. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ENROLLMENT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The facility that the patient chooses to designate as his preferred location for care. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "ENROLLMENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:Enrolled;N:Not Enrolled;P:In Process;",
+      "helpText": "Patient's enrollment category. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "ENROLLMENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P27.15'",
+      "required": false,
+      "pointerTo": 27.15,
+      "helpText": "Patient's enrollment status. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "SHAD STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Indicates whether patient meets requirements for Shipboard Hazard and Defense (SHAD). ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PLACEHOLD PRIMARY CARE TEAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE TEAM, is no longer needed. The name has been changed to PLACEHOLD PRIMARY CARE TEAM and its value will be set to null.   ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PLACEHOLD PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE PROVIDER, is no longer needed. The name has been changed to PLACEHOLD PC PROVIDER and its value will be set to null.   ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PLACEHOLD PC PROV PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PC PROVIDER PERSON CLASS, is no longer needed. The name has been changed to PLACEHOLD PC PROV PERSON CLASS and its value will be set to null.   ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PLACEHOLD ASSOC PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOCIATE PC PROVIDER, is no longer needed. The name has been changed to PLACEHOLD ASSOC PC PROVIDER and its value will be set to null.   ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PLACEHOLD AS PC PROV PERSON CL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOC. PC PROV. PERSON CLASS, is no longer needed. The name has been changed to PLACEHOLD AS PC PROV PERSON CL and its value will be set to null.   ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ORDERING DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date the order was first dispensed. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "ORDERING STOP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the stop code associated with the order. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "HEAD & NECK CANCER INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies whether patient has head and/or neck cancer. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PLACEHOLD ETHNICITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ETHNICITY, is no longer needed.  The name  has been changed to PLACEHOLD ETHNICITY and its value will be set to null. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PLACEHOLD RACE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as RACE 1, is no longer needed.  The name has been changed to PLACEHOLD RACE 1 and its value will be set to null. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "Currently NULL.  This field is not currently used. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Currently NULL.  This field is not currently used. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL.  This field is not currently used. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL.  This field is not currently used. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "ORDERING PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VA code of the Person Class of the Ordering Provider as of the date of  this extract record. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PLACEHOLD DSS IP #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field, previously known as DSS IP #, is no longer needed. The name has been changed to PLACEHOLD DSS IP # and its value will be set to null.   ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the enrollment priority group and the enrollment  priority subgroup. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "USER ENROLLEE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "U:USER ENROLLED;",
+      "helpText": "Indicates whether a Veteran has User Enrollee status for the current or  future fiscal year. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AC:ACTIVE DUTY;AL:ALLIED VETERAN;CO:COLLATERAL;EM:EMPLOYEE;IN:INELIGIBLE;MI:MILITARY RETIREE;NO:NON-VETERAN (OTHER);NS:NSC VETERAN;SC:SC VETERAN;TR:TRICARE;",
+      "helpText": "Refers to the various types of patient which may be seen at a VA facility.  Every patient in the system must have a TYPE specified. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "CV STATUS ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;E:ELIGIBILITY EXPIRED;",
+      "helpText": "Records if veteran served on active duty in a theater of combat operations during a period of war after the Persian Gulf War or in combat against a hostile force during a period of hostilities after November 11, 1998. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "CV ELIGIBILITY END DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Records the Combat Veteran eligibility expiration date of the veteran who served on active duty in a theater of combat operations during a period of war after the Persian Gulf War or in combat against a hostile force during a period of hostilities after November 11, 1998 ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "ENCOUNTER CV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Records if a veteran served on active duty in a theater of combat operations during a period of war after the Persian Gulf War or in combat against a hostile force during a period of hostilities after November 11, 1998. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "NATIONAL PATIENT RECORD FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field records whether the patient's record contains 1 or more active category 1 (National) Patient Record Flags. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "ERI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies patients from impacted zip code areas designated by the Federal Emergency Management Agency (FEMA). ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "This field is used to indicate if this visit represents treatment of a VA  patient claiming exposure to Southwest Asia Conditions. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "OEF/OIF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Military Operation in which the patient was in combat during the  specified time period. This field is a length of nine characters and  reflects the OEF or OIF where this patient was in combat. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "OEF/OIF RETURN DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date the patient left the OEF/OIF area, if known. Otherwise, it is  the end date of military pay for this OEF/OIF deployment. This date field  has a format equal to YYYYMMDD. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "PLACEHOLD ASSOC PC PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as ASSOCIATE PC PROVIDER NPI, is no longer needed. The name has been changed to PLACEHOLD ASSOC PC PROV NPI and its value will be set to null.   ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "PLACEHOLD PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, previously known as PRIMARY CARE PROVIDER NPI, is no longer needed. The name has been changed to PLACEHOLD PC PROVIDER NPI and its value will be set to null.   ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the individuals providing  health care services. This field has a length of fifteen characters.  ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The code for the country associated with the address. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "PATCAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:Active Duty;ADD:Active Duty Dependent;FNRS:Former Non-Remarried Spouse;RET:Retired;RETD:Retiree Dependent;RES:Reservist;REC:Recruit;TDRL:Temporary Disability;TFL:TRICARE for Life;",
+      "helpText": "This is the Patient's category which will be used for FHCC (Federal Health Care Center) Reconciliation. DSS must capture and report DoD patients so that the FHCC reconciliation process can function as designed. \"Reconciliation\" is the process used within the new FHCC to determine which patients DoD pays for and which VA pays for. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "ENCOUNTER SC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if treatment provided during this patient encounter is Service  Connected. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "CAMP LEJEUNE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if patient was exposed to contaminated water while stationed at Camp Lejeune, NC between January 1, 1957 and December 31, 1987. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "ENCOUNTER CAMP LEJEUNE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if episode of care is related to exposure to contaminated water while stationed at Camp Lejeune, NC between January 1, 1957 and December 31, 1987. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "COMBAT VETERAN INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies if the patient served in a combat zone. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "COMBAT VETERAN LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the war in which the combat service was incurred. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "NEW SCRIPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies those UDP pharmacy transactions where the pharmacist reviewed  the patient's medications before a new prescription was filled or an  existing one renewed. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PATIENT DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is the Station Number of the facility that performed the work. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "VISTA DEA SPECIAL HDLG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "Identifies the DEA codes assigned to the drug associated with this record.  ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "PLACEHOLD CERNER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ439",
+      "length": 439,
+      "required": false,
+      "helpText": "This field is for the Cerner extract data. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "NEW MPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "A national VA system IDENTIFIER which uniquely identifies a patient.   Commonly called \"Patient ICN\" or \"Patient IEN\"; not to be confused with  the IEN from the VistA PATIENT file. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "*SELF IDENTIFIED GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Male;F:Female;TM:Transgender Male;TF:Transgender Female;O:Other;N:Does not wish to disclose;B:Non-Binary;",
+      "helpText": "The SELF IDENTIFIED GENDER value indicates the patient's personal sense  of their gender identity (if they choose to provide it).    Self-identified gender may be the same or different as the sex assigned  at birth.   This field has been deprecated as of patch ECX*3*196 and should no longer  be used. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "PRICE PER DISPENSE UNIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,4",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the price per dispense unit for this drug. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "DISPENSE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the dispense unit of this drug. ",
+      "fieldNumber_": 96
+    }
+  ],
+  "fieldCount": 97,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.809", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

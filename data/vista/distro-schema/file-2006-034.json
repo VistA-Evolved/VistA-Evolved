@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2006.034,
+  "fileName": "IMPORT QUEUE",
+  "globalRoot": "2006.034",
+  "globalReference": "^MAG(2006.034,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2006.03X",
+      "required": true,
+      "pointerTo": 2006.03,
+      "helpText": "This field is synchronized (DINUMed) with the original \"IMPORT\" queue created in the Image Background QUEUE file (#2006.03). The two files (2006.034 and 2006.03) are kept in sync by a reference in 2006.03 field QUEUE DATA ITEM (#10).  This back reference is necessary in cases of requeues.  The requeue process involves deleting the originally created 2006.03 entry, preserving field #10 data, and creating a new 2006.03 Import entry.  Thus the DINUM connection between the files 2006.03 and 2006.034",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IMAGE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "2006.341A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.341,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.034", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

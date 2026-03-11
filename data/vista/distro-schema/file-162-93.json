@@ -1,0 +1,69 @@
+{
+  "fileNumber": 162.93,
+  "fileName": "FEE BASIS UNAUTHORIZED REQUESTED INFORMATION",
+  "globalRoot": "162.93",
+  "globalReference": "^FB(162.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the record in this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the requested information. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates if the requested information is active. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "162.931",
+      "required": false,
+      "helpText": "This field contains a detailed description of the requested information. The description is printed as part of the text of the letter whenever  information is requested. ",
+      "isMultiple": true,
+      "subFileNumber": 162.931,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "POSTSCRIPT",
+      "dataType": "SUBFILE",
+      "rawType": "162.932",
+      "required": false,
+      "helpText": "If populated, the postscript is printed as part of the text of the letter whenever the associated information is requested.  It is printed at the end of the letter after the signature. ",
+      "isMultiple": true,
+      "subFileNumber": 162.932,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "162.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

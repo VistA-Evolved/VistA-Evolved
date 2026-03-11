@@ -1,0 +1,58 @@
+{
+  "fileNumber": 2006.5842,
+  "fileName": "TELEREADER ACQUISITION SITE",
+  "globalRoot": "2006.5842",
+  "globalReference": "^MAG(2006.5842,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "VistA site that takes the images associated   with a consult and captures them into the VistA system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIMARY SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The parent site of an acquisition site. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Active;0:Inactive;",
+      "helpText": "Status of a site to read from an acquisition site. Active means images can be read. Inactive means images cannot be read. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCK TIMEOUT IN MINUTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of minutes a study can be locked by a user. After this period of time, a study that is still locked is automatically unlocked. If this field is undefined, the application will default to 180 minutes. Max value is 99999, no decimals allowed. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5842", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

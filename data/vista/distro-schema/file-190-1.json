@@ -1,0 +1,187 @@
+{
+  "fileNumber": 190.1,
+  "fileName": "REQUESTED RECORDS",
+  "globalRoot": "190.1PIO",
+  "globalReference": "^RTV(190.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP190'I",
+      "required": true,
+      "pointerTo": 190,
+      "helpText": "This allows the identification of the request for a record with the entity defined in the record file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME REQUESTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This identifies the date, time when the request was made ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER REQUESTING RECORD",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This shows the person who made the request. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME RECORD NEEDED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This identifies the date, time when the record is needed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "R*P195.9X",
+      "required": true,
+      "pointerTo": 195.9,
+      "helpText": "This identifies the borrower who needs the record ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "c:CHARGED;x:CANCELLED;r:REQUESTED;n:NOT FILLABLE;",
+      "helpText": "This allows the system to differentiate the state of the request process. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE/TIME CURRENT STATUS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This defines the date, time when the current status was established. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "USER RESPONSIBLE FOR STATUS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the user in the system associated with the current status. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CANCEL REASON",
+      "dataType": "POINTER",
+      "rawType": "*P195.6'",
+      "required": false,
+      "pointerTo": 195.6,
+      "helpText": "This differentiates the status of a canceled request. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PULL LIST",
+      "dataType": "POINTER",
+      "rawType": "P194.2'",
+      "required": false,
+      "pointerTo": 194.2,
+      "helpText": "This identifies a list of requests which are logically grouped together to allow the system to perform a group action on a series of requests. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PARENT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P190.1'",
+      "required": false,
+      "pointerTo": 190.1,
+      "helpText": "This allows the system to create a series of linked requests so that the request for 1 record can spawn requests for logically associated records. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "INSTITUTION OF REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This further identifies the requestor to support divisions within the system. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE REQUEST LAST PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This identifies the date, time the barcoded request label was printed in the system. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ASSOCIATED REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "*P195.9X",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This allows the system to associate one borrower with another borrower to further more fully describe the need for a record. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the addition of free text to more fully describe the request for a record. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "ELAPSED TIME TO CURRENT STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This allows the system to quantify the status of a request and sort requests for priority. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "ABOR", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AP", "field": },
+    {"name": "AP1", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "190.1", "field": .01, "type": "regular"},
+    {"name": "190.1", "field": 2, "type": "regular"},
+    {"name": "190.1", "field": 4, "type": "regular"},
+    {"name": "190.1", "field": 4, "type": "regular"},
+    {"name": "190.1", "field": 5, "type": "regular"},
+    {"name": "190.1", "field": 10, "type": "regular"},
+    {"name": "190.1", "field": 10, "type": "regular"},
+    {"name": "190.1", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D DISP1^RTUTL1"}
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "fileNumber": 2261.5,
+  "fileName": "ASISTS PURPOSE FOR USING SHARPS",
+  "globalRoot": "2261.5",
+  "globalReference": "^OOPS(2261.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a purpose for using Sharps. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a code that will identify a purpose for using sharps. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.5", "field": .01, "type": "regular"},
+    {"name": "2261.5", "field": .01, "type": "regular"},
+    {"name": "2261.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

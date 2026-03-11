@@ -1,0 +1,76 @@
+{
+  "fileNumber": 1927.403,
+  "fileName": "NUPA CARE PLAN GI/GU DEVICES",
+  "globalRoot": "1927.403",
+  "globalReference": "^NUPA(1927.403,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4'",
+      "required": true,
+      "pointerTo": 1927.4,
+      "helpText": "The care plan that these devices apply to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEVICE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P1927.41'",
+      "required": false,
+      "pointerTo": 1927.41,
+      "helpText": "The type of GI device. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME INSERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the GI device was inserted. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME REMOVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the GI device was removed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "1927.4034",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.4034,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "GI:GI;GU:GU;",
+      "helpText": "Is the device for GI or GU? ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.403", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^NUPA(1927.41,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1927.41,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

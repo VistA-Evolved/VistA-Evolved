@@ -1,0 +1,149 @@
+{
+  "fileNumber": 358.5,
+  "fileName": "IMP/EXP DATA FIELD",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name is used to identify the field within a block. It can be anything the designer of a form wants it to be. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP358.1'",
+      "required": true,
+      "pointerTo": 358.1,
+      "helpText": "  The particular block the data field should appear in. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE OF DATA",
+      "dataType": "POINTER",
+      "rawType": "*P358.6'",
+      "required": false,
+      "pointerTo": 358.6,
+      "helpText": "  The particular interface that should be invoked to obtain the data for display. Some of the interfaces don't actually return data, but are instead 'dummy' interfaces for the purpose of printing things like blank lines. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LAST ITEM INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  This field is used to indicate which item on a list is the last to be printed to the form. The remaining items can be printed to a separate piece of paper. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NUMBER ON LIST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "For data returned by the package interface that is in the form of a list, this field indicates which one of the items on the list should be displayed to this field. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TEXT LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The label that should precede the text. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TEXT LABEL APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  The label can have characteristics, such as being underlined or emboldened. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TEXT STARTING COLUMN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "This field determines what column the text should begin in. Applies only if the Package Interface returns a word-processing field. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TEXT STARTING ROW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "  Determines which line on the form, relative to the block, the text area should begin at. Only applies if the package interface returns a word-processing field. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "NUMBER OF FORM LINES FOR TEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  The number of lines on the form that should be allocated for the text. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SPACING OF TEXT LINES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SINGLE SPACED;2:DOUBLE SPACED;3:SINGLE, BUT DOUBLE IF BLANK;",
+      "helpText": "  Determines the spacing between lines of text. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "WIDTH OF TEXT LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  Determines how many characters across should be allocated to the text. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBFIELD",
+      "dataType": "SUBFILE",
+      "rawType": "358.52I",
+      "required": false,
+      "helpText": "A data field can be composed of multiple subfields. Each subfield can have a label and data. ",
+      "isMultiple": true,
+      "subFileNumber": 358.52,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "358.5", "field": .01, "type": "regular"},
+    {"name": "358.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "W \"\""}
+  ]
+}

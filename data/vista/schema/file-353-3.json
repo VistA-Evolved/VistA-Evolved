@@ -1,0 +1,36 @@
+{
+  "fileNumber": 353.3,
+  "fileName": "IB ATTACHMENT REPORT TYPE",
+  "globalRoot": "353.3",
+  "globalReference": "^IBE(353.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ATTACHMENT REPORT TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Report Type Code describes the type of documentation that will provide additional information for this claim. Attachment Report Type Code is at both the claim level and line level. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ATTACHMENT REPORT TYPE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the descriptive name of the Report Type Code to describe the type of documentation that will provide additional information for this claim. Attachment Report Type is at both the claim level and line level. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "353.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

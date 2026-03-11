@@ -1,0 +1,166 @@
+{
+  "fileNumber": 350.6,
+  "fileName": "IB ARCHIVE/PURGE LOG",
+  "globalRoot": "350.6I",
+  "globalReference": "^IBE(350.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARCHIVE LOG #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0",
+      "length": 15,
+      "required": true,
+      "helpText": "The Log # number is used to identify a unique archive/purge operation for a single file.  The number will be equal to the internal entry number of the Log entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEARCH TEMPLATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the Search Template used to contain the list of entries to be archived/purged.  This name is the .01 field for the template entry in the SORT TEMPLATE file (#.401).  The name of the template is stored instead of a hard pointer to the SORT TEMPLATE file because the template is deleted from the file after the entries have been purged.  The name of the template is the string \"IB ARCHIVE/PURGE #\" concatenated with the Archive Log # (field .01). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ARCHIVE FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This field points to the FILE file (#1) and represents the file to be archived/purged.  The Billing data files subject to archiving/purging currently are:     350  INTEGRATED BILLING ACTION   351  CATEGORY C BILLING CLOCK   399  BILL/CLAIMS ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "# RECORDS ARCHIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field will contain the number of entries which have been processed in each sequential archive/purge operation.  The 'Search' option will update the field with the number of entries which have met the search criteria.  The 'Archive' option will update this field with the number of entries archived.  The 'Purge' option will update the field with the number of entries purged.  Also, the 'Delete Entry From Search Template' option will update the field when entries from the template are deleted.",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LOG STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPEN;2:CLOSED;3:CANCELLED;",
+      "helpText": "This field contains the current status of the archive/purge operation. The status will be OPEN when the log entry is created, and CLOSED after successfully purging archived entries.  The entry will be CANCELLED if an error is detected during processing which invalidates the operation. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SEARCH BEGIN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time at which the search was initiated is automatically stuffed into this field by the 'Search' option. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "SEARCH END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time at which the search was completed is automatically stuffed into this field by the 'Search' option.  The existence of this field in the log entry assures that the search on the file was successful, and thus the field is used as the flag to allow archiving. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "SEARCH INITIATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field conatins the individual who queued the search on the file. The field is updated by a trigger when the SEARCH BEGIN DATE/TIME field is updated. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "ARCHIVE BEGIN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the archiving of data is initiated is automatically stuffed into this field by the 'Archive' option. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "ARCHIVE END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the archiving of data was completed is automatically stuffed into this field by the 'Archive' option.  The existence of this field in the log entry assures that archiving was successful, and thus the field is used as a flag to allow purging. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "ARCHIVE INITIATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the individual who archived the file.  The field is updated by a trigger when the ARCHIVE BEGIN DATE/TIME field is updated. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "PURGE BEGIN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that purging is initiated is automatically stuffed into this field by the 'Purge' option. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "PURGE END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the purging of data was completed is automatically stuffed into this field by the 'Purge' option.  When this field is updated the status of the log entry is updated to CLOSED. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PURGE INITIATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the individual who purged the file.  The field is updated by a trigger when the PURGE BEGIN DATE/TIME field is updated. ",
+      "fieldNumber_": 3.03
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "AF1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "350.6", "field": .01, "type": "regular"},
+    {"name": "350.6", "field": .02, "type": "regular"},
+    {"name": "350.6", "field": .03, "type": "regular"},
+    {"name": "350.6", "field": .03, "type": "regular"},
+    {"name": "350.6", "field": .05, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "350.6", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 2.01, "type": "regular"},
+    {"name": "", "field": 3.01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(350.6,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 1.01, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,1),4,5)_\"-\"_$E($P(^(1),U,1),6,7)_\"-\"_$E($P(^(1),U,1),2,3)"}
+  ]
+}

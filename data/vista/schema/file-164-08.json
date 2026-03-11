@@ -1,0 +1,243 @@
+{
+  "fileNumber": 164.08,
+  "fileName": "ICDO-SITES",
+  "globalRoot": "164.08I",
+  "globalReference": "^ONCO(164.08,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FREE TEXT LIST FOR ICDO SITES. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ICDO-2 SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "INTERNATIONAL CLASSIFICATION OF DISEASE FOR ONCOLOGY, 2ND REVISION, 1990. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "00-14:HEAD & NECK;15-26:DIGESTIVE;30-39:RESPIRATORY;40-49:MUSCULOSKELETAL;50-:BREAST;51-58:GYNECOLOGIC;60-68:GENITOURINARY;69-:OPTHALMIC;70-72:NERVOUS;73-75:ENDOCRINE;76-:OTHER ILL/DEFINED;77-:LYMPH;80-:UNKNOWN;",
+      "helpText": "This is the general anatomical system into which the topographical site falls. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REPORTING GROUP",
+      "dataType": "POINTER",
+      "rawType": "P164.14'",
+      "required": false,
+      "pointerTo": 164.14,
+      "helpText": "This is the reporting group under which the site falls. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TOT#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the total number of cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ANAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of analytic cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NON-ANALYTIC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of non-analytic cases for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "WHITE-MALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field accumulates the number of white male patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "WHITE-FEMALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of white female patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "BLACK-MALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of black male patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BLACK-FEMALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of black female patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "OTHER-MALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of other (non-white, non-black) male patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "OTHER-FEMALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of other (non-white, non-black) female patients for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "STAGE 0",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of Stage 0 cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STAGE I",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of Stage I cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "STAGE II",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of Stage II cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "STAGE III",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of Stage III cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "STAGE IV",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of Stage IV cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "UNSTAGED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of unstaged cases for the ONCOS ANNUAL- REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the year for the ONCOS ANNUAL-REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "N/A",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field accumulates the number of cases for which staging is not applicable for use in the ONCOS ANNUAL REGISTRY SUMMARY Report. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ICDO-1 SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "INTERNATIONAL CLASSIFICATION OF DIEASES FOR ONCOLOGY, FIELD TRIAL EDITION 1987. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "164.08", "field": .01, "type": "regular"},
+    {"name": "164.08", "field": .02, "type": "regular"},
+    {"name": "164.08", "field": 4, "type": "regular"},
+    {"name": "164.08", "field": 5, "type": "regular"},
+    {"name": "164.08", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

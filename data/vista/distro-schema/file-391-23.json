@@ -1,0 +1,72 @@
+{
+  "fileNumber": 391.23,
+  "fileName": "DG REGISTER ONCE FIELD DEFINITION",
+  "globalRoot": "391.23",
+  "globalReference": "^DGRO(391.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,5",
+      "length": 13,
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,6",
+      "length": 15,
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FIELD DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Disable Field",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDER INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field indexes the order that data must be loaded into the respective fields at the Querying Site.   Is of the format 1 Alpha character followed by an optional Numeric character. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "391.23", "field": .01, "type": "regular"},
+    {"name": "391.23", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

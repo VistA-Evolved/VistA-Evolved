@@ -1,0 +1,147 @@
+{
+  "fileNumber": 46.1,
+  "fileName": "INPATIENT POV",
+  "globalRoot": "46.1",
+  "globalReference": "^DGICD9(46.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "A diagnosis related to the inpatient stay. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TREATED FOR SC CONDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'Y' if this applicant is service connected and this diagnosis is  related to the service connection.  Otherwise enter 'N'.  This field can only be entered if the service connection information was entered in registration.  See field .301 in file 2. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TREATED FOR AO CONDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The Agent Orange questions must be answered yes in registration before this field can be entered.  Enter 'Y' is this diagnosis is related to Agent  Orange exposure.  See field .32102 in file 2. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TREATMENT FOR IR CONDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'Y' if the diagnosis is related to exposure to ionizing radiation. Enter 'N' if this diagnosis is unrelated to ionizing radiation. The ionizing radiation must be entered in registration before it can be entered here.  See field .32111 in file 2. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXPOSURE TO SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'Y' if the diagnosis is related to service in SW Asia. Enter 'N' if the diagnosis is unrelated to service in SW Asia. This information must be entered in Registration before it can be entered here.  See field .322013 in file 2. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TREATMENT FOR MST",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'Y' if the diagnosis is related to military sexual trauma.  Enter 'N' if the diagnosis is unrelated to military sexual trauma.  This information must be entered in registration first. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TREATMENT FOR HEAD/NECK CA",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter 'Y' if this diagnosis is related to head/neck cancer.  Enter 'N' if the diagnosis is unrelated to the patient's head/neck cancer. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COMBAT VET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicate if the inpatient stay at this location is related to military service in combat and not from cause other than military service in combat operations (congenital, developmental, pre-service existing conditions, or conditions having specific and well-established etiology that began after military combat service, i.e., bone fractures occuring after separation date, common colds, etc).  This information can only be entered if the patient has CV status in Registration. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TREATMENT FOR SHAD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Project 112/SHAD was the name of the overall program for both shipboard and land-based biological and chemical testing that was conducted by the United States (U.S.) military between 1962 and 1973. Project SHAD (Shipboard Hazard and Defense) was the shipboard portion of these tests. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PTF",
+      "dataType": "POINTER",
+      "rawType": "P45'",
+      "required": false,
+      "pointerTo": 45,
+      "helpText": "This connects the file to the PTF file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "SOURCE is a string of text (3-30 character) identifying the source of the data. Examples of  SOURCE are:  \"LAB  DATA\" or \"RADIOLOGY DATA\". ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who is responsible for add/edit/delete action on the encounter. Pointer to the New Person file (200). ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DELETE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "46.1", "field": .01, "type": "regular"},
+    {"name": "46.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

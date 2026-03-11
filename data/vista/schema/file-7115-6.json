@@ -1,0 +1,45 @@
+{
+  "fileNumber": 7115.6,
+  "fileName": "HDIS FILE/FIELD",
+  "globalRoot": "7115.6",
+  "globalReference": "^HDIS(7115.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE/FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The File/Field Name associated with a VistA File/Field combination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The File Number assigned to the file in VistA. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The Field Number assigned to the field in VistA. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7115.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 8970.1,
+  "fileName": "SAGG PROJECT",
+  "globalRoot": "8970.1",
+  "globalReference": "^KMPS(8970.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0I",
+      "length": 1,
+      "required": true,
+      "helpText": "Since the SAGG PROJECT file is identified uniquely with the site at which it is installed, this field will only accept one entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "XTMP GLOBAL LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the name of the Volume Set (for DSM only) where the temporary collection global (^XTMP) is located at this site.   If this is an Cache site, leave BLANK. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .025,
+      "fieldName": "XTMP GLOBAL UCI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the name of the UCI (for DSM only) where the temporary collection global (^XTMP) is located at this site.  If left BLANK, the collection software will default to the value of the first data piece in the ^%ZOSF(\"PROD\") global node.   If this is an Cache site, leave BLANK. ",
+      "fieldNumber_": .025
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VOLUME SET TO MONITOR",
+      "dataType": "SUBFILE",
+      "rawType": "8970.11",
+      "required": false,
+      "helpText": "This multiple field contains the Volume Sets (DSM) or Directories (Cache) that will be monitored by SAGG. ",
+      "isMultiple": true,
+      "subFileNumber": 8970.11,
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8970.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

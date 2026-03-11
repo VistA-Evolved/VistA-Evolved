@@ -1,0 +1,313 @@
+{
+  "fileNumber": 8925.99,
+  "fileName": "TIU PARAMETERS",
+  "globalRoot": "8925.99P",
+  "globalReference": "^TIU(8925.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Please enter the DIVISION these parameters apply to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENABLE ELECTRONIC SIGNATURE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "Electronic signature is enabled when this parameter is set to 1. Until such time as electronic signature is enabled, signatures are to be written on the chart copy of the TIU document, and provision must be made for TIU documents to be marked Signed on Chart. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHARACTERS PER LINE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This value (default 60) is divided into the total number of 'actual' characters in a given transcribed document to derive the line count for that document.  By 'actual' characters, we mean all printable ASCII characters, with multiple white space characters stripped. This prevents transcriptionists from \"stuffing\" line counts by adding white space. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "GRACE PERIOD FOR PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "OUT OF SERVICE.  Purging is disabled.   This is the number of days following transcription for which a document will be kept, prior to purge. Allowable range is from 90 to 7300 days (20 years).   NOTE: Progress Notes and their addenda are not subject to purge, regardless of this parameter. IF YOU WANT TO DISABLE PURGING ALTOGETHER, LEAVE THIS PARAMETER EMPTY (or delete any existing value). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "GRACE PERIOD FOR SIGNATURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of days following transcription before an author or Attending Physician is notified of a deficiency.  If no grace period is entered, clinicians are not notified of overdue signatures. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OPTIMIZE LIST BUILDING FOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:performance;S:security;",
+      "helpText": "This parameter determines whether or not TIU list building functions invoke business rules, excluding from the list any documents the user is not authorized to see.  Checking business rules in this way optimizes list building for security.  It may be costly in terms of performance.   When optimized for performance (the default behavior of TIU), business rules excluding notes from view are bypassed when building lists of documents.   NOTE: This applies only to lists: when an unauthorized user att",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SUPPRESS REVIEW NOTES PROMPT",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "Applies to Progress Notes only.  When this parameter is set to YES, TIU suppresses the prompt which asks if the user wishes to see available progress notes before entering a new note.  This parameter is overridden by the Personal Preference of same name.  If neither parameter is entered, the Review Notes prompt is NOT suppressed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DEFAULT PRIMARY PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE, DON'T PROMPT;1:DEFAULT, BY LOCATION;2:AUTHOR (IF PROVIDER);",
+      "helpText": "This parameter determines the behavior of the Primary Provider prompt for a standalone encounter.   If the parameter has no value, the prompt has no default. If the parameter has value 0, the user is not prompted for primary provider. If the parameter has value 1, the default for the Primary Provider prompt is the site's default provider for the given location.  If the parameter has value 2, the default is the author if the author is a provider; if the author is not a provider, the prompt has no",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ASCII UPLOAD SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:host file server;R:remote computer;",
+      "helpText": "Applies only when the ASCII upload protocol is used. This field specifies the source from which documents are uploaded. (H)ost indicates to the upload processor that the source of the data is an ASCII host file (VMS or DOS), while (R)emote indicates that the data is read from an ASCII stream coming to VISTA from a terminal emulator on a remote computer (for example, an IBM PC or compatible, or an Apple Macintosh). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RECORD HEADER SIGNAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text tag or signal used by the upload process to determine that a new document record header has been encountered.  It may be as simple as the three-character string \"MSH\" or as complex as \"HEADERBEGIN\". The signal \"@@@\", used by the Surgery Package option to transmit operative notes, is another possibility.   NOTE: Although you may define this parameter independently for each DIVISION, we recommend that you choose just one such signal per site. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "END OF MESSAGE SIGNAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Applies only to transfers made using the ASCII protocol.  This is the free text signal to the upload process that the entire file/stream has been transmitted without difficulty, and no more lines of data need to be read. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "BEGIN REPORT TEXT SIGNAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the signal to the upload processor that the fixed-field header for a given report record has been fully read, and that the body of the narrative report follows. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "MAJOR DELIMITER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This ASCII character separates the various pieces of fixed-field information in the message header. Please avoid using delimiters such as \",\", or \":\", which may be contained within the data itself, using instead less common symbols such as \"|\", \"\\\" or \"~\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "FUTURE APPOINTMENT RANGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This parameter determines how far in advance a future appointment may be selected when entering a document for outpatient care.   Allowable values range from 1 to 180 days, defaulting to 1 day. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PACE CHARACTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Applies only to transfers which use the ASCII protocol.   This is the ASCII value of the character which VistA sends to the remote computer to acknowledge receipt of the previous text line and to prompt the remote to transmit another line. You may choose any character with an ASCII value between 1 and 126.   If you are using the same remote to upload both MailMan messages and textual reports, then we recommend using the \">\" symbol, ASCII 62. Otherwise, we suggest using the ACK character (ASCII 6",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "UPLOAD HEADER FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:captioned;D:delimited string;",
+      "helpText": "This field determines whether the upload filer expects delimited string or captioned formats for the header of each document. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "UPLOAD PROTOCOL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:ASCII;k:KERMIT;",
+      "helpText": "This is the upload protocol used to transmit documents, with a for ASCII, or k for KERMIT. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "RUN UPLOAD FILER IN FOREGROUND",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This parameter specifies whether to run the filer for the upload process in the foreground or in the background (as a Task).   If no preference is specified, the filer runs in the BACKGROUND. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "ENABLE CHART COPY PROMPT",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "OUT OF SERVICE.  See TIU Document Parameter ALLOW CHART PRINT OUTSIDE MAS. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "ENABLE DICTATION CONTROL",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "A YES in this field will turn on dictation functionality introduced by  patch TIU*1*297.  A NO or lack of entry will turn off this dictation  functionality.   When dictation functionality is turned on and a progress note is started and the phrase \"TO BE DICTATED\" is entered in the very first line by an author who holds the TIUDCT security key, the entire note will be replaced with dictation instructions taken from the DICTATION INSTRUCTIONS Field (#6). ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "AMENDMENT SIGNATURE BLOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "OUT OF SERVICE.  The signer's normal signature block is used for amendments.   This parameter allows the site to specify the format of the signature block for an amendment.    While Business Rules determine who may amend documents, generally it is the user class CHIEF,MIS who may do so. If this user is not the site's Privacy Act officer, then it may be desirable to enter a statement indicating that the user is signing on behalf of the Privacy Act Officer.   For example, if the user's name is Joh",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "BLANK CHARACTER STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This string of characters is used by the transcriptionist to represent a \"blank\" when a word or phrase in the dictation cannot be understood for inclusion in the transcription. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "ENABLE NOTIFICATIONS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date indicates to TIU when to begin sending signature notifications (available/overdue for signature) to expected signers/cosigners. Notifications are sent beginning on this date, and only for documents entered on/after this date. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UPLOAD ERROR ALERT RECIPIENT",
+      "dataType": "POINTER",
+      "rawType": "8925.992P",
+      "required": false,
+      "helpText": "These persons receive alerts from the upload/filer process when a document cannot be filed/located or has missing fields.   This field is OVERRIDDEN by recipients set for the given document type in parameter FILING ERROR ALERT RECIPIENTS in the TIU DOCUMENT PARAMETERS file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "START OF ADD SGNR ALERT PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "This parameter determines how far back the nightly task will look  for overdue additional signatures.   If blank, defaults to 12M.   This parameter should be set to the same value as the LENGTH OF SIGNER ALERT PERIOD to avoid any potential gaps in resending alerts.   If this parameter is less than the LENGTH OF SIGNER ALERT PERIOD,  documents that fall between the date ranges will NOT have alerts sent as  OVERDUE.   Example:  LENGTH OF SIGNER ALERT PERIOD=12M           START OF ADD SGNR ALERT PE",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "END OF ADD SGNR ALERT PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the length in time from the current date that the TIU NIGHTLY  TASK will stop regenerating alerts for overdue additional signatures. The value must be in a FileMan date range format such as 6D, 3W or 4M.    If no value is entered, the TIU NIGHTLY TASK will search for documents in the TIU DOCUMENT File (8925) up to the current date. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "LENGTH OF SIGNER ALERT PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the length of time that the TIU NIGHTLY TASK will go back prior  to \"today\" when searching for documents that have overdue signatures.  The value must be in a FileMan date range format such as 6D, 3W or 4M.    If no value is entered, the TIU NIGHTLY TASK will begin searching for  documents starting at 1 year prior to \"today\" in the TIU DOCUMENTS file  (8925). ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "MINIMUM COPY WORDS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "This field defaults to 5 words if no value is set. As this determines  what is captured as copied text, this value can play a significant role in what is tracked. The smaller this number, the more copy actions will be captured. Each site will need to determine the appropriate level of capture which is ideal for their individual needs. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "COPY/PASTE VERIFY PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field defaults to 90% if no value is set. This field plays a significant part in determining when pasted text is identified as originating from a previously captured copy action.  The higher the percentage, the less likely pasted text will be identified as originating from copied text.  Each site will need to determine the appropriate level of percentage match which is ideal for their individual needs. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "COPY/PASTE USERCLASS",
+      "dataType": "POINTER",
+      "rawType": "8925.9901P",
+      "required": false,
+      "helpText": "This field is empty to begin. The copy/paste software will always provide the \"CHIEF, HIMS\", \"CHIEF, MIS\", and the \"PRIVACY ACT OFFICER\" userclasses as having the ability to view copy/paste highlighting in CPRS. If sites wish to provide another userclass these rights, then they should add an existing userclass to this entry. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DICTATION INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "8925.9902",
+      "required": false,
+      "helpText": "This field is only meaningful when the ENABLE DICTATION CONTROL (#.23)  field is set to YES.  This field should contain text instructions specific to this institution for dictating text into a patient's progress note.   Within this field you may reference local variables or expressions by  placing them between vertical bars.  For example, to reference the internal entry number of this document type |TIUDA|.   Local variables available are TIUDA, TIUL5, and TIUINST. TIUDA is the internal entry nu",
+      "isMultiple": true,
+      "subFileNumber": 8925.9902,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

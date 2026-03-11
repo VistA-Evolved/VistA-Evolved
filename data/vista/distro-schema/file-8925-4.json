@@ -1,0 +1,129 @@
+{
+  "fileNumber": 8925.4,
+  "fileName": "TIU UPLOAD LOG",
+  "globalRoot": "8925.4D",
+  "globalReference": "^TIU(8925.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time at which the filing event (i.e., success or failure) occurred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who invoked the upload process.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOCUMENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the document type (as found in the second piece of the header tag, (e.g., $HDR:   DISCHARGE SUMMARY), by which the filing event can be identified. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ERROR DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the freetext error message. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BUFFER FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "*P8925.2'",
+      "required": false,
+      "pointerTo": 8925.2,
+      "helpText": "  This is the record number in file #8925.2 (TIU UPLOAD BUFFER FILE) where the erroneous record(s) reside(s). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RESOLUTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RESOLVED;0:UNRESOLVED;",
+      "helpText": "  This set of codes indicates the resolution status of the error. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESOLUTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field indicates the date/time at which the error was resolved. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EVENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Success;1:Filing Error;2:Missing Field Error;",
+      "helpText": "This identifies whether the record was successfully filed, or whether an error occurred. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains the institution associated with the upload filing event. For TIU DOCUMENT file (#8925) entries, is extracted from the document's hospital location if known; otherwise it is extracted from  the user's log-on division. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HEADER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8925.41",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8925.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MISSING FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "8925.42",
+      "required": false,
+      "helpText": "This multiple is used to store errors where records are successfully filed with one or more missing fields. ",
+      "isMultiple": true,
+      "subFileNumber": 8925.42,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "8925.4", "field": .01, "type": "regular"},
+    {"name": "8925.4", "field": .06, "type": "regular"},
+    {"name": "8925.4", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

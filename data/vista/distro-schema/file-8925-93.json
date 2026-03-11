@@ -1,0 +1,67 @@
+{
+  "fileNumber": 8925.93,
+  "fileName": "TIU PRINT PARAMETERS",
+  "globalRoot": "8925.93",
+  "globalReference": "^TIU(8925.93,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the Hospital Location to which the parameters apply. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PROGRESS NOTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field should be set to 'YES' to enable batch printing of progress notes from the [TIU PRINT PN WARD] and [TIU PRINT PN OUPT LOC] options. These options are intended to be used by MAS personnel printing CHART copies. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "LAST PROGRESS NOTE PRINTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to track the last progress note printed for this location.  The option resets this field after each print.  If the field is null the option will prompt to select a date. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PROGRESS NOTES DEFAULT PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field is a pointer to the device file.  The default the site would like to have presented when batch using the TIU progress notes batch print options [TIU PRINT PN OUTPT LOC] and [TIU PRINT PN WARD]. The user may select another printer at the time to job is queued. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EXCLUDE FROM PN BATCH PRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If you answer yes to this prompt, progress notes for this location will not be included in the progress notes outpatient batch print job [TIU PRINT PN BATCH]. Do this if you want to print the CHART copies of the notes for this location in the clinic and not in the file room. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

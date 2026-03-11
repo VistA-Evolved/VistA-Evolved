@@ -1,0 +1,224 @@
+{
+  "fileNumber": 702,
+  "fileName": "CP TRANSACTION",
+  "globalRoot": "702",
+  "globalReference": "^MDD(702,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the Patient file (#2) for this transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "SSN (C)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the computed value of the patient's SSN from the Patient file (#2). ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .012,
+      "fieldName": "DOB (C)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This field contains the computed value of the patient's DOB from the Patient file (#2). ",
+      "fieldNumber_": .012
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date/time the transaction was created. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the DUZ of the user that created this transaction. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CP DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "RP702.01'",
+      "required": true,
+      "pointerTo": 702.01,
+      "helpText": "This field contains a pointer to the CP DEFINITION file (#702.01) indicating the procedure of the transaction. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CONSULT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an Consult number from Request/Consultation file (#123). This field represents the Consult order that is matched up to this transaction. (Reference IA #3162) ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TIU NOTE",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This field contains a pointer to the TIU DOCUMENT file (#8925) representing the note that contains the interpretation of this transaction as well as the links to the associated images.  (Reference IA #3376) ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VSTRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the vstring.  The vstring is in the following format: Visit type_\";\"_Visit Date/Time_\";\"_Hospital Location (internal entry number of the visit). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TRANSACTION MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short 80 characters text message of the transaction status update. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TRANSACTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:New;1:Submitted;2:Error;3:Complete;4:Ready to Complete;5:Pending Instrument Data;6:Cancelled;",
+      "helpText": "This field contains the status of this transaction. Available statuses  are listed below with a description of each.   0: New                                                                         This transaction has been created by an external application and needs to  be checked-in with the CPUser application and submitted to an instrument. An example of this status would be a consent form scanned in via the VistA Imaging Capture Workstation that creates a CP Study record  stub with a TIU do",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "ERROR MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "702.091",
+      "required": false,
+      "helpText": "This multiple contains the information on the error messages that Clinical Procedures receive from API calls with Consults, TIU, CPRS, and VistA Imaging. ",
+      "isMultiple": true,
+      "subFileNumber": 702.091,
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "IMAGE",
+      "dataType": "SUBFILE",
+      "rawType": "702.1",
+      "required": false,
+      "helpText": "This multiple contains the image attachment information for the transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 702.1,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SUBMITTED TO INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "P702.09'",
+      "required": false,
+      "pointerTo": 702.09,
+      "helpText": "Points to the instrument definition that this study was submitted to at the time of check-in. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "INSTRUMENT ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the unique order number for this study that is sent to the instrument if it is bi-directional so the results can be auto-matched back to this study by the CP Gateway. Field is 1-22 characters and contains only numeric characters. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010'I",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is the Visit entry returned from PCE. (Reference IA# 1902) ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "SCHEDULED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time when the HL7 message should be sent by CP to the device for this CP transaction. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "CONVERSION ID REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the Reference Conversion ID.  It is a variable pointer to the Medicine files.  It indicates which converted Medicine report record is associated with the CP Transaction study.  This field helps to keep track which CP Transaction study was created for the Medicine report conversion. This field is a variable pointer to the following files:                                                                    691   ECHO                                    691.1 CARDIAC CATHETERIZATION    ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .991,
+      "fieldName": "IMAGE COUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed field to return the total number of images associated with this transaction. ",
+      "fieldNumber_": .991
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "ACON", "field": },
+    {"name": "ACONV", "field": },
+    {"name": "ACP", "field": },
+    {"name": "AINST", "field": },
+    {"name": "AION", "field": },
+    {"name": "AS", "field": },
+    {"name": "ASD", "field": },
+    {"name": "ATIU", "field": },
+    {"name": "AUPNV", "field": },
+    {"name": "AVISIT", "field": },
+    {"name": "B", "field": },
+    {"name": "702", "field": .01, "type": "regular"},
+    {"name": "702", "field": .04, "type": "regular"},
+    {"name": "702", "field": .05, "type": "regular"},
+    {"name": "702", "field": .06, "type": "regular"},
+    {"name": "702", "field": .09, "type": "regular"},
+    {"name": "702", "field": .11, "type": "regular"},
+    {"name": "702", "field": .12, "type": "regular"},
+    {"name": "702", "field": .13, "type": "regular"},
+    {"name": "702", "field": .13, "type": "regular"},
+    {"name": "702", "field": .14, "type": "regular"},
+    {"name": "702", "field": .3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,2),5)"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MDS(702.01,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(702.01,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "fileNumber": 503338,
+  "fileName": "VOLUNTARY SERVICE SITE PARAMETER",
+  "globalRoot": "503338PI",
+  "globalReference": "^ABS(503338,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "  This field contains the name of the voluntary service site.  It is a pointer to the DHCP Institution file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIMARY STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field will be set to 'YES' when the station is the station which has the most volunteer activity.  Only one station may carry this indicator. It is only important if your station supports multiple voluntary service activities. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DAYS TO RETAIN TIME CARDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This field contains the number of days you wish time cards in file 503335 to be retained and protected from purging. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DAYS TO RETAIN DAILY RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This field contains the number of days you wish to retain daily record entries in file 503331 and protect them from purging. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MEAL PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "  This field contains the authorized meal price for volunteers who eat in the canteen. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REQUIRED HOURS FOR LUNCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This field contains the minimum number of hours of service a volunteer must work to be eligible for a meal at VA expense. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CUT OFF TIME FOR LUNCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This field contains the time, in 24 hour time (1:00 p.m. - 1300), after which the auto log-in program will not ask a volunteer if he/she is staying for lunch. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SCREEN SAVER NAME/INFO",
+      "dataType": "SUBFILE",
+      "rawType": "503338.07",
+      "required": false,
+      "helpText": "  This word processing field contains the banner you wish to have displayed on the screen saver portion of the auto log-in program. ",
+      "isMultiple": true,
+      "subFileNumber": 503338.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AUTHORIZED USER",
+      "dataType": "POINTER",
+      "rawType": "503338.08P",
+      "required": false,
+      "helpText": "  This multiple field contains a list of those users authorized access to the records for this specific voluntary service activity. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VOL STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This field contains the 3-4 character station number used by the Austin DPC to identify the specific voluntary activity. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REQUIRE ALTERNATE LANGUAGE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to YES when the station has a need to present the text of the auto-login program to the volunteers in a language other than English. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFAULT LANGUAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENGLISH;2:SPANISH;",
+      "helpText": "This field contains the language to be used as a default when presenting questions to volunteers during the auto-login process. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ALTERNATE LANGUAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENGLISH;2:SPANISH;",
+      "helpText": "This field contains the alternate language in use at the facility for volunteers, when required. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MEAL AUTHORIZATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MEAL LIST;1:MEAL TICKET;",
+      "helpText": "This field contains the meal authorization type in use at the facility for volunteer meals. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "VETERANS GAMES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to specify if a particular site is being used for the purpose of recording volunteer hours for a program of national veteran games. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MEALS ON SATURDAYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If \"YES\" the \"Are you staying for lunch\" question will be asked if appropriate. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MEALS ON SUNDAYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MEALS ON HOLIDAYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "AFFILIATED ORGANIZATIONS",
+      "dataType": "POINTER",
+      "rawType": "503338.018P",
+      "required": false,
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "503338", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "503338", "field": 1, "type": "regular"},
+    {"name": "503338", "field": 9, "type": "regular"},
+    {"name": "503338", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR, "value": "W \"  \",$P(^(0),\"^\",9)"}
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 19200.111,
+  "fileName": "VPE PERSON",
+  "globalRoot": "19200.111I",
+  "globalReference": "^XVV(19200.111,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INITIALS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VPE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": " The VPE ID number is used to identify who signed out  routines in the Routine Library package (..LBRY). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ROUTINE VERSIONING PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ID", "field": },
+    {"name": "19200.111", "field": .01, "type": "regular"},
+    {"name": "19200.111", "field": 2, "type": "regular"},
+    {"name": "19200.111", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": A1, "value": "W ?40,$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,397 @@
+{
+  "fileNumber": 213.9,
+  "fileName": "NURS PARAMETERS",
+  "globalRoot": "213.9",
+  "globalReference": "^DIC(213.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This field contains the word ONE, and can only contain this word.  Also, there can only be one entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CNO PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field denotes the device which is assigned to print all of the nursing exception reports.  This printer should be on at all times. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NURSING OFFLINE/ONLINE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:OFF-LINE;0:ON-LINE;",
+      "helpText": "This switch will allow the site manager to bring the Nursing application  off-line without bringing the entire system down. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NURSING NEW PERSON FILE ACCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACCESS TO NEW PERSON FILE;0:NO ACCESS TO NEW PERSON FILE;",
+      "helpText": "This field allows the Site Manager to turn on/off access to the NEW PERSON file from the Nursing Package. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NURS INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This switch is used by the NURSINIT's ONLY.  NO EDITING ALLOWED!!! ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "NURA INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This switch is used by the NURAINIT's ONLY.  NO EDITING ALLOWED!!! ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "NURQ INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This switch is used by the NURQINIT's ONLY.  NO EDITING ALLOWED!!! ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "NURC INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This switch is used by the NURCINIT's ONLY.  NO EDITING ALLOWED!!! ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "DATE AMIS JOB LAST RUN",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field will contain the last date that the Nursing Acuity/ Separation-Activation Run has run.  This is the Nursing Acuity/ Separation-Activation Run that calculates patient category totals. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "AMIS JOB COMPLETION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NOT COMPLETED;1:COMPLETED;",
+      "helpText": "Flag denoting whether or not the Nursing Acuity/Separation-Activation Run ran to completion. ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "AMIS WARD LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The ward that was last being processed by the Nursing Acuity/ Separation-Activation Run.  This number is the variable NWARD in the routine NURAAU0, and corresponds to an internal entry number in the NURS Location file. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "AMIS PATIENT LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The patient that was last being processed by the Nursing Acuity/ Separation-Activation Run.  This number is the variable DFN in the routine NURAAU0, and it corresponds to the internal entry number in the Patient file. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 6.8,
+      "fieldName": "EVENING ACUITY COMPLETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT COMPLETED;1:COMPLETED;",
+      "helpText": "Flag denoting whether or not the midnight batch job ran to completion. being processed by the midnight acuity batch job. ",
+      "fieldNumber_": 6.8
+    },
+    {
+      "fieldNumber": 6.9,
+      "fieldName": "EVENING WARD LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The ward that was last being processed for midnights by the Nursing Acuity/ Separation-Activation Run.  This number is the variable NWARD in the routine NURAMU0, and corresponds to an internal entry number in the NURS Location file. ",
+      "fieldNumber_": 6.9
+    },
+    {
+      "fieldNumber": 6.91,
+      "fieldName": "EVENING PT LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The patient that was last being processed for midnights by the Nursing Acuity/Separation-Activation Run.  This number is the variable DFN in the routine NURAMU0, and it corresponds to the internal entry number in the Patient file. ",
+      "fieldNumber_": 6.91
+    },
+    {
+      "fieldNumber": 6.92,
+      "fieldName": "SEP/ACT JOB COMPLETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT COMPLETED;1:COMPLETED;",
+      "helpText": "This field indicates whether or not the Nursing Acuity/Separation- Activation Run has been completed. ",
+      "fieldNumber_": 6.92
+    },
+    {
+      "fieldNumber": 6.93,
+      "fieldName": "NIGHT ACUITY COMPLETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT COMPLETED;1:COMPLETED;",
+      "helpText": "Flag denoting whether or not the the Nursing Acuity/Separation-Activation Run ran to completion. ",
+      "fieldNumber_": 6.93
+    },
+    {
+      "fieldNumber": 6.94,
+      "fieldName": "NIGHT WARD LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The ward that was last being processed by the Nursing Acuity/Separation- Activation Run.  This number is the variable NWARD in the routine NURAMB1, and corresponds to an internal entry number in the NURS Location File. ",
+      "fieldNumber_": 6.94
+    },
+    {
+      "fieldNumber": 6.95,
+      "fieldName": "NIGHT PATIENT LAST PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The patient that was last being processed by the Nursing Acuity/Separation- Activation Run.  This number is the variable DFN in the routine NURAMB1, and it corresponds to the internal entry number in the patient file. ",
+      "fieldNumber_": 6.95
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "DAY SHIFT ACUITY TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The time that the acuity totals will be calculated for the day shift for the current workload statistics report. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "EVENING SHIFT ACUITY TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The time that the acuity totals will be calculated for the evening shift for the current workload statistics report. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "NIGHT SHIFT ACUITY TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The time that the acuity totals will be calculated for the night shift for the AMIS and current workload statistics report. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PROFESSIONAL PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field defaults the percentage of professional personnel assigned to a unit if the professional percentage field is not defined in the NURS Location file.  This data is used in the calculation of unit workload statistics. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "*MANHOURS BATCH JOB STATUS",
+      "dataType": "DATE",
+      "rawType": "213.9003DA",
+      "required": false,
+      "helpText": "This field contains the status of the Nursing Acuity/Separation-Activation Run for a specific date. ",
+      "isMultiple": true,
+      "subFileNumber": 213.9003,
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*NURS VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field indicates the version of the Nursing Service General Module (NURS) software. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "*NURA VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "The field indicates the version of the Nursing Administration (NURA)  Package. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "*NURE VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field indicates the version of the Nursing Education (NURE) Package. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "*NURC VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field indicates the version of the Nursing Clinical (NURC) Package. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PATIENT PLAN OF CARE HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The data in this field will allow the site to change the title of the report generated by the Patient Plan of Care, Print (NURCPP-CARE) option. (NURCPP-CARE) option.  For example, the title, Nursing Care Plan, can be renamed to Patient Care Plan. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "PATIENT PROBLEM HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The data in this field allows the site to change the header, Patient Problem, for the report generated by the Patient Plan of Care, Print (NURCPP-CARE) option.  If this field has no data, the Patient Problem heading will still print. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "GOALS/EXPECTED OUTCOMES HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The data in this field allows the site to change the Goals/Expected Outcomes heading on the report generated by the Patient Plan of Care, Print (NURCPP-CARE) option.  If this field has no data then the heading Goals/ Expected Outcomes will be used. will be used. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "INTERVENTIONS/ORDERS HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The data in this field allows the site to change the Nursing Interventions/ Orders heading of the report generated by the Patient Plan of Care, Print (NURCPP-CARE) option.  If this field has no data, then the Nursing Interventions/Orders heading will be used. Interventions/Orders heading will be used. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "DEFAULT EVALUATION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The data in this field represents the default evaluation date displayed in the Patient Plan of Care, Edit (NURCPE-CARE) option when an evaluation date for a problem is edited. edited. ",
+      "fieldNumber_": 10.4
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "DEFAULT TARGET DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The data in this field represents the default target date displayed in the Patient Plan of Care, Edit (NURCPE-CARE) option. (NURCPE-CARE) option when an target date for a goal is edited. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 10.6,
+      "fieldName": "PRINT ATT NUMS ON EOS RPT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag will control whether or not the attending physician numbers  will print on the Nursing End of Shift Report. ",
+      "fieldNumber_": 10.6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRODUCT LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether or not FTEE data in the NURS Position Control file (#211.8) is associated with multiple services/product lines. 'YES' indicates that an FTEE can be associated with one of multiple services or product lines. 'NO' indicates that all FTEE is associated with Nursing Service. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MULTI-DIVISIONAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether or not the facilty is multi-divisional. YES indicates that each nursing location may be associated with a separate and different division/institution.  NO indicates that all locations are associated with a single institution. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "*AUTOMATED MAR BATCH ZTSK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the ZTSK number of the Automated MAR Pharmacy Extract Batch Job. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "ACUITY TASK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain a number if the patient acuity job is currently being calculated. If the NURAAM-ACU (tasked) option is running the number will be the task number. If the NURAAM-ACUMAN (manual) option is running the number will be '1'. ",
+      "fieldNumber_": 56
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "213.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

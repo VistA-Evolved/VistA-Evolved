@@ -1,0 +1,73 @@
+{
+  "fileNumber": 790.8,
+  "fileName": "WV DATA NEEDING REVIEW",
+  "globalRoot": "790.8",
+  "globalReference": "^WV(790.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP790'",
+      "required": true,
+      "pointerTo": 790,
+      "helpText": "This field stores which patient has pregnancy or lactation status data that the case manager or maternity care coordinator needs to review. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "*P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field points to the visit that is associated with the pregnancy  or lactation status data needing review. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIU DOCUMENT",
+      "dataType": "POINTER",
+      "rawType": "*P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This field points to the document that is associated with the  pregnancy or lactation status data needing review. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOCATION OF DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "4:PREGNANCY STATUSES;5:LACTATION STATUSES;",
+      "helpText": "This field stores the node in the WV PATIENT file (#790) that contains  the data needing review. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTIVITIES",
+      "dataType": "DATE",
+      "rawType": "790.801DI",
+      "required": false,
+      "helpText": "This field stores all of the activities associated with the patient and  visit. ",
+      "isMultiple": true,
+      "subFileNumber": 790.801,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AVSIT", "field": },
+    {"name": "B", "field": },
+    {"name": "790.8", "field": .01, "type": "regular"},
+    {"name": "790.8", "field": 2, "type": "regular"},
+    {"name": "790.8", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(790.8,4,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 603.01,
+  "fileName": "CLOZAPINE PATIENT LIST",
+  "globalRoot": "603.01",
+  "globalReference": "^YSCL(603.01,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLOZAPINE REGISTRATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ7",
+      "length": 7,
+      "required": true,
+      "helpText": "The Clozapine registration number is assigned by the manufacturer.  It is  maintained and authorized by the NCCC in Dallas. Refer all questions  regarding this number to the NCCC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLOZAPINE PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the Patient (#2) file.  The patient must be  authorized by the NCCC in Dallas before treatment is started. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPENSE FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WEEKLY;B:BI-WEEKLY;M:MONTHLY;",
+      "helpText": "This field indicates whether a patient is authorized for a weekly or biweekly Clozapine dosage. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OVERRIDE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the specific date when an override will be allowed for this patient.  This date should only be manipulated by the NCCC. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "603.01", "field": .01, "type": "regular"},
+    {"name": "603.01", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

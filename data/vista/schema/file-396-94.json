@@ -1,0 +1,57 @@
+{
+  "fileNumber": 396.94,
+  "fileName": "2507 INSUFFICIENT REASONS",
+  "globalRoot": "396.94",
+  "globalReference": "^DVB(396.94,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSUFFICIENT REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the text of the reason that the 2507 exam was insufficient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSUFFICIENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used when transferring insufficient exams.  It is included to allow the implementation of access of insufficient reasons by an associated code.   Because this code is used by the AMIE 2507 transfer processing, it should not be modified. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSUFFICIENT REASON (REPORT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains an abridged version of the Insufficient Reason. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field denotes if the INSUFFICIENT REASON is inactive. The valid  values for this field is from a set of code. Y for Yes, denoting the  INSUFFICIENT REASON is inactive. N for No, denoting the field is active. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "396.94", "field": .01, "type": "regular"},
+    {"name": "396.94", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

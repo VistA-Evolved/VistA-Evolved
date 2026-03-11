@@ -1,0 +1,47 @@
+{
+  "fileNumber": 26.21,
+  "fileName": "PRF HL7 EVENT",
+  "globalRoot": "26.21",
+  "globalReference": "^DGPF(26.21,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient associated with a Patient Record Flags  query trigger. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INITIAL TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date and time when the PRF event trigger fired. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:COMPLETE;I:INCOMPLETE;E:ERROR;",
+      "helpText": "This field contains the current status of the Patient Record Flags HL7  query process.  An INCOMPLETE status indicates that the HL7 query has  either not been transmitted or that the query was NAK'ed by all receiving sites.  A COMPLETE status indicates that the HL7 query has run successfully to at least one of the patient's treating facilities or that the local facility is the patient's only treating facility.  An ERROR status  indicates that the maximum number of HL7 query attempts has been rea",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

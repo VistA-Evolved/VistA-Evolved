@@ -1,0 +1,41 @@
+{
+  "fileNumber": 409.31,
+  "fileName": "SD WL SERVICE/SPECIALTY",
+  "globalRoot": "409.31",
+  "globalReference": "^SDWL(409.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVICE/SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "RP40.7I",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "Enter DSS ID that are approved to be used by the Wait List(Sch/PCMM) application.  Only active DSS IDs in the Clinic Stop file can be added. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "409.311P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "409.31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

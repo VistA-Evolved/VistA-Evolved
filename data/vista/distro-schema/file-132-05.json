@@ -1,0 +1,37 @@
+{
+  "fileNumber": 132.05,
+  "fileName": "RESTRAINTS AND POSITIONAL AIDS",
+  "globalRoot": "132.05",
+  "globalReference": "^SRO(132.05,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This is the name of the restraint or positioning aid.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES\" to inactivate this file entry and to prevent it selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "132.05", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

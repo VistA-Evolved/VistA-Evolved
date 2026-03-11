@@ -1,0 +1,39 @@
+{
+  "fileNumber": 126.56,
+  "fileName": "GMRY INPUT TYPE",
+  "globalRoot": "126.56I",
+  "globalReference": "^GMRD(126.56,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the names of major input/intake types, e.g., PO(by  mouth), TUBE FEEDING and OTHER. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field holds the listing order for the patient intake/output reports. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "126.56", "field": .01, "type": "regular"},
+    {"name": "126.56", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE1, "value": "D EN^DDIOL($P(^(0),U,2),\"\",\"?$X+3\")"}
+  ]
+}

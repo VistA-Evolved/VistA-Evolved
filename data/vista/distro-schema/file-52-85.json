@@ -1,0 +1,97 @@
+{
+  "fileNumber": 52.85,
+  "fileName": "EPHARMACY MEDICATION PROFILE PREFERENCES",
+  "globalRoot": "52.85",
+  "globalReference": "^PS(52.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "This is the Pharmacy Division for which the division-specific Medication Profile preferences refer to.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXP/CANCEL CUTOFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the default cutoff number of days for a expired or discontinued prescription to be displayed in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division. The number of days count from the date the prescription was either expired or discontinued.   Note: This parameter can be overridden by user specific preferences. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SORT BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RX:RX NUMBER;DR:DRUG NAME;ID:ISSUE DATE;LF:LAST FILL;",
+      "helpText": "This is the default 'SORT BY' column in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division.   Note: This parameter can be overridden by user specific preferences.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SORT ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ASCENDING;D:DESCENDING;",
+      "helpText": "This is the default sorting order (Ascending or Descending) column in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division.     Note: This parameter can be overridden by user specific preferences.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISPLAY SIG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This is the default value (ON/OFF) that determine whether the SIG will be displayed or not in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division. When 'ON', the SIG is displayed in the line right below its respective prescription.      Note: This parameter can be overridden by user specific preferences.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GROUP BY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This is the default value (YES/NO) that determine whether the list of prescription should be group by status (Active, Discontinued, Hold, etc.) or not in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division. When this parameter is set to 'NO', all the regular prescriptions (excludes: Non-VA Meds, Pending Orders and REFILL TOO SOON/DUR prescriptions) are listed under the 'CURRENT ORDERS' group.                                 ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DISPLAY ORDER COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This is the default value (YES/NO) that determine whether the count of prescriptions listed under a group (Active, Non-VA Meds, Pending Orders, etc.) should be displayed in the header of that group in the ePharmacy Medication Profile for the users logged into the Outpatient Pharmacy application under this Pharmacy Division.                                     Note: This parameter can be overridden by user specific preferences.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "52.8551P",
+      "required": false,
+      "helpText": "This sub-file contains users and their specific preferences for the ePharmacy Medication Profile. The user-specific preferences in this sub-file override the division's as well as the 'Factory Default' preferences.   ",
+      "fieldNumber_": 51
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

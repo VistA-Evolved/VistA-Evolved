@@ -1,0 +1,335 @@
+{
+  "fileNumber": 52.47,
+  "fileName": "ERX EXTERNAL PHARMACY",
+  "globalRoot": "52.47",
+  "globalReference": "^PS(52.47,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ70",
+      "length": 70,
+      "required": true,
+      "helpText": "This is the name of the eRx external pharmacy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NCPDP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the NCPDP identifier for this pharmacy. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the NPI for the external pharmacy. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The DEA Number for the external pharmacy. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STORE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the name of the pharmacy/store, such as CSV, WALGREENS, etc. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Address line 1 for the external pharmacy/store. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "Address line 2 for the external pharmacy/store. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city associated with the external pharmacy/store. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "STATE/PROVINCE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state/province in which the external pharmacy/store resides. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "POSTAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "The postal code for the pharmacy/store. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "VA:VA FACILITY;EF:EXTERNAL FACILITY;EP:EXTERNAL PHARMACY;OP:OTHER FACILITY;",
+      "helpText": "This is the type of the pharmacy/store. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the country code for this pharmacy/store. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the pharmacy specialty for the incoming eRx Pharmacy. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IDENTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.472A",
+      "required": false,
+      "helpText": "This sub-file holds the identification elements passed in with the  incoming eRx. ",
+      "isMultiple": true,
+      "subFileNumber": 52.472,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.473A",
+      "required": false,
+      "helpText": "This sub-file holds the communication values and types for an eRx  external pharmacy. ",
+      "isMultiple": true,
+      "subFileNumber": 52.473,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASSOCIATED ERX PERSON",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "This holds the person(s) associated with the eRx external pharmacy. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "FORMER LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former last name associated with the eRx external pharmacy. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "FORMER FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former first name associated with the eRx external pharmacy. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "FORMER MIDDLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the former middle name associated with the eRx external pharmacy. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "FORMER SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the former suffix associated with the eRx external pharmacy. ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "FORMER PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the former prefix associated with the eRx external pharmacy. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "2017 COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.477",
+      "required": false,
+      "helpText": "This subfile contains the communication information associated with the  eRx external pharmacy. This subfile was created to support the 2017  script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.477,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "2017 DIRECT ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ254",
+      "length": 254,
+      "required": false,
+      "helpText": "This is the direct address associated with the incoming communication. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "2017 STATE LICENSE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the state license number for the eRx pharmacy. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "2017 MEDICARE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Medicare Number of the pharmacy. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "2017 MEDICAID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Medicaid Number for the eRx pharmacy. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 9.4,
+      "fieldName": "2017 UPIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the UPIN number associated with the eRx pharmacy. ",
+      "fieldNumber_": 9.4
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "2017 HIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the HIN number associated with the eRx Pharmacy. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 9.6,
+      "fieldName": "2017 MUTUALLY DEFINED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the mutually defined identification value for the eRx pharamcy. ",
+      "fieldNumber_": 9.6
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "2017 NCPDP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This the 2017071 NCPDP ID for the eRx Pharmacy. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "2017 NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the 2017071 script standard NPI for the eRx pharmacy. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "2017 DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the 2017071 script standard DEA Number for the eRx Pharmacy. ",
+      "fieldNumber_": 10.3
+    }
+  ],
+  "fieldCount": 32,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

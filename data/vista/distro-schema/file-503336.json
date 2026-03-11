@@ -1,0 +1,207 @@
+{
+  "fileNumber": 503336,
+  "fileName": "OCCASIONAL VOLUNTEER TIME SHEET",
+  "globalRoot": "503336I",
+  "globalReference": "^ABS(503336,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "  This field contains the unique identification number assigned to this time sheet. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the transaction type assigned to this time sheet.  It will always be '07'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the 3-4 character station number used by the Austin DPC to identify the specific voluntary activity. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "NAME OR ORGANIZATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field will contain the free text name of the individual or organization being represented on the time sheet. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORGANIZATION CODE",
+      "dataType": "POINTER",
+      "rawType": "*P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "helpText": "  This field contains the specific organization being represented on the time sheet. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "ORGANIZATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SERVICE ASSIGNMENT",
+      "dataType": "POINTER",
+      "rawType": "P503332'",
+      "required": false,
+      "pointerTo": 503332,
+      "helpText": "  This field contains the name of the Medical Center Service for which the volunteers worked. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NUMBER IN GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This field contains the number of volunteers in the specific group represented on this time sheet. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TOTAL HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This field contains the total number of hours provided by all the members of the group. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "  This field contains the date the work was provided. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SUSPENDED;1:READY FOR TRANSMISSION;2:ERROR - NOT TRANSMITTED;3:TRANSMITTED;4:RETRANSMITTED;",
+      "helpText": "  This field contains the transmission status of this particular time sheet. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the full date, in FileManager format, that the time sheet was transmitted to the Austin DPC. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DELAY TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field will contain a 'yes' when the users wish to delay the transmission of this time sheet to the Austin DPC. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This field contains the name of the user who transmitted the time sheet to the Austin DPC. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE RETRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the full date, in FileManager format, that the time sheet was re-transmitted to the Austin DPC. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RETRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This field contains the name of the user who re-transmitted the time sheet to the Austin DPC. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TIME CARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the data string for this time sheet in the format necessary to be transmitted to the Austin DPC. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TRANSMISSION MONTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the Month/Year that the time sheet was last transmitted to the Austin DPC. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "503336", "field": .01, "type": "regular"},
+    {"name": "503336", "field": 2.5, "type": "regular"},
+    {"name": "503336", "field": 3, "type": "regular"},
+    {"name": "503336", "field": 7, "type": "regular"},
+    {"name": "503336", "field": 7, "type": "regular"},
+    {"name": "503336", "field": 8, "type": "regular"},
+    {"name": "503336", "field": 8.5, "type": "regular"},
+    {"name": "503336", "field": 11, "type": "regular"},
+    {"name": "503336", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2.5, "value": "W \"   \",$P(^(0),U,14)"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ABS(503334,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(503334,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 7, "value": "W \"   \",$E($P(^(0),U,8),4,5)_\"-\"_$E($P(^(0),U,8),6,7)_\"-\"_$E($P(^(0),U,8),2,3)"}
+  ]
+}

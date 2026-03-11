@@ -1,0 +1,36 @@
+{
+  "fileNumber": 451.6,
+  "fileName": "REASON FOR OVERTIME",
+  "globalRoot": "451.6",
+  "globalReference": "^PRSN(451.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OVERTIME CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Overtime Code is a 2 letter code that reflects a nurse's  reason for working overtime.  For instance, the code EW stands for  Extreme Weather. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OVERTIME DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Overtime Description is the explanatory text of the Overtime Code. Each Overtime Description is designated by a 2 character code. For  example Extreme Weather is EW, Unpredicted Patient Care is UP, etc. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "451.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

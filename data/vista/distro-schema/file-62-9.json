@@ -1,0 +1,201 @@
+{
+  "fileNumber": 62.9,
+  "fileName": "LAB SHIPPING CONFIGURATION",
+  "globalRoot": "62.9",
+  "globalReference": "^LAHM(62.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to give a name to a pair of facilities that have entered into a relationship in which the collecting facility sends the host facility laboratory specimens for clinical testing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COLLECTING FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is used to designate the collecting facility that is part of a shipping configuration. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HOST FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is used to designate the host facility that is part of a shipping configuration. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "HOST FACILITY'S SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The name of the institution which houses the computer system of the host which will be receiving the order. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This field is used to designate whether this shipping configuration is \"active\", i.e. selectable by the user for use in building, processing and receipting shipments of laboratory test. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COLLECTING FACILITY'S SPEC ID",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:COLLECTING FACILITY;1:HOST FACILITY;3:SAME SYSTEM;",
+      "helpText": "This field is used to determine the source of the specimen id (Lab UID)  used to identify a specimen. It is used by the Host facility when accessioning tests requests from Collecting facilities to determine  if the Host facility needs to generate a new specimen id/label or use the specimen id/label from the Collecting facility.   If both the Collecting and Host facilities on operating on the same computer system then select #3 - SAME SYSTEM. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COLLECTING FACILITY'S SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The name of the institution which houses the computer system from which the sender transmitted/sent the order. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LAB MESSAGING LINK",
+      "dataType": "POINTER",
+      "rawType": "P62.48'",
+      "required": false,
+      "pointerTo": 62.48,
+      "helpText": "This field is used to link a shipping configuration with an electronic transmission of shipping manifests. When a shipping manifest is shipped, this field is checked to determine if the software should transmit the orders on the manifest to the host facility. It identifies the entry in the LA7 MESSAGE PARAMETER file #62.8 to use for building and transmitting the manifest. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SHIPPING METHOD",
+      "dataType": "POINTER",
+      "rawType": "P62.92'",
+      "required": false,
+      "pointerTo": 62.92,
+      "helpText": "This field is used to designate the method of shipment used by a shipping configuration. Examples could be courier, taxi, commercial carrier, etc. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "BARCODE MANIFEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:YES-COMPACT;",
+      "helpText": "This field determines if site/patient/specimen information is barcoded on the shipping manifest when it has a status of \"shipped\".   There are two styles of bar codes. The regular style (code=\"YES\"), which was released with the original version of Laboratory Electronic Data Interchange (LEDI), produces a long bar code. If the receiving site, which is reading these type of bar codes, has problems then switch to the compact style (code=\"YES-COMPACT\"). This will produce a shorter bar code. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "MANIFEST RECEIPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Allows site to have a receipt printed with a shipping manifest when the status of the manifest is \"SHIPPED\". This receipt can be used to record acknowledgment of receipt of the shipment by the courier service used to transport the specimens to the host facility. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "OTHER SYSTEM IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this entry is used to communicate with a non-VA, non-DoD system, enter the 2-3 alpha character identifier used to uniquely identify this system.   This identifier is used in constructing the HL7 application name and facility and resolving identification of institutions during HL7 message building and processing.   This field is not used when VistA is communicating with a VA or DoD facility. These facilities are identified by their VA station number or DoD DMIS ID respectively. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the system that you are shipping to requires an account number for billing or other purposes enter the number here. It will be printed on shipping manifests and transmitted in electronic messages if applicable. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "INCLUDE UNCOLLECTED SPECIMENS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If specimens that are still pending receipt in lab are to build on a shipping manifest then answer \"YES\". If only specimens that have been received in the lab, i.e. have a lab arrival time, are to build then answer \"NO\".   If field is blank then default is \"NO\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TEST CODING SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NLT;1:NON-VA;2:LOINC;",
+      "helpText": "If orders are being sent to a non-VA facility and the facility can not accept VA test order codes then answer with the type of coding system. \"NON-VA\" indicates that the other system is using a local coding system. The laboratory shipping software will then use the non-VA test codes entered for each test on this configuration.   If the non-VA facility can accept VA test codes then answer \"NLT\" and the software will sent VA test order codes.   VA test order codes are usually NLT codes but in the ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "SPECIMEN CODING SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:HL7 TABLE 0070;1:LOCAL-NON HL7;",
+      "helpText": "Collecting facility: If orders are sent to a non-VA facility and the facility can not receive HL7 specimen codes from HL7 table 0070 then answer with the type of coding system \"LOCAL\".  Host facility: If orders are received from a non-VA facility and the facility can not transmit HL7 specimen codes from HL7 table 0070 then answer with the type of coding system \"LOCAL\". ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "ORDERING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "62.9003P",
+      "required": false,
+      "helpText": "Use this field to specify specific ordering locations used by this configuration. Only those ordering locations defined will attempt to build to a manifest related to this configuration.   This field is useful when an accession area is shared by a division that has multiple physical locations which ship independently of each other. It allows specimens from selected locations to build to a manifest and avoid adding specimens from other locations that match on other criteria - accession area, divi",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "TEST/PROFILE",
+      "dataType": "POINTER",
+      "rawType": "62.9001P",
+      "required": false,
+      "helpText": "This multiple is used to define the tests and criteria that is used to determine which tests/specimens are built on a shipping manifest used by this configuration.   If you need to have the same test in more than once to support different specimen/urgency criteria then enter the test name enclosed in \"\" to add the same test. ",
+      "fieldNumber_": 60
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "62.9", "field": .01, "type": "regular"},
+    {"name": "62.9", "field": .02, "type": "regular"},
+    {"name": "62.9", "field": .031, "type": "regular"},
+    {"name": "62.9", "field": .06, "type": "regular"},
+    {"name": "62.9", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

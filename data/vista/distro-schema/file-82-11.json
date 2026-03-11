@@ -1,0 +1,43 @@
+{
+  "fileNumber": 82.11,
+  "fileName": "DRG PROCEDURE CODE COMBINATIONS",
+  "globalRoot": "82.11",
+  "globalReference": "^ICDIDP(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IDENTIFIER CODE",
+      "dataType": "POINTER",
+      "rawType": "RP82.1'",
+      "required": true,
+      "pointerTo": 82.1,
+      "helpText": "This is a code which is used in DRG Grouper processing. It specifies a particular patient condition which further explains a diagnosis. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BLOCK",
+      "dataType": "SUBFILE",
+      "rawType": "82.111A",
+      "required": false,
+      "helpText": "This multiple contains blocks of specific combinations of procedures  (located in the \"ONE OF\" and the \"WITH ONE OF n\" multiples), which when  found to occur together for a patient, confirm that the patient has the  specific patient case identified in the IDENTIFIER CODE (#.01) field. It  also supplies the DRGs (located in the \"MDC\" multiple) associated with  patient case.   Patient cases are divided in such a way that any one BLOCK has to be  satisfied. For a BLOCK to be satisfied, at least one",
+      "isMultiple": true,
+      "subFileNumber": 82.111,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "WITH1", "field": },
+    {"name": "WITH2", "field": },
+    {"name": "WITH3", "field": },
+    {"name": "WITH4", "field": },
+    {"name": "82.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

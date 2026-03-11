@@ -1,0 +1,302 @@
+{
+  "fileNumber": 457.1,
+  "fileName": "TOUR OF DUTY",
+  "globalRoot": "457.1IO",
+  "globalReference": "^PRST(457.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "A sequential number that identifies the tour of duty. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TOUR HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A character string that identifies the start and stop times for all segments of the tour of duty. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A description of the tour of duty. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEAL TIME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "The length of the meal time in fifteen minute increments. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSOCIATED T&L UNIT",
+      "dataType": "POINTER",
+      "rawType": "457.13P",
+      "required": false,
+      "helpText": "The time and leave unit this tour of duty is associated with. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AVAILABLE TO ALL T&L'S?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the tour of duty is available to all time and leave units. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TWO-DAY TOUR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates the tour of duty spans two calendar days. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REGULAR HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "The number of regular pay work hours in this tour of duty. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PREMIUM MEAL TIME?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the meal time is subject to premium pay. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "START TIME-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the first segment of the tour of duty. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STOP TIME-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the first segment of the tour of duty. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SPECIAL CODE-1",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the first segment of the tour of duty. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "START TIME-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the second segment of the tour of duty. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STOP TIME-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the second segment of the tour of duty. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SPECIAL CODE-2",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the second segment of the tour of duty. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "START TIME-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the third segment of the tour of duty. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "STOP TIME-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the third segment of the tour of duty. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SPECIAL CODE-3",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the third segment of the tour of duty. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "START TIME-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the fourth segment of the tour of duty. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "STOP TIME-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the fourth segment of the tour of duty. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SPECIAL CODE-4",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the fourth segment of the tour of duty. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "START TIME-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the fifth segment of the tour of duty. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "STOP TIME-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the fifth segment of the tour of duty. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SPECIAL CODE-5",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with fifth segment of the tour of duty. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "START TIME-6",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the sixth segment of the tour of duty. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "STOP TIME-6",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the sixth segment of the tour of duty. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "SPECIAL CODE-6",
+      "dataType": "POINTER",
+      "rawType": "P457.2'",
+      "required": false,
+      "pointerTo": 457.2,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the sixth segment of the tour of duty. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "START TIME-7",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The start time for the seventh segment of the tour of duty. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "STOP TIME-7",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The stop time for the seventh segment of the tour of duty. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SPECIAL CODE-7",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "A pointer to the SPECIAL TOUR INDICATOR file (#457.2) which identifies the type of special (non-regular) hours associated with the seventh segment of the tour of duty. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "457.1", "field": .01, "type": "regular"},
+    {"name": "457.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W \"   Meal: \",$P(^(0),\"^\",3)"}
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "fileNumber": 228,
+  "fileName": "DENTAL CPT CODE MAPPING",
+  "globalRoot": "228PI",
+  "globalReference": "^DENT(228,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ADA CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P81'X",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "This is a subset of the CPT codes that are used by dental service.  An entry in this file is mapped to the DAS file (#221) by the other fields in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the ADA/CPT code was inactivated.   Inactive codes will not be returned in the RPC calls to the gui for  selection by the dental users.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CTV",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is for documentation purposes.  1 CTV = 10 VA-DSS RVUs  (Relative Value Unit).  The value of this field will give the site  guidance on the amount of credit will be given for that procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FIELD FROM FILE 221",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is the link to the dental activity file (221).  This CPT code must be associated with a corresponding data element in file 221.  You enter the field number from file 221.  The input transform will ensure that the data element exists. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATA FOR FILE 221",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This stores the value that will be placed into the corresponding field in file 221.  The input tranform on this field will verify that the value you enter is compatible with the data dictionary definition as defined in the corresponding field in file 221.  To enter data into this field, you must have a value in field 3 (FIELD FROM FILE 221). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUBCATEGORY-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VistA CPT file has field 3 CPT Category which is a pointer to file 81.1.  File 81.1 has only one entry for Dental, called DENTAL PROCEDURE. This field has been added as finer categorization of the cpt procedure. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SUBCATEGORY-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VistA CPT file has field 3 CPT Category which is a pointer to file 81.1.  File 81.1 has only one entry for Dental, called DENTAL PROCEDURE. This field has been added as finer categorization of the cpt procedure. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "QUAD RELATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "If this cpt procedure is related to a quadrant instead of being individually toothed-based, then enter YES. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NUM SURFACES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the number of surfaces per tooth associated with this CPT code. This is needed for the DSS CPRS-Dental gui to provide proper screening of data input. The data must be in the format of number from 1-6, with an optional +sign This would be the case where the CPT code indicated x or more surfaces. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TOOTH RELATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "This field is needed to pass to DSS Dental gui.  It will tell the Delphi program whether or not the CPT code is tooth specific or not.  For example, the cpt codes for teeth cleaning would not be related to a specific tooth. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DEFAULT #CANALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is for use with the DSS gui program for filing data to the Dental Activity System.  A value should be entered here only if the procedure involves a tooth's root canal.  If so, then enter a default number of canals for this procedure. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DAS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is used as a flag to send to the DSS GUI program.  When a provider picks  a CPT procedure, this field will indicate whether the default action should be complete or not.  If complete, then answer Yes. This will indicate to the program whether or not to file this procedure with the Dental Activity System.  For example, some procedures may cover several visits and the procedure is not marked as complete until the final visit.  In this case, then the default action for the DSS gui is to ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRIMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;e:EITHER;",
+      "helpText": "This flag will indicate whether or not this procedure is a \"primary\" procedure for dental. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ARCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;",
+      "helpText": "Enter yes if this procedure is related to an arch ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:VACO;L:local;",
+      "helpText": "This field indicates whether this particular entry is a national control entry (by VA Dental Central Office) or if it is a local code entered by the site. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "VA-DSS GROUP",
+      "dataType": "POINTER",
+      "rawType": "P228.42'",
+      "required": false,
+      "pointerTo": 228.42,
+      "helpText": "Enter the appropriate grouping for this ADA code for Decision Support  Services purposes. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "FLAGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains text flags that denote various types of ADA  transactions.  This field replaces all of the single fields that contained flag information.        QUAD RELATED       Q      TOOTH RELATED      T      PRIMARY            Y      ARCH               A      UPPER (arch)       U      LOWER (arch)       L      PROTHESIS RELATED  P      ENDO               E      RANGED             R      APICO              a      RETRO              r      HEMI               H       PARTIAL            p  ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "RVU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the Decision Support Systems' Relative Value Unit for this ADA code. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "TOTAL MAPPED ICD9 DIAGNOSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of nationally mapped diagnoses in field #5  DEFAULT DIAGNOSES for a procedure.  The nationally mapped Dx cannot be edited, but the site may add and modify (arrange) additional diagnosis entries to the list below them.   This number will be 0 (zero) for locally entered CPT codes. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "TOTAL MAPPED ICD10 DIAGNOSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of nationally mapped diagnoses in field #5 DEFAULT DIAGNOSES for a procedure.  The nationally mapped Dx cannot be edited, but the site may add and modify (arrange) additional diagnosis entries to the list below them.   This number will be 0 (zero) for locally entered CPT codes. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "TP CONDITION",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'O",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter a default value for a condition data type that is appropriate for  this ADA code. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "TP AREA",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'O",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter the default value for the treatment planning area that is  appropriate for this ADA code. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "TP MATERIAL",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'O",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter the default material value for treatment planning for this ADA code. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "VA COST TO PERFORM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the dollar amount that it costs the VA to perform  this procedure. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "EQUIVALENT PRIVATE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the dollar amount that a private dentist (non-VA)  would charge for the procedure. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "TEETH#",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If you answered YES to the TOOTH RELATED field (#9), you may enter a string of numbers for which this CPT procedure corresponds.  The numbers will represent tooth number (1-32) and may be entered as:    n1,n2,n3,n4,n5  or   n1,n2,n3-n4,n5-n6,n7  etc    where ni = a whole number from 1 to 32 representing tooth number    ni-nj will represent a range a teeth from tooth ni to tooth nj The input transform on this field will will convert any ranges (ni-nj) into individual numbers, so that the stored v",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADMIN GUIDELINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains a coding guideline for the site, entered by the dental admin,  for this CPT code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CODING GUIDELINE",
+      "dataType": "SUBFILE",
+      "rawType": "228.04",
+      "required": false,
+      "helpText": "Contains the coding guidelines created by the Dental Coding Committee for this CPT code.  Coding guidelines are used to ensure standard code usage  among the sites. ",
+      "isMultiple": true,
+      "subFileNumber": 228.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFAULT ICD9 DIAGNOSES",
+      "dataType": "POINTER",
+      "rawType": "228.05PA",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DEFAULT ICD10 DIAGNOSES",
+      "dataType": "POINTER",
+      "rawType": "228.06P",
+      "required": false,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "228", "field": .06, "type": "regular"},
+    {"name": "228", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .06, "value": "W \"  \",$P(^(0),U,6)"},
+    {"field": .07, "value": "W \"  \",$P(^(0),U,7)"}
+  ]
+}

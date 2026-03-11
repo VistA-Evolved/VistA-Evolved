@@ -1,0 +1,49 @@
+{
+  "fileNumber": 126.8,
+  "fileName": "GMRY INTAKE ITEMS",
+  "globalRoot": "126.8",
+  "globalReference": "^GMRD(126.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of intake item (excluding the IV related items) such as tea, coffee, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This field stores the volume of the food container. For example:   large glass .. 240 ml  small glass .. 125 ml   cup .......... 150 ml  milk carton .. 240 ml   soup/cereal .. 120 ml  jello ........  75 ml   ice cream ....  50 ml ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INPUT TYPE",
+      "dataType": "POINTER",
+      "rawType": "126.82P",
+      "required": false,
+      "helpText": "This multiple screens the possible input items for a given NON-IV input type. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BL", "field": },
+    {"name": "C", "field": },
+    {"name": "126.8", "field": .01, "type": "regular"},
+    {"name": "126.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

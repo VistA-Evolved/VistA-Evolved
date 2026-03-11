@@ -1,0 +1,39 @@
+{
+  "fileNumber": 348,
+  "fileName": "AR NATIONAL DATA BASE CRITERIA",
+  "globalRoot": "348I",
+  "globalReference": "^RC(348,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This is a three part number that identifies an entry in the Accounts Receivable data collectors.  The first digit is the data collector number.  The second digit is the criteria number.  The remainder is the entry number. This field is used for lookup and translation of criteria numbers onto reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the full category name of the national data base item and appears on the facility report. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "348", "field": .01, "type": "regular"},
+    {"name": "348", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

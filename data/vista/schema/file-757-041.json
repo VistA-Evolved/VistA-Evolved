@@ -1,0 +1,39 @@
+{
+  "fileNumber": 757.041,
+  "fileName": "EXCLUDED STRINGS",
+  "globalRoot": "757.041",
+  "globalReference": "^GMP(757.041,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is a list of strings (may or may not be a full word) which occurr so frequently in the Lexicon that a warning will be issued if the user searches the Lexicon using one of these strings as a search parameter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FREQUENCY OF USE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0I",
+      "length": 7,
+      "required": false,
+      "helpText": "This represents the number of times a string is found within the Lexicon. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ANO", "field": },
+    {"name": "B", "field": },
+    {"name": "757.041", "field": .01, "type": "regular"},
+    {"name": "757.041", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

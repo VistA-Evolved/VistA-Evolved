@@ -1,0 +1,197 @@
+{
+  "fileNumber": 100.9,
+  "fileName": "OE/RR NOTIFICATIONS",
+  "globalRoot": "100.9",
+  "globalReference": "^ORD(100.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the internal entry number assigned to a notification.  Entries 1 through 9999 are reserved for National release by the OE/RR  Notifications package.   For local site-defined notifications, the internal entry number must be  specific to your VAMC in the following format:   <your station number><incremental notification number 01-99>   For example, if your site is number 456, your first locally created  notification would be 45601.                          ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the notification.  It should match the text in the MESSAGE TEXT field as closely as possible (it may be an abbreviated version of the entry in MESSAGE TEXT.)  This field is displayed to users when selecting or reviewing entries in this file (100.9). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PACKAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This entry should always be \"OR\" to indicate the alert (notification) is  processed by OE/RR.  \"OR\" is stuffed via a trigger x-ref in field .01. This Package ID will have \";DFN;NIEN\" concatenated to the end of it, to make the XQAID variable which is used by the XQALERT routine to provide a unique cross-reference.  The order entry notification system will check the New person file to determine if this message is already pending for the user.  If it already exists, the user will not receive a seco",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This text will be appended to the Patient last name and last 4 characters of the social security number to create the order notification text. (e.g., SMITH (4356): Unsigned orders. - Where \"Unsigned orders.\" is the  content of MESSAGE TEXT.)  Text entered into this field is the default text for notifications where the text message usually comes from the package (MESSAGE TYPE = PKG). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "PKG:PACKAGE PROVIDES A VARIABLE MESSAGE;NOT:NOTIFICATION FILE PROVIDES MESSAGE;",
+      "helpText": "MESSAGE TYPE field is used as a flag to determine where the message text originates.  If from the NOTIFICATION file, MESSAGE TYPE is 'NOT.'  If the message comes from the package, MESSAGE TYPE is 'PKG.' ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTION FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INFORMATION ONLY;R:RUN ROUTINE;",
+      "helpText": "This a mandatory flag used to regulate processing in XQALERT processing. The flag is set to I to indicate the notification is for INFORMATION ONLY -  no follow-up action is to be taken.  'I' notifications are deleted as each user reviews them.  'R' notifications have a follow-up action associated with them.  The user will be taken to another routine or option when they select a notification with ACTION FLAG = R and a follow-up routine/option is defined. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional field used to create the XQAROU variable to be used by the XQALERT routine.  This field represents the TAG in tag^routine.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ROUTINE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional variable identifying a routine or tag(field .06)^routine used to create XQAROU for processing by XQALERT. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NON-MENU TYPE OPTION ACTION",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This is an optional field used to create the variable XQAOPT for use by XQALERT.  It should indicate a non-menu type option on the user's primary or secondary menu, not on the Common menu.  The phantom jump  is used to navigate to the destination option and will check pathway restrictions in doing so. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "RELATED PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the package where the notification originates or is triggered (e.g., LAB, MAS, Pharmacy.) ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROCESSING FLAGS",
+      "dataType": "SET",
+      "rawType": "100.92S",
+      "required": false,
+      "helpText": "This field tells the notification system any special instructions to  follow when creating the notification. ",
+      "isMultiple": true,
+      "subFileNumber": 100.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains free text describing the notification, how it is trig- gered and what action(s) delete it. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FOLLOW-UP TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REPORT;1:COSIGN_PN;2:EXPIRING_ORDER;3:FLAGGED_ORDER;4:ORDER;5:UNLINKED;6:NEW_CONSULT;7:NEW_ORDER;8:COSIGN_ORDER;9:ES_ORDER;10:UNSIGN_PN;11:UNVERIFIED_MED;",
+      "helpText": "This field contains the type of follow-up action to be taken.  It is used  by the application managing the follow-up action  (e.g. GUI interface) to initiate the proper follow-up action separate from the underlying data  base and application layers.  Example follow-up types include: report, e/s, flag. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "PROCESS AS SMART NOTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field designates whether this alert is a SMART type alert.  When the  alert is tagged as a SMART alert (1 for YES) then the CPRS GUI handles  this differently when processing the alert than other alerts. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "NOTE TITLE",
+      "dataType": "POINTER",
+      "rawType": "*P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "If the field PROCESS AS SMART NOTIFICATION is set to YES, then when  processing this type of alert in CPRS, the user will be given the chance  to enter a TUI note.  The class of the TUI note comes from this field. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "ALLOW ADDENDUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this alert is set to YES for PROCESS AS SMART NOTIFICATION then when  the user in CPRS is given the opportunity to create a new TUI Note, if  this field is set to YES then they are also given the opportunity to  addend an existing TIU Note for the current patient if one exists with  the same document title as is set in field 6.2 (NOTE TITLE) ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "TIU OBJECT",
+      "dataType": "POINTER",
+      "rawType": "*P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "The TIU object identified in this field is used to display to the user  upon processing an alert of this type. ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEPENDENT ALERTS",
+      "dataType": "POINTER",
+      "rawType": "100.9001P",
+      "required": false,
+      "helpText": "A multiple to hold more than one dependent alerts. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "100.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "100.9", "field": .02, "type": "regular"},
+    {"name": "100.9", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

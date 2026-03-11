@@ -1,0 +1,121 @@
+{
+  "fileNumber": 26.14,
+  "fileName": "PRF ASSIGNMENT HISTORY",
+  "globalRoot": "26.14",
+  "globalReference": "^DGPF(26.14,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0I",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the internal entry number which is assigned to each record of this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRF ASSIGNMENT",
+      "dataType": "POINTER",
+      "rawType": "RP26.13'I",
+      "required": true,
+      "pointerTo": 26.13,
+      "helpText": "This field contains the history record's parent Patient Record Flag Assignment in the PRF ASSIGNMENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field will contain the Date and [optional] Time of either the initial ASSIGNMENT of the PATIENT RECORD FLAG or the REVIEW Date/Time of the  PATIENT RECORD FLAG. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:NEW ASSIGNMENT;2:CONTINUE;3:INACTIVATE;4:REACTIVATE;5:ENTERED IN ERROR;6:DBRS#/OTHER FIELD UPDATE;7:REFRESH INACTIVE;8:REFRESH ACTIVE;",
+      "helpText": "This field contains the event that occurred to create this PRF ASSIGNMENT HISTORY record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person entering, editing or reviewing the associated patient record flag assignment. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'IO",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person who approved the assignment of the patient record flag to the patient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TIU PN LINK",
+      "dataType": "POINTER",
+      "rawType": "RP8925'I",
+      "required": true,
+      "pointerTo": 8925,
+      "helpText": "This field contains the IEN of the TIU Progress Note that is linked to this PRF Assignment History record. Integration Agreement #4387. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CREATED BY SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Enter the name of the INSTITUTION which created this history record.   This field is auto-populated with the system's facility name whenever a new record is created in this file by a Fileman trigger cross reference  on the .01 field. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HISTORY COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "26.141",
+      "required": false,
+      "helpText": "This word processing field contains the comments associated with the  patient record flag assignment history.  The history comments should  describe the reason that the history record was generated. ",
+      "isMultiple": true,
+      "subFileNumber": 26.141,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DBRS NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "26.142",
+      "required": false,
+      "helpText": "The Disruptive Behavior Reporting System (DBRS) has information which  might be of interest.  This field records any changes to DBRS# records in  file 26.13. ",
+      "isMultiple": true,
+      "subFileNumber": 26.142,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.14", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,2),6)"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(26.14,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

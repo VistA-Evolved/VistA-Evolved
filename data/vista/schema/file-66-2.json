@@ -1,0 +1,100 @@
+{
+  "fileNumber": 66.2,
+  "fileName": "BLOOD BANK VALIDATION",
+  "globalRoot": "66.2I",
+  "globalReference": "^LAB(66.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of option being validated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MENU NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of menu ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MENU ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation of menu ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FUNCTIONAL AREA",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:DONOR;2:INVENTORY;3:PATIENT;4:INQUIRIES;5:REPORTS;6:SUPERVISOR;7:INQUIRIES/WARD;8:DONOR/REPORTS;",
+      "helpText": "Functional area ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OPTION DESCRIPTION",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:DATA ENTRY;2:DATA EDITING;3:DATA ENTRY/REVIEW;4:EDIT TEMPLATE/SOFTWARE CONTROL;5:FILE SETUP/SOFTWARE CONTROL;6:FORM/LETTER CONTENT;7:FORM/REPORT GENERATION;8:PURGING DATA/FILE ENTRIES;9:DATA INQUIRY ONLY;",
+      "helpText": "Description of option ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LIMITED ACCESS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;0:no;1:yes;",
+      "helpText": "Whether access will be limited or not ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OPTION IN USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "Whether the option is used by the facility or not. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME VALIDATED",
+      "dataType": "DATE",
+      "rawType": "66.21D",
+      "required": false,
+      "helpText": "Multiple for date/time validated ",
+      "isMultiple": true,
+      "subFileNumber": 66.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "66.2", "field": .01, "type": "regular"},
+    {"name": "66.2", "field": .02, "type": "regular"},
+    {"name": "66.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

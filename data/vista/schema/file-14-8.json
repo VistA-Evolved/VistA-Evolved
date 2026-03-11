@@ -1,0 +1,34 @@
+{
+  "fileNumber": 14.8,
+  "fileName": "TASK SYNC FLAG",
+  "globalRoot": "14.8",
+  "globalReference": "^%ZISL(14.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "14.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

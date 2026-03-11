@@ -1,0 +1,48 @@
+{
+  "fileNumber": 71.1,
+  "fileName": "MAJOR RAD/NUC MED AMIS CODES",
+  "globalRoot": "71.1",
+  "globalReference": "^RAMIS(71.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "MAJOR AMIS CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number, between one and one hundred of this major radiology AMIS code. AMIS codes are used in the compilation of various workload reports, including the AMIS Report. On certain reports that are sorted by procedure, the sort is done on the AMIS category of the procedure. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This field contains a brief description, 3-50 characters, of this AMIS code. AMIS codes are used in the compilation of various workload reports, including the AMIS Report.   Since the AMIS codes are no longer assigned by the National Radiology  Program Office (NRPO) Office, they can be added or updated at any local VA Medical Center. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the weighted work unit, a number between 1 and 80, associated with this AMIS code.  These weights are used in the compilation of various workload reports, including the AMIS Report.   These weights are assigned by the local Radiology Department at each VA Medical Center (VAMC). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

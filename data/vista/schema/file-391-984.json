@@ -1,0 +1,38 @@
+{
+  "fileNumber": 391.984,
+  "fileName": "EXCEPTION STATUS",
+  "globalRoot": "391.984",
+  "globalReference": "^DGCN(391.984,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the status that will be displayed to the user when using the exception handler in the Patient Data Review  [VAFC EXCEPTION HANDLER] option. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the status code that will be displayed to the user when using the exception handler in the Patient Data Review  [VAFC EXCEPTION HANDLER] option. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "391.984", "field": .01, "type": "regular"},
+    {"name": "391.984", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

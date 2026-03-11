@@ -1,0 +1,39 @@
+{
+  "fileNumber": 23451,
+  "fileName": "ISIJ FAVORITES",
+  "globalRoot": "23451",
+  "globalReference": "^ISI(23451,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "ISI Rad user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RADIOLOGY EXAM",
+      "dataType": "SUBFILE",
+      "rawType": "23451.01",
+      "required": false,
+      "helpText": "This field contains radiology exam data used for accessing a radiology exam. ",
+      "isMultiple": true,
+      "subFileNumber": 23451.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "23451", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

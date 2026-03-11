@@ -1,0 +1,54 @@
+{
+  "fileNumber": 802.1,
+  "fileName": "NLM VALUE SET CODING SYSTEMS",
+  "globalRoot": "802.1",
+  "globalReference": "^PXRM(802.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Full name of the NLM VSAC coding system.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Object Identifier (OID) of the NLM VSAC coding system.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Version of the coding system.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LEXICON SAB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Lexicon Standard Abbreviation (SAB) that corresponds to this NLM VSAC coding system. It provides the connection between an NLM VSAC coding system and a Lexicon coding system.  ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "802.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

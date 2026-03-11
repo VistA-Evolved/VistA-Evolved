@@ -1,0 +1,83 @@
+{
+  "fileNumber": 165.9,
+  "fileName": "ONCOLOGY EOD SCHEMAS",
+  "globalRoot": "165.9",
+  "globalReference": "^ONCO(165.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCHEMA ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ5",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the numerical Schema ID based on the Topography and Histology. The Schema ID is based on the NAACCR data item #3800.  The Schema ID is used to determine the codes used for that particular primary. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCHEMA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80",
+      "length": 80,
+      "required": true,
+      "helpText": "This is the descriptive name of the schema. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EOD PRIMARY TUMOR CODE",
+      "dataType": "SUBFILE",
+      "rawType": "165.92",
+      "required": false,
+      "helpText": "This is the Extent of Disease for the primary tumor. ",
+      "isMultiple": true,
+      "subFileNumber": 165.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EOD REGIONAL NODES CODE",
+      "dataType": "SUBFILE",
+      "rawType": "165.93",
+      "required": false,
+      "helpText": "This is the Extent of Disease for the regional nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 165.93,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EOD METS CODE",
+      "dataType": "SUBFILE",
+      "rawType": "165.94",
+      "required": false,
+      "helpText": "This is the Extent of Disease for the METS. ",
+      "isMultiple": true,
+      "subFileNumber": 165.94,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEOADJUVANT THERAPY TX EFFECT",
+      "dataType": "POINTER",
+      "rawType": "P167.6'",
+      "required": false,
+      "pointerTo": 167.6,
+      "helpText": "This field is a pointer to the ONCO NEOADJUVANT THERAPY TREATMENT EFFECT (#167.6) file to determine which set of codes to use for this schema. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "165.9", "field": .01, "type": "regular"},
+    {"name": "165.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

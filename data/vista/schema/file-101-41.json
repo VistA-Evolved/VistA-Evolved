@@ -1,0 +1,326 @@
+{
+  "fileNumber": 101.41,
+  "fileName": "ORDER DIALOG",
+  "globalRoot": "101.41",
+  "globalReference": "^ORD(101.41,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the dialog; entries that were converted from the Protocol file will retain the same name.  Namespacing is not required, but still encouraged. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The text of this dialog's name as it appears on a menu or subheader. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field disables use of this dialog when it contains text.  The text should be a short message explaining why use of this dialog has been disabled, as it will be displayed if this dialog is selected. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:prompt;D:dialog;Q:quick order;O:order set;M:menu;A:action;",
+      "helpText": "This field defines the type of order dialog to be processed.  Control will be passed to the OE/RR Dialog Processor for dialog items; menu types are used for displaying and selecting dialog items.  Action types will only execute the entry and exit actions, ignoring any items that may exist; these dialogs should not create entries in the Orders file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPLAY GROUP",
+      "dataType": "POINTER",
+      "rawType": "P100.98'",
+      "required": false,
+      "pointerTo": 100.98,
+      "helpText": "This field determines what display group this dialog has been defined for. It will define which orderable items are selectable with this dialog, as well as what service to send the order to when it is complete. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SIGNATURE REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:ORELSE;2:ORES;",
+      "helpText": "This field indicates what signature will be required for orders created by this dialog, to be considered complete and ready to release to the service for action.  If this flag is set to NO and the dialog contains a prompt for item(s) from the Orderable Item file, the order created may still require a signature if any of the items ordered are individually flagged as requiring a signature. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the VISTA package that is intended to receive orders created by this dialog; this is required for creating the HL7 messages to pass the order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VERIFY ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is a flag, which determines if the order created by this dialog will be presented to the user for verification before saving in the Orders file; for most quick orders, this flag should be set to 0 (no). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ASK FOR ANOTHER ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:YES-DON'T ASK;",
+      "helpText": "This field allows the user to add another order from this dialog, when the initial order is accepted and placed; if set to YES, the user will be asked \"Add another <dialog display text> order?\" to allow for either exiting the processor or adding an additional order of the same type. This field can also be set to YES-DON'T ASK to force the processor to automatically drop into prompting for another order without asking first. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEMS",
+      "dataType": "SUBFILE",
+      "rawType": "101.412IA",
+      "required": false,
+      "helpText": "This field contains the components for dialogs:      Dialogs      -> prompts      Quick orders -> prompts (completed)      Order sets   -> dialogs or quick orders      Menus        -> dialogs, quick orders, or order sets ",
+      "isMultiple": true,
+      "subFileNumber": 101.412,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:date/time;R:free text date/time;F:free text;N:numeric;S:set of codes;Y:yes/no;P:pointer;W:word processing;",
+      "helpText": "This is the type of data being prompted for; this field is used to define a call to the reader (^DIR) in most cases. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a parameter that may be used to further specify the data type. The string stored here should be appropriate for the second ^-piece of DIR(0) when used with the data type field. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a single word identifier which will be stored with the user response in the Orders file #100, where it will be indexed for quick reference to certain values in the order dialog.  The following are some examples of values currently in use:      START      -> Start date/time    STOP       -> Stop date/time    SCHEDULE   -> Administration Schedule    ORDERABLE  -> Orderable Item    DRUG       -> Dispense Drug    CANCEL     -> Cancel Future Orders flag    COMMENT    -> Word pr",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "VALIDATION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that will be executed at the time of releasing an order created with this dialog; dialog responses may be checked again here before releasing the order to the service. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ADDITIONAL TEXT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that will be executed when order ORIFN created by this dialog is about to be displayed; any string that should be appended to the order text should be returned in Y. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "101.411",
+      "required": false,
+      "helpText": "This is a description of the dialog and its uses. ",
+      "isMultiple": true,
+      "subFileNumber": 101.411,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RESPONSES",
+      "dataType": "SUBFILE",
+      "rawType": "101.416",
+      "required": false,
+      "helpText": "This multiple contains any responses to prompts that have been pre-answered to create a quick order. ",
+      "isMultiple": true,
+      "subFileNumber": 101.416,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that will be executed at the top of a dialog, prior to the execution of any prompts; it may perform functions such as listing the recent Radiology exams before ordering a new one, or alerting the user to an existing diet order before making a change. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "QUICK SETUP",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that will be executed in the place of the Entry Action when creating quick orders for this dialog; variables may be set here instead to bypass the usual dependence on specific patient values. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that will be executed upon completion of processing the dialog; it is currently used only with dialog-type entries. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "CONTROLS",
+      "dataType": "SUBFILE",
+      "rawType": "101.415A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 101.415,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "COLUMN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the width, in characters, for each column in a menu.  For example, to have 3 columns on an 80 character device, enter a width of 26. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "MNEMONIC WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field allows the width of item mnemonics to be varied; the default value is 5. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PATH SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This switch allows the user, when traversing back UP the tree of menus and items, to select a new path back down the tree.  In other words, the menu is redisplayed when returning to that menu's level in the tree and processing back down the tree is possible from that point.  If nothing is selected from the menu, the path continues back up the tree. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "LISTBOX TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "WINDOW FORM ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field tells the GUI DELPHI code which form to use to process the order dialog.  Each number represents a unique form.  Following are some of the more common codes and their corresponding form in DELPHI.       Form Name     Windows Form ID     ---------     ---------------   OD_ACTIVITY           100   OD_ALLERGY            105   OD_CONSULT            110   OD_PROCEDURE          112   OD_DIET_TXT           115   OD_DIET               117   OD_LAB                120   OD_MEDINPT            13",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "CREATE PARENT ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates whether a parent order should be created to group together all the orders created by this order set; this flag is only valid with SET type order dialogs.  If this value is YES, a parent order will be created, and only the parent will be presented on the orders list for display and action; NO will prevent a parent from being created and all orders will be created and displayed independently. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "DISPLAY SUBHEADER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates whether a subheader is to be displayed for each order in this set as it is processed and placed; this flag is only valid with SET type order dialogs. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "AUTO-ACCEPT QUICK ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This can be set to yes for a quick order so that it can be placed simply by clicking on it in the GUI (no ordering dialog is displayed). ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For menus, this contains the $H time the menu was last compiled for use with the Unwinder utility (^XQOR). ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AD", "field": },
+    {"name": "AM", "field": },
+    {"name": "AM2", "field": },
+    {"name": "AM51", "field": },
+    {"name": "AM52", "field": },
+    {"name": "AMM", "field": },
+    {"name": "AMM2", "field": },
+    {"name": "AMM3", "field": },
+    {"name": "AMM4", "field": },
+    {"name": "AMM5", "field": },
+    {"name": "APKG", "field": },
+    {"name": "C", "field": },
+    {"name": "101.41", "field": .01, "type": "regular"},
+    {"name": "101.41", "field": 2, "type": "regular"},
+    {"name": "101.41", "field": 2, "type": "regular"},
+    {"name": "101.41", "field": 7, "type": "regular"},
+    {"name": "101.41", "field": 51, "type": "regular"},
+    {"name": "101.41", "field": 52, "type": "regular"},
+    {"name": "101.41", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "fileNumber": 1.62,
+  "fileName": "POLICY FUNCTION",
+  "globalRoot": "1.62",
+  "globalReference": "^DIAC(1.62,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is a number that uniquely identifies the function. Values less than 1000 are reserved for FileMan use. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30X",
+      "length": 30X,
+      "required": true,
+      "helpText": "The formal unique name of the function, prefaced with the package namespace specified in the PACKAGE file, or the letter Z or A. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the name of the function as it should be displayed to the user in the Policy Editor. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ATTRIBUTE;C:CONDITION;R:RESULT;O:OBLIGATION;",
+      "helpText": "This field indicates the expected usage of this function; it will be used to screen potential selections for the various function fields of a policy in the Policy Editor. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NULL VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PERMIT;D:DENY;",
+      "helpText": "This field is only used with Result functions, when a specific result must be returned for the policy; if a permit or deny result could not be determined for the policy or set, the value saved in this field will be returned as the result. It is recommended to use result functions with a null value with top-level policies, otherwise processing logic within a policy could be inadvertently altered. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXECUTE CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the M code that will be executed for this function. See the VA FileMan Programmer Manual for full details on available variables and expected output. Attribute functions should set any needed record elements in the DIVAL(\"attribute\")=\"value\" array; Condition and Result functions should return a boolean value in Y. Obligation functions may perform any tasks needed by the application. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1.622",
+      "required": false,
+      "helpText": "This field contains a brief description of the function; it should include any input variables required, the expected output, and any possible error messages. ",
+      "isMultiple": true,
+      "subFileNumber": 1.622,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.62", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(1.62,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

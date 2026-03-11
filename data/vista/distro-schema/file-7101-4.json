@@ -1,0 +1,50 @@
+{
+  "fileNumber": 7101.4,
+  "fileName": "NOIS RESPONSE",
+  "globalRoot": "7101.4",
+  "globalReference": "^FSCD(\"RESPONSE\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a name assigned to the response. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who owns this response. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "7101.42",
+      "required": false,
+      "helpText": "This is the text of the response. ",
+      "isMultiple": true,
+      "subFileNumber": 7101.42,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7101.4", "field": .01, "type": "regular"},
+    {"name": "7101.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

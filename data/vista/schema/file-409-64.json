@@ -1,0 +1,114 @@
+{
+  "fileNumber": 409.64,
+  "fileName": "QUERY OBJECT",
+  "globalRoot": "409.64",
+  "globalReference": "^SD(409.64,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This property contains the name of the query object being defined.    The name should be namespaced. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": " This property contains the name of the file associated with this query object  definition.    (Note: It is possible to have a file associated with more than         one query object definition.)  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUBSCRIPTS IN GLOBAL ROOT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": " This property contains the number of subscripts in the global root for  the file associated with this query object definition.    Examples:            Global Root            Level     -----------            -----      ^SCE                   0      ^SCPT(404.42)          1                  This property is needed by some methods when the intrinic $QSUBCRIPT  function is executed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "$STORAGE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": " This property indicates the trigger value of $STORAGE that causes  the query object data to be stored in ^TMP global instead of a local array.  (The local variable is the default.)    If the $STORAGE is less than the Property value then store in global.    Examples:            $Storage Value     Property Value     Query Stored in...            ==============     ==============     ==================                 30000             10000               local                  5000             10",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OK TO TRANSPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT OK;1:OK;",
+      "helpText": " This field indicates to the transport utility if this  query template should be distributed.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "OPEN METHOD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": " This property contains any query specific open logic that the   custodial pacakge needs performed. This logic is executed  after the generic open logic is performed. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "CLOSE METHOD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": " This property contains any query specific close logic that the   custodial pacakge needs performed. This logic is executed  before the generic close logic is performed.  ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "SCAN METHOD",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": " This property contains query object specific logic that the custodial  package must specify that allows the use of the Scan method by  developers.    This scan logic typically hard codes references to supported indexes.  There is a significant performance reasons for the custidial packages  to develop this logic. The Next/Eof scanning approach is much slower then  using Scan/Scan Callback approach.      For more information, see API definitions for the following:      Scan     Scan Callback    ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "ZERO NODE METHOD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": " This property contains any query specific logic that the   custodial pacakge needs performed to screen out unsupported  fields on the zero node.    Various methods of the query object need to make available to  developers the zero node of an entry. For example, during the execution  of the filters and scan callbacks, the zero node is made available  to developers in the variable Y0.    If the custodial package does not support all fields on the zero  node, then logic similar to the following ne",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "SUPPORTED INDEXES",
+      "dataType": "SUBFILE",
+      "rawType": "409.641",
+      "required": false,
+      "helpText": " This multiple contains index definitions that are supported  by the custodial package when the developer uses this query object  definition. ",
+      "isMultiple": true,
+      "subFileNumber": 409.641,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.64", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

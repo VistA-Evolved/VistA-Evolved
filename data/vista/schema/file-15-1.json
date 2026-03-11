@@ -1,0 +1,352 @@
+{
+  "fileNumber": 15.1,
+  "fileName": "DUPLICATE RESOLUTION",
+  "globalRoot": "15.1P",
+  "globalReference": "^VA(15.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE TO BE CHECKED",
+      "dataType": "POINTER",
+      "rawType": "R*P1'X",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This is the file that is being checked for duplicates and if duplicates are found, to be merged. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DUPLICATE SEARCH STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "c:COMPLETED;h:HALTED;r:RUNNING;e:ERROR(STOP);",
+      "helpText": " This is the status of the duplicate checker at any given time. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEARCH BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the present search started.  This field does not require user input, it is automatically filled in when you start the search. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SEARCH COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date and time that the duplicate search is completed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TYPE OF SEARCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "b:BASIC;n:NEW;",
+      "helpText": "This field describes the type of search the Duplicate Resolution software will conduct.  A 'BASIC' search starts at the beginning of a file while the 'NEW' search will only check those newly added entries. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CROSS-REF FOR NEW SEARCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the cross reference that should be utilized to separate out any records that you wish to run through the Duplicate Resolution software checking to see if any potential duplicates. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMBER OF RECORDS PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of records that have been checked for duplicates by the duplicate checking software. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST RECORD PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the last record that was processed by the duplicate checking software. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CANDIDATE COLLECTION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the routine which will be used to gather any potential duplicate records which should be checked by the Duplicate Resolution software. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SECONDS SEARCHED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used to track the number of seconds that the search process was running PRIOR TO the most current start (or restart).  The value is determined at the time the process stops for any reason (completed, halt, or error).  While the search is running it does NOT include time for the current process. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DUPLICATE MANAGER MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group that will be sent a bulletin whenever any known problems occur during the duplicate checking or merging process. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "NUMBER SELECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used to indicate the number of potential duplicates that have been found in the current search. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DAYS BEFORE FINAL VERIFY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The value of this field is the number of days available for ancillary reviewers to conduct their reviews. If action is still pending by any ancillary reviewers after this period, the site may take alternative action; notify designated persons via a mail group, establish an additional reviewer, or otherwise resolve the review. All reviews must be resolved prior to merging the affected record pair. The default with this application release is five days.  Days 1 to 30. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DAYS BETWEEN VERIFY AND MERGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the sites determination on the number of days that MUST pass before a completely verified duplicate pair may be merged. This time period is included to provide for outstanding tests which might have been ordered for the entry which is to be merged into the other one to be completed prior to the merge, so that data are not entered for the merged entry after the merge has been completed.   ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "POTENTIAL DUPLICATE THRESHOLD%",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the percentage of the total possible score that needs to be obtained before a duplicate record pair is placed in the Duplicate Record file as a Potential Non-Verified Duplicate pair. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "VERIFIED DUPLICATE MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group that will be sent a bulletin whenever a Potential Non-Verified Duplicate is changed to a Verified Duplicate status. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "VERIFIED DUPLICATE MSG ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the routine which will be called to send a bulletin to members of the Verified Duplicate Mail Group. No '^' should be included. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "VERIFIED DUPLICATE THRESHOLD%",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the percentage that needs to be obtained before a duplicate record pair is placed in the Duplicate Record file as a Verified Potential Duplicate pair. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "MERGE STYLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INTERACTIVE;1:NON-INTERACTIVE;",
+      "helpText": "This field is used to define whether during the merge process the operator will be able to select certain field values to transfer (Interactive) or if the merge will occur automatically (Non-interactive). ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "DELETE FROM ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to tell the Duplicate Resolution software whether or not you wish to delete the From entry in this file. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PRE-MERGE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is utilized to name a routine that should be done prior to the merging process. This may be a entry point call to a routine or just a routine name. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "POST-MERGE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is utilized to name a routine that should be done after the completion of the merge process.  This may be a entry point call to a routine or just a routine name. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "MERGE MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group that will be sent a bulletin whenever the merge process has been completed for a duplicate record pair. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "MERGE MSG ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the routine which will be called to send a bulletin to members of the Merge Mail Group.  No '^' should be included. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "AUTO MERGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:RUN;1:STOP;",
+      "helpText": "This field is used by the Kernel Merge routines to determine if it should stop automatically merging the Ready to Merge Verified Duplicates. ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "MERGE DIRECTION INP TRANSFORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the routine that will be executed by the input transform on the merge directions field of the Duplicate record file. This routine will execute code that will help the user decide whether or not they have selected the best record to be the target record. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "NUMBER OF THREADS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is used to indicate the number of threads that should be used during the longest phase of the merge process.  Entry of 1 would indicate that only the main process (the same as null) would be running.  Entry of 2 to 5 indicates that the main process along with 1 to 4 other threads should be used during this phase.  Each additional thread will be used to process one of the most time consuming files.  Which will reduce the amount of time that the main process takes. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "THREAD FILES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate the preference for files which be used as separate threads during the 3rd phase of the merge if extra threads are indicated in field 1.01.  The files to be threaded should be those which take the longest during this phase of the merge process with the most time consuming file indicated first.  The files are indicated by file numbers separated by semi-colons, e.g.,  44;52;50.8; ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "SECONDS TO WAIT FOR STOP CHECK",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field will define how many seconds a merge process should run before  making a call to ZTLOAD to see if the user requested the background processes  to stop.  ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ANCILLARY SERVICE",
+      "dataType": "SUBFILE",
+      "rawType": "15.12",
+      "required": false,
+      "helpText": "Ancillary Service is a multiple of the service packages that are associated with the duplicates. ",
+      "isMultiple": true,
+      "subFileNumber": 15.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "LAST TIME NOTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is entered and updated during the search for potential duplicates.  It is entered and updated by XDRDMAIN on each entry of the file that is being searched for duplicates.  It is used by XDRDSTAT to determine if an apparently running process has stopped processing.  If this is the case, the process is marked as having errored out after 15 minutes of no recorded activity. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "SUPPRESS NEW DUP EMAIL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "When a PATIENT pair entry is added to the DUPLICATE RECORD file by PSIM, an email is sent to the mail group specified in the DUPLICATE MANAGER MAIL GROUP field, notifying them that the patient pair has been added to the file with POTENTIAL DUPLICATE, UNVERIFIED status.   If this field is set to 1 (YES), the email will be suppressed (NOT sent). If this field is set to 0 (NO), the email will be sent. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 1100,
+      "fieldName": "DUPLICATE TESTS",
+      "dataType": "SUBFILE",
+      "rawType": "15.111A",
+      "required": false,
+      "helpText": "Enter the name of the duplicate test you wish to run to determine if a pair of records are duplicates. ",
+      "isMultiple": true,
+      "subFileNumber": 15.111,
+      "fieldNumber_": 1100
+    },
+    {
+      "fieldNumber": 1200,
+      "fieldName": "DINUM FILES FOR MERGE",
+      "dataType": "POINTER",
+      "rawType": "15.112PA",
+      "required": false,
+      "helpText": "This multiple contains files that you want an operator to be able to compare and merge specific fields from prior to the merging and deletion of the duplicate record From entry. You may only enter files that point to and are dinum with the file you specified in the File to Be Checked field (#.01).  You should only place entries in this multiple if you have chosen 'Interactive' for the type of merge in the Merge Style field (#.25).  It uses Fileman's Compare and Merge option to display the duplic",
+      "fieldNumber_": 1200
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AGL", "field": },
+    {"name": "APDTI", "field": },
+    {"name": "B", "field": },
+    {"name": "15.1", "field": .01, "type": "regular"},
+    {"name": "15.1", "field": .01, "type": "regular"},
+    {"name": "15.1", "field": .15, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

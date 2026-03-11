@@ -1,0 +1,72 @@
+{
+  "fileNumber": 394.84,
+  "fileName": "VAQ - SEGMENT GROUP",
+  "globalRoot": "394.84I",
+  "globalReference": "^VAT(394.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Group Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Name of group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Group Type",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PUBLIC;0:PRIVATE;",
+      "helpText": "Set to PRIVATE if the group can only be referenced by the person who created the group.  Set to PUBLIC if the group can be referenced by all users. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Created By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who created this group. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "Date Created",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the group was created. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Data Segment",
+      "dataType": "POINTER",
+      "rawType": "394.841P",
+      "required": false,
+      "helpText": "Multiple containing data segments contained in this group. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AE1", "field": },
+    {"name": "AE2", "field": },
+    {"name": "B", "field": },
+    {"name": "394.84", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "394.84", "field": .02, "type": "regular"},
+    {"name": "394.84", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE1, "value": "W ?35,@(\"$P($P($C(59)_$S($D(^DD(394.84,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": WRITE2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W ?50,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

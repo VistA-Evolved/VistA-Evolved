@@ -1,0 +1,37 @@
+{
+  "fileNumber": 59.9,
+  "fileName": "PBM PATIENT DEMOGRAPHICS",
+  "globalRoot": "59.9",
+  "globalReference": "^PSUDEM(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field records the date and time when any change occurs in the  PATIENT file (#2) on any field captured in the PBM Patient  Demographics Extract. These changes are captured by the DG Field  Monitor. The data in this field is purged monthly for all data older  than 75 days. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field records the PATIENT DFN when any change occurs in the PATIENT  file (#2) on any field captured in the PBM Patient Demographics Extract. When the monthly patient demographic extract runs, it will harvest data  from the PATIENT file (#2) for the DFNs stored in this field and all data  older than 75 days will be purged from this file.  ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

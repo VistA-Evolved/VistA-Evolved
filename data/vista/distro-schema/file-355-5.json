@@ -1,0 +1,308 @@
+{
+  "fileNumber": 355.5,
+  "fileName": "INSURANCE CLAIMS YEAR TO DATE",
+  "globalRoot": "355.5P",
+  "globalReference": "^IBA(355.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "POLICY",
+      "dataType": "POINTER",
+      "rawType": "RP355.3I",
+      "required": true,
+      "pointerTo": 355.3,
+      "helpText": "Select the patient's health insurance policy against which claims may have been made. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient who is on this policy. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BENEFIT YEAR BEGINNING ON",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This is the first day of the year in which the health insurance policy's benefits apply.  Exact date (with month and day) is required. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEDUCTIBLE MET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the dollar amount of claims against this policy is less than the  the policy's annual deductible, enter \"NO\".  If it is equal to or  greater than the annual deductible, enter \"YES\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AMOUNT OF DEDUCTIBLE MET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEDUCTIBLE (INPT) MET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the dollar amount of claims for inpatient services is less than the policy's annual deductible for inpatient services, enter \"NO\". If it is equal to or greater than the annual deductible for such services, enter \"YES\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AMOUNT OF DEDUCTIBLE (INP) MET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy for inpatient services. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DEDUCTIBLE (OPT) MET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the dollar amount of claims for outpatient services is less than the policy's annual deductible for outpatient services, enter \"NO\". If it is equal to or greater than the annual deductible for such services, enter \"YES\". ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AMOUNT OF DEDUCTIBLE (OPT) MET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy for outpatient services. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "AMT LIFETIME MAX USED (OPT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy, which can then be compared to the maximum amount available over the life of the policy. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "MH DEDUCTIBLE (INP) MET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the dollar amount of claims for inpatient mental health services is less than the policy's annual deductible for these services, enter \"NO\".  If it is equal to or greater than the annual  deductible for such services, enter \"YES\". ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AMOUNT OF MH (INP) DED MET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy for inpatient mental health services. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "MH DEDUCTIBLE (OPT) MET?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the dollar amount of claims for outpatient mental health services is less than the policy's annual deductible for these services, enter \"NO\".  If it is equal to or greater than the annual deductible for such services, enter \"YES\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "AMOUNT OF MH (OPT) DED MET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy for outpatient mental health services. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRE-EXISTING CONDITIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the patient's pre-existing conditions. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "COORDINATION OF BENEFITS DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient is included in a policy held by a family member, e.g. spouse, enter that information here. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PATIENT POLICY POINTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "AMT. MH LIFET. MAX USED (INPT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the dollar amount of claims against this policy for mental health services. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "AMT LIFETIME MAX USED (INPT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the dollar amount of inpatient claims against this policy, which can then be compared to the maxium amount available over the life of the policy. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "AMT MH LIFET MAX USED (OPT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the dollar amount of MH claims against this policy, which can then be compared to the maximum amount available over the life of the policy. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this entry was created.  It is automatically triggered by the creation of the entry. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who created this entry.  It is automatically triggered by the creation of this entry. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the entry was verified.  It is automatically triggered by the verification process. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who verified the entry.  It is automatically triggered by the verification process. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the entry was last edited.  It is automatically triggered whenever editing takes place. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who last edited the entry.  It is automatically triggered whenever editing takes place. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PERSON CONTACTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Give the name of the person at the insurance company with whom you verified insurance claims information. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "COMMENT - CLAIMS FILED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any pertinent information here that you did not enter above. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "CONTACT'S PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Give the telephone number of the person who verified insurance claims information. ",
+      "fieldNumber_": 1.09
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "APPY", "field": },
+    {"name": "APPY1", "field": },
+    {"name": "APPY2", "field": },
+    {"name": "APPY3", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.5", "field": .01, "type": "regular"},
+    {"name": "355.5", "field": .01, "type": "regular"},
+    {"name": "355.5", "field": .02, "type": "regular"},
+    {"name": "355.5", "field": .02, "type": "regular"},
+    {"name": "355.5", "field": .03, "type": "regular"},
+    {"name": "355.5", "field": .17, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

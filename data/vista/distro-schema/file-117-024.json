@@ -1,0 +1,97 @@
+{
+  "fileNumber": 117.024,
+  "fileName": "FHQUE QUEUED REPORTS/LABELS",
+  "globalRoot": "117.024",
+  "globalReference": "^FH(117.024,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OPTION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the option, from file 19, plus the run time. For example FHPATM 0800. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TIME TO RUN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The time the option should run, from 0001-2359. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "The printer the option should print to. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTRY TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "Line tag to be called. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CALLED ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "Routine to be called.  Be sure to put a line tag in field 3. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Is the item active?  Entering no will cause it not to print. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "VARIABLES",
+      "dataType": "SUBFILE",
+      "rawType": "117.0242",
+      "required": false,
+      "helpText": "List of variables that the given ROUTINE will require to run without  operator intervention. ",
+      "isMultiple": true,
+      "subFileNumber": 117.0242,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DAYS TO RUN",
+      "dataType": "POINTER",
+      "rawType": "117.02402P",
+      "required": false,
+      "helpText": "The days that the option will run from the 117.0241 file. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "117.024", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

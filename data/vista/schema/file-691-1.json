@@ -1,0 +1,1030 @@
+{
+  "fileNumber": 691.1,
+  "fileName": "CARDIAC CATHETERIZATION",
+  "globalRoot": "691.1ID",
+  "globalReference": "^MCAR(691.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This date/time field identifies the catheterization procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the patient's identification number assigned by the medical facility.  In most cases it is the person's social security number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;",
+      "helpText": "This fields contains the gross evaluation of the results of this procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYMPTOM",
+      "dataType": "POINTER",
+      "rawType": "691.43PA",
+      "required": false,
+      "helpText": "This field contains the patient's physical complaints or symptoms. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RISK FACTOR",
+      "dataType": "POINTER",
+      "rawType": "691.44PA",
+      "required": false,
+      "helpText": "This field contains the morbidity factors which this patient is most susceptible to. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the name of the patient followed by a space(optional), followed by the first name,  followed by a space, followed by the middle initial. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "WT LBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The weight of the patient at the time of the procedure is stored here. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "HT IN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The height in inches at the time of the procedure. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "BODY SURFACE AREA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2I",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies parameter is calculated by height and weight and stored in square meters. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CATH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to enter the cardiac catheterization procedure number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REFERRING PHYSICIAN/AGENCY",
+      "dataType": "POINTER",
+      "rawType": "P697.1",
+      "required": false,
+      "pointerTo": 697.1,
+      "helpText": "This allows the user to enter the referring physician/agency/hospital's name. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in-house patient address. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CCL LOG PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "691.11PA",
+      "required": false,
+      "helpText": "This allows the user to enter the cardiac catheterization procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TECH COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.12",
+      "required": false,
+      "helpText": "This allows the cardiac cath. technician to enter comments pertaining  to the procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.12,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "691.13PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple cardiac cath. procedure. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "691.14",
+      "required": false,
+      "helpText": "This allows the user to enter a brief medical history. ",
+      "isMultiple": true,
+      "subFileNumber": 691.14,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "HEART MEDICATION",
+      "dataType": "POINTER",
+      "rawType": "691.16PA",
+      "required": false,
+      "helpText": "This field documents the cardiac medicines that the patient is taking at the time of this procedure. (multiple) ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PHYSICAL EXAM",
+      "dataType": "SUBFILE",
+      "rawType": "691.17",
+      "required": false,
+      "helpText": "This allows the user to enter data obtained from medical patient's  physical examination. ",
+      "isMultiple": true,
+      "subFileNumber": 691.17,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "INDICATION",
+      "dataType": "POINTER",
+      "rawType": "691.18PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple pre-cardiac catheterization diagnoses. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PREMEDICATION",
+      "dataType": "SET",
+      "rawType": "691.2SA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple pre-cardiac catheterization medications. ",
+      "isMultiple": true,
+      "subFileNumber": 691.2,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VASCULAR ACCESS",
+      "dataType": "SET",
+      "rawType": "691.21SA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple cardiac catheterization  vascular accesses. ",
+      "isMultiple": true,
+      "subFileNumber": 691.21,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "FLUORO TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter catheterization fluoroscopy time. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "USE OF SHEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARTERY;V:VEIN;B:BOTH ARTERY AND VEIN;N:NEITHER ARTERY NOR VEIN;",
+      "helpText": "This defines the use of a sheath during cardiac catheterization. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "RIGHT HEART CATHETER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:7F COURNAND;Z:7F ZUCKER;S:7F SWAN GANZ;E:7F EPPENDORF;",
+      "helpText": "This allows the user to enter the specific right heart catheter used. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LEFT VENTRICULAR CATHETER",
+      "dataType": "POINTER",
+      "rawType": "691.22PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left ventricular catheters used. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RIGHT CORONARY CATHETER",
+      "dataType": "POINTER",
+      "rawType": "691.23PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple right coronary catheters used. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LEFT CORONARY CATHETER",
+      "dataType": "POINTER",
+      "rawType": "691.24PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left coronary catheters used. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "AORTOGRAPHY PROJECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LAO;R:RAO;",
+      "helpText": "This field identifies the view of the aortography projection. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "OTHER PROCEDURE AND COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.25",
+      "required": false,
+      "helpText": "This allows the user to enter unspecified procedures and comments. ",
+      "isMultiple": true,
+      "subFileNumber": 691.25,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PROTAMINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to enter the protamine used during the  cardiac catheterization. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "INTERVENTION",
+      "dataType": "SET",
+      "rawType": "691.26S",
+      "required": false,
+      "helpText": "This allows the user to enter multiple cardiac catheterization interventions. ",
+      "isMultiple": true,
+      "subFileNumber": 691.26,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "RCA NORMALITY",
+      "dataType": "POINTER",
+      "rawType": "P695.9'",
+      "required": false,
+      "pointerTo": 695.9,
+      "helpText": "This allows the user to enter the right coronary artery normality. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RCA SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "691.27PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple right coronary artery segments. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "RCA DISTAL VESSEL",
+      "dataType": "POINTER",
+      "rawType": "P696.3'",
+      "required": false,
+      "pointerTo": 696.3,
+      "helpText": "This allows the user to enter the right coronary artery distal vessel. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RCA COLLATERAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRESENT;N:NOT PRESENT;",
+      "helpText": "This allows the user to enter the right coronary artery collateral vessel. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "RCA ORIGIN OF COLLATERAL",
+      "dataType": "POINTER",
+      "rawType": "691.28PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple right coronary artery origins of collateral vessels. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LEFT MAIN CA NORMALITY",
+      "dataType": "POINTER",
+      "rawType": "P695.9'",
+      "required": false,
+      "pointerTo": 695.9,
+      "helpText": "This allows the user to enter the left main coronary artery normality. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LMCA NARROWING",
+      "dataType": "POINTER",
+      "rawType": "691.29PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left main coronary artery narrowings. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.5,
+      "fieldName": "LMCA NARROWING #",
+      "dataType": "SUBFILE",
+      "rawType": "691.47A",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left main coronary artery narrowings. ",
+      "isMultiple": true,
+      "subFileNumber": 691.47,
+      "fieldNumber_": 33.5
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "LAD NORMALITY",
+      "dataType": "POINTER",
+      "rawType": "P695.9'",
+      "required": false,
+      "pointerTo": 695.9,
+      "helpText": "This allows the user to enter the left anterior descending coronary artery normality. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "LAD SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "691.3PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left anterior descending coronary artery segments. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LAD DISTAL VESSELS",
+      "dataType": "POINTER",
+      "rawType": "P696.3'",
+      "required": false,
+      "pointerTo": 696.3,
+      "helpText": "This allows the user to enter the left anterior descending distal vessels. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "LAD COLLATERALS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;P:PRESENT;",
+      "helpText": "This allows the user to enter left anterior descending collateral vessels. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "LAD ORIGIN OF COLLATERALS",
+      "dataType": "POINTER",
+      "rawType": "691.31PA",
+      "required": false,
+      "helpText": "This allows the user to enter the left anterior descending arterial origin of collaterals (multiple). ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "CIRCUMFLEX NORMALITY",
+      "dataType": "POINTER",
+      "rawType": "P695.9'",
+      "required": false,
+      "pointerTo": 695.9,
+      "helpText": "This allows the user to enter the circumflex coronary normality. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CIRCUMFLEX SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "691.32PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple circumflex artery segments. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CIRCUMFLEX DISTAL VESSEL",
+      "dataType": "POINTER",
+      "rawType": "P696.3'",
+      "required": false,
+      "pointerTo": 696.3,
+      "helpText": "This allows the user to enter circumflex coronary artery distal vessels. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "CIRCUMFLEX COLLATERALS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;P:PRESENT;",
+      "helpText": "This allows the user to enter the circumflex coronary artery collaterals. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CIR. ORIGIN OF COLLATERALS",
+      "dataType": "POINTER",
+      "rawType": "691.33PA",
+      "required": false,
+      "helpText": "This allows the user to enter the origin of circumflex collaterals. (multiple) ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "FLUOROSCOPY",
+      "dataType": "SET",
+      "rawType": "691.34SA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple visualizations of calcium noted during the cardiac cath. ",
+      "isMultiple": true,
+      "subFileNumber": 691.34,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DOMINANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:LEFT DOMINANCE;R:RIGHT DOMINANCE;B:BALANCED DOMINANCE;",
+      "helpText": "This allows the user to enter the dominant coronary tree. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "BYPASS GRAFT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NOT PRESENT;P:PRESENT;",
+      "helpText": "This allows the user to enter the presence of coronary bypass grafts. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DISTAL ANASTOMOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.35PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple distal anastomosis. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "ANGIOPLASTY SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "691.36PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple angioplasty segments. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "LEFT VENTRICULOGRAPHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;G:GLOBAL HYPOKINESIS;NO:NOT PERFORMED;",
+      "helpText": "This field identifies the field used to enter the performance of a left ventriculography. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LEFT VENTRICULAR WALL MOTION",
+      "dataType": "POINTER",
+      "rawType": "691.39PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple LV wall motion normalities. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "MITRAL REGURGITATION",
+      "dataType": "POINTER",
+      "rawType": "P696.7'",
+      "required": false,
+      "pointerTo": 696.7,
+      "helpText": "This allows the user to enter the presence of mitral regurgitation. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 51.5,
+      "fieldName": "MITRAL REGURGITANT FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the mitral regurgitation fraction. ",
+      "fieldNumber_": 51.5
+    },
+    {
+      "fieldNumber": 51.6,
+      "fieldName": "AORTIC REGURGITANT FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter aortic regurgitant fraction. ",
+      "fieldNumber_": 51.6
+    },
+    {
+      "fieldNumber": 51.7,
+      "fieldName": "TOTAL REGURGITANT FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the computed total regurgitant fraction. ",
+      "fieldNumber_": 51.7
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "THROMBUS OM LV GRAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This allows the user to enter presence of a LV thrombus. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LV EJECTION FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated LV ejection fraction. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "AORTOGRAPHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:1+;2:2+;3:3+;4:4+;5:5+;",
+      "helpText": "This allows the user to enter the aortography projection. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "AORTIC ROOT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;D:DILATED;",
+      "helpText": "This allows the user to enter the aortic root dimensions normality. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "SINUSES OF VALSALVA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:2 SINUSES OF VALSALVA;3:3 SINUSES OF VALSALVA;",
+      "helpText": "This allows the user to enter number of sinuses of valsalva. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "BYPASS GRAFTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:ONE;2:TWO;3:THREE;4:FOUR;5:FIVE;",
+      "helpText": "This allows the user to enter number of coronary bypass grafts. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "COMPLICATION",
+      "dataType": "POINTER",
+      "rawType": "691.4PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple cardiac cath. complications. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "INTERPRETATION",
+      "dataType": "POINTER",
+      "rawType": "*P693.2'",
+      "required": false,
+      "pointerTo": 693.2,
+      "helpText": "This allows the user to enter the final interpretation of  the cardiac cath. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CONCLUSION",
+      "dataType": "SUBFILE",
+      "rawType": "691.41",
+      "required": false,
+      "helpText": "This allows the user to enter specific statements in reference to the cardiac cath. ",
+      "isMultiple": true,
+      "subFileNumber": 691.41,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PLAN",
+      "dataType": "SUBFILE",
+      "rawType": "691.42",
+      "required": false,
+      "helpText": "This allows the user to enter specific statements in reference to the patient's management plan. ",
+      "isMultiple": true,
+      "subFileNumber": 691.42,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "CARDIOLOGY FELLOW",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This allows the user to enter the primary cardiology fellow. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "CARDIOLOGY STAFF",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This allows the user to enter the primary physician in attendance. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "CARDIOLOGY FELLOW-2ND",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This allows the user to enter the secondary cardiology fellow. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "CARDIOLOGY STAFF-2ND",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This allows the user to enter the secondary physician in attendance. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will be displayed in the summary areas of Order Entry/Results Reporting and Health Care Summaries. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.46P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 899,
+      "fieldName": "MARKED FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARKED FOR DELETION;",
+      "helpText": "This field is used by lookup operations to screen out such records from general access by the electronic medical record.  The functionality allows this record to remain in the system for auditing purposes. ",
+      "fieldNumber_": 899
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC VISIT file for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the individual who created this version of the record, the last person to edit the entree. ",
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "ENTERING ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the scrambled electronic signature. ",
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the record was entered. ",
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the New Person file identifier of the person releasing the record. The person entering the electronic signature is captured here. ",
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "VERIFIER ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the electronic signature of the verifier. ",
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the record was verified. ",
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASE ON-LINE VERIFIED;ROV:RELEASE OFF-LINE VERIFIED;RNV:RELEASE NOT VERIFIED;S:SUPERSEDED;SRV:SUPERSEDING RELEASE ON-LINE VERIFIED;SROV:SUPERSEDING RELEASE OFF-LINE VERIFIED;",
+      "helpText": "This field controls the release status of the record. ",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the record was released to the general medical record viewer. ",
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the procedure was signed electronically. ",
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This indicator controls the process of superseding released records which require addendums or changes.  This functionality allows an auditing of information which has been available for the medical record. ",
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field directs the flow of supersessions of records. ",
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARKED FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARKED FOR DELETION;",
+      "helpText": "This field allows the record to remain in the database but screened from the medical record. ",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field documents the identity of the deleter. ",
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the date and time that the supersession took place. ",
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "RECORD CREATATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the original file entry for this procedure was made. ",
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This value documents the sequence number of record revisions. ",
+      "fieldNumber_": 1515
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "691.12005P",
+      "required": false,
+      "helpText": "This field points to an entry in the image file. ",
+      "fieldNumber_": 2005
+    },
+    {
+      "fieldNumber": 2006,
+      "fieldName": "RESTING HEART RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the patient's resting heart rate. ",
+      "fieldNumber_": 2006
+    },
+    {
+      "fieldNumber": 2007,
+      "fieldName": "END DIASTOLIC VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular diastolic volume. ",
+      "fieldNumber_": 2007
+    },
+    {
+      "fieldNumber": 2008,
+      "fieldName": "END SYSTOLIC VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular end systolic volume. ",
+      "fieldNumber_": 2008
+    },
+    {
+      "fieldNumber": 2009,
+      "fieldName": "CARDIAC OUTPUT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This field computes the Angiographic Cardiac Output from the Resting Heart Rate (#2006), EDV (#2007), and ESV (#2008).                                                              The formula used is:   Heart_Rate * (EDV - ESV). ",
+      "fieldNumber_": 2009
+    }
+  ],
+  "fieldCount": 102,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "691.1", "field": .01, "type": "regular"},
+    {"name": "691.1", "field": .01, "type": "regular"},
+    {"name": "691.1", "field": 1, "type": "regular"},
+    {"name": "691.1", "field": 1, "type": "regular"},
+    {"name": "691.1", "field": 1.1, "type": "regular"},
+    {"name": "691.1", "field": 1.2, "type": "regular"},
+    {"name": "", "field": 63, "type": "regular"},
+    {"name": "691.1", "field": 900, "type": "regular"},
+    {"name": "691.1", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S ZZ=+$P(^(0),\"^\",2) W \"   \",$S($D(^MCAR(690,ZZ,0))#2:$P(^DPT(ZZ,0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\") K ZZ"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(691.1,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

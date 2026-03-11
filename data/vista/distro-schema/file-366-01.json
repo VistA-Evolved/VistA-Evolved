@@ -1,0 +1,121 @@
+{
+  "fileNumber": 366.01,
+  "fileName": "NCPDP PROCESSOR",
+  "globalRoot": "366.01",
+  "globalReference": "^IBCNR(366.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The NCPDP Processor's long name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BLOCKED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Flag indicating if the NCPDP Processor is blocked from receiving NCPDP transmissions. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time associated with the creation of the NCPDP Processor  file (#366.01) entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PRIMARY CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's primary contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PRIMARY CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's primary contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PRIMARY CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's primary contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ALTERNATE CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's alternate contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ALTERNATE CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's alternate contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ALTERNATE CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP Processor's alternate contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTACT MEANS",
+      "dataType": "SUBFILE",
+      "rawType": "366.012",
+      "required": false,
+      "helpText": "The NCPDP Processor's Contact Means sub-file Applies to both the NCPDP Processor's primary and alternate contacts. ",
+      "isMultiple": true,
+      "subFileNumber": 366.012,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "366.013P",
+      "required": false,
+      "helpText": "The NCPDP Processor's Application (electronic interface application) sub-file. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "366.01", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

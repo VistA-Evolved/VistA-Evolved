@@ -1,0 +1,132 @@
+{
+  "fileNumber": 83.1,
+  "fileName": "DRG MDC CATEGORY DRG",
+  "globalRoot": "83.1",
+  "globalReference": "^ICDD(83.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DRG",
+      "dataType": "POINTER",
+      "rawType": "RP80.2'",
+      "required": true,
+      "pointerTo": 80.2,
+      "helpText": "This is a Diagnostic Related Group (DRG) code.  Entry will define all the  characteristics necessary for the DRG to calculate. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MDC-CAT",
+      "dataType": "POINTER",
+      "rawType": "RP83'",
+      "required": true,
+      "pointerTo": 83,
+      "helpText": "The MDC-Category this DRG is assigned to.  Each DRG is assigned to one  MDC-Category that defines the related care. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "UNIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a simple counter (1:1) of DRG records within a category as there  may be more than one entry per DRG.  The Unit combined with the DRG  uniquely identifies the DRG record within the category. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CATEGORY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MEDICAL;MP:MEDICAL W/OR;P:SURGICAL;",
+      "helpText": "Each DRG is defined as either Medical or Surgical based on the level of  care being provided.  This generally corresponds to the assignment of  Operating Room procedures and DRG hierarchy.                MEDICAL DRGs may not be assigned if Operating Room procedures exist for  the event unless specifically required.   MEDICAL W/OR is a special subset of Medical that allows unrelated  Operating Room procedures.   SURGICAL may have specifically required and/or unrelated Operating Room  procedures. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If the patient's Age affects the selection of the DRG then enter that Age here. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "If the patient's Sex affects the selection of the DRG then enter that  here.  Selecting a value for this field will limit the DRGs selection to patients of that Sex. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MCC REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MCC REQ;",
+      "helpText": "Identifies if a Secondary Diagnosis defined as a major complication or  comorbidity (MCC) is required for this DRG to be selected.   Or the Principal Diagnosis must be an MCC of its Own. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CC REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CC REQ;",
+      "helpText": "Identifies if a Secondary Diagnosis defined as a complication or  comorbidity (CC) is required for this DRG to be selected.   Or the Principal Diagnosis must be a CC of its Own. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SPECIAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AMA;2:ALIVE;3:EXPIRED;4:TRANSFER ACF;5:EXPIRED/TACF;",
+      "helpText": "Special circumstances of the patient stay that are required for the DRG  to be selected:              AMA - patient left hospital Against Medical Advice ALIVE - patient did not die during the stay EXPIRED - patient died during the stay TRANSFER ACF - Patient transferred to an Acute Care Facility on Discharge EXPIRED/TACF - Patient either died during the stay or transferred to an  Acute Care Facility on Discharge ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CASE/SET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies DRGs that require a distinct sub-set of codes within the  category to be selected.  These are generally in addition to the other  codes required for the less specific DRGs within the category.   The Case/Set Name should match or contain at least one of the Code Sets  assigned to the DRGs MDC Case. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MDC CASE",
+      "dataType": "DATE",
+      "rawType": "83.1001D",
+      "required": false,
+      "helpText": "The MDC Case identifies the groups of Code Sets that define the DRG and  are required for that DRGs selection.  A DRG may have multiple Case's  assigned, any one of the Cases will result in the DRG being selected (OR). ",
+      "isMultiple": true,
+      "subFileNumber": 83.1001,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ACE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "83.1", "field": .01, "type": "regular"},
+    {"name": "83.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICDD(83,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(83,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

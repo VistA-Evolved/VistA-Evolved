@@ -1,0 +1,97 @@
+{
+  "fileNumber": 665.1,
+  "fileName": "PROSTHETIC HOME/LIAISON VISITS",
+  "globalRoot": "665.1D",
+  "globalReference": "^RMPR(665.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE VISIT OPENED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date that the Home/Liaison visit was opened. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT NAME/INSTITUTION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "Variable pointer to the Patient File, Institution File, and the Vendor File. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF VISIT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "H:HOME;L:LIAISON;",
+      "helpText": "Indicates if visit was a Home or Liaison Visit ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VISITOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the New Person File. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE VISIT CLOSED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the Date that the Home/Liaison visit was closed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "TOTAL HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Contains the total hours of the visit. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REASON FOR VISIT",
+      "dataType": "SUBFILE",
+      "rawType": "665.15",
+      "required": false,
+      "helpText": "Contains information regarding the reason for the visit. ",
+      "isMultiple": true,
+      "subFileNumber": 665.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Station number stored to allow splitting up for Amis calculations ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "665.1", "field": .01, "type": "regular"},
+    {"name": "665.1", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "fileNumber": 104,
+  "fileName": "MDRO SITE PARAMETERS",
+  "globalRoot": "104",
+  "globalReference": "^MMRS(104,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This field contains the division the parameters are defined for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECEIVING UNIT SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be set to 'Yes' if at your site the admitting (or  receiving) unit screens patients on unit-to-unit transfers. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISCHARGING UNIT SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be set to 'Yes' if at your site the discharging unit  screens patients on unit-to-unit transfers. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCREEN POS ON TRANSFER IN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be set to 'Yes' if at your site you are screening all  patients on transfers into the unit, regardless of MRSA status. This field should be set to 'No' if you only screen patients not known to be infected and/or colonized with MRSA on transfers into the unit. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SCREEN POS ON DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be set to 'Yes' if at your site you are screening  patients on discharge, death, or transfer out from the unit, regardless of MRSA status.   This field should be set to 'No' if you only screen patients not known to be infected and/or colonized with MRSA on discharge, death, or transfer out from the unit. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ISOLATION ORDERS",
+      "dataType": "POINTER",
+      "rawType": "104.05PA",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 216061,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "104.0216061P",
+      "required": false,
+      "helpText": "This subfile contains specimen(s) for each division. ",
+      "fieldNumber_": 216061
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "104", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "fileNumber": 101.51,
+  "fileName": "ORDER EPCS AUDIT",
+  "globalRoot": "101.51",
+  "globalReference": "^ORD(101.51,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER",
+      "dataType": "POINTER",
+      "rawType": "RP100'",
+      "required": true,
+      "pointerTo": 100,
+      "helpText": "This is the Order being audited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AUDIT LOGS",
+      "dataType": "DATE",
+      "rawType": "101.511D",
+      "required": false,
+      "helpText": "These are the audit logs for this Order. ",
+      "isMultiple": true,
+      "subFileNumber": 101.511,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "101.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

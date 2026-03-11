@@ -1,0 +1,58 @@
+{
+  "fileNumber": 503339.1,
+  "fileName": "VOLUNTARY SERVER MESSAGE",
+  "globalRoot": "503339.1",
+  "globalReference": "^ABS(503339.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the internal entry number of the download message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the code for the type of download; the month, day and year (MMDDYY) it was created; the station number it pertains to; and the sequence number of the message within the total download message count. For example: TYPE-MMDDYY-STATION NUMBER-SEQUENCE NUMBER ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RECEIVED;S:SERVED;",
+      "helpText": "This field identifies the status of the download message. When the message arrives it is marked as RECEIVED. After the message has been processed it is marked as SERVED. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the download message was received. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "503339.1", "field": .01, "type": "regular"},
+    {"name": "503339.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(450.12,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(450.12,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

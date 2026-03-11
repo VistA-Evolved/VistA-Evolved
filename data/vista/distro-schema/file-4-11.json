@@ -1,0 +1,37 @@
+{
+  "fileNumber": 4.11,
+  "fileName": "AGENCY",
+  "globalRoot": "4.11",
+  "globalReference": "^DIC(4.11,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the agency. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AGENCY CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "V:VA;AF:AIR FORCE;I:IHS;ARMY:ARMY;N:NAVY;O:OTHER;E:EHR;USCG:COAST GUARD;",
+      "helpText": "a short code for the agency. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

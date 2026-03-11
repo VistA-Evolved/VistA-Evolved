@@ -1,0 +1,81 @@
+{
+  "fileNumber": 137.45,
+  "fileName": "LOCAL SURGICAL SPECIALTY",
+  "globalRoot": "137.45I",
+  "globalReference": "^SRO(137.45,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the 'local' surgical specialty used at this site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NATIONAL SURGICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P45.3'O",
+      "required": true,
+      "pointerTo": 45.3,
+      "helpText": "This is the 'national' surgical specialty in file 45.3 to which this 'local' specialty points. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSOCIATED CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the default clinic associated with operations or procedures performed by this surgical specialty.  This information is used to document patient encounters in the VISIT file (#900010). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to make this specialty inactive and to prevent its selection and use by users in the Surgery Package. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a code used for selecting local surgical specialties.  Your answer may be a number, number/letter combination, or brief alphabetic code.  The specialty code is optional.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ROBOTIC DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO - ROBOTICS NOT USED;",
+      "helpText": "Setting this field to NO - ROBOTICS NOT USED will cause the software to automatically set the ROBOTIC ASSISTANCE (Y/N) field to NO when a surgical case is created and this specialty is selected. The value of  the ROBOTIC ASSISTANCE (Y/N) for the case can still be modified for the case later.   Leave this field blank if the specialty uses robotics for any procedures. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B1", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "137.45", "field": .01, "type": "regular"},
+    {"name": "137.45", "field": 1, "type": "regular"},
+    {"name": "137.45", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(45.3,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(45.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

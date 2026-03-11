@@ -1,0 +1,540 @@
+{
+  "fileNumber": 356.19,
+  "fileName": "CLAIMS TRACKING UNBILLED AMOUNTS DATA",
+  "globalRoot": "356.19",
+  "globalReference": "^IBE(356.19,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Enter the Month and Year for this data.  Days of the week are not allowed. Only one entry for a month/year may be entered.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CURR MON NO. INPT BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the number of inpatient bills authorized for the current month.   For example, the record for September, 1994 should contain the count of all the inpatient bills whose Authorization Date in the BILL/CLAIMS file is in September, 1994, irregardless of the date of the care being billed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CURR MON $AMNT INPT BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Enter the total dollar value of the inpatient bills authorized during this month.  This is the sum of the Total Bill amount for the bills counted in the CURR MON NO. INPT BILLS field (.02). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CURR MON NO OPT VSTS BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the number of outpatient visits authorized for this month.  If a bill is for three visits then the count would be three.   For example, the record for September, 1994 should contain the count of all the outpatient bills whose Authorization Date in the BILL/CLAIMS file is in September, 1994, irregardless of the date of the care being billed. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CURR MON $AMNT OPT BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Enter the total dollar value of the outpatient bills authorized during this month.  This is the sum of the Total Bill Amount for the bills counted in the CURR MON NO. OPT BILLS field (.04) ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME CURR MON UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the monthly totals were last updated.  The processes that run automatically will not overwrite existing data, use the user options to update these fields. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PRIOR 12 MON NO. INPT BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the prior 12 months number of inpatient bills.  This should be the sum of the number of inpatient bills for the 12 months preceding this month.     This field is automatically updated by the software. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRIOR 12 MON $AMNT INPT BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Enter the total of the dollar amount of inpatient bills authorized in the preceding 12 months, not including this month. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRIOR 12 MON OPT VST BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter the sum of the number of outpatient visits on bills authorized during the preceding 12 months.  Do no include bills authorized during the current month.   For example, the October, 1994, entry would contain the total outpatient visits from October 31, 1993 to September 31, 1994. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PRIOR 12 MON $AMNT OPT BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Enter the sum of the dollar amount of outpatient bills authorized during the preceding 12 months.  Do no include bills authorized during the current month.     For example, the October, 1994, entry would contain the total dollar amount of outpatient bills from October 31, 1993  to September 31, 1994. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DATE/TIME PRIOR 12 MON UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the prior 12 month totals were last updated.  The processes that run automatically will not overwrite existing data, use the user options to update these fields. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "NUMBER OF UNBILLED INPT. CASES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient cases that appear billable but  do not have a final bill associated with it (either an admit to discharge, or an interim final claim bill) by the end of the reporting period.    This field is updated automatically by the software.  The CLAIMS TRACKING file (356) is used as the sole source of potentially billable admissions. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "AVERAGE INPT. BILL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the average inpatient bill dollar amount used to determine the unbilled amount for this month.  It can be determined by dividing field .08 by field .07.   The unbilled inpatient amount is determined by multiplying field .13 by field .12 ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "NUMBER OF UNBILLED OPT. CASES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of unbilled but potentially billable outpatient  visits that were not billed by the end of the reporting period.   This field is updated automatically by the software.  It uses the CLAIMS TRACKING file (356) as the source of all outpatient visits. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "AVERAGE OPT. BILL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the average amount billed for an outpatient visit during the 12 months prior to the month that this entry is for. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DATE/TIME UNBILLED RPT UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Unbilled Amounts report was last run for this  month and the monthly totals were updated. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "FOR MONTH OF:",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Select the month and year you want to rebuild the report for.   The answer must be a month and year without a date, for example enter 'OCT 94'. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "NO. INPT INST. CLAIMS (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of institutional claims for inpatient episodes for the past month. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "AMT INPT INST. CLAIMS (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of institutional claims for inpatient episodes for the past month. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "NO. INPT EPISODES/INST. (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes for institutional claims for the past month. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "NO. INPT PROF. CLAIMS (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of professional claims for inpatient episodes for the past month. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "AMT INPT PROF. CLAIMS (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of professional claims for inpatient episodes for the past month. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "NO. INPT EPISODES/PROF. (MON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes for professional claims for the past month. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "NO. INPT INST. CLAIMS (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of institutional claims for inpatient episodes for the past 12 months. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "AMT INPT INST. CLAIMS (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of institutional claims for inpatient episodes for the past 12 months. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "NO. INPT EPISODES/INST. (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes for institutional claims for the past 12 months. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "NO. INPT PROF. CLAIMS (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of professional claims for inpatient episodes for the past 12 months. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "AMT INPT PROF. CLAIMS (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount of professional claims for inpatient episodes for the past 12 months. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "NO. INPT EPISODES/PROF. (12M)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes for professional claims for the past 12 months. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "DATE UPDATED (MON)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Average Bill Amounts data for the past month was stored in this file. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "DATE UPDATED (12M)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Average Bill Amounts data for the past 12 months was stored in this file. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "EPISODES MISSING INST CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes that have no corresponding institutional claims. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "EPISODES MISSING PROF CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of inpatient episodes that have no corresponding professional claims. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "ENCOUNTERS MISSING CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of outpatient encounters prior to 9/1/99 that have no corresponding claims. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "CPT CODES MISSING INST CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of CPT/procedure codes for outpatient encounters that have no corresponding institutional/technical claims. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "CPT CODES MISSING PROF CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of CPT/procedure codes for outpatient encounters that have no corresponding professional claims. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "NUMBER OF UNBILLED RX'S",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of prescriptions that have no corresponding claims. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "UNBILLED INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total amount of unbilled inpatient care. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "UNBILLED OUTPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total amount of unbilled outpatient care. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "UNBILLED RX AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total amount of unbilled prescriptions. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "TOTAL UNBILLED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the combined total of the UNBILLED INPATIENT AMOUNT, UNBILLED OUTPATIENT AMOUNT, and the UNBILLED RX AMOUNT. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "DATE UNBILLED REPORT UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the unbilled amounts report was generated. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "NO. MRA INPT INST CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The number of admissions with an inpatient institutional bill in MRA req status. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "NO. MRA INPT PROF CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The number of admissions with an inpatient professional bill in MRA req status. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "MRA CPT CODES ON INST CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The number of CPT codes found on institutional claims in a REQUEST MRA status. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "MRA CPT CODES ON PROF CLAIMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The number of CPT codes found on professional claims in a REQUEST MRA status. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "NUMBER OF MRA UNBILLED RX'S",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The # of prescriptions on claims in REQUEST MRA status. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "MRA UNBILLED INPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The total amount of inpatient charges for bills in MRA request status. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "MRA UNBILLED OUTPATIENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The total amount of outpatient charges for bills in MRA request status. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "MRA UNBILLED PRESCRIPTION AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The total amount of prescription charges for bills in MRA request status. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "TOTAL MRA UNBILLED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "The total amount of unbilled inpatient, outpatient and Rx on MRA request claims. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TOTAL UNBILLED INPT. CARE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12,2",
+      "length": 12,
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TOTAL UNBILLED OPT. CARE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12,2",
+      "length": 12,
+      "required": false,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "B", "field": },
+    {"name": "356.19", "field": .01, "type": "regular"},
+    {"name": "356.19", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

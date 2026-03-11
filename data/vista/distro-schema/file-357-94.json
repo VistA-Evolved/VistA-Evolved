@@ -1,0 +1,87 @@
+{
+  "fileNumber": 357.94,
+  "fileName": "ENCOUNTER FORM PRINTERS",
+  "globalRoot": "357.94P",
+  "globalReference": "^IBE(357.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERMINAL TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP3.2'",
+      "required": true,
+      "pointerTo": 3.2,
+      "helpText": "Enter the terminal type that you'd like to define for encounter forms. You can enter a printer control language, simplex and duplex printer escape sequences.  Currently only PCL5 is supported for scannable  encounter forms.  Simplex and Duplex printing is supported on all printers that have duplex printing ability.  Generally all HP printers (HP3 and  above) support PCL5. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINTER LANGUAGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PCL5;",
+      "helpText": "Enter the printer control language that this terminal type supports for printing scannable encounter forms.  Currently only PCL5 is supported.   If this terminal type supports PCL5 then enter PCL5, otherwise this should be left blank.  Generally all HP printers (HP3 and above) support PCL5. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SIMPLEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the code used to put this printer into Simplex mode (one sided print).  For PCL5 printers this generally is $C(27)_\"&l0S\".  Be careful when typing this in, the character sequence is: Escape, ampersand, lower case L, numeral zero, capital S. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DUPLEX, LONG-EDGE BINDING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the code used to put this printer into Duplex mode, long Edge Binding (two sided printing, like you'd use in a binder).  For  PCL5 printers this generally is $C(27)_\"&l1S\".  Be careful when typing this in, the character sequence is: Escape, ampersand, lower case L, numeral 1, capital S.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DUPLEX, SHORT-EDGE BINDING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the code used to put this printer into Duplex mode, short Edge Binding (two sided printing, like you'd use in a patient chart). For PCL5 printers this generally is $C(27)_\"&l2S\".  Be careful when typing this in, the character sequence is: Escape, ampersand, lower case L, numeral 2, capital S.                                              ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TCP PRINTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'Yes' if this is a TCP printer terminal type such as P-REMOTE.    Currently the duplex printing of Encounter Forms does not work correctly when sent to a TCP printer using a Jet Direct card.  The problem is that at the end of the first page the printer appears to overflow causing a form feed.  The subsequent form feed then causes the back of the page to be blank and the beginning of page 2 to start on a new page.  While this issue is actively being reseached at the time of release of AICS ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESET EXECUTE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the printer code that you would like sent to the printer immediately after a reset is sent when using PCL5 to print encounter forms.  This is primarily intended to support changes to which bin the paper should be sent to. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.94", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

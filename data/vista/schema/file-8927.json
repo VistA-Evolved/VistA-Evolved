@@ -1,0 +1,257 @@
+{
+  "fileNumber": 8927,
+  "fileName": "TIU TEMPLATE",
+  "globalRoot": "8927",
+  "globalReference": "^TIU(8927,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the template as it will appear in the template tree, 3-60 characters in length, not starting with punctuation.   Duplicate NAMEs ARE permitted, and are distinguished by the tree they belong to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BLANK LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the number of blank lines inserted between Group Template items when the template is used for composing documents.   For example, suppose a Group Template DEMOGRAPHICS has item templates NAME and ADDRESS, each with boilerplate as shown:          Template        Boilerplate        -------------------------------        NAME            Patient Name:        ADDRESS         Street Address:                        City:                        State, Zip:   Then the boilerplate for a document e",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "T:TEMPLATE;G:GROUP TEMPLATE;C:CLASS CONTAINER;P:PERSONAL ROOT CONTAINER;R:SHARED ROOT CONTAINER;TF:TITLE ROOT FOLDER;CF:CONSULT ROOT FOLDER;OF:PROCEDURE ROOT FOLDER;",
+      "helpText": "The TIU TEMPLATE FILE stores templates for use in composing documents and also stores the containers which organize the templates into trees. Every entry in the file belongs to at least one tree.  Some entries contain other entries as items.   There are 5 types of entries in the TIU TEMPLATE FILE:       'T' for TEMPLATE       'G' for GROUP TEMPLATE       'C' for CONTAINER       'P' for PERSONAL ROOT CONTAINER       'R' for SHARED ROOT CONTAINER       'TF' for TITLE ROOT FOLDER       'CF' for CON",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "Entries in the TIU TEMPLATE FILE have status ACTIVE or INACTIVE. Status INACTIVE serves as a way to hide entries from users composing documents.   INACTIVE templates are NOT available for composing documents. In theory, ACTIVE templates ARE available.  In fact, however, even an ACTIVE template's select ability depends on its position in the tree, as will be seen below.   Containers, for their part, may also have status ACTIVE or INACTIVE, and may contain ACTIVE or INACTIVE items.  Thus, an INACT",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXCLUDE FROM GROUP BOILERPLATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Applies only to templates (types T and G). There are occasions when a template is added as an item to some Group Template simply as a logical storage place, and not because the template is usually desired as part of the composite boilerplate text of the Group Template.   This field permits the user to specify that a particular template be ignored whenever it is an item of a Group Template being used to compose a document.   The field applies to both shared and personal templates. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PERSONAL OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The PERSONAL OWNER of an entry is a user from the NEW PERSON FILE who can edit the template or container.  An entry is recognized by the computer as personal (as opposed to shared) by the presence of a PERSONAL OWNER. PERSONAL OWNER is set automatically when a user goes to edit a shared entry in their personal tree: the shared entry is copied, and the user is made the owner of the copy. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EDITOR CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8930'X",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "EDITOR CLASS applies ONLY to shared root containers, active or inactive. The EDITOR CLASS is a class from the USR CLASS FILE whose members can edit all containers and templates in the shared template tree.  This applies to the SHARED ROOT CONTAINER, TITLE ROOT FOLDER, CONSULT ROOT FOLDER and PROCEDURE ROOT FOLDER.   The CLINICAL COORDINATOR User Class is automatically made the default EDITOR CLASS when a Shared Root Container is first created. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DIALOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When this field is Yes, Group Templates appear to function as dialogs, asking the user to check off which elements of the group to insert into the note. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DISPLAY ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When this field is yes, a template will not be selectable from within a template dialog, but will appear for informational purposes only. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "FIRST LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to YES, the template will only show the first line of text when displayed in a template dialog.  All text will be added to the note text. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ONE ITEM ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to YES, this field allows only one child item to be  selected at a time.  Selecting a new child item unselects any existing child items. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "HIDE DIALOG ITEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "In a template dialog, this field allows child items to be  hidden when the parent item has not been selected. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "HIDE TREE ITEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to YES, this field will cause a folder, group template or dialog to not display any of it's child items when viewed from the Templates drawer. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "INDENT ITEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to YES, child items will be indented in the dialog. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "REMINDER DIALOG",
+      "dataType": "POINTER",
+      "rawType": "*P801.41'X",
+      "required": false,
+      "pointerTo": 801.41,
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "LOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Not Locked;1:Locked;",
+      "helpText": "Locks Shared Templates so they can not be copied. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "COM OBJECT",
+      "dataType": "POINTER",
+      "rawType": "*P101.15'",
+      "required": false,
+      "pointerTo": 101.15,
+      "helpText": "When linked to a COM Object, template activates object. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "COM PARAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Optional Parameter to pass to COM Object ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "LINK",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "VX",
+      "required": false,
+      "helpText": "Allows link to a TIU Title, Consult Reason for Request, or Procedure Reason for Request. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CONSULT LOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set by adding or removing templates to or from the TIU TEMPLATE CONSULT LOCK parameter via the TIU TEMPLATE CONSULT LOCK option. When this field is set to YES, the template may not be edited in the CPRS GUI Template Editor. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BOILERPLATE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8927.02",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8927.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8927.05",
+      "required": false,
+      "helpText": "This field can be used to keep notes about a given template. ",
+      "isMultiple": true,
+      "subFileNumber": 8927.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEMS",
+      "dataType": "SUBFILE",
+      "rawType": "8927.03IA",
+      "required": false,
+      "helpText": "Items are themselves members of the TIU TEMPLATE FILE, and vary according to the type of the item parent.   A container (type C, P, or R) holds templates (TEMPLATES and GROUP TEMPLATES) as its items. It may also hold other containers as items.   A GROUP TEMPLATE is made up of TEMPLATES or of other GROUP TEMPLATES as items.  Its boilerplate text is a composite consisting of, first, it own boilerplate text if it has any, and then the boilerplate text of its items, in SEQUENCE order.  (See also fie",
+      "isMultiple": true,
+      "subFileNumber": 8927.03,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AL", "field": },
+    {"name": "AROOT", "field": },
+    {"name": "AROOT1", "field": },
+    {"name": "AROOT2", "field": },
+    {"name": "B", "field": },
+    {"name": "PO", "field": },
+    {"name": "8927", "field": .01, "type": "regular"},
+    {"name": "8927", "field": .03, "type": "regular"},
+    {"name": "8927", "field": .04, "type": "regular"},
+    {"name": "8927", "field": .06, "type": "regular"},
+    {"name": "8927", "field": .06, "type": "regular"},
+    {"name": "8927", "field": .19, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

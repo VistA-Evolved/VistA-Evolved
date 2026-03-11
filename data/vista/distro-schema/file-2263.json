@@ -1,0 +1,39 @@
+{
+  "fileNumber": 2263,
+  "fileName": "ASISTS DOL TYPE OF INJURY CODES",
+  "globalRoot": "2263",
+  "globalReference": "^OOPS(2263,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This is the NAME of the Type of Injury Code as defined by the Department of Labor (DOL).  The NAME must not be altered for any Type of Injury Code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0I",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the Code that is associated with the NAME of the Type of Injury Code as defined by the Department of Labor (DOL).  These CODES must not be changed. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2263", "field": .01, "type": "regular"},
+    {"name": "2263", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "fileNumber": 2006.5733,
+  "fileName": "QUERY/RETRIEVE STATISTICS",
+  "globalRoot": "2006.5733",
+  "globalReference": "^MAGDAUDT(2006.5733,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The value of this field is a date. This date identifies the date for which statistics are being recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "2006.57331PA",
+      "required": false,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5733", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

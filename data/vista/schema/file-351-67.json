@@ -1,0 +1,28 @@
+{
+  "fileNumber": 351.67,
+  "fileName": "TRANSFER PRICING INPT PROSTHETIC ITEMS",
+  "globalRoot": "351.67",
+  "globalReference": "^IBAT(351.67,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "R*P661.1'",
+      "required": true,
+      "pointerTo": 661.1,
+      "helpText": "This is a direct pointer to file 661.1 for the prosthetic items to be automatically billed for inpatients.  Most prosthetic devices for inpatients are covered by the price of the DRG for the inpatient stay. However, some are not.  Sites may identify specific items that would not be covered by the price of the DRG. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.67", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

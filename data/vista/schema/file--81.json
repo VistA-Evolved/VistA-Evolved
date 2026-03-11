@@ -1,0 +1,112 @@
+{
+  "fileNumber": .81,
+  "fileName": "DATA TYPE",
+  "globalRoot": ".81",
+  "globalReference": "^DI(.81,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,2",
+      "length": 16,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INTERNAL REPRESENTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STANDARD PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default prompt used during a Reader (^DIR) call of this data type, when no prompt is supplied in DIR(\"A\"). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SORT BY EXTERNAL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter 'YES' if, by default, data of this data type should sort by its external rather than internal form. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".8121",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .8121,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "FIELDS DEFINED BY THIS TYPE",
+      "dataType": "SUBFILE",
+      "rawType": ".81215",
+      "required": false,
+      "helpText": "This multiple field list all fields in this database that point to this DATA TYPE.  These are not editable here. The values are stuffed automatically when a field using this DATA TYPE is created under 'MODIFY FILE ATTRIBUTES'. ",
+      "isMultiple": true,
+      "subFileNumber": .81215,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PROPERTY",
+      "dataType": "POINTER",
+      "rawType": ".81101P",
+      "required": false,
+      "helpText": "This multiple lists all the PROPERTIES that specify what this DATA TYPE does. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "METHOD",
+      "dataType": "POINTER",
+      "rawType": ".81201P",
+      "required": false,
+      "helpText": "This multiple lists all the METHODS that specify what this DATA TYPE does. ",
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AFDEF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": ".81", "field": .01, "type": "regular"},
+    {"name": ".81", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

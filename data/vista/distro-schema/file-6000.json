@@ -1,0 +1,106 @@
+{
+  "fileNumber": 6000,
+  "fileName": "VBECS SITE PARAMETERS",
+  "globalRoot": "6000P",
+  "globalReference": "^VBEC(6000,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Used to have VA FileMan only have one entry in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'XI",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the name of the facility running this application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TOTAL LAB DATA RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field indicates the total number of records in the Lab Data  (#63) file when the data conversion begins. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NUM LAB DATA RECORDS CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "The number of records in the Lab Data (#63) file converted to VBECS is  automatically entered here when the data conversion application finishes processing. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TOTAL BLOOD INVENTORY RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the total number of records in the Blood Inventory (#65.4) file.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NUM BLOOD INVENTORY RECS CNVT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "The number of Blood Inventory (#65.4) file records converted to VBECS is automatically entered here when the data conversion application finishes processing. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field identifies the default directory where the legacy data files  reside.  On an Open VMS machine, the format will look something like:  'SYS$USER:[USER]'.  The directory specification ([USER]) optionally can  be preceded by a device name, in this case, 'SYS$USER' (and colon [:]).   Wildcard characters are not allowed. When identifying a subdirectory,  separate the names of the directory levels with periods (.).   Both file systems use the backslash (\\) character to separate directory  na",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VBECS MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P3.8'X",
+      "required": true,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group the person responsible for data validation and  data conversion should expect to see mail regarding results of the  aforementioned processes. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WORKLOAD RUN DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field hold the last run date for the workload extraction from VBECS.  The data in this field is the $H date and will be compared to the current  $H date when deciding whether or not to allow the extraction to run. Only  one run is allowed per day. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6000", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

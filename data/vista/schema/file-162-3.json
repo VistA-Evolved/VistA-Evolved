@@ -1,0 +1,138 @@
+{
+  "fileNumber": 162.3,
+  "fileName": "FEE CNH ACTIVITY",
+  "globalRoot": "162.3DI",
+  "globalReference": "^FBAACNH(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The internal entry number for each CNH Activity. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date and time of this activity (admission, discharge or transfer). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VETERAN",
+      "dataType": "POINTER",
+      "rawType": "RP161'",
+      "required": true,
+      "pointerTo": 161,
+      "helpText": "The name of the Fee Basis patient associated with this activity. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVITY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADMISSION;T:TRANSFER;D:DISCHARGE;",
+      "helpText": "Entry into this field indicates whether activity was an admission, discharge or transfer. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "An entry into this field will indicate that the activity at hand is part of an \"active\" admission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASSOCIATED ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "R*P162.3'X",
+      "required": true,
+      "pointerTo": 162.3,
+      "helpText": "This field points all activities back to the admission that they are associated with.  It allows for the ability to tie an admission with all associated transfers and a final discharge if one exists. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADMISSION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:AFTER RE-HOSPITALIZATION > 15 DAYS;2:TRANSFER FROM OTHER CNH;3:FROM ASIH < 15 DAYS;4:ALL OTHER;",
+      "helpText": "Field populated for activity types of 'admission' only.  Indicates the type of admission for veteran. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSFER TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:TO AUTHORIZED ABSENCE;2:TO UN-AUTHORIZED ABSENCE;3:TO ASIH;4:FROM AUTHORIZED ABSENCE;5:FROM UN-AUTHORIZED ABSENCE;6:FROM ASIH < 15 DAYS;",
+      "helpText": "Field is populated for activity type of 'transfer' only.  Indicates the type of transfer for each veteran. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISCHARGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REGULAR;2:DEATH;3:TRANSFER TO OTHER CNH;4:ASIH;5:DEATH WHILE ASIH;6:REGULAR - PRIVATE PAY;",
+      "helpText": "Field is populated for activity type of 'discharge' only.  Indicates the type of discharge for each veteran. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NURSING HOME",
+      "dataType": "POINTER",
+      "rawType": "*P161.2'",
+      "required": false,
+      "pointerTo": 161.2,
+      "helpText": "Reference to the Vendor file, this field indicates the name of the Nursing Home to which this activity is associated with (i.e. where the veteran is residing). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ASSOCIATED AUTHORIZATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The internal entry number of the Authorization associated with the admission entry.  Transfer and Discharge entries will not have this data. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "162.3", "field": .01, "type": "regular"},
+    {"name": "162.3", "field": 1, "type": "regular"},
+    {"name": "162.3", "field": 1, "type": "regular"},
+    {"name": "162.3", "field": 1, "type": "regular"},
+    {"name": "162.3", "field": 4, "type": "regular"},
+    {"name": "162.3", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^FBAAA(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(161,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(162.3,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

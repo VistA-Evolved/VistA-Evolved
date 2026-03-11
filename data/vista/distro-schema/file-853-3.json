@@ -1,0 +1,58 @@
+{
+  "fileNumber": 853.3,
+  "fileName": "VPS ALLERGY DISCREPANCY INDICATORS",
+  "globalRoot": "853.3",
+  "globalReference": "^VPS(853.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the internal entry number of the indicator entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "INDICATOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name field of the allergy discrepancy indicator entry. The field value is a variation of allergy changed, allergy confirmed, or allergy discrepancy indicator on the Kiosk. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field provides detailed description of the allergy discrepancy indicator entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CONFIRMED;X:CHANGED;D:DISCREPANCY;",
+      "helpText": "This field represents the type of indicator. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "853.3", "field": .01, "type": "regular"},
+    {"name": "853.3", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

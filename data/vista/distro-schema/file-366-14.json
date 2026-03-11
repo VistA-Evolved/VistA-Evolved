@@ -1,0 +1,43 @@
+{
+  "fileNumber": 366.14,
+  "fileName": "IB NCPDP EVENT LOG",
+  "globalRoot": "366.14",
+  "globalReference": "^IBCNR(366.14,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This date is populated by the IB software That supports the processing of ePharmacy Billing events for outpatient claims. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EVENT",
+      "dataType": "SET",
+      "rawType": "366.141SA",
+      "required": false,
+      "helpText": "This multiple contains 1 to many records by Event type that can occur on  a given date for 1 to many outpatient prescription claims. ",
+      "isMultiple": true,
+      "subFileNumber": 366.141,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "I", "field": },
+    {"name": "R", "field": },
+    {"name": "U", "field": },
+    {"name": "366.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

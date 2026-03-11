@@ -1,0 +1,148 @@
+{
+  "fileNumber": 50.67,
+  "fileName": "NDC/UPN",
+  "globalRoot": "50.67O",
+  "globalReference": "^PSNDF(50.67,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0aX",
+      "length": 9,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the 12 character NDC (National Drug Code) for this item. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UPN",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the UPN (Universal Product Number) for this item. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "P55.95'a",
+      "required": false,
+      "pointerTo": 55.95,
+      "helpText": "This is the manufacturer of this item. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRADE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the trade name of this item. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VA PRODUCT NAME",
+      "dataType": "POINTER",
+      "rawType": "P50.68'a",
+      "required": false,
+      "pointerTo": 50.68,
+      "helpText": "This is the VA Product associated with this item. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ROUTE OF ADMINISTRATION",
+      "dataType": "SUBFILE",
+      "rawType": "50.676A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.676,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This is the date when this item was made inactive. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PACKAGE SIZE",
+      "dataType": "POINTER",
+      "rawType": "P50.609'a",
+      "required": false,
+      "pointerTo": 50.609,
+      "helpText": "This is the package size. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PACKAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P50.608'a",
+      "required": false,
+      "pointerTo": 50.608,
+      "helpText": "This is the package type. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OTX/RX INDICATOR",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "O:Over the counter;R:Prescription;",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PREVIOUS NDC",
+      "dataType": "SUBFILE",
+      "rawType": "50.6711A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6711,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PREVIOUS UPN",
+      "dataType": "SUBFILE",
+      "rawType": "50.6712A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6712,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "ANDC", "field": },
+    {"name": "NDC", "field": },
+    {"name": "T", "field": },
+    {"name": "UPN", "field": },
+    {"name": "50.67", "field": 1, "type": "regular"},
+    {"name": "50.67", "field": 2, "type": "regular"},
+    {"name": "50.67", "field": 4, "type": "regular"},
+    {"name": "50.67", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

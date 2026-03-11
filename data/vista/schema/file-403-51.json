@@ -1,0 +1,37 @@
+{
+  "fileNumber": 403.51,
+  "fileName": "RECALL REMINDERS APPT TYPE",
+  "globalRoot": "403.51",
+  "globalReference": "^SD(403.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Type of Recall is asked when an Recall entry is made. This \"type\" is   created by the Recall Coordinator, and is used as a description as why the Veteran will need a Recall made. Some examples: (Followup, 6Month  Cleaning, and Yearly Exam). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Letter or Number that has been assigned to a Recall Type. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "403.51", "field": .01, "type": "regular"},
+    {"name": "403.51", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

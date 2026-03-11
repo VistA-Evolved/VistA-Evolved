@@ -1,0 +1,27 @@
+{
+  "fileNumber": 912.7,
+  "fileName": "ESP CRIME CATEGORIES",
+  "globalRoot": "912.7",
+  "globalReference": "^ESP(912.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the name of a primary crime category.  These categories have been selected by Security and Law Enforcement program directors.  New categories should NOT be added by local sites. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "912.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

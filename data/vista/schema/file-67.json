@@ -1,0 +1,263 @@
+{
+  "fileNumber": 67,
+  "fileName": "REFERRAL PATIENT",
+  "globalRoot": "67I",
+  "globalReference": "^LRT(67,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Name of patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Sex of patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "Date of birth of patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .033,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed field. ",
+      "fieldNumber_": .033
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MARITAL STATUS",
+      "dataType": "POINTER",
+      "rawType": "P11'",
+      "required": false,
+      "pointerTo": 11,
+      "helpText": " This field contains the marital status of the referral patient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RACE",
+      "dataType": "POINTER",
+      "rawType": "P10'",
+      "required": false,
+      "pointerTo": 10,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "RELIGION",
+      "dataType": "POINTER",
+      "rawType": "P13'",
+      "required": false,
+      "pointerTo": 13,
+      "helpText": " This field contains the religious preference of the referral patient. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Short description of referral. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REFERRAL SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Where specimen came from- (ex. Hospital, Physician's office) ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .104,
+      "fieldName": "PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .104
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street part of address of patient. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Secondary street address. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Tertiary street address. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City part of address of patient. ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "State part of address of patient. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Zip code part of address of patient. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Home phone number of patient. ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .132,
+      "fieldName": "OFFICE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Office (work) phone number of patient. ",
+      "fieldNumber_": .132
+    },
+    {
+      "fieldNumber": .133,
+      "fieldName": "PHONE #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Other phone number. ",
+      "fieldNumber_": .133
+    },
+    {
+      "fieldNumber": .134,
+      "fieldName": "PHONE #4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Other phone number. ",
+      "fieldNumber_": .134
+    },
+    {
+      "fieldNumber": .351,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date of death of patient. ",
+      "fieldNumber_": .351
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT FILE REF",
+      "dataType": "POINTER",
+      "rawType": "*P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the pointer to ^DPT( and is used to obtain patient's demographics. LEDI accessioning attempts to find a match in the Patient file (#2) using the PID (Socical Security Number). If a match is found, the patient's demographic information is copied into the REFERRAL PATIENT file fields, NAME, SSN, Date of Birth and sex.   The pointer entry stored in this field is used in future lookup for data validation. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "NHE FILE REF",
+      "dataType": "POINTER",
+      "rawType": "P537010'",
+      "required": false,
+      "pointerTo": 537010,
+      "helpText": "This field contains the pointer to the VAMC NETWORK PATIENT (#537010) file used to obtain patient's demographics. LEDI accessioning software attempts to find a match in the 537010 file using the PID (SSN). If a match is found, the patient's demographic information is copied into the REFERRAL PATIENT fields NAME,SSN and Date of Birth.   The pointer entry stored in this field is used in future lookups to data validation. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Patient Name",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field controls the sequence used to lookup of patient's demographic information already stored in either ^DPT( or the ^LRT(67 files. This field is used by LEDI patient accessioning software. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "Patient's record number in the lab data file. ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BS", "field": },
+    {"name": "BS5", "field": },
+    {"name": "C", "field": },
+    {"name": "CN", "field": },
+    {"name": "D", "field": },
+    {"name": "67", "field": .01, "type": "regular"},
+    {"name": "67", "field": .01, "type": "regular"},
+    {"name": "67", "field": .09, "type": "regular"},
+    {"name": "67", "field": .09, "type": "regular"},
+    {"name": "67", "field": .09, "type": "regular"},
+    {"name": "67", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(67,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .03, "value": "W \"   \",$$FMTE^XLFDT($P(^(0),U,3),\"5Z\")"},
+    {"field": .09, "value": "W \"   \",$P(^(0),U,9)"},
+    {"field": .1, "value": "W:$D(^(.1)) \"   \",$E(^(.1),1,19)"}
+  ]
+}

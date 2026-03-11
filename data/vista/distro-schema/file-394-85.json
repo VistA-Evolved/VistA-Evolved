@@ -1,0 +1,36 @@
+{
+  "fileNumber": 394.85,
+  "fileName": "VAQ - STATUS",
+  "globalRoot": "394.85",
+  "globalReference": "^VAT(394.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Code",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Code representing current status of a transaction.   Code must be in the form XXXX-YYYYY where XXXX is the namespace of the package (1-4 upper case characters) and YYYYY is 1-5 characters (upper or lower case) of the package's choosing.  [Must Pattern match 1.4U1\"-\"1.5A] ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Status",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Printable description of the code. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

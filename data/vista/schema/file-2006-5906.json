@@ -1,0 +1,44 @@
+{
+  "fileNumber": 2006.5906,
+  "fileName": "ROUTE LOAD BALANCE",
+  "globalRoot": "2006.5906",
+  "globalReference": "^MAGRT(2006.5906,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.59'",
+      "required": true,
+      "pointerTo": 2006.59,
+      "helpText": "The value of this field is a pointer to a Routing Rule (file # 2006.59).   The information in the current record describes how image files are being routed to destinations, and how the load per destination is balanced, based on a routing rule.   The value of this field identifies the routing rule that governs the balancing act that is described in the current record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "2006.59061PA",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BALANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is computed by the program that balances the load over multiple destinations.   This value is a string that consists of a variable number of data elements (the number depends on the number of possible destinations in the routine rule, see file # 2006.59).   The value for this string is calculated and updated in subroutine BALANCE^MAGBRTE2(IMAGE,RULE). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

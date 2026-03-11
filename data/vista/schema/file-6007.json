@@ -1,0 +1,107 @@
+{
+  "fileNumber": 6007,
+  "fileName": "STANDARD VBECS DATA",
+  "globalRoot": "6007",
+  "globalReference": "^VBEC(6007,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ATTRIBUTE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the attribute. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ATTRIBUTE KEY ",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This this the attribute key.  It is an identifier that ensure the  uniqueness of a record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "GUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the Globally Unique Identifier (GUID) of the attribute stored in  a SQL Server table. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ANTIGEN/ANTIBODY IDENTIFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AB:Antibody;AN:Antigen;",
+      "helpText": "This field is used to identify the entity to a greater granularity.  When mapping Function Field (#61.3) data only, it will need to be known whether the entity is an antigen or an antibody. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "VA FILEMAN FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the VistA FileMan file that contains data most closely related to the attribute name of this record. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the address of the blood supplier. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the city where the blood supplier is located. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'I",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state where the blood supplier is located. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the zip code of the blood supplier. ",
+      "fieldNumber_": .15
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "FNUM", "field": },
+    {"name": "SA", "field": },
+    {"name": "U", "field": },
+    {"name": "6007", "field": .01, "type": "regular"},
+    {"name": "6007", "field": .01, "type": "regular"},
+    {"name": "6007", "field": .02, "type": "regular"},
+    {"name": "6007", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

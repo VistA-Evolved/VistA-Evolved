@@ -1,0 +1,168 @@
+{
+  "fileNumber": 802.3,
+  "fileName": "NLM QUALITY MEASURE GROUPS",
+  "globalRoot": "802.3",
+  "globalReference": "^PXRM(802.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEASURE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Title of the clinical quality measure.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CMS ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Centers for Medicare and Medicaid Services clinical quality measure ID.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Version number of the clinical quality measure.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Globally Unique Identifier of the clinical quality measure.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NQF NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "National Quality Forum identifier of the clinical quality measure.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "802.34",
+      "required": false,
+      "helpText": "This word-processing field contains the description of the clinical quality measure.  ",
+      "isMultiple": true,
+      "subFileNumber": 802.34,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Category the clinical quality measure is in; examples are: Attribute, Communication, Individual Characteristic, Medication, and Procedure.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IDENTIFIER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The numerical portion of the CMS ID, for example if the CMS ID is CMS71v4 then Identifier is 71.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Status of the clinical quality measure, for example: InProgress or Complete.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Clinical quality measure type, examples are: OUTCOME or PROCESS.  ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MEASURE SET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Measure Set the measure belongs to. Measure Sets are defined by a combination of year, either calendar or fiscal, and eligible hospital (EH) or eligible provider (EP). Example: CY 2014 EP  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SHEETNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A spreadsheet is one of the formats in which clinical quality measures can be obtained. Sheetname is the name of the spreadsheet sheet where the clinical quality measure is located.  ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEVELOPER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Organization that developed the clinical quality measure.  ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STEWARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Organization that is the steward of the clinical quality measure. It may or may not be the same as the developer of the measure.  ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COPYRIGHT",
+      "dataType": "SUBFILE",
+      "rawType": "802.313",
+      "required": false,
+      "helpText": "This word-processing field describes any copyrights associated with the clinical quality measure. It can include things like copyrights for coding systems used by the measure and the measure itself.  ",
+      "isMultiple": true,
+      "subFileNumber": 802.313,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "VALUE SETS",
+      "dataType": "SUBFILE",
+      "rawType": "802.314A",
+      "required": false,
+      "helpText": "This multiple contains a list of all the value sets used by the clinical quality measure.  ",
+      "isMultiple": true,
+      "subFileNumber": 802.314,
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

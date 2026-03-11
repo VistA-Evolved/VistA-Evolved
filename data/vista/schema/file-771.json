@@ -1,0 +1,106 @@
+{
+  "fileNumber": 771,
+  "fileName": "HL7 APPLICATION PARAMETER",
+  "globalRoot": "771I",
+  "globalReference": "^HL(771,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the application that will send/receive HL7 messages (e.g., RADIOLOGY).  Vista application names must be namespaced and unique. Answer must be 3-120 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE/INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:ACTIVE;i:INACTIVE;",
+      "helpText": "This field indicates whether the DHCP application is currently active.  A DHCP application should be inactivated when application updates are taking place.   The HL7 package will not accept messages from an inactive SENDING APPLICATION. An error will be returned from the call to GENERATE^HLMA. Also, it will not hand off inbound messages to an inactive RECEIVING APPLICATION. An error status will be logged. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This information will be placed in the FACILITY ID field of the HL7 message header if present. This information will override the default facility id information whenever the FACILITY ID REQUIRED field of the subscriber protocol is set to YES. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Vista applications may use this field to generate Mailman notifications when messaging problems are detected. To retrieve this mailgroup, see documentation for the API, GETAPP^HLCS2. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*HL7 SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "771.05P",
+      "required": false,
+      "helpText": "This is applicable to HL7 v1.5 interfaces only. Enter the HL7 segments used by the Vista application. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "*HL7 MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "771.06P",
+      "required": false,
+      "helpText": "This is applicable only to HL7 v1.5 interfaces. Enter the HL7 messages used by the DHCP application. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COUNTRY CODE",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "Enter the country code associated with this application. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "HL7 FIELD SEPARATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The field separator separates two adjacent fields within a segment.  It also separates the segment ID from the first data field in the segment. The field separator can be defined differently for each HL7 message.  The fourth character in the MSH segment serves as the field separator for all segments in the HL7 message.   If this field is left blank, the default will be the '^' character. However, most messaging applications use the '|' as a field separator.   Note that the character used as a fi",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "HL7 ENCODING CHARACTERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If this field is left blank, the default encoding characters will be set to, \"~|\\&\". Note that if you choose this default, the FIELD SEPARATOR must be set to \"^\". If you choose the vertical bar (\"|\") as a field separator, enter \"~^\\&\" as your encoding characters. This will avoid a potential conflict with VA Fileman.   Up to four encoding characters may be defined. Each encoding character must be unique and none of the encoding characters may be the same as the field separator character. Each enc",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "771", "field": .01, "type": "regular"},
+    {"name": "771", "field": .01, "type": "regular"},
+    {"name": "771", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(771,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "fileNumber": 631.4,
+  "fileName": "HBHC PROVIDER",
+  "globalRoot": "631.4IO",
+  "globalReference": "^HBHC(631.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HBHC ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This field represents a unique number assigned to each HBPC (formerly  called HBHC) provider. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROVIDER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field represents the HBPC provider's name in the NEW PERSON (#200)  file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is no longer in use after the install of HBH*1.0*32. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GRADE/STEP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is no longer in use after the install of HBH*1.0*32. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FTEE ON HBHC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is no longer in use after the install of HBH*1.0*32. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HBHC TEAM",
+      "dataType": "POINTER",
+      "rawType": "RP633'",
+      "required": true,
+      "pointerTo": 633,
+      "helpText": "This field represents which HBPC (also called HBHC) team includes this  provider. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVE PROVIDER NUMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Inactive Provider Number;",
+      "helpText": "This field is no longer in use after the install of HBH*1.0*32.  Providers which were defined before install might have this field set  to \"inactive\". ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "631.4", "field": .01, "type": "regular"},
+    {"name": "631.4", "field": 1, "type": "regular"},
+    {"name": "631.4", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HBHC(633,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(633,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

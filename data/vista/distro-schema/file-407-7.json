@@ -1,0 +1,58 @@
+{
+  "fileNumber": 407.7,
+  "fileName": "TRANSMISSION ROUTERS",
+  "globalRoot": "407.7",
+  "globalReference": "^VAT(407.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The name assigned to a transmission router or destination point that data will be electronically transmitted to, usually at the Austin DPC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LINES/MSG FIXED LENGTH RECORD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "Maximum number of lines of FIXED LENGTH records to allow in a single mailman message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LINES/MSG VARIABLE LENGTH REC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Maximum number of lines of VARIABLE LENGTH records to allow in a single mailman message. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIL ROUTER",
+      "dataType": "SUBFILE",
+      "rawType": "407.71AI",
+      "required": false,
+      "helpText": "The mail router is the actual router name/destination that is given to a transmission router for electronic flow of data to usually the Austin DPC.  For example, the mail router used to transmit Fee Basis data to Austin DPC is named Q-FEE.DOMAIN.EXT ",
+      "isMultiple": true,
+      "subFileNumber": 407.71,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "407.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "fileNumber": 115.7,
+  "fileName": "DIETETIC ENCOUNTERS",
+  "globalRoot": "115.7",
+  "globalReference": "^FHEN(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains a sequential number assigned to the encounter and has no meaning. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME OF ENCOUNTER",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date and time at which the dietetic encounter took place. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLINICIAN",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the clinician who provided the service during the encounter. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENCOUNTER TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP115.6'",
+      "required": true,
+      "pointerTo": 115.6,
+      "helpText": "This field contains a pointer to the Encounter Type file (115.6) indicating the type of encounter. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EVENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This optional field contains a pointer to the Hospital Location file (44) indicating where the encounter took place. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INITIAL/FOLLOWUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INITIAL;F:FOLLOWUP;",
+      "helpText": "This field indicates whether the encounter was an initial one of this type or a follow-up. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIME UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of time units earned by this encounter. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "GROUP/INDIVIDUAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "G:GROUP;I:INDIVIDUAL;",
+      "helpText": "This field indicates whether the encounter was a group one or an encounter with a single individual. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "GROUP SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of persons involved, including any collaterals. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EVENT COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain a short comment concerning the event. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMMUNICATIONS OFFICE",
+      "dataType": "POINTER",
+      "rawType": "RP119.73'",
+      "required": true,
+      "pointerTo": 119.73,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "115.701PA",
+      "required": false,
+      "helpText": "This field is a multiple containing data relating to patients involved in the encounter. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ENTERING CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer indicating the person making the encounter entry. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time the encounter was actually entered. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "LAST REVIEW DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the encounter was last reviewed. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "REVIEW CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to File 200 of the person entering the review. ",
+      "fieldNumber_": 104
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AP", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "CO", "field": },
+    {"name": "115.7", "field": .01, "type": "regular"},
+    {"name": "115.7", "field": 1, "type": "regular"},
+    {"name": "115.7", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

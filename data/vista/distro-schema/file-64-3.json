@@ -1,0 +1,29 @@
+{
+  "fileNumber": 64.3,
+  "fileName": "WKLD INSTRUMENT MANUFACTURER",
+  "globalRoot": "64.3",
+  "globalReference": "^LAB(64.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": " This field contains the name of the manufacturer. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "VR", "field": },
+    {"name": "64.3", "field": .01, "type": "regular"},
+    {"name": "64.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

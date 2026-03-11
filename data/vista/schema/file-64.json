@@ -1,0 +1,358 @@
+{
+  "fileNumber": 64,
+  "fileName": "WKLD CODE",
+  "globalRoot": "64I",
+  "globalReference": "^LAM(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFOI",
+      "required": true,
+      "helpText": "The procedure or test name.  The names contained in this file are derived from a national list of laboratory procedures. This file is updated as needed from VACO Pathology.   THIS FILE SHOULD NOT BE EDITED BY FILEMAN AT THE LOCAL LEVEL.  Utilities are provided for local sites to manipulate distributed file data to meet their needs. If a site determines a procedure which they perform is not in this file, they are to contact VACO pathology for  procedures to obtain new entries.   When attempting t",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "64.04",
+      "required": false,
+      "helpText": " This field is used to further explain the procedure if required. ",
+      "isMultiple": true,
+      "subFileNumber": 64.04,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains a condensed version of the name. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WKLD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "The code number of the AMIS report for the procedure. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WKLD UNIT WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "The AMIS unit weight. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BILLABLE PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "  If this test is considered to be a billable LMIP procedure enter yes to this prompt.  These procedure will be cumulated and sent to the national data base for LMIP reporting. On certain reports a '+' will appear in front of the name of the procedure to indicate it is defined as billable. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Reserve 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not presently used at this time. The field is not obsolete but will be converted to other functions in a later version. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "UNIT FOR COUNT",
+      "dataType": "POINTER",
+      "rawType": "RP64.22'",
+      "required": true,
+      "pointerTo": 64.22,
+      "helpText": "E.g., case, std, qc, test, spec, etc. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The cost of the procedure being done. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": " This field contains the price charged to another facility. This field differs from the COST field (#7) in that this figure includes profit margin.    If PRICE is required for custom reports and this field is blank, the COST field amount will be used. If the COST field is blank the value of 1 will be used as the default amount. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SORTING GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " If the site would like to attach some arbitrary value to this code, it may be done in this field. The system makes no use of this field, it is designed solely for the site's use. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "Reserve 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " This field is not presently used by the system. It will be converted to other uses in later software versions. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "P64.3'",
+      "required": false,
+      "pointerTo": 64.3,
+      "helpText": " This field is used to identify the vender/manufacturer of this particular procedure or instrument. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "WKLD CODE LAB SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP64.21'",
+      "required": true,
+      "pointerTo": 64.21,
+      "helpText": " This field is a nationally defined category. This field will provide a method of group data on the national level. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DSS Feeder Key",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " This field is used to indicate that this code Wkld Code should be used for DSS Laboratory data collection. Codes that are defined as YES will be extracted and passed to the DSS Laboratory API. Guidelines for the use of this field will be jointly issued by the Pathology & Laboratory Medicine Service Headquarters and the DSS Program Office.   General guidelines for the defining Wkld Codes as DSS Feeder Key should pass the following tests: 1) Patient's test results are entered via the Laboratory P",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ACTIVATE WKLD CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " If the workload code has ever been reported by this institution, this field will be set to yes by the system. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BATCH ANALYZER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": " If this procedure code is for a batch analyzer, this field should be set to yes. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CODE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "64.018AV",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 64.018,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "64.019A",
+      "required": false,
+      "helpText": "This is a synonym field. ",
+      "isMultiple": true,
+      "subFileNumber": 64.019,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "64.01PA",
+      "required": false,
+      "helpText": "Specimen associated with the test ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LOCAL ACC AREA",
+      "dataType": "POINTER",
+      "rawType": "P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "This field is used to link workload codes to accession area on the local system. Select the accession area this workload code should be associate with. Later enhancements will allow certain LMIP reports to sorted based on this field.   When new reports become available, this field will be used instead of the WKLD CODE LAB SECT (pointer to file #64.21) which is assigned  nationally. If this field is blank, file #64.21 lab section will be used. The reports will indicate those entries not pointed t",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ACC AREA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": " This field contains the free text name of the LOCAL ACC AREA pointer. It is triggered by field #21 and not editable by user. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ASSOCIATED NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "64.023AV",
+      "required": false,
+      "helpText": " Associated or linked names from local laboratory tables (files).  ",
+      "isMultiple": true,
+      "subFileNumber": 64.023,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "WKLD CODE NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "64.024",
+      "required": false,
+      "helpText": "This field is used for storing general notes regarding inactive or erroneous code(s). ",
+      "isMultiple": true,
+      "subFileNumber": 64.024,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DEFAULT LOINC CODE",
+      "dataType": "POINTER",
+      "rawType": "OP95.3'",
+      "required": false,
+      "pointerTo": 95.3,
+      "helpText": " This field is used to identify the default LOINC code. This field is usually used when the specimen is not clinically significant (i.e. body fluids). ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.2,
+      "fieldName": "TIME ASPECT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field contains the timing of the measurement or observation for this test for this WKLD CODE LOINC default code. ",
+      "fieldNumber_": 25.2
+    },
+    {
+      "fieldNumber": 25.3,
+      "fieldName": "UNITS",
+      "dataType": "POINTER",
+      "rawType": "P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "fieldNumber_": 25.3
+    },
+    {
+      "fieldNumber": 25.4,
+      "fieldName": "DATA LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the data storage location of the result. It comes from the FIELD field (#13) in file 60 and it is the data dictionary field in file 63, subfile 63.04 ['CH' subcript tests]. ",
+      "fieldNumber_": 25.4
+    },
+    {
+      "fieldNumber": 25.5,
+      "fieldName": "TEST",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": " This field contains the backward pointer to the Laboratory Test file (#60). ",
+      "fieldNumber_": 25.5
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ES DISPLAY ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used to by the LAB CPT BILLING option to display those CPT codes defined by this NLT codes and will be referenced by this number. The number entered must be unique between 1-500. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "MI/AP DATABASE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'X",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "Used for Microbiology (\"MI\" subscript) and Anatomic Pathology (\"SP\", \"EM\", \"CY\" subscripts) to link the reportable components of a report with its corresponding orderable test. ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "VR", "field": },
+    {"name": "64", "field": .01, "type": "regular"},
+    {"name": "64", "field": .01, "type": "regular"},
+    {"name": "64", "field": .01, "type": "regular"},
+    {"name": "64", "field": .04, "type": "regular"},
+    {"name": "64", "field": 1, "type": "regular"},
+    {"name": "64", "field": 1, "type": "regular"},
+    {"name": "64", "field": 14, "type": "regular"},
+    {"name": "64", "field": 14, "type": "regular"},
+    {"name": "64", "field": 15, "type": "regular"},
+    {"name": "", "field": 21, "type": "regular"},
+    {"name": "64", "field": 25, "type": "regular"},
+    {"name": "", "field": 25, "type": "regular"},
+    {"name": "", "field": 25, "type": "regular"},
+    {"name": "", "field": 25, "type": "regular"},
+    {"name": "", "field": 25, "type": "regular"},
+    {"name": "64", "field": 25.5, "type": "regular"},
+    {"name": "64", "field": 26, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "fileNumber": 799.51,
+  "fileName": "ROR GENERIC DRUG",
+  "globalRoot": "799.51",
+  "globalReference": "^ROR(799.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF  NATIONAL REGISTRY DEFINITION!   The NAME field stores a short name of the drug. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'X",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF  NATIONAL REGISTRY DEFINITION!   This field identifies the registry that the drug  is associated with. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DRUG GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P799.1'X",
+      "required": true,
+      "pointerTo": 799.1,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF  NATIONAL REGISTRY DEFINITION! ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VA GENERIC",
+      "dataType": "POINTER",
+      "rawType": "RP50.6'X",
+      "required": true,
+      "pointerTo": 50.6,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF  NATIONAL REGISTRY DEFINITION! ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   Drugs associated with the national registries must have this field set to \"YES\". This prevents local editing of other fields of the record. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "799.51", "field": .01, "type": "regular"},
+    {"name": "799.51", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

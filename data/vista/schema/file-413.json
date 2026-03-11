@@ -1,0 +1,942 @@
+{
+  "fileNumber": 413,
+  "fileName": "EQUIPMENT REQUEST",
+  "globalRoot": "413",
+  "globalReference": "^PRCN(413,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Internal number for each equipment request. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the temporary transaction number that is calculated based on the facility number, the CMR Official, the fiscal year and a  sequential number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who initiates the request.  It defaults from the DUZ number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REQUESTING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is the requestor's service that is calculated from their entry in the New Person file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the actual date and time that the request was initialized. This automatically defaults from the current date and time when the request is being entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P411'",
+      "required": false,
+      "pointerTo": 411,
+      "helpText": "This is the station number that will automatically default if there is only one station numer otherwise, the requestor will be prompted for it. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "CMR",
+      "dataType": "POINTER",
+      "rawType": "P6914.1'",
+      "required": false,
+      "pointerTo": 6914.1,
+      "helpText": "This is the CMR number who will ultimately be responsible for the equipment when ordered and received. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CMR RESPONSIBLE OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who is associated with a particular CMR.  This is defaulted when a CMR is selected and all messages will be directed to this person. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REQUEST STATUS",
+      "dataType": "POINTER",
+      "rawType": "P413.5'",
+      "required": false,
+      "pointerTo": 413.5,
+      "helpText": "This is the status of the request.  It is set at the completion of each step of the process. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date is automatically set whenever the status on a request changes.  It is the date that status was applied to the request. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADDITIONAL;R:REPLACEMENT;I:INITIAL;",
+      "helpText": "There are three type of requests.  Each request type may ask some different front-end questions.  Replacement type will also create an accompanying turn-in request. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROJECT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " The principal identifier of entries in the CONSTRUCTION PROJECT file. Format should be either 'SSS-NNN' or 'SSS-YY-NNN'; where SSS is the facility number and NNN is a sequential project number.  YY is usually the fiscal year in which an NRM request is submitted, but may also be used for a two-character alphabetic project category designation.  Note that the facility number need not always be the number of the VAMC. For example, if you are reporting on a National Cemetery project the first 3 dig",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "PROJECT MANAGER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person in charge of a particular project if a project number was entered. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TURN-IN REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P413.1'",
+      "required": false,
+      "pointerTo": 413.1,
+      "helpText": "This points to the accompanying turn-in request from the turn-in request file (413.1).  The request and the turn-in are tied to each other. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REQUESTOR PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the requestor and should default from new person file. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE REQUIRED BY",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This date is required for a 2237. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SORT",
+      "dataType": "POINTER",
+      "rawType": "P410.7",
+      "required": false,
+      "pointerTo": 410.7,
+      "helpText": "This Sort Group field may be used to group together all transactions (requests) that relate to a specific project, work order, investigator, food group, doctor, etc. This is the previous 'Project Number' field. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P410.2",
+      "required": false,
+      "pointerTo": 410.2,
+      "helpText": "This Classification of Request field allows you  to classify and/or categorize all transactions (requests) for supplies, services, etc. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LINE ITEM NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "413.015A",
+      "required": false,
+      "helpText": "This is a item that is being entered for the request. ",
+      "isMultiple": true,
+      "subFileNumber": 413.015,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "CHANGE IN PERSONNEL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If any change in personnel is needed because of the acquisition of this item, either more people needed or less. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "JCAHO,CAP,SAFETY DEFICIENCY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This should be answered if there is any special safety considerations with requesting this equipment. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CHANGE IN RECURRING COSTS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INCREASE;D:DECREASE;N:NO CHANGE;",
+      "helpText": "This should indicate whether there are any savings by acquiring this equipment or increased costs.  If other than no change, some other questions will be asked. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SUFFICIENT FUNDS BUDGETED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If there is an increase in recurring costs, the requestor should indicate whether sufficients funds have been budgeted for this item. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ANNUAL RECURRING SUPPLY COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "Any supply costs that may need to be budgeted for the future if this is acquired. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TRAINING NEEDED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "By ordering this equipment, whether new training will be needed to use it. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "EST. TRAINING COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "A estimated cost of any training needed. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MAINT. CONTRACT RECOMMENDED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Do you think that a maintenance contract on the equipment that you are requesting would be desirable? ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "MAINT. CONTRACT COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "Any estimated maintenance cost if a maintenance contract is obtained for this equipment. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SPACE AVAILABLE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Do you presently have sufficient space to accommodate the equipment that you are requesting? ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The exact location of the proposed equipment.  Try to format your response as ROOM-BUILDING-DIVISION (if applicable).  If the requested equipment is portable and subject to use in many different locations, please enter PORTABLE instead of a physical location. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.5,
+      "fieldName": "SPACE FILE PTR.",
+      "dataType": "POINTER",
+      "rawType": "P6928'",
+      "required": false,
+      "pointerTo": 6928,
+      "helpText": "If a location was selected from the Space file, the internal pointer number will be filed here.  User doesn't see this. ",
+      "fieldNumber_": 26.5
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "INSTALLATION NEEDED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This question must be answered 'Yes' if the Engineering Department must install any of the equipment in the request when it has been ordered and received. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "UTILITIES REQUIRED",
+      "dataType": "SET",
+      "rawType": "413.028SA",
+      "required": false,
+      "helpText": "This field is to tell Engineering what kind of work might be needed to install this equipment when received so they can allocate their resources. ",
+      "isMultiple": true,
+      "subFileNumber": 413.028,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "OTHER UTILITIES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Explain what you had in mind when you selected 'Other' as a required utility. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SERVICE CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a person other than the requestor that the CMR Official or Personal Property Manager may refer back to for further questions. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SERVICE CONTACT PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This phone number is triggered from the OFFICE PHONE field of the NEW PERSON File (#200). ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CMR OFFICIAL APPROVAL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If the primary CMR Responsible Official does not approve a request, the request will be returned to the requestor. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "CHIEF SUPPLY APPROVAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The Chief of Supply should indicate whether the request is approved or not.  If the request is not approved, it will be returned to the requestor. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "CMR PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This priority lets the Personal Property Manager (PPM) have some idea of what items might be considered more critical.  It will also help the Equipment Committee during its' review process. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "NX EQUIPMENT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The Personal Property Manager (PPM) makes the final determination on whether the equipment being requested is really considered items for CMR responsibility. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "CONTROLLED ITEM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The Personal Property Manager (PPM) has a list of criteria that determines whether equipment is considered controlled or not.  If equipment being requested is considered controlled, it must go through Central Office approval process before continuing on to the Equipment Committee. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is taking the first 20 characters of the line item description (which is a word-processing field) and setting that into a single field for reports. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CONCURRENCE NEEDED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If other users in the facility may be affected by the purchase of the requested items, then answering 'Yes' to this question will provide the selected concurring officials the chance to review and decide on approval of the request. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "CONCURRING OFFICIALS",
+      "dataType": "POINTER",
+      "rawType": "413.046P",
+      "required": false,
+      "helpText": "This can be other persons selected to review the request. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "EQUIPMENT COMMITTEE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DD:Disapproved;DF:Deferred;AP:Approved-Pending Funds;AF:Approved-Funded;",
+      "helpText": "This is the final status determined by the Equipment Committee for this request. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "EQUIP. COMMITTEE STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Equipment Committee's final disposition of the request was made.  This will be set automatically when the status is filed. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "EQUIPMENT COMMITTEE RANKING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "The ranking of request is temporary assigned so that the Equipment Committee may review requests based on the importance of the request actually being purchased. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "2237 NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P410'",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "This is the 2237 number that is assigned when a request has been approved by the Equipment Committee and a 2237 has been created from the request. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "ENG. MAINTENANCE TRAINING",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Will additional maintenance training be required for Engineering personnel if the proposed equipment is acquired? ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "ENG. TRAINING TUITION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The total cost of tuition for all required maintenance training. If necessary to train two (2) employees at an estimated cost of $1000, please enter 2000. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ENG. TRAINING TRAVEL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "If the required maintenance training includes travel costs, please enter that amount. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ENG. TRAINING VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The potential vendor who will be conducting the maintenance training. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 55.5,
+      "fieldName": "ENG TRAIN VENDOR PTR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This is the training vendor pointer if the vendor exists in the IFCAP Vendor file. ",
+      "fieldNumber_": 55.5
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "ENG. TRAINING LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The location where the maintenance training will take place. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "CONSTRUCTION/RENOVATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Please say yes if any special construction or renovation needs to be completed before the installation of any equipment in this request. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "PROJECT NEEDED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Is it necessary that a project be submitted and approved in order to accomplish the necessary construction or renovation? ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "ENG. PROJECT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": " The principal identifier of entries in the CONSTRUCTION PROJECT file. Format should be either 'SSS-NNN' or 'SSS-YY-NNN'; where SSS is the facility number and NNN is a sequential project number.  YY is usually the fiscal year in which an NRM request is submitted, but may also be used for a two-character alphabetic project category designation. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CONSTRUCTION/RENOVATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Estimated cost of necessary construction or renovation work. Be careful to include costs (if any) that are accounted for in your estimate of SPECIAL INSTALLATION COST. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CONSTRUCTION/RENOVATION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Approximate number of calendar days that would be required for completion of any necessary construction or renovation work. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "SPECIAL INSTALLATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Will Engineering Service need to provide any special assistance in order for the requested equipment to be installed and made operational?  Some common examples of special installation requirements might include utility connections (other than connection of regular electrical power), minor alterations to casework, and temporary removal of doors or windows.    Incoming inspections to assure that specifications are met prior to initial use are normally performed on all new equipment.  These routin",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "SPECIAL INSTALLATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Estimated cost of performing the work actions described under SPECIAL INSTALLATION DESCRIPTION.  Be carefule not to include costs (if any) that are accounted for under CONSTRUCTION/RENOVATION COST. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ADDITIONAL TEST EQUIP.",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Will Engineering Service need to purchase or lease any additional test equipment if the requested NX equipment is acquired? ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "ADDITIONAL TEST EQUIP. COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The approximate cost of additional test equipment that will need to be purchased if the requested NX equipment is acquired.  In the case of test equipment that will be leased or rented, please include the rental(s) in your estimate of MAINTENANCE IMPACT COST, or MAINTENANCE CONTRACT COSTS (whichever applies). ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "MAINTENANCE IMPACT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Estimated cost of all costs that would be required to maintain the requested equipment for a period of one year. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "ENGINEERING CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Engineering Service employee who should be contacted if additional information is required concerning this Engineering Equipment Review. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "ENGINEERING CONTACT PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The telephone number of the ENGINEERING CONTACT PERSON. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "TOTAL ENGINEERING EST. COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This estimated cost is computed from the following costs that the Engineering department may have entered for this request: training tuition, training travel, construction/renovation, special installation, additional test equipment, and maintenance impact. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "ENG. MAINTENANCE CONTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Would Engineering Service favor a maintenance contract for the NX equipment being requested? ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "ENG. MAINT. CONTRACT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Full Maintenance;2:PM;3:Parts Only;4:Screening Contract;5:Other;",
+      "helpText": "Select the kind of maintenance contract that Engineering Service regards as most appropriate.  Ask yourself if it should cover parts and labor? Scheduled or unscheduled maintenance?  Hours of coverage? Response time and/or maximum downtime? ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ENG. MAINT. OTHER CONTRACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Describe the maintenance contract that is not covered in the types of contracts. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "SETS MAINTENANCE MANUALS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "How many sets of maintenance manuals would be needed by the Engineering Service for maintenance of the requested equipment? Two (2) sets should be sufficient in most cases. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "CMR OFFICIAL FINAL APPROVAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field allows the CMR Official to review a request that has been in the request pipeline for a long period of time.  A request may need editing if it has been around a while.  If no editing is needed, then it can go to become a 2237. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "RESUBMIT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P413.5'",
+      "required": false,
+      "pointerTo": 413.5,
+      "helpText": "This is the status of the request before it is resubmitted. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CHANGE IN PERSONNEL EXPLAIN",
+      "dataType": "SUBFILE",
+      "rawType": "413.01",
+      "required": false,
+      "helpText": "If the requestor enters 'Y'es to change in personnel, an explanation is needed as to what kind of changes this request causes. ",
+      "isMultiple": true,
+      "subFileNumber": 413.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DEFICIENCY EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0101",
+      "required": false,
+      "helpText": "This field is to enter a more detailed explanation if the user answered 'Y'es to any special safety considerations with equipment being requested. Goes with field JCAHO,CAP,SAFETY DEFICIENCY. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "CHANGE RECUR COST EXPLAIN",
+      "dataType": "SUBFILE",
+      "rawType": "413.0102",
+      "required": false,
+      "helpText": "If other than 'No Change' was answered in the field CHANGE IN RECURRING COSTS, then a fuller explanation is needed. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0102,
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "TRAINING EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0103",
+      "required": false,
+      "helpText": "If field TRAINING NEEDED? was answered 'Yes', then a detailed explanation is required to be entered. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0103,
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "MAINT. CONTRACT JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0104",
+      "required": false,
+      "helpText": "Please explain why you think that a maintenance contract for this equipment would be desirable. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0104,
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "CMR APPROVAL EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0105",
+      "required": false,
+      "helpText": "If the CMR did not approve a request, then it is required that they enter an explanation of why they didn't approve the request. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "CONSTRUCT/RENOV DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0117",
+      "required": false,
+      "helpText": "Briefly describe the nature and location of any necessary construction or renovation work, whether a project is needed or not. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0117,
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "SPECIAL INSTALL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0118",
+      "required": false,
+      "helpText": "Describe the special tasks that Engineering Service will need to perform before the requested equipment can be installed and made operational. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0118,
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "ADDITIONAL TEST EQUIP EXPLAIN",
+      "dataType": "SUBFILE",
+      "rawType": "413.0119",
+      "required": false,
+      "helpText": "List and describe any additional test equipment that would be needed for calibration and/or repair of the requested NX equipment.  Do not include test equipment that is presently on hand or otherwise available without cost. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0119,
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "ENG. REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "413.03",
+      "required": false,
+      "helpText": "Engineering comments of a general nature that may be of some benefit to the Equipment Committee. ",
+      "isMultiple": true,
+      "subFileNumber": 413.03,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "NX EQUIP EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0121",
+      "required": false,
+      "helpText": "If the PPM does not consider this to be non-expendable, an explanation of why is required. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0121,
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "ESTIMATED SAVINGS",
+      "dataType": "SUBFILE",
+      "rawType": "413.0123",
+      "required": false,
+      "helpText": "  Any estimated savings that are effected by the purchase of a controlled item needs to be identified (personnel, supplies, increased production, etc.) ",
+      "isMultiple": true,
+      "subFileNumber": 413.0123,
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "ADDITIONAL EQUIPMENT",
+      "dataType": "SUBFILE",
+      "rawType": "413.0124",
+      "required": false,
+      "helpText": "Requests for additional equipment will include the number and description of the same or related type of machines now being used in operation. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0124,
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "REPLACEMENT EQUIPMENT",
+      "dataType": "SUBFILE",
+      "rawType": "413.0125",
+      "required": false,
+      "helpText": "Requests for replacement equipment will include the complete description of the item being replaced, estimate of repairs, total amount of money expended for repairs while equipment was in use, and trade-in allowance. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0125,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0126",
+      "required": false,
+      "helpText": "A statement of justification for why the line item is being requested is required. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0126,
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "REASON CANCELLED",
+      "dataType": "SUBFILE",
+      "rawType": "413.0127",
+      "required": false,
+      "helpText": "A reason why the request was cancelled is required. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0127,
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "EQUIP COMM EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0128",
+      "required": false,
+      "helpText": "An explanation is required as to why the Equipment Committee did not approve a request. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0128,
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "CHIEF SUPPLY EXPLANATION",
+      "dataType": "SUBFILE",
+      "rawType": "413.0129",
+      "required": false,
+      "helpText": "A reason why the Chief, Supply did not approve a equipment request is required. ",
+      "isMultiple": true,
+      "subFileNumber": 413.0129,
+      "fieldNumber_": 129
+    }
+  ],
+  "fieldCount": 91,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "P", "field": },
+    {"name": "413", "field": .01, "type": "regular"},
+    {"name": "413", "field": 2, "type": "regular"},
+    {"name": "", "field": 4.5, "type": "regular"},
+    {"name": "413", "field": 5, "type": "regular"},
+    {"name": "413", "field": 6, "type": "regular"},
+    {"name": "", "field": 30, "type": "regular"},
+    {"name": "413", "field": 34, "type": "regular"},
+    {"name": "413", "field": 49, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCN(413.5,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(413.5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

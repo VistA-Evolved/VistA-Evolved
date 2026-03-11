@@ -1,0 +1,97 @@
+{
+  "fileNumber": 2006.918,
+  "fileName": "ARTIFACT INSTANCE",
+  "globalRoot": "2006.918",
+  "globalReference": "^MAGV(2006.918,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARTIFACT",
+      "dataType": "POINTER",
+      "rawType": "RP2006.916'",
+      "required": true,
+      "pointerTo": 2006.916,
+      "helpText": "This is the Artifact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STORAGE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP2006.917'",
+      "required": true,
+      "pointerTo": 2006.917,
+      "helpText": "This is the storage provider that created  the artifact instance. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "URL",
+      "dataType": "SUBFILE",
+      "rawType": "2006.9183",
+      "required": false,
+      "helpText": " A field used by storage provider subclasses to retrieve an artifact. The  URL needs to have meaning only to the storage provider that created the artifact. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.9183,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time at which the artifact was created. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST ACCESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time at which the artifact was most recently retrieved. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILEREF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the artifact filename of the artifact stored on the  VistA Imaging file servers. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISK VOLUME",
+      "dataType": "POINTER",
+      "rawType": "P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field gives the path for the network location of the stored artifact  (i.e. on which server it resides). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILEPATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the artifact filepath of the artifact stored on the  VistA Imaging file servers. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.918", "field": .01, "type": "regular"},
+    {"name": "2006.918", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

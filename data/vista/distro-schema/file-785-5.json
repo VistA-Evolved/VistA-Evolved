@@ -1,0 +1,350 @@
+{
+  "fileNumber": 785.5,
+  "fileName": "EEO INFORMAL COMPLAINTS",
+  "globalRoot": "785.5I",
+  "globalReference": "^EEO(785.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPLAINANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "Enter the name of the person making the complaint, (Complainant). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the street address of the complainant's residence. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The city in which the complainant resides. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state in which the complainant resides, points to the State file (#5). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The Zip Code portion of the Complainants address, must be either 5 numbers or 5 numbers followed by a \"-\" and 4 more numbers.  ",
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "OEO NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The format for OEO# consists of two numbers followed by a dash and up to four more numbers, for example... 93-1109. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "CASE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "The number assigned to the EEO Complaint case by this software at initial, and subsequent entry/edit sessions. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The Complainants station name, (The station to which s/he is assigned).  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P730'X",
+      "required": false,
+      "pointerTo": 730,
+      "helpText": "The service department to which the complainant belongs.  This points  to file #730, the National Service file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "POSITION/GRADE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The pay grade of the complainants position, (pay plan-series-grade). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "JOB TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The job title of the complainant. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REP'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the person representing the complainant.     ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REP'S PHONE NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the phone number of the complainant's representative.           ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REP'S STREET ADDR.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the street address of the complainant's representative. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REP'S CITY ADDR.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The city in which the complainant's representative resides. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REP'S STATE ADDR.",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state in which the complainant's representative resides. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REP'S ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the zip code of the complainant's representative in either 5 or 9 digit format (5 numbers or 5 numbers followed by a \"-\" and four more numbers). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COUNSELOR'S NAME",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the counselor assigned to the complainant. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "DATE OF INCIDENT",
+      "dataType": "DATE",
+      "rawType": "DaX",
+      "required": false,
+      "helpText": "The date upon which the alleged EEO incident actually occurs.     ",
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 14.7,
+      "fieldName": "DATE INITIAL CONTACT/INTERVIEW",
+      "dataType": "DATE",
+      "rawType": "DaX",
+      "required": false,
+      "helpText": "The date the complainant initially contacted the EEO office, cannot be   after the date of the Final Interview. ",
+      "fieldNumber_": 14.7
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE NOTICE OF FINAL INTERVIEW",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date notice of final interview is issued to the complainant, cannot be prior to the date of initial contact.                                                                                                        ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.5,
+      "fieldName": "DATE OF INFORMAL RESOLUTION",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date that the complaint is resolved, if the complaint is resolved at the informal stage (informal stage is before 'Date Formal Complaint Filed'). ",
+      "fieldNumber_": 15.5
+    },
+    {
+      "fieldNumber": 15.7,
+      "fieldName": "DATE EXTENSION REQUESTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the Complainant and Agency requested an extention (must be within 30 days of Date of Initial Contact) ",
+      "fieldNumber_": 15.7
+    },
+    {
+      "fieldNumber": 15.9,
+      "fieldName": "LENGTH OF EXTENSION GRANTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The length of the period for which an extension is granted during the counseling phase of a complaint. ",
+      "fieldNumber_": 15.9
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE FORMAL COMPLAINT FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date that the complainant filed a formal complaint.  If mailed use the postmark date, if hand delivered use the date delivered.                                                                        ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.05,
+      "fieldName": "DATE UNION GRIEVANCE FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If a union grievance was also filed enter that date. ",
+      "fieldNumber_": 16.05
+    },
+    {
+      "fieldNumber": 16.07,
+      "fieldName": "DATE MSPB APPEAL FILED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If a complaint was also filed with MSPB, enter that date here. ",
+      "fieldNumber_": 16.07
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "DATE COUNS. INFORMED OF F.C.",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the counselor is informed of the formal complaint, cannot be after the date the counselor files his report. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.7,
+      "fieldName": "DATE COUNSELOR FILED REPORT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the counselor files his report to the EEO Officer, cannot be prior to the date the counselor was informed of the formal complaint. ",
+      "fieldNumber_": 16.7
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "ISSUE CODES",
+      "dataType": "POINTER",
+      "rawType": "785.52P",
+      "required": false,
+      "helpText": "Enter here as many issue codes as are necessary for this complaint, this field points to EEO Complaint Issue Codes file (786). ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "BASIS",
+      "dataType": "POINTER",
+      "rawType": "785.51P",
+      "required": false,
+      "helpText": "Enter all 'BASIS' that are involved in this complaint, this field points to the EEO Complaint Basis file (#785.1).           ",
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ISSUE CODE COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter a brief description of any topic related to this complaint.  This  must not exceed 120 characters. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "NARRATIVE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "785.54",
+      "required": false,
+      "helpText": "You may enter any information pertaining to this complaint, this field will  be displayed on Form 0210 (Initial Complaint Intake Form) ",
+      "isMultiple": true,
+      "subFileNumber": 785.54,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "POINTER",
+      "rawType": "785.561P",
+      "required": false,
+      "helpText": "The resolution the complainant is seeking, what actions the complainant feels would rectify the situation.  This field points to the Corrective  Actions file (#785.2). ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "COUNSELOR SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the user number for the EEO counselor, specialist, data input personnel, etc., who is responsible for inputting pre-formal complaint data into this complaint. ",
+      "fieldNumber_": 98
+    }
+  ],
+  "fieldCount": 35,
+  "crossReferences": [
+    {"name": "ANODE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "785.5", "field": .01, "type": "regular"},
+    {"name": "785.5", "field": .01, "type": "regular"},
+    {"name": "785.5", "field": 1.2, "type": "regular"},
+    {"name": "785.5", "field": 1.3, "type": "regular"},
+    {"name": "785.5", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Q, "value": "W:$D(^(5)) \"   \",$P(^(5),U,6)"},
+    {"field": QUIT, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,3),4,5)_\"-\"_$E($P(^(1),U,3),6,7)_\"-\"_$E($P(^(1),U,3),2,3)"}
+  ]
+}

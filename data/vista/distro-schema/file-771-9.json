@@ -1,0 +1,66 @@
+{
+  "fileNumber": 771.9,
+  "fileName": "HL7 DEGREE",
+  "globalRoot": "771.9",
+  "globalReference": "^HL(771.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The HL7 educational degree (e.g., ASSOCIATE OF ARTS) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The HL7 educational degree abbreviated value (e.g. AA or PharmD, etc.) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "771.93P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "HL7 STANDARD",
+      "dataType": "COMPUTED",
+      "rawType": "C",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "USING APPLICATION",
+      "dataType": "SUBFILE",
+      "rawType": "771.9051",
+      "required": false,
+      "helpText": "The application that has specific use for this HL7 DEGREE VALUE. ",
+      "isMultiple": true,
+      "subFileNumber": 771.9051,
+      "fieldNumber_": 51
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "771.9", "field": .01, "type": "regular"},
+    {"name": "771.9", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

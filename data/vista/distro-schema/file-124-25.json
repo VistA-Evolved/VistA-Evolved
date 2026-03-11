@@ -1,0 +1,88 @@
+{
+  "fileNumber": 124.25,
+  "fileName": "TERM CLASSIFICATION",
+  "globalRoot": "124.25I",
+  "globalReference": "^GMRD(124.25,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Special classification name that further identifies or categorizes an Aggregate Term (#124.2). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The package that is using this term classification. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BEGIN TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a flag to the GMRG Reporting mechanism to show where the organizational level ends, and the generation of text for the prime document begins. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACTION ON ENTERING DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The value in this field is automatically stuffed into the ACTION ON ENTERING SELECTION field of File #124.2 if this classification was selected for an Aggregate Term. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTION ON FILING DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The data here is stuffed into the ACTION ON FILING field of File #124.2 for an Aggregate Term that has this classification selected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACTION ON LEAVING DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This data is stuffed into the ACTION ON LEAVING SELECTION field of the Aggregate Term (#124.2) file for an aggregate term associated with this classification. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTION ON PRINTING DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The data in this field is stuffed into the ACTION ON PRINTING SELECTION field of the Aggregate Term (#124.2) file for terms associated with this  classification. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AA0", "field": },
+    {"name": "AA1", "field": },
+    {"name": "ATD", "field": },
+    {"name": "B", "field": },
+    {"name": "124.25", "field": .01, "type": "regular"},
+    {"name": "124.25", "field": .01, "type": "regular"},
+    {"name": "124.25", "field": 1, "type": "regular"},
+    {"name": "124.25", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

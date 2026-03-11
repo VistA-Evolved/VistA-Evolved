@@ -1,0 +1,171 @@
+{
+  "fileNumber": 704.115,
+  "fileName": "OBS_ALARM",
+  "globalRoot": "704.115",
+  "globalReference": "^MDC(704.115,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This value is a Global Unique IDentifier (GUID) for this alarm. The GUID  is maintained nationally so this value represents this item throughout  the enterprise. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This identifies the patient for which this alarm (#.01) is applicable.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This is the term to be monitored when the Clinical Flowsheets application  determines whether to signal an alarm. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UNIT_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the unit of measurement to use when Clinical Flowsheets  compares observed and \"alarm\" values. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ALARM_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Value in range;1:Value not in range;2:Value greater than;3:Value less than;4:Value in Picklist;5:Value is True;6:Value is False;",
+      "helpText": "This indicates the case, when satisfied by an observed value, for the  assigned patient and term, that may cause the Clinical Flowsheets  application to trigger the alarm (#01).   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MIN_VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This field is the minimum value for this term (#.03) and unit(#.04) that  will not trigger the alarm (#.01). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MAX_VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This field is the maximum value for this term (#.03) and unit(#.04) that  will not trigger alarm. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ALARM_SET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether or not this alarm's (#.01) conditions are  satisfied. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates if this alarm (#.01) logic is to be executed on new values  (reset). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ACTIVATED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is the date/time this alarm (#.01) is to be activated.  ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ACTIVATED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) that activated this alarm (#.01). ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DEACTIVATED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this alarm (#.01) is to be deactivated.   ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DEACTIVATED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) that deactivated this alarm  (#.01).   ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "ACTIVATED_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the comment entered when this alarm (.01) was activated. A sample ACTIVATED COMMENT could be \"Alarm activated for automated  monitoring\". ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "DEACTIVATED_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the comment entered when this alarm (.01) was deactivated. A sample DEACTIVATED COMMENT could be \"Alarm deactivated for staff  monitoring\". ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "PICKLIST_IDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a list of VA Unique IDentifiers for a \"picklist-type\"  observation.  A sample PICKLIST IDS could be:  \"{65069804-39BF-41ED-9EA3-BF2C41389F10},{715091C2-9668-4678-900E-6D55 D3335A30},{D5B3E135-4D68-4528-BBC9-6E8A7A997104}\" ",
+      "fieldNumber_": .4
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

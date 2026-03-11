@@ -1,0 +1,66 @@
+{
+  "fileNumber": 139.2,
+  "fileName": "RISK MODEL LAB TEST",
+  "globalRoot": "139.2",
+  "globalReference": "^SRO(139.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the laboratory test which will be tracked using the Surgery Risk Assessment Module. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LABORATORY DATA NAME",
+      "dataType": "POINTER",
+      "rawType": "139.21P",
+      "required": false,
+      "helpText": "These are the local Data Names in file 63 pointed to by this lab test. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "RP61'",
+      "required": true,
+      "pointerTo": 61,
+      "helpText": "This is the specimen associated with this laboratory test. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VASQIP REFERENCE LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field determines the reference \"low value\" for the laboratory  test. This value is derived from the usual distribution of cardiac  risk assessment test values reported nationally. Test values less  than the reference low are permitted but should be verified for accuracy. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VASQIP REFERENCE HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field determines the \"reference high\" value for the laboratory  test. This value is derived from the usual distribution of cardiac  risk assessment test values reported nationally. Test values higher  than the reference high are permitted but should be verified for accuracy. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "139.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

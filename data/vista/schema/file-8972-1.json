@@ -1,0 +1,215 @@
+{
+  "fileNumber": 8972.1,
+  "fileName": "CP CODE EVALUATOR",
+  "globalRoot": "8972.1",
+  "globalReference": "^KMPD(8972.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CPU TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DIO REFERENCES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BIO REFERENCES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PAGE FAULTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "M COMMANDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "GLOBAL REFERENCES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:not active;1:active;",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ELAPSED TIME (SECONDS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DATE/TIME LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "8972.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8972.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ASSOCIATED ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "8972.111",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8972.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99.04,
+      "fieldName": "AVE CPU TIME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.04
+    },
+    {
+      "fieldNumber": 99.05,
+      "fieldName": "AVE DIO REFERENCES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.05
+    },
+    {
+      "fieldNumber": 99.06,
+      "fieldName": "AVE BIO REFERENCES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.06
+    },
+    {
+      "fieldNumber": 99.07,
+      "fieldName": "AVE PAGE FAULTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.07
+    },
+    {
+      "fieldNumber": 99.08,
+      "fieldName": "AVE M COMMANDS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.08
+    },
+    {
+      "fieldNumber": 99.09,
+      "fieldName": "AVE GLOBAL REFERENCES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "fieldNumber_": 99.09
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8972.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

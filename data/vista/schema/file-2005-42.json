@@ -1,0 +1,164 @@
+{
+  "fileNumber": 2005.42,
+  "fileName": "MAG PATH CASELIST",
+  "globalRoot": "2005.42",
+  "globalReference": "^MAG(2005.42,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the accession number of the case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ROUTINE;1:HIGH;2:STAT;",
+      "helpText": "This is the priority of the case. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SLIDES AVAILABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag indicates whether there are slides available for the case. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TRADITIONAL;1:ROBOTICS;2:WSI;",
+      "helpText": "This is the method used to read the slides for the case in the acquisition site. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "U:Unread;R:Read (verified);C:Cancelled;",
+      "helpText": "The status of the case in the TelePath application. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time that the case began. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LAST ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time of the last activity. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NUMBER OF IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of images acquired. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIRST LOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNLOCKED;1:LOCKED;",
+      "helpText": "This flag indicates whether there is a first (reservation) lock for the case, established by a pathologist. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "FIRST LOCK DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when the first (reservation) lock is set for the case. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "FIRST LOCK USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user setting the first lock (reservation lock) on the case. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SECOND LOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNLOCKED;1:LOCKED;",
+      "helpText": "This flag indicates whether there is a second (accession) lock for the case,  established by a pathologist. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "SECOND LOCK DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when the second lock (accession lock) is set for the  case. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "SECOND LOCK USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user setting the second lock (accession lock) on the case. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "2005.421",
+      "required": false,
+      "helpText": "This is the Note attached to the case. ",
+      "isMultiple": true,
+      "subFileNumber": 2005.421,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.42", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "fileNumber": 446.7,
+  "fileName": "CLRS REPORT STORAGE",
+  "globalRoot": "446.7",
+  "globalReference": "^PRCP(446.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION/INVENTORY POINT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a number representing a combination of the station number  concatenated with the inventory point for the CLRS report being stored. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOH REPORT DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the first part of the CLRS report data for the Stock on Hand report.  The data presents as follows, with  each field in brackets: <Station#>*<Date Range>*<Inventory Point ID>*<Inventory Point Name>*<Inventory Point Type>*<Total Dollars>*<# Inventory Point Items> *<Current Line Item #>*<Cost Center> ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOH REPORT DATA PT2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the second part of the CLRS report data for the Stock on Hand report.  The data presents as follows, with  each field in brackets: <Std Total $ Value>*<ODI  Total $ Value>*<All Total $ Value>*<Std # SOH Items>*<ODI # SOH Items>*<All # SOH Items>*<Std # Inv Items>*<ODI # Inv Items>*<All # Inv Items> ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SSR REPORT DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the first part of the CLRS report data for the Stock Status Report.  The data reports as follows, with each field in brackets:  <Station #>*<Date Range>*<Inactivity Range>*<Inventory Point ID>*<Inventory Point>*<Inventory Point Type> ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SSR REPORT DATA PT2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the second part of the CLRS report data for the Stock Status Report.  The data reports as follows, with each field in brackets: <Std Opening Balance Total>*<ODI Opening Balance Total>*<All Opening Balance Total>*<Std Receipts Total>*<ODI Receipts Total>*<All Receipts Total>*<Std Usage Total>*<ODI Usage Total>*<All Usage Total>*<Std Adjustments Total>*<ODI  Adjustments Total>*<All Adjustments Total> ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSR REPORT DATA PT3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the third part of the CLRS report data for the Stock Status Report.  The data reports as follows, with each field in brackets: <Std Closing Balance Total>*<ODI Closing Balance Total>*<All Closing Balance Total>*<# Std Receipts>*<# ODI Receipts>*<# All  Receipts>*<# Std Usage>*<# ODI Usage>*<# All Usage>*<# Std Adjustments>*<# ODI Adjustments>*<# All Adjustments> ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SSR REPORT DATA PT4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the fourth part of the CLRS report data for the  Stock Status Report.  The data reports as follows, with each field in brackets: <Std Turnover Total>*<ODI Turnover Total>*<All Turnover Total>*<Std # Inactive Items>*<ODI # Inactive Items>*<All # Inactive Items>*<Std Inactive Total $>*<ODI Inactive Total $>*<All Inactive Total $>*<Std Inactive %>*<ODI Inactive %>*<All Inactive %> ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SSR REPORT DATA PT5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will house the fifth part of the CLRS report data for the  Stock Status Report.  The data reports as follows, with each field in brackets: <Std # Long Supply>*<ODI # Long Supply>*<All # Long Supply>*<Std Long Supply Total $>*<ODI Long Supply Total $>*<All Long Supply Total $>*<Std Long Supply %>*<ODI Long Supply %>*<All Long Supply %>*<Std # Inventory Line Items>*<ODI # Inventory Line Items>*<All # Inventory Line Items> ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "446.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

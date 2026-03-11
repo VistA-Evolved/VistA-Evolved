@@ -1,0 +1,214 @@
+{
+  "fileNumber": 618.2,
+  "fileName": "MENTAL HEALTH TEAM",
+  "globalRoot": "618.2I",
+  "globalReference": "^YSG(\"SUB\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the sub-unit to be documented.  Teams may be comprised of physicians, nursing teams, primary therapists, etc. A team may be responsible for all patients on a ward or for a portion of the patient population on a ward. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "WARD LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This is a pointer to the hospital location file.  Each team has one ward location. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short name for the team.  Its use is mainly for ease of selection. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field is to be used only if a team is no longer active.  If this field contains \"1\", admits to this team will no longer be allowed. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "REPORT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the order that this team will be shown on reports relative to other teams of the same ward.  Enter a number that allows easy changes later ie 10,20,30 rather than 1,2,3. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary physician for this team. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PSYCHOLOGIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary psychologist for this team. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOCIAL WORKER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary social worker for this team. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIMARY NURSE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary nurse for this team. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VOCATIONAL SPECIALIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the primary vocational specialist for this team. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "THERAPIST 1",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a therapist on this team. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "THERAPIST 2",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a therapist on the team. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TEAM LEADER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the staff member with responsibility for coordinating team activity. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TEAM BEDS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of team beds.  This field is used in reporting and for admission rotation purposes. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADMIT IN ROTATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If answered \"1\", team rotation status will be displayed.  Team rotation is strictly linear (i.e., one team receives an admission and goes to the end of the rotation list).  Remaining teams move up in rotation.  Teams whose admission allotment have been filled are identified.  This rotation system is for display only.  Automatic team assignments are not made by the In-Patient Features Option of the Mental Health System. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LOCAL TITLE FOR LISTED STAFF",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the title for the staff member to be tied to a patient.  Examples include, \"coordinator\", \"primary therapist\", \"case manager\", \"primary nurse\". ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MASTER TX PLAN DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days following admission that a treatment plan must be placed in the medical record.  Current range is 1 to 120 days. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TREATMENT PLAN UPDATE DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days following the master treatment plan that updates are required.  Current range is 1 to 120 days. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "INTERVIEW/TEST",
+      "dataType": "SUBFILE",
+      "rawType": "618.21",
+      "required": false,
+      "helpText": "This is a listing of tests and interviews routinely reviewed by the psychologist.  It allows quick looks at administrations of test batteries. ",
+      "isMultiple": true,
+      "subFileNumber": 618.21,
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AOR", "field": },
+    {"name": "AWD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "618.2", "field": .01, "type": "regular"},
+    {"name": "618.2", "field": .5, "type": "regular"},
+    {"name": "618.2", "field": .7, "type": "regular"},
+    {"name": "618.2", "field": .9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "W:$D(^(\"1\")) \"   \",$S($D(^DIC(42,+$P(^(\"1\"),U),0))#2:$P(^(0),U),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .7, "value": "W:$D(^(\"1\")) \"   \",$P(^(\"1\"),U,2)"},
+    {"field": .9, "value": "W \"\""}
+  ]
+}

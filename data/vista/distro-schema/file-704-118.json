@@ -1,0 +1,37 @@
+{
+  "fileNumber": 704.118,
+  "fileName": "OBS_QUALIFIER",
+  "globalRoot": "704.118",
+  "globalReference": "^MDC(704.118,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OBS_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.117'",
+      "required": true,
+      "pointerTo": 704.117,
+      "helpText": "This identifies the observation part of this observation/qualifier pair. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUALIFIER_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the qualifier part of this observation/qualifier pair. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

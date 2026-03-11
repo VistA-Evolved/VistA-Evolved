@@ -1,0 +1,65 @@
+{
+  "fileNumber": 349.7,
+  "fileName": "CCPC STATEMENT ERRORS",
+  "globalRoot": "349.7",
+  "globalReference": "^RCPSE(349.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the error that caused the patient statement not to print in CCPC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR TYPE",
+      "dataType": "POINTER",
+      "rawType": "P349.8'",
+      "required": false,
+      "pointerTo": 349.8,
+      "helpText": "This field will hold the type of error that is sent back from CCPC. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RE-TRANSMIT;S:SEND MESSAGE;",
+      "helpText": "This field will hold the type of action to take when an error of this type occurs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the cause of the error code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EXPANDED DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field store the expanded description for an error. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "349.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

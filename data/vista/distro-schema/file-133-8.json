@@ -1,0 +1,39 @@
+{
+  "fileNumber": 133.8,
+  "fileName": "SURGERY WAITING LIST",
+  "globalRoot": "133.8IP",
+  "globalReference": "^SRO(133.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SURGICAL SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P137.45'",
+      "required": true,
+      "pointerTo": 137.45,
+      "helpText": "This is the name of the Surgical Specialty.  All entries in the Waiting List file have an associated Surgical Specialty.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "133.801IP",
+      "required": false,
+      "helpText": "This is the name of the patient.   ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AP", "field": },
+    {"name": "AWL", "field": },
+    {"name": "B", "field": },
+    {"name": "133.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

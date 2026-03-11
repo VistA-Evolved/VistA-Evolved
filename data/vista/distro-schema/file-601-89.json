@@ -1,0 +1,38 @@
+{
+  "fileNumber": 601.89,
+  "fileName": "MH CHOICEIDENTIFIERS",
+  "globalRoot": "601.89",
+  "globalReference": "^YTT(601.89,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHOICETYPEID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This field specifies a MH CHOICETYPE ID field (#.01) of the MH  CHOICETYPE file (#601.751). Numbers under 100,000 are part of the national database and should not be edited locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHOICEIDENTIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:None;0:Zero;1:One;",
+      "helpText": "Choicetype Identifiers are the displayed numeric options that go along  with a multiple choice item. Choices can be numbered starting from one, from zero or remain unnumbered. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.89", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

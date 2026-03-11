@@ -1,0 +1,73 @@
+{
+  "fileNumber": 362.1,
+  "fileName": "IB AUTOMATED BILLING COMMENTS",
+  "globalRoot": "362.1I",
+  "globalReference": "^IBA(362.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "A reference number that should be unique for each entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLAIMS TRACKING ID",
+      "dataType": "POINTER",
+      "rawType": "P356'",
+      "required": false,
+      "pointerTo": 356,
+      "helpText": "The Claims Tracking event for this comment entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P399'",
+      "required": false,
+      "pointerTo": 399,
+      "helpText": "This is the bill associated with the Claims Tracking event, if any. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the event was added to the comments file.  This is usually the date the auto biller first tried to create a bill for the event. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "362.111",
+      "required": false,
+      "helpText": "Comments associated with the Claims Tracking event the the Bill/Claims  bill. ",
+      "isMultiple": true,
+      "subFileNumber": 362.111,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "362.1", "field": .01, "type": "regular"},
+    {"name": "362.1", "field": .02, "type": "regular"},
+    {"name": "362.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBT(356,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(356,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGCR(399,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(399,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

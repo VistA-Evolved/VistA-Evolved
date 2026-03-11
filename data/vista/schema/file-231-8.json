@@ -1,0 +1,142 @@
+{
+  "fileNumber": 231.8,
+  "fileName": "TRACKING ROOM-BED",
+  "globalRoot": "231.8",
+  "globalReference": "^EDPB(231.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the internal name of the room, bed, or area that a patient may be  during the course of their visit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This allows each station (division, for example) to manage its own set of rooms / beds / areas. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AREA",
+      "dataType": "POINTER",
+      "rawType": "P231.9'",
+      "required": false,
+      "pointerTo": 231.9,
+      "helpText": "This is the area in the hospital associated with this room or bed.   Initially, the only area supported is the emergency department.  It is  expected that additional areas will be supported in the future. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This flag is used to mark a room/bed/area as out of service. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the sequence for displaying the room/bed/area on the large  display board. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name that is shown on the large display board.  It should be  concise or abbreviated to save space on the display board. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DISPLAY WHEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OCCUPIED;1:ALWAYS;2:NEVER;",
+      "helpText": "This indicates when the room/bed/area should show up on the large display  board.  The room may always show, show only if currently occupied by a  patient, or never show. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DEFAULT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If populated, the default status is automatically assigned to the entry  in the ED LOG file when the room/bed/area is selected.  For example, you  might want to automatically assign the status, Awaiting Triage, when the  patient is assigned to the waiting room. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MULTIPLE ASSIGN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Single;1:Multiple;2:Waiting;3:Single Non-ED;4:Multiple Non-ED;",
+      "helpText": "This field affects the behavior of the room for data entry and reports.   If single, only one patient at a time may be assigned to the room.  Exam rooms are a common example.  If multiple, multiple patients may be  simultaneously assigned to the room.  Waiting is a special case to  identify waiting areas in the reports.  Non-ED indicates an area where the patient may be that is outside the emergency department itself. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SHARED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If several beds or areas share the same physical space, use this field to  create a common name for these beds/areas.  By having this shared name,  the reports may by used to identify exposures to contagious organisms. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BOARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An entry in this field indicates that the room/area should be displayed  on a specific board that uses the name entered here. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A specific room/area may be mapped to a particular foreground and  background color for use with the display board. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRIMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Primary;2:Secondary;",
+      "fieldNumber_": .13
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "231.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

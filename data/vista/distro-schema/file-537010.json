@@ -1,0 +1,61 @@
+{
+  "fileNumber": 537010,
+  "fileName": "VAMC NETWORK PATIENT",
+  "globalRoot": "537010I",
+  "globalReference": "^AFJ(537010,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Social Security Number",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "this field should contain the patient ssn for use to compare the common patients ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Date of Birth",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Patient Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Records Available At",
+      "dataType": "POINTER",
+      "rawType": "537010.04P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Date Entered",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "537010", "field": .01, "type": "regular"},
+    {"name": "537010", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "D EN^DDIOL($P(^(0),U,3),\"\",\"?15\")"}
+  ]
+}

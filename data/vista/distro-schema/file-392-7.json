@@ -1,0 +1,133 @@
+{
+  "fileNumber": 392.7,
+  "fileName": "BENEFICIARY TRAVEL MANUAL DEDUCTIBLE WAIVER",
+  "globalRoot": "392.7",
+  "globalReference": "^DGBT(392.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WAIVER REQUEST DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date/time of the waiver request. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient to whom the waiver pertains. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WAIVER STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether or not the waiver is authorized. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GRANTED/DENIED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who granted/denied the waiver. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WAIVER APPROVAL/DENIAL DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the travel waiver was approved or denied. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WAIVER ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Select the person who entered the waiver status. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WAIVER REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains  user remarks about why the waiver was approved or denied. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the waiver will expire. The expiration date will be set  without user intervention. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the record was added to the file. It is set by the  system. This cannot be changed except by programmer. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "DELETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the manual waiver request was deleted. This field is set  by a routine. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "WAIVER DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who deleted the waiver request. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DELETION REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains remarks about why the waiver was deleted. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "392.7", "field": .01, "type": "regular"},
+    {"name": "392.7", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

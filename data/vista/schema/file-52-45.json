@@ -1,0 +1,112 @@
+{
+  "fileNumber": 52.45,
+  "fileName": "ERX SERVICE REASON CODES",
+  "globalRoot": "52.45",
+  "globalReference": "^PS(52.45,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the internal record number of the code. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVICE REASON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the eRx service reason code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ150",
+      "length": 150,
+      "required": false,
+      "helpText": "This is the brief description of the eRx service reason code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE TYPE ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the abbreviation of type service reason code. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the description related to the code abbreviation. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FULL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "52.451",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.451,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "NCIT SUBTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the subtype of the NCIT code. This is used to determine whether a  code is a Dose Unit of Measure, DEASchedule, Quantity Unit of Measure, or  part of another subset of NCIT codes. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CHANGE REQUEST REASON TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "52.452",
+      "required": false,
+      "helpText": "This is template text utilized as a suggestion for the user when they submit an Rx Change Request to the outside prescriber. ",
+      "isMultiple": true,
+      "subFileNumber": 52.452,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CH REQ REASON TEXT BY DIVISION",
+      "dataType": "POINTER",
+      "rawType": "52.4521PA",
+      "required": false,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "TYPE", "field": },
+    {"name": "52.45", "field": .01, "type": "regular"},
+    {"name": "52.45", "field": .02, "type": "regular"},
+    {"name": "52.45", "field": .03, "type": "regular"},
+    {"name": "52.45", "field": 2.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

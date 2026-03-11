@@ -1,0 +1,27 @@
+{
+  "fileNumber": 6924.1,
+  "fileName": "FSA-ACCIDENT ACTIVITY",
+  "globalRoot": "6924.1",
+  "globalReference": "^ENG(6924.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCIDENT ACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Accident classification scheme. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6924.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

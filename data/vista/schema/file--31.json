@@ -1,0 +1,67 @@
+{
+  "fileNumber": .31,
+  "fileName": "KEY",
+  "globalRoot": ".31",
+  "globalReference": "^DD(\"KEY\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,7",
+      "length": 20,
+      "required": true,
+      "helpText": "Answer should be the number of the file or subfile identified by this key. A file may have more than one key, but only one primary key. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer must be the name of this key. The name of a file's primary key should be A, with subsequent keys for the same file named B, C, and so on. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;",
+      "helpText": "Answer 'PRIMARY' if this is the primary key of the file, the key that will usually be used for identifying entries. Otherwise, answer 'SECONDARY'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELD",
+      "dataType": "SUBFILE",
+      "rawType": ".312IA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .312,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUENESS INDEX",
+      "dataType": "POINTER",
+      "rawType": "*P.11'",
+      "required": false,
+      "pointerTo": .11,
+      "helpText": "Answer with the index that FileMan should use to ensure that new key values are unique. It must be a new-style index that resides in the Index file, and must cross-reference the key fields in proper sequence. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

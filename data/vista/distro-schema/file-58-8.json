@@ -1,0 +1,402 @@
+{
+  "fileNumber": 58.8,
+  "fileName": "DRUG ACCOUNTABILITY STATS",
+  "globalRoot": "58.8I",
+  "globalReference": "^PSD(58.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PHARMACY LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the Pharmacy location.     The Controlled Substances module will recognize this location as the Narcotic Area of Use (NAOU) throughout this package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "M:MASTER VAULT;S:SATELLITE VAULT;N:NARCOTIC LOCATION;P:PRIMARY;",
+      "helpText": "This field contains the location type for this pharmacy location. Location types are \"M\" for master vault, \"S\" for satellite vault, \"N\" for narcotic location, and \"P\" for primary.    This field should NOT be edited directly using VA FileMan.  The Drug Accountability and Controlled Substances modules depend on the accuracy of this data.   The Controlled Substances module supports \"M\", \"S\" and \"N\" location types. For CS use, enter the master vault locations first.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "R*P59.4'",
+      "required": true,
+      "pointerTo": 59.4,
+      "helpText": "This field contains a pointer to the inpatient site.  This is a required data element within the Controlled Substances module. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRIMARY DISPENSING SITE",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "This field contains a pointer to the primary dispensing site for this pharmacy location.  This data is utilized within the Controlled Substances module. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which this pharmacy location was inactivated. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASK MFG/LOT #/EXP.DATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The answer for asking manufacturer, lot #, and expiration date on drugs tracked within this Pharmacy location .  If this field is set to \"1\" or \"YES\", manufacturer, lot number, and expiration date will be asked when dispensing drugs within this Pharmacy location.    For Controlled Substances use, this field should be answered for Master vaults and Satellite vaults. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IS THIS PHARM WORKING STOCK?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Pharmacy location designated as a Narcotic Area of Use for pharmacy working stock. If this field is set to \"1\" or \"YES\" drug data will be utilized differently within the Controlled Substances module. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "58.8001IP",
+      "required": false,
+      "helpText": "Drug is defined by physical location, stock level, balance on-hand, reorder level, quantity to reorder, breakdown unit, package size, manufacturer, lot number, and expiration date.  Other information available is inventory types, ward (for drug), and prime vendor item number (if applicable).    In the Controlled Substances module, all CS order requests are stored in the ORDERS multiple within DRUG. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*PRIMARY INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "*P445'X",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "To provide a direct link between a pharmacy inventory point and a pharmacy location entry in this file.  Receiving that occurs in the inventory point will update on hand quantities in the pharmacy location. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "*RECEIPT FAILURE NOTIFICATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If a Drug Accountability location is linked to a Primary Inventory Point the items received into the Primary Inventory Point will also be updated in the Drug Accountability location.  If items are received into the linked Primary Inventory that are not connected to the DRUG file (#50) or not stocked in the Drug Accountability location, and this field is set to \"YES\", the RECEIPT FAILURE mail group will be notified with a list of the items. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRIME VENDOR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "To more efficiently process prime vendor receipts, setting this flag to \"YES\" will allow you to store an obligation number.  This number will then be offered as a default whenever using the Receive Directly into Drug Accountability [PSA RECEIVING] option on the Receipts Menu [PSA RECEIPTS MENU] menu. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CURRENT PRIME VENDOR PO#",
+      "dataType": "POINTER",
+      "rawType": "*P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This entry will be used as a default when receiving from the prime vendor. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AUTO GENERATE DISPENSING #'S?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The pharmacy dispensing number (Green Sheet #) will be automatically generated when dispensing Controlled Substances orders if this field is set to \"1\" or \"YES\".  If left blank, or if \"0\", or \"NO\" are entered the pharmacy employee processing the Controlled Substances order will have to enter the dispensing number (Green Sheet #). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LOW DISPENSING #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "The lowest CS pharmacy dispensing number for this dispensing site.  The system will not allow numbers smaller than the one you choose. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "HIGH DISPENSING #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "The largest acceptable pharmacy dispensing number for this dispensing site.  The difference between this number and the lowest pharmacy dispensing number should be substantial.  The system will not allow numbers larger than the one you choose. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LAST DISPENSING #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0X",
+      "length": 9,
+      "required": false,
+      "helpText": "The last CS pharmacy dispensing number used.  This number will start at the lowest pharmacy dispensing number, increment it by one until it finds a number that has not been used, and then use that number for the next Controlled Substances order. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "USING PERPETUAL INVENTORY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag is used to determine if this NAOU is using the Controlled Substances perpetual inventory functionality.   If this field is set to \"YES\" or \"1\" the standard Controlled Substance Administration Record VA FORM 10-2638 (Green Sheet) WILL NOT be printed and will be replaced by the perpetual inventory method of tracking CS drugs.   For an NAOU that is using a perpetual inventory, the MAXIMUM QUANTITY PER ORDER field (#8.5) for a drug in the dispensing site will limit the maximum quantity tha",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PRINT GREEN SHEET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a flag used to determine the sequence in which a Controlled Substance Administration Record VA FORM 10-2638 (Green Sheet) will be printed.  If set to \"YES\" or \"1\" the \"Green Sheet\" will print after the order has been processed and prior to a RPh verification. If set to \"NO\" or \"0\" the \"Green Sheet\" will print after a RPh has verified the filled order. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "GREEN SHEET STOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GPO 1992 PRINTING;0:OTHER GPO PRINTING;",
+      "helpText": "The VA FORM 10-2638 (Green Sheet) stock was printed on 8 x 10 1/2 paper. In 1992, the paper size changed to 8 1/2 x 11.  This field is used as a site parameter when printing the Green Sheet forms.  Additional spacing is required for the GPO 1992 printed stock. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "OUTPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "P59'X",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "When prescriptions are filled the corresponding drug for this Outpatient Site will be updated for monthly total dispensed. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "58.842P",
+      "required": false,
+      "helpText": "When Unit Dose and IV dispensing data is compiled, it will affect  the Drug Accountability Location to which a ward is linked. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PRIMARY INVENTORY POINT(S)",
+      "dataType": "POINTER",
+      "rawType": "58.8445P",
+      "required": false,
+      "helpText": "To provide a direct link between a pharmacy inventory point and a pharmacy location entry in this file.  Receiving that occurs in the inventory point will update on hand quantities in the pharmacy location. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DISPENSING WORKSHEET SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRUG/NAOU;N:NAOU/DRUG;S:SELECT AT PRINTING;",
+      "helpText": "This field determines the sort order when printing the Controlled Substances \"Pharmacy Dispensing Worksheet\".  The sort order may be defined by drug then NAOU, by NAOU then drug, or selected when printing the worksheet. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DEFAULT GREEN SHEET PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "A pointer to the name of the device selected as the default printer for Green Sheets. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DEFAULT REPORT PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "A pointer to the name of the device selected as the default printer for various Controlled Substances reports. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DEFAULT LABEL PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "A pointer to the name of the device selected as the default printer for Controlled Substances labels. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "LAST UD UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "When the UD dispensing data is collected from the UNIT DOSE PICK LIST STATS file (#57.6) a date is stored here.  Each time unit dose dispensing data is collected, it begins FROM this date. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ORDER ENTRY BANNER",
+      "dataType": "SUBFILE",
+      "rawType": "58.828",
+      "required": false,
+      "helpText": "A banner to be displayed for Nursing Order Entry, Pharmacy Order Entry from Nursing, and Infusion Order Entry.  This banner may be edited via the option, Create/Edit the Narcotic Area of Use. ",
+      "isMultiple": true,
+      "subFileNumber": 58.828,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "EMERGENCY ORDER PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This device will be used to print a notice of emergency orders submitted by nursing personnel.  The printer designated to receive these messages SHOULD NOT be the printer which prints green sheets or controlled substances labels. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ALLOW ONE-TIME REQUESTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "     If the primary dispensing site for an NAOU allows one-time requests, any active drug in that dispensing site may be ordered, even though it may be inactive or not stocked by that NAOU.  Certain drugs within a dispensing site may be marked as not selectable and are unavailable for even one-time requests. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "IV ROOM",
+      "dataType": "POINTER",
+      "rawType": "58.831P",
+      "required": false,
+      "helpText": "The IV Room multiple contains the Outpatient Clinic's IV rooms to which the  Outpatient Pharmacy dispenses IVs. When IV dispensing data is compiled, it  will affect the Drug Accountability outpatient pharmacy location to which  the IV Room is linked. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ADJUSTMENT MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "The persons in this mail group will receive messages whenever an adjustment or count correction occurs for this Narcotic Area of Use (NAOU). ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TIME LIMIT FOR DELAYED DOSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the time limit for Nursing to record a delayed wastage or return to stock for a dose that was not administered to a patient. If a \"1\" is entered, Nurses will have one hour to record the disposition of a dose for this Narcotic Area of Use. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "MAINTAIN REORDER LEVELS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The MAINTAIN REORDER LEVELS? field denotes if the drugs in the pharmacy location or master vault are to maintain their reorder levels. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DAYS TO KEEP INVOICE DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The DAYS TO KEEP INVOICE DATA field contains the number of days invoices are to remain in the DRUG ACCOUNTABILITY ORDERS (#58.811) file. A nightly job checks this field to determine if the invoice data should be deleted. Invoice data must remain in the file at least 120 days. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "OUTPATIENT SITE(S)",
+      "dataType": "POINTER",
+      "rawType": "58.836P",
+      "required": false,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "BALANCE DISCREPANCY CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "Enables Control Substance Dispensing sites to turn off the manual balance discrepancy inventory software. ON will include the dispensing site in the manual count when dispensing controlled substances. OFF is used for automated dispensing when manual counting is not desired. A null entry in this field is the same as OFF. ",
+      "fieldNumber_": 37
+    }
+  ],
+  "fieldCount": 37,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADISP", "field": },
+    {"name": "AEXP", "field": },
+    {"name": "AEXPO", "field": },
+    {"name": "AIV", "field": },
+    {"name": "AOP", "field": },
+    {"name": "ASITE", "field": },
+    {"name": "ASITE1", "field": },
+    {"name": "B", "field": },
+    {"name": "BC", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "P", "field": },
+    {"name": "58.8", "field": .01, "type": "regular"},
+    {"name": "58.8", "field": 1, "type": "regular"},
+    {"name": "58.8", "field": 1, "type": "regular"},
+    {"name": "58.8", "field": 2, "type": "regular"},
+    {"name": "58.8", "field": 11, "type": "regular"},
+    {"name": "58.8", "field": 20, "type": "regular"},
+    {"name": "58.8", "field": 37, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")),^(\"I\")]\"\",^(\"I\")'>DT D EN^DDIOL($C(7)_\"**INACTIVE**\")"}
+  ]
+}

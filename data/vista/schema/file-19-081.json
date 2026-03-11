@@ -1,0 +1,121 @@
+{
+  "fileNumber": 19.081,
+  "fileName": "AUDIT LOG FOR OPTIONS",
+  "globalRoot": "19.081",
+  "globalReference": "^XUSEC(19,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Entries in this file are uniquely identified by the precise time when the option was accessed.  An entry will be made as specified in the Kernel Site Parameters File.  Once the date set in the 'Initiate Audit' Field has been reached, this file will be used to maintain a log according to the 'Option Audit' flag. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "OPTION",
+      "dataType": "POINTER",
+      "rawType": "RP19'",
+      "required": true,
+      "pointerTo": 19,
+      "helpText": "This field indicates the name of the option being audited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field indicates the name of the user who has accessed the option. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates the device used while the option was accessed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "JOB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field records the job number associated with the option access. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME OF EXIT FROM OPTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field marks the time when the user exited from the option. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CPU",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field records the CPU location of the option access. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "For a Server-type option this field will contain the message number in the Message File that activated (or tried to activate) the server option.  This message is called the 'server request.' ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SENDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For a Server-type option this field will contain the return address of the person who initiated the server request, that is, the name of the person who sent the message that activated (or tried to activate) the option. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SUBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For a Server-type option this field will contain the subject of the MailMan message that activated (or tried to activate) the option. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For a Server-type option this field will contain the resulting action of a server request.  In the event of an error, the error will be trapped by the server software and entered into this field. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19.081", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

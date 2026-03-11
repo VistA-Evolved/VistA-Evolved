@@ -1,0 +1,68 @@
+{
+  "fileNumber": 984.1,
+  "fileName": "MASTER PATIENT INDEX (LOCAL NUMBERS)",
+  "globalRoot": "984.1",
+  "globalReference": "^MPIF(984.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number which will be used as a multiple to generate local ICNs when the MPI is unreachable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST NUMBER USED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This keeps the last number used (not the next number to use). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CHECK SUM FOR LAST NUMBER USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This filed contains the checksum for the last Local ICN (Integration Control Number) in the LAST NUMBER USED field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NEXT NUMBER TO USE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "When used move to last number used and generate a new entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHECK SUM FOR NEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the checksum for the next number to use.  Move to the checksum used then generate a new entry. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "984.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

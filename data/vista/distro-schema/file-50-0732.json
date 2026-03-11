@@ -1,0 +1,87 @@
+{
+  "fileNumber": 50.0732,
+  "fileName": "DUE QUESTION",
+  "globalRoot": "50.0732",
+  "globalReference": "^PS(50.0732,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Question to be used in the DUE QUESTIONNAIRE file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE OF ANSWER REQUIRED",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES/NO/UNKNOWN;2:FREE TEXT;3:NUMERIC;",
+      "helpText": "Limits the type of Answer allowed.      1. YES/NO/UNKNOWN    2. FREE TEXT    3. NUMERIC   This field logically defines the Answer field, however, VA FileMan will treat the Answer field as it is defined in the Data Dictionary, i.e. Free Text with a max length of 245 characters.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOWER LIMIT FOR NUMERICS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The smallest number allowed for an Answer to this Question. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UPPER LIMIT FOR NUMERICS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,4X",
+      "length": 13,
+      "required": false,
+      "helpText": "The largest number allowed for an Answer to this Question. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FRACTIONAL DIGITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The number of fractional digits allowed for an Answer to this Question. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FREE TEXT LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of characters allowed for an Answer to this Question. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCKED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Used to prevent changes to the  Question text once an DUE ANSWER SHEET has been printed. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.0732", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

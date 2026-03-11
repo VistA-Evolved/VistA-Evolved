@@ -1,0 +1,57 @@
+{
+  "fileNumber": 73.1,
+  "fileName": "RAD MODALITY DEFINED TERMS",
+  "globalRoot": "73.1",
+  "globalReference": "^RAMIS(73.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODALITY ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Two-letter code for the modality, as defined by the DICOM Standards (PS 3.3). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MODALITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the modality. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:Retired;",
+      "helpText": "Code 'R' for Retired, indicates that the corresponding modality has been defined as Retired by the DICOM Standards (PS 3.3-1998).  A retired modality may be used, however it is strongly encouraged to implement a newer modality. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REPLACED BY",
+      "dataType": "POINTER",
+      "rawType": "P73.1'",
+      "required": false,
+      "pointerTo": 73.1,
+      "helpText": "The name of the replacing modality as defined in the DICOM Standards (PS 3.3-1998) ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "73.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W:$P(@(DIC_\"Y,0)\"),U,3)]\"\" \"  (\",$E($P(^DD(73.1,2,0),$P(@(DIC_\"Y,0)\"),U,3)_\":\",2),1,$F($P(^DD(73.1,2,0),$P(@(DIC_\"Y,0)\"),U,3)_\":\",2),\";\")-2),\")\""}
+  ]
+}

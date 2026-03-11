@@ -1,0 +1,57 @@
+{
+  "fileNumber": 8989.518,
+  "fileName": "PARAMETER ENTITY",
+  "globalRoot": "8989.518",
+  "globalReference": "^XTV(8989.518,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,6X",
+      "length": 16,
+      "required": false,
+      "helpText": "The internal entry numbers of this file match the file numbers from which entity instances are obtained.  For example, for the entity USER, the file number is 200. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name used to identify the entity when using parameter tools. It may not always be the same as the file name from which entities are selected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This identifies the prefix used to identify the entity type when making calls to XPAR. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MIXED CASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the entity in mixed case. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8989.518", "field": .01, "type": "regular"},
+    {"name": "8989.518", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

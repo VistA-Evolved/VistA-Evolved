@@ -1,0 +1,78 @@
+{
+  "fileNumber": 391.92,
+  "fileName": "NEW PERSON TREATING FACILITY LIST",
+  "globalRoot": "391.92",
+  "globalReference": "^DGCN(391.92,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PERSON",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "PERSON identifies a specific individual in the NEW PERSON (#200) file  that is known at a facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "INSTITUTION identifies the facilities (Ie. INSTITUTION (#4)) where this PERSON (#.01) has access. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ150",
+      "length": 150,
+      "required": false,
+      "helpText": "SOURCE ID is the unique system assigned identifier at the identified  facility for the person record. The value of SOURCE ID varies, depending  on the source facility.   If SOURCE ID is from the Master Patient Index, the value is the  Integration Control Number (ICN). If SOURCE ID is from the Department of  Defense (DoD), the value is the Electronic Data Interchange Personal  Identifier (EDIPI), which is their equivalent of an ICN.  In the future,  SOURCE ID may come from other sources due to ad",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SOURCE ID TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NI:National unique individual identifier;PI:Patient internal identifier;PN:Person number;EI:Employee number;SS:Social Security number;NPI:National provider identifier;",
+      "helpText": "The SOURCE ID TYPE field defines the data source for this entry.  The  source ID type is a reference to the HL7 Table 0203, Identifier Type, and  the VA Identity Management user defined values: NI (National Identifier),  PI (Patient Identifier), PN (Person Number), EI (Employee Identifier), SS  (Social Security Number), and NPI (National Provider Identifier). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASSIGNING AUTHORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "ASSIGNING AUTHORITY stores a portion of the data used to assemble fully  qualified identifiers used for either the HL7 v2.4 or v3.0 standard.  It  is based on the Health Level Seven (HL7) standardized table 0363 and  contains the universal ID subcomponent of the assigning authority  component in the standard PID-3 identifier.   The fully qualified HL7 identifier is composed of the PERSON (#.01),  SOURCE ID (#.03), SOURCE ID TYPE (#.04), INSTITUTION (#.02), ASSIGNING  AUTHORITY (#10)  which const",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "IDENTIFIER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Active;H:Merged;",
+      "helpText": "The IDENTIFIER STATUS field supports joint VA/DoD medical centers,  Veteran's Record Management (VRM), and Virtual Lifetime Electronic Record  (VLER) initiatives.  This field allows the capture of the resolved  duplicate events and exposes the related identifier and identifier status  to the consuming applications.   A value of \"A\" indicates that the person record is an active record on the identifying system (e.g., VAMC or DoD).  A value of \"H\" indicates that  the person record was identified a",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "391.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

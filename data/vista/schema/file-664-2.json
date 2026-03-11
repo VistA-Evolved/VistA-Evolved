@@ -1,0 +1,169 @@
+{
+  "fileNumber": 664.2,
+  "fileName": "PROSTHETIC WORK ORDER",
+  "globalRoot": "664.2",
+  "globalReference": "^RMPR(664.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORK ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the permanent number used to identify and track the Lab request. It is built from both information the user enters and a sequence number assigned by the computer (e.g., 644-95-2-O-0016).     644    =  Station Number     95     =  Fiscal Year     2      =  Quarter     O      =  Type of Laboratory (Orthotic, Restoration, Shoe Last,               Wheelchair Repair, National Foot Center, or Denver               Distribution Center) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLIANCE/REPAIR",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "Pointer to associated RECORD OF PROS APPLIANCE/REPAIR entry in file #660. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the INSTITUTION file (#4).  If a site is multidivisional, entries are screened out by site number. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "JOB NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a job number, which may be between 1 and 999.  Each job number is associated withan item on the 2529-3.  The numbers are not entered by the user, but set in the background in the lab routines. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the DATE the Lab Work Order was entered. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MATERIALS USED",
+      "dataType": "POINTER",
+      "rawType": "664.22PA",
+      "required": false,
+      "helpText": "Contains components required to complete the fabricated item.  May be the fabricated item if the item was taken from stock. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EST. SHIPPING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the estimated shipping cost for delivery of item(s) on VAF 10-2421. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTUAL SHIPPING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the actual shipping cost for delivery of item(s) on VAF 10-2421. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REFERRAL STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the Station Name or Station Number of the facility that is referring the VAF 10-2529-3 to a Prosthetic Laboratory. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WORK FOR OTHER STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OTHER STATION;",
+      "helpText": "Prosthetic Laboratories processing a Work Order for another facility should enter a `1` in order to get the appropriate AMIS credit.  The referring facility receives the administrative AMIS credit, and the facility processing the Work Order receives the laboratory AMIS credit. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Item/Job on the Lab Work Order was completed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who completed the Item/Job. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE MEASURED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Lab Technician measured or fitted the patient for the items/services requested on the Lab Work Order. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CHECKED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person checking the completed item/service requested on the Lab Work Order for quality control monitoring. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "664.212",
+      "required": false,
+      "helpText": "Additional comments noted on the Lab Work Order. ",
+      "isMultiple": true,
+      "subFileNumber": 664.212,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "A1", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "664.2", "field": .01, "type": "regular"},
+    {"name": "664.2", "field": 1, "type": "regular"},
+    {"name": "664.2", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "fileNumber": 118.2,
+  "fileName": "TUBEFEEDING",
+  "globalRoot": "118.2sI",
+  "globalReference": "^FH(118.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the tubefeeding product as it will appear on all lists and displays. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPENSING UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a title for the dispensing unit such as bottle, can or package. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AMT/UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the number of ml's or grams of product contained in the dispensing unit. For products which require reconstitution with water, it is the number of ml's after reconstitution. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KCAL/ML",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,2",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains the number of KiloCalories per ml of product. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the portion cost of the tubefeeding and is a computed field which obtains the value from the recipe file based upon the 'Corresponding Recipe' pointer. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "118.21",
+      "required": false,
+      "helpText": "This multiple contains alternate names or synonyms for the product. These names should include any names commonly known or used by ward/medical personnel. ",
+      "isMultiple": true,
+      "subFileNumber": 118.21,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CORRESPONDING RECIPE",
+      "dataType": "POINTER",
+      "rawType": "P114'",
+      "required": false,
+      "pointerTo": 114,
+      "helpText": "This field is a pointer to the recipe in file 114 (the Recipe file) which contains the ingredients for this feeding. Cost and other data for this feeding will be retrieved from the recipe file. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, prohibits further selection of this item by ward or dietetic personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "118.2", "field": .01, "type": "regular"},
+    {"name": "118.2", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

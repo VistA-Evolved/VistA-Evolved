@@ -1,0 +1,165 @@
+{
+  "fileNumber": 728.44,
+  "fileName": "CLINICS AND STOP CODES",
+  "globalRoot": "",
+  "globalReference": "^ECX(728.44,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC NAME",
+      "dataType": "POINTER",
+      "rawType": "RP44XI",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "The name of the clinic. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STOP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "The stop code for this clinic as determined by Medical Administration Service (MAS). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CREDIT STOP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "The credit stop code, if none exists, for this clinic as determined by Medical Administration Service (MAS).   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DSS STOP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "Three digit Stop Code number assigned to  specific location. Each Stop Code number represents a type of care or Service/treating specialty (clinics only). Stop code must have a restriction type of Primary or Either. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DSS CREDIT STOP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "Appointments to this clinic will receive this Stop Code credit in addition to the 'normal' Stop Code credit if a Stop Code different from the 'normal' Stop Code for this clinic is entered here.  Credit Stop Code must have a restriction type of Secondary or Either. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTION TO SEND",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "4:SEND STOP CODE(S) WITH CHAR4 CODE;5:SEND STOP CODE(S) WITHOUT CHAR4 CODE;6:DO NOT SEND;",
+      "helpText": "This determines how Stop Code, Credit Stop Code, CHAR4 Code, and MCA Labor Code (if present) are combined to form a Feeder Key for this clinic. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE LAST REVIEWED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date this data in this file was last reviewed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NATIONAL CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P728.441'",
+      "required": true,
+      "pointerTo": 728.441,
+      "helpText": "The NATIONAL CODE is a four character code that is optionally used to build part of the DSS Feeder Key field in the DSS Clinic (CLI) Extract.   If used, the four character code helps describe/identify the clinic the CLI Extract record is for. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NON-OR DSS IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field will identify clinics which are used for non-OR procedures in the Surgery package. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that MAS inactivated this clinic. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DSS PRODUCT DEPARTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Department Number designated to  the patient care product being provided. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NON-COUNT CLINIC (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Is this clinic to be a non-count clinic for workload purposes? OR Are visits to this clinic to be included in workload statistics? ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RECORD LAST SYNCHED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the entry in this file was last synched. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MCA LABOR CODE",
+      "dataType": "POINTER",
+      "rawType": "*P728.442'",
+      "required": false,
+      "pointerTo": 728.442,
+      "helpText": "This field further defines the clinic setup by identifying the Managerial Cost Accounting (MCA) labor code associated with this clinic. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PROVIDER STATION",
+      "dataType": "POINTER",
+      "rawType": "*P4'OX",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the Sta6a of the provider's station when the provider is based at another facility. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "728.44", "field": .01, "type": "regular"},
+    {"name": "728.44", "field": 6, "type": "regular"},
+    {"name": "728.44", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

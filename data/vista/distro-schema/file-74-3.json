@@ -1,0 +1,66 @@
+{
+  "fileNumber": 74.3,
+  "fileName": "REPORT DISTRIBUTION QUEUE",
+  "globalRoot": "74.3",
+  "globalReference": "^RABTCH(74.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name given to the report distribution queue. Distribution queue names must be between 3 and 30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CATEGORY OF REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;N:NON WARD OR CLINIC;A:ALL REPORTS;",
+      "helpText": "This field contains the categories available for rad/nuc med reports. Choices are : 'I' for inpatient, 'O' for outpatient, 'N' for non ward or clinic, 'A' for all reports. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TOP OF PAGE MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a site-defined message to be displayed with the report distribution queue. The message must be 5-79 characters in length. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "74.33DA",
+      "required": false,
+      "helpText": "This is a multiple field that tracks activity associated with the distribution queue. ",
+      "isMultiple": true,
+      "subFileNumber": 74.33,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date that this distribution queue was inactivated by the rad/nuc med coordinator.  Until the day following the inactivation  date, the distribution queue may be selected. ",
+      "fieldNumber_": 125
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "74.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

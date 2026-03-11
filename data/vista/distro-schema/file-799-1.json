@@ -1,0 +1,65 @@
+{
+  "fileNumber": 799.1,
+  "fileName": "ROR LIST ITEM",
+  "globalRoot": "799.1",
+  "globalReference": "^ROR(799.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains a text representation of the item (external value). The text is displayed by  the GUI in the list of possible values of the registry field that this item is associated with. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "3:Lab Group;4:Drug Group;5:BMI Group;6:MELD Group;7:Renal Group;",
+      "helpText": "An internal value of this field links the item to the registry field. The items with the same type define the possible values of the registry field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'X",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "This field identifies the registry that the item is associated with. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains a code (internal value) of the item. The codes are unique only among the items of the same type associated with the same registry. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF INACTIVATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this field has a value, the item will be considered inactive after this date. Use this  field to disable unnecessary items instead of deleting them. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 404.94,
+  "fileName": "SCHEDULING REPORT GROUP",
+  "globalRoot": "404.94",
+  "globalReference": "^SD(404.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The field contains the name of the report group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PCMM;",
+      "helpText": "This field allows for a higher level classification of related reports.  Currently(4/96), there is only one class avaliable, PCMM. However, it is envisioned that other sub-modules within scheduling will use the basic Query Template Utility. When this occurs, this field will allow the utility to only allow user selection of reports available for the module accessing the utility. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.9401",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 404.9401,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "404.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

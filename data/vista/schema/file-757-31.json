@@ -1,0 +1,61 @@
+{
+  "fileNumber": 757.31,
+  "fileName": "DISPLAYS",
+  "globalRoot": "757.31",
+  "globalReference": "^LEX(757.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short descriptive title indicating the function or purpose of  the display. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CLASSIFICATION CODES;S:SEMANTICS;F:FULL DISPLAY;",
+      "helpText": "Display type indicates the print display method. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This string contains the instructions (parameters) for the display routines. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "757.313",
+      "required": false,
+      "helpText": "Contains a detailed description of exactly what is to be displayed. ",
+      "isMultiple": true,
+      "subFileNumber": 757.313,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ADSP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "757.31", "field": .01, "type": "regular"},
+    {"name": "757.31", "field": .01, "type": "regular"},
+    {"name": "757.31", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "fileNumber": 357.69,
+  "fileName": "TYPE OF VISIT",
+  "globalRoot": "357.69IP",
+  "globalReference": "^IBE(357.69,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P81'X",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "Enter the Type of Visit CPT code.  These currently all begin with 992. This is sometimes refered to as the Level of Care CPT. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "SHORT NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field displays the SHORT NAME of the Visit CPT stored in the CPT file. ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RECOMMENDED HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The header recommended for use when designing a form. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RECOMMENDED TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text that is recommended for use on a form when using this code. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field should be set to '1' when the code should no longer be used. Codes should not be deleted from this file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NEW,ESTABLISHED,CONSULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEW;2:ESTABLISHED;3:CONSULT;9:OTHER;",
+      "helpText": "This field will be used to group encounter types for summary report purposes. All Type of visit records which relate to NEW, ESTABLISHED or CONSULT encounters, whether the encounter was In-Office, In-Home, Eye Care, Preventive, Domicilliary etc. in nature, will be grouped as NEW, ESTABLISHED or CONSULT. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALLOW QUANTITY GREATER THAN 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.69", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": ""},
+    {"field": .03, "value": ""},
+    {"field": WRITE, "value": "D EN^DDIOL(\"    \"_$P(^(0),U,3),\"\",\"?0\")"}
+  ]
+}

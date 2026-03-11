@@ -1,0 +1,37 @@
+{
+  "fileNumber": 409.834,
+  "fileName": "SDEC ADDITIONAL RESOURCE",
+  "globalRoot": "409.834",
+  "globalReference": "^SDEC(409.834,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of this resource. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No field to indicate that this resource is inactive. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.834", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

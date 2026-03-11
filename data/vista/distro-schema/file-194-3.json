@@ -1,0 +1,53 @@
+{
+  "fileNumber": 194.3,
+  "fileName": "RECORD TRACKING SORT GLOBAL",
+  "globalRoot": "194.3",
+  "globalReference": "^RTV(194.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the type of sort that is implemented using the global.  Curently only a terminal digit sort is implemented. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "START COMPILE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that compiling or re-compiling the sort global started. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FINISH COMPILE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the sort global compile finished. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DFN",
+      "dataType": "POINTER",
+      "rawType": "194.31PA",
+      "required": false,
+      "helpText": "This field contains the DFN, the internal file number of the PATIENT file(#2). The system uses the DFN to find the SSN to calculate the terminal digits.  ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

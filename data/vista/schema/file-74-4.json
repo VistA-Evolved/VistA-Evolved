@@ -1,0 +1,100 @@
+{
+  "fileNumber": 74.4,
+  "fileName": "REPORT DISTRIBUTION",
+  "globalRoot": "74.4P",
+  "globalReference": "^RABTCH(74.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPORT",
+      "dataType": "POINTER",
+      "rawType": "R*P74'X",
+      "required": true,
+      "pointerTo": 74,
+      "helpText": "This is a pointer to 'RAD/NUC MED REPORTS' file (#74). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE PLACED IN RPT DIST FILE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the report was entered into the  Report Distribution Queue. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPUTER USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to the NEW PERSON file (#200). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRINT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the report was initially printed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "Pointer to the Ward Location File(#42) ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRINCIPAL CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Pointer to the Hospital Location File(#44). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISTRIBUTION QUEUE",
+      "dataType": "POINTER",
+      "rawType": "P74.3'",
+      "required": false,
+      "pointerTo": 74.3,
+      "helpText": "Pointer to the Report Distribution Queue File(#74.3). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REQUESTING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field points to the NEW PERSON file (#200) to indicate the name of the person who requested this Rad/Nuc Med exam.  This person is not always a physician.  (i.e. A nurse might request the exam.) ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "74.4", "field": .01, "type": "regular"},
+    {"name": "74.4", "field": 4, "type": "regular"},
+    {"name": "74.4", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

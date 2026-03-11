@@ -1,0 +1,155 @@
+{
+  "fileNumber": 798.4,
+  "fileName": "ROR PATIENT",
+  "globalRoot": "798.4",
+  "globalReference": "^RORDATA(798.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "You can select an existing patient or add a new  one from the PATIENT file (#2).   You can access records of this file only if you have appropriate security key(s) for any registry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "RDOI",
+      "required": true,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFOI",
+      "required": true,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1112,
+      "fieldName": "ZIP+4",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .1112
+    },
+    {
+      "fieldNumber": .301,
+      "fieldName": "SERVICE CONNECTED?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .301
+    },
+    {
+      "fieldNumber": .302,
+      "fieldName": "SERVICE CONNECTED PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .302
+    },
+    {
+      "fieldNumber": .323,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P21'I",
+      "required": false,
+      "pointerTo": 21,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .323
+    },
+    {
+      "fieldNumber": .351,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .351
+    },
+    {
+      "fieldNumber": .3721,
+      "fieldName": "RATED DISABILITIES DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": .3721
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RACE AND ETHNICITY DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "OLD SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "OLD ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 991,
+      "fieldName": "INTEGRATION CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Do not edit this field! ",
+      "fieldNumber_": 991
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BS", "field": },
+    {"name": "BS5", "field": },
+    {"name": "SSN", "field": },
+    {"name": "798.4", "field": .01, "type": "regular"},
+    {"name": "798.4", "field": .09, "type": "regular"},
+    {"name": "798.4", "field": .09, "type": "regular"},
+    {"name": "798.4", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

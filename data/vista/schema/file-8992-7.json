@@ -1,0 +1,140 @@
+{
+  "fileNumber": 8992.7,
+  "fileName": "LOG4M CONFIG",
+  "globalRoot": "8992.7",
+  "globalReference": "^XTV(8992.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the NAME used to identify a particular LOG4M CONFIG entry. The NAME is used within source code to specify logging startup, if the NAME exists within the LOG4M CONFIG file and if the ACTIVE field  (#.02) is set to a YES value (there are two choices for YES) then logging would be initiated.  If the file entry for a specific NAME does not exist, or if the ACTIVE field is set to NO, then no logging will be performed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NO;E:YES, EASY CONFIG;D:YES, DETAILED CONFIG;",
+      "helpText": "This field determines whether, on a call to FILEINIT^XTMLOG with the NAME  value for a file entry, the logging is started or not.  If the value for  the ACTIVE field is NO, logging is not started.  If the value is YES,  EASY CONFIG, then logging is started using the specifications in the EZ  ENTRY field (#.03) and EZ LEVEL field (#.04) to determine how the logging  will be handled and the level of logging effort.  If the value is YES,  DETAILED CONFIG, then logging is started using the specifica",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EZ ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The EASY ENTRY field (#.03) can be used to easily specify the type(s) of logging desired.  The value is a text string with semi-colon separated specifiers for logging modes.      C - indicates logging to the user's console.  Logging messages are sent        to the console as they are generated.    G - indicates logging to a global location and is followed by a comma        and an identifer for the global location under ^XTMP(\"XTMLOG\",         [e.g., G,TEST4 would result in data being stored unde",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EZ LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FATAL;E:ERROR;W:WARN;I:INFO;D:DEBUG;",
+      "helpText": "The EZ LEVEL field indicates the lowest level of reporting (generally with the highest detail logging) that is desired.  The order being from the highest level (lowest detail) of FATAL, then down through ERROR, WARN, INFO, and finally the lowest level (highest detail) of DEBUG.  The desired level of reporting in the logging code is indicated by the tag which is called [e.g., DO FATAL^XTMLOG(  or DO DEBUG^XTMLOG( , with desired arguments following the parentheses].  If a specific level above DEBU",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ROUTINE FILTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The ROUTINE FILTER field can be used to specify a series of comma  separated routines which will limit the logging to those logging calls  which are present in one of the routines in the list.  This can be used  to reduce significantly the amount of logging output if the area of  interest is limited to a specific group of routines instead of a larger  number of routines. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USER FILTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a list of user DUZ values (comma-separated) which indicates which  users should have logging turned on.  This provides the capability to  turn on logging of a highly used piece of code for only selected users  instead of everyone (which is the default if this entry is a null string). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OUTPUT ON CLOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;P:PRINTER;M:MAIL MESSAGE;",
+      "helpText": "This field may be used to specify an output option on endding the logging session.  A global listing of the output must have been specified as at  least one output option for the data, since it will be the global data  used as the source of the output.  The current options are M for Mail  Message or P for Printer.  Selection of N or no value will result in no  direct output when the logging session is terminated.  If Printer output  is selected, the desired output device must be specified in the",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "OUTPUT SPECS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may be used to enter specifications related to the OUTPUT ON  CLOSE field.  If printer output was specified, then this field must  contain the specification for the desired printer in the form that would  be used to set the IOP value.  If mail message output was specified, this  may contain the DUZ values for one or more users separated by commas, or  it may contain e-mail addresses, separated by commas.  If nothing is  entered for mail message output, then the output would go to the ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DETAILED CONFIG",
+      "dataType": "SUBFILE",
+      "rawType": "8992.71",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8992.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PRINT LAYOUT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The PRINT LAYOUT is a string of characters based on those used for Log4J  to describe the data and order to be output for the log entries.  The  type identifiers begin with % (%% will yield a literal %), are case  sensitive and may have some positioning data before the type identifier.     %n should be the final entry on the line and indicates the end of the       line.   %p the priority (FATAL, ERROR, WARN, INFO, or DEBUG) of the log entry.   %t the job number for the current job.   %m the mess",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "OUTPUT ON CLOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;P:PRINTER;M:MAIL MESSAGE;",
+      "helpText": "This field may be used to specify an output option on ending the logging session.  A global listing of the output must have been specified as at  least one output option for the data, since it will be the global data  used as the source of the output.  The current options are M for Mail  Message or P for Printer.  Selection of N or no value will result in no  direct output when the logging session is terminated.  If Printer output  is selected, the desired output device must be specified in the ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "MAIL OUTPUT SPECS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may be used to enter specifications related to the OUTPUT ON  CLOSE field for mail output. If mail output was specified, then this field must contain the DUZ value(s) comma separated for the intended  recipients.   This field is ignored unless the OUTPUT ON CLOSE field contains an M. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PRINTER OUTPUT SPECS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may be used to enter specifications related to the OUTPUT ON  CLOSE field for printer output. If printer output was specified, then this field must contain the specification for the desired printer in the form  that would be used to set the IOP value.   This field is ignored unless the OUTPUT ON CLOSE field contains a P. ",
+      "fieldNumber_": 3.03
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8992.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

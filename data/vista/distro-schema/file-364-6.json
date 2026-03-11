@@ -1,0 +1,169 @@
+{
+  "fileNumber": 364.6,
+  "fileName": "IB FORM SKELETON DEFINITION",
+  "globalRoot": "364.6P",
+  "globalReference": "^IBA(364.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL FORM",
+      "dataType": "POINTER",
+      "rawType": "RP353'X",
+      "required": true,
+      "pointerTo": 353,
+      "helpText": "Identifies a billing 'form' or 'screen' where the data element is used. The combination of form/page/line/column must be unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SECURITY LEVEL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "N:NATIONAL,NO EDIT;L:LOCAL;",
+      "helpText": "This field determines whether or not editing of the entry is allowed.  If the security level of the entry is NATIONAL (N), no local editing is allowed.  If the security level of the entry is LOCAL (L), it may be edited. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ASSOCIATED FORM DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "P364.6'",
+      "required": false,
+      "pointerTo": 364.6,
+      "helpText": "The form definition record this definition will override. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PAGE OR SEQUENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to specify the page, section, transaction segment, etc. that the data element is to be associated with.  This field will be used as the second-level sort field when extracting data fields for this form. The combination of form/page/line/column must be unique. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FIRST LINE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "If this is a printed form, this is the first line number that this data element will appear on.  For transmitted forms, this is assumed to always be a 1.  This will be used as the third-level sort field when extracting data fields for this form.  The combination of form/page/line/column must be unique. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAX NUMBER LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "If a printed form, this is the highest numbered line number that this data element is allowed to print on. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LOCAL OVERRIDE ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This controls whether or not the output forms generator will allow for a redefinition of this record via a local override. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STARTING COLUMN OR PIECE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1X",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the column on the form, position in the data string (for non-printed forms) -  starting at position 1, or delimited piece that this data element is to be printed or stored in.  This will be used as the fourth-level sort field when extracting data fields for this form.  The combination of form/page/line/column must be unique. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "The length desired for the data element.  If present, this field will be used to truncate or pad the data element to this length after the element has been passed through the routine identified in the FORMAT ROUTINE field. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the field that is used as an identifier to make lookups on this file meaningful. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CALCULATE ONLY OR OUTPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CALCULATE ONLY;0:OUTPUT;",
+      "helpText": "This field is set to 1 if there is a need to do a special extract or calculation at some point in the processing, but no output is desired from the field's code execution.  Used to set up arrays for group elements then the individual elements are output separately. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TRANSMIT IGNORES IF NULL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This field can be used to suppress output of a field if its value is null. If not suppressed, an entry is made in the output global used by the formatter, regardless of the contents of the data for this field. Supressing the value results in no output to the formatter's output global if the value of the data for this field is determined to be null. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATA REQUIRED FOR FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is a flag that will stop the output of a record if this field indicates data is required and the data extracted is null. ",
+      "fieldNumber_": .13
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "APAR", "field": },
+    {"name": "APAR1", "field": },
+    {"name": "ASEQ", "field": },
+    {"name": "ASEQ1", "field": },
+    {"name": "ASEQ2", "field": },
+    {"name": "ASEQ3", "field": },
+    {"name": "B", "field": },
+    {"name": "364.6", "field": .01, "type": "regular"},
+    {"name": "364.6", "field": .01, "type": "regular"},
+    {"name": "364.6", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "364.6", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "364.6", "field": .04, "type": "regular"},
+    {"name": "364.6", "field": .05, "type": "regular"},
+    {"name": "364.6", "field": .08, "type": "regular"},
+    {"name": "", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": .05, "value": "W \"   \",$P(^(0),U,5)"},
+    {"field": .08, "value": "W \"   \",$P(^(0),U,8)"},
+    {"field": .1, "value": "W \"   \",$P(^(0),U,10)"}
+  ]
+}

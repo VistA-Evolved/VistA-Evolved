@@ -1,0 +1,241 @@
+{
+  "fileNumber": 90,
+  "fileName": "MEDICAL RECORD",
+  "globalRoot": "90",
+  "globalReference": "^MR(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the internal file number of the diagnosis. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient's name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PHY",
+      "dataType": "DATE",
+      "rawType": "90.01D",
+      "required": false,
+      "helpText": "This field contains the results of the physical examination. concerning the patient's overall condition associated with the systems identified.      The user may enter one of three responses:  1) Within NORMAL Limits; 2) OMITTED; 3) ABNORMAL.  If \"3\" is entered, the user will be asked to describe the abnormality.      ",
+      "isMultiple": true,
+      "subFileNumber": 90.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "*PRINCIPAL DSM-III DX DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the principal DSM-II diagnosis was entered. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "*PRINCIPAL DSM-III DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP627'",
+      "required": true,
+      "pointerTo": 627,
+      "helpText": "This is the DSM-III code for the diagnosis which is the primary reason for treatment. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 102.4,
+      "fieldName": "*X DSM-III DIAGNOSIS DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the DSM-III X diagnosis was entered. ",
+      "fieldNumber_": 102.4
+    },
+    {
+      "fieldNumber": 102.6,
+      "fieldName": "*X DSM-III DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP627'",
+      "required": true,
+      "pointerTo": 627,
+      "helpText": "This is the DSM-III diagnosis accounting for the largest percentage of the length of stay. ",
+      "fieldNumber_": 102.6
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "*DSM-III DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "90.04PA",
+      "required": false,
+      "helpText": "This is the code of the DSM-III diagnosis. conform to DSM-III-R criteria.  Mandated June 1987. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "*AXIS 4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NONE;2:MINIMAL;3:MILD;4:MODERATE;5:SEVERE;6:EXTREME;7:CATASTROPHIC;0:UNSPECIFIED;",
+      "helpText": "This is the rating code for severity of psychosicial stressor. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "*AXIS 4 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a given psychosocial stressor code is entered. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "*AXIS 4 BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the user entering a given psychosical stressor code. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "*AXIS 5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPERIOR;2:VERY GOOD;3:GOOD;4:FAIR;5:POOR;6:VERY POOR;7:GROSSLY IMPAIRED;0:UNSPECIFIED;",
+      "helpText": "This is the rating code for highest level of adaptive functioning past year. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "*AXIS 5 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a given adaptive functioning code is entered. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "*AXIS 5 BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the user entering a given adaptive functioning code. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "*PAST PRINCIPAL DX",
+      "dataType": "POINTER",
+      "rawType": "90.06PA",
+      "required": false,
+      "helpText": "This is the past DSM-III diagnosis that was the primary reason for treatment. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "*PAST X DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "90.07PA",
+      "required": false,
+      "helpText": "This is the past DSM-III code which accounted for the largest percentage of the length of stay. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "*PRINCIPLE ICD9 DX DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the principal ICD9 diagnosis was entered. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "*PRINCIPAL ICD9 DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "This is the ICD9 code for the diagnosis which is the primary reason for treatment. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 113.4,
+      "fieldName": "*X ICD9 DIAGNOSIS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the ICD9 X diagnosis was entered. ",
+      "fieldNumber_": 113.4
+    },
+    {
+      "fieldNumber": 113.6,
+      "fieldName": "*X ICD9 DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the ICD9 diagnosis accounting for the largest percentage of the length of stay. ",
+      "fieldNumber_": 113.6
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "*ICD9 DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "90.1PA",
+      "required": false,
+      "helpText": "This is the code of the ICD9 diagnosis. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "*PAST PRINCIPAL ICD9 DX",
+      "dataType": "POINTER",
+      "rawType": "90.16PA",
+      "required": false,
+      "helpText": "This is the past ICD9 diagnosis that was the primary reason for treatment. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "*PAST ICD9 X DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "90.17PA",
+      "required": false,
+      "helpText": "This is the past ICD9 diagnosis code which accounted for the largest percentage of length of stay. ",
+      "fieldNumber_": 117
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "90", "field": .01, "type": "regular"},
+    {"name": "", "field": 104, "type": "regular"},
+    {"name": "", "field": 104, "type": "regular"},
+    {"name": "", "field": 107, "type": "regular"},
+    {"name": "", "field": 107, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

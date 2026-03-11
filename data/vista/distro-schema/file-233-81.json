@@ -1,0 +1,39 @@
+{
+  "fileNumber": 233.81,
+  "fileName": "NHAMCS REASON FOR VISIT DISPLAY",
+  "globalRoot": "233.81",
+  "globalReference": "^EDPB(233.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NHAMCS CODE",
+      "dataType": "POINTER",
+      "rawType": "P233.8'",
+      "required": false,
+      "pointerTo": 233.8,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "233.81", "field": .01, "type": "regular"},
+    {"name": "233.81", "field": .01, "type": "regular"},
+    {"name": "233.81", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

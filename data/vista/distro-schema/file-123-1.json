@@ -1,0 +1,96 @@
+{
+  "fileNumber": 123.1,
+  "fileName": "REQUEST ACTION TYPES",
+  "globalRoot": "123.1",
+  "globalReference": "^GMR(123.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The internal entry number of the Request Action Type. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACTION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This file contains the tracking actions which may be taken to track a Consult or Request order from its entry in CPRS through its resolution.   This file also contains relationships of CPRS statuses which are the result of the action taken. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RELATED OE/RR STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P100.01'",
+      "required": false,
+      "pointerTo": 100.01,
+      "helpText": "This is the CPRS status which will be used to update the order in OE/RR when this action is taken. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISABLED MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field displays a 'DISABLED' message when this CPRS status has been disabled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HL7 CONTROL CODE FROM CONSULTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates what HL7 control code is passed to CPRS from Consults.     Example:               \"SN\"=Service entered, backdoor consult, automatically released from CPRS, though signatures may still be required depending on nature of order              \"OD\"=Discontinued              \"OC\"=Denied by service (Cancelled)              \"SC\"=Service status update (generic status change) for active and partial results              \"XX\"=Forwarded              \"RE\"=Completed ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HL7 CONTROL CODE FROM CPRS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates what HL7 control code is passed from CPRS to Consults.     Example: \"NW\"=New consult entered and released through CPRS              \"CA\"=Cancelled via the orders tab              \"DC\"=Discontinued ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HL7 TABLE 38 ORDER STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is for documenting purposes and contains the related Table 38 order status from HL7 for each activity. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACTION PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used on the 513 Form as a header for comments. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "123.1", "field": .01, "type": "regular"},
+    {"name": "123.1", "field": 1, "type": "regular"},
+    {"name": "123.1", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,333 @@
+{
+  "fileNumber": 1.5,
+  "fileName": "ENTITY",
+  "globalRoot": "1.5",
+  "globalReference": "^DDE(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30X",
+      "length": 30X,
+      "required": true,
+      "helpText": "A unique name of the entity or resource this record will represent. The name must be preceded by its package prefix (2 to 4 characters) specified in the PACKAGE file, or the letter \"Z\" or \"A\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEFAULT FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ21,8X",
+      "length": 21,
+      "required": false,
+      "helpText": "This is the primary file or sub-file number associated with this entity,  and the default source file for data. It is optional if no data associated with this entity is stored in any FileMan file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SORT BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the default cross reference to use when GETting instances of this entity or resource; it may be overridden by the XREF field in the Item multiple when this entity is embedded inside another, or by other query parameters. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FILTER BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the name of a local variable that contains the value to filter entries by using the specified cross reference. See the FileMan  Developer's Guide for a list of variables that will be available to use (read only). Other variables can be set and killed by the Entity's GET Pre and Post Processing code fields. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "READ ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:READONLY;",
+      "helpText": "Set this flag if this entity is read only. It will then not support the  create, post, or put http verbs. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATA MODEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SDA;F:FHIR;",
+      "helpText": "If this entity is intended to return data according to the constraints of a specific model, such as SDA or FHIR, then enter that here. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This is the name that will be used for the XML or JSON tags. If no value is entered here, the Name (.01) field will be used. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "1.51",
+      "required": false,
+      "helpText": "The Items multiple defines the data elements that make up the entity. ",
+      "isMultiple": true,
+      "subFileNumber": 1.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "KEY ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The item that is the key value of this entity. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "KEY FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ22,9",
+      "length": 22,
+      "required": false,
+      "helpText": "The field number associated with the item that is the key to the entity. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "KEY CODSYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The coding system associated with the key. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "KEY XREF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the item that is the alternate key to the entity type. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GET ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed prior to any other processing for the  GET method. If you set any additional variables here for use inside the  Entity, remember to kill them in the GET POST PROCESSING.   If this Entity is being processed inside another one, the local variable  ID holds the string that the parent entity will be passing into this one  (i.e., a pointer from a field value that is being expanded into a full  coded element by this entity). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GET EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed after all other processing for the GET method. Be sure to kill any variables set in the GET PRE PROCESSING  field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GET ID ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed for each record, to identify or validate it. Local variable DIEN contains the id value or string passed  into this Entity to operate on.   Set DDEOUT=1 to skip or omit this entire record from the results. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GET QUERY ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Ft12",
+      "required": false,
+      "helpText": "Enter the tag^routine to be used for finding the appropriate records in the VistA primary source file, instead of FIND^DIC. This routine should  create the array DLIST(#)=ID, where # is a sequential number and ID is a  string that identifies a record in the Default File. ID may also be a  string that is processed by this entity.   Local variables that may be referenced and used (not changed or killed)  include: DFN = Patient file #2 ien        DSTRT = Start date.time of search (FileMan format)  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is Standard MUMPS code that will set DIC('S') for a screen, to be used in a FIND^DIC query. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PUT ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed prior to any other processing for the PUT method. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PUT EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed after all other processing for the PUT method. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PUT ID ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed for each record, to identify or validate it. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PUT CREATE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed whenever a new record is created via the PUT method. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DELETE ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed prior to any other processing for the DELETE method. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DELETE EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed after all other processing for the DELETE method. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DELETE ID ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed for each record, to identify or validate it. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "POST ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed prior to any other processing for the POST method. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "POST EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed after all other processing for the POST method. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "POST ID ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed for each record, to identify or validate it. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "POST CREATE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is code that will be executed whenever a new record is created via the POST method. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "1.519",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1.519,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "GET POLICY",
+      "dataType": "POINTER",
+      "rawType": "P1.61'",
+      "required": false,
+      "pointerTo": 1.61,
+      "helpText": "This field points to the Application Action #1.61 entry which is the VistA equivalent of the GET method for the Entity. The Application Action is linked to a Data Access Control Policy in file #1.6. This policy will be evaluated when a GET request is made for this Entity, to determine if the user or client is authorized to access the data. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "PUT POLICY",
+      "dataType": "POINTER",
+      "rawType": "P1.61'",
+      "required": false,
+      "pointerTo": 1.61,
+      "helpText": "This field points to the Application Action #1.61 entry which is the VistA equivalent of the PUT method for the Entity. The Application Action is linked to a Data Access Control Policy in file #1.6. This policy will be evaluated when a PUT request is made for this Entity, to determine if the user or client is authorized to access the data. ",
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 19.3,
+      "fieldName": "DELETE POLICY",
+      "dataType": "POINTER",
+      "rawType": "P1.61'",
+      "required": false,
+      "pointerTo": 1.61,
+      "helpText": "This field points to the Application Action #1.61 entry which is the VistA equivalent of the DELETE method for the Entity. The Application Action is linked to a Data Access Control Policy in file #1.6. This policy will be evaluated when a DELETE request is made for this Entity, to determine if the user or client is authorized to access the data. ",
+      "fieldNumber_": 19.3
+    },
+    {
+      "fieldNumber": 19.4,
+      "fieldName": "POST POLICY",
+      "dataType": "POINTER",
+      "rawType": "P1.61'",
+      "required": false,
+      "pointerTo": 1.61,
+      "helpText": "This field points to the Application Action #1.61 entry which is the VistA equivalent of the POST method for the Entity. The Application Action is linked to a Data Access Control Policy in file #1.6. This policy will be evaluated when a POST request is made for this Entity, to determine if the user or client is authorized to access the data. ",
+      "fieldNumber_": 19.4
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "F", "field": },
+    {"name": "1.5", "field": .01, "type": "regular"},
+    {"name": "1.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.06, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(1.5,.06,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,6)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

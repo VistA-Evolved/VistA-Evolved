@@ -1,0 +1,28 @@
+{
+  "fileNumber": 69.51,
+  "fileName": "LREPI REMINDER LINK",
+  "globalRoot": "69.51",
+  "globalReference": "^LAB(69.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REMINDER",
+      "dataType": "POINTER",
+      "rawType": "RP811.9'",
+      "required": true,
+      "pointerTo": 811.9,
+      "helpText": "This field holds a pointer to the REMINDER DEFINITION (#811.9) file. These entries will be used to determine which Clinical Reminders will be used to generate data for the Hepatitis C registry. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "69.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

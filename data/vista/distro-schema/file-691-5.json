@@ -1,0 +1,525 @@
+{
+  "fileNumber": 691.5,
+  "fileName": "ELECTROCARDIOGRAM (EKG)",
+  "globalRoot": "691.5ID",
+  "globalReference": "^MCAR(691.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field identifies the specific EKG procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the patient's identification number assigned by the medical facility.  In most cases it is the person's social security number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;T:TECHNICALLY UNSATISFACTORY;",
+      "helpText": "This field contains the gross evaluation of the results of this procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYMPTOM",
+      "dataType": "POINTER",
+      "rawType": "691.51PA",
+      "required": false,
+      "helpText": "This field contains the patient's physical complaints or symptoms. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RISK FACTOR",
+      "dataType": "POINTER",
+      "rawType": "691.52PA",
+      "required": false,
+      "helpText": "This field contains the morbidity factors which this patient  is most susceptible to in regards to this procedure. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "HEART MED",
+      "dataType": "POINTER",
+      "rawType": "691.53PA",
+      "required": false,
+      "helpText": "This field documents the cardiac medicines that the patient is taking at the time of this procedure (multiple). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WEIGHT (LBS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The weight of the patient at the time of the procedure is stored here. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "HEIGHT (INCHES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The height of the patient in inches at the time of the procedure. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient's last name followed by a  comma, followed by a space(optional), followed  by the first name, followed by a space, followed by the middle initial. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF EKG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT RETRIEVAL;R:ROUTINE;O:ORIGINAL;",
+      "helpText": "This allows the user to enter the type of ECG/EKG. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VENT. RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the ventricular rate. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PR INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter ECG/EKG PR interval. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QRS DURATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the ECG/EKG QRS duration. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the QT interval. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "QTC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the QTC interval. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "P AXIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the P axis. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "R AXIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the R axis. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "T AXIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the T axis. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CONFIRMATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CONFIRMED;U:UNCONFIRMED;",
+      "helpText": "This allows the user to enter the ECG/EKG confirmation status. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "INTERPRETED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This allows the user to enter the interpreting physician. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "COMPARISON STATEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to enter the ECG/EKG comparison statement. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "INTERPRETATION CODE (RHYTHM)",
+      "dataType": "POINTER",
+      "rawType": "691.54PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple rhythm interpretation codes. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "INTERPRETATION CODE (CONFIG)",
+      "dataType": "POINTER",
+      "rawType": "691.55PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple configuration interpretation codes. ",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 14.2,
+      "fieldName": "INTERPRETATION CODE (PACING)",
+      "dataType": "POINTER",
+      "rawType": "691.56PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple pacing interpretation codes. ",
+      "fieldNumber_": 14.2
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DIASTOLIC BP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the diastolic blood pressure. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SYSTOLIC BP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the systolic blood pressure. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.517",
+      "required": false,
+      "helpText": "This allows the user to make specific comments regarding the ECG/EKG. ",
+      "isMultiple": true,
+      "subFileNumber": 691.517,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in-house patient address. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "AUTO-INSTRUMENT DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "691.57",
+      "required": false,
+      "helpText": "This field contains the interpretation of the procedure generated by the instrument(EKG monitor). ",
+      "isMultiple": true,
+      "subFileNumber": 691.57,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "AUTOMATED INSTRUMENT DATA ?",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date that the ECG was successfully transferred into DHCP system through the automated interface ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer must be 1-79 characters in length.  This will appear on the 'Summary of Patient Procedures'.  ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.58P",
+      "required": false,
+      "helpText": "This field identifies the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 899,
+      "fieldName": "MARKED FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARKED FOR DELETION;",
+      "fieldNumber_": 899
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "691.52005PA",
+      "required": false,
+      "helpText": "This field points to an entry in the Image File. ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "691.5", "field": .01, "type": "regular"},
+    {"name": "691.5", "field": .01, "type": "regular"},
+    {"name": "691.5", "field": 1, "type": "regular"},
+    {"name": "691.5", "field": 1, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "691.5", "field": 900, "type": "regular"},
+    {"name": "691.5", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S ZZ=$P(^(0),\"^\",2) W \"   \",$S($D(^MCAR(690,ZZ,0))#2:$P(^DPT(ZZ,0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\") K ZZ"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(691.5,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

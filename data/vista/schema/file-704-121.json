@@ -1,0 +1,141 @@
+{
+  "fileNumber": 704.121,
+  "fileName": "CP_KARDEX_ACTION",
+  "globalRoot": "704.121",
+  "globalReference": "^MDC(704.121,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This value is the Global Unique IDentifier (GUID) for this entry. This  value is maintained nationally and is the same throughout the  enterprise. A sample ID could be \"{2E0C516D-3858-4A1F-A2F3-BF0AB9E3A7FC}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TASK_ID",
+      "dataType": "POINTER",
+      "rawType": "R*P704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies a task in the TERM File (#704.101). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SCHEDULE_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.008'",
+      "required": true,
+      "pointerTo": 704.008,
+      "helpText": "This identifies the schedule (#704.008) to use with the task (#.02).  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field identifies the patient (file #2) assigned to this task. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "START_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the execution of this task is permitted. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STOP_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the execution of this task is no longer permitted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SCHEDULE_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Continuous;1:PRN;2:One-Time;3:Stat;4:Now;",
+      "helpText": "This field indicates the type of schedule used for this task. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PRN_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No PRN;1:PRN-And;2:PRN-AndNTE;3:PRN-Or;",
+      "helpText": "This field indicates the Pro Re Nata (PRN) option for task. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Active;1:Expired;2:Discontinued;3:Held;",
+      "helpText": "This field indicates the status of the task.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SPECIAL_INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is free-text for instructions for this particular task. A sample SPECIAL INSTRUCTIONS could be \"Turn patient 90 degrees\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "PRN_NTE_AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field the maximum number of times this task should executed.  This  field is used in the case of tasks with a PRN option. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "FIRST_SCHEDULED_TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the military time of the first time that this item should be  executed once the start date/time has been reached.  A sample FIRST  SCHEDULED TIME could be \"1330\" to represent \"01:30 PM\" as the first time  this task should be executed.    ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "CUSTOM_SCHEDULED_TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a custom schedule.  If the user wished to modify the  schedule for this task (#.02), the schedule here in a military times.  A  sample CUSTOM SCHEDULED TIMES could be \"0400,0800,1200,1600,2000\". ",
+      "fieldNumber_": .3
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

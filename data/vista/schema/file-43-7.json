@@ -1,0 +1,108 @@
+{
+  "fileNumber": 43.7,
+  "fileName": "ADT TEMPLATE",
+  "globalRoot": "43.7Is",
+  "globalReference": "^DG(43.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Internal Reference number assigned to each template automatically as each new one is entered into the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ADT OPTION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "The ADT OPTION NAME is the name given to the user menu option in the Admission Discharge Transfer DHCP application software to perform certain functions or display/print reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IDENTIFIER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0IX",
+      "length": 4,
+      "required": true,
+      "helpText": "The identifier is the same number as the internal reference number, automatically assigned to the entry as each new one is entered into the file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEMPLATE FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2IX",
+      "length": 6,
+      "required": true,
+      "helpText": "The template file is the File number that a particular template has been created in.  For example, the 'Female Inpatient List' is located in the Patient File, or File 2.00. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEMPLATE TYPE",
+      "dataType": "SET",
+      "rawType": "RSXI",
+      "required": true,
+      "setOfCodes": "E:EDIT;P:PRINT;S:SORT;",
+      "helpText": "This designates what type of fileman template is utilized to perform functions or displays/outputs through the ADT DHCP application software. The forms of templates are as follows:       INPUT - requires user input into the software to enter or edit               current information.      OUTPUT - In most cases, the user designates a date range or other               range to print, and an output is sent to a designated               printer.        SORT - A sort template is created through file",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EDIT TEMPLATE NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P.402'X",
+      "required": true,
+      "pointerTo": .402,
+      "helpText": "Allows a user through fileman, to edit, change or add new names or types of entries in any particular file based on that user's fileman access. The name given to a template that has more than two edits or changes is the template name.  The user can at a later date call up this template and make the same edits/changes as designated earlier without having to re-enter the variables.  The name is user specific. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRINT TEMPLATE NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P.4'X",
+      "required": true,
+      "pointerTo": .4,
+      "helpText": "Print template name is the name given to a print template that  includes a range of fields from any particular file to print in a specified format for later use without having to re-enter the same variables each time it is required.  The name is user specific. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SORT TEMPLATE NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P.401'X",
+      "required": true,
+      "pointerTo": .401,
+      "helpText": "Sort template name is the name (user specific) given to a set of variables for information searching that can be used at a later date without having to re-enter the same variables each time it is required. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DISTRIBUTED TEMPLATE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "The distributed template name is the name assigned (by developer) to any given input, sort or print template that is included in the  national release of any DHCP software package. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "43.7", "field": .01, "type": "regular"},
+    {"name": "43.7", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

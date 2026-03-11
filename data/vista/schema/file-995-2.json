@@ -1,0 +1,72 @@
+{
+  "fileNumber": 995.2,
+  "fileName": "CIRN EVENT STATISTICS",
+  "globalRoot": "995.2I",
+  "globalReference": "^RGSTAT(995.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "A generic number assigned to each statistical entry in the file.  This number is sequential. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP995'",
+      "required": true,
+      "pointerTo": 995,
+      "helpText": "The event type the statistical entry represents. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the statistical entry was created.  When an event is triggered, it creates an entry in this file if one does not exist for the date. If an event type is not triggered in a particular day, an entry will not exist for that date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Number representing the number of times the event was triggered for the date specified in the date field. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ERRORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This represents the number of errors that were encountered while trying to process an event.  Since events can be re-processed after an error condition is corrected, the number of errors and number of events successfully processed can be greater than the number of total events.   For example: If a single event attempted to run and had an error and was reprocessed successfully, the number of errors would be one and the number processed would be one.  If you totaled these two fields it would equal",
+      "fieldNumber_": 1.02
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AX1", "field": },
+    {"name": "AX2", "field": },
+    {"name": "B", "field": },
+    {"name": "995.2", "field": .01, "type": "regular"},
+    {"name": "995.2", "field": .02, "type": "regular"},
+    {"name": "995.2", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR1, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": WR2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RGEQASN(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(995,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

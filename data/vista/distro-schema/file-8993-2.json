@@ -1,0 +1,48 @@
+{
+  "fileNumber": 8993.2,
+  "fileName": "XULM LOCK MANAGER LOG",
+  "globalRoot": "8993.2",
+  "globalReference": "^XLM(8993.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME PROCESS TERMINATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field records the date and time that the process was killed.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "THE TERMINATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is used to record the user who terminated the process and its locks.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCESS DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8993.21",
+      "required": false,
+      "helpText": "This field contains information about the process that was terminated and the locks that it held.  ",
+      "isMultiple": true,
+      "subFileNumber": 8993.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8993.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "fileNumber": 37,
+  "fileName": "DISPOSITION",
+  "globalRoot": "37I",
+  "globalReference": "^DIC(37,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the disposition.  These entries are distributed by the MAS package and shouldn't be altered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this disposition.  On outputs and displays where there is not enough room to display the full name of the disposition, the abbreviation may appear instead. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPLICATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REGISTRATION;C:CLINIC;",
+      "helpText": "This field cotains an R if this disposition type is from registration or C if it is from a clinic. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISPOSITION ACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "H:HOSPITAL;S:SCH-ADMIT;O:OUTPATIENT;I:INACTIVE;D:DOMICILIARY;N:NURSING HOME;E:NO EFFECT;X:NO CHANGE (INACTIVE IF NONE);P:PENDING;",
+      "helpText": "Choose from the available choices the dispostion action (where the patient is being dispositioned to).  Choices include various types of inpatient and outpatient care. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CONTINUING CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if this disposition is for a continuing episode of care. Otherwise, respond NO. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*AMIS 331 GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:HOSPITAL CARE;O:OUTPATIENT CARE;N:NURSING HOME CARE;D:DOMICILIARY CARE;X:NOT IN NEED;C:CANCELED;Z:NOT COUNTED;P:PENDING;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "*AMIS 320 GROUP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:HOSPITAL;2:NHC;3:DOM;4:OPC;5:NOT IN NEED;6:CANCELLED;7:NOT ELIGIBLE;8:RESOURCES NOT AVAIL.;9:NOT AGREEING TO PAY DEDUCT.;10:REFERRED TO OTHER VA FACILITY;11:PENDING;",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AMIS 401-420 DISPOSITION GROUP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CANCEL;2:COMMUNITY;3:DOM ADMIT;4:DOM W/L;5:FEE BASIS;6:HOSP ADMIT;7:HOSP W/L;8:NHCU ADMIT;9:NHCU W/L;10:NO CARE REQ;11:OTHER;12:OP CARE REC;13:PENDING;14:OTHER VA;15:REFUSED TO PAY;",
+      "helpText": "This field contains the AMIS 400 series segment under which this disposition should fall.  It is imperative this field contain accurate data or it could cause workload reporting (and therefore reimbursement) to be incorrect. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if this dispostion should no longer be selectable during the disposition a patient option.  Previous dispositions of this type will not be affected in any way. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "37.01",
+      "required": false,
+      "helpText": "This multiple contains alternate names by which this disposition may be selected.  If the user enters either the disposition name or one of these synonyms, this disposition will be selected. ",
+      "isMultiple": true,
+      "subFileNumber": 37.01,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "*HONEYWELL CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PROGRAM ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the code which is executed once this dispostion is selected.  This code is distributed by the MAS package and MUST NOT BE ALTERED.  Editing of this data can have severe negative impacts on the operation of the registration and disposition software including software errors. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AHN", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "S", "field": },
+    {"name": "37", "field": .01, "type": "regular"},
+    {"name": "37", "field": 1, "type": "regular"},
+    {"name": "37", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

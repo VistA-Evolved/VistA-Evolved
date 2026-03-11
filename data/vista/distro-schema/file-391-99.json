@@ -1,0 +1,95 @@
+{
+  "fileNumber": 391.99,
+  "fileName": "PATIENT DATA ELEMENT",
+  "globalRoot": "391.99",
+  "globalReference": "^DGCN(391.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXCEPTION",
+      "dataType": "POINTER",
+      "rawType": "RP391.98'",
+      "required": true,
+      "pointerTo": 391.98,
+      "helpText": "This is a pointer to the PATIENT DATA EXCEPTION.  This .01 is not unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the file that the data element would be placed in. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the field the data element belongs in. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MASTER FILE",
+      "dataType": "POINTER",
+      "rawType": "P391.98'",
+      "required": false,
+      "pointerTo": 391.98,
+      "helpText": "This is a pointer to this file. Its use will be for the definition of multiples.  At this point in time it is not used. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EDITED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field flags incoming data elements that were actually edited at the site which originated the incoming message. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "UNRESOLVED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field flags incoming data elements that cannot be resolved. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value that will be placed in the field. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AKY", "field": },
+    {"name": "AKY1", "field": },
+    {"name": "AKY2", "field": },
+    {"name": "ASRT", "field": },
+    {"name": "ASRT1", "field": },
+    {"name": "B", "field": },
+    {"name": "391.99", "field": .01, "type": "regular"},
+    {"name": "391.99", "field": .01, "type": "regular"},
+    {"name": "391.99", "field": .02, "type": "regular"},
+    {"name": "391.99", "field": .02, "type": "regular"},
+    {"name": "391.99", "field": .03, "type": "regular"},
+    {"name": "391.99", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "fileNumber": 408.43,
+  "fileName": "PATIENT REGISTRATION ONLY REASON",
+  "globalRoot": "408.43",
+  "globalReference": "^DG(408.43,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This field contains a patient's self-reported Registration reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AVAILABILITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:REGISTER A PATIENT;2:COLLATERAL OF PATIENT;3:RECORD CREATED BY HEC;4:VBA AUTO REGISTRATION;",
+      "helpText": "This field contains values that determine which records can be selected  for different processes. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains a code for Registration reason. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "408.43", "field": .01, "type": "regular"},
+    {"name": "408.43", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W:$D(^(\"0\")) ?40,$P(^(\"0\"),U,3) W:$P(^(\"0\"),U,1)[\"VHA TRANSPLANT\" !,\"   (including organ and plasma donors)\" W:$P(^(\"0\"),U,1)[\"EXPOSURE\" !,\"   (including Agent Orange, CLV etc.)\""}
+  ]
+}

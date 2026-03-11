@@ -1,0 +1,102 @@
+{
+  "fileNumber": 62.85,
+  "fileName": "LAB SHIPPING EVENT",
+  "globalRoot": "62.85",
+  "globalReference": "^LAHM(62.85,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will contain one of two types of identifiers.   If the event relates to a shipping manifest, it will contain the shipping manifest identitier.   If it relates to a laboratory test on the shipping manifest, it will contain the unique identifier (UID) of the test's accession. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to file #200, NEW PERSON. Is the user who generated the event that is being recorded in this file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RECORD DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date/time that this event is being recorded in the file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EVENT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SHIPPING MANIFEST;2:ACCESSION TEST;",
+      "helpText": "This field describes what the event relates to. Does it reflect changes made to a shipping manifest or to an accession on the manifest.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EVENT CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P64.061'",
+      "required": true,
+      "pointerTo": 64.061,
+      "helpText": "Used to describe the event that occurred.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date/time that the event occurred. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAB TEST",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": "If this event relates to a test on an accession, the test will be recorded in this field. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ASSOCIATED MANIFEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the event relates to a test then the shipping manifest affected is recorded in this field. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "ADT", "field": },
+    {"name": "AM", "field": },
+    {"name": "ATST", "field": },
+    {"name": "ATST1", "field": },
+    {"name": "B", "field": },
+    {"name": "62.85", "field": .01, "type": "regular"},
+    {"name": "62.85", "field": .07, "type": "regular"},
+    {"name": "62.85", "field": .07, "type": "regular"},
+    {"name": "62.85", "field": .08, "type": "regular"},
+    {"name": "62.85", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

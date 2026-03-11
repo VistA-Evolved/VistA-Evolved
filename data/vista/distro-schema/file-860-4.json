@@ -1,0 +1,53 @@
+{
+  "fileNumber": 860.4,
+  "fileName": "ORDER CHECK DATA FIELD",
+  "globalRoot": "860.4I",
+  "globalReference": "^OCXS(860.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DATA SOURCES",
+      "dataType": "POINTER",
+      "rawType": "860.41P",
+      "required": false,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DATATYPE",
+      "dataType": "POINTER",
+      "rawType": "P864.1'",
+      "required": false,
+      "pointerTo": 864.1,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "860.4", "field": .01, "type": "regular"},
+    {"name": "860.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

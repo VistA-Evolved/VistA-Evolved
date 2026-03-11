@@ -1,0 +1,180 @@
+{
+  "fileNumber": 6002.01,
+  "fileName": "VBECS WORKLOAD CAPTURE",
+  "globalRoot": "6002.01",
+  "globalReference": "^VBEC(6002.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to uniquely identify the workload transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PATIENT;U:UNITS;D:DONOR;M:MISCELLANEOUS;",
+      "helpText": "This field indicates the type of workload transaction being recorded. 1) Patient 2) Units 3) Donor 4) Misc ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The Division/Institution where the workload event occurred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The Date/Time the workload event occured. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROCESSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is populated by the Lab software to indicate completion of the  transaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:Pending Processing;I:In Process;S:Successfully Processed;E:Error;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WORKLOAD CODE",
+      "dataType": "POINTER",
+      "rawType": "RP64'",
+      "required": true,
+      "pointerTo": 64,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WORKLOAD METHOD",
+      "dataType": "POINTER",
+      "rawType": "P64.2'",
+      "required": false,
+      "pointerTo": 64.2,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MULTIPLY FACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "USER ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TEST PERFORMED",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRODUCT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ACCESSION AREA",
+      "dataType": "POINTER",
+      "rawType": "P68'",
+      "required": false,
+      "pointerTo": 68,
+      "helpText": "This field is used to over-ride the system default accession area of  'BLOOD BANK' which is usually ^LRO(68,29,0). This field is important to  be populated in multi-divisional systems. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "UPDATE ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "PCE ENCOUNTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "6002.01", "field": .01, "type": "regular"},
+    {"name": "6002.01", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

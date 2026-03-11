@@ -1,0 +1,75 @@
+{
+  "fileNumber": 356.93,
+  "fileName": "INPATIENT INTERIM DRG",
+  "globalRoot": "356.93PI",
+  "globalReference": "^IBT(356.93,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P80.2'",
+      "required": true,
+      "pointerTo": 80.2,
+      "helpText": "Enter the DRG that best describes this inpatient case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADMISSION MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "*P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field should point to the admission movement of the inpatient  episode that this interim DRG is for. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that this DRG was computed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ESTIMATED LENGTH OF STAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,1",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the estimated length of stay in the medical center for UR or Insurance purposes.  This is not related to the average length of  stays for PTF.  It is the estimated LOS for this admission for this patient for this DRG.  It is used to help determine if for billing purposes that this patient has exceeded his length of stay. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DAYS REMAINING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the days remaining that this patient has for this DRG. It is the ELOS minus the number of days the patient has already been treated for this episode. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AMVD", "field": },
+    {"name": "AMVD1", "field": },
+    {"name": "B", "field": },
+    {"name": "356.93", "field": .01, "type": "regular"},
+    {"name": "356.93", "field": .02, "type": "regular"},
+    {"name": "356.93", "field": .03, "type": "regular"},
+    {"name": "356.93", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGPM(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(405,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   Admission Date: \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   Computed: \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": WRITE, "value": "N Y S Y=$G(^(0)) W \"   \",$P($G(^DPT(+$P($G(^DGPM(+$P(Y,U,2),0)),U,3),0)),U)"}
+  ]
+}

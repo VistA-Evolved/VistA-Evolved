@@ -1,0 +1,52 @@
+{
+  "fileNumber": 161.22,
+  "fileName": "FEE BASIS CNH RATE",
+  "globalRoot": "161.22",
+  "globalReference": "^FBAA(161.22,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This field is a system generated number.  It has no meaning other than to make the entry unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DOLLAR AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This field contains the dollar amounts associated with a contract. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CONTRACT",
+      "dataType": "POINTER",
+      "rawType": "RP161.21'",
+      "required": true,
+      "pointerTo": 161.21,
+      "helpText": "Contains the contract number associated with this rate as listed in the FEE Basis CNH Contract file. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "161.22", "field": .02, "type": "regular"},
+    {"name": "161.22", "field": .03, "type": "regular"},
+    {"name": "161.22", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

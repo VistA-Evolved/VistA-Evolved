@@ -1,0 +1,28 @@
+{
+  "fileNumber": 601.97,
+  "fileName": "MH INSTRUMENT CATEGORY",
+  "globalRoot": "601.97",
+  "globalReference": "^YTT(601.97,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "The category name is used to organize the instruments into sub-groups that make instrument selection easier for the user in the MHA Web application. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.97", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

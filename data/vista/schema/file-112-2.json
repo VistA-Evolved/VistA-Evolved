@@ -1,0 +1,298 @@
+{
+  "fileNumber": 112.2,
+  "fileName": "DRI VALUES",
+  "globalRoot": "112.2",
+  "globalReference": "^FH(112.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a category of people for whom Recommended Dietary Allowance values have been published. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short name, or mnemonic, for the RDA category of persons. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROTEIN GM.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Protein per day for this RDA group. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VITAMIN A RE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin A in Retinol Equivalents per day for this RDA group. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VITAMIN E MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin E per day for this RDA group. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VITAMIN C MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin C per day for this RDA group. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "THIAMIN MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Thiamin per day for this RDA group. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RIBOFLAVIN MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Riboflavin per day for this RDA group. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NIACIN MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Niacin per day for this RDA group. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "VITAMIN B6 MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin B6 per day for this RDA group. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FOLATE MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Folate per day for this RDA group. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "VITAMIN B12 MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin B12 per day for this RDA group. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CALCIUM MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Calcium per day for this RDA group. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PHOSPHORUS MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Phosphorus per day for this RDA group. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MAGNESIUM MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Magnesium per day for this RDA group. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "IRON MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Iron per day for this RDA group. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ZINC MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Zinc per day for this RDA group. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PANTOTHENIC ACID MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Pantothenic Acid per day for this RDA group. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "COPPER MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Copper per day for this RDA group. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MANGANESE MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Manganese per day for this RDA group. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SODIUM MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Sodium per day for this RDA group. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "POTASSIUM MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Potassium per day for this RDA group. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "BIOTIN MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Biotin per day for this DRI group. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SELENIUM MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Selenium per day for this RDA group. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CHOLINE MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Choline per day for this RDA group. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "VITAMIN D MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin D per day for this RDA group. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FLUORIDE MG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Fluoride per day for this RDA group. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "VITAMIN K MCG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field represents the recommended amount of Vitamin K per day for this DRI group. ",
+      "fieldNumber_": 26
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "112.2", "field": .01, "type": "regular"},
+    {"name": "112.2", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

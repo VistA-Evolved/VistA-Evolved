@@ -1,0 +1,41 @@
+{
+  "fileNumber": 853.8,
+  "fileName": "VPS CLINICAL SURVEY",
+  "globalRoot": "853.8",
+  "globalReference": "^VPS(853.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient who entered the questionnaire. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUESTIONNAIRE IDENTIFIER",
+      "dataType": "POINTER",
+      "rawType": "853.805PA",
+      "required": false,
+      "helpText": "This multiple stores all the patient's questionnaire identification information. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "853.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

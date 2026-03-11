@@ -1,0 +1,76 @@
+{
+  "fileNumber": 1.5216,
+  "fileName": "SQLI_TABLE_ELEMENT",
+  "globalRoot": "1.5216",
+  "globalReference": "^DMSQ(\"E\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "E_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of table element. Foreign keys are suffixed _FK or PFK. Primary keys are suffixed _PK. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "E_DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "RP1.5212'",
+      "required": true,
+      "pointerTo": 1.5212,
+      "helpText": "IEN of domain in SQLI_DOMAIN ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "E_TABLE",
+      "dataType": "POINTER",
+      "rawType": "RP1.5215'",
+      "required": true,
+      "pointerTo": 1.5215,
+      "helpText": "IEN of table in SQLI_TABLE. Required. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "E_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:Column;P:Primary key;F:Foreign key;",
+      "helpText": "C for column, P for primary key, or F for foreign key ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "E_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short description of the element ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "1.5216", "field": .01, "type": "regular"},
+    {"name": "1.5216", "field": 1, "type": "regular"},
+    {"name": "1.5216", "field": 2, "type": "regular"},
+    {"name": "1.5216", "field": 2, "type": "regular"},
+    {"name": "1.5216", "field": 3, "type": "regular"},
+    {"name": "1.5216", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

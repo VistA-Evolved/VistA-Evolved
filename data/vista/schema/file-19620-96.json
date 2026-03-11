@@ -1,0 +1,51 @@
+{
+  "fileNumber": 19620.96,
+  "fileName": "DSIR NON-COMPUTERIZED RECORDS PATIENTS",
+  "globalRoot": "19620.96",
+  "globalReference": "^DSIR(19620.96,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of non-computerized patient in the form LAST,FIRST MI ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Cintains non-computerized patient's date of birth. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Contains the non-computerized patient's social security number. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BS5", "field": },
+    {"name": "SSN", "field": },
+    {"name": "19620.96", "field": .01, "type": "regular"},
+    {"name": "19620.96", "field": .01, "type": "regular"},
+    {"name": "19620.96", "field": .09, "type": "regular"},
+    {"name": "19620.96", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

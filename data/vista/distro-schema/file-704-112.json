@@ -1,0 +1,83 @@
+{
+  "fileNumber": 704.112,
+  "fileName": "OBS_FLOWSHEET",
+  "globalRoot": "704.112",
+  "globalReference": "^MDC(704.112,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FLOWSHEET_ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This value is the Global Unique IDentifier for this flowsheet. This value  is system generated, maintained nationally, so this value represents the  same flowsheet throughout the enterprise. A sample FLOWSHEET ID could be \"{E2237CB1-7706-4B43-A96C-D08B812D2A2E}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the official NAME for this flowsheet (#.01). A sample NAME could be \"ICU MONITORING\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name displayed via the Clinical Flowsheets application for  this flowsheet. A sample DISPLAY NAME could be \"ICU Monitoring\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free-text COMMENT to document the purpose for this flowsheet  (#.01). A sample COMMENT could be \"Primary flowsheet for ICU patients\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether or not this flowsheet (#.01) can be used in  the Clinical Flowsheets application. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT_TIU_NOTE",
+      "dataType": "POINTER",
+      "rawType": "P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This field correlates this entry to an entry in the TIU DOCUMENT File  (#8925). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DISPLAY_KARDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not the \"Kardex grid\" will be displayed  when this flowsheet(#.01) is opened.  ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

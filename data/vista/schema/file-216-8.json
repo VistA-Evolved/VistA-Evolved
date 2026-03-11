@@ -1,0 +1,70 @@
+{
+  "fileNumber": 216.8,
+  "fileName": "NURS CARE PLAN",
+  "globalRoot": "216.8IP",
+  "globalReference": "^NURSC(216.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT FILE ENTRY",
+      "dataType": "POINTER",
+      "rawType": "R*P124.3'I",
+      "required": true,
+      "pointerTo": 124.3,
+      "helpText": "This field is a pointer to the GMR Text (#124.3) File.  The data in this record pertains to the entry that this field points to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NURSING PROBLEM LIST",
+      "dataType": "POINTER",
+      "rawType": "216.81P",
+      "required": false,
+      "helpText": "A list of problems for this nursing care plan or patient plan of care. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EVALUATION DATE",
+      "dataType": "DATE",
+      "rawType": "216.82ID",
+      "required": false,
+      "helpText": "Evaluation information for a particular problem for a particular date. ",
+      "isMultiple": true,
+      "subFileNumber": 216.82,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TARGET DATE",
+      "dataType": "DATE",
+      "rawType": "216.83ID",
+      "required": false,
+      "helpText": "The target dates for the goals/expected outcomes for the plan of care. Plan. ",
+      "isMultiple": true,
+      "subFileNumber": 216.83,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORDER INFO",
+      "dataType": "DATE",
+      "rawType": "216.84ID",
+      "required": false,
+      "helpText": "Stored here is the status information for nursing orderables (or interventions). ",
+      "isMultiple": true,
+      "subFileNumber": 216.84,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "216.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL(\"\",,\"?0\")"}
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "fileNumber": 100.97,
+  "fileName": "SCHEDULED ALERTS",
+  "globalRoot": "100.97",
+  "globalReference": "^OR(100.97,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WHEN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WHO",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "XQAID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BODY",
+      "dataType": "SUBFILE",
+      "rawType": "100.976",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 100.976,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FIRED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PLACER ORDER #",
+      "dataType": "POINTER",
+      "rawType": "P100'X",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the CPRS order number (IEN) for this entry. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "100.97", "field": .01, "type": "regular"},
+    {"name": "100.97", "field": 2, "type": "regular"},
+    {"name": "100.97", "field": 4, "type": "regular"},
+    {"name": "100.97", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

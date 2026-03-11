@@ -1,0 +1,517 @@
+{
+  "fileNumber": 48,
+  "fileName": "MAS RELEASE NOTES",
+  "globalRoot": "48",
+  "globalReference": "^DG(48,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VERSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the MAS Version number being distributed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NOTIFICATION MESSAGE SENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "If a message was sent to the ISC the date last sent. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMISSION METHOD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:LETTER;M:MAILMAN MESSAGE;",
+      "helpText": "Was notification made via LETTER or MAILMAN message. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SCHEDULING RELEASE TOO",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Was the scheduling package released with this version. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SCHEDULING VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,4",
+      "length": 8,
+      "required": false,
+      "helpText": "If a scheduling release was included with this installation what was the version number? ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VERSION REQUIRED TO INSTALL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,4",
+      "length": 8,
+      "required": true,
+      "helpText": "What version of MAS is required in order to install this version. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RELEASE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date of this release from the Albany ISC. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OPENING COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.01",
+      "required": false,
+      "helpText": "Opending comments word-processing field to explain briefly what version of MAS Release Notes are for and any outstanding issues involved. ",
+      "isMultiple": true,
+      "subFileNumber": 48.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "NEW OPTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "48.02A",
+      "required": false,
+      "helpText": "This multiple contains all new MAS menu options associated with the Version noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.02,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "NEW SECURITY KEYS",
+      "dataType": "SUBFILE",
+      "rawType": "48.016A",
+      "required": false,
+      "helpText": "A multiple containing any new Security Keys associated with Version number noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.016,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NEW MAIL GROUPS",
+      "dataType": "SUBFILE",
+      "rawType": "48.017A",
+      "required": false,
+      "helpText": "Multiple containing any new mail groups associated with Version number noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.017,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CHANGED OPTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "48.04A",
+      "required": false,
+      "helpText": "Multiple containing any changed menu options associated with Version number noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.04,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DELETED OPTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "48.06A",
+      "required": false,
+      "helpText": "Multiple containing any deleted menu options associated with Version number noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.06,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "NEW ROUTINES",
+      "dataType": "SUBFILE",
+      "rawType": "48.07",
+      "required": false,
+      "helpText": "Multiple containing any new routines associated with Version number noted. ",
+      "isMultiple": true,
+      "subFileNumber": 48.07,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "OBSOLETE ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "48.08",
+      "required": false,
+      "helpText": "Multiple containing any obsolete routines that will be deleted as a result of changes in the current release. ",
+      "isMultiple": true,
+      "subFileNumber": 48.08,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "SUGGEST MAPPING FOR ROUTINES",
+      "dataType": "SUBFILE",
+      "rawType": "48.09",
+      "required": false,
+      "helpText": "Multiple containing routines that it is recommended/suggested to map. ",
+      "isMultiple": true,
+      "subFileNumber": 48.09,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "JOURNALLING RECOMMENDATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "48.041",
+      "required": false,
+      "helpText": "Multiple containing information of journalling recommendations/ instructions associated with current release. ",
+      "isMultiple": true,
+      "subFileNumber": 48.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "FILE (DD) CHANGES",
+      "dataType": "SUBFILE",
+      "rawType": "48.045",
+      "required": false,
+      "helpText": "Word processing field explaining and MAS File Data Dictionary changes that have occurred as a result of changes associated with the current release. ",
+      "isMultiple": true,
+      "subFileNumber": 48.045,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PTF COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.046",
+      "required": false,
+      "helpText": "Word processing field containing comments/instructions/special items of interest/new legislation, etc. associated with the  Patient Treatment File (PTF) portion of the MAS software. ",
+      "isMultiple": true,
+      "subFileNumber": 48.046,
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "RUG COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.047",
+      "required": false,
+      "helpText": "Word processing field containing comments/instructions/special items of interest/new legislation, etc. associated with the Resource Utilization Grouper (RUG) portion of the MAS software. ",
+      "isMultiple": true,
+      "subFileNumber": 48.047,
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "LOOKUP COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.048",
+      "required": false,
+      "helpText": "Word processing field containing comments/instructions/related changes, etc. to the Patient (^DPT) look up. ",
+      "isMultiple": true,
+      "subFileNumber": 48.048,
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "BILLING COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.049",
+      "required": false,
+      "helpText": "Word processing field containing comments/instructions/special items of interest/new legislation, etc. associated with the Billing portion of the MAS software.  In a future release, all billing options, etc. will be transferred to the Integrated Billing package. ",
+      "isMultiple": true,
+      "subFileNumber": 48.049,
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 49.5,
+      "fieldName": "SCHEDULING COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.0495",
+      "required": false,
+      "helpText": "Word processing field containing comments/instructions/special items of interest/new legislation, etc. associated with the Scheduling portion of the MAS software. ",
+      "isMultiple": true,
+      "subFileNumber": 48.0495,
+      "fieldNumber_": 49.5
+    },
+    {
+      "fieldNumber": 49.7,
+      "fieldName": "DISC. WORKLOAD COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.0497",
+      "required": false,
+      "helpText": "This field will be *'d for deletion in the MAS V5.2 release. Discretionary workload reports/options, etc. are not longer required by VACO for use in the field. ",
+      "isMultiple": true,
+      "subFileNumber": 48.0497,
+      "fieldNumber_": 49.7
+    },
+    {
+      "fieldNumber": 49.8,
+      "fieldName": "IRT COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.13",
+      "required": false,
+      "helpText": "This is a word-processing field that contains comments on new or changed functionality or special notes on the Incomplete Record Tracking Menu in the MAS package with new releases. ",
+      "isMultiple": true,
+      "subFileNumber": 48.13,
+      "fieldNumber_": 49.8
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "CLOSING COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "48.1",
+      "required": false,
+      "helpText": "Word processing containing any closing comments (summary) of any outstanding issues/new functionality, etc. related to the current release. ",
+      "isMultiple": true,
+      "subFileNumber": 48.1,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DG PRE-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DG namespaced pre-initialization started. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DG INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DG namespaced intialization started. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DG POST-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DG namespaced post-intialization started. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DG INIT END",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DG namespaced intialization ended. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "DPT PRE-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DPT pre-initialization started. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "DPT INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DPT intialization started ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DPT POST-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DPT post-initialization started. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "DPT INIT END",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the DPT initialization ended. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "SD PRE-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the SD namespaced pre-initialization started. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "SD INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time SD namespaced initialization started ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "SD POST-INIT START",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time SD post-initialization started. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "SD INIT END",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time the SD initialization ended. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "SPECIAL JOB STARTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time any special job was started.  This may not be related to all releases, just special cases. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "SPECIAL JOB ENDED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time any special job ended.  This may not be related to all releases, just special cases. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "SPECIAL JOB2 DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Date/time a second special job was completed. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "MAY I INCLUDE YOUR FILE SIZES?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Does user wish to have program include the sizes of their files in the output received as a result of running initializations? ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "DOCUMENTATION QUALITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NONE INCLUDED;1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "User enters the range of quality they felt the documentation sent with the package release fell into (i.e. poor, fair, good, etc.) ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "INSTALLATION GUIDE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "Quality of the installation guide received with the release, i.e. good, poor, fair, etc. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "RELEASE NOTES",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "Quality of the release notes received with the release, i.e. good, poor, fair, etc. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "INITIALIZATION SATISFACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "How was the quality of the initialization as related to IRM. Was it poor?, fair?, etc.  Did the initialization run smoothly? Were there major problems encountered?  Items that may effect the quality of the initialization quality. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "USER SATISFACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "The quality of user satisfaction.  How did the users react to the installation/results of updated software?  Were they pleased? Did they find many items they felt uncomfortable with? etc. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "OVERALL SATISFACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:POOR;2:FAIR;3:GOOD;4:VERY GOOD;5:EXCELLENT;",
+      "helpText": "Rank the overall satisfaction of the release, including all documentation, initializations, functionality, etc. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "USER COMMENTS/SUGGESTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "48.12",
+      "required": false,
+      "helpText": "Word processing field for users to express their concerns, comments, findings, reactions to the release as a whole.  Any recommendations they may have, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 48.12,
+      "fieldNumber_": 150
+    }
+  ],
+  "fieldCount": 49,
+  "crossReferences": [
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "48", "field": .01, "type": "regular"},
+    {"name": "48", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

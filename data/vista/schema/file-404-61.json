@@ -1,0 +1,40 @@
+{
+  "fileNumber": 404.61,
+  "fileName": "MH PCMM STOP CODES",
+  "globalRoot": "404.61",
+  "globalReference": "^SCTM(404.61,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC STOP NAME",
+      "dataType": "POINTER",
+      "rawType": "RP40.7'",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "This is a clinic stop used by Mental Health Service within the  PCMM. Clinic stops entered here are used to produce a Mental Health PCMM  report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXCLUDE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to exclude any Mental Health encounter with the entered Clinic Stop Code as a secondary/credit stop. The Clinic Stop should have a RESTRICTION TYPE(#5) of \"Secondary\" or \"Either\" in file CLINIC STOP(#40.7) file. The secondary/credit stop is entered in the CREDIT STOP CODE(#2503) field of the HOSPITAL LOCATION(#44) file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "404.61", "field": .01, "type": "regular"},
+    {"name": "404.61", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

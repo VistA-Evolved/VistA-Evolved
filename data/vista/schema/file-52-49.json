@@ -1,0 +1,2093 @@
+{
+  "fileNumber": 52.49,
+  "fileName": "ERX HOLDING QUEUE",
+  "globalRoot": "52.49",
+  "globalReference": "^PS(52.49,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERX HUB ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ14,0",
+      "length": 14,
+      "required": true,
+      "helpText": "This is the unique message identifier from the eRx processing hub. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATED OR PARENT MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message ID of any related or parent messages that may be  associated with this eRx Holding Queue message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the incoming eRx message was added to the eRx  Holding Queue file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EXTERNAL PATIENT IDENTIFIER",
+      "dataType": "POINTER",
+      "rawType": "P52.46'",
+      "required": false,
+      "pointerTo": 52.46,
+      "helpText": "This is the external patient identifier. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VISTA PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the Vista linked patient. Pointer to file #2. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The institution associated with this eRx request. Pointer to the  INSTITUTION file (#4). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PHARMACY SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P59.7'",
+      "required": false,
+      "pointerTo": 59.7,
+      "helpText": "This is the pharmacy system associated with the incoming eRx message. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RR:RXRENEWALREQUEST;RE:RXRENEWALRESPONSE;N:NEWRX;CR:RXCHANGEREQUEST;RXF:RXFILL;IE:INBOUND ERROR;OE:OUTBOUND ERROR;CA:CANCELRX;CN:CANCELRXRESPONSE;CX:RXCHANGERESPONSE;",
+      "helpText": "This is the message type associated with this incoming eRx request  (Change, Cancel, RxRenewal, Partial Fill, etc). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXTERNAL/PROVIDER ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external or provider order number associated with this  incoming eRx message. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "VISTA PENDING OUTPATIENT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the associated Vista order as stored in the PENDING OUTPATIENT  ORDERS file (#52.41). ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "OE/RR ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This is the OE/RR order number from the ORDERS file (#100) associated  with this incoming eRx message. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PHARMACY PRESCRIPTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the prescription file entry (#52) associated with this incoming  eRx message. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RELATES TO HUB ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the eRx processing hub ID that is related to this message. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "SUGGESTED VISTA RX",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the VistA Rx record used to fill the data related to the incoming Drug, Dosage, SIG, Days Supply, Quantity and # of Refills. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERX ORDER STATUS",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the status for the incoming eRx message. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "DRUG VALIDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who manually validated the drug. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "DRUG VALIDATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time of the manually validation of the drug for the eRx. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "PATIENT VALIDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who manually evaluated the patient for the incoming  eRx. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "PATIENT VALIDATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the patient was manually validated. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PROV STAT (AUTO MATCHING)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MATCHED;0:NOT MATCHED;2:MATCHED/EDITED;",
+      "helpText": "This is the auto-matching status for a provider associated with the  incoming eRx prescription request. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "PROV STAT (MANUAL VALIDATION)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VALIDATED;0:NOT VALIDATED;",
+      "helpText": "This is the manual validation status of the provider associated with the  incoming eRx prescription request. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "DRUG STAT (AUTO MATCHING)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MATCHED;0:NOT MATCHED;2:MATCHED/EDITED;",
+      "helpText": "This is the drug auto-matching status for the drug associated with this  incoming eRx prescription request. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DRUG STAT (MANUAL VALIDATION)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VALIDATED;0:NOT VALIDATED;",
+      "helpText": "This is the manual validation status for the drug associated with the  incoming eRx prescription request. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "PATIENT STATUS (AUTO MATCHING)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MATCHED;0:NOT MATCHED;2:MATCHED/EDITED;",
+      "helpText": "This is the drug auto-matching status for the patient associated with this incoming eRx prescription request. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "PATIENT STATUS (MANUAL VAL)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VALIDATED;0:NOT VALIDATED;",
+      "helpText": "This is the manual validation status for the patient associated with the  incoming eRx prescription. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "PROVIDER VALIDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who manually validated the provider for the eRx. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "PROVIDER VALIDATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the provider was validated. ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "EXTERNAL PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "The external provider for this incoming prescription. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "EXTERNAL PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "This is the external pharmacist associated with the incoming prescription  message. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "VA MATCHED PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The VA (matched) provider. This is the provider found in the NEW PERSON  file which matches the incoming provider information associated with the  eRx message. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "TO/FROM QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PHARMACY;C:CLINIC;M:MAILBOX;D:PRESCRIBER;ZZZ:MUTUALLY DEFINED;",
+      "helpText": "This is the to/from qualifier for the incoming eRx message. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "ERX EXTERNAL PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P52.47'",
+      "required": false,
+      "pointerTo": 52.47,
+      "helpText": "This is the external pharmacy associated with the incoming eRx. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "ERX EXTERNAL SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "This is the supervisor associated with the incoming eRx prescription. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "PROVIDER AUTO VALIDATED FLAG",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field identifies whether the VistA Provider was auto-validated or  not. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "EXTERNAL DRUG/SUPPLY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the incoming drug/supply item for the eRx holding queue entry. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "MATCHED DRUG/SUPPLY",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the VA matched drug from the DRUG file (#50), that is the  equivalent to the incoming external drug/supply item passed in. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "PRODUCT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the incoming product code. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "DRUG DB CODE QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "The drug db code qualifier for the incoming eRx. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "PRODUCT CODE QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ND:NATIONAL DRUG CODE (NDC);MF:MANUFACTURER;UP:UNIVERSAL PRODUCT CODE (UPC);",
+      "helpText": "This is the product code qualifier associated with the product code. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "STRENGTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the strength for the drug/supply item. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "DRUG DB CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the drug db code for the incoming eRx. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "FORM SOURCE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:NCI PHARMACEUTICAL DOSAGE FORM;AB:NCI UNITS OF PRESENTATION;AC:NCI POTENCY UNIT;",
+      "helpText": "This is the form source code from the external source for the incoming  eRx prescription. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "FORM CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the incoming form code value from the external source for the  incoming eRx prescription. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "STRENGTH SOURCE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:NCI PHARMACEUTICAL DOSAGE FORM;AB:NCI UNITS OF PRESENTATION;AC:NCI POTENCY UNIT;",
+      "helpText": "The strength source code for the incoming eRx drug or supply item. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "STRENGTH CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The strength code associated with the eRx drug/supply item. ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "DEA SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the schedule for the eRx incoming prescription (drug/supply item). ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,5",
+      "length": 17,
+      "required": false,
+      "helpText": "This is the quantity for the drug/supply item. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "CODE LIST QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "38:ORIGINAL QUANTITY;40:REMAINING QUANTITY;87:QUANTITY RECEIVED;QS:QUANTIFY SUFFICIENT;",
+      "helpText": "The code list qualifier for the incoming eRx drug/supply item. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "UNIT SOURCE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AA:NCI PHARMACEUTICAL DOSAGE FORM;AB:NCI UNITS OF PRESENTATION;AC:NCI VALUES OF PROPERTY OR ;AC:NCI POTENCY UNIT;",
+      "helpText": "The unit source value for the incoming eRx drug/supply item. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "POTENCY UNIT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The potency unit code for the drug/supply item. ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The days supply for the incoming eRx drug or supply item. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of refills for the incoming eRx prescription. ",
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "REFILL QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:NUMBER OF REFILLS;PRN:AS NEEDED;P:PHARMACY REQUESTED REFILLS;A:ADDITIONAL REFILLS AUTHORIZED;",
+      "helpText": "This is the refill qualifier associated with the eRx incoming  prescription. ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.8,
+      "fieldName": "SUBSTITUTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO PRODUCT SELECTION INDICATED;1:SUBSTITUTION NOT ALLOWED BY PRESCRIBER;",
+      "helpText": "Substitution definition, as needed. This holds the information regarding  substitutions for a drug/supply item. ",
+      "fieldNumber_": 5.8
+    },
+    {
+      "fieldNumber": 5.9,
+      "fieldName": "WRITTEN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the eRx incoming prescription was written by the  provider. ",
+      "fieldNumber_": 5.9
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "LAST FILL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last fill date of the eRx prescription. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The eRx prescription expiration date. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The effective date of the eRx prescription. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "PERIOD END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The period end for the incoming eRx prescription. ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "DELIVERED ON DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the delivery date of the eRx prescription. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "DATE VALIDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the validation date of the eRx prescription. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 6.7,
+      "fieldName": "FUTURE FILL HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date until when the eRx should be held for a future fill. ",
+      "fieldNumber_": 6.7
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DIRECTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The directions for the eRx prescription. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The notes associated with the eRx prescription. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "52.499",
+      "required": false,
+      "helpText": "The diagnosis values associated with the eRx patient/prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.499,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "PRIOR AUTHORIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The prior authorization value for the eRx prescription. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "PRIOR AUTHORIZATION QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the prior authorization qualifier for the eRx prescription. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "PRIOR AUTHORIZATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:APPROVED;D:DENIED;R:REQUESTED;N:NOT REQUIRED;F:DEFERRED;",
+      "helpText": "The prior authorization status for the eRx authorization. ",
+      "fieldNumber_": 10.4
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "DO NOT FILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:EMERGENCY;3:HOLD;",
+      "helpText": "1 - Yes - Used for medications ordered by a prescriber not requiring  dispensing, but available for reference and drug-to-drug interaction  checking. 2 - Emergency - Indicates that the prescription should not be filled.  This is a cover prescription for a previously called in emergency oral  prescription as necessary for a controlled substance. 3 - Hold - Used for medications ordered by a prescriber but not requiring  dispensing at this time. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 10.6,
+      "fieldName": "NEEDED NO LATER THAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the prescription is needed by. ",
+      "fieldNumber_": 10.6
+    },
+    {
+      "fieldNumber": 10.7,
+      "fieldName": "TIMEZONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the time zone associated with the needed by date/time. ",
+      "fieldNumber_": 10.7
+    },
+    {
+      "fieldNumber": 10.8,
+      "fieldName": "TIME ZONE DIFFERENCE QUANTITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the time zone difference quantity related to the needed by time zone value. ",
+      "fieldNumber_": 10.8
+    },
+    {
+      "fieldNumber": 10.9,
+      "fieldName": "NEEDED NO LATER THAN REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the reason for the needed by date/time. ",
+      "fieldNumber_": 10.9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STRUCTURED SIG",
+      "dataType": "SUBFILE",
+      "rawType": "52.4911A",
+      "required": false,
+      "helpText": "This sub-file holds the structured SIG information from the incoming XML  message. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4911,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ORDER CHECKS",
+      "dataType": "SUBFILE",
+      "rawType": "52.4912A",
+      "required": false,
+      "helpText": "This multiple contains the order check information. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4912,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "PATIENT FACILITY UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This the patient location facility unit associated with the incoming eRx  prescription. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.2,
+      "fieldName": "BED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The physical bed that the patient is occupying. ",
+      "fieldNumber_": 13.2
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "ROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The room where the patient is physically located. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "OBSERVATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4914A",
+      "required": false,
+      "helpText": "This is the observation multiple that holds all observations received for  an eRx prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4914,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OBSERVATION NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The observation notes associated with the eRx prescription. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DRUG USE EVALUATION",
+      "dataType": "POINTER",
+      "rawType": "52.4916PA",
+      "required": false,
+      "helpText": "This sub-file holds the drug use evaluation information for an incoming  eRx prescription. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "EXTERNAL PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P52.47'",
+      "required": false,
+      "pointerTo": 52.47,
+      "helpText": "This is the external pharmacy that sent the eRx prescription to the VA. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 17.2,
+      "fieldName": "EXTERNAL PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "This is the external pharmacist associated with the incoming eRx  prescription. ",
+      "fieldNumber_": 17.2
+    },
+    {
+      "fieldNumber": 17.3,
+      "fieldName": "TRANSFERRED TO VA PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The external VA institution where the prescription was transferred. ",
+      "fieldNumber_": 17.3
+    },
+    {
+      "fieldNumber": 17.4,
+      "fieldName": "XFER TO EXTERNAL PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P52.47'",
+      "required": false,
+      "pointerTo": 52.47,
+      "helpText": "This is the external pharmacy to where the eRx prescription was  transferred. ",
+      "fieldNumber_": 17.4
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PAYER INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4918A",
+      "required": false,
+      "helpText": "The payer/cardholder information for the associated eRx prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4918,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "STATUS HISTORY",
+      "dataType": "DATE",
+      "rawType": "52.4919DA",
+      "required": false,
+      "helpText": "This multiple tracks the status changes that have occurred for an eRx. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4919,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "AUDIT LOG",
+      "dataType": "DATE",
+      "rawType": "52.492D",
+      "required": false,
+      "helpText": "This multiple works as an audit log to capture data related to changes  made to VistA Patient, Provider and Drug/Sig in a Holding Queue record,  either by auto-matching or manually. ",
+      "isMultiple": true,
+      "subFileNumber": 52.492,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "VISTA QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the Vista quantity for the eRx prescription. This is the quantity  needed for a prescription in Vista. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 20.2,
+      "fieldName": "VISTA DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the VistA Days supply value associated with the incoming eRx. ",
+      "fieldNumber_": 20.2
+    },
+    {
+      "fieldNumber": 20.3,
+      "fieldName": "VISTA VERB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the medication instruction (verb) for the eRx. ",
+      "fieldNumber_": 20.3
+    },
+    {
+      "fieldNumber": 20.4,
+      "fieldName": "VISTA ROUTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MAIL;W:WINDOW;P:PARKED;",
+      "helpText": "This is the pickup routing method for the incoming eRx. Available options are W (WINDOW) or M (Mail) if the eRx is going to be dispensed or P (PARKED) if the eRx is not supposed to be dispensed until requested. ",
+      "fieldNumber_": 20.4
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "VISTA REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of vista refills for this incoming eRx. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 20.6,
+      "fieldName": "VISTA CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "The vista clinic associated with the incoming eRx. ",
+      "fieldNumber_": 20.6
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "QUANTITY/TIMING",
+      "dataType": "SUBFILE",
+      "rawType": "52.4921A",
+      "required": false,
+      "helpText": "This is the quantity/timing sub-file which holds information about dosing  for a medication. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4921,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22.1,
+      "fieldName": "FROM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The FROM value as passed from the incoming XML. ",
+      "fieldNumber_": 22.1
+    },
+    {
+      "fieldNumber": 22.2,
+      "fieldName": "FROM QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PHARMACY;D:PRESCRIBER;",
+      "helpText": "The from qualifier attribute associated with this eRx. ",
+      "fieldNumber_": 22.2
+    },
+    {
+      "fieldNumber": 22.3,
+      "fieldName": "TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 'To' value as passed in as part of the header portion of the  eRx XML message. ",
+      "fieldNumber_": 22.3
+    },
+    {
+      "fieldNumber": 22.4,
+      "fieldName": "TO QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PHARMACY;D:PRESCRIBER;",
+      "helpText": "This is the 'To' qualifier attribute that is passed within the incoming  XML. This To qualifier is found in the 'Header' parent of the XML. ",
+      "fieldNumber_": 22.4
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "CH SENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date time the eRx was received by the vista system. ",
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 24.1,
+      "fieldName": "RELATED INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the institution that the incoming eRx belongs to. ",
+      "fieldNumber_": 24.1
+    },
+    {
+      "fieldNumber": 24.2,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the medical center division associated to the incoming eRx. ",
+      "fieldNumber_": 24.2
+    },
+    {
+      "fieldNumber": 24.3,
+      "fieldName": "SENDER SECONDARY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the senders secondary identification value. ",
+      "fieldNumber_": 24.3
+    },
+    {
+      "fieldNumber": 24.4,
+      "fieldName": "SENDER TERTIARY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the senders tertiary identification value. ",
+      "fieldNumber_": 24.4
+    },
+    {
+      "fieldNumber": 24.5,
+      "fieldName": "RECEIVER SECONDARY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the receiver secondary identification value. ",
+      "fieldNumber_": 24.5
+    },
+    {
+      "fieldNumber": 24.6,
+      "fieldName": "RECEIVER TERTIARY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the receiver tertiary identification. ",
+      "fieldNumber_": 24.6
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CH MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Change Healthcare message identifier. This number is not to  be considered to be a unique identifier. It is possible that the same  message ID could come from more than one provider. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.2,
+      "fieldName": "PENDING OUTPATIENT ORDER#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the pending outpatient order in file 52.41, once the eRx has been  sent to the file. ",
+      "fieldNumber_": 25.2
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "VA DISPENSING INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.4926A",
+      "required": false,
+      "helpText": "This field holds the VA SIG information, which will be sent to pending  outpatient orders as the SIG. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4926,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "VA PATIENT INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the patient instructions for an eRx. This field will be  transferred to the pending outpatient orders file upon acceptance of an  eRx. This field is the equivalent to the patient instructions field in  the pending outpatient orders file. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DRUG COVERAGE STATUS",
+      "dataType": "SUBFILE",
+      "rawType": "52.4928A",
+      "required": false,
+      "helpText": "The drug coverage status multiple to hold the drug coverage status values. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4928,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "INDICATION FOR USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field contains the Indication For Use for this eRx medication. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 29.1,
+      "fieldName": "INDICATION FOR USE FLAG",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field determines whether or not to include the Indication For Use in the SIG. 1 - to include in the SIG ; 0 - not to include ",
+      "fieldNumber_": 29.1
+    },
+    {
+      "fieldNumber": 29.2,
+      "fieldName": "OTHER LANG INDICATION FOR USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field contains the Other Language Indication For Use for this eRx  medication. ",
+      "fieldNumber_": 29.2
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "VA PROVIDER COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VA provider comments. This represents the provider comments  for a prescription, which is the VA's version of the 'DIRECTIONS' that  are received with an eRx. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "VA UNEXPANDED SIG",
+      "dataType": "SUBFILE",
+      "rawType": "52.4931",
+      "required": false,
+      "helpText": "The un-expanded SIG for the eRx prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4931,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "EXTERNAL FORM CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The external form code for the medication being prescribed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "EXTERNAL POTENCY UNIT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external form of the potency unit code. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "EXTERNAL STRENTH CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the external value of the strength code.  ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PAYER CARDHOLDER ID CONVERTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this flag is set to yes, the payer cardholder ID values have been  converted into the new format. This needs to be set if the conversion has  taken place so no futher conversion attempts will occur on this record.  The cardholder id field is not a required field on an incoming eRx and  was previously being used as the .01 field. This has been changed to now  be a sequence value, and cardholder ID has been moved into field #7. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "MEDICATION DISPENSED/REQUESTED",
+      "dataType": "SUBFILE",
+      "rawType": "52.4949",
+      "required": false,
+      "helpText": "This multiple holds the medication dispensed/medication(s) requested in  support of the refill request and change request message types. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4949,
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "REQUEST/RESPONSE COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ255",
+      "length": 255,
+      "required": false,
+      "helpText": "This is the refill request/response comments for the eRx refill request  or refill response. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 50.1,
+      "fieldName": "NOTE ADDED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who entered the note related to an eRx refill request  or response. ",
+      "fieldNumber_": 50.1
+    },
+    {
+      "fieldNumber": 50.2,
+      "fieldName": "NOTE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the note was entered for a request or response type  of message. ",
+      "fieldNumber_": 50.2
+    },
+    {
+      "fieldNumber": 51.1,
+      "fieldName": "REFILL/CHANGE REQUEST PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who made the outbound refill/change request. ",
+      "fieldNumber_": 51.1
+    },
+    {
+      "fieldNumber": 51.2,
+      "fieldName": "# OF REFILLS REQUESTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of refills requested on an prescription refill request. ",
+      "fieldNumber_": 51.2
+    },
+    {
+      "fieldNumber": 52.1,
+      "fieldName": "RESPONSE VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:APPROVED;D:DENIED;DNP:DENIED, NEW RX TO FOLLOW;AWC:APPROVED WITH CHANGES;R:REPLACE;V:VALIDATED;",
+      "helpText": "This is the response type for a refill request. This tells us the status  of the request, as returned by the provider. ",
+      "fieldNumber_": 52.1
+    },
+    {
+      "fieldNumber": 52.2,
+      "fieldName": "RESPONSE NOTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the note as written by the provider, for a refill or cancel  response message type. ",
+      "fieldNumber_": 52.2
+    },
+    {
+      "fieldNumber": 52.3,
+      "fieldName": "RESPONSE REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the reference number associated with the refill or change request  response. ",
+      "fieldNumber_": 52.3
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "RESPONSE CODES",
+      "dataType": "POINTER",
+      "rawType": "52.4955P",
+      "required": false,
+      "helpText": "This multiple holds the response codes related to the refill or change  response. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "REQUEST/RESPONSE ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the error text for an inbound or outbound eRx error message. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "REQUEST/RESPONSE ERROR CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "600:COMMUNICATION PROBLEM - TRY AGAIN LATER;601:RECEIVER UNABLE TO PROCESS - DO NOT RETRY;602:RECEIVER SYSTEM ERROR - TRY AGAIN LATER;900:TRANSACTION REJECTED - DO NOT RETRY;",
+      "helpText": "This is the error code associated with an eRx error message. ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "REQUEST/RESPONSE ERR DCODES",
+      "dataType": "POINTER",
+      "rawType": "52.4961P",
+      "required": false,
+      "helpText": "This multiple holds the error description codes for a request/response  message. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 70.1,
+      "fieldName": "FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the facility name associated with the incoming eRx. ",
+      "fieldNumber_": 70.1
+    },
+    {
+      "fieldNumber": 70.2,
+      "fieldName": "FACILITY ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the address line 1 associated with the facility. ",
+      "fieldNumber_": 70.2
+    },
+    {
+      "fieldNumber": 70.3,
+      "fieldName": "FACILITY ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the address line 2 associated with the facility. ",
+      "fieldNumber_": 70.3
+    },
+    {
+      "fieldNumber": 70.4,
+      "fieldName": "FACILITY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the city associated with the facility. ",
+      "fieldNumber_": 70.4
+    },
+    {
+      "fieldNumber": 70.5,
+      "fieldName": "FACILITY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state associated with the facility. ",
+      "fieldNumber_": 70.5
+    },
+    {
+      "fieldNumber": 70.6,
+      "fieldName": "FACILITY ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the zip code associated with the facility. ",
+      "fieldNumber_": 70.6
+    },
+    {
+      "fieldNumber": 70.7,
+      "fieldName": "COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the country code associated with the facility. ",
+      "fieldNumber_": 70.7
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "FACILITY IDENTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4971A",
+      "required": false,
+      "helpText": "This multiple contains information related to the eRx facility. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4971,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4972A",
+      "required": false,
+      "helpText": "This multiple contains information related to the eRx facility. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4972,
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "2017 FACILITY COMMUNICATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.4973",
+      "required": false,
+      "helpText": "This subfile contains the facility communication information associated  with an eRx. This subfile was created to support the 2017 script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4973,
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74.1,
+      "fieldName": "2017 FAC NCPDPID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the NCPDPID associated with the facility identification. This  field was created to support the 2017 script standard. ",
+      "fieldNumber_": 74.1
+    },
+    {
+      "fieldNumber": 74.2,
+      "fieldName": "2017 FAC STATE LIC NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the state license number associated with the facility  identification. This field was created to support the 2017 script  standard. ",
+      "fieldNumber_": 74.2
+    },
+    {
+      "fieldNumber": 74.3,
+      "fieldName": "2017 FAC MEDICARE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Medicare Number associated with the facility identification.  This field was created to support the 2017 script standard. ",
+      "fieldNumber_": 74.3
+    },
+    {
+      "fieldNumber": 74.4,
+      "fieldName": "2017 FAC MEDICAID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Medicaid Number associated with the facility identification.  This field was created to support the 2017 script standard. ",
+      "fieldNumber_": 74.4
+    },
+    {
+      "fieldNumber": 74.5,
+      "fieldName": "2017 FAC UPIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the UPIN associated with the facility identification. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 74.5
+    },
+    {
+      "fieldNumber": 74.6,
+      "fieldName": "2017 FACILITY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the facility identification. This field was created to support  the 2017 script standard. ",
+      "fieldNumber_": 74.6
+    },
+    {
+      "fieldNumber": 75.1,
+      "fieldName": "2017 FAC DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the Drug Enforcement Agency number associated with the facility  identification. This field was created to support the 2017 script  standard. ",
+      "fieldNumber_": 75.1
+    },
+    {
+      "fieldNumber": 75.2,
+      "fieldName": "2017 FAC HIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the HIN associated with the facility identification. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 75.2
+    },
+    {
+      "fieldNumber": 75.3,
+      "fieldName": "2017 FAC NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the NPI associated with the facility identification. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 75.3
+    },
+    {
+      "fieldNumber": 75.4,
+      "fieldName": "2017 FAC MUTUALLY DEFINED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the mutually defined value associated with the facility  identification. This field was created to support the 2017 script  standard. ",
+      "fieldNumber_": 75.4
+    },
+    {
+      "fieldNumber": 75.5,
+      "fieldName": "2017 FAC REMS ENROLLMENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the REMS healthcare settings enrollment identification associated  with the facility identification. This field was created to support the  2017 script standard. ",
+      "fieldNumber_": 75.5
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "2017 FACILITY DIRECT ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ255",
+      "length": 255,
+      "required": false,
+      "helpText": "This is the facility direct address associated with the eRx. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 80.1,
+      "fieldName": "CHANGE REQUEST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C1:SIGNIFICANT CHANGE;C2:FREQUENCY CHANGE;C3:INSIGNIFICANT CHANGE;",
+      "helpText": "This field identifies the change request type for cancel and change eRx  messages.   C1 Significant change (Any changes to the Drug, form, strength, dosage,  or route)   C2 Frequency Change (Any change to the frequency or hours of  administration for the drug)   C3 Insignificant Change (All other changes) ",
+      "fieldNumber_": 80.1
+    },
+    {
+      "fieldNumber": 80.2,
+      "fieldName": "RETURN RECEIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the return receipt associated with a cancel or change eRx message. ",
+      "fieldNumber_": 80.2
+    },
+    {
+      "fieldNumber": 80.3,
+      "fieldName": "REQUEST REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the request reference number for a cancel or change eRx message. ",
+      "fieldNumber_": 80.3
+    },
+    {
+      "fieldNumber": 80.4,
+      "fieldName": "CHANGE RX STATUS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CANCEL;D:DISCONTINUE;",
+      "helpText": "This is the change of prescription status flag, intended to be used for  cancel and change eRx message types. ",
+      "fieldNumber_": 80.4
+    },
+    {
+      "fieldNumber": 80.5,
+      "fieldName": "CHANGE/CANCEL DENIED BY HUB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag identifies entries that have been denied by the eRx processing  hub. ",
+      "fieldNumber_": 80.5
+    },
+    {
+      "fieldNumber": 95.1,
+      "fieldName": "CONTROLLED SUBSTANCE INDICATOR",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates if the incoming eRx prescription is for a controlled  substance. ",
+      "fieldNumber_": 95.1
+    },
+    {
+      "fieldNumber": 95.2,
+      "fieldName": "CS DIG SIGNATURE DIGEST METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the encryption hashing  method (e.g., SHA-1, SHA-256, etc.) used to encode the digital  signature. ",
+      "fieldNumber_": 95.2
+    },
+    {
+      "fieldNumber": 95.3,
+      "fieldName": "CS DIG SIGNATURE DIGEST VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This value is used to confirm that all fields have been included in the  digital signature. ",
+      "fieldNumber_": 95.3
+    },
+    {
+      "fieldNumber": 95.4,
+      "fieldName": "CS DIG SIGNATURE VALUE",
+      "dataType": "SUBFILE",
+      "rawType": "52.499501",
+      "required": false,
+      "helpText": "This is the digest value that has been signed with a private key. ",
+      "isMultiple": true,
+      "subFileNumber": 52.499501,
+      "fieldNumber_": 95.4
+    },
+    {
+      "fieldNumber": 95.5,
+      "fieldName": "CS DIG SIGNATURE X509 DATA",
+      "dataType": "SUBFILE",
+      "rawType": "52.499502",
+      "required": false,
+      "helpText": "This is a string of the base64 encoded raw bytes of the X509 certificate  (which contains the Public Key), used by the receiver to validate the  digital signature. ",
+      "isMultiple": true,
+      "subFileNumber": 52.499502,
+      "fieldNumber_": 95.5
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PROCESSING ERRORS",
+      "dataType": "SUBFILE",
+      "rawType": "52.49101A",
+      "required": false,
+      "helpText": "This sub-file contains the processing errors associated with the eRx entry. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49101,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "MESSAGE HISTORY",
+      "dataType": "POINTER",
+      "rawType": "52.49201P",
+      "required": false,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 301.1,
+      "fieldName": "2017 LTC LEVEL OF CHANGE",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the LTC level of change associated with the incoming eRx. This  field is being created to support the 2017 script standard. ",
+      "fieldNumber_": 301.1
+    },
+    {
+      "fieldNumber": 301.2,
+      "fieldName": "2017 URGENCY INDICATOR CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STANDARD;X:URGENT/EXPEDITED;",
+      "helpText": "This is the urgency indicator code associated with the incoming eRx. This  field is being created to support the 2017 script standard. ",
+      "fieldNumber_": 301.2
+    },
+    {
+      "fieldNumber": 301.3,
+      "fieldName": "2017 PROHIBIT RENEWAL REQUEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "TRUE:1;FALSE:0;",
+      "helpText": "This is the prohibit renewal request associated with the incoming eRx.  This field is being created to support the 2017 script standard. ",
+      "fieldNumber_": 301.3
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "2017 NO KNOWN ALLERGIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This is the no known allergies field associated with an incoming eRx.  This field is being created to support the 2017 script standard. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "2017 ALLERGIES",
+      "dataType": "SUBFILE",
+      "rawType": "52.49303",
+      "required": false,
+      "helpText": "This subfile contains all information relating to allergies of an  incoming eRx. This subfile is being created to support the 2017 script  standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49303,
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "2017 BENEFITS COORDINATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.49304",
+      "required": false,
+      "helpText": "This subfile contains all information relating to the benefits  coordination section of an incoming eRx. This subfile was created to  support the 2017 script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49304,
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "2017 OBSERVATION NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ140",
+      "length": 140,
+      "required": false,
+      "helpText": "This is the observation notes associated with the incoming eRx. This  field was created to support the 2017 script standard. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "2017 OBSERVATION",
+      "dataType": "SUBFILE",
+      "rawType": "52.49306",
+      "required": false,
+      "helpText": "This subfile contains the observation section of the incoming eRx. This  subfile was created to support the 2017 script standard. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49306,
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307.1,
+      "fieldName": "2017 FOLLOW-UP PRESCRIBER",
+      "dataType": "POINTER",
+      "rawType": "P52.48'",
+      "required": false,
+      "pointerTo": 52.48,
+      "helpText": "This is the follow-up prescriber related to the incoming eRx. This field  was created to support the 2017 script standard. ",
+      "fieldNumber_": 307.1
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "2017 MEDICATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.49311",
+      "required": false,
+      "helpText": "This subfile holds the medication details for an eRx. This can be the  prescribed, requested, or dispensed medication. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49311,
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312.1,
+      "fieldName": "SCRIPT VERSION NUMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:20170715 SCRIPT VERSION;",
+      "helpText": "This is the version number associated with the incoming eRx. If set to 1,  version is confirmed to be 20170715, if 0, field will be set to null. ",
+      "fieldNumber_": 312.1
+    },
+    {
+      "fieldNumber": 312.2,
+      "fieldName": "REQUEST REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the request reference number associated with the eRx. ",
+      "fieldNumber_": 312.2
+    },
+    {
+      "fieldNumber": 312.3,
+      "fieldName": "RETURN RECEIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the return receipt associated with the eRx. ",
+      "fieldNumber_": 312.3
+    },
+    {
+      "fieldNumber": 313.1,
+      "fieldName": "ECL VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the ECL version number associated with the eRx. ",
+      "fieldNumber_": 313.1
+    },
+    {
+      "fieldNumber": 313.2,
+      "fieldName": "DATA TYPE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the data type version associated with the eRx. ",
+      "fieldNumber_": 313.2
+    },
+    {
+      "fieldNumber": 313.3,
+      "fieldName": "STRUCTURES VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the structures version associated with the eRx. ",
+      "fieldNumber_": 313.3
+    },
+    {
+      "fieldNumber": 313.4,
+      "fieldName": "TRANSACTION DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the transaction domain associated with the eRx. ",
+      "fieldNumber_": 313.4
+    },
+    {
+      "fieldNumber": 313.5,
+      "fieldName": "TRANSACTION VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the transaction version associated with the eRx. ",
+      "fieldNumber_": 313.5
+    },
+    {
+      "fieldNumber": 313.6,
+      "fieldName": "TRANSPORT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the transport version associated with the eRx. ",
+      "fieldNumber_": 313.6
+    },
+    {
+      "fieldNumber": 314.1,
+      "fieldName": "SENDER SOFTWARE DEVELOPER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This is the sender software developer associated with the eRx. ",
+      "fieldNumber_": 314.1
+    },
+    {
+      "fieldNumber": 314.2,
+      "fieldName": "SENDER SOFTWARE PRODUCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This is the sender software product associated with the eRx. ",
+      "fieldNumber_": 314.2
+    },
+    {
+      "fieldNumber": 314.3,
+      "fieldName": "SENDER SOFTWARE VERSION REL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This is the sender software version release associated with the eRx. ",
+      "fieldNumber_": 314.3
+    },
+    {
+      "fieldNumber": 315.1,
+      "fieldName": "CHANGE MES REQ CODE",
+      "dataType": "POINTER",
+      "rawType": "P52.45",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the message request code associated with the change  request/response. ",
+      "fieldNumber_": 315.1
+    },
+    {
+      "fieldNumber": 316,
+      "fieldName": "CHANGE MES SUB CODE",
+      "dataType": "SUBFILE",
+      "rawType": "52.49316",
+      "required": false,
+      "helpText": "This is the message request sub code associated with the change  request/response. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49316,
+      "fieldNumber_": 316
+    },
+    {
+      "fieldNumber": 317,
+      "fieldName": "CHANGE REQUEST REASON TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "52.49317",
+      "required": false,
+      "helpText": "This is the Rx Change Request Reason Text that was send to the outside prescriber. ",
+      "isMultiple": true,
+      "subFileNumber": 52.49317,
+      "fieldNumber_": 317
+    },
+    {
+      "fieldNumber": 318.1,
+      "fieldName": "CH RES STATE LICENSE NUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the state license number associated with the change response. ",
+      "fieldNumber_": 318.1
+    },
+    {
+      "fieldNumber": 318.2,
+      "fieldName": "CH RES MEDICARE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the medicare number associated with the change response. ",
+      "fieldNumber_": 318.2
+    },
+    {
+      "fieldNumber": 318.3,
+      "fieldName": "CH RES MEDICAID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the medicaid number associated with the change response. ",
+      "fieldNumber_": 318.3
+    },
+    {
+      "fieldNumber": 319.1,
+      "fieldName": "CH RES UPIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the UPIN associated with the change response. ",
+      "fieldNumber_": 319.1
+    },
+    {
+      "fieldNumber": 319.2,
+      "fieldName": "CH RES DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the DEA number associated with the change response. ",
+      "fieldNumber_": 319.2
+    },
+    {
+      "fieldNumber": 319.3,
+      "fieldName": "CH RES HIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the HIN associated with the change response. ",
+      "fieldNumber_": 319.3
+    },
+    {
+      "fieldNumber": 319.4,
+      "fieldName": "CH RES SOCIAL SECURITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the social security number associated with the change response. ",
+      "fieldNumber_": 319.4
+    },
+    {
+      "fieldNumber": 319.5,
+      "fieldName": "CH RES NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the NPI associated with the change response. ",
+      "fieldNumber_": 319.5
+    },
+    {
+      "fieldNumber": 320.1,
+      "fieldName": "CH REQ PROGRESS NOTE REF #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the reference number returned by TIU when a Patient Progress Note  is automatically created when the user submits a Change Request to  the ouside Prescriber. ",
+      "fieldNumber_": 320.1
+    },
+    {
+      "fieldNumber": 320.2,
+      "fieldName": "CH REQ PROGRESS NOTE COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ210",
+      "length": 210,
+      "required": false,
+      "helpText": "This is the Change Request comment for the Patient Progress Note that is  automatically created when the Change Request is submitted to the outside  prescriber. ",
+      "fieldNumber_": 320.2
+    },
+    {
+      "fieldNumber": 321.1,
+      "fieldName": "CH RES CERT TO PRESCRIBE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the certificate to prescribe associated with the change response. ",
+      "fieldNumber_": 321.1
+    },
+    {
+      "fieldNumber": 321.2,
+      "fieldName": "CH RES DATA 2000 WAIVER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the data 2000 waiver identification associated with the change  response. ",
+      "fieldNumber_": 321.2
+    },
+    {
+      "fieldNumber": 321.3,
+      "fieldName": "CH RES MUTUALLY DEFINED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the mutually defined information associated with the change  response. ",
+      "fieldNumber_": 321.3
+    },
+    {
+      "fieldNumber": 322.1,
+      "fieldName": "CH RES REMS PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ35",
+      "length": 35,
+      "required": false,
+      "helpText": "This is the REMS healthcare provider enrollment identification associated  with the change response. ",
+      "fieldNumber_": 322.1
+    },
+    {
+      "fieldNumber": 322.2,
+      "fieldName": "CH RES STATE SUBSTANCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ255",
+      "length": 255,
+      "required": false,
+      "helpText": "This is the state control substance number associated with the change  response. ",
+      "fieldNumber_": 322.2
+    },
+    {
+      "fieldNumber": 323,
+      "fieldName": "CH RES SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "P52.45'",
+      "required": false,
+      "pointerTo": 52.45,
+      "helpText": "This is the supervisor associated with the change response. ",
+      "fieldNumber_": 323
+    },
+    {
+      "fieldNumber": 324,
+      "fieldName": "VAL CH RES DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date associated with the change response. This field only  applies to validated types of change responses. ",
+      "fieldNumber_": 324
+    },
+    {
+      "fieldNumber": 325,
+      "fieldName": "CH RES SPECIALTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the specialty associated with the change response. ",
+      "fieldNumber_": 325
+    }
+  ],
+  "fieldCount": 210,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "ORN", "field": },
+    {"name": "RTHID", "field": },
+    {"name": "52.49", "field": .01, "type": "regular"},
+    {"name": "52.49", "field": .05, "type": "regular"},
+    {"name": "52.49", "field": .12, "type": "regular"},
+    {"name": "52.49", "field": .14, "type": "regular"},
+    {"name": "52.49", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

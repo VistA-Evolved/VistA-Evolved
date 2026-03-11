@@ -1,0 +1,60 @@
+{
+  "fileNumber": 45.81,
+  "fileName": "STATION TYPE",
+  "globalRoot": "45.81I",
+  "globalReference": "^DIC(45.81,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains a station type. Valid station type are numbers between '10' and '99'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station type name. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*SUFFIXES",
+      "dataType": "SUBFILE",
+      "rawType": "45.811",
+      "required": false,
+      "helpText": "This multiple is no longer in use and has been starred for deletion. It will be removed in a future release of the PIMS (MAS) package. Previously, this multiple contained the suffixes assigned to various stations or facilities.  It has been replaced by the Suffix Ptr field (#.01) of the Suffix Ptr multiple (#45.813) which is a pointer to the Facility Suffix file (#45.68).  The Facility Suffix file is a table file which contains the suffixes, effective date(s), and active/inactive flag(s). ",
+      "isMultiple": true,
+      "subFileNumber": 45.811,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SUFFIX PTR",
+      "dataType": "POINTER",
+      "rawType": "45.813P",
+      "required": false,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "D1", "field": },
+    {"name": "45.81", "field": .01, "type": "regular"},
+    {"name": "45.81", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

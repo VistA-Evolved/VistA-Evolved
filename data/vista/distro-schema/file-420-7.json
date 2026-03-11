@@ -1,0 +1,58 @@
+{
+  "fileNumber": 420.7,
+  "fileName": "BUDGET DISTRIBUTION CODES",
+  "globalRoot": "420.7",
+  "globalReference": "^PRCF(420.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the distribution code number that is used when entering funding transactions under the Funds Distribution portion of IFCAP (e.g., Number used while performing transactions when funds are distributed to a Medical Center with the explicit purpose of hiring people, classified as recurring or non-recurring personal services). ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This is the distribution code number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an abbreviation for the distribution code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SORT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the sort order of the distribution code. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "420.7", "field": .01, "type": "regular"},
+    {"name": "420.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

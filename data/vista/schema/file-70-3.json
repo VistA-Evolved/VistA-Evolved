@@ -1,0 +1,99 @@
+{
+  "fileNumber": 70.3,
+  "fileName": "RADIATION ABSORBED DOSE",
+  "globalRoot": "70.3",
+  "globalReference": "^RAD(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field identifies the patient absorbing radiation associated with this exam. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXAM DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field identifies the exam date/time of the exam. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0I",
+      "length": 5,
+      "required": true,
+      "helpText": "This field tracks the case number of the exam. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DOSE COLLECTED WITHIN THE VA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field tracks whether the exam introducing the radiation was performed under the direction of the Department of Veterans Affairs (VA). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AIR KERMA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,9",
+      "length": 16,
+      "required": false,
+      "helpText": "Kinetic energy released in matter (Kerma), is defined as the sum of the initial energies of all the charged particles liberated by uncharged ionizing radiation in a material of given mass per unit mass.  Kerma in air is called 'air kerma'.   Unit: Milligray (mGy) ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "AIR KERMA AREA PRODUCT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,9",
+      "length": 15,
+      "required": false,
+      "helpText": "Air Kerma Area Product is defined as the air kerma at a particular  location in an x-ray beam multiplied by the cross-sectional area of the  beam at that location. It is an approximate indication of the total amount of energy delivered by the x-ray beam.   Unit: Gray centimeters squared (Gy-cm2) ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TOTAL FLUOROSCOPY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The ability of fluoroscopy to display motion is provided by a continuous  series of images produced per second. High radiation exposures to patients can result from multiple series of images.   Therefore, total fluoroscopic time is one of the metrics that determines the exposure to the patient from fluoroscopy.   Unit: seconds (time) ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "IRRADIATION INSTANCE UID",
+      "dataType": "SUBFILE",
+      "rawType": "70.31A",
+      "required": false,
+      "helpText": "An irradiation event is the occurrence of radiation being applied to a  patient in a single continuous time-frame between the start (release) and  the stop (cease) of the irradiation.   This sub-file is a record of up to five of the highest irradiation  instances for this study. ",
+      "isMultiple": true,
+      "subFileNumber": 70.31,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "70.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,2),6)"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

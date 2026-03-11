@@ -1,0 +1,71 @@
+{
+  "fileNumber": 61.6,
+  "fileName": "OCCUPATION FIELD",
+  "globalRoot": "61.6I",
+  "globalReference": "^LAB(61.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the job. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The characters following \"J-\" in the SNOMED reference book. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "61.61A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains synonyms or common misspellings of this job. ",
+      "isMultiple": true,
+      "subFileNumber": 61.61,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOURNAL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "61.62A",
+      "required": false,
+      "helpText": "This is a multiple field.  It contains journal references that apply to this job. ",
+      "isMultiple": true,
+      "subFileNumber": 61.62,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a 1 to 5 character abbreviation for this job.  It is used as a unique code for it. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "61.6", "field": .01, "type": "regular"},
+    {"name": "61.6", "field": 2, "type": "regular"},
+    {"name": "61.6", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

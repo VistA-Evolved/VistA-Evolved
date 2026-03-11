@@ -1,0 +1,99 @@
+{
+  "fileNumber": 355.36,
+  "fileName": "CREATION TO PROCESSING TRACKING",
+  "globalRoot": "355.36",
+  "globalReference": "^IBA(355.36,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is the date and time that the insurance record was processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF PROCESSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:No Touch to No Touch;2:No Touch to Human;3:Human to No Touch;4:Human to Human;",
+      "helpText": "This field is the type of processing from creation until processed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE OF INFORMATION",
+      "dataType": "POINTER",
+      "rawType": "P355.12'",
+      "required": false,
+      "pointerTo": 355.12,
+      "helpText": "This field is the source of the original data input. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EIV AUTO-UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the transaction was auto-updated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EIV INQUIRY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the IEN of the inquiry record. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EIV RESPONSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the IEN of the response record. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BUFFER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the IEN of the transaction in the INSURANCE VERIFICATION  PROCESSOR File (#355.33). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "WHICH EXTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BUFFER;2:APPT;3:NON-VERIFIED;4:EICD;5:REQUEST ELECTRONIC;6:ICB/VISTA;7:MBI;",
+      "helpText": "This field identifies which data extract that the transmission record was  generated from. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.36", "field": .01, "type": "regular"},
+    {"name": "355.36", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

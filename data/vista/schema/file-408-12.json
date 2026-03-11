@@ -1,0 +1,63 @@
+{
+  "fileNumber": 408.12,
+  "fileName": "PATIENT RELATION",
+  "globalRoot": "408.12PI",
+  "globalReference": "^DGPR(408.12,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient to which this individual is related (even if it is the patient himself/herself). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATIONSHIP",
+      "dataType": "POINTER",
+      "rawType": "R*P408.11'",
+      "required": true,
+      "pointerTo": 408.11,
+      "helpText": "Enter in this field the persons relationship to the veteran.  Choose only those that are appropriate for the sex of the person entered. Self and Spouse will not be selectable or editable.  They are created automatically by the module.  If there are already 19 child dependents associated with the veteran this dependent may not be son, stepson,  daughter or stepdaughter. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PERSON",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RVX",
+      "required": true,
+      "helpText": "Enter in this field the name of the relative.  The entry must be either in the PATIENT file (for those individuals that have been seen as patients in this facility) or the INCOME PERSON file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "408.1275D",
+      "required": false,
+      "helpText": "This multiple contains data on when an individual became a dependent and a non-dependent.  First, a date must be selected and then it must be determined whether on that date the relative became active or became a non-dependent.  This information is used in the means test and income screening modules for purposes of income collection.  Only those persons that are active relatives of a patient will require income collection. ",
+      "isMultiple": true,
+      "subFileNumber": 408.1275,
+      "fieldNumber_": 75
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AENR02", "field": },
+    {"name": "AIVM", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "408.12", "field": .01, "type": "regular"},
+    {"name": "408.12", "field": .02, "type": "regular"},
+    {"name": "408.12", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,3),1:\"\") D NAME^DICM2 W \"   \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

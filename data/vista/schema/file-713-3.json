@@ -1,0 +1,59 @@
+{
+  "fileNumber": 713.3,
+  "fileName": "EAS MT LETTERS",
+  "globalRoot": "713.3",
+  "globalReference": "^EAS(713.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of a letter that has been initially created for automated means test letters.  These letters are utilized mostly in the Enrollment Application System (EAS) software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:60-DAY LETTERS;2:30-DAY LETTERS;3:REPORT OF CONTACT;4:ZERO-DAY LETTERS;",
+      "helpText": "This field is used by the Letter Generation routines to select the appropriate letter to print. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INITIAL SECTION OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "713.33",
+      "required": false,
+      "helpText": "Main body of the letter.  Do not modify, changes will be directed as necessary ",
+      "isMultiple": true,
+      "subFileNumber": 713.33,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PREFERRED LOCATION",
+      "dataType": "POINTER",
+      "rawType": "713.34P",
+      "required": false,
+      "helpText": "Division related section of the letter ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "713.3", "field": .01, "type": "regular"},
+    {"name": "713.3", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

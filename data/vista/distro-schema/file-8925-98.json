@@ -1,0 +1,72 @@
+{
+  "fileNumber": 8925.98,
+  "fileName": "TIU PERSONAL DOCUMENT TYPE LIST",
+  "globalRoot": "8925.98",
+  "globalReference": "^TIU(8925.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PERSON",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person whose preference is being identified. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT DOCUMENT CLASS",
+      "dataType": "POINTER",
+      "rawType": "*P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This is the group (i.e., either Document Class or Class) to which the preferred document list belongs.  i.e., enter the class Progress Notes to indicate that the corresponding list will apply to Progress Notes. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This determines what TITLE will be offered by default when selecting from a given parent class (e.g., when entering a PROGRESS NOTE, you may want the DEFAULT TITLE to be DIABETES EDUCATION, etc.). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PERSONAL DOCUMENT LIST",
+      "dataType": "POINTER",
+      "rawType": "8925.9801IP",
+      "required": false,
+      "helpText": "This Multiple is used for storing personal lists of documents for type selection during entry/editing. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the timestamp on the record in $H format which is compared with that on the compiled menu in ^XUTL(\"XQORM\",\"DA;TIU(8925.98,\",99) to determine whether recompilation is necessary. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "8925.98", "field": .01, "type": "regular"},
+    {"name": "8925.98", "field": .01, "type": "regular"},
+    {"name": "8925.98", "field": .02, "type": "regular"},
+    {"name": "8925.98", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^TIU(8925.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8925.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

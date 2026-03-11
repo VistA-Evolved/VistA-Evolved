@@ -1,0 +1,38 @@
+{
+  "fileNumber": 8991,
+  "fileName": "XTV ROUTINE CHANGES",
+  "globalRoot": "8991",
+  "globalReference": "^XTV(8991,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the routine name for a routine which has been logged for change tracking. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "8991.01DA",
+      "required": false,
+      "helpText": "This multiple is used to track changes by the date on which the changes were LOGGED (changes are not specifically recorded until they are logged).  The last date entry will always contain a complete copy of the routine code. ",
+      "isMultiple": true,
+      "subFileNumber": 8991.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8991", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

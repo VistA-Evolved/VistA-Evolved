@@ -1,0 +1,56 @@
+{
+  "fileNumber": 30,
+  "fileName": "DISPOSITION LATE REASON",
+  "globalRoot": "30",
+  "globalReference": "^DIC(30,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "Number",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the internal entry number of this DISPOSITION LATE REASON.  This number is determined by VA FileMan and the MAS software package.  This number can be used in the software to determine programming flow.  It must NOT be altered in any way.  Nor should entries be added to or removed from this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This field contains a reason why a patient may have been dispositioned after the allowable period of time (as determined by the site in the MAS PARAMETERS file).  All reasons are determine by MAS VACO and the MAS SIUG and maintained by the MAS software module.  This information should not be edited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this DISPOSTION LATE REASON.  On outputs or displays where there is insufficient room to display the entry reason for the late disposition, this abbreviation may appear instead. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REASON TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NOT COUNTED;0:COUNTED;",
+      "helpText": "This field contains a 0 if a late disposition of this type should be counted on statistical reports, or a 1 if it shouldn't be. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "30", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

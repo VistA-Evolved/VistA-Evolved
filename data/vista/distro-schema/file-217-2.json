@@ -1,0 +1,27 @@
+{
+  "fileNumber": 217.2,
+  "fileName": "NURQ RATIONALE",
+  "globalRoot": "217.2",
+  "globalReference": "^NURQ(217.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RATIONALE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field describes the rationale or reason for looking at the indicator. High risk, high volume, and problem prone are the only rationale entries exported in this version. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "217.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

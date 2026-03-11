@@ -1,0 +1,1772 @@
+{
+  "fileNumber": 356.22,
+  "fileName": "HCS REVIEW TRANSMISSION",
+  "globalRoot": "356.22",
+  "globalReference": "^IBT(356.22,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time of when the entry was added to the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The Patient of this transmission entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSURANCE POLICY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the IEN of the PATIENT INSURANCE multiple (file 2,  sub-file .312) this entry is for. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INPATIENT / OUTPATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "The status of the patient - inpatient or outpatient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "The Ward location for inpatients, null for outpatients. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "The Clinic for outpatients, null for inpatients. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EVENT DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Date of the event for this entry. Contains admission date/time (internal  FM format) for inpatients or appointment date/time (internal FM format) for outpatients. Can contain date range in [internal FM date/time]-[internal FM date/time] format. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:IN PROGRESS;02:AWAITING RESPONSE;03:UNABLE TO SEND;04:NEGATIVE RESPONSE RECEIVED;05:POSITIVE RESPONSE RECEIVED;06:MANUALLY REMOVED;07:PENDING RESPONSE RECEIVED;08:FLAGGED FOR NEXT REVIEW;0:INITIAL ENTRY;09:215 INQ SENT;",
+      "helpText": "The code describing current status of the entry. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MARKED 'IN PROGRESS' BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The User who marked this entry as \"in progress\". ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE MARKED 'IN PROGRESS'",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Date/time this entry was marked as 'in progress'. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "REQUESTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the person who will be the Contact for any UMO questions. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HL7 message control number that is generated at the time the  HL7 message is created and placed in the outgoing HL7 message queue. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "INQUIRY",
+      "dataType": "POINTER",
+      "rawType": "P356.22'",
+      "required": false,
+      "pointerTo": 356.22,
+      "helpText": "This field contains the pointer to the 278 inquiry this response  corresponds to. If this entry is an inquiry, this field should be blank. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P356.22'",
+      "required": false,
+      "pointerTo": 356.22,
+      "helpText": "This field contains the pointer to the 278 response for this inquiry. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time response was received (if this entry is a  response) or inquiry was sent out (if this entry is an inquiry). ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "SOURCE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the source of the event is an appointment, this is internal FileMan  date/time of the appointment.  If the source of the event is an  admission, this is the internal FileMan date of the admission. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "TICKLER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A value of 'D' will prevent this entry from being shown on the HCSR  worklist until the admission related to the entry has been discharged.   The 'D' option is only valid for entries with an Input/Output value of  'I'. Otherwise this is an internal FileMan date and the entry will begin to appear on the worklist on this date. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "FROM RESPONSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "If the entry was created from the Response Worklist, the value of this  field is 1. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "215 TRIGGERED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "A flag that determines if a 278X215 Inquiry transaction has been generated for this entry. This 215 version of the 278 transaction could have been generated manually or via the auto-trigger controlled by the IB SITE PARAMETERS definition for auto trigger of 215 for appointments or admissions. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:X12 217 TRANSACTION;1:X12 215 TRANSACTION;2:X12 RESPONSE MESSAGE;",
+      "helpText": "This field value identifies the entry as either an X12 278X217 transaction, or an X12 278X215 transaction, or an X12 278 response. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "RESPONSE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Not In-Progress;1:In Progress;",
+      "helpText": "This field is set to 1 when a user marks the Response on the Response  Worklist as In-Progress.  It is set to 0 when a user removes the  In-Progress mark. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "DELETED RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DELETED;",
+      "helpText": "Determines if a response entry was manually removed from the Response Worklist and should not be displayed. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "DATE MANUALLY REMOVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The timestamp of when an entry was manually removed from the worklist. A manually removed entry will no longer appear on the HCSR Worklist or the HCSR Response Worklist. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "MANUALLY REMOVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who manually removed an entry from the HCSR Worklist or the HCSR Response Worklist. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "DELETE REASON",
+      "dataType": "POINTER",
+      "rawType": "P356.023'",
+      "required": false,
+      "pointerTo": 356.023,
+      "helpText": "The Delete Reason Code is the reason for which the 278 request or inquiry  was removed from the HCSR Worklist. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "MANUAL 215",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT A MANUAL 215;1:MANUAL 215;",
+      "helpText": "This flag is set automatically when a 278x215 Authorization Inquiry is  generated manually. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "REQ FROM RESP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO REQUEST CREATED FROM RESPONSE;1:REQUEST CREATED FROM THIS RESPONSE;",
+      "helpText": "This field indicates whether a request message was created from this  response message.  This is required in order to prevent duplicate  requests being generated from one response message. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMENTS",
+      "dataType": "DATE",
+      "rawType": "356.221DA",
+      "required": false,
+      "helpText": "User comments for this entry. ",
+      "isMultiple": true,
+      "subFileNumber": 356.221,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "REQUEST CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P356.001'O",
+      "required": false,
+      "pointerTo": 356.001,
+      "helpText": "The Request Type for this Patient Event review that is being submitted  for approval (e.g. Admission Review, Health Services Review, Individual  or Specialty Care Review). ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "CERTIFICATION TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P356.002'O",
+      "required": false,
+      "pointerTo": 356.002,
+      "helpText": "This is Certification Type of the HCSR Transmission entry. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "SERVICE TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P365.013'O",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "The Service Type field is REQUIRED unless you plan to enter Service Detail information. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "FACILITY TYPE QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Uniform Billing Claim Form Bill Type;B:Place of Service Codes for Professional or Dental Services;",
+      "helpText": "The Service Location Qualifier field is REQUIRED unless you plan to enter Service Detail information. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "FACILITY TYPE",
+      "dataType": "POINTER",
+      "rawType": "P353.1'O",
+      "required": false,
+      "pointerTo": 353.1,
+      "helpText": "Select the Service Location where this patient event will be performed. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "LOCATION OF CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Hospital - Inpt or Opt (includes clinics);2:Skilled Nursing (NHCU);3:Home Health Agency;7:Clinic (only independent/satellite);8:Spec. Facility Hosp/Amb Surg Ctr;",
+      "helpText": "This is location of care code for the 278 inquiry. This field is only populated if the FACILITY TYPE QUALIFIER field is set to A. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "BILL CLASSIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "8:Swingbed;1:Inpatient (Medicare-A);2:Humanit. Emerg. (Inpatient/Medicare-B);3:Outpatient;4:Humanit. Emerg. (Outpatient/ESRD);",
+      "helpText": "This is Bill Classification code for the 278 inquiry. This field is only populated if the FACILITY TYPE QUALIFIER field is set to A. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "RELATED CAUSES #1",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "AA:Auto Accident;AP:Another Party Responsible;EM:Employment;",
+      "helpText": "Select a cause related to this patient care event. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "RELATED CAUSES #2",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "AP:Another Party Responsible;EM:Employment;",
+      "helpText": "Select a cause related to this patient care event. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "RELATED CAUSES #3",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "AP:Another Party Responsible;EM:Employment;",
+      "helpText": "Select a cause related to this patient care event. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state in which the auto accident occurred.  This is REQUIRED if the accident occurred out of this state. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "COUNTRY",
+      "dataType": "POINTER",
+      "rawType": "P779.004'O",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "The country in which the auto accident occurred if outside the US. ",
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "LEVEL OF SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "03:Emergency;E:Elective;U:Urgent;",
+      "helpText": "The Level of Service if care is other than Routine. This is REQUIRED if this request is an Appeal. ",
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 2.14,
+      "fieldName": "CURRENT HEALTH CONDITION",
+      "dataType": "POINTER",
+      "rawType": "P356.003'O",
+      "required": false,
+      "pointerTo": 356.003,
+      "helpText": "The Health Condition Code is only entered if it is a factor in choosing services that are not typical for the patient's diagnoses. ",
+      "fieldNumber_": 2.14
+    },
+    {
+      "fieldNumber": 2.15,
+      "fieldName": "PROGNOSIS CODE",
+      "dataType": "POINTER",
+      "rawType": "P356.004'O",
+      "required": false,
+      "pointerTo": 356.004,
+      "helpText": "The Prognosis Code is only entered if it is a factor in choosing services that are not typical for the patient's diagnoses. ",
+      "fieldNumber_": 2.15
+    },
+    {
+      "fieldNumber": 2.16,
+      "fieldName": "RELEASE OF INFORMATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Prov has Limited or Restricted Ability to Release Data Related to Clm;Y:Prov has a Signed Statement Permitting Release of Medical Billing Data;",
+      "helpText": "The ROI code which determines how information of this patient event will be released. ",
+      "fieldNumber_": 2.16
+    },
+    {
+      "fieldNumber": 2.17,
+      "fieldName": "DELAY REASON",
+      "dataType": "POINTER",
+      "rawType": "P356.005'O",
+      "required": false,
+      "pointerTo": 356.005,
+      "helpText": "The Delay Reason code.  This information is REQUIRED if this request is outside of the normal timeframe for this UMO. ",
+      "fieldNumber_": 2.17
+    },
+    {
+      "fieldNumber": 2.18,
+      "fieldName": "ACCIDENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date on which the accident occurred. ",
+      "fieldNumber_": 2.18
+    },
+    {
+      "fieldNumber": 2.19,
+      "fieldName": "LAST MENSTRUAL PERIOD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Date of Last Menstrual Period if this request is related to pregnancy. ",
+      "fieldNumber_": 2.19
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "ESTIMATED DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Estimated Date of Birth if this request is related to an estimated date of birth (due date). ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.21,
+      "fieldName": "ILLNESS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the current symptoms or illness first began. ",
+      "fieldNumber_": 2.21
+    },
+    {
+      "fieldNumber": 2.22,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The patient discharge date/time for the 278 inquiry. Time is optional. ",
+      "fieldNumber_": 2.22
+    },
+    {
+      "fieldNumber": 2.23,
+      "fieldName": "CERTIFICATION ISSUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Certification Issue Date for this authorization. ",
+      "fieldNumber_": 2.23
+    },
+    {
+      "fieldNumber": 2.24,
+      "fieldName": "CERTIFICATION EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The authorization expiration date. ",
+      "fieldNumber_": 2.24
+    },
+    {
+      "fieldNumber": 2.25,
+      "fieldName": "CERTIFICATION EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The Certification Effective Date for the authorization provided. ",
+      "fieldNumber_": 2.25
+    },
+    {
+      "fieldNumber": 2.26,
+      "fieldName": "CERT EFFECTIVE THRU DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date for which the authorization is still in effect. ",
+      "fieldNumber_": 2.26
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "356.223PA",
+      "required": false,
+      "helpText": "This multiple contains patient diagnosis codes for 278 inquiry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "HCSD QUANTITY QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P365.016'O",
+      "required": false,
+      "pointerTo": 365.016,
+      "helpText": "If the Certification Type is 4 - Extension, this is the number of additional visits. If the Certification Type is S - Revised, it is the new total. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "HCSD SERVICE UNIT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "The service unit count for the Health Care Services Delivery segment of the 278 inquiry. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "HCSD UNITS OF MEASUREMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DA:Days;MO:Months;WK:Weeks;",
+      "helpText": "The Unit of Measurement for the Sample Selection Modulus. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "HCSD SAMPLE SELECTION MODULUS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter a number with up to 2 decimal points that represents the sampling frequency in terms of the Unit of Measurement (e.g. 1.5 weeks). ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "HCSD TIME PERIOD QUALIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P365.015'O",
+      "required": false,
+      "pointerTo": 365.015,
+      "helpText": "The Time Period Qualifier for the Period Count when patient events must be rendered within a specific time frame. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "HCSD PERIOD COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a whole number between 1 and 999 when patient events must be rendered within a specific time frame. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "HCSD DELIVERY FREQUENCY",
+      "dataType": "POINTER",
+      "rawType": "*P365.025'",
+      "required": false,
+      "pointerTo": 365.025,
+      "helpText": "The Delivery Frequency Code when patient events must be rendered within a specific time frame. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "HCSD DELIVERY TIME PATTERN",
+      "dataType": "POINTER",
+      "rawType": "P356.007'O",
+      "required": false,
+      "pointerTo": 356.007,
+      "helpText": "The optional Delivery Pattern Time Code of when the services will be provided. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "AMBULANCE CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Ambulance Certification Condition(s). ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "AMBULANCE CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The first of 5 possible Ambulance Certification Conditions. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "AMBULANCE CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The second of 5 possible Ambulance Certification Conditions. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "AMBULANCE CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The third of 5 possible Ambulance Certification Conditions. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "AMBULANCE CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fourth of 5 possible Ambulance Certification Conditions. ",
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "AMBULANCE CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fifth of 5 possible Ambulance Certification Conditions. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "CHIROPRACTIC CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Chiropractic Certification Condition(s). ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "CHIROPRACTIC CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The first of 5 possible Chiropractic Certification Conditions. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "CHIROPRACTIC CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Second of 5 possible Chiropractic Certification Conditions. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "CHIROPRACTIC CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The third of 5 possible Chiropractic Certification Conditions. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "CHIROPRACTIC CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fourth of 5 possible Chiropractic Certification Conditions. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "CHIROPRACTIC CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fifth of 5 possible Chiropractic Certification Conditions. ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "DME CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Durable Medical Equipment (DME) Certification Condition(s). ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 5.08,
+      "fieldName": "DME CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The first of 5 possible DME Certification Conditions. ",
+      "fieldNumber_": 5.08
+    },
+    {
+      "fieldNumber": 5.09,
+      "fieldName": "DME CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The second of 5 possible DME Certification Conditions. ",
+      "fieldNumber_": 5.09
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "DME CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The third of 5 possible DME Certification Conditions. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "DME CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fourth of 5 possible DME Certification Conditions. ",
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.12,
+      "fieldName": "DME CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The fifth of 5 possible DME Certification Conditions. ",
+      "fieldNumber_": 5.12
+    },
+    {
+      "fieldNumber": 5.13,
+      "fieldName": "OXYGEN CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Oxygen Therapy Certification condition(s). ",
+      "fieldNumber_": 5.13
+    },
+    {
+      "fieldNumber": 5.14,
+      "fieldName": "OXYGEN CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the need for Oxygen Therapy.  You can enter up to five Condition codes. ",
+      "fieldNumber_": 5.14
+    },
+    {
+      "fieldNumber": 5.15,
+      "fieldName": "OXYGEN CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the need for Oxygen Therapy.  You can enter up to five Condition codes. ",
+      "fieldNumber_": 5.15
+    },
+    {
+      "fieldNumber": 5.16,
+      "fieldName": "OXYGEN CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the need for Oxygen Therapy.  You can enter up to five Condition codes. ",
+      "fieldNumber_": 5.16
+    },
+    {
+      "fieldNumber": 5.17,
+      "fieldName": "OXYGEN CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Cerfication Condition code that describes the need for Oxygen Therapy.  You can enter up to five Condition codes. ",
+      "fieldNumber_": 5.17
+    },
+    {
+      "fieldNumber": 5.18,
+      "fieldName": "OXYGEN CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the need for Oxygen Therapy.  You can enter up to five Condition codes. ",
+      "fieldNumber_": 5.18
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "FUNCT. LIMIT CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Functional Limitation Certification Condition(s). ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "FUNCT. LIMIT CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the patient's Functional Limitations.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "FUNCT. LIMIT CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the patient's Functional Limitations.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "FUNCT. LIMIT CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the patient's Functional Limitations.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "FUNCT. LIMIT CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the patient's Functional Limitations.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "FUNCT. LIMIT CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition code that describes the patient's Functional Limitations.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "ACTIVITIES CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Activities permitted certification condition(s). ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.08,
+      "fieldName": "ACTIVITIES CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the defined patient activities permitted.  You can enter up to five Condition Codes. ",
+      "fieldNumber_": 6.08
+    },
+    {
+      "fieldNumber": 6.09,
+      "fieldName": "ACTIVITIES CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the defined patient activities permitted.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.09
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "ACTIVITIES CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the defined patient activities permitted.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.11,
+      "fieldName": "ACTIVITIES CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the defined patient activities permitted.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.11
+    },
+    {
+      "fieldNumber": 6.12,
+      "fieldName": "ACTIVITIES CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the defined patient activities permitted.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.12
+    },
+    {
+      "fieldNumber": 6.13,
+      "fieldName": "MENTAL STATUS CERT. CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This field indicates existence of Mental Status Certification Condition(s). ",
+      "fieldNumber_": 6.13
+    },
+    {
+      "fieldNumber": 6.14,
+      "fieldName": "MENTAL STATUS CONDITION #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the patient's mental status.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.14
+    },
+    {
+      "fieldNumber": 6.15,
+      "fieldName": "MENTAL STATUS CONDITION #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certificaton Condition Code that represents the patient's mental status.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.15
+    },
+    {
+      "fieldNumber": 6.16,
+      "fieldName": "MENTAL STATUS CONDITION #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the patient's mental status.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.16
+    },
+    {
+      "fieldNumber": 6.17,
+      "fieldName": "MENTAL STATUS CONDITION #4",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the patient's mental status.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.17
+    },
+    {
+      "fieldNumber": 6.18,
+      "fieldName": "MENTAL STATUS CONDITION #5",
+      "dataType": "POINTER",
+      "rawType": "*P356.008'O",
+      "required": false,
+      "pointerTo": 356.008,
+      "helpText": "The Certification Condition Code that represents the patient's mental status.  You can add up to five Condition Codes. ",
+      "fieldNumber_": 6.18
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "ADMISSION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Emergency;2:Urgent;3:Elective;4:Newborn;5:Trauma;9:Information not available;",
+      "helpText": "The optional Admission Type that describes the type of inpatient admission. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "ADMISSION SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P356.009'O",
+      "required": false,
+      "pointerTo": 356.009,
+      "helpText": "The an optional Admission Source that decribes the source of the inpatient admission. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P356.01'O",
+      "required": false,
+      "pointerTo": 356.01,
+      "helpText": "The optional Patient Status which describes the current status of the patient. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 7.04,
+      "fieldName": "NURSING HOME STATUS",
+      "dataType": "POINTER",
+      "rawType": "P356.011'",
+      "required": false,
+      "pointerTo": 356.011,
+      "helpText": "The Nursing Home (SNF) Residential status is required when the patient is currently in or eligible for a  nursing home. ",
+      "fieldNumber_": 7.04
+    },
+    {
+      "fieldNumber": 7.05,
+      "fieldName": "TREATMENT SERIES NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Enter a 1-9 digit whole number.  This is REQUIRED when requesting certification for a specific number in a series of treatments. ",
+      "fieldNumber_": 7.05
+    },
+    {
+      "fieldNumber": 7.06,
+      "fieldName": "TREATMENT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a 1-15 digit number.  This is REQUIRED when requesting certification for a specific number in a series of treatments. ",
+      "fieldNumber_": 7.06
+    },
+    {
+      "fieldNumber": 7.07,
+      "fieldName": "SUBLUXATION LEVEL CODE #1",
+      "dataType": "POINTER",
+      "rawType": "P356.012'",
+      "required": false,
+      "pointerTo": 356.012,
+      "helpText": "The Subluxation Level code is REQUIRED if the treatment includes subluxation. ",
+      "fieldNumber_": 7.07
+    },
+    {
+      "fieldNumber": 7.08,
+      "fieldName": "SUBLUXATION LEVEL CODE #2",
+      "dataType": "POINTER",
+      "rawType": "P356.012'",
+      "required": false,
+      "pointerTo": 356.012,
+      "helpText": "The Subluxation Level code is REQUIRED if treatment includes subluxation. ",
+      "fieldNumber_": 7.08
+    },
+    {
+      "fieldNumber": 7.09,
+      "fieldName": "PATIENT CONDITION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Acute Condition;C:Chronic Condition;D:Non-acute Condition;E:Non-Life Threatening;F:Routine;G:Symptomatic;M:Acute Manifestation of a Chronic Condition;",
+      "helpText": "The REQUIRED code that describes the current condition of the patient. ",
+      "fieldNumber_": 7.09
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "COMPLICATION INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "Determines whether or not complications indicators exist. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.11,
+      "fieldName": "PAT. COND. DESCRIPTION LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a 1-80 character, free text description of the patient's condition. ",
+      "fieldNumber_": 7.11
+    },
+    {
+      "fieldNumber": 7.12,
+      "fieldName": "PAT. COND. DESCRIPTION LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a 1-80 character, free text description of the patient's condition. ",
+      "fieldNumber_": 7.12
+    },
+    {
+      "fieldNumber": 7.13,
+      "fieldName": "X-RAY AVAILABLE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "Determines wheter or not related X-Rays are available. ",
+      "fieldNumber_": 7.13
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "OXYGEN EQUIPMENT TYPE #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.013'O",
+      "required": false,
+      "pointerTo": 356.013,
+      "helpText": "Select the type of Oxygen Equipment.  You can enter up to three Oxygen Equipment Types. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "OXYGEN EQUIPMENT TYPE #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.013'O",
+      "required": false,
+      "pointerTo": 356.013,
+      "helpText": "Select the type of Oxygen Equipment.  You can enter up to three Oxygen Equipment Types. ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "OXYGEN EQUIPMENT TYPE #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.013'O",
+      "required": false,
+      "pointerTo": 356.013,
+      "helpText": "Select the type of Oxygen Equipment.  You can enter up to three Oxygen Equipment Types. ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "OXYGEN EQUIPMENT REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter an optional 1-80 character, free text description of why the oxygen equipment is needed. ",
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 8.05,
+      "fieldName": "OXYGEN FLOW RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ18,2",
+      "length": 18,
+      "required": false,
+      "helpText": "Enter a numeric value representing the Oxygen Flow rate in liters/minute. ",
+      "fieldNumber_": 8.05
+    },
+    {
+      "fieldNumber": 8.06,
+      "fieldName": "DAILY OXYGEN USE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a numeric value representing the number of times per day that the patient must use oxygen. ",
+      "fieldNumber_": 8.06
+    },
+    {
+      "fieldNumber": 8.07,
+      "fieldName": "OXYGEN USE PERIOD HOUR COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a numeric value representing the number of hours per period of oxygen use. ",
+      "fieldNumber_": 8.07
+    },
+    {
+      "fieldNumber": 8.08,
+      "fieldName": "RESPIRATORY THERAPIST ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a 1-80 character, free text description of special orders for the Respiratory Therapist. ",
+      "fieldNumber_": 8.08
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "ARTERIAL BLOOD GAS QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a numerical value representing Arterial Blood Gas Quantity. ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 9.02,
+      "fieldName": "OXYGEN SATURATION QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a numerical value representing Oxygen Saturation Quantity. ",
+      "fieldNumber_": 9.02
+    },
+    {
+      "fieldNumber": 9.03,
+      "fieldName": "OXYGEN TEST CONDITION",
+      "dataType": "POINTER",
+      "rawType": "P356.014'O",
+      "required": false,
+      "pointerTo": 356.014,
+      "helpText": "The conditions under which the patient was tested. ",
+      "fieldNumber_": 9.03
+    },
+    {
+      "fieldNumber": 9.04,
+      "fieldName": "OXYGEN TEST FINDINGS #1",
+      "dataType": "POINTER",
+      "rawType": "*P356.015'",
+      "required": false,
+      "pointerTo": 356.015,
+      "helpText": "The patient's Oxygen Test Findings.  You can enter up to three findings. ",
+      "fieldNumber_": 9.04
+    },
+    {
+      "fieldNumber": 9.05,
+      "fieldName": "OXYGEN TEST FINDINGS #2",
+      "dataType": "POINTER",
+      "rawType": "*P356.015'",
+      "required": false,
+      "pointerTo": 356.015,
+      "helpText": "The patient's Oxygen Test Findings.  You can enter up to three findings. ",
+      "fieldNumber_": 9.05
+    },
+    {
+      "fieldNumber": 9.06,
+      "fieldName": "OXYGEN TEST FINDINGS #3",
+      "dataType": "POINTER",
+      "rawType": "*P356.015'",
+      "required": false,
+      "pointerTo": 356.015,
+      "helpText": "The patient's Oxygen Test Findings.  You can enter up to three findings. ",
+      "fieldNumber_": 9.06
+    },
+    {
+      "fieldNumber": 9.07,
+      "fieldName": "PORTABLE OXYGEN SYSTEM FLOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Enter a numeric value representing the Flow Rate for portable oxygen in liter/minute. ",
+      "fieldNumber_": 9.07
+    },
+    {
+      "fieldNumber": 9.08,
+      "fieldName": "OXYGEN DELIVERY SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P356.016'O",
+      "required": false,
+      "pointerTo": 356.016,
+      "helpText": "The prescribed form of Oxygen Delivery. ",
+      "fieldNumber_": 9.08
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "HOME HEALTH START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date when the home health, private duty or nursing agency services started. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "HOME HEALTH CERT. START",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date when home health care will start. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "HOME HEALTH CERT. END",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The Date when home health care will end. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "COVERED BY MEDICARE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:Not applicable;Y:Yes;N:No;",
+      "helpText": "The Medicare coverage indicator for the 278 inquiry. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "SURGERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which surgery was performed.  This date should be entered if there was a surgery related to this home health care. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "SURGICAL PROCEDURE CODE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HC:CPT/HCPCS;ID:ICD-9-CM;",
+      "helpText": "The Procedure Coding Method for the related surgical procedures. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "SURGICAL PROCEDURE CODE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "The Surgical Procedure associated with this home health care. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "PHYSICIAN ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which the physician issued verbal orders for the start of home health care. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "LAST VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which the patient was last seen by the physician. ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "PHYSICIAN CONTACT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date on which the physician was last contacted by the home health services provider. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "LAST ADMISSION START DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The Start Date of the last inpatient admission. ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "LAST ADMISSION END DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The End Date of the last inpatient admission. ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 10.13,
+      "fieldName": "PATIENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P356.017'O",
+      "required": false,
+      "pointerTo": 356.017,
+      "helpText": "The Facility Type that represents the location of the patient's last inpatient admission. ",
+      "fieldNumber_": 10.13
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ATTACHMENTS",
+      "dataType": "POINTER",
+      "rawType": "356.2211PA",
+      "required": false,
+      "helpText": "This multiple contains additional patient information (attachments) for  patient event level. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "356.2212",
+      "required": false,
+      "helpText": "This is a free form message for 278 inquiry. ",
+      "isMultiple": true,
+      "subFileNumber": 356.2212,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PATIENT EVENT PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "356.2213PA",
+      "required": false,
+      "helpText": "This multiple holds data related to patient event providers for 278  inquiry. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PATIENT EVENT TRANSPORT",
+      "dataType": "SET",
+      "rawType": "356.2214SA",
+      "required": false,
+      "helpText": "This multiple holds data related to patient event transport information  for 278 inquiry. ",
+      "isMultiple": true,
+      "subFileNumber": 356.2214,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OTHER UMO",
+      "dataType": "SET",
+      "rawType": "356.2215SA",
+      "required": false,
+      "helpText": "This multiple holds data related to patient event other UMO for 278  inquiry. ",
+      "isMultiple": true,
+      "subFileNumber": 356.2215,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SERVICE LINE",
+      "dataType": "SUBFILE",
+      "rawType": "356.2216A",
+      "required": false,
+      "helpText": "This multiple holds data related to each service line. ",
+      "isMultiple": true,
+      "subFileNumber": 356.2216,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "PREV. AUTHORIZATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the previous Authorization Number from the UMO that is associated with this patient event. ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 17.02,
+      "fieldName": "PREV. ADMIN. REFERENCE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the previous Administrative Reference Number from the UMO that is associated with this patient event. ",
+      "fieldNumber_": 17.02
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "WEIGHT UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "KG:KILOGRAM;LB:POUND;",
+      "helpText": "THE code specifying the units in which a value is being expressed, or manner in which a measurement has been taken. (CR101) ",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 18.02,
+      "fieldName": "PATIENT WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the patient's weight in pounds. ",
+      "fieldNumber_": 18.02
+    },
+    {
+      "fieldNumber": 18.03,
+      "fieldName": "AMBULANCE TRANSPORT CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INITIAL TRIP;R:RETURN TRIP;T:TRANSFER TRIP;X:ROUND TRIP;",
+      "helpText": "The type of ambulance transportation trip. ",
+      "fieldNumber_": 18.03
+    },
+    {
+      "fieldNumber": 18.04,
+      "fieldName": "AMBULANCE TRANSPORT REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:NEAREST FACILITY;B:PREFERRED PHYSICIAN;C:NEARNESS OF FAMILY;D:SPECIALIST OR SPECIAL EQUIP.;E:REHABILITATION FACILITY;F:RESIDENTIAL FACILITY;",
+      "helpText": "Enter a code here to indicate the reason why the patient was transported to a particular location. ",
+      "fieldNumber_": 18.04
+    },
+    {
+      "fieldNumber": 18.05,
+      "fieldName": "DISTANCE UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DH:MILES;DK:KILOMETERS;",
+      "helpText": "This field indicates the units of the value expressed in the field Transport Distance. ",
+      "fieldNumber_": 18.05
+    },
+    {
+      "fieldNumber": 18.06,
+      "fieldName": "TRANSPORT DISTANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field represents the distance the patient was transported. ",
+      "fieldNumber_": 18.06
+    },
+    {
+      "fieldNumber": 18.09,
+      "fieldName": "ROUND TRIP PURPOSE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text entered here should explain why a round trip was needed.  This field is REQUIRED when the Transport Code is Round Trip. ",
+      "fieldNumber_": 18.09
+    },
+    {
+      "fieldNumber": 18.1,
+      "fieldName": "STRETCHER PURPOSE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text entered here should explain why a stretcher was needed. ",
+      "fieldNumber_": 18.1
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "UMO CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the UMO contact person. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "COMMUNICATION NO. QUALIFIER-1",
+      "dataType": "POINTER",
+      "rawType": "*P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "The value entered here identifies the type of number entered in the field Contact Communication Number-1. ",
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 19.02,
+      "fieldName": "COMMUNICATION NO. QUALIFIER-2",
+      "dataType": "POINTER",
+      "rawType": "*P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "The value entered here identifies the type of number entered in the field Contact Communication Number-2. ",
+      "fieldNumber_": 19.02
+    },
+    {
+      "fieldNumber": 19.03,
+      "fieldName": "COMMUNICATION NO. QUALIFIER-3",
+      "dataType": "POINTER",
+      "rawType": "*P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "The value entered here identifies the type of number entered in the field Contact Communication Number-3. ",
+      "fieldNumber_": 19.03
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CONTACT COMMUNICATION NUMBER-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a 10 digit phone/FAX number (format: nnnnnnnnnn  or nnn-nnn-nnnn) or an email/URL address. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CONTACT COMMUNICATION NUMBER-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a 10 digit phone/FAX number (format: nnnnnnnnnn  or nnn-nnn-nnnn) or an email/URL address. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CONTACT COMMUNICATION NUMBER-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a 10 digit phone/FAX number (format: nnnnnnnnnn  or nnn-nnn-nnnn) or an email/URL address. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DELETE REASON NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "356.2223",
+      "required": false,
+      "helpText": "This note is available to provide additional information pertaining to  the removal of a 278 Request(217) or Inquiry(215) from the HCSR Worklist. ",
+      "isMultiple": true,
+      "subFileNumber": 356.2223,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "AAA SEGMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "356.22101A",
+      "required": false,
+      "helpText": "This multiple contains AAA segments data from 278 response. ",
+      "isMultiple": true,
+      "subFileNumber": 356.22101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 103.01,
+      "fieldName": "CERTIFICATION ACTION CODE",
+      "dataType": "POINTER",
+      "rawType": "P356.02'",
+      "required": false,
+      "pointerTo": 356.02,
+      "helpText": "Code indicating type of action. ",
+      "fieldNumber_": 103.01
+    },
+    {
+      "fieldNumber": 103.02,
+      "fieldName": "REVIEW IDENTIFICATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reference information as defined for a particular Transaction Set or as specified by the Reference Identification Qualifier. ",
+      "fieldNumber_": 103.02
+    },
+    {
+      "fieldNumber": 103.03,
+      "fieldName": "REVIEW DECISION REASON CODE",
+      "dataType": "POINTER",
+      "rawType": "P356.021'",
+      "required": false,
+      "pointerTo": 356.021,
+      "helpText": "Code indicating a code from a specific industry code list. ",
+      "fieldNumber_": 103.03
+    },
+    {
+      "fieldNumber": 103.04,
+      "fieldName": "SECOND SURGICAL OPINION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field should be set to 'YES' if second surgical opinion is required. ",
+      "fieldNumber_": 103.04
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "TRN SEGMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "356.22105A",
+      "required": false,
+      "helpText": "This multiple contains TRN segments data. ",
+      "isMultiple": true,
+      "subFileNumber": 356.22105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "HI SEGMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "356.22107A",
+      "required": false,
+      "helpText": "This multiple contains data for HI segments. ",
+      "isMultiple": true,
+      "subFileNumber": 356.22107,
+      "fieldNumber_": 107
+    }
+  ],
+  "fieldCount": 178,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "356.22", "field": .01, "type": "regular"},
+    {"name": "356.22", "field": .12, "type": "regular"},
+    {"name": "356.22", "field": .15, "type": "regular"},
+    {"name": "356.22", "field": .23, "type": "regular"},
+    {"name": "", "field": 10.02, "type": "regular"},
+    {"name": "", "field": 10.11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

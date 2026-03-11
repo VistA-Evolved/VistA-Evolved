@@ -1,0 +1,310 @@
+{
+  "fileNumber": 9000010.07,
+  "fileName": "V POV",
+  "globalRoot": "9000010.07IP",
+  "globalReference": "^AUPNVPOV(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "POV",
+      "dataType": "POINTER",
+      "rawType": "R*P80'X",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "POV is an abbreviation for \"Purpose of Visit\". Since Purpose of Visit is often confused with \"Chief complaint\", another abbreviation might better be \"Problem of Visit\". This is the Provider's conclusion about what was treated at the visit. The Provider should be able to indicate a preferred narrative for what was treated and an ICD Diagnosis code. If the problem treated is from the Problem List, then the Problem List entry information can be used for the \"Problem of Visit\" entry.   At VA facilit",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .019,
+      "fieldName": "ICD NARRATIVE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "This is the computed diagnosis narrative that is defined in the ICD Diagnosis file for the ICD Diagnosis code identified in the POV (.01) field. ",
+      "fieldNumber_": .019
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient whose problem or diagnosis was treated.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "R*P9000010'I",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "The encounter entry in the Visit file that is associated with this problem treated.   In IHS facilities, this is the date and time the visit occurred.   In VA facilities, this is the date and time of the clinic appointment for the patient in the Scheduling package, or the date and time the encounter occurred if there was no appointment. By using the appointment date and time, clinic activity can be captured for clinical use as well as be used for billing and workload information by the appropria",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROVIDER NARRATIVE",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.27",
+      "required": true,
+      "pointerTo": 9999999.27,
+      "helpText": "This is the provider's text describing the diagnosis that was treated at the visit. The text may contain additional information related specifically, to the patient at the time of the visit (e.g., hypertension, uncontrolled). The provider's narrative may be different from the ICD Diagnosis files description for a code, but should not have a significantly different meaning. The ICD Diagnosis code in the POV (.01) field should be the code that \"most closely\" represents the providers narrative.   I",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MODIFIER",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "C:CONSIDER;D:DOUBTFUL;F:FOLLOW UP;M:MAYBE, POSSIBLE, PERHAPS;O:RULE OUT;P:PROBABLE;R:RESOLVED;S:SUSPECT, SUSPICIOUS;T:STATUS POST;",
+      "helpText": "(Optional) This is how a provider may modify the diagnosis or problem treated to reflect the status of the diagnosis as of this visit. Common examples of modifiers are Rule Out, Follow-up, or Status Post.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PRIMARY/SECONDARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;",
+      "helpText": "This field represents the clinically pertinent ranking of problems treated. An encounter can have only one primary diagnosis, all others are secondary.  ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE OF INJURY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and optional time the injury occurred for the problem being treated, it must be prior to the Visit Date and Time.   At VA facilities, Date of Injury is prompted for when the ICD diagnosis code is considered to be an injury code. For ICD-9, this is when the code lies in the range 800-999.999. For ICD-10, this is when the code starts with an 'S' or 'T'.  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "CLINICAL TERM",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This field is the Clinical Lexicon term which most closely represents the Provider Narrative of the problem treated.   At VA facilities: The Clinical Lexicon is automatically captured via encounter form data capture (AICS package) when the problem being  treated is from the Active Problem List. In the manual data entry process, there is currently no prompt for the clinical term.  ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PROBLEM LIST ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P9000011'",
+      "required": false,
+      "pointerTo": 9000011,
+      "helpText": "This field identifies what Problem List entry is related to the problem treated at the visit. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "ORDERING/RESULTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ORDERING;R:RESULTING;OR:BOTH O&R;",
+      "helpText": "This field identifies a diagnosis as being Ordering, Resulting, or both Ordering and Resulting. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the actual date and time of the encounter. This date and time may be different than the Visit Date and Time specified in the Visit file. However, it cannot be a future date.   This field is useful for capturing the actual time encounters take place, or when, during the encounter, something happened.   ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "For consistency, this field was added to each V-file.  However, for the  V POV, the Ordering Provider does not apply itself well, unless a provider is ordering another provider to treat a problem. Optionally, in the future, this field may be able to represent the provider responsible for the encounter providers work. ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who treated the diagnosis at the encounter. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 80001,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used in the VA to indicate that this problem treated at this visit was service connected. ",
+      "fieldNumber_": 80001
+    },
+    {
+      "fieldNumber": 80002,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used in the VA to indicate that this problem treated at this visit was related to agent orange exposure. ",
+      "fieldNumber_": 80002
+    },
+    {
+      "fieldNumber": 80003,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used in the VA to indicate that this problem treated at this visit was related to ionizing radiation exposure. ",
+      "fieldNumber_": 80003
+    },
+    {
+      "fieldNumber": 80004,
+      "fieldName": "SW ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used in the VA to indicate that this problem treated at this visit was related to Southwest Asia Conditions exposure. ",
+      "fieldNumber_": 80004
+    },
+    {
+      "fieldNumber": 80005,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if this diagnosis code was related to a Military Sexual Trauma problem.  ",
+      "fieldNumber_": 80005
+    },
+    {
+      "fieldNumber": 80006,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if this diagnosis code was related to Head and/or Neck Cancer.  ",
+      "fieldNumber_": 80006
+    },
+    {
+      "fieldNumber": 80007,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate that the visit represents treatment of a VA patient for a problem that is related to combat.  ",
+      "fieldNumber_": 80007
+    },
+    {
+      "fieldNumber": 80008,
+      "fieldName": "PROJ 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Project 112/SHAD was the name of the overall program for both shipboard and land-based biological and chemical testing that was conducted by the United States (U.S.) military between 1962 and 1973. Project SHAD (Shipboard Hazard and Defense) was the shipboard portion of these tests. ",
+      "fieldNumber_": 80008
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any data in the V POV entry has been edited.  ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 80201,
+      "fieldName": "PROVIDER NARRATIVE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P9999999.27",
+      "required": false,
+      "pointerTo": 9999999.27,
+      "helpText": "This field is the category narrative related to the problem treated. ",
+      "fieldNumber_": 80201
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ELECTRONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AATOO", "field": },
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9000010.07", "field": .01, "type": "regular"},
+    {"name": "9000010.07", "field": .02, "type": "regular"},
+    {"name": "9000010.07", "field": .02, "type": "regular"},
+    {"name": "9000010.07", "field": .03, "type": "regular"},
+    {"name": "9000010.07", "field": .03, "type": "regular"},
+    {"name": "9000010.07", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

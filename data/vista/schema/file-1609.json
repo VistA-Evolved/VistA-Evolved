@@ -1,0 +1,128 @@
+{
+  "fileNumber": 1609,
+  "fileName": "EHRM HL7 Message",
+  "globalRoot": "1609",
+  "globalReference": "^EHMHL7(1609,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME POSTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field stores the date/time that the HL7 message was added to the  file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "IFC:Inter-Facility Consult;PRF:Patient Record Flag;",
+      "helpText": "This field identifies the type or source of the HL7 message - IFC or PRF. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This field stores the Message ID (MSH-10).  It is extracted from the MSH  segment by the filing software (FILE^EHMHL7) and populated automatically. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VISTA CONSULT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field holds the VistA Consult number for IFC type messages.  It is extracted from the ORC segment (ORC-4) by the filing software (FILE^EHMHL7) and populated automatically. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CERNER ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field stores the Cerner order number.  It is extracted from the ORC  segment (ORC-3) by the filing software (FILE^EHMHL7) and populated automatically. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PATIENT'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This field stores the patient's name.  It is extracted from the PID  segment (PID-6) by the filing software (FILE^EHMHL7) and populated automatically. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field stores the patient's ICN.  It is extracted from the PID segment (PID-6) by the filing software (FILE^EHMHL7) and populated automatically. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SENDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field stores the sending site.  It is extracted from the MSH  segment (MSH-4.1) by the filing software (FILE^EHMHL7) and populated automatically.     Note: If MSH-4.1 is blank, CERNER is used. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RECEIVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field stores the receiving site.  It is extracted from the MSH  segment (MSH-6.1) by the filing software (FILE^EHMHL7) and populated automatically.     Note: If MSH-6.1 is blank, CERNER is used. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HL7 MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "1609.01",
+      "required": false,
+      "helpText": "This word processing field stores the HL7 message. ",
+      "isMultiple": true,
+      "subFileNumber": 1609.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CERNER", "field": },
+    {"name": "CONSULT", "field": },
+    {"name": "ICN", "field": },
+    {"name": "MSGID", "field": },
+    {"name": "PATIENT", "field": },
+    {"name": "1609", "field": .01, "type": "regular"},
+    {"name": "1609", "field": 2, "type": "regular"},
+    {"name": "1609", "field": 3, "type": "regular"},
+    {"name": "1609", "field": 4, "type": "regular"},
+    {"name": "1609", "field": 5, "type": "regular"},
+    {"name": "1609", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

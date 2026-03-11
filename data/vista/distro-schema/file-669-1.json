@@ -1,0 +1,36 @@
+{
+  "fileNumber": 669.1,
+  "fileName": "PROSTHETIC LAB W.O #",
+  "globalRoot": "669.1",
+  "globalReference": "^RMPR(669.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the station, year and quarter part of Lab Work order numbers. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST NUMBER USED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the last number used with the associated shation, year and quarter. This is updated when a new work order number is generated for the associated station, year, and quarter. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "669.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

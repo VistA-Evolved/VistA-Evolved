@@ -1,0 +1,99 @@
+{
+  "fileNumber": 3.076,
+  "fileName": "ERROR MESSAGES",
+  "globalRoot": "3.076",
+  "globalReference": "^%ZTER(2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the brief name for an error used by one or more operating systems (e.g., UNDEF for an undefined error) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ERROR TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "F:FATAL;H:HARDWARE;I:IO/DEVICE;P:PROGRAM;D:DATA;L:LOCAL;",
+      "helpText": "This field attempts to indicate the primary responsibility for an error, such as hardware, or software, since this affects the extent of recoverability from an error. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SCREEN IN XTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Don't show;2:Don't record;",
+      "helpText": "This field is used to mark errors that should be screened in one way or another. If blank show and record error, 1 record but don't show in XTER in default mode, 2 don't record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COUNT SCREENED ERRORS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field turns one the counting of the screening of this error. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "National",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;",
+      "helpText": "This field should only be used by the National developers. This is to GUARANTEE that certain ones are in the file. These entries can't be deleted. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OPERATING SYSTEM NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "3.0761A",
+      "required": false,
+      "helpText": "This is a multiple field which is used to indicate which operating system(s) use a given brief name for an error. ",
+      "isMultiple": true,
+      "subFileNumber": 3.0761,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ALTERNATIVE SCREENING TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If you need to screen errors on text that can not be placed in the .01 field than use a local name for the .01 and enter the real screening text in this field.  This field will allow ^ and other characters that cannot be placed in the .01 field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COUNT OF SCREENED ERRORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds a count of the number of times this error was screen from being recorded in the error trap. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "3.076", "field": .01, "type": "regular"},
+    {"name": "3.076", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W2, "value": "D:$D(^(2)) EN^DDIOL($E(^(2),1,50),\"\",\"?35\")"}
+  ]
+}

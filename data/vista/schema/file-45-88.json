@@ -1,0 +1,45 @@
+{
+  "fileNumber": 45.88,
+  "fileName": "PTF EXPANDED CODE CATEGORY",
+  "globalRoot": "45.88",
+  "globalReference": "^DIC(45.88,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the category this item can be found under. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "The flag field will indicated which additional questions should be asked during PTF processing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date after which this entry is no longer valid. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "45.88", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

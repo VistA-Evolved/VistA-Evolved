@@ -1,0 +1,109 @@
+{
+  "fileNumber": 2101.3,
+  "fileName": "GENERIC CODE SHEET TRANSMISSION RECORD",
+  "globalRoot": "2101.3",
+  "globalReference": "^GECS(2101.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The batch number of the batch created.  Example: 460-VOL-89-75 would indicate a batch with station number 460, code sheet system identifier VOL (3 character identifier for batch type), fiscal year 89, and counter number 75.  The counter is generated from file 2101.5 GENERIC CODE SHEET COUNTER. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SYSTEM IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the 3 character batch type (from the batch type file 2101.1). ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "BATCH TYPE",
+      "dataType": "POINTER",
+      "rawType": "P2101.1'",
+      "required": false,
+      "pointerTo": 2101.1,
+      "helpText": "This field is used to store the batch type from the batch type file 2101.1. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BATCH;T:TRANSMISSION;R:RECEIVING REPORT;",
+      "helpText": "This field is used to store the status of the batch.  Status's can be batch (code sheets have been batched but not transmitted) or transmitted.  The receiving report status is currently not used. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date the batch was assembled.  This field is used for archiving old transmission records. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the user which batched the code sheets.  This field is used for informational purposes only. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE GIVEN TO MAILMAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date the batch was assembled in a mail message for transmission. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "2101.32",
+      "required": false,
+      "helpText": "This field is used to store the mail messages which were used to transmit the batch. ",
+      "isMultiple": true,
+      "subFileNumber": 2101.32,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RELEASE BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to store the user which transmitted the batch.  This field is used for informational purposes only. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "2101.3", "field": .01, "type": "regular"},
+    {"name": "2101.3", "field": .01, "type": "regular"},
+    {"name": "2101.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

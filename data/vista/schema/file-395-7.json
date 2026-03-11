@@ -1,0 +1,74 @@
+{
+  "fileNumber": 395.7,
+  "fileName": "HINQ AUDIT",
+  "globalRoot": "395.7P",
+  "globalReference": "^DVB(395.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field points to the patient file for the person it is to keep track of. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRD",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ALERT ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "c:CORRECTED ALERT;a:ACKNOWLEDGED ALERT;",
+      "helpText": "The system uses this field to record the response to an alert. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER THAT PROCESSED ALERT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to record the user who corrected or acknowledged an alert. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME ALERT WAS PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to record the date/time when an alert was corrected or acknowledged. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "395.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

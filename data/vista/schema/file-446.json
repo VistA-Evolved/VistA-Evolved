@@ -1,0 +1,71 @@
+{
+  "fileNumber": 446,
+  "fileName": "DISTRIBUTION/USAGE HISTORY",
+  "globalRoot": "446PIs",
+  "globalReference": "^PRCP(446,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISTRIBUTED TO",
+      "dataType": "POINTER",
+      "rawType": "RP445'X",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This is the inventory/distribution point to which the item(s) was distributed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MONTH/YEAR DISTRIBUTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the month and year in which the item was distributed or used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISTRIBUTED FROM",
+      "dataType": "POINTER",
+      "rawType": "RP445'",
+      "required": true,
+      "pointerTo": 445,
+      "helpText": "This is the inventory/distribution point from which the item(s) was distributed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the cost center from which the item(s) was distributed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,3",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total cost of the item(s) used or distributed. It is based on the selling cost. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "446", "field": .01, "type": "regular"},
+    {"name": "446", "field": 1, "type": "regular"},
+    {"name": "446", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "N % S %=$P(^(0),U,2) W \"    \",$E(%,4,5),\"/\",$E(%)+17,$E(%,2,3) Q"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

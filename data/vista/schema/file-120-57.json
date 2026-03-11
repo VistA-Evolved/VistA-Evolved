@@ -1,0 +1,237 @@
+{
+  "fileNumber": 120.57,
+  "fileName": "GMRV VITALS PARAMETERS",
+  "globalRoot": "120.57",
+  "globalReference": "^GMRD(120.57,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field provides an arbitrary name for the single entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUICK ORDER PROTOCOL COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains a counter which is appended to the end of each quick order protocol. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "GMRV INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains a switch used by the GMRVINIT's ONLY.  NO EDITING ALLOWED!!! ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STOP DATE DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field stores the number of days allotted in between the start date of a vitals order and the stop date. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CANCEL ON WARD TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates that a flag is present to cancel vital measurement  orders when a patient transfers between wards. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CANCEL ON SERVICE TRANSFER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates that a flag is present to cancel vital measurement  orders when a patient transfers between services. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ABNORMAL TEMPERATURE - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,1",
+      "length": 5,
+      "required": true,
+      "helpText": "This field indicates the upper limit for an acceptable range of patient  temperatures. The abnormal high is equal to or greater than the value  entered. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "ABNORMAL TEMPERATURE - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,1",
+      "length": 5,
+      "required": true,
+      "helpText": "This field sets the lower limit for an acceptable range of patient  temperatures. The abnormal low is equal to or below that of the value  entered. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "ABNORMAL PULSE - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field sets the upper limit of an acceptable pulse rate. The abnormal  high is equal to or greater than the value entered. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "ABNORMAL PULSE - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the lower limit of an acceptable pulse rate. The abnormal  low is equal to or lower than the value entered. ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "ABNORMAL RESPIRATION - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the upper limit of an acceptable respiration rate. The  abnormal high is equal to or greater than the value entered. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "ABNORMAL RESPIRATION - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the lower limit of an acceptable respiration rate. The  abnormal low is equal to or lower than the value entered. ",
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "ABNORMAL SYSTOLIC - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the upper limit for an acceptable systolic blood pressure.   The abnormal high is equal to or greater than the value entered. ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.71,
+      "fieldName": "ABNORMAL DIASTOLIC - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the upper limit for an acceptable diastolic blood pressure.  The abnormal high is equal to or greater than the value entered. ",
+      "fieldNumber_": 5.71
+    },
+    {
+      "fieldNumber": 5.8,
+      "fieldName": "ABNORMAL SYSTOLIC - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the lower limit for an acceptable systolic blood pressure.   The abnormal low is equal to or lower than the value entered. ",
+      "fieldNumber_": 5.8
+    },
+    {
+      "fieldNumber": 5.81,
+      "fieldName": "ABNORMAL DIASTOLIC - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the lower limit for an acceptable diastolic blood pressure.  The abnormal low is equal to or lower than the value entered. ",
+      "fieldNumber_": 5.81
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "ABNORMAL CVP - HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,1",
+      "length": 5,
+      "required": true,
+      "helpText": "This field sets the upper limit of an acceptable central venous pressure rate.  The abnormal high is equal to or greater than the value entered. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "ABNORMAL CVP - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,1",
+      "length": 5,
+      "required": true,
+      "helpText": "This field sets the lower limit of an acceptable central venous pressure. The abnormal low is equal to or lower than the value entered. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "ABNORMAL O2 SATURATION - LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field sets the lower limit of an acceptable oxygen saturation rate. The abnormal low is equal to or lower than the value entered. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "PHASE I COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field denotes whether the GMRV Site/Quality Conversion has completed. ",
+      "fieldNumber_": 999
+    },
+    {
+      "fieldNumber": 999.1,
+      "fieldName": "PHASE II COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field denotes whether the GMRV Vitals Measurement Data Conversion has completed. ",
+      "fieldNumber_": 999.1
+    },
+    {
+      "fieldNumber": 999.2,
+      "fieldName": "PHASE II LAST RECORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field will contain the number of the last record to be converted by the GMRV Vitals Measurement Data Conversion, or it will be null if the conversion has completed or has not started. ",
+      "fieldNumber_": 999.2
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "120.57", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

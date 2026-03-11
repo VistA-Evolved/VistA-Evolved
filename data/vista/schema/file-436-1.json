@@ -1,0 +1,151 @@
+{
+  "fileNumber": 436.1,
+  "fileName": "AR MEDICARE DEDUCTIBLE ALERTS PART A",
+  "globalRoot": "436.1",
+  "globalReference": "^PRCA(436.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The PATIENT ACCOUNT NUMBER will be used as a look up to the BILL NO. field (#.01) in the ACCOUNTS RECEIVABLE file (#430).  It is loaded as it is received from the Financial Services Center, FSC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MEDICARE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:PART A;",
+      "helpText": "Medicare type to which the deductible applied.  Currently only  supporting Medicare Part A. It is loaded as it is received from the  Financial  Services Center, FSC.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUBSCRIBER ID (HICN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Medicare Assigned Member ID number. It is loaded as it is received from the Financial Services Center, FSC. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLAIM YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 4 character year the deductible is applied against.  It is  loaded as it is received from the Financial  Services Center, FSC. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DCN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Document Control Number for this claim. It is loaded as it is  received from the Financial  Services Center, FSC.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CASH DEDUCTIBLE SUBMITTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Cash Deductible Submitted amount (DDDDCC) as it is received from the Financial  Services Center, FSC. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CASH DEDUCTIBLE AVAILABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Cash Deductible Available amount (DDDDCC) as it is received from the Financial  Services Center, FSC. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SERVICE START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Service Start Date. It is received from the Financial  Services Center (FSC) in the format CCYYMMDD, but converted and filed as  a FileMan date. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SERVICE END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Service End Date. It is received from the Financial Services  Center (FSC) in the format CCYYMMDD, but converted and filed as a FileMan  date. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Report Date. It is received from the Financial Services  Center (FSC) in the format CCYYMMDD, but converted and filed as a FileMan  date. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BILL NO.",
+      "dataType": "POINTER",
+      "rawType": "P430'",
+      "required": false,
+      "pointerTo": 430,
+      "helpText": "The PATIENT ACCOUNT NUMBER will be used as a look up to the BILL NO.   field (#.01) in the ACCOUNTS RECEIVABLE file (#430). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "MDA REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT REVIEWED;1:REVIEW IN PROCESS;2:REVIEW COMPLETE;3:REVIEW COMPLETE/REMOVE ENTRY;",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the Medical Center Division to which this deductible was applied. It is retrieved using the Bill Number. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMENT DATE TIME",
+      "dataType": "DATE",
+      "rawType": "436.12DA",
+      "required": false,
+      "helpText": "This multiple contains comments pertaining to the Medicare Deductible Alert received from the Financial Services Center, FSC. ",
+      "isMultiple": true,
+      "subFileNumber": 436.12,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "436.1", "field": .01, "type": "regular"},
+    {"name": "436.1", "field": 1.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

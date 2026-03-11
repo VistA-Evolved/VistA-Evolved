@@ -1,0 +1,97 @@
+{
+  "fileNumber": 8.1,
+  "fileName": "MAS ELIGIBILITY CODE",
+  "globalRoot": "8.1I",
+  "globalReference": "^DIC(8.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the official name of the MAS eligibility code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CARD COLOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PURPLE;B:BLUE;R:RED;",
+      "helpText": "This field indicates the color of the patient's card for the MAS eligibility. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field may contain an abbreviation for the eligibility name.  It may be used in place of the name in selected prints. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VA CODE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0I",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contains the VA CODE NUMBER that has been assigned to this eligibility. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "N:NON-VETERAN;Y:VETERAN;",
+      "helpText": "This field indicates the type of patient that can be assigned this eligibility. The patient is either a 'veteran' or a 'non-veteran' type. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains a shorten eligibility name that is used for output that has limited space to print. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the eligibility is inactive then this field will be set to 'YES'. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SELECT AS ADDITIONAL",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether patients may be assigned this eligibility as an 'additional' eligibility.   If the field is set to 'NO' or is not filled in, then the eligibility can only be assigned as a primary eligibility.   If set to 'YES', then the eligibility can be used as both a primary and an 'additional' eligibility. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8.1", "field": .01, "type": "regular"},
+    {"name": "8.1", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W:$D(^(\"0\")) ?35,$P(^(\"0\"),U,4)"}
+  ]
+}

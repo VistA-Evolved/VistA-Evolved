@@ -1,0 +1,387 @@
+{
+  "fileNumber": 2040,
+  "fileName": "VIST ROSTER",
+  "globalRoot": "2040",
+  "globalReference": "^ANRV(2040,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the VIST veteran. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "ENROLLMENT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the veteran was added to the VIST roster. ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "REFERRAL SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:VA EYE CLINIC;2:NON-VA EYE CLINIC;3:STATE AGENCY;4:COMMUNITY AGENCY;5:VA STAFF;6:VETERANS SERVICE ORGANIZATION;7:FAMILY/FRIEND;8:SELF;9:OTHER;",
+      "helpText": "This is the person, organization, service or other source for the referral to the VIST program. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NUMBER OF DEPENDENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of people in addition to the veteran for whom the veteran has financial responsibility. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "LIVING ARRANGEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALONE;2:FAMILY;3:NURSING HOME;4:STATE VETERANS CENTER;5:UNKNOWN;6:LIVES WITH FRIEND;7:BOARD AND CARE;8:OTHER;",
+      "helpText": "This describes with whom the veteran resides. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "SPOUSE'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the veteran's spouse. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEPENDENT'S NAME & INFO",
+      "dataType": "SUBFILE",
+      "rawType": "2040.02",
+      "required": false,
+      "helpText": "These are the names of the veteran's dependents.  You can also include other information, i.e. phone numbers, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VIST ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This describes the category of VA eligibility of the veteran. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the last period of active service the veteran served. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "VA ENTITLEMENT (AMIS)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "022:0% ONLY (022);023:10% SC THRU SMC (023);024:SC FOR BLINDNESS (024);025:NSC PENSION A&A/HB (025);NSC:NSC PENSION ONLY;OTH:NSC OTHER ELIGIBILITY;",
+      "helpText": "This is the category of VIST eligibility as prescribed on the VIST AMIS. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EYE EXAM DATE & VISUAL STATUS",
+      "dataType": "DATE",
+      "rawType": "2040.04D",
+      "required": false,
+      "helpText": "This is the date of the eye examination and the entry of the veteran's visual acuities and/or fields. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "EYE DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "2040.01P",
+      "required": false,
+      "helpText": "This states the diagnosis causing the veteran's visual loss. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "VISUAL ACTIVITY (AMIS)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "004:NO SIGHT (004);005:LP UP TO & INCLUDING 5/200 (005);006:LP OF 6/200 TO 20/200 (006);007:FIELD RESTRICTION (007);008:NOT KNOWN (008);",
+      "helpText": "This describes the veteran's degree of vision loss. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GENERAL HEALTH",
+      "dataType": "SUBFILE",
+      "rawType": "2040.05",
+      "required": false,
+      "helpText": "This provides a summary of the veteran's general health. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VIS TEAM REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "2040.06D",
+      "required": false,
+      "helpText": "This is the date of the most recent VIST Review. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.06,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "VIST FIELD VISIT DATE (AMIS)",
+      "dataType": "DATE",
+      "rawType": "2040.03D",
+      "required": false,
+      "helpText": "This is the date of the most recent field or home visit to the veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.03,
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VIST ELIGIBLE (AMIS)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "001:YES (001);002:NO - REVIEWED FOR BRC ATTENDANCE (002);003:NO - OTHER (003);NO:NO - NOT LEGALLY BLIND;I:INACTIVE;",
+      "helpText": "This states whether the veteran is eligible for VIST services. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NON VIST ELIGIBLE (AMIS)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "002:REVIEWED FOR BRC (002);003:OTHER (003);",
+      "helpText": "This denotes veterans not eligible for VIST Services. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "PERIOD OF SERVICE (AMIS)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the period of Service the veteran spent in the military. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.6,
+      "fieldName": "PERIOD OF SERVICE (AMIS) II",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the AMIS field for period of service. ",
+      "fieldNumber_": 8.6
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "AGE CATEGORY I",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the field denoting the age category in which the veteran is currently. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 8.9,
+      "fieldName": "AGE CATEGORY II",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the field that denotes the age of the veteran. ",
+      "fieldNumber_": 8.9
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MAJOR ACTIVITY (AMIS)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "009:EMP FOR PAY (009);010:ENG IN TRN/SCHOOL (010);011:VOL WORK 10HRS/WK (011);012:RETIRED W/APPROP. ACT. (012);013:TOO ILL OR TOO DISABLED (013);014:NO WELL DEFINED ACT. (014);015:NOT KNOWN (015);",
+      "helpText": "This field denotes the veteran's major activities, work, school, volunteer activities, retired, too ill.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COUNTY",
+      "dataType": "COMPUTED",
+      "rawType": "Cm",
+      "required": false,
+      "helpText": "This denotes the county in which the veteran resides. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "VIST COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the VIST coordinator responsible for providing the veteran the VIST services. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "DATE VETERAN DISCHARGED (AMIS)",
+      "dataType": "DATE",
+      "rawType": "2040.07D",
+      "required": false,
+      "helpText": "This is the date a veteran was discharged from a blind rehabilitation program. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.07,
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "*ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "2040.012",
+      "required": false,
+      "helpText": "This is an outline of the veteran's general functioning within his environment. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "FINANCIAL AND BENEFITS INFO",
+      "dataType": "SUBFILE",
+      "rawType": "2040.08",
+      "required": false,
+      "helpText": "This indicates the veteran's financial status. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.08,
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 12.2,
+      "fieldName": "PATIENT HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "2040.09",
+      "required": false,
+      "helpText": "This provides an outline for the veteran's family, education, military, marital and work history. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.09,
+      "fieldNumber_": 12.2
+    },
+    {
+      "fieldNumber": 12.3,
+      "fieldName": "ACTIVITIES",
+      "dataType": "SUBFILE",
+      "rawType": "2040.1",
+      "required": false,
+      "helpText": "This outlines the veteran's general activities within his environment. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.1,
+      "fieldNumber_": 12.3
+    },
+    {
+      "fieldNumber": 12.4,
+      "fieldName": "ADJUSTMENT TO BLINDNESS",
+      "dataType": "SUBFILE",
+      "rawType": "2040.11",
+      "required": false,
+      "helpText": "This summarizes the degree to which the veteran has adjusted to the  loss of sight. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.11,
+      "fieldNumber_": 12.4
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "IMPRESSIONS",
+      "dataType": "SUBFILE",
+      "rawType": "2040.12",
+      "required": false,
+      "helpText": "This outlines observations regarding the veteran's general  functioning with respect to his/her vision loss. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.12,
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PLAN",
+      "dataType": "SUBFILE",
+      "rawType": "2040.013",
+      "required": false,
+      "helpText": "This states the proposed action steps to meet the presented needs. (freetext) ",
+      "isMultiple": true,
+      "subFileNumber": 2040.013,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "2040.014DA",
+      "required": false,
+      "helpText": "The date after which the veteran was no longer carried on the active  VIST ROSTER. ",
+      "isMultiple": true,
+      "subFileNumber": 2040.014,
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "2040", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

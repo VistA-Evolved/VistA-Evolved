@@ -1,0 +1,56 @@
+{
+  "fileNumber": 62.485,
+  "fileName": "LA7 MESSAGE LOG BULLETINS",
+  "globalRoot": "62.485",
+  "globalReference": "^LAHM(62.485,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This field contains a number between 1 and 9999999 that uniquely identifies an error or exceptional condition.  Numbers below 999 are reserved for package use only. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the text description of the error or exceptional condition.  This field is used to create an error or exceptional condition display in the ^XTMP global. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "SEND ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to flag those errors which can generate an alert to a site selectable mail group whenever this error occurs. The site needs to designate a mail group in the LA7 MESSAGE PARAMETER file (#62.48) under the ALERT CONDITION field (#20). ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BUILD LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is standard MUMPS code that is executed to log the text description error into the ^XTMP global.  The MUMPS code should set the LA7TXT() array to feel in the fields in the text description.    Example MUMPS code: S LA7TXT(1)=LA76249  Variable value: LA76249=123  Text description: Message # |1| did not contain a PID segment.  ^XTMP: Message # 123 did not contain a PID segment. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.485", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "fileNumber": 1.61,
+  "fileName": "APPLICATION ACTION",
+  "globalRoot": "1.61",
+  "globalReference": "^DIAC(1.61,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30X",
+      "length": 30X,
+      "required": true,
+      "helpText": "The formal unique name of the action, prefaced with the package namespace specified in the PACKAGE file, or the letter Z or A. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE#",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7X",
+      "length": 15,
+      "required": true,
+      "helpText": "This is a number that represents a valid VistA file or sub-file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "API NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is the name of an action that the VistA application supports on the sub/file. This string may be used as the ACTION parameter of the Policy Evaluation API. Some examples include read or view, create, edit, sign, cancel, etc. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CREATE;R:READ;U:UPDATE;D:DELETE;",
+      "helpText": "This is the basic category the action belongs to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "POLICY",
+      "dataType": "POINTER",
+      "rawType": "*P1.6",
+      "required": false,
+      "pointerTo": 1.6,
+      "helpText": "When the policy evaluation API is invoked, the file# and action passed in will be used to find a match in this file; the Policy pointed to by this field will then be evaluated for an access result. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This field contains a brief description of the action. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AVAILABLE FIELDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This is a string of field numbers, delimited by semi-colons, that can be  used as the DR variable for FileMan api's; see the VA FileMan Programmer Manual for further details.   This string will be returned to the client if a permit result is found, to identify the fields that are allowed to be viewed or acted on. The value saved here will be the default string for this action; it may be overridden by a string saved at a finer level within the default policy. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ADDITIONAL FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "1.615A",
+      "required": false,
+      "helpText": "This multiple holds additional DR strings as needed, such as the fields that may be accessed in a sub-file. To save a continuation string for the top-level file, enter the primary file number for this action. ",
+      "isMultiple": true,
+      "subFileNumber": 1.615,
+      "fieldNumber_": 5.1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "1.61", "field": .01, "type": "regular"},
+    {"name": "1.61", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "W \"   \",$P(^(0),U,2),\"   \",$P(^(0),U,3)"}
+  ]
+}

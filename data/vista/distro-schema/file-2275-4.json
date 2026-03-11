@@ -1,0 +1,54 @@
+{
+  "fileNumber": 2275.4,
+  "fileName": "MHV RESPONSE MAP",
+  "globalRoot": "2275.4",
+  "globalReference": "^MHV(2275.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Subscriber protocol of the inbound message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RESPONSE PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the event driver protocol for the response. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BUILDER ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter MUMPS tag and routine to execute for building this response message. Use a tilde (~) instead of a circumflex (^). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BOUNDARY SEGMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Segment that marks the boundary of a new record. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2275.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

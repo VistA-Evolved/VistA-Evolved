@@ -1,0 +1,83 @@
+{
+  "fileNumber": 38.1,
+  "fileName": "DG SECURITY LOG",
+  "globalRoot": "38.1IP",
+  "globalReference": "^DGSL(38.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the PATIENT file representing the patient who is listed as sensitive. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SECURITY LEVEL",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "0:NON-SENSITIVE;1:SENSITIVE;",
+      "helpText": "This field contains a 1 if the patient record is presently listed as sensitive or a 0 if the patient's record is not currently sensitive. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SECURITY ASSIGNED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file denoting the name of the user who most recently changed this patient's security level. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME SECURITY ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contians the date/time that this patient's security level was most recently changed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SECURITY SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the remote source that assigned the patient's security level. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DATE/TIME RECORD ACCESSED",
+      "dataType": "DATE",
+      "rawType": "38.11DA",
+      "required": false,
+      "helpText": "This multiple contains information on when and by whom a patient's record was accessed (if that patient's record was listed as sensitive at the time). ",
+      "isMultiple": true,
+      "subFileNumber": 38.11,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "ABUL", "field": },
+    {"name": "AD", "field": },
+    {"name": "ANS", "field": },
+    {"name": "AU", "field": },
+    {"name": "B", "field": },
+    {"name": "38.1", "field": .01, "type": "regular"},
+    {"name": "38.1", "field": 2, "type": "regular"},
+    {"name": "38.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W \"\""}
+  ]
+}

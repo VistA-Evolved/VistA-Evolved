@@ -1,0 +1,71 @@
+{
+  "fileNumber": 409.55,
+  "fileName": "APPOINTMENT PFSS ACCOUNT REFERENCE",
+  "globalRoot": "409.55",
+  "globalReference": "^SD(409.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "APPOINTMENT ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is the unique record identifier for the appointment /  account number reference. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPOINTMENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Date/Time of the scheduled appointment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Reference to Patient File (#2) for patient's appointment ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This field is the pointer to the HOSPITAL LOCATION File (#44) ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P375'I",
+      "required": false,
+      "pointerTo": 375,
+      "helpText": "This is the file reference to the PFSS ACCOUNT File (#375) which  contains the IBB Account Number reference.  This is the reference to the  account number returned from the external system. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "409.55", "field": .01, "type": "regular"},
+    {"name": "409.55", "field": .02, "type": "regular"},
+    {"name": "409.55", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

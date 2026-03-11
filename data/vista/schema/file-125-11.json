@@ -1,0 +1,55 @@
+{
+  "fileNumber": 125.11,
+  "fileName": "PROBLEM SELECTION CATEGORY",
+  "globalRoot": "125.11",
+  "globalReference": "^GMPL(125.11,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ65",
+      "length": 65,
+      "required": true,
+      "helpText": "This is the name given to this problem group to identify and describe it.  It must be unique. National categories are prefixed with a \"VA-\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this group was last changed; it is stuffed in by the Problem List pkg utilities. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "R*SX",
+      "required": true,
+      "setOfCodes": "N:National;V:VISN;L:Local;",
+      "helpText": "This is the Class of the category. Possible classes are \"N\" for national,  \"V\" for VISN, and \"L\" for local. National categories cannot be edited by  sites. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CATEGORY CONTENTS",
+      "dataType": "POINTER",
+      "rawType": "125.111P",
+      "required": false,
+      "helpText": "These are the problems that are associated with or grouped under this  category. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(125.11,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

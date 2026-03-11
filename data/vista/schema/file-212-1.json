@@ -1,0 +1,58 @@
+{
+  "fileNumber": 212.1,
+  "fileName": "NURS EDUCATION",
+  "globalRoot": "212.1I",
+  "globalReference": "^NURSF(212.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NURSING NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Internal number assigned to the 'education description'. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "EDUCATION DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Generic name given to different types or levels of degrees. EDUCATION FILE (#20.11). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NURSING CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An abbreviation of the `education description'. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NURSING CODE PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "A number assigned to a specific degree for the purpose of ranking the educational preparation of an employee.  This number is used to  generate administrative reports under the options: 'Service Reports' and 'Location Reports'. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "212.1", "field": .01, "type": "regular"},
+    {"name": "212.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .01, "value": "W ?45,$S(X=\"\":\"\",1:$P(^(0),U,3))"}
+  ]
+}

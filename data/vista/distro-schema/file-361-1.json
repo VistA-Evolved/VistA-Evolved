@@ -1,0 +1,1054 @@
+{
+  "fileNumber": 361.1,
+  "fileName": "EXPLANATION OF BENEFITS",
+  "globalRoot": "361.1",
+  "globalReference": "^IBM(361.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL",
+      "dataType": "POINTER",
+      "rawType": "RP399'",
+      "required": true,
+      "pointerTo": 399,
+      "helpText": "This is the pointer to the bill # to which this EOB is associated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PAYER NAME",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is the name of the insurance company that provided this EOB for the bill. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PAYER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payer ID provided for the insurance co that returned this EOB. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EOB TYPE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "0:NORMAL EOB;1:MEDICARE MRA;",
+      "helpText": "This field indicates whether this EOB contains actual payment data or is simply an MRA received from MEDICARE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that this EOB entry was added to the Vista file. This is not mapped from the 835 transmission. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EOB PAID DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the effective date of money movement (paid date) from the payer, as indicated in the 835 transmission. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the TRACE NUMBER from the 835 transaction for this EOB ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CROSSED OVER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the insurance company to which this claim was sent  for COB purposes automatically. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CROSSED OVER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID returned on the 835 for the CROSS-OVER payer. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DRG CODE USED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DRG code used for pricing as reported from the payer for institutional claims only. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DRG WEIGHT USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,4",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the DRG weight used for pricing as reported from the payer for institutional claims only. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DISCHARGE FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the DISCHARGE FRACTION field as reported by the payer for institutional claims only. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CLAIM STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROCESSED;2:DENIED;3:PENDED;4:REVERSAL;5:OTHER;",
+      "helpText": "This is the status of this EOB.  Only PROCESSED and DENIED claims will be sent to subsequent payers for COB purposes. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ICN as reported on the EOB from the payer. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "INSURANCE SEQUENCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "This is the sequence for the insurance for this bill. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT REVIEWED;1:REVIEW IN PROCESS;1.5:COB PROCESSED, NOT AUTHORIZED;2:ACCEPTED-INTERIM EOB;3:ACCEPTED-COMPLETE EOB;4:REJECTED;9:CLAIM CANCELLED;",
+      "helpText": "This is the current processing status of the EOB/MRA.  Only MRA claims can be in a REJECTED status. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "MANUAL ENTRY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the EOB was added electronically or manually. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "MANUALLY ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person responsible for the entry of this EOB. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "TRANSMIT BILL",
+      "dataType": "POINTER",
+      "rawType": "*P364'",
+      "required": false,
+      "pointerTo": 364,
+      "helpText": "This is the transmit bill entry that was responsible for this EOB. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "FINAL REVIEW ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:BILL CANCELLED - NO FURTHER ACTION;F:FILED - NO ACTION;R:CORRECTED/RESUBMITTED;P:COB PROCESSED;O:OTHER ACTION;",
+      "helpText": "This is the action that was taken to complete the review of this EOB. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "CLAIM STATUS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the actual X12 claim status code that was received for this EOB. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PAYER PAID AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount that was paid on this claim for this EOB ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PATIENT RESPONSIBILITY AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,2",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the amount the insurance company/MRA dictates is the responsibility of the patient for this claim. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "COVERED AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount as reported by the payer. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DISCOUNT AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the prompt pay discount amount as reported by the payer. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "PER DAY LIMIT AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount as reported by the payer. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "INTEREST AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount as reported by the payer. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "TAX AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount as reported by the payer. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "TOTAL BEFORE TAXES AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount as reported by the payer. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "STATEMENT START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the payer reported as the starting date of service for the claim. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "STATEMENT END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the payer reported as the ending date of service for the claim. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "CLAIM RECEIVED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the payer received the claim. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "COVERAGE EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the insurance coverage expires. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "CORRECTED PRIORITY PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the corrected name of the priority payer for this claim. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "CORRECTED PRIORITY PAYER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AD:BLUE CROSS/BLUE SHIELD ASSOC;FI:FEDERAL TAXPAYER;NI:NAIC;PP:PHARMACY PROCESSOR NUMBER;XV:CENTERS FOR MEDICARE/MEDICAID;PI:PAYER ID;",
+      "helpText": "This is the type of the corrected priority payer. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "CORRECTED PRIORITY PAYER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID of the corrected priority payer. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "OTHER SUBSCRIBER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the other subscriber for this claim. ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "TOTAL ALLOWED AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "TOTAL SUBMITTED CHARGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "NEGATIVE REIMBURSEMENT AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount of negative reimbursement on a claim as reported by MEDICARE. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "HPID/OEID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXI",
+      "required": false,
+      "helpText": "The HPID/OEID is a 10-digit, all-numeric identifier following the ISO  Standard 7812 format with a Luhn check-digit as the tenth digit. The  start digit of the HPID/OEID signals whether the identifier has been  provided to a health  plan and not to an \"other entity\". If the start  digit is a seven (7) then it is an HPID and identifies a health plan, a six (6) indicates an \"other entity\" (OEID). The OEID serves as the identifier for entities that are not health plans, healthcare providers, or ind",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "M-CARE OUTP REIMBURS. RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,4",
+      "length": 6,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "M-CARE OUTP HCPCS PAYMNT AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "M-CARE OUTP REMARKS CODE-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "M-CARE OUTP REMARKS CODE-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "M-CARE OUTP REMARKS CODE-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "M-CARE OUTP REMARKS CODE-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "M-CARE OUTP REMARKS CODE-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "M-CARE ESRD PAID AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "M-CARE NON-PAYABLE PROF COMP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "M-CARE INP COV. DAYS/VISIT CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "M-CARE INP LIFETM PSYCH DY CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "M-CARE INP CLAIM DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "M-CARE INP CAP EXCEPTION AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "M-CARE INP DISPROP. SHARE AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "M-CARE INP MSP PASS THRU AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "M-CARE INP PPS CAPITAL AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "M-CARE INP PPS CAP FSP-DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "M-CARE INP PPS CAP HSP-DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "M-CARE INP PPS CAP DSH-DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "M-CARE INP OLD CAPITAL AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "M-CARE INP PPS CAPITAL IME AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "M-CARE INP PPS OP HOS DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "M-CARE INP COST REPORT DAY CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 4.15,
+      "fieldName": "M-CARE INP PPS OP FED DRG AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.15
+    },
+    {
+      "fieldNumber": 4.16,
+      "fieldName": "M-CARE INP PPS CAP OUTLIER AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.16
+    },
+    {
+      "fieldNumber": 4.17,
+      "fieldName": "M-CARE INP INDIRECT TEACH AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.17
+    },
+    {
+      "fieldNumber": 4.18,
+      "fieldName": "M-CARE INP NON-PAY PROF COMP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 4.18
+    },
+    {
+      "fieldNumber": 4.19,
+      "fieldName": "MEDICARE NON-COVERED DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice ",
+      "fieldNumber_": 4.19
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "M-CARE INP PYMNT REMARK CODE-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.011,
+      "fieldName": "REMARK CODE-1 SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated text for remark code # 1, if available This applies to EITHER inpatient or outpatient remark codes from MEDICARE. ",
+      "fieldNumber_": 5.011
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "M-CARE INP PYMNT REMARK CODE-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.021,
+      "fieldName": "REMARK CODE-2 SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated text for remark code # 2, if available This applies to EITHER inpatient or outpatient remark codes from MEDICARE. ",
+      "fieldNumber_": 5.021
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "M-CARE INP PYMNT REMARK CODE-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.031,
+      "fieldName": "REMARK CODE-3 SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated text for remark code # 3, if available This applies to EITHER inpatient or outpatient remark codes from MEDICARE. ",
+      "fieldNumber_": 5.031
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "M-CARE INP PYMNT REMARK CODE-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.041,
+      "fieldName": "REMARK CODE-4 SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated text for remark code # 4, if available This applies to EITHER inpatient or outpatient remark codes from MEDICARE. ",
+      "fieldNumber_": 5.041
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "M-CARE INP PYMNT REMARK CODE-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a data element from a MEDICARE electronic remittance advice. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.051,
+      "fieldName": "REMARK CODE-5 SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviated text for remark code # 5, if available This applies to EITHER inpatient or outpatient remark codes from MEDICARE. ",
+      "fieldNumber_": 5.051
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "NEW PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 'new' patient name as reported on the electronic EOB. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "NEW PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 'new' patient ID as reported on the electronic EOB. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "CORRECTED DATA MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text message describing the results of the processing of  the \"06\" record type on the incoming 835 transmission.  The \"06\" record  type is where the payer can send back the corrected patient name and/or  the corrected patient ID#.  VistA will accept this information and  attempt to the update the patient insurance files with this data. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "TRANSFERRED IN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the site that this EOB was transferred into this site from. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AR AMOUNTS DISTRIBUTION",
+      "dataType": "SUBFILE",
+      "rawType": "361.18A",
+      "required": false,
+      "helpText": "This is the list of bills that AR has determined will apply to this ERA  along with the amount that was paid/retracted. ",
+      "isMultiple": true,
+      "subFileNumber": 361.18,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "835 CLAIM LEVEL ADJUSTMENTS",
+      "dataType": "SET",
+      "rawType": "361.11S",
+      "required": false,
+      "helpText": "This is the list of claim level adjustments, including general category of adjustment, reason code, amount and quantity. ",
+      "isMultiple": true,
+      "subFileNumber": 361.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "835 LINE LEVEL ADJUSTMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "361.115A",
+      "required": false,
+      "helpText": "This is the list of line level adjustments, including general category of adjustment, reason code, amount and quantity. ",
+      "isMultiple": true,
+      "subFileNumber": 361.115,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MESSAGE STORAGE ERRORS",
+      "dataType": "SUBFILE",
+      "rawType": "361.12",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 361.12,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REVIEW DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "361.121DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 361.121,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 25.01,
+      "fieldName": "PAYER CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the contact the payer has provided for questions concerning this particular claim's adjudication. ",
+      "fieldNumber_": 25.01
+    },
+    {
+      "fieldNumber": 25.02,
+      "fieldName": "CONTACT NUMBER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a phone #/telephone extension or email address for the contact. ",
+      "fieldNumber_": 25.02
+    },
+    {
+      "fieldNumber": 25.03,
+      "fieldName": "CONTACT TYPE 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:E-MAIL;FX:FAX;TE:TELEPHONE;EX:TELEPHONE EXTENSION;",
+      "helpText": "This is the code that describes the type of contact information provided in the CONTACT NUMBER 1 field. ",
+      "fieldNumber_": 25.03
+    },
+    {
+      "fieldNumber": 25.04,
+      "fieldName": "CONTACT NUMBER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a phone #/telephone extension or email address for the contact. ",
+      "fieldNumber_": 25.04
+    },
+    {
+      "fieldNumber": 25.05,
+      "fieldName": "CONTACT TYPE 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:E-MAIL;FX:FAX;TE:TELEPHONE;EX:TELEPHONE EXTENSION;",
+      "helpText": "This is the code that describes the type of contact information provided in the CONTACT NUMBER 2 field. ",
+      "fieldNumber_": 25.05
+    },
+    {
+      "fieldNumber": 25.06,
+      "fieldName": "CONTACT NUMBER 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a phone #/telephone extension or email address for the contact. ",
+      "fieldNumber_": 25.06
+    },
+    {
+      "fieldNumber": 25.07,
+      "fieldName": "CONTACT TYPE 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:E-MAIL;FX:FAX;TE:TELEPHONE;EX:TELEPHONE EXTENSION;",
+      "helpText": "This is the code that describes the type of contact information provided in the CONTACT NUMBER 3 field. ",
+      "fieldNumber_": 25.07
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "AUTO BILL MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains reason messages or error messages that describe why this EOB record was not automatically turned into a secondary or tertiary bill. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "AUTO BILL MESSAGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the automatic bill generation failure message was filed. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 61.01,
+      "fieldName": "ORIGINAL 06 RECORD DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the original \"06\" record type on the 835 transmission  from Austin.  It contains the corrected patient name and/or the corrected  patient ID directly from the payer. ",
+      "fieldNumber_": 61.01
+    },
+    {
+      "fieldNumber": 62.01,
+      "fieldName": "MAILMAN HEADER INFORMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains MailMan header data which is returned from the  MailMan utility $$NET^XMRENT. ",
+      "fieldNumber_": 62.01
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P364.1'",
+      "required": false,
+      "pointerTo": 364.1,
+      "helpText": "This is the number of the batch the bill was in when the EOB message was received. ",
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 100.02,
+      "fieldName": "RETURN MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID of the return message that this EOB was delivered in.  It is used to ensure these EOB messages don't get added to this file more than once. ",
+      "fieldNumber_": 100.02
+    },
+    {
+      "fieldNumber": 100.03,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who last edited this EOB record. ",
+      "fieldNumber_": 100.03
+    },
+    {
+      "fieldNumber": 100.04,
+      "fieldName": "LAST EDITED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time this EOB record was edited. ",
+      "fieldNumber_": 100.04
+    },
+    {
+      "fieldNumber": 100.05,
+      "fieldName": "MESSAGE CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the calculated checksum value of the X12 835 transaction data from the payer.  It is a unique number which is mathematically generated based on the actual data in the 835 flat file received from Austin.   This number will be used to identify and eliminate duplicate 835 transmissions into VistA. ",
+      "fieldNumber_": 100.05
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MOVE/COPY/REMOVE HISTORY",
+      "dataType": "DATE",
+      "rawType": "361.1101DA",
+      "required": false,
+      "helpText": "This multiple contains a record for each time an EEOB is moved or copied.  Removing an EEOB also creates a record in this multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 361.1101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "EEOB REMOVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REMOVED;",
+      "helpText": "This field indicates that the ELECTRONIC EXPLANATION OF BENEFITS (EEOB) detail on the record has been filed against the wrong claim and should be ignored by all reporting options. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 106,
+  "crossReferences": [
+    {"name": "ABB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AEOB", "field": },
+    {"name": "AERR", "field": },
+    {"name": "AREV", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "361.1", "field": .01, "type": "regular"},
+    {"name": "361.1", "field": .01, "type": "regular"},
+    {"name": "361.1", "field": .03, "type": "regular"},
+    {"name": "361.1", "field": .05, "type": "regular"},
+    {"name": "361.1", "field": .06, "type": "regular"},
+    {"name": "", "field": .15, "type": "regular"},
+    {"name": "361.1", "field": .16, "type": "regular"},
+    {"name": "", "field": .16, "type": "regular"},
+    {"name": "", "field": .16, "type": "regular"},
+    {"name": "361.1", "field": .19, "type": "regular"},
+    {"name": "361.1", "field": 100.02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W, "value": "N %Y S %Y=$G(^(0)) D EN^DDIOL($$EXTERNAL^DILFD(361.1,.02,,$P(%Y,U,2))_\" (\"_$$EXTERNAL^DILFD(361.1,.15,,$P(%Y,U,15))_\")\")"}
+  ]
+}

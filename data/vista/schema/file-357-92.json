@@ -1,0 +1,27 @@
+{
+  "fileNumber": 357.92,
+  "fileName": "PRINT CONDITIONS",
+  "globalRoot": "357.92",
+  "globalReference": "^IBE(357.92,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT CONDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  A condition recognized by the Print Manager. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

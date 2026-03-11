@@ -1,0 +1,73 @@
+{
+  "fileNumber": 662,
+  "fileName": "PROS DISABILITY CODE",
+  "globalRoot": "662I",
+  "globalReference": "^RMPR(662,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the internal number of the Prosthetic Disability Code. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARABIC DISABILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Arabic initials for a disability code, such as AMP/LAE for Amputee/Arm, Left, Above Elbow. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAJOR DISABILITY CODE SYMBOLS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the Major Disability Code Symbol for the Prosthetics Disability Code (e.g. AMPUTEE). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GROUP EXTENT OF DISABILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the area of the Veterans disability. Reference to the parts of body disabled. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "DISABILITY GROUPING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Contains the Number 1 through 10.  The 10 major disability groupings are displayed on the VAF 10-7306d AMIS report. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CORRESPONDING MAS DISABILITY",
+      "dataType": "POINTER",
+      "rawType": "662.06P",
+      "required": false,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "662", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

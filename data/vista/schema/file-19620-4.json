@@ -1,0 +1,35 @@
+{
+  "fileNumber": 19620.4,
+  "fileName": "DSIR DOCUMENT TYPE",
+  "globalRoot": "19620.4",
+  "globalReference": "^DSIR(19620.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOCUMENT_TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AVAILABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BOTH;F:FOIA ONLY;P:PRIVACY ACT ONLY;",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

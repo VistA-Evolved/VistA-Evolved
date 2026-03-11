@@ -1,0 +1,116 @@
+{
+  "fileNumber": 161,
+  "fileName": "FEE BASIS PATIENT",
+  "globalRoot": "161P",
+  "globalReference": "^FBAAA(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The name of the patient who is requesting authorization for obtaining Fee services. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "FEE ID CARD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The number pre-printed on the Fee ID Card assigned (given) to the patient. The patient can only have one number assigned to him/her at a given time. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "FEE ID CARD ISSUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the Fee ID Card was issued to the patient. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .65,
+      "fieldName": "FEE ID CARD EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the expiration date for a patient's ID card. ",
+      "fieldNumber_": .65
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "REASON FOR CARD NUMBER CHANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The reason that the patient's Fee ID Card number was changed or terminated. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AUTHORIZATION",
+      "dataType": "DATE",
+      "rawType": "161.01ID",
+      "required": false,
+      "helpText": "This data is related to specific validity periods where the veteran is authorized to obtain Fee services and the VA will reimburse. ",
+      "isMultiple": true,
+      "subFileNumber": 161.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPORT OF CONTACT",
+      "dataType": "DATE",
+      "rawType": "161.02D",
+      "required": false,
+      "helpText": "Contains information relating to the initial contact between the VA and a patient's representative, regarding patient treatment at a non-VA facility. ",
+      "isMultiple": true,
+      "subFileNumber": 161.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ARCH ELIGIBILITY",
+      "dataType": "DATE",
+      "rawType": "161.011D",
+      "required": false,
+      "helpText": "This field is a Project ARCH (Access Received Closer to Home) Eligibility  multiple.  Every time a new update of eligibility data comes in, a new  entry for this multiple is created.             ",
+      "isMultiple": true,
+      "subFileNumber": 161.011,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACV", "field": },
+    {"name": "AE", "field": },
+    {"name": "AENR01", "field": },
+    {"name": "AENR02", "field": },
+    {"name": "AENR03", "field": },
+    {"name": "AENR095", "field": },
+    {"name": "AENR102", "field": },
+    {"name": "AF", "field": },
+    {"name": "AIC", "field": },
+    {"name": "AIC1", "field": },
+    {"name": "AOLD", "field": },
+    {"name": "ARCH", "field": },
+    {"name": "ARCHSRC", "field": },
+    {"name": "ATST", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161", "field": .01, "type": "regular"},
+    {"name": "161", "field": .5, "type": "regular"},
+    {"name": "161", "field": .5, "type": "regular"},
+    {"name": "161", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

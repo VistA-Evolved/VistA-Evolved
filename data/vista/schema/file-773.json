@@ -1,0 +1,513 @@
+{
+  "fileNumber": 773,
+  "fileName": "HL7 MESSAGE ADMINISTRATION",
+  "globalRoot": "773P",
+  "globalReference": "^HLMA(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "POINTER",
+      "rawType": "RP772'",
+      "required": true,
+      "pointerTo": 772,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an unique identifier associated with a message. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "FAST PURGE DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMISSION TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "I:INCOMING;O:OUTGOING;",
+      "helpText": "The type of transmission (incoming or outgoing). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:IMMEDIATE;D:DEFERRED;",
+      "helpText": "The delivery priority assigned to this outgoing message. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HEADER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:SINGLE MESSAGE;B:BATCH OF MESSAGES;F:FILE OF BATCHES;",
+      "helpText": "There are three types of messages as follows:    M for Single message (contains only one MSH segment)  B for Batch of messages (contains multiple MSH segments)  F for File of batches (contains multiple BHS segments)   This field is automatically filled in by the Messaging System and is used to determine the appropriate header segment to build for a message. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INITIAL MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P773'",
+      "required": false,
+      "pointerTo": 773,
+      "helpText": "This is the first message of a transaction.  All messages pointing to the initial message are part of the transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LOGICAL LINK",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "This is a pointer to the Logical Link file (#870).  This link is used to transmit messages to an external receiving application.  This field is not filled in when messages are exchanged between DHCP applications on the same system. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SUBSCRIBER PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P101'",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "The Protocol related to this message. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value to use in the Security field of the Message Header segment. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DON'T PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DON'T PURGE;0:TO PURGE;",
+      "helpText": "When this field is set to 1, the message wil never be purged by the HL7 \"Purge Message Text File Entries\" option. However, when this field is set to 0 or is empty, the message is allowed to be purged by the HL7 \"Purge Message Text Entries\" option. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CONTINUATION POINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value to use in the Continuation Pointer field of the Message Header segment. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACKNOWLEDGEMENT TO",
+      "dataType": "POINTER",
+      "rawType": "P773'",
+      "required": false,
+      "pointerTo": 773,
+      "helpText": "This field points to the message that the MSA segment in the current message is acknowledging. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SENDING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P771'",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "The application that is sending the message. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RECEIVING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P771'",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "The application that is receiving this message. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.2'",
+      "required": false,
+      "pointerTo": 771.2,
+      "helpText": "This is the Message type from the HL7 standard. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "EVENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P779.001'",
+      "required": false,
+      "pointerTo": 779.001,
+      "helpText": "This is the Event Type from the HL7 standard. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LOGICAL LINK - IN QUEUE",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP771.6'",
+      "required": true,
+      "pointerTo": 771.6,
+      "helpText": "The status currently assigned to this message. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "STATUS UPDATE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the Status field was last updated for this message. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If there was an error in sending or receiving this message, this field will contain the error message. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ERROR TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.7'",
+      "required": false,
+      "pointerTo": 771.7,
+      "helpText": "A description of the type of error that occured. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "TRANSMISSION ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of transmission attempts for this outgoing message. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "OPEN ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of attempts to open a TCP connections for this outgoing message. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ACK TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of seconds the Lower Layer Protocol waits for an acknowledgement from the receiving application. This field will override the ACK TIMEOUT of the Logical Link for this message. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "MESSAGE SIZE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This computed field returns the number of character in a message. It includes the message header and body. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 90.01,
+      "fieldName": "HLP-SUBSCRIBER PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the SUBSCRIBER PROTOCOL that was on the 1st piece of the HLP(\"SUBSCRIBER\"[,#]) subscriber entry.  (If the HLP(\"SUBSCRIBER\") entry was used to reset the MSH segment fields, this field will be null.)     Additional Comments on ^HLMA(ien,90) Node ----------------------------------------- When the MSH segment fields are successfully reset using either  HLP(\"SUBSCRIBER\") or HLP(\"SUBSCRIBER\",#), the entire HLP(\"SUBSCRIBER\") or HLP(\"SUBSCRIBER\",#) array entry is stored on the ^HLMA(#,9",
+      "fieldNumber_": 90.01
+    },
+    {
+      "fieldNumber": 90.02,
+      "fieldName": "HLP-SENDING APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the SENDING APPLICATION that was on the 2nd piece of the  HLP(\"SUBSCRIBER\"[,#]) subscriber entry.     (See the 'Additional Comments on ^HLMA(ien,90) Node' section in the  description for field # 90.01.) ",
+      "fieldNumber_": 90.02
+    },
+    {
+      "fieldNumber": 90.03,
+      "fieldName": "HLP-SENDING FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the SENDING FACILITY that was on the 3rd piece of the HLP(\"SUBSCRIBER\"[,#]) subscriber entry.     (See the 'Additional Comments on ^HLMA(ien,90) Node' section in the  description for field # 90.01.) ",
+      "fieldNumber_": 90.03
+    },
+    {
+      "fieldNumber": 90.04,
+      "fieldName": "HLP-RECEIVING APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the RECEIVING APPLICATION that was on the 4th piece of the HLP(\"SUBSCRIBER\"[,#]) subscriber entry.   (See the 'Additional Comments on ^HLMA(ien,90) Node' section in the  description for field # 90.01.) ",
+      "fieldNumber_": 90.04
+    },
+    {
+      "fieldNumber": 90.05,
+      "fieldName": "HLP-RECEIVING FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the RECEIVING FACILITY that was on the 5th piece of the HLP(\"SUBSCRIBER\"[,#]) subscriber entry.   (See the 'Additional Comments on ^HLMA(ien,90) Node' section in the  description for field # 90.01.) ",
+      "fieldNumber_": 90.05
+    },
+    {
+      "fieldNumber": 90.06,
+      "fieldName": "HLP-SUBROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "See the description for the HLP-ROUTINE field (#90.07). ",
+      "fieldNumber_": 90.06
+    },
+    {
+      "fieldNumber": 90.07,
+      "fieldName": "HLP-ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Application developers may pass a reference to M code in the  HLP(\"SUBSCRIBER\"[,#]) subscriber entry.  When this is done, the  subroutine being referenced is stored in the HLP-SUBROUTINE field  (#90.06), and the routine is stored in this field. ",
+      "fieldNumber_": 90.07
+    },
+    {
+      "fieldNumber": 90.08,
+      "fieldName": "HLP-DEBUG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The application developer can control what type of debugging data is  stored when MSH segment fields are reset by the HLP(\"SUBSCRIBER\"[,#])  entry.  This field holds the data on the eighth piece of the  HLP(\"SUBSCRIBER\"[,#]) entry, which also specifies which debugging data  should be stored.   Types Debug Data: ----------------- There are three types of debug data:     - Node ^HLMA(ien,90) data.  (See global map of this file for fields.)   - Node ^HLMA(ien,91) data.  (See global map of this file",
+      "fieldNumber_": 90.08
+    },
+    {
+      "fieldNumber": 91.01,
+      "fieldName": "ORIGINAL SND APP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of the SENDING APPLICATION is calculated from the event driver protocol.  If this value is overwritten by a HLP(\"SUBSCRIBER\"[,#]) entry, the value before overwrite is stored in this field.   Note:  Fields 91.03, 91.05, and 91.07 similarly hold the pre-overwrite        values for their respective fields. ",
+      "fieldNumber_": 91.01
+    },
+    {
+      "fieldNumber": 91.02,
+      "fieldName": "ORIGINAL SND APP-SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARRAY;M:M CODE;",
+      "helpText": "MSH segment fields can be overwritten by free-text values on pieces 2  through 5 of the HLP(\"SUBSCRIBER\"[,#]) node, or by M code referenced in  this node.  If the HLP-ORIGINAL SND APP field (#91.01) is overwritten by  free-text data, this field will hold an \"A\" (for array.)  If overwritten  by M code this field will hold \"M\". ",
+      "fieldNumber_": 91.02
+    },
+    {
+      "fieldNumber": 91.03,
+      "fieldName": "ORIGINAL SND FAC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of the SENDING FACILITY is calculated from the event driver protocol.  If this value is overwritten by a HLP(\"SUBSCRIBER\"[,#]) entry, the value before overwrite is stored in this field. ",
+      "fieldNumber_": 91.03
+    },
+    {
+      "fieldNumber": 91.04,
+      "fieldName": "ORIGINAL SND FAC-SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARRAY;M:M CODE;",
+      "helpText": "MSH segment fields can be overwritten by free-text values on pieces 2  through 5 of the HLP(\"SUBSCRIBER\"[,#]) node, or by M code referenced in  this node.  If the HLP-ORIGINAL SND FAC field (#91.03) is overwritten by  free-text data, this field will hold an \"A\" (for array.)  If overwritten  by M code this field will hold \"M\". ",
+      "fieldNumber_": 91.04
+    },
+    {
+      "fieldNumber": 91.05,
+      "fieldName": "ORIGINAL REC APP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of the RECEIVING APPLICATION is calculated from the subscriber protocol.  If this value is overwritten by a HLP(\"SUBSCRIBER\"[,#]) entry, the value before overwrite is stored in this field. ",
+      "fieldNumber_": 91.05
+    },
+    {
+      "fieldNumber": 91.06,
+      "fieldName": "ORIGINAL REC APP-SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARRAY;M:M CODE;",
+      "helpText": "MSH segment fields can be overwritten by free-text values on pieces 2  through 5 of the HLP(\"SUBSCRIBER\"[,#]) node, or by M code referenced in  this node.  If the HLP-ORIGINAL REC APP field (#91.05) is overwritten by  free-text data, this field will hold an \"A\" (for array.)  If overwritten  by M code this field will hold \"M\". ",
+      "fieldNumber_": 91.06
+    },
+    {
+      "fieldNumber": 91.07,
+      "fieldName": "ORIGINAL REC FAC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of the RECEIVING FACILITY is calculated from the subscriber protocol. If this value is overwritten by a HLP(\"SUBSCRIBER\"[,#]) entry, the value before overwrite is stored in this field. ",
+      "fieldNumber_": 91.07
+    },
+    {
+      "fieldNumber": 91.08,
+      "fieldName": "ORIGINAL REC FAC-SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARRAY;M:M CODE;",
+      "helpText": "MSH segment fields can be overwritten by free-text values on pieces 2  through 5 of the HLP(\"SUBSCRIBER\"[,#]) node, or by M code referenced in  this node.  If the HLP-ORIGINAL REC FAC field (#91.07) is overwritten by  free-text data, this field will hold an \"A\" (for array.)  If overwritten  by M code this field will hold \"M\". ",
+      "fieldNumber_": 91.08
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "LAST DATE/TIME UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "For outgoing message:   1. Date/time of its commit ACK received.   2. Date/time of its application ACK message received (overwriting       #1).   And for incoming message:   1. Date/time of the message received.   2. Date/time of the message has been processed by the application       (overwriting #1). ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "TIME START TO SEND",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the transmission of this outgoing message began. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "TIME SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the transmission of this outgoing message finished. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "TIME OF COMMIT/APP ACK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this message received the commit ACK, or application ACK of original mode or direct connect transmission (API: DIRECT^HLMA). ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "TIME OF APPLICATION ACK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this message received the application ACK. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "TIME START PROCESSING",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the application began processing this message. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "TIME PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the application finished processing this message. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "MSH",
+      "dataType": "SUBFILE",
+      "rawType": "773.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 773.01,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 51,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "773", "field": .01, "type": "regular"},
+    {"name": "773", "field": 2, "type": "regular"},
+    {"name": "773", "field": 6, "type": "regular"},
+    {"name": "773", "field": 7, "type": "regular"},
+    {"name": "773", "field": 14, "type": "regular"},
+    {"name": "773", "field": 20, "type": "regular"},
+    {"name": "773", "field": 100, "type": "regular"},
+    {"name": "773", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileNumber": 605.1,
+  "fileName": "MH DASHBOARD WIDGET",
+  "globalRoot": "605.1",
+  "globalReference": "^YSD(605.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20",
+      "length": 20,
+      "required": true,
+      "helpText": "This is the name of the MH DASHBOARD WIDGET. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Ft17",
+      "required": false,
+      "helpText": "If a date is entered in this field the widget will no longer display in  the dashboard. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COLUMNS",
+      "dataType": "SUBFILE",
+      "rawType": "605.12",
+      "required": false,
+      "helpText": "Enter the columns that will display on the widget.  ",
+      "isMultiple": true,
+      "subFileNumber": 605.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENTS",
+      "dataType": "POINTER",
+      "rawType": "605.13P",
+      "required": false,
+      "helpText": "This is a list of possible instruments that are used for the widget. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "605.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

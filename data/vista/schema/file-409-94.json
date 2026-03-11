@@ -1,0 +1,58 @@
+{
+  "fileNumber": 409.94,
+  "fileName": "SDEC SUBSPECIALTY",
+  "globalRoot": "409.94",
+  "globalReference": "^SDEC(409.94,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUBSPECIALTY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "The numeric ID that represents the subspecialty. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUBSPECIALTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ150",
+      "length": 150,
+      "required": true,
+      "helpText": "The name of the subspecialty that aligns with the subspecialty ID. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBSPECIALTY TIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SECONDARY;T:TERTIARY;",
+      "helpText": "Identifies the tier type for this subspecialty; secondary or tertiary. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT RECORD",
+      "dataType": "POINTER",
+      "rawType": "P409.94'",
+      "required": false,
+      "pointerTo": 409.94,
+      "helpText": "This field will hold the parent (or secondary) subspecialty for any  tertiary subspecialty records. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "fileNumber": 131.7,
+  "fileName": "OPERATING ROOM",
+  "globalRoot": "131.7P",
+  "globalReference": "^SRS(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the name of the operating room.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the physical location of the operating room.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PERSON RESP.",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person responsible for this operating room.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the telephone number of the operating room.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are comments relating specifically to this operating room.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SCHEDULE DATE",
+      "dataType": "DATE",
+      "rawType": "131.701DA",
+      "required": false,
+      "helpText": "This is information about the Schedule date.   ",
+      "isMultiple": true,
+      "subFileNumber": 131.701,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "BLOCK SCHEDULE DATE",
+      "dataType": "DATE",
+      "rawType": "131.702DA",
+      "required": false,
+      "helpText": "This is the block schedule date.  This field should not be modified through Fileman.   ",
+      "isMultiple": true,
+      "subFileNumber": 131.702,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SERVICE BLOCKOUT",
+      "dataType": "SUBFILE",
+      "rawType": "131.703A",
+      "required": false,
+      "helpText": "This is information related to service blockouts.   ",
+      "isMultiple": true,
+      "subFileNumber": 131.703,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP134'",
+      "required": true,
+      "pointerTo": 134,
+      "helpText": "This is the operating room type.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLEANING TIME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the average number of minutes required to clean this operating room after completion of a case.  It will be used in determining operating room utilization.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NORMAL DAILY SCHEDULE",
+      "dataType": "SET",
+      "rawType": "131.711S",
+      "required": false,
+      "helpText": "This is the normal daily schedule for each operating room.   ",
+      "isMultiple": true,
+      "subFileNumber": 131.711,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to make this operating room inactive and to prevent its selection and use by users of the Surgery package.  A 'YES' in this field indicates that this operating room is not in service. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "131.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

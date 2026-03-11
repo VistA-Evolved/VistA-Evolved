@@ -1,0 +1,48 @@
+{
+  "fileNumber": 53.4,
+  "fileName": "PRE-EXCHANGE NEEDS",
+  "globalRoot": "53.4P",
+  "globalReference": "^PS(53.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "  This is the user (pharmacist) who entered the pre-exchange needs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "  This is the date and time the first pre-exchange needs was entered for a particular session of order entry or non-verified orders. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "53.401PA",
+      "required": false,
+      "helpText": "  This is the patient for whom the labels were created.  This also contains the orders for which the labels were created. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AUD", "field": },
+    {"name": "B", "field": },
+    {"name": "53.4", "field": .01, "type": "regular"},
+    {"name": "53.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

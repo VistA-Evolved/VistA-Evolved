@@ -1,0 +1,100 @@
+{
+  "fileNumber": 446.5,
+  "fileName": "CUSTOM LABEL",
+  "globalRoot": "446.5",
+  "globalReference": "^PRCT(446.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a general description for the label that is designed for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'X",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the file that the label will print from during a search and sort functions.  For example: If you want to print a label for all drugs in  the drug file, you would enter 50 or DRUG for this field and labels will print from this file.  If this field is not defined, then the label will be considered to be just free text and not associated with a file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LABEL ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If this field has a routine entered, this routine will be called to print the labels rather than the generic label routine. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SPECIALTY COMMANDS",
+      "dataType": "POINTER",
+      "rawType": "P446.6'",
+      "required": false,
+      "pointerTo": 446.6,
+      "helpText": "This field stores the specialty command for the label. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "446.51",
+      "required": false,
+      "helpText": "This is the user defined description of the report.  The report can contain parameters (|1|, |2|, etc...). ",
+      "isMultiple": true,
+      "subFileNumber": 446.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARAMETER",
+      "dataType": "SUBFILE",
+      "rawType": "446.52I",
+      "required": false,
+      "helpText": "This field stores the definition of the parameter used on the label. ",
+      "isMultiple": true,
+      "subFileNumber": 446.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FILEMAN CODE",
+      "dataType": "SUBFILE",
+      "rawType": "446.53",
+      "required": false,
+      "helpText": "This word-processing field contains the compiled FILEMAN code necessary to run the report. ",
+      "isMultiple": true,
+      "subFileNumber": 446.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MUMPS CODE",
+      "dataType": "SUBFILE",
+      "rawType": "446.54",
+      "required": false,
+      "helpText": "This word-processing field contains the compiled MUMPS code necessary to run the report. ",
+      "isMultiple": true,
+      "subFileNumber": 446.54,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "446.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

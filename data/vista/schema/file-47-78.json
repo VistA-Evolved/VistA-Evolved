@@ -1,0 +1,40 @@
+{
+  "fileNumber": 47.78,
+  "fileName": "PRONOUN TYPES",
+  "globalRoot": "47.78",
+  "globalReference": "^DG(47.78,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRONOUN TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ25",
+      "length": 25,
+      "required": true,
+      "helpText": "The PRONOUN TYPE field specifies the appropriate noun that a patient has  requested to be addressed as. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ5",
+      "length": 5,
+      "required": true,
+      "helpText": "This code uniquely identifies the PRONOUN TYPE record. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "47.78", "field": .01, "type": "regular"},
+    {"name": "47.78", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "fileNumber": 344.7,
+  "fileName": "RCDPE PARAMETER AUDIT",
+  "globalRoot": "344.7",
+  "globalReference": "^RCY(344.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Contains the date and time the selected record was last updated. This field should only be updated programmatically. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MODIFIED IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains an Internal Entry Number for either the AR SITE PARAMETER file (#342) or the RCDPE AUTO-PAY EXCLUSION file (#344.6), depending on what value was changed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHANGED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The last person to update the selected entry.  This field should only be updated programmatically. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHANGED FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,4",
+      "length": 7,
+      "required": false,
+      "helpText": "The field number of the parameter from the appropriate file that was changed. This field should only be updated programmatically. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MODIFIED FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "344.6:RCDPE AUTO-PAY EXCLUSION;344.61:RCDPE PARAMETER;",
+      "helpText": "This is the file number of the value which was modified. This field should only be updated programmatically. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value of the selected field after the change. This field  should only be updated programmatically. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value of the selected field before the change. This field should only be updated programmatically. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a required field under certain circumstances. It holds a brief  explanation as to why a field was changed. This field should only be updated programmatically. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

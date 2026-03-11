@@ -1,0 +1,35 @@
+{
+  "fileNumber": 165.55,
+  "fileName": "CONVERSION FLAGS",
+  "globalRoot": "165.55",
+  "globalReference": "^ONCO(165.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONVERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONVERSION COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "165.55", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

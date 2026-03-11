@@ -1,0 +1,39 @@
+{
+  "fileNumber": 920.76,
+  "fileName": "PX ICE SERVER STATUS",
+  "globalRoot": "920.76",
+  "globalReference": "^PXV(920.76,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:DISABLED;1:ENABLED;2:ENABLED/UNAVAILABLE;",
+      "helpText": "This is the status of the ICE interface. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "920.761D",
+      "required": false,
+      "helpText": "This is the sub-file that records any changes to the status of the ICE  interface. ",
+      "isMultiple": true,
+      "subFileNumber": 920.761,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "920.76", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

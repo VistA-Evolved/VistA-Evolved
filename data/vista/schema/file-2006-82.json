@@ -1,0 +1,223 @@
+{
+  "fileNumber": 2006.82,
+  "fileName": "IMAGING WINDOWS SESSIONS",
+  "globalRoot": "2006.82",
+  "globalReference": "^MAG(2006.82,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The users name is entered in this field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "P2006.1'",
+      "required": false,
+      "pointerTo": 2006.1,
+      "helpText": "This field references the site parameter file. The Site parameter entry  defines all of the attributes of Vista Imaging local area network. This  includes facility user preferences, network write locations, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to New Person file.  This is the user of the VistA Imaging Application. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This the Date Time (to the minute) when this imaging session started. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date Time (to the minute) when this imaging session ended. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WORKSTATION",
+      "dataType": "POINTER",
+      "rawType": "P2006.81'",
+      "required": false,
+      "pointerTo": 2006.81,
+      "helpText": "This is the workstation that was used for this Imaging session.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the last patient (or current patient) accessed during this Imaging session. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "This is the last Image ( or current Image ) accessed during this Imaging session ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER SERVICE/SECTION",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "The Service/Section of the Imaging User. Capturing this information provides statistical data to the site. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TRACKING ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the tracking id sent by the Application doing the Import It is a unique number, to be used for tracking purposes. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CLIENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the version of the Client application. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "HOST VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Version of Imaging installed on the Host. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.4,
+      "fieldName": "OS VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Operating System Version installed  on the Workstation. ",
+      "fieldNumber_": 9.4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PAT CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of patients accessed during this imaging session. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IMAGE CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of images viewed during the imaging session. Images of all types are counted.  Documents, Full Color, EKGs and Radiology  images. Whenever a user clicks on an Abstract or Image list entry, and the images is  displayed, it is counted.  Abstracts are not counted. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CAP CT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is a count of the number of images captured during this Imaging session.  All images are counted.  A Group of 10 is counted as 10. Multipage Images are counted as 1 image. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "START MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL;2:CPRS;3:IMPORT API;",
+      "helpText": "Numerical Code to determine how the session started. 1 := normal start 2 := Started By CPRS 3 := Import API called. Other codes to be determined later. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CONNECT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of minutes this session was connected. (If a session has no End Time... we don't set this field) ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.821A",
+      "required": false,
+      "helpText": "Certain actions are tracked in abbreviated form. Patient selection, Image Capture, Image selection, Errors, Logon and Logoff. This is mainly for debugging purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.821,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ERRORS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.823A",
+      "required": false,
+      "helpText": "Errors that occur in 'M' routines are tracked for the Imaging session.  The Error description is saved, and the Date/Time the error occured. By using the MAGSYS.EXE Utility (for Imaging System Managers) the sequence of  actions that preceded the Error can be viewed. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.823,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACWRK", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "2006.82", "field": .01, "type": "regular"},
+    {"name": "2006.82", "field": 1, "type": "regular"},
+    {"name": "2006.82", "field": 2, "type": "regular"},
+    {"name": "2006.82", "field": 4, "type": "regular"},
+    {"name": "2006.82", "field": 4, "type": "regular"},
+    {"name": "2006.82", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,3),5)"}
+  ]
+}

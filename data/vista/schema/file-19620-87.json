@@ -1,0 +1,114 @@
+{
+  "fileNumber": 19620.87,
+  "fileName": "DSIR AD HOC SETUP DATA",
+  "globalRoot": "19620.87",
+  "globalReference": "^DSIR(19620.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "THIS ITEM CONTAINS TEXT TO BE DISPLAYED WITHIN VARIOUS LIST BOXES AND  COMBO BOXES WITHIN THE AD HOC REPORT SCREENS ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SELECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  determine if this field may be used in data selections (filtering). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "DATE RANGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate whether or not this field is part of a date range. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PRINT FIELDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate if this field may be printed. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "SORT BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate if this field may be used as part of the sorting algorithm. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "SORT RANKING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This value is used to assign a statistical weight to this field and is used to optimize both the the sorting process and the selection process. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "IS DATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate that this field is a date. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "SOURCE GLOBAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the file number which contains this field. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "SOURCE FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the field number within the global of this field. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "FIELD INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the index name to use when working with this field in the  selection process. ",
+      "fieldNumber_": 2.03
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.87", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

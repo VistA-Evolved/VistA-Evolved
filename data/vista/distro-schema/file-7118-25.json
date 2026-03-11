@@ -1,0 +1,57 @@
+{
+  "fileNumber": 7118.25,
+  "fileName": "HDIS VUID IMPLEMENTATION STATUS",
+  "globalRoot": "7118.25",
+  "globalReference": "^HDISF(7118.25,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP7118.21'",
+      "required": true,
+      "pointerTo": 7118.21,
+      "helpText": "The VAMC system being processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE/FIELD",
+      "dataType": "POINTER",
+      "rawType": "RP7115.6'I",
+      "required": true,
+      "pointerTo": 7115.6,
+      "helpText": "The File/Field associated with the record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP7115.5'I",
+      "required": true,
+      "pointerTo": 7115.5,
+      "helpText": "This indicates the status of the VUID implementation process for the facility, domain and file/field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "The Date/Time that this status was entered. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7118.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

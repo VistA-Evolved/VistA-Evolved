@@ -1,0 +1,69 @@
+{
+  "fileNumber": 365.15,
+  "fileName": "IIV STATUS TABLE",
+  "globalRoot": "365.15",
+  "globalReference": "^IBE(365.15,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the internal representation of a given IIV status which may be found in the Insurance Buffer application.  This code takes into account that although several IIV statuses may use the same symbol  in the IIV status column in the Insurance Buffer list, each IIV status  may have a different meaning. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ASCII VALUE FOR IIV STATUS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is the ASCII number representation for the character which should be displayed in the IIV status column in the insurance  buffer list for this entry.  The ASCII value is being stored instead of  the character itself because of the issues involved with storing the \"?\"  character as a valid symbol. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXPAND ENTRY ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EE Update is Allowed;0:EE Update is Not Allowed;",
+      "helpText": "This field will determine whether or not the IIV status associated with a buffer entry may get overwritten by the Expand Entry action in the Insurance Buffer application.  Some IIV statuses should stay as they are and not get updated by Expand Entry and other symbols should get updated, so the user knows the current status of the buffer entry with regard to the IIV process. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "365.152",
+      "required": false,
+      "helpText": "This is the explanation of what the IIV status means.  This description will appear in the Expand Entry action of the  Insurance Buffer application. ",
+      "isMultiple": true,
+      "subFileNumber": 365.152,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "SUBFILE",
+      "rawType": "365.17",
+      "required": false,
+      "helpText": "This is the set of steps a user needs to follow in order to resolve this IIV problem that is displayed on the Expand Entry screen in the Insurance  Buffer. ",
+      "isMultiple": true,
+      "subFileNumber": 365.17,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "365.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

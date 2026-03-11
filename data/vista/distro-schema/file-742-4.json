@@ -1,0 +1,282 @@
+{
+  "fileNumber": 742.4,
+  "fileName": "QA INCIDENT REPORT",
+  "globalRoot": "742.4I",
+  "globalReference": "^QA(742.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Indicates the case number for this particular incident. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INCIDENT",
+      "dataType": "POINTER",
+      "rawType": "R*P742.1'",
+      "required": true,
+      "pointerTo": 742.1,
+      "helpText": "Indicates the type of incident for this record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF INCIDENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Indicates the date of the incident. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INCIDENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P742.5'",
+      "required": false,
+      "pointerTo": 742.5,
+      "helpText": "Indicates the location of the incident. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INCIDENT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "742.41",
+      "required": false,
+      "helpText": "Contains the description of the incident. ",
+      "isMultiple": true,
+      "subFileNumber": 742.41,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PERSON REPORTING THE INCIDENT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Contains the person who reported the incident. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TITLE OF THE REPORTING PERSON",
+      "dataType": "POINTER",
+      "rawType": "P3.1'",
+      "required": false,
+      "pointerTo": 3.1,
+      "helpText": "Enter the title of the reporting person. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "WITNESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Contains whether the incident had a witness. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "LOCAL CASE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLOSED;1:OPEN;2:DELETED;3:QUICK;",
+      "helpText": "Contains the case status for the incident. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "VA 10-2633 DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the date the form VA 10-2633 was created. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "VA 10-2633 DATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the date the form VA 10-2633 was completed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LEVEL OF REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NONE;2:ADMINISTRATIVE INVESTIGATION;3:OTHER;4:M&M/PEER REVIEW;",
+      "helpText": "Contains the type of level of review. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "LR DATE INITIATED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the date the level of review was initiated. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "LR DATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Contains the date the level of review was completed.  ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "QA TYPE OF DEATH",
+      "dataType": "POINTER",
+      "rawType": "*P742.14'",
+      "required": false,
+      "pointerTo": 742.14,
+      "helpText": "Contains the reason for the patient's death. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "MEDICAL CENTER ACTION",
+      "dataType": "SET",
+      "rawType": "742.42SA",
+      "required": false,
+      "helpText": "Contains the action(s) taken by the medical center. ",
+      "isMultiple": true,
+      "subFileNumber": 742.42,
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "NATIONAL CASE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLOSED;1:OPEN;2:DELETED;3:QUICK;4:FULL;",
+      "helpText": "Indicates the case status on the national level. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "PATIENT ABUSE ALLEGED/PROVEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ALLEGED;1:PROVEN;",
+      "helpText": "Indicates whether the incident of patient abuse was proven.  '1' for a  proven case, '0' for an alleged case. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "BENEFICIARY QUARTERLY REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the Beneficiary Quarterly Report can be generated based on the incident. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "PERTINENT INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "742.43",
+      "required": false,
+      "helpText": "Contains any Pertinent Information as it applies to the incident. ",
+      "isMultiple": true,
+      "subFileNumber": 742.43,
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "INCIDENT TRANSMITTED TO DATABASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRANSMITTED;0:NOT TRANSMITTED;",
+      "helpText": "This field flags whether an incident has been 'rolled' up to the regional NQABD system. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "LEVEL OF REVIEW (OTHER)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the Level of Review type which is not contained in the Level of  Review field. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "INCIDENT SUMMARY DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Denotes whether Incident Data has been used for the Quarterly Summary. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "INCIDENT AUDIT TRAIL",
+      "dataType": "POINTER",
+      "rawType": "P740.5'",
+      "required": false,
+      "pointerTo": 740.5,
+      "helpText": "Files any changes to the QA Incident file to the QA Audit file. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 52
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "ACS", "field": },
+    {"name": "ADTH", "field": },
+    {"name": "ANCS", "field": },
+    {"name": "B", "field": },
+    {"name": "BDT", "field": },
+    {"name": "BINC", "field": },
+    {"name": "BLOC", "field": },
+    {"name": "742.4", "field": .01, "type": "regular"},
+    {"name": "742.4", "field": .01, "type": "regular"},
+    {"name": "742.4", "field": .02, "type": "regular"},
+    {"name": "742.4", "field": .02, "type": "regular"},
+    {"name": "742.4", "field": .03, "type": "regular"},
+    {"name": "742.4", "field": .03, "type": "regular"},
+    {"name": "742.4", "field": .04, "type": "regular"},
+    {"name": "742.4", "field": .09, "type": "regular"},
+    {"name": "742.4", "field": .15, "type": "regular"},
+    {"name": "742.4", "field": .17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(742.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(742.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

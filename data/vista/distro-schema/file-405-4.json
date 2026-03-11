@@ -1,0 +1,76 @@
+{
+  "fileNumber": 405.4,
+  "fileName": "ROOM-BED",
+  "globalRoot": "405.4I",
+  "globalReference": "^DG(405.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "Enter the name of the room-bed you are adding.  Should be in the format ROOM-BED. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "POINTER",
+      "rawType": "RP405.6",
+      "required": true,
+      "pointerTo": 405.6,
+      "helpText": "Enter a description for this bed.  It will show when entering 2 question marks at the ROOM-BED prompt in bed control or when displaying bed availability.  An example would be PRIVATE ROOM. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CURRENTLY OUT-OF-SERVICE?",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Is this bed currently unavailable?  This field is computed based on data in the OUT-OF-SERVICE DATE multiple. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "WARD(S) WHICH CAN ASSIGN",
+      "dataType": "POINTER",
+      "rawType": "405.41P",
+      "required": false,
+      "helpText": "Enter the list of wards which can assign this bed. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "OUT-OF-SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "405.42ID",
+      "required": false,
+      "helpText": "This multiple contains information on when this bed has been placed out- of-service. ",
+      "isMultiple": true,
+      "subFileNumber": 405.42,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AINV", "field": },
+    {"name": "ARBU", "field": },
+    {"name": "B", "field": },
+    {"name": "BD", "field": },
+    {"name": "W", "field": },
+    {"name": "405.4", "field": .01, "type": "regular"},
+    {"name": "405.4", "field": .01, "type": "regular"},
+    {"name": "405.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I '$D(DGPMT) D ID^DGPMDDRB"}
+  ]
+}

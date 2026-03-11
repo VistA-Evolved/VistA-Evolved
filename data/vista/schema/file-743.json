@@ -1,0 +1,307 @@
+{
+  "fileNumber": 743,
+  "fileName": "QA MONITOR",
+  "globalRoot": "743I",
+  "globalReference": "^QA(743,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This can either be free text or a predetermined list (of initial identifying letters or numbers) as defined by the site so that monitors can be grouped and easily retrieved by the service, section, or whatever. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short free text name determined by the user for this monitor. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This field will allow the manager to track what monitors are currently being used by each service.  The service entered has nothing to do with the conditions chosen or what data is auto enrolled. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STANDARD OF CARE",
+      "dataType": "SUBFILE",
+      "rawType": "743.02",
+      "required": false,
+      "helpText": "This word processing field defines the standard of care to be monitored. ",
+      "isMultiple": true,
+      "subFileNumber": 743.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CLINICAL INDICATOR",
+      "dataType": "SUBFILE",
+      "rawType": "743.03",
+      "required": false,
+      "helpText": "This word processing field defines the criteria necessary to meet the standard of care. ",
+      "isMultiple": true,
+      "subFileNumber": 743.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RATIONALE",
+      "dataType": "POINTER",
+      "rawType": "743.04PA",
+      "required": false,
+      "helpText": "This field defines the rationale for the use of this monitor.  You may select all that apply. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "AUTO ENROLL MONITOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether or not this is an auto enroll monitor. You should answer Y(es) to this field only if this monitor can be auto enrolled.  Your answer to this field will determine which conditions you will be allowed to select. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MONITOR STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FINISHED;0:UNDER CONSTRUCTION;",
+      "helpText": "Answer FINISHED to this field only when you are sure you are completely finished entering/editing this monitor.  Once you answer FINISHED you will no longer be able to edit selected monitor fields. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CONDITION",
+      "dataType": "POINTER",
+      "rawType": "743.01PA",
+      "required": false,
+      "helpText": "A condition applies a True/False test on selected data elements in a patient's record.  If the result of the test is true that patient's record is captured for further processing. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FALL OUT RELATIONSHIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field specifically states the relationship between the conditions entered by the user.  The user may use & (and), ! (or), ' (not), and parentheses () to specify the relationship. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SAMPLE RELATIONSHIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the relationship among the conditions.  This field specifically states the relationship between the conditions that contribute to the sample size.  The user may use & (and), ! (or), ' (not) and parentheses () to specify the relationship. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "OTHER DATA TO CAPTURE",
+      "dataType": "POINTER",
+      "rawType": "743.06PA",
+      "required": false,
+      "helpText": "When a patient meets the conditions of the monitor and falls out, the other data to capture entries define which data elements in the patient's record should be collected. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "TIME FRAME",
+      "dataType": "POINTER",
+      "rawType": "P743.92'",
+      "required": false,
+      "pointerTo": 743.92,
+      "helpText": "Time frame is the period of time over which the program begins capturing data and then sums up the data to start all over again with the beginning of the next similar time frame. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "MINIMUM SAMPLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0X",
+      "length": 7,
+      "required": false,
+      "helpText": "For PERCENT thresholds: This field defines the minimum sample size (denominator) that must be reached before threshold checking occurs. For NUMERIC thresholds: This field may be used along with the BULLETIN WHEN MIN SAMPLE MET field (set to YES) as a pre-threshold notification. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "THRESHOLD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Threshold defines the number or percentage of fall outs after which some specific action will occur.  The threshold may be entered as a pure numeric response (e.g., 38), or as a percentage (e.g., 38%). ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "HI/LO PERCENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:HIGH;L:LOW;",
+      "helpText": "If the user chooses 'Hi', the threshold will be met when the percentage is calculated to be >= the threshold. If the user chooses 'Lo', the threshold will be met when the percentage is calculated to be <= the threshold. Hi/Lo Percent is only meaningful for percent thresholds. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ON/OFF SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "This field controls whether or not a monitor is active.  For an auto enroll monitor to capture data the switch must be turned on.  For a manual entry monitor to be selectable, the switch must be turned on. When you wish to stop using a monitor, this switch should be turned off. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field determines when the monitor should start to capture data, or when manual entry of data for this monitor may begin. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field determines when the monitor should stop capturing data, or when manual entry of data for this monitor is no longer allowed. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "PRINT DAILY FALL OUT LIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether or not a generic list of all fall outs, sorted by monitor, is printed daily. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "PRINT DAILY WORKSHEETS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether worksheets are printed daily for all fall outs for this monitor.  For this to work, the worksheet must first be created by a programmer and linked to the monitor. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "BULLETIN WHEN THRESHOLD MET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is answered YES, then a bulletin will be sent to a specified mail group when the threshold is met.  This bulletin is sent only once per time frame. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "BULLETIN AT END OF TIME FRAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is answered YES, then a bulletin will be sent to a specified mail group when the end of the time frame is reached.  This bulletin is sent only once per time frame. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "BULLETIN WHEN MIN SAMPLE MET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is answered YES, than a bulletin will be sent to a specified mail group when the minimum sample size is met or exceeded.  This bulletin is sent only once per time frame. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "BULLETIN MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "*P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field contains the name of the mail group that the threshold, minimum sample, and end of time frame bulletins will be sent to. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ALLOW 'DUPLICATE' FALL OUTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answering Y(es) to this question allows an event to fall out multiple times for the same patient within a given time frame.  Answering N(o) will allow the event to fall out only once per time frame.   For example, a monitor is set up to capture all admissions over a monthly time frame.  Assume a patient is admitted twice in the same month.  Answering 'NO' to this question will capture only the patient's first admission.  Answering 'YES' will capture both. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "CONDITION FOR DATE OF EVENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0X",
+      "length": 12,
+      "required": false,
+      "helpText": "This field controls which of the conditions will provide the date that will be used as the event date for the fall out.  You will usually want to pick the condition whose date most uniquely defines the event you are monitoring.  For example, if you were monitoring all female (Condition #1: SEX) admissions (Condition #2: MAS MOVEMENT TYPE) you would pick condition number two as the condition to supply the event date. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SPECIAL FUNCTIONS ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may contain the entry point of a routine that will perform some special function on the captured data. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "WORKSHEET ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field may contain the entry point of a routine that will print a worksheet for all fallouts. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "ASRV", "field": },
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "C", "field": },
+    {"name": "CU", "field": },
+    {"name": "743", "field": .01, "type": "regular"},
+    {"name": "743", "field": .01, "type": "regular"},
+    {"name": "743", "field": .02, "type": "regular"},
+    {"name": "743", "field": .02, "type": "regular"},
+    {"name": "743", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": WRITE, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(743,7,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

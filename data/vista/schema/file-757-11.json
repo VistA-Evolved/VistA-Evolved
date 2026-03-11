@@ -1,0 +1,58 @@
+{
+  "fileNumber": 757.11,
+  "fileName": "SEMANTIC CLASS",
+  "globalRoot": "757.11",
+  "globalReference": "^LEX(757.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEMANTIC CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Three character (uppercase) mnemonic representing a semantical class.  For example, ORG - Organism, PRO - Procedures, ACT - Activities, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTIVE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Full title (textual description, mixed case) representing a semantical class. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLASS CONTENTS",
+      "dataType": "SUBFILE",
+      "rawType": "757.112",
+      "required": false,
+      "helpText": "Textual description of the semantical class containing (as a minimum) the semantical types included within the semantical class. ",
+      "isMultiple": true,
+      "subFileNumber": 757.112,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASSOCIATED CODING SYSTEMS",
+      "dataType": "SUBFILE",
+      "rawType": "757.113",
+      "required": false,
+      "helpText": "This multiple field contains all of the classification systems (i.e., ICD, CPT, DSM) which have terms included in this semantical class. ",
+      "isMultiple": true,
+      "subFileNumber": 757.113,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

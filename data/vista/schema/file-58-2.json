@@ -1,0 +1,58 @@
+{
+  "fileNumber": 58.2,
+  "fileName": "AOU INVENTORY GROUP",
+  "globalRoot": "58.2",
+  "globalReference": "^PSI(58.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This group name represents the Areas of Use which are inventoried together as a \"batch\" or \"cluster\".  This grouping establishes the elements of the inventory so that they do not have to be redefined every time the inventory is scheduled. Inventory groups may be established by (1) location, (2) time, (3) category or \"type\" of item to be inventoried, or any combination of these three. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AREA OF USE (AOU)",
+      "dataType": "POINTER",
+      "rawType": "58.21P",
+      "required": false,
+      "helpText": "Enter name of AOU that is to be inventoried when specifying this inventory group at the time of creating an inventory date.  This is a way to 'group' commonly inventoried AOUs under an easy to remember inventory group name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "58.23",
+      "required": false,
+      "helpText": "This text describes the inventory group and its use, and perhaps the times when normally processed.  This is purely for documentation of your site specific information. ",
+      "isMultiple": true,
+      "subFileNumber": 58.23,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NARCOTIC AREA OF USE (NAOU)",
+      "dataType": "POINTER",
+      "rawType": "58.29P",
+      "required": false,
+      "helpText": "Enter name of NAOU that is to be inventoried when specifying this inventory group at the time of creating an inventory date.  This is a way to \"group\" commonly inventoried NAOUs under an easy to remember inventory group name. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CS", "field": },
+    {"name": "WS", "field": },
+    {"name": "58.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

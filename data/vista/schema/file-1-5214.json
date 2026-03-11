@@ -1,0 +1,61 @@
+{
+  "fileNumber": 1.5214,
+  "fileName": "SQLI_OUTPUT_FORMAT",
+  "globalRoot": "1.5214",
+  "globalReference": "^DMSQ(\"OF\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OF_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OF_DATA_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP1.5211'",
+      "required": true,
+      "pointerTo": 1.5211,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OF_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OF_EXT_EXPR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "An M expression which converts the base value of X to its external value ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OF_EXT_EXEC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "A line of M code which converts the base value of X to external ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.5214", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

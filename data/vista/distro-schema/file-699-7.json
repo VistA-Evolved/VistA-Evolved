@@ -1,0 +1,39 @@
+{
+  "fileNumber": 699.7,
+  "fileName": "ENDOSCOPIC DEVICE",
+  "globalRoot": "699.7",
+  "globalReference": "^MCAR(699.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to store the various devices used during an Endoscopy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "J:JEJUNOSTOMY TUBE;G:GASTROSTOMY TUBE;SP:SPHINCTEROTOME;ST:STENT;",
+      "helpText": "This field is used to separate stents, sphincterotomes, gastrostomy tubes, and jejunostomy tubes. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.7", "field": .01, "type": "regular"},
+    {"name": "699.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,735 @@
+{
+  "fileNumber": 19620.871,
+  "fileName": "DSIR SAVED AD HOC REPORTS",
+  "globalRoot": "19620.871",
+  "globalReference": "^DSIR(19620.871,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the saved report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REPORT AUTHOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to identify the author of this report. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REPORT CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the report was created ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REPORT LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the report was last updated ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "REPORT SELECTION FIELD 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First field to select or filter by (optional) ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "REPORT SELECTION VALUE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value to select or filter by.  Only populated if there is data in REPORT  SELECTION FIELD 1. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "REPORT SELECTION FIELD 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second field to select or filter by (optional) ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "REPORT SELECTION VALUE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value to select or filter by.  Only populated if there is data in REPORT SELECTION FIELD 2. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "REPORT SELECTION FIELD 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Third field to select or filter by (optional) ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "REPORT SELECTION VALUE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value to select or filter by.  Only populated if there is data in REPORT SELECTION FIELD 3. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "REPORT DATE RANGE FIELD 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field to use as the first date range selector. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "REPORT DATE RANGE FROM 1",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Start date for Date Range 1. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "REPORT DATE RANGE TO 1",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "End date for Date Range 1. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "REPORT DATE RANGE FIELD 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field to use as the second date range selector. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "REPORT DATE RANGE FROM 2",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Start date for Date Range 2. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "REPORT DATE RANGE TO 2",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "End date for Date Range 2. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "REPORT SORT BY FIELD 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field to use as the first sortange selector. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "REPORT SORT ASCENDING 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines ascending (Y) or descending (N) sort order for sort selector 1. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "REPORT SORT GROUP 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the data should be grouped when sorted for sort selector 1. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 7.04,
+      "fieldName": "REPORT SORT COUNT 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": 7.04
+    },
+    {
+      "fieldNumber": 7.05,
+      "fieldName": "REPORT SORT SUM 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the grouped data should be summed when sorted for sort selector 1. ",
+      "fieldNumber_": 7.05
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "REPORT SORT BY FIELD 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field to use as the second sort selector. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "REPORT SORT ASCENDING 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines ascending (Y) or descending (N) sort order for sort selector 2. ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "REPORT SORT GROUP 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the data should be grouped when sorted for sort selector 2. ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "REPORT SORT COUNT 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the grouped data should be counted when sorted for sort selector 2. ",
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 8.05,
+      "fieldName": "REPORT SORT SUM 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the grouped data should be summed when sorted for sort selector 2. ",
+      "fieldNumber_": 8.05
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "REPORT SORT BY FIELD 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field to use as the third sort selector. ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 9.02,
+      "fieldName": "REPORT SORT ASCENDING 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines ascending (Y) or descending (N) sort order for sort selector 3. ",
+      "fieldNumber_": 9.02
+    },
+    {
+      "fieldNumber": 9.03,
+      "fieldName": "REPORT SORT GROUP 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the data should be grouped when sorted for sort selector 3. ",
+      "fieldNumber_": 9.03
+    },
+    {
+      "fieldNumber": 9.04,
+      "fieldName": "REPORT SORT COUNT 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the grouped data should be counted when sorted for sort selector 3. ",
+      "fieldNumber_": 9.04
+    },
+    {
+      "fieldNumber": 9.05,
+      "fieldName": "REPORT SORT SUM 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determines if the grouped data should be summed when sorted for sort selector 3. ",
+      "fieldNumber_": 9.05
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "REPORT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORT TITLE     ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "REPORT TITLE REPEAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  determine if the title needs to be repeated on each page of the report. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "REPORT TITLE FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the title. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "REPORT TITLE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the title. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "REPORT TITLE BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the title. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "REPORT TITLE ITALICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the title. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "REPORT TITLE UNDERLN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the title. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "REPORT SUB TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORT SUB-TITLE ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "REPORT SUB TITLE REPEAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to determine if the sub- title needs to be repeated on each page of the report. ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "REPORT SUB TITLE FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the sub-title. ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "REPORT SUB TITLE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the sub-title. ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 11.05,
+      "fieldName": "REPORT SUB TITLE BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the sub-title. ",
+      "fieldNumber_": 11.05
+    },
+    {
+      "fieldNumber": 11.06,
+      "fieldName": "REPORT SUB TITLE ITALICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the sub-title. ",
+      "fieldNumber_": 11.06
+    },
+    {
+      "fieldNumber": 11.07,
+      "fieldName": "REPORT SUB TITLE UNDERLN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the sub-title. ",
+      "fieldNumber_": 11.07
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "REPORT FOOTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORT FOOTER ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "REPORT FOOTER REPEAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to determine if the footer needs to be repeated on each page of the report. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 12.03,
+      "fieldName": "REPORT FOOTER FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the footer. ",
+      "fieldNumber_": 12.03
+    },
+    {
+      "fieldNumber": 12.04,
+      "fieldName": "REPORT FOOTER SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the footer. ",
+      "fieldNumber_": 12.04
+    },
+    {
+      "fieldNumber": 12.05,
+      "fieldName": "REPORT FOOTER BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the footer. ",
+      "fieldNumber_": 12.05
+    },
+    {
+      "fieldNumber": 12.06,
+      "fieldName": "REPORT FOOTER ITALICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the footer. ",
+      "fieldNumber_": 12.06
+    },
+    {
+      "fieldNumber": 12.07,
+      "fieldName": "REPORT FOOTER UNDERLN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the footers. ",
+      "fieldNumber_": 12.07
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "REPORT GROUP TITLE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First group title ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.02,
+      "fieldName": "REPORT GROUP TITLE REPEAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a group title should be repeated on each page when a group  spans multiple pages. ",
+      "fieldNumber_": 13.02
+    },
+    {
+      "fieldNumber": 13.03,
+      "fieldName": "REPORT GROUP TITLE FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the group titles. ",
+      "fieldNumber_": 13.03
+    },
+    {
+      "fieldNumber": 13.04,
+      "fieldName": "REPORT GROUP TITLE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the group titles. ",
+      "fieldNumber_": 13.04
+    },
+    {
+      "fieldNumber": 13.05,
+      "fieldName": "REPORT GROUP TITLE BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the group titles. ",
+      "fieldNumber_": 13.05
+    },
+    {
+      "fieldNumber": 13.06,
+      "fieldName": "REPORT GROUP TITLE ITALICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the group titles. ",
+      "fieldNumber_": 13.06
+    },
+    {
+      "fieldNumber": 13.07,
+      "fieldName": "REPORT GROUP TITLE UNDERLN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the group titles. ",
+      "fieldNumber_": 13.07
+    },
+    {
+      "fieldNumber": 14.01,
+      "fieldName": "REPORT GROUP FOOTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "GROUP FOOTER ",
+      "fieldNumber_": 14.01
+    },
+    {
+      "fieldNumber": 14.03,
+      "fieldName": "REPORT GROUP FOOTER FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the group footers. ",
+      "fieldNumber_": 14.03
+    },
+    {
+      "fieldNumber": 14.04,
+      "fieldName": "REPORT GROUP FOOTER SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the group footers. ",
+      "fieldNumber_": 14.04
+    },
+    {
+      "fieldNumber": 14.05,
+      "fieldName": "REPORT GROUP FOOTER BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the group footers. ",
+      "fieldNumber_": 14.05
+    },
+    {
+      "fieldNumber": 14.06,
+      "fieldName": "REPORT GROUP FOOTER ITALACS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the group footers. ",
+      "fieldNumber_": 14.06
+    },
+    {
+      "fieldNumber": 14.07,
+      "fieldName": "REPORT GROUP FOOTER UNDERLINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the group footers. ",
+      "fieldNumber_": 14.07
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "REPORT GROUP TITLE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Second group title ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "REPORT GROUP TITLE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Third group title. ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "REPORT ORIENTATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PROTRAIT;L:LANDSCAPE;A:AUTOMATIC;",
+      "helpText": "Set of codes to determine page orientation as follows:   CODE: P     WILL STAND FOR: PROTRAIT CODE: L     WILL STAND FOR: LANDSCAPE CODE: A     WILL STAND FOR: AUTOMATIC ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "REPORT BODY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORT BODY is currently a place holder for documentation and is not used. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "REPORT BODY MULTI LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate if items in the report body can span multiple lines. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "REPORT BODY FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Font name to use for the report body. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "REPORT BODY SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Font size to use for the report body. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "REPORT BODY BOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be made bold for the report body. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "REPORT BODY ITALICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font be itallicized for the report body. ",
+      "fieldNumber_": 20.06
+    },
+    {
+      "fieldNumber": 20.07,
+      "fieldName": "REPORT BODY UNDERLN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if the font will be underlined for the report body. ",
+      "fieldNumber_": 20.07
+    }
+  ],
+  "fieldCount": 75,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.871", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 19620.5,
+  "fileName": "*VEJD ROI AUTHORITY",
+  "globalRoot": "19620.5",
+  "globalReference": "^DSIR(19620.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTHORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "CONVERSION POINTER",
+      "dataType": "POINTER",
+      "rawType": "P19620.51'",
+      "required": false,
+      "pointerTo": 19620.51,
+      "fieldNumber_": 100.01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "19620.5", "field": .01, "type": "regular"},
+    {"name": "19620.5", "field": 100.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

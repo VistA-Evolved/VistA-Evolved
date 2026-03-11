@@ -1,0 +1,125 @@
+{
+  "fileNumber": 757.13,
+  "fileName": "SOURCE CATEGORY",
+  "globalRoot": "757.13",
+  "globalReference": "^LEX(757.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CATEGORY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of a terminology category specified by a source vocabulary (i.e., VA Drug Class as specified by NDF or Diagnostic class as specified by ICD). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CATEGORY IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A single code (i.e., NDF code AH200 for Antihistamines, Ethanolamine) or a range of codes (i.e., ICD range of codes 001-009 for Intestinal Infectious Diseases) assigned to the terminology category by the source vocabulary. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PARENT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P757.13'",
+      "required": false,
+      "pointerTo": 757.13,
+      "helpText": "This is the internal entry number in the Source Category file #757.13 where the parent category is located. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT CATEGORY IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If a source category has a parent, then the parent category identifier will be included.  It is a code or a range of codes assigned to the parent  category by the source vocabulary. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ANCESTOR CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P757.13'",
+      "required": false,
+      "pointerTo": 757.13,
+      "helpText": "This is the internal entry number (IEN) in the Source Category file #757.13 where the ancestral category is located.  Ancestral categories are  characterized as a category without a parent. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ANCESTOR CATEGORY IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the identifier of the ancestral category and consist of a code or a range of codes assigned by the source vocabulary. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FAMILY DESCENDANTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a listing of internal entry numbers starting with the ancestral category to the named category (.01 field).  The internal entry numbers are  delimited by the tilde (~) character.  <ANC>~<...>~<...>~<PAR>~<CATEGORY> ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FAMILY ANCESTORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a listing of internal entry numbers starting with the named category (.01 field) to the ancestral category.  The internal entry numbers are  delimited by the tilde (~) character.  <CAT>~<PAR>~<...>~<...>~<ANC> ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P757.14",
+      "required": false,
+      "pointerTo": 757.14,
+      "helpText": "This is a pointer to the Source file #757.14 containing the common and  acceptable name for the source of the category (i.e., NDF VA Drug Class, ICD Three Digit Classification, etc), and the source file or document  containing the category. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SYSTEM OR GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the system (i.e., cardiovascular, pulmonary, etc) or  group (pharmacy, etc) which is MOST frequently associated with the source category. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AAID", "field": },
+    {"name": "ACID", "field": },
+    {"name": "ACP", "field": },
+    {"name": "APC", "field": },
+    {"name": "APID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "757.13", "field": .01, "type": "regular"},
+    {"name": "757.13", "field": .01, "type": "regular"},
+    {"name": "757.13", "field": .01, "type": "regular"},
+    {"name": "757.13", "field": 1, "type": "regular"},
+    {"name": "757.13", "field": 3, "type": "regular"},
+    {"name": "757.13", "field": 3, "type": "regular"},
+    {"name": "757.13", "field": 3, "type": "regular"},
+    {"name": "757.13", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "fileNumber": 404.56,
+  "fileName": "TEAM AUTOLINK",
+  "globalRoot": "404.56",
+  "globalReference": "^SCTM(404.56,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEAM",
+      "dataType": "POINTER",
+      "rawType": "RP404.51'",
+      "required": true,
+      "pointerTo": 404.51,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTOLINK",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "Links for automatic patient addition/removal based on ADT movements. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "APRIMARY", "field": },
+    {"name": "APRIMARY1", "field": },
+    {"name": "B", "field": },
+    {"name": "404.56", "field": .01, "type": "regular"},
+    {"name": "404.56", "field": .01, "type": "regular"},
+    {"name": "404.56", "field": .01, "type": "regular"},
+    {"name": "404.56", "field": .02, "type": "regular"},
+    {"name": "404.56", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S DIY=$S($D(@(DIC_(+Y)_\",\"\"0\"\")\")):$P(^(\"0\"),U,2),1:\"\") D NAME^DICM2 W \"   \",DINAME,@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

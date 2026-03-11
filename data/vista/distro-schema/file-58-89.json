@@ -1,0 +1,97 @@
+{
+  "fileNumber": 58.89,
+  "fileName": "CS ERROR LOG",
+  "globalRoot": "58.89",
+  "globalReference": "^PSD(58.89,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the internal entry number for this Controlled Substances error. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P58.81'",
+      "required": false,
+      "pointerTo": 58.81,
+      "helpText": "This field contains a pointer to the Controlled Substances transaction generating this error. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the Controlled Substances error occurred. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CORRECTED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the name of the pharmacy or nursing supervisor correcting this error. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME CORRECTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Controlled Substances error was corrected. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESOLUTION",
+      "dataType": "SUBFILE",
+      "rawType": "58.895",
+      "required": false,
+      "helpText": "The final resolution for this Controlled Substances error. ",
+      "isMultiple": true,
+      "subFileNumber": 58.895,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P58.8'",
+      "required": false,
+      "pointerTo": 58.8,
+      "helpText": "This field contains a pointer to the Controlled Substances location, dispensing vault or NAOU, where this error occurred. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "B", "field": },
+    {"name": "58.89", "field": .01, "type": "regular"},
+    {"name": "58.89", "field": 1, "type": "regular"},
+    {"name": "58.89", "field": 2, "type": "regular"},
+    {"name": "58.89", "field": 4, "type": "regular"},
+    {"name": "58.89", "field": 6, "type": "regular"},
+    {"name": "58.89", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSD(58.8,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(58.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

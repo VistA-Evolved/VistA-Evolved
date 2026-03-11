@@ -1,0 +1,78 @@
+{
+  "fileNumber": 25.11,
+  "fileName": "HEALTH BENEFIT PLAN",
+  "globalRoot": "25.11",
+  "globalReference": "^DGHBP(25.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME ",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the Health Benefit Plan name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PLAN CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field contains the Plan Code associated with the Health Benefit Plan. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "25.13",
+      "required": false,
+      "helpText": "This field contains the short description associated with the Health  Benefit Plan. ",
+      "isMultiple": true,
+      "subFileNumber": 25.13,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "25.14",
+      "required": false,
+      "helpText": "This field contains the detailed long description associated with the  Health Benefit Plan. ",
+      "isMultiple": true,
+      "subFileNumber": 25.14,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COVERAGE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Coverage Code associated with the Health Benefit Plan. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Determine if Health Benefit Plan is inactive. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "25.11", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

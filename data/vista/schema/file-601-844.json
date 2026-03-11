@@ -1,0 +1,30 @@
+{
+  "fileNumber": 601.844,
+  "fileName": "MH ADMINISTRATION SOURCE",
+  "globalRoot": "601.844",
+  "globalReference": "^YTT(601.844,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is used to provide additional information about how the  administration was entered.  This will help identify whether the  administration originated from the Windows application, web, iPad, etc. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "601.844", "field": .01, "type": "regular"},
+    {"name": "601.844", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 433.001,
+  "fileName": "AR SUSPENSION TYPES",
+  "globalRoot": "433.001",
+  "globalReference": "^PRCA(433.001,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ3",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the code for this suspension type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This describes the suspension type in more detail. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field will be marked inactive if a suspension type is determined to  be no longer in use. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "433.001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

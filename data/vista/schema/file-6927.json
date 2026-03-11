@@ -1,0 +1,75 @@
+{
+  "fileNumber": 6927,
+  "fileName": "LOCKS",
+  "globalRoot": "6927",
+  "globalReference": "^ENG(\"LK\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Unique identification symbol as it appears on key itself. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "CTRL KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Use this field for control key or keyway information. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GGM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:KEYED TO GGM;N:NOT KEYED TO GGM;",
+      "helpText": "Can the great grand master key be used in lieu of this key? ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MASTER",
+      "dataType": "SUBFILE",
+      "rawType": "6927.01",
+      "required": false,
+      "helpText": "LIST OF MASTER KEYS FOR THIS LOCK ",
+      "isMultiple": true,
+      "subFileNumber": 6927.01,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMBINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Keying combination for this lock.  Optional information. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE CHANGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date lock was last reconfigured. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6927", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "fileNumber": 1.5218,
+  "fileName": "SQLI_PRIMARY_KEY",
+  "globalRoot": "1.5218",
+  "globalReference": "^DMSQ(\"P\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "P_TBL_ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "RP1.5216'",
+      "required": true,
+      "pointerTo": 1.5216,
+      "helpText": "IEN of table element in SQLI_TABLE_ELEMENT ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "P_COLUMN",
+      "dataType": "POINTER",
+      "rawType": "RP1.5217'",
+      "required": true,
+      "pointerTo": 1.5217,
+      "helpText": "IEN of column in SQLI_COLUMN corresponding to this primary key ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "P_SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "Sequence number of primary key ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "P_START_AT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial value of key before a $ORDER loop ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "P_END_IF",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "M expression in key value, {K}, which, if false, ends the $ORDER loop ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "P_ROW_COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Estimated number of rows per record set at this level ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "P_PRESELECT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Code to be executed before selecting this key, before optimization. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "P_KEY_FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P1.5213'",
+      "required": false,
+      "pointerTo": 1.5213,
+      "helpText": "Key formats map internal storage values to their value when used as keys. In general, information is lost in the process; they can't be converted back. This means data must be converted to key format before it can be compared to such a key. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "1.5218", "field": .01, "type": "regular"},
+    {"name": "1.5218", "field": 1, "type": "regular"},
+    {"name": "1.5218", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

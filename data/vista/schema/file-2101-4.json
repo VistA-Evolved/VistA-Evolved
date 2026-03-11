@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2101.4,
+  "fileName": "GENERIC CODE SHEET TEMPLATE MAPS (not used)",
+  "globalRoot": "2101.4",
+  "globalReference": "^GECS(2101.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the name of the input template used when creating or editing code sheets. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAP",
+      "dataType": "SUBFILE",
+      "rawType": "2101.41",
+      "required": false,
+      "helpText": "This field stores a map of the input template in the form \\'field number' T(for output transform);'global node';'piece'.  For example \\1200T;VOLU;1 indicates the field number 1200 with a defined output transform, with data located on global node VOLU, piece number 1. ",
+      "isMultiple": true,
+      "subFileNumber": 2101.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2101.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

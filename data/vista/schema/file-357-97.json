@@ -1,0 +1,48 @@
+{
+  "fileNumber": 357.97,
+  "fileName": "ENCOUNTER FORM COUNTERS",
+  "globalRoot": "",
+  "globalReference": "^IBD(357.97,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LAST FIELD LOCATOR TABLE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "Used to assign a numeric ID to the FIELD LOCATOR TABLEs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAST PRINTED FORM ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Used to assign a numeric ID to each printed encounter form. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST UNKNOWN IMAGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This number is used to store images where the form id or form type could not be determined.  The alogrythm for storing images is:    1.  If form type, form id, and page are known, and the form passed        validation, the image is stored as Xnnnnnn.tif, where X is the        workstation identifier, and the first 6 n's are the form ID and        the last n is the page number, for example, if workstation A        scanned page 1 of form id 87753 the image would be stored as        A877531.tif.  (V",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.97", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

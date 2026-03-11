@@ -1,0 +1,107 @@
+{
+  "fileNumber": 62.1,
+  "fileName": "DELTA CHECKS",
+  "globalRoot": "62.1",
+  "globalReference": "^LAB(62.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the delta check.  It may be either an absolute or a percentage check.  It may also be used for making range comparisons. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "XECUTABLE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "MUMPS code describing the delta check. Example:  For the Delta Checks Name \"ABS VALLUE\" (absolute value) the Executable code is Q:X=\"\"!(X1=\"\")!(+X2=0) S Y=0,X3=X-X1 S:X3<0 X3=-X3 I X3>X2 S Y=1 W \"  <<DELTA CHECK>>  \",7,X3. This statement ends the routine if the response is null (carriage return), if the previous value (X1) is null, or if the maximum difference is 0. If not, the difference between current and previous value (X3=X-X1) is computed and converted to the absolute value and the message",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "OVERFLOW 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field provides room for continuation of the code in the XECUTABLE CODE field, if needed. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "62.11",
+      "required": false,
+      "helpText": "This field contains information about how the delta check is used, or what it does. ",
+      "isMultiple": true,
+      "subFileNumber": 62.11,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SITE NOTES DATE",
+      "dataType": "DATE",
+      "rawType": "62.131D",
+      "required": false,
+      "helpText": " The date of this particular note. ",
+      "isMultiple": true,
+      "subFileNumber": 62.131,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "TEST NAME FOR INPUT VALUE 1",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": " This field is a pointer to a test that will contain the result value of  the first incoming test. The result value should be stored in the  variable LRSB(X) - where X is the data name IEN from ^DD(63.04. ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 60.2,
+      "fieldName": "TEST NAME FOR INPUT VALUE 2",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": " This field is a pointer to a test that will contain the result value of the second incoming test. The result value should be stored in the variable LRSB(X) - where X is the data name IEN from ^DD(63.04. ",
+      "fieldNumber_": 60.2
+    },
+    {
+      "fieldNumber": 60.3,
+      "fieldName": "TEST NAME FOR INPUT VALUE 3",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": " This field is a pointer to a test that will contain the result value of the third incoming test. The result value should be stored in the variable LRSB(X) - where X is the data name IEN from ^DD(63.04. ",
+      "fieldNumber_": 60.3
+    },
+    {
+      "fieldNumber": 61.1,
+      "fieldName": "TEST NAME FOR OUTPUT VALUE 1",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": "This field is a pointer to a test that will contain the calculated value of the first outgoing test. The calculated value should be stored in the  variable LRSB(X) - where X is the data name IEN from ^DD(63.04. ",
+      "fieldNumber_": 61.1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

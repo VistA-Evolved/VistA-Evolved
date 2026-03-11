@@ -1,0 +1,1029 @@
+{
+  "fileNumber": 2264,
+  "fileName": "ASISTS COMPENSATION CLAIM (CA7)",
+  "globalRoot": "2264",
+  "globalReference": "^OOPS(2264,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CA7 CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the ASISTS case number for this CA-7. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "DATE CA7 CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is a system supplied date that the CA-7 was created. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "PERSON THAT CREATED CA7",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field will store the DUZ for the person who created the CA-7. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "ASISTS RECORD",
+      "dataType": "POINTER",
+      "rawType": "P2260'",
+      "required": false,
+      "pointerTo": 2260,
+      "helpText": "This field will link an ASISTS Claim to this CA-7. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "EMPLOYEE SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the employee's SSN.  It is stored in this file as well as the ASISTS ACCIDENT REPORTING File (#2260) to streamline CA-7 case number lookup. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "EMPLOYEE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the employee who is filing for compensation. ",
+      "fieldNumber_": .9
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWCP FILE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the OWCP File Number (also known as the DOL Case Number) for this CA-7. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAILING STREET ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street portion of the employee's mailing address and is collected each time as it may be different. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAILING CITY ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city portion of the employee's mailing address. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAILING STATE ADD",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state portion of the employee's mailing address. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAILING ZIPCODE ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code portion of the employee's mailing address. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EMPLOYEE EMAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's email address if they have one. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE OF INJURY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the injury or illness occurred. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EMPLOYEE PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's contact phone number. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "EMPLOYEE FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's fax number if they have one. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TYPE COMPENSATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Leave without pay;2:Leave buy back;3:Other wage loss;4:Schedule Award;",
+      "helpText": "This field will contain the type of compensation being filed for, for this claim.  Only one type can be selected per claim. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CLAIM START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the first date compensation for this claim is being filed for. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CLAIM END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the ending date compensation for this claim is being filed for. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CLAIM INTERMITTENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the claim dates were continuous or not.  If  not continuous enter Yes, otherwise enter No. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "OTHER WAGE TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the description of other wage loss if that type of compensation is being claimed. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EXTERNALLY WORKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee was employed outside their federal job at any time during the claim date range. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BUSINESS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the business where the employee worked, if they worked outside their federal job during the claim date range. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "BUSINESS STREET ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street portion of the business address where the employee worked. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "BUSINESS CITY ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city portion of the business address where the employee worked. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "BUSINESS STATE ADD",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the state portion of the business where the employee worked. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BUSINESS ZIPCODE ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the zip code portion of the business where the employee worked. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE BEGAN OUTSIDE WORK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date contains the first date the employee began working at an outside job during the claim period. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE END OUTSIDE WORK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last day the employee worked outside employment during the claim date range. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "OUTSIDE WORK DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field describes the type of outside work the employee performed for an employer while working outside their federal job. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "1ST CLAIM FILED FOR INCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate if this is the first compensation claim filed for a particular CA-1 or CA-2. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CHANGES SINCE LAST CLAIM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates if the employee's dependent or direct deposit information has changed or if they have filed a claim for U.S. Civil Service, other  federal retirement or disability law, or the Department of Veterans Affairs. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DEPENDENT INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "2264.026A",
+      "required": false,
+      "helpText": "This multiple contains the demographic information for dependents living with the employee who is filing a request for compensation claim. ",
+      "isMultiple": true,
+      "subFileNumber": 2264.026,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DEP SUPPORT PAYMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the employee is making support payments for any dependent listed in Section 5. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DEP SUPPORT COURT ORDERED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee is making court ordered support payments for any dependent listed in section 5. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "SUPPORT PAY RECIPIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the individual receiving support payments for a dependent listed in section 5. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SUPPORT PAY STREET ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the street address of the individual receiving support  payments. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SUPPORT PAY CITY ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city address of the individual receiving support payments. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SUPPORT PAY STATE ADD",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the state address of the individual receiving support payments. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SUPPORT PAY ZIPCODE ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the zip code address of the individual receiving support payments. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "THIRD PARTY CLAIM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates if the employee will file a claim against a third party for the injury or illness.  This person or organization must be someone other than the employee or Federal government. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PRIOR VA DISABILITY BENEFIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee has ever applied for or received disability benefits from the Department of Veterans Affairs. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "PRIOR DISABILITY CLAIM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the VA claim number from a previous disability claim filed against or received from the Department of Veterans Affairs. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "PRIOR DISABILITY VA OFFICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the full name of the VA office where the prior claim was filed. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PRIOR DISABILITY STREET ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the street portion of the address for the VA office where the prior claim was filed. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PRIOR DISABILITY CITY ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city portion of the address for the VA office where the prior claim was filed. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PRIOR DISABILITY STATE ADD",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the state portion of the address for the VA office where the previous claim was filed. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PRIOR DISABILITY ZIPCODE ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the zip code portion of the address for the VA office where the previous claim was filed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 41.3,
+      "fieldName": "PRIOR DISABILITY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will describe the nature of the prior disability. ",
+      "fieldNumber_": 41.3
+    },
+    {
+      "fieldNumber": 41.6,
+      "fieldName": "PRIOR DISABILITY MONTHLY AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the amount of the monthly disability received by the employee. ",
+      "fieldNumber_": 41.6
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PREV BEN FED RET/DISA LAW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee has applied for or received payments under any other Federal Retirement or Disability law. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PREV BEN FED CLAIM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the claim number for the previous Federal Retirement or Disability law claim. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PREV BEN FED ANNUITY START DTE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the previously filed Federal Retirement or Disability claim annuity first began. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "PREV BEN FED PAY AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the amount of the monthly payment for the previous Federal Retirement or Disability law claim. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PREV BEN FED RETIREMENT SYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Retirement system of the previously filed claim. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "EMP NAME FOR CA7",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the employee that is signing the CA-7. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "EMP CA7 SIGNATURE BLOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the validation code for the signature block for the  employee signing the CA-7. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "EMP CA7 DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the employee electronically signed the CA-7. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DATE OF INJURY (PAGE 2)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date of injury or illness for the claim. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "BASE PAY TIME OF INCIDENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the base pay for the employee at the time of the incident. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PAY RATE TIME OF INCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:Hourly;A:Annum;",
+      "helpText": "This field contains the pay rate for the employee at the time of the incident. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "GRADE AT TIME OF INCIDENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the employee's grade at the time of the incident. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "STEP AT TIME OF INCIDENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the employee's step at the time of the incident. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "ADD PAY TYPE",
+      "dataType": "POINTER",
+      "rawType": "2264.055P",
+      "required": false,
+      "helpText": "This multiple contains the additional pay type, the amount of additional pay, and the pay rate. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "DATE EMPLOYEE STOPPED WORK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the employee stopped working for this incident. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "BASE PAY WHEN STOPPED WORK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the base pay amount the employee was earning at the time they stopped working as a result of this incident. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "PAY RATE WHEN STOPPED WORK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "H:Hourly;A:Annum;",
+      "helpText": "This is the pay rate for the employee at the time they stopped working after the incident. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "GRADE WHEN STOPPED WORK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the grade for the employee when they stopped work as a result of this incident. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "STEP WHEN STOPPED WORK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the step the employee was when they stopped work as a result of the incident. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ADD PAY WHEN WORK STOPPED",
+      "dataType": "POINTER",
+      "rawType": "2264.061PA",
+      "required": false,
+      "helpText": "This multiple contains the additional pay type, the amount of additional pay, and pay rate the employee was earning at the time the employee stopped work as a result of the incident. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "REGULAR WKLY 40 HR SCHEDULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee works a fixed, regular 40 hour weekly schedule. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "REGULAR WORK SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a listing of the days the employee is regularly scheduled to work, if working a fixed 40 hour week.  Examples of input are:   For Monday through Friday, enter 2-6   For Sunday, Wednesday through Saturday, enter 1,4-7 or 1,4,5,6,7 ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "LENGTH TIME IN POSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates if the employee was working in the position for at least 11 months prior to the incident. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "POSITION AVAILABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates if the position the employee held prior to the incident would have been available for 11 months if the injury had not occurred. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "IRREGULAR WORK SCHEDULE",
+      "dataType": "SUBFILE",
+      "rawType": "2264.066",
+      "required": false,
+      "helpText": "This multiple collects the employees work daily schedule for the 2 weeks prior to the incident.  It includes the start and end date as well as the number of  hours worked each day.  The software will prevent data from being entered for more than 2 weeks.  ",
+      "isMultiple": true,
+      "subFileNumber": 2264.066,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "HLTH BENEFITS WHEN PAY STOPPED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the employee had health coverage under FEHBP on the date their pay stopped. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "HLTH BENEFITS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the employee's health benefits code. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "BASIC LIFE INSURANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee was enrolled in basic life insurance coverage on the day that their pay stopped. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "OPTIONAL LIFE INSURANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the employee was enrolled in optional life insurance coverage on the date their pay stopped. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "OPT LIFE INSURANCE CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the class of the optional life insurance if the employee had coverage on the date that their pay stopped. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "RETIREMENT SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field will indicate whether the employee was enrolled in a retirement system at the time that their pay stopped. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "RETIREMENT SYSTEM PLAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CSRS;2:FERS;3:OTHER;",
+      "helpText": "This field will indicate what type of retirement system the employee had at the time their pay stopped. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "COP RECEIVED START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the begin date of continuation of pay that the employee received. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "COP RECEIVED END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date of continuation of pay that the employee received. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "COP INTERMITTENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee received continuation of pay continuously or if there was a break in benefits. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "PAY STATUS DURING CLAIM",
+      "dataType": "SET",
+      "rawType": "2264.077SA",
+      "required": false,
+      "helpText": "This multiple contains the pay status, start and end date and whether the pay status for the date range entered was continuous or intermittent. ",
+      "isMultiple": true,
+      "subFileNumber": 2264.077,
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "EMPLOYEE RETURNED TO WORK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee returned to work during this CA-7 claim. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "DATE EMPLOYEE RETURNED TO WORK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the employee returned to work after the incident relating to this CA-7 claim. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "RETURNED TO PRE-INJURY JOB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the employee returned to their regular job - the one they were working prior to the incident that resulted in this claim. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "REASON NOT RETURN TO JOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reason the employee was not able to return to their pre-incident 'regular' job.  ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains any remarks that the workers' compensation specialist needs to make regarding this CA-7 claim. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "WC NAME FOR CA7",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the Workers' Comp (WC) specialist who signed the claim. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "WC CA7 ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the WC specialist's electronic signature who signed the claim. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "WC CA7 DATE OF SIGNATURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the WC specialist electronically signed the claim. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "WC CA7 TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the WC specialist's official title. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "AGENCY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the official name of the agency whose WC specialist is signing this claim.  ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "OWCP CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the individual who OWCP should contact should they need additional information regarding this claim. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "OWCP CONTACT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the title for the OWCP contact person should OWCP need to contact them regarding this claim. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "OWCP CONTACT PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the telephone number for the individual that OWCP should contact if they need additional information regarding this claim. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "OWCP CONTACT FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the fax number for the individual that OWCP should contact if they need additional information regarding this claim. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "OWCP CONTACT EMAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the email address for the individual that OWCP should contact if they need additional information regarding this claim. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "WEEK WORK STOPPED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The Workers' Comp specialist will enter the week of the pay period that worked stopped. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "DAY OF WEEK WORK STOPPED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The Workers' Comp specialist will enter an number indicating what day of the week work stopped.  Sunday = 1, Monday = 2, etc.  This information will be used in conjunction with the WEEK WORKED STOPPED for calculating continuation of pay. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "EMP VALIDATION CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the validation code for verification that the data has not changed after the employee signed the CA-7 case. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the version number used to encode the electronic  signature code for the CA-7. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "WC VALIDATION CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the validation code for verification that the data has not changed after the workers' compensation specialist has signed the CA-7 case. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "DATE CA7 RCVD FROM EMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the CA7 form was received from the employee. ",
+      "fieldNumber_": 98
+    }
+  ],
+  "fieldCount": 106,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "SSN", "field": },
+    {"name": "2264", "field": .01, "type": "regular"},
+    {"name": "2264", "field": .7, "type": "regular"},
+    {"name": "2264", "field": .8, "type": "regular"},
+    {"name": "2264", "field": .9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

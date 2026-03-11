@@ -1,0 +1,202 @@
+{
+  "fileNumber": 8989.51,
+  "fileName": "PARAMETER DEFINITION",
+  "globalRoot": "8989.51",
+  "globalReference": "^XTV(8989.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the parameter.  It should be namespaced according to the  package from which the parameter originated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the displayable name for the parameter (allows mixed case,  non-namespaced names). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MULTIPLE VALUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "If this field is set to 'Yes', multiple instances of the parameter will be  allowed for a single entity.  Otherwise, the value of the instance field for a given Entity-Parameter combination will always be '1'. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSTANCE TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text term that can be used when prompting for a new instance of  the parameter (in the case where the parameter in multiple valued).  If not  entered, the word \"Instance\" will be used. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VALUE TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains text that is issued as a prompt for the value.  If nothing is here, the prompt will be the word 'Value:'. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROHIBIT EDITING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field prevents the parameter value from being edited with Fileman or any Parameters tools. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "VALUE DATA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:date/time;F:free text;N:numeric;S:set of codes;Y:yes/no;P:pointer;W:word processing;M:M code;C:constant;",
+      "helpText": "This is the type of data this parameter will contain.  This field is used to  define a call to the reader (^DIR) in most cases. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "VALUE DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a string that may be used to further specify the data type.  The  string stored here should be appropriate for the second ^-piece of DIR(0)  when used with the data type field. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "VALUE HELP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a line of help text that is displayed when the user  requests help or encounters an error while entering the VALUE field in the  PARAMETERS file. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VALUE VALIDATION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains the M code that is placed in the third piece of DIR(0) when validating a value in the PARAMETERS file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VALUE SCREEN CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains M code that is used to screen allowable entries for the  VALUE field in the PARAMETERS file.  The code is placed in DIR(\"S\") when  validating the entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "KEYWORD",
+      "dataType": "SUBFILE",
+      "rawType": "8989.514",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8989.514,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "INSTANCE DATA TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:date/time;F:free text;N:numeric;S:set of codes;Y:yes/no;P:pointer;",
+      "helpText": "This is the type of data that is contained in the INSTANCE field of the  PARAMETERS file, if multiple parameter instances per entity are allowed.   This field is used to define a call to the reader. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "INSTANCE DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This may be used to further define the data type for the INSTANCE field of  the parameter.  The string stored here should be appropriate for the second  ^-piece of DIR(0) when used with the data type field. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "INSTANCE HELP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a line of help text that is displayed when the user  requests help or encounters an error while entering the INSTANCE field of  the PARAMETERS file. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INSTANCE VALIDATION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains M code that is placed in the third piece of DIR(0) when  validating the INSTANCE field in the PARAMETERS file. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INSTANCE SCREEN CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains M code that is used to screen allowable entries for the  INSTANCE field in the PARAMETERS file.  The code is placed in DIR(\"S\") when  validating the entry. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8989.512",
+      "required": false,
+      "helpText": "A description of the parameter may be entered here. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.512,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ALLOWABLE ENTITIES",
+      "dataType": "SUBFILE",
+      "rawType": "8989.513I",
+      "required": false,
+      "helpText": "This multiple contains a list of entities (pointers to files) for which the  parameter may be validly set. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.513,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "8989.51", "field": .01, "type": "regular"},
+    {"name": "8989.51", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N X S X=^(0) D EN^DDIOL($P(X,U,2),\"\",\"?36\")"}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "fileNumber": 40.6,
+  "fileName": "SD TELE HEALTH STOP CODE FILE",
+  "globalRoot": "40.6",
+  "globalReference": "^SD(40.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STOP CODE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ9",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the stop code number from the Clinic Stop File (#40.7). ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "40.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

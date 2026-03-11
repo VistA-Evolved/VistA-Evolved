@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.34,
+  "fileName": "BPS NCPDP PRESCRIBER PLACE OF SERVICE",
+  "globalRoot": "9002313.34",
+  "globalReference": "^BPS(9002313.34,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ3",
+      "length": 3,
+      "required": true,
+      "helpText": "Prescriber Place of Service Code being sent with the claim. This is based on the NCPDP Standards for field D57-RG. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ70",
+      "length": 70,
+      "required": true,
+      "helpText": "Textual explanation of the Prescriber Place of Service Code. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.34", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

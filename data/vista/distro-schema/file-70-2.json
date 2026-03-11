@@ -1,0 +1,65 @@
+{
+  "fileNumber": 70.2,
+  "fileName": "NUC MED EXAM DATA",
+  "globalRoot": "70.2PIA",
+  "globalReference": "^RADPTN(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "    The name of the patient for this exam. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXAM DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date/time this exam took place and should be an exact match to an existing exam in the Rad/Nuc Med Patient file #70.  It is automatically populated when records are created in file 70.2. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "The case number for this exam should be an exact match to an existing case number in the Rad/Nuc Med patient file #70. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "RADIOPHARMACEUTICALS",
+      "dataType": "POINTER",
+      "rawType": "70.21PA",
+      "required": false,
+      "helpText": "If radiopharmaceutical(s) have been associated with a nuclear med procedure, they will be automatically entered by the system when the case is registered.  Radiopharmaceuticals associated with a case may be deleted or added during case editing. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "70.2", "field": .01, "type": "regular"},
+    {"name": "70.2", "field": .01, "type": "regular"},
+    {"name": "70.2", "field": 2, "type": "regular"},
+    {"name": "70.2", "field": 2, "type": "regular"},
+    {"name": "70.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "D EN^DDIOL(\"Exam Date: \"_$$FMTE^XLFDT($P(^(0),\"^\",2),\"1P\"),\"\",\"?0\")"},
+    {"field": 3, "value": "D EN^DDIOL(\"Case No: \"_$P(^(0),\"^\",3),\"\",\"?55\")"}
+  ]
+}

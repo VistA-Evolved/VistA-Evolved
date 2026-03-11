@@ -1,0 +1,369 @@
+{
+  "fileNumber": 366.03,
+  "fileName": "PLAN",
+  "globalRoot": "366.03",
+  "globalReference": "^IBCNR(366.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Plan's identifier (ID / VA National Plan ID). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Plan's long name (VA National Plan Name). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NAME - SHORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's short name. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BC:Blue Cross;CO:Commercial;TC:TRICARE;UC:Uncategorized;",
+      "helpText": "The Plan's type code. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REGION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's geographical region (e.g. MD). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time associated with the creation of Plan file (#366.03) entry. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PRIMARY CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's primary contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PRIMARY CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's primary contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PRIMARY CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's primary contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ALTERNATE CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's alternate contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ALTERNATE CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's alternate contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ALTERNATE CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's alternate contact degree code (e.g. MD). ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTACT MEANS",
+      "dataType": "SUBFILE",
+      "rawType": "366.032",
+      "required": false,
+      "helpText": "The Plan's Contact Means sub-file. Applies to both the Plan's primary and alternate contacts. ",
+      "isMultiple": true,
+      "subFileNumber": 366.032,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "366.033P",
+      "required": false,
+      "helpText": "The Plan's Application (electronic interface application) sub-file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "PHARMACY BENEFITS MANAGER NAME",
+      "dataType": "POINTER",
+      "rawType": "P366.02'",
+      "required": false,
+      "pointerTo": 366.02,
+      "helpText": "The Plan's Pharmacy Benefits Manager (PBM) Name. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "BANKING IDENTIFICATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Banking Identification Number (BIN). Used for NCPDP transmissions. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "PROCESSOR CONTROL NUMBER (PCN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's Processor Control Number (PCN). Used for NCPDP transmissions. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "NCPDP PROCESSOR NAME",
+      "dataType": "POINTER",
+      "rawType": "P366.01'",
+      "required": false,
+      "pointerTo": 366.01,
+      "helpText": "The Plan's NCPDP Processor Name. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "ENABLED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Is the Plan enabled for NCPDP transmissions? ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "SOFTWARE VENDOR ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's software vendor / certification identifier (ID). Used for NCPDP transmissions. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "BILLING PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Billing Payer Sheet Name. Defines the NCPDP Billing (B1) Record format. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "REVERSAL PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Reversal Payer Sheet Name. Defines the NCPDP Reversal (B2) Record format. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "REBILL PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Rebill Payer Sheet Name. Defines the NCPDP Rebill (B3) Record format. ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "MAXIMUM NCPDP TRANSACTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The Plan's maximum NCPDP transactions permitted within an NCPDP transmission. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "TEST BILLING PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Test Billing Payer Sheet Name. Defines the Test NCPDP Billing (B1) Record format. ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "TEST REVERSAL PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Test Reversal Payer Sheet Name. Defines the Test NCPDP Reversal (B2) Record format. ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 10.13,
+      "fieldName": "TEST REBILL PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Plan's Test Rebill Payer Sheet Name. Defines the Test NCPDP Rebill (B3) Record format. ",
+      "fieldNumber_": 10.13
+    },
+    {
+      "fieldNumber": 10.14,
+      "fieldName": "TEST ELIGIBILITY SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the Plan's Test Eligibility Verification Payer Sheet Name, which  gives the specifications for a Eligibility Verification request sent for  this plan.  This payer sheet is manually entered by the user to override  the normal Eligibility Payer sheet in the ELIGIBILITY PAYER SHEET NAME (#10.15) field and is used when the site needs to use a payer sheet other than the 'standard' one. ",
+      "fieldNumber_": 10.14
+    },
+    {
+      "fieldNumber": 10.15,
+      "fieldName": "ELIGIBILITY PAYER SHEET NAME",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the Plan's Eligibility Verification Payer Sheet Name, which gives the specifications for a Eligibility Verification request sent for this plan. ",
+      "fieldNumber_": 10.15
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "RX PRIMARY CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) primary contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "RX PRIMARY CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) primary contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "RX PRIMARY CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) primary contact degree code (e.g. MD). ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "RX ALTERNATE CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) alternate contact name in general VA name format (Family,Given Middle/MI Suffix). ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 11.05,
+      "fieldName": "RX ALTERNATE CONTACT PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) alternate contact prefix / title (e.g. Dr.). ",
+      "fieldNumber_": 11.05
+    },
+    {
+      "fieldNumber": 11.06,
+      "fieldName": "RX ALTERNATE CONTACT DEGREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Plan's pharmacy (RX) alternate contact degree code (e.g. MD). ",
+      "fieldNumber_": 11.06
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RX CONTACT MEANS",
+      "dataType": "SUBFILE",
+      "rawType": "366.0312",
+      "required": false,
+      "helpText": "The Plan's Pharmacy (RX) Contact Means sub-file. Applies to both the Plan's pharmacy (RX) primary and alternate contacts. ",
+      "isMultiple": true,
+      "subFileNumber": 366.0312,
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "366.03", "field": .01, "type": "regular"},
+    {"name": "366.03", "field": .02, "type": "regular"},
+    {"name": "366.03", "field": 10.02, "type": "regular"},
+    {"name": "366.03", "field": 10.03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 10.02, "value": "W:$D(^(10)) \"   \",$P(^(10),U,2)"},
+    {"field": 10.03, "value": "W:$D(^(10)) \"   \",$P(^(10),U,3)"}
+  ]
+}

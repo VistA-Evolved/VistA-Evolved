@@ -1,0 +1,168 @@
+{
+  "fileNumber": 45.84,
+  "fileName": "PTF CLOSE OUT",
+  "globalRoot": "45.84PI",
+  "globalReference": "^DGP(45.84,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the IFN of associated file entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PTF RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP45'X",
+      "required": true,
+      "pointerTo": 45,
+      "helpText": "This field contains a pointer to the PTF record that has been closed out. This entry is DINUMed with the PTF File (#45). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This is the admission date as it appears in the PTF record in file (#45). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLOSE OUT DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time this record was closed out by the  coding clerks. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST CLOSED OUT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to file (#200) that indicates which clerk closed out this PTF record. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RELEASE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the PTF record was released for transmission to Austin. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to file (#200) indicating which clerk released the PTF record for transmission to Austin. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DRG",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "This field contains a pointer to the DRG File (#80.2) which is the DRG at the time of close out for this patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STORED(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (0) node of the patient's record at the time the PTF record was closed out. The information contained in this node is demographic information about the patient. For a complete description of the contents of this field refer to the Patient File (#2). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STORED(.11)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.11) node of the patient's record at the of close out. The patients current address is contained in this node. For a complete description of the contents of this field refer to the Patient File (#2). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STORED(.52)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.52) node of the patient's record at the time of close out. The information contained in this node includes POW information. For a complete description of the contents of this field refer to the Patient File (#2). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "STORED(.321)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.321) node of the patient's record at the time of close out. The following information is contained in the (.321) node: Agent Orange,  Radiation and Vietnam Service information. For a complete description of the (.321) node refer to the Patient File (#2). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "STORED(.32)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.32) node of the patient's record at the time of close out. Information about the patients' military service is stored in this node. For a complete description of the (.32) node refer to the Patient File (#2). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STORED(57)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.56) node of the patient's record at the time of close out. This node contains information relating to spinal cord injury. For a complete description of the (.56) node refer to the Patient File (#2). ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STORED(.3)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the (.3) node of the patient's record at the time of close out. This node contains information about monetary benefits recieved by the patients. For a complete description of the (.3) node refer to the Patient File (#2). ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "45.84", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "45.84", "field": .01, "type": "regular"},
+    {"name": "45.84", "field": 2, "type": "regular"},
+    {"name": "45.84", "field": 3, "type": "regular"},
+    {"name": "45.84", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .01, "value": "I $D(^DGPT(+Y,0)) W \"  \",$P(^DPT(+^DGPT(+Y,0),0),U,9) I $D(^DGP(45.84,+Y,0))"},
+    {"field": 1, "value": "I $D(^DGPT(+Y,0)) W \"  \",\"Admitted: \",$E($P(^DGPT(+Y,0),U,2),4,5)_\"-\"_$E($P(^(\"0\"),U,2),6,7)_\"-\"_$E($P(^(\"0\"),U,2),2,3) S %=^DGP(45.84,+Y,0) K %"}
+  ]
+}

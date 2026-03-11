@@ -1,0 +1,57 @@
+{
+  "fileNumber": 6914.9,
+  "fileName": "NATIONAL EIL",
+  "globalRoot": "6914.9",
+  "globalReference": "^ENG(6914.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Two digit Equipment Inventory Listing (EIL) code established by VACO Directive. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the EIL code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Cost Center (if any) that is linked to the EIL code. This will be used as the cost center of any equipment entries whose CMR begins with the national EIL code. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADMINISTRATIVE/OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P6914.7'",
+      "required": false,
+      "pointerTo": 6914.7,
+      "helpText": "Administrative/Office (A/O) for the EIL. If a value is entered here then FA Documents whose CMR value starts with the EIL are required to use this A/O. This field should be left blank if there is more than one appropriate A/O code for the EIL. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "6914.9", "field": .01, "type": "regular"},
+    {"name": "6914.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

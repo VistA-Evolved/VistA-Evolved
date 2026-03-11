@@ -1,0 +1,28 @@
+{
+  "fileNumber": 2006.171,
+  "fileName": "MUSE TEST TYPES",
+  "globalRoot": "2006.171",
+  "globalReference": "^MAG(2006.171,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEST TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "The TEXT of the Test Type that is entered into this field must EXACTLY Match the TEXT of the Test Type on the MUSE System ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.171", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

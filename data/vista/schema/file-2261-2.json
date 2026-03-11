@@ -1,0 +1,41 @@
+{
+  "fileNumber": 2261.2,
+  "fileName": "ASISTS CRITICAL TRACKING ISSUES",
+  "globalRoot": "2261.2",
+  "globalReference": "^OOPS(2261.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a injury category name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a code that identifies a injury category. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.2", "field": .01, "type": "regular"},
+    {"name": "2261.2", "field": .01, "type": "regular"},
+    {"name": "2261.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

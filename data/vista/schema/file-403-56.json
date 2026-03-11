@@ -1,0 +1,204 @@
+{
+  "fileNumber": 403.56,
+  "fileName": "RECALL REMINDERS REMOVED",
+  "globalRoot": "403.56",
+  "globalReference": "^SD(403.56,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Recall Reminder Patient who has been removed from the Recall Reminder  file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCESSION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Lab order number or accession number moved from the Recall File. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comments that have been moved from the Recall Reminder File. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "FAST / NON-FASTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "f:FASTING;n:NON-FASTING;",
+      "helpText": "Fasting and Non fasting information moved from the Recall Reminder file. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "COMMENT AUDIT",
+      "dataType": "DATE",
+      "rawType": "403.58DA",
+      "required": false,
+      "helpText": "This multiple will audit the COMMENT (#2.5) field by tracking each update  including the additional comment entered, the date/time it was entered,  and the user who had entered the comment.  ",
+      "isMultiple": true,
+      "subFileNumber": 403.58,
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEST/APP",
+      "dataType": "POINTER",
+      "rawType": "P403.51'",
+      "required": false,
+      "pointerTo": 403.51,
+      "helpText": "This is the type of Recall Visit that is assigned for this entry and has  been moved from the Recall Reminder file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P403.54'",
+      "required": false,
+      "pointerTo": 403.54,
+      "helpText": "The provider who is assigned for this Recall entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Select from the Hospital Location for this Recall entry. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "LENGTH OF APPT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The length of appointment that will be required once scheduled. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECALL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Recall date moved from Recall Reminder file once the patient had been  removed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE REMINDER SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the reminder was sent to the patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER WHO ENTERED RECALL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person who entered or edited Recall entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "DATE/TIME RECALL ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time this recall reminder was added. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EAS TRACKING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40a",
+      "length": 40a,
+      "required": false,
+      "helpText": "The EAS tracking number originates from the Enterprise Appointment Scheduling system. This number allows actions performed by a proxy user to be traceable back to the end user. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "APPT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the patient was deleted from the recall list because s/he got an appointment, this is the date/time of the appointment. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "APPT CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "If the patient was deleted from the recall list because s/he got an appointment, this is the clinic of the appointment. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DELETE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the patient was deleted from the recall list because a clerk deleted him/her, this is the date/time of the deletion. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "DELETE CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If the patient was deleted from the recall list because a clerk deleted him/her, this is the clerk who deleted the patient. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "DELETE REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FAILURE TO RESPOND;2:MOVED;3:DECEASED;4:DOESN'T WANT VA SERVICES;5:RECEIVED CARE AT ANOTHER VA;6:OTHER;7:APPT SCHEDULED;8:VET SELF-CANCEL;",
+      "helpText": "The reason why a patient was removed from Recall. ",
+      "fieldNumber_": 203
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "403.56", "field": .01, "type": "regular"},
+    {"name": "403.56", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "fileNumber": 863.6,
+  "fileName": "OCX MDD METHOD",
+  "globalRoot": "863.6",
+  "globalReference": "^OCXS(863.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLASS FILE",
+      "dataType": "POINTER",
+      "rawType": "P863'",
+      "required": false,
+      "pointerTo": 863,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE OF EXECUTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:ROUTINE;X:EXECUTABLE CODE STRING;T:TEMPLATE;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "863.61",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXECUTABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "863.63P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A unique ID for this object. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.6", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.6", "field": .02, "type": "regular"},
+    {"name": "863.6", "field": .03, "type": "regular"},
+    {"name": "863.6", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

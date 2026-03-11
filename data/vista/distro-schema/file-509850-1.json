@@ -1,0 +1,104 @@
+{
+  "fileNumber": 509850.1,
+  "fileName": "A&SP DIAGNOSTIC CONDITION",
+  "globalRoot": "509850.1IP",
+  "globalReference": "^ACK(509850.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "POINTER",
+      "rawType": "P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The CODE field contains the pointer to the diagnostic condition code for  Audiology and Speech Pathology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MODIFIERS ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "No longer used after the installation of Quasar Version 3.0. The MODIFIERS ALLOWED field activates or inactivates ICD CM code  modifiers (i.e., 0 for NO or 1 for YES).  ICD CM codes for Audiology and  Speech Pathology may not adequately describe the scope or variety of  problems seen by audiologists and speech pathologists. Recognizing this  deficiency, modifiers have been developed for certain codes to clarify  diseases or to provide codes for diseases where no codes now exist. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*CARD CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The CARD CODE field has been marked for deletion.  Card code capability  was not implemented in QUASAR V. 1.0.  Eighteen months after the release  of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLINIC STOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUDIOLOGY;S:SPEECH;SA:EITHER;",
+      "helpText": "The CLINIC STOP field contains A for AUDIOLOGY, S for SPEECH PATHOLOGY,  or SA for EITHER Speech or Audiology.  The ICD CM CODE is used for one  of these clinic stops. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HEARING LOSS CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Audiometric fields are required for C&P exams but are optional for routine exams.  The only exception to this is if the problem involves an ICD CM code which indicates a hearing loss. The HEARING LOSS CODE field contains 1 or YES if this ICD CM code requires the asking of the audiometric questions.  The field contains 0 or NO if the ICD CM code is not a hearing loss code. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "The ACTIVE field contains 0 for INACTIVE or 1 for ACTIVE.  Because  entries in the A&SP DIAGNOSTIC CONDITION file are pointed to by the  DIAGNOSTIC CODE field in the A&SP CLINIC VISIT file, entries should not  be deleted.    Periodically, ICD CM codes are inactivated by the code developers, the  Department of Veterans Affairs, or the Director, Audiology and Speech  Pathology Service (VAHQ).  Diagnostic codes which are not to be used are  marked as inactive. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ICD VERSION",
+      "dataType": "POINTER",
+      "rawType": "P80.4'",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "This is the ICD coding system for the diagnosis.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALLOWABLE MODIFIERS",
+      "dataType": "SUBFILE",
+      "rawType": "509850.11",
+      "required": false,
+      "helpText": "The ALLOWABLE MODIFIERS field is a multiple field containing the letter and description for an ICD diagnostic code modifier. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACSC", "field": },
+    {"name": "B", "field": },
+    {"name": "509850.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "509850.1", "field": .02, "type": "regular"},
+    {"name": "509850.1", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": ""}
+  ]
+}

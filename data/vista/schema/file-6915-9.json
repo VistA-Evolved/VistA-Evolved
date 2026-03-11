@@ -1,0 +1,36 @@
+{
+  "fileNumber": 6915.9,
+  "fileName": "FAP BALANCES",
+  "globalRoot": "6915.9",
+  "globalReference": "^ENG(6915.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the station number of a station which has had capitalized non-expendable equipment transmitted to Fixed Assets. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FUND",
+      "dataType": "POINTER",
+      "rawType": "6915.91P",
+      "required": false,
+      "helpText": "The field contains the fund (by station) for which capitalized non-expendable equipment has been transmitted to Fixed Assets. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6915.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

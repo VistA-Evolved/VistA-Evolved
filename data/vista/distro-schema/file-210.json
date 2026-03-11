@@ -1,0 +1,549 @@
+{
+  "fileNumber": 210,
+  "fileName": "NURS STAFF",
+  "globalRoot": "210IOP",
+  "globalReference": "^NURSF(210,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EMPLOYEE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to NEW PERSON FILE (#200). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SOCIAL SECURITY NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "Extended pointer to NEW PERSON FILE (field 9 of FILE #200).  Employee's SSN. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY SERVICE POSITION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the employee's primary SERVICE POSITION. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCATION PRIMARY PRODUCT LINE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field indicates the service/program/product line associated with the employee's primary assignment. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "SVC POS PRIMARY PRODUCT LINE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field indicates the service/program/product line associated with the employee's primary service position. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIMARY FACILITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30X",
+      "length": 30X,
+      "required": false,
+      "helpText": "This field indicates the Institution/Division associated with the employee's primary assignment. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TOTAL ASSIGNMENT FTEE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,3X",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the employee's actual FTEE. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INTERMITTENT;R:INACTIVE;",
+      "helpText": "Indicates if the individual is currently employed in Nursing Service. IDENTIFIER ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Employee's Primary Assignment Location. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "ASSIGN TOUR OF DUTY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Employee's primary assignment location. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "GRADE/STEP CODE",
+      "dataType": "POINTER",
+      "rawType": "RP211.1'",
+      "required": true,
+      "pointerTo": 211.1,
+      "helpText": "Indicates employee's service category, grade, and step level. Pointer to NURS PAY SCALE FILE (#211.1). ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.7,
+      "fieldName": "UNIFORM ALLOWANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether or not an employee is receiving a uniform allowance. ",
+      "fieldNumber_": 6.7
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "Extended pointer to NEW PERSON FILE (field 5 of File #200). ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "AGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed age of employee. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SEX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Extended pointer to NEW PERSON FILE (field 4 of FILE #200). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "HOME ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Street number and street name of current residence. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "HOME CITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "City where employee is currently residing. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "HOME STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Pointer to the STATE FILE (#5). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "HOME ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Zip code for employee's home address. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "MAILING ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street number and street name of current mailing address. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 13.35,
+      "fieldName": "MAILING ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the mailing address of the new person. ",
+      "fieldNumber_": 13.35
+    },
+    {
+      "fieldNumber": 13.4,
+      "fieldName": "MAILING ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the third line of the mailing address of the new person. ",
+      "fieldNumber_": 13.4
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "MAILING CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City of mailing address. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 13.7,
+      "fieldName": "MAILING STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Pointer to STATE FILE (#5). ",
+      "fieldNumber_": 13.7
+    },
+    {
+      "fieldNumber": 13.9,
+      "fieldName": "MAILING ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Zip code of mailing address. ",
+      "fieldNumber_": 13.9
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TELEPHONE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "210.01A",
+      "required": false,
+      "helpText": "Current telephone number of employee. ",
+      "isMultiple": true,
+      "subFileNumber": 210.01,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "NAME OF EMERGENCY CONTACT",
+      "dataType": "SUBFILE",
+      "rawType": "210.02A",
+      "required": false,
+      "helpText": "Indicates name of individual to contact if employee is involved in an accident. Demographic information on the 'Emergency Contact' is also documented. ",
+      "isMultiple": true,
+      "subFileNumber": 210.02,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STATE ISSUING LICENSE",
+      "dataType": "POINTER",
+      "rawType": "210.03PA",
+      "required": false,
+      "helpText": "Documents licensure information for RNs, LPNs, and LVNs. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "VETERAN PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO SERVICE;1:NONE;2:5 PT.;3:10 PT. DISAB.;4:10 PT. COMP.;5:10 PT. OTHER;6:10 PT./30% COMP;",
+      "helpText": "Employee veteran preference code.  A number 0 - 6. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STATION ENTRY ON DUTY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates employee's EOD (entry on duty) date for this facility (i.e. VAMC, OPC etc.). ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "VA EMPLOYMENT STARTING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the employee's EOD date within the VA system. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SERVICE COMPUTATION DATE",
+      "dataType": "DATE",
+      "rawType": "CD",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "END OF PROBATIONARY PERIOD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates date on which employee's probationary period ends. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 19.61,
+      "fieldName": "DATE OF PROMOTION",
+      "dataType": "DATE",
+      "rawType": "210.17D",
+      "required": false,
+      "helpText": "Date of the employee's last promotion. ",
+      "isMultiple": true,
+      "subFileNumber": 210.17,
+      "fieldNumber_": 19.61
+    },
+    {
+      "fieldNumber": 19.86,
+      "fieldName": "NPSB",
+      "dataType": "DATE",
+      "rawType": "210.18D",
+      "required": false,
+      "helpText": "Date on which the registered nurse's proficiency/annual narrative is due. ",
+      "isMultiple": true,
+      "subFileNumber": 210.18,
+      "fieldNumber_": 19.86
+    },
+    {
+      "fieldNumber": 21.3,
+      "fieldName": "PROFESSIONAL EDUCATION",
+      "dataType": "POINTER",
+      "rawType": "210.04PA",
+      "required": false,
+      "helpText": "Describes the professional education of the employee. ",
+      "fieldNumber_": 21.3
+    },
+    {
+      "fieldNumber": 21.5,
+      "fieldName": "HIGHEST NURSING DEGREE",
+      "dataType": "POINTER",
+      "rawType": "P212.1'",
+      "required": false,
+      "pointerTo": 212.1,
+      "helpText": "Indicates highest nursing degree held by the employee. Pointer to the NURS EDUCATION FILE (#212.1). ",
+      "fieldNumber_": 21.5
+    },
+    {
+      "fieldNumber": 21.51,
+      "fieldName": "HIGHEST NURSING CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Abbreviation from File 212.1 indicating the highest nursing degree for this employee. ",
+      "fieldNumber_": 21.51
+    },
+    {
+      "fieldNumber": 21.7,
+      "fieldName": "HIGHEST ACADEMIC DEGREE",
+      "dataType": "POINTER",
+      "rawType": "P212.1'",
+      "required": false,
+      "pointerTo": 212.1,
+      "helpText": "The highest academic degree held by this employee. ",
+      "fieldNumber_": 21.7
+    },
+    {
+      "fieldNumber": 21.71,
+      "fieldName": "HIGHEST ACADEMIC CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "The abbreviation of the highest academic degree for this employee. ",
+      "fieldNumber_": 21.71
+    },
+    {
+      "fieldNumber": 22.5,
+      "fieldName": "PROFESSIONAL EXPERIENCE",
+      "dataType": "SUBFILE",
+      "rawType": "210.13IA",
+      "required": false,
+      "helpText": "Identifies the professional experience of the employee before 'Station EOD Date'. ",
+      "isMultiple": true,
+      "subFileNumber": 210.13,
+      "fieldNumber_": 22.5
+    },
+    {
+      "fieldNumber": 23.1,
+      "fieldName": "FACULTY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if the employee is a faculty member. ",
+      "fieldNumber_": 23.1
+    },
+    {
+      "fieldNumber": 23.2,
+      "fieldName": "FACULTY APPOINTMENT",
+      "dataType": "SUBFILE",
+      "rawType": "210.08",
+      "required": false,
+      "helpText": "This field indicates that the employee has a faculty appointment. ",
+      "isMultiple": true,
+      "subFileNumber": 210.08,
+      "fieldNumber_": 23.2
+    },
+    {
+      "fieldNumber": 23.5,
+      "fieldName": "INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Institution at which employee is a faculty member. ",
+      "fieldNumber_": 23.5
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "NATIONAL CERTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "210.024P",
+      "required": false,
+      "helpText": "Documents national certification of registered nurses. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MILITARY EXPERIENCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates military experience for this employee. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "MILITARY STATUS",
+      "dataType": "SET",
+      "rawType": "210.06SA",
+      "required": false,
+      "helpText": "Documents active and/or inactive status of military experience. ",
+      "isMultiple": true,
+      "subFileNumber": 210.06,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "*CONTINUING EDUCATION PROGRAM",
+      "dataType": "SUBFILE",
+      "rawType": "210.12",
+      "required": false,
+      "helpText": "Continuing education programs attended by employee. ",
+      "isMultiple": true,
+      "subFileNumber": 210.12,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "*MANDATORY INSERVICE PROGRAM",
+      "dataType": "DATE",
+      "rawType": "210.05ID",
+      "required": false,
+      "helpText": "Tracks employee attendance at mandatory inservices. ",
+      "isMultiple": true,
+      "subFileNumber": 210.05,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 28.1,
+      "fieldName": "MI REVIEW GROUP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "The name of the mandatory inservice/training group(s) associated with this employee. ",
+      "fieldNumber_": 28.1
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PRIVILEGES",
+      "dataType": "POINTER",
+      "rawType": "210.19P",
+      "required": false,
+      "helpText": "Indicates the privileges granted to an employee. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "SERVICE CATEGORY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the service category of the employee. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "SALARY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the employee's salary which is stored in the PAID Employee (#450) file. ",
+      "fieldNumber_": 42
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AK", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "210", "field": .01, "type": "regular"},
+    {"name": "210", "field": 5.5, "type": "regular"},
+    {"name": "210", "field": 6.5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$S($D(^NURSF(211.3,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 5, "value": "W \"\""},
+    {"field": 5.5, "value": "W \"\""},
+    {"field": 28.1, "value": "W \"\""}
+  ]
+}

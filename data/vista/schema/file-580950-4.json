@@ -1,0 +1,27 @@
+{
+  "fileNumber": 580950.4,
+  "fileName": "*AJK1UB RETRANSMIT",
+  "globalRoot": "580950.4",
+  "globalReference": "^DIZ(580950.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This file contains the entries which are to be re-transmitted to the collection agency on the next transmission cycle.  Entries may be added to this file by the user, using appropriate options, or may be system generated.  This file should not be edited directly. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "580950.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

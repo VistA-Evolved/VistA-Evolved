@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2006.55,
+  "fileName": "DICOM WORKLIST PATIENT",
+  "globalRoot": "2006.55",
+  "globalReference": "^MAGDWLST(2006.55,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'XI",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer into the INSTITUTION file (#4). The pointed to location is the division where a study for a patient is scheduled to be performed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "2006.552PA",
+      "required": false,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": }
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "fileNumber": 9002313.03,
+  "fileName": "BPS RESPONSES",
+  "globalRoot": "9002313.03P",
+  "globalReference": "^BPSR(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BPS CLAIM",
+      "dataType": "POINTER",
+      "rawType": "RP9002313.02'",
+      "required": true,
+      "pointerTo": 9002313.02,
+      "helpText": "Identifier for BPS responses. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE RESPONSE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that response was received on the system. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "VERSION RELEASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NCPDP Version/Release Number. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code identifying the type of transaction. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "TRANSACTION COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Count of transactions in the transmission.  ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "MEDICAID ID INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 115-N5 (Medicaid ID Number), which is defined as \"A unique member identification number assigned by the Medicaid Agency.\" ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "MEDICAID AGENCY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 116-N6 (Medicaid Agency Number), which is defined as \"Number assigned by processor to identify the individual Medicaid Agency  or representative.\" ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "SERVICE PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to a pharmacy or provider. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "SERVICE PROVIDER ID QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Code qualifying the 'Service Provider ID' (2Ø1) ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to the cardholder group or employer group. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "CARDHOLDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 302-C2 (Cardholder ID), which is defined as \"Insurance ID assigned to the cardholder or identification number used by  the plan.\" ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 304-C4 (Date Of Birth), which is defined as \"Date of birth of patient.\" ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "PATIENT FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 310-CA (Patient First Name), which is defined as \"Individual first name.\" ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "PATIENT LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store NCPDP field 311-CB (Patient Last Name), which is defined as \"Individual last name.\" ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "Identifies date the prescription was filled or professional service  rendered. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "RESPONSE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;R:REJECTED;",
+      "helpText": "A code indicating the status of this response. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free form message. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 524,
+      "fieldName": "PLAN IDENTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Assigned by the processor to identify a set of parameters, benefit, or  coverage criteria used to adjudicate a claim. ",
+      "fieldNumber_": 524
+    },
+    {
+      "fieldNumber": 545,
+      "fieldName": "NETWORK REIMBURSEMENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Field defined by the processor. It identifies the network, for the covered member, used to calculate the reimbursement to the pharmacy. ",
+      "fieldNumber_": 545
+    },
+    {
+      "fieldNumber": 568,
+      "fieldName": "PAYER ID QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:STANDARD UNIQUE HEALTH PLAN ID;02:HIN;03:BIN;04:NAIC;99:OTHER;",
+      "helpText": "Code indicating the type of payer ID. ",
+      "fieldNumber_": 568
+    },
+    {
+      "fieldNumber": 569,
+      "fieldName": "PAYER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Payer identification - the payer this claim was submitted to. ",
+      "fieldNumber_": 569
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "RESPONSES",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.0301A",
+      "required": false,
+      "helpText": "This is the transaction response data returned by the third-party payer. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.0301,
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 9999,
+      "fieldName": "RAW DATA RECEIVED",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.39999",
+      "required": false,
+      "helpText": "This is to store the raw data received from the payer. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.39999,
+      "fieldNumber_": 9999
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "9002313.03", "field": .01, "type": "regular"},
+    {"name": "9002313.03", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

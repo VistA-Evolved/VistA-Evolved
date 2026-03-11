@@ -1,0 +1,37 @@
+{
+  "fileNumber": 52.9,
+  "fileName": "PHARMACY PRINTED QUEUE",
+  "globalRoot": "52.9P",
+  "globalReference": "^PS(52.9,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FAILED DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Name or number of the failed output device. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LABEL/PROFILE",
+      "dataType": "POINTER",
+      "rawType": "52.9001IP",
+      "required": false,
+      "helpText": "This field is used to store the name of the Label/Profile. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

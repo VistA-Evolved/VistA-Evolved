@@ -1,0 +1,177 @@
+{
+  "fileNumber": 741.99,
+  "fileName": "QA OCCURRENCE AUTO RUN DATES",
+  "globalRoot": "741.99D",
+  "globalReference": "^QA(741.99,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTO ENROLL RUN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date that auto enroll ran. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*TOTAL 101",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 101 records auto enrolled. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "TOTAL 101.1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 101.1 records auto enrolled. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOTAL 102",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 102 records auto enrolled. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*TOTAL 103",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 103 records auto enrolled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "*TOTAL 104.1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 104.1 records auto enrolled. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "*TOTAL 104.2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 104.2 records auto enrolled. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "*TOTAL 105.1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 105.1 records auto enrolled. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "*TOTAL 105.2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 105.2 records auto enrolled. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "TOTAL 106.1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 106.1 records auto enrolled. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "*TOTAL 106.2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 106.2 records auto enrolled. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TOTAL 107",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 107 records auto enrolled. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TOTAL 108",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 108 records auto enrolled. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TOTAL 109",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 109 records auto enrolled. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TOTAL PATIENTS AUTO ENROLLED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field computes the sum of all the 'TOTAL #' fields in the file. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TOTAL 199",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of screen 199 records auto enrolled. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "741.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "fileNumber": 2005.67,
+  "fileName": "NEW IMAGING FILE CLEANUP LOG",
+  "globalRoot": "2005.67",
+  "globalReference": "^MAGV(2005.67,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0",
+      "length": 15,
+      "required": true,
+      "helpText": "This field contains the IEN of the duplicate or corrupt Imaging File entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,3O",
+      "length": 8,
+      "required": true,
+      "helpText": "This field contains the file in which the problematic Imaging entry  exists. . ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the original, or unique non-duplicate, Internal Entry  Number (IEN) of the Imaging file entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DUPLICATE;2:NO PARENT RECORD POINTER;3:INVALID PARENT RECORD POINTER;4:NO PATIENT REFERENCE POINTER;5:INVALID PATIENT REFERENCE POINTER;6:POINTS TO DUPLICATE PARENT RECORD;",
+      "helpText": "This field contains the reason the Imaging file problem record was flagged for cleanup. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "SI:STATUS CHANGE TO INACCESSIBLE (COMPLETED);I:STATUS CHANGE TO INACCESSIBLE (IDENTIFIED);MI:PARENT POINTER CHANGE (IDENTIFIED);MC:PARENT POINTER CHANGE (COMPLETED);",
+      "helpText": "This field contains the action taken on the problematic Imaging record. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the Date/Time the action was taken on the problematic  Imaging record. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ64",
+      "length": 64,
+      "required": false,
+      "helpText": "This field contains the key associated with the problematic entry in the  Imaging file. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INVALID PARENT REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field contains the Internal Entry Number (IEN) of the parent Imaging  file entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NEW PARENT REFERENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field contains the new parent file pointer to which the record will  point after the status has been changed to inaccessible. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DUPLICATE PARENT REFERENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This field contains the Imaging record's pointer to its parent file, when  the parent file record is a duplicate of another record. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.67", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 6, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "fileNumber": 799.31,
+  "fileName": "ROR XML ITEM",
+  "globalRoot": "799.31",
+  "globalReference": "^ROR(799.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the tag name. The name should  not contain spaces and any punctuation marks  except underscore. See an XML reference guide for more details. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "fileNumber": .5,
+  "fileName": "FUNCTION",
+  "globalRoot": ".5I",
+  "globalReference": "^DD(\"FUNC\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MUMPS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FR",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE-VALUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:YES;X:NO;O:OPTIONAL (DEPENDS ON VALUE OF ARGUMENT);",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NUMBER OF ARGUMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "WORD-PROCESSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:MEANINGFUL ONLY FOR W-P;",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

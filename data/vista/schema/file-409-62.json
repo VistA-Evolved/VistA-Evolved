@@ -1,0 +1,45 @@
+{
+  "fileNumber": 409.62,
+  "fileName": "APPOINTMENT GROUP",
+  "globalRoot": "409.62",
+  "globalReference": "^SD(409.62,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the appointment group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the free-text title for the group. The title is used as part of the header in the 'Appointment Management' option screen. The header describes the  appointment list being displayed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains the MUMPS code that returns $T which is used to determine if an appointment should be used as part of the group.   Normally, this field is not filled in and the association of an APPOINTMENT STATUS to the group is enough to define the relationship.   An example of the use of this SCREEN field is in the FUTURE group entry. Both the INPATIENT and FUTURE appointment statuses are associated with this group.  However, INPATIENT appointments can be in the past and future.  The scre",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.62", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

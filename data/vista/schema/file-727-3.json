@@ -1,0 +1,39 @@
+{
+  "fileNumber": 727.3,
+  "fileName": "DSS DIVISION IDENTIFIER",
+  "globalRoot": "727.3",
+  "globalReference": "^ECX(727.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Only existing entries in the MEDICAL CENTER DIVISION file (#40.8) may be selected.  The division must be active during the current fiscal  year. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DSS DIVISION IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Sites should use the same value as they have established on DSS in Austin for the medical center division.   Exactly one alphanumeric character. Numerics: 1-9 (0 not allowed). Alphas: A-Z (lowercase not allowed). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "727.3", "field": .01, "type": "regular"},
+    {"name": "727.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

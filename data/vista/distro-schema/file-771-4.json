@@ -1,0 +1,62 @@
+{
+  "fileNumber": 771.4,
+  "fileName": "HL7 DATA TYPE",
+  "globalRoot": "771.4I",
+  "globalReference": "^HL(771.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The two character HL7 data type abbreviation (e.g., ST). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The full name of the HL7 data type (e.g., String). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "771.43P",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSFORM - DHCP TO STANDARD",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to process data in fields that are assigned this data type. The code in this field is used to transform a DHCP value to the standard value. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSFORM - STANDARD TO DHCP",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "MUMPS code used to process data in fields that are assigned this data type. The code in this field is used to transform a standard value to a DHCP value. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W ?10,$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 745.5,
+  "fileName": "CONTACT DISCIPLINES",
+  "globalRoot": "745.5",
+  "globalReference": "^QA(745.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Codes for disciplines or services involved in a Report of Contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Expanded name of Discipline for Report of Contact. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "745.52",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 745.52,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "745.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

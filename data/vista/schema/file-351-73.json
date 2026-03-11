@@ -1,0 +1,59 @@
+{
+  "fileNumber": 351.73,
+  "fileName": "IB DM WORKLOAD PARAMETERS",
+  "globalRoot": "351.73",
+  "globalReference": "^IBE(351.73,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLERK NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The workload reports will be produced based on this clerk.  The clerk must be a valid entry in the New Person file (#200). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRODUCTIVITY REPORT ONLY?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The flag that determines if Workload reports and Productivity reports will be produced for this clerk OR if the clerk will only appear on Productivity reports. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will be 'stuffed' with the DUZ of the person entering this clerk for the first time when option \"AR Workload Reporting\" is accessed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ASSIGNMENT",
+      "dataType": "SUBFILE",
+      "rawType": "351.731",
+      "required": false,
+      "helpText": "The assignment is a set of criteria by which Workload Reporting is processed. ",
+      "isMultiple": true,
+      "subFileNumber": 351.731,
+      "fieldNumber_": 1.1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.73", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

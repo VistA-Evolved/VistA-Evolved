@@ -1,0 +1,36 @@
+{
+  "fileNumber": 4.05,
+  "fileName": "INSTITUTION ASSOCIATION TYPES",
+  "globalRoot": "4.05",
+  "globalReference": "^DIC(4.05,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Institution Associations Types can be uniquely identified by number throughout the VHA in VistA. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.05", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,1529 @@
+{
+  "fileNumber": 660,
+  "fileName": "RECORD OF PROS APPLIANCE/REPAIR",
+  "globalRoot": "660IOD",
+  "globalReference": "^RMPR(660,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the transaction was entered into the system.  It may or may not be the same as the request date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP665",
+      "required": true,
+      "pointerTo": 665,
+      "helpText": "This is the name of the patient that this transaction is for.   The name is a pointer to the PROSTHETIC PATIENT file which has the same internal entry number as the main patient database. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is the date the appliance issue or repair was requested by the patient.  It may or may not be the same as the entry date or the delivery date.  This depends on how quickly the transactions take place. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF TRANSACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INITIAL ISSUE;R:REPLACE;S:SPARE;X:REPAIR;5:RENTAL;",
+      "helpText": "This set of codes will tell what kind of transaction this request is.  The possibilities all fall under the VAF 10-7306a listings  except for the repair. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "RP661'O",
+      "required": true,
+      "pointerTo": 661,
+      "helpText": "This field is a pointer to the master item list of possible appliances. The master list is set up so that appliances fall into groups which are the types of appliances. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "HCPCS",
+      "dataType": "POINTER",
+      "rawType": "RP81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "Health Care Financing Administration Common Procedure Coding System (HCPCS).   This field should have the HCPCS code for the Item you are selecting. HCPCS is a uniform method for healthcare providers and medical suppliers to report professional services, procedures and supplies. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "VENDOR TRACKING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the Vendor's internal unique tracking number.  Some of the small vendors are not automated with VISA, and this tracking number is used to reference this transaction.  This tracking number is based on the item, and can be as simple as the vendors item number, or elaborate as the vendors transaction number.  This data will be used in the reconciliation process. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.3,
+      "fieldName": "BANK AUTHORIZATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This six digit number is the authorization number VISA gives to the vendor for guaranteed payment.  This number is used in the reconciliation process. ",
+      "fieldNumber_": 4.3
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "PSAS HCPCS",
+      "dataType": "POINTER",
+      "rawType": "P661.1'X",
+      "required": false,
+      "pointerTo": 661.1,
+      "helpText": "Standardized Prosthetics HCPCS that points to file 661.1. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "STOCK ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P661.6",
+      "required": false,
+      "pointerTo": 661.6,
+      "helpText": "This is a pointer to file #661.6. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "CPT Modifiers in a comma delimited format, consistent with the HCFA published manuals. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "DATE CPT MODIFIER EXTRACTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the patient record extracted for billing.  This date is also being used to trigger a mail message to billing if the PSAS HCPCS is edited and changed after the extraction has been ran. ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 4.9,
+      "fieldName": "HCPCS-ICD9 CODING FLAG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used to determine the current code set versioning of a transaction.         No errors, number 1.         PSAS HCPCS, Not Billiable Item, number 14.         ICD9 error, number 12.         HCPCS error, number 13.         Both ICD9 and HCPCS error, number 132.         Both ICD9 error and Not Billiable Item, number 142. ",
+      "fieldNumber_": 4.9
+    },
+    {
+      "fieldNumber": 4.91,
+      "fieldName": "CODING FLAG DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date associated with field number 4.9.  The date the coding flag was set. ",
+      "fieldNumber_": 4.91
+    },
+    {
+      "fieldNumber": 4.92,
+      "fieldName": "HIGH TECH ITEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is the determination by the Prosthetics Laboratory Technician. 1=YES 0=NO ",
+      "fieldNumber_": 4.92
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the number of units that was issued or repaired for this transaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SHIP/DEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the charge associated with shipping. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "PICKUP/DEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PICKUP;D:DELIVERY;",
+      "helpText": "This field is a set of codes to identify pickup/delivery charges on VAF 10-2319. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP440'",
+      "required": true,
+      "pointerTo": 440,
+      "helpText": "The vendor is a pointer to IFCAP's VENDOR file and is the name of the company from which this appliance was or is to be purchased.  The vendor may or may not be the same as the manufacturer.  Therefore, manufacturers should also be listed in this file as vendors if you are going to be  purchasing directly from the manufacturer. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The station is the Veterans Affairs site where this transaction is to come to completion.  It is the station that is ultimately responsible for the issue and payment for the prosthetic device. This is the station reporting the workload. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "SUSPENSE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is suspense date (.01 field) of file (#668). ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.11,
+      "fieldName": "SUSPENSE STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This refers to the consulting station. ",
+      "fieldNumber_": 8.11
+    },
+    {
+      "fieldNumber": 8.12,
+      "fieldName": "PCE",
+      "dataType": "POINTER",
+      "rawType": "P9000010",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is pointer to (Patient Encounter), Visit file (#9000010).  When an entry is created in PCE a pointer is being set. ",
+      "fieldNumber_": 8.12
+    },
+    {
+      "fieldNumber": 8.13,
+      "fieldName": "DATE SENT TO PCE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date last sent or edited in PCE.  If PCE is deleted this field should be deleted. ",
+      "fieldNumber_": 8.13
+    },
+    {
+      "fieldNumber": 8.14,
+      "fieldName": "SUSPENSE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INCOMPLETE;1:COMPLETE;",
+      "helpText": "This is the suspense status of the patient 2319 record. If the status is complete, a suspense link was established.  If the status is incomplete, there is no suspense link to the patient 2319 record. ",
+      "fieldNumber_": 8.14
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "DATE RX WRITTEN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the prescription was written as it appears in file #668. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "INITIAL ACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date when an initial action was entered in suspense. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 8.4,
+      "fieldName": "COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the susepnse was completed as it appears in file #668. ",
+      "fieldNumber_": 8.4
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "TYPE OF REQUEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field could either be ROUTINE PROSTHETICS, EYEGLASS, CONTACT LENS, OXYGEN, MANUAL  NON CPRS or CLOTHING ALLOWANCE. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.6,
+      "fieldName": "SUSPENSE REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to file #200, the person requesting the suspense as it  appears in file #668. ",
+      "fieldNumber_": 8.6
+    },
+    {
+      "fieldNumber": 8.61,
+      "fieldName": "CONSULT REQUEST SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A service/section of a suspense requestor that initiated a consult for Prosthetics item.  This free text entry is a service/section name of SERVICE/SECTION file (#49). ",
+      "fieldNumber_": 8.61
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "PROVISIONAL DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text diagnosis as it appears in suspense file. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 8.8,
+      "fieldName": "SUSPENSE ICD",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the code at the time suspense was created. ",
+      "fieldNumber_": 8.8
+    },
+    {
+      "fieldNumber": 8.9,
+      "fieldName": "CONSULT",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This is a pointer to Consult file #123. ",
+      "fieldNumber_": 8.9
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SERIAL NBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the serial number of the issued or repaired appliance.  If the serial number is longer than 20 characters, use the FIRST 20 characters.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "PRODUCT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The manufacture product description to be used for recalls. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "PRODUCT MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The manufacture product model number to be used for recalls. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the appliance was delivered and accepted by the patient.  This date, under certain circumstances, may be a date that the appliance was mailed to the patient.  It may or may not be the same as the transaction date and/or the request date. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FORM REQUESTED ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PSC;2:2421;3:2237;4:2529-3;5:2529-7;6:2474;7:2431;8:2914;9:OTHER;10:2520;11:STOCK ISSUE;12:INVENTORY ISSUE;13:HISTORICAL DATA;14:VISA;15:LAB ISSUE-3;16:DALC;",
+      "helpText": "The FORM REQUESTED ON is based on current VA regulations.   The system makes no checks to be sure that the form entered from the set of codes is within these regulations. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "V:VA;C:COMMERCIAL;",
+      "helpText": "This set of codes denotes which two possible sources were used for the acquisition of the appliance.  The sources are grouped into either VA sources or commercial sources. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LOAN;2:CONDEMNED;3:RETURNED;4:INACTIVE;5:LOST;",
+      "helpText": "The action taken on this transaction is noted here.  The set of codes is self explanatory; however, the inactive action is used to indicate that the appliance is no longer being followed by VA. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the total cost of the transaction. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "HISTORICAL DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this field contains an asterisk (*), then this transaction has been counted by the AMIS option, or is considered to be a historical transaction. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "A free-text field used to indicate any additional information that is needed for this entry.  For Purchasing Transactions this field will contain the remarks for the individual item, and the close-out remarks added together. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "RETURNED STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RETURNED;2:CONDEMNED;3:CANCELLED;4:TURNED-IN;5:LOST;6:BROKEN;",
+      "helpText": "The status of the appliance upon return to the veteran.  This notes what action was taken by the repair depot or station upon the completion of repairs. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "RETURN STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date upon which the return status was determined and carried out if the item was returned to the veteran. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*STATUS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DECEASED;T:TRANSFERRED;I:INACTIVE;",
+      "helpText": "The status of the patient is entered here so the service can determine if the patient is being followed, dropped, transferred, or canceled by this station. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PATIENT NOTIFICATION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RE-SEND;",
+      "helpText": "This field if set to 1 will be used to gather the patient records that need to be re-sent for the daily pull of the Mandatory Patient Notification process. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DELIVERY VERIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Veteran indicates on the Notification card that he  received the item. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "DELIVERY VERIFICATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RECEIVED;2:NOT RECEIVED;3:DAMAGED or INCOMPLETE;4:RECEIVED not as ORDERED;5:RECEIVED in ERROR;",
+      "helpText": "This is the statement of receipt that the Veteran indicates on the  returned Delivery Notification Card. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LOT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field stores the lot number of the item being furnished to the patient. Enter the manufacturer's lot number, if known. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "*PRODUCT LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HEARING AIDS;2:BATTERIES;3:OTHER;",
+      "helpText": "Set of codes that contains information for Hearing Aid transactions. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TRANSACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IFCAP transaction number from VAF 4-1358 or VAF 2237. A temporary Transaction number for a VAF 10-2529-3 may also be entered. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a detailed description of the item/service supplied. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DELIVER TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Delivery location that will print on VAF 10-2421 to show the vendor where the item will be delivered. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DATE REQUIRED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the vendor is required to provide the Item/Service by. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "INITIATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the transaction. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "EXTENDED DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "660.028",
+      "required": false,
+      "helpText": "This is the extended information from purchasing and also from posting of VAF 2237s. ",
+      "isMultiple": true,
+      "subFileNumber": 660.028,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This is the inventory point for this transaction and is a pointer to the GENERIC INVENTORY file (#445). ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PRIMARY ICD DIAGNOSIS CODE",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the primary diagnosis code for the order. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 30.1,
+      "fieldName": "PRIMARY AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to Agent Orange exposure. ",
+      "fieldNumber_": 30.1
+    },
+    {
+      "fieldNumber": 30.2,
+      "fieldName": "PRIMARY IONIZED RADIATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to Ionized Radiation exposure. ",
+      "fieldNumber_": 30.2
+    },
+    {
+      "fieldNumber": 30.3,
+      "fieldName": "PRIMARY SERVICE-CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to a Service-Connected condition. ",
+      "fieldNumber_": 30.3
+    },
+    {
+      "fieldNumber": 30.4,
+      "fieldName": "PRIMARY ENVIRONMENTAL CONT.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to Environmental Contaminants exposure. ",
+      "fieldNumber_": 30.4
+    },
+    {
+      "fieldNumber": 30.5,
+      "fieldName": "PRIMARY MST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to Military Sexual Trauma. ",
+      "fieldNumber_": 30.5
+    },
+    {
+      "fieldNumber": 30.6,
+      "fieldName": "PRIMARY HEAD/NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis is related to Head/Neck Cancer. ",
+      "fieldNumber_": 30.6
+    },
+    {
+      "fieldNumber": 30.7,
+      "fieldName": "PRIMARY COMBAT VET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Primary diagnosis related to Combat. ",
+      "fieldNumber_": 30.7
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SECONDARY ICD DIAGNOSIS CODE 1",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the secondary diagnosis code 1. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "SECONDARY AGENT ORANGE 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Agent Orange exposure. ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.2,
+      "fieldName": "SECONDARY IONIZED RADIATION 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Ionized Radiation exposure. ",
+      "fieldNumber_": 31.2
+    },
+    {
+      "fieldNumber": 31.3,
+      "fieldName": "SECONDARY SERVICE-CONNECTED 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary Diagnosis 1 is related to a Service-Connected condition. ",
+      "fieldNumber_": 31.3
+    },
+    {
+      "fieldNumber": 31.4,
+      "fieldName": "SECONDARY ENVIRONMENTAL CONT 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Environmental Contaminants exposure. ",
+      "fieldNumber_": 31.4
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "SECONDARY MST 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Military Sexual Trauma. ",
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 31.6,
+      "fieldName": "SECONDARY HEAD/NECK CANCER 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Head/Neck cancer. ",
+      "fieldNumber_": 31.6
+    },
+    {
+      "fieldNumber": 31.7,
+      "fieldName": "SECONDARY COMBAT VET 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 1 is related to Combat. ",
+      "fieldNumber_": 31.7
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SECONDARY ICD DIAGNOSIS 2",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the secondary diagnosis code 2. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "SECONDARY AGENT ORANGE 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Agent Orange exposure. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "SECONDARY IONIZED RADIATION 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Ionized Radiation exposure. ",
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 32.3,
+      "fieldName": "SECONDARY SERVICE-CONNECTED 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to a Service-Connected condition. ",
+      "fieldNumber_": 32.3
+    },
+    {
+      "fieldNumber": 32.4,
+      "fieldName": "SECONDARY ENVIR. CONT. 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Environmental Contaminants exposure. ",
+      "fieldNumber_": 32.4
+    },
+    {
+      "fieldNumber": 32.5,
+      "fieldName": "SECONDARY MST 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Military Sexual Trauma. ",
+      "fieldNumber_": 32.5
+    },
+    {
+      "fieldNumber": 32.6,
+      "fieldName": "SECONDARY HEAD/NECK CANCER 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Head/Neck cancer. ",
+      "fieldNumber_": 32.6
+    },
+    {
+      "fieldNumber": 32.7,
+      "fieldName": "SECONDARY COMBAT VET 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 2 is related to Combat. ",
+      "fieldNumber_": 32.7
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SECONDARY ICD DIAGNOSIS 3",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the secondary diagnosis code 3. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.1,
+      "fieldName": "SECONDARY AGENT ORANGE 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Agent Orange exposure. ",
+      "fieldNumber_": 33.1
+    },
+    {
+      "fieldNumber": 33.2,
+      "fieldName": "SECONDARY IONIZED RADIATION 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Ionized Radiation exposure. ",
+      "fieldNumber_": 33.2
+    },
+    {
+      "fieldNumber": 33.3,
+      "fieldName": "SECONDARY SERVICE-CONNECTED 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to a Service-Connected condition. ",
+      "fieldNumber_": 33.3
+    },
+    {
+      "fieldNumber": 33.4,
+      "fieldName": "SECONDARY ENVIRON. CONT. 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Environmental Contaminants exposure. ",
+      "fieldNumber_": 33.4
+    },
+    {
+      "fieldNumber": 33.5,
+      "fieldName": "SECONDARY MST 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Military Sexual Trauma. ",
+      "fieldNumber_": 33.5
+    },
+    {
+      "fieldNumber": 33.6,
+      "fieldName": "SECONDARY HEAD/NECK CANCER 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Head/Neck cancer. ",
+      "fieldNumber_": 33.6
+    },
+    {
+      "fieldNumber": 33.7,
+      "fieldName": "SECONDARY COMBAT VET 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Secondary diagnosis 3 is related to Combat. ",
+      "fieldNumber_": 33.7
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "OIF/OEF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Veteran determined to be OEF/OIF 1 Yes 0 NO. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "USER WHO EDIT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who edited the 2319 record using option ED2.  This field will only be populated when the Total Cost field has been changed. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DATE EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Total Cost field has been changed using option ED2. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "HCPCS/ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enternal entry of an HCPCS concatenated to an enternal entry of an item in file #661.1.  Entry for this field is derived from the entry in file 661.2, field #9. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "HCPCS/ITEM DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of an Item or Appliance kept by local site in file #661.1, field #20. This field is updated during the STOCK ISSUE options. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 38.1,
+      "fieldName": "EXCLUDE/WAIVER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EXCLUDED;W:WAIVER;",
+      "helpText": "This field determines if the item is EXCLUDED or Waver off of a National Contract ",
+      "fieldNumber_": 38.1
+    },
+    {
+      "fieldNumber": 38.7,
+      "fieldName": "CONTRACT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the Contract Number. ",
+      "fieldNumber_": 38.7
+    },
+    {
+      "fieldNumber": 38.8,
+      "fieldName": "NUMBER OF BIDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of bids recieved for a particular item. ",
+      "fieldNumber_": 38.8
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when an item is issued to the patient. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "REQUESTING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the station requesting services or appliances. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "ECMS ACTIONUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the eCMS internal, unique identifier for the IFCAP 2237 used to perform the Purchase Request.  This data is part of the eCMS/IFCAP interface. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "UNIQUE ITEM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the unique identifier of the eCMS or IFCAP 2237 line item of a Purchase Request.  This data is part of the eCMS/IFCAP interface if a contract item or is a modification of the 2237 Obligation Number if not. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "TOTAL LABOR HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2X",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of hours spent on the job. This field is only populated via routines. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "TOTAL LABOR COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total cost of the labor to perform this job. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "TOTAL MATERIAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The total cost of all the materials to perform the job. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "TOTAL LAB COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The Prosthetic Laboratory Total Cost calculated by AMIS. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "COMPLETION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the job was completed. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LAB REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A free-text field used to indicate any additional Laboratory information that is needed for this entry.  Since the field is only 40 characters in length, use meaningful abbreviations where possible. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "AMIS NEW CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field is set when AMIS is generated. It is the New Worksheet AMIS code. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "AMIS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is set when AMIS is generated.  This is the date AMIS was run and the item was picked up and counted. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SC/OP;2:SC/IP;3:NSC/IP;4:NSC/OP;",
+      "helpText": "This is the Prosthetic Patient Category used for counting AMIS. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "SPECIAL CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL LEGISLATION;2:A&A;3:PHC;4:ELIGIBILITY REFORM;",
+      "helpText": "If the patient is NSC/OP, then this field must also be set.  SPECIAL CATEGORY is also used in counting AMIS. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ADMIN REPAIR AMIS CODE",
+      "dataType": "POINTER",
+      "rawType": "*P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "This field will be set when AMIS is generated for the Repair Worksheets. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "AMIS GROUPER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is used in AMIS calculations.  This field should never be changed through FileMan! ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "SOURCE OF PROCUREMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ORTHOTIC LAB;R:RESTORATION LAB;S:SHOE LAST CLINIC;W:WHEELCHAIR REPAIR SHOP;N:NATIONAL FOOT CENTER;D:DENVER DISTRIBUTION CENTER;",
+      "helpText": "The source from which the Purchasing Agent is ordering the needed equipment. The sources one may choose from are limited. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "RECEIVING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field contains the institution that will receive the  VAF 10-2529-3 request for processing. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "WORK ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P664.2",
+      "required": false,
+      "pointerTo": 664.2,
+      "helpText": "Work Order Number (STA-FY-QTR-TYPE OF LAB-NUMBER) for items processed in the Prosthetic Laboratory. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "2529-3",
+      "dataType": "POINTER",
+      "rawType": "P664.1'",
+      "required": false,
+      "pointerTo": 664.1,
+      "helpText": "VAF 10-2529-3 information will be displayed if the VAF 10-2319 item is  associated with a Denver Distribution Center, National Foot Center, or  Prosthetics Lab request. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 72.5,
+      "fieldName": "FREE TEXT WO #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the actual human readable Work Order Number for NPPD  identification purposes. ",
+      "fieldNumber_": 72.5
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "LAB AMIS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Last date the Lab AMIS was run. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "ORTHOTICS LAB CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "Contains the Orthotic Lab New Code. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "ORTHOTICS LAB REPAIR CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "Contains the Orthotic Lab Repair Code. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "RESTORATION LAB CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "Contains the Restoration Lab New Code. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "RESTORATIONS LAB REPAIR CODE",
+      "dataType": "POINTER",
+      "rawType": "P663'",
+      "required": false,
+      "pointerTo": 663,
+      "helpText": "Contains the Restoration Lab Repair Code. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P420.5'",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "This is the unit by which items/services are issued (e.g., each, pair, box, case, etc.). ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "AMIS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO ADMIN COUNT;",
+      "helpText": "Contains the status if the Item will not count on the Administrative AMIS. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "WORK FOR OTHER STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Contains the Status if the Job Performed will display as work performed for another station. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "NO ADMIN COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO COUNT;",
+      "helpText": "This field will be set if the Item will not count on the Administrative AMIS or the Orthotic Laboratory AMIS. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "NO LAB COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO COUNT;",
+      "helpText": "Field will be set if there is no AMIS Count for AMIS. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "BACKLOG DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date that the entry was created. This entry will be a backlog entry until it has been completed. All backlog data must show up on the Laboratory or Restoration AMIS Count. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "HISTORICAL ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 89.1,
+      "fieldName": "DALC REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the line level reference number from a DALC purchase order or delivery of item or service. ",
+      "fieldNumber_": 89.1
+    },
+    {
+      "fieldNumber": 89.2,
+      "fieldName": "DALC BILL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Billing Date from the Denver  Acquisition and Logistics  Center (DALC). ",
+      "fieldNumber_": 89.2
+    },
+    {
+      "fieldNumber": 89.3,
+      "fieldName": "DALC ORDERING STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Ordering station from to the Denver  Acquisition and  Logistics Center (DALC). ",
+      "fieldNumber_": 89.3
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "HISTORICAL STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "HISTORICAL VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "HISTORICAL VENDOR PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "HISTORICAL STREET ADD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "HISTORICAL CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "HISTORICAL STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "HISTORICAL ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "HISTORICAL RECORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used for the consolidation sites, will contain the data that has been merged from a legacy system. This field is populated by the RMPRJ routine that is not exported. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P375'",
+      "required": false,
+      "pointerTo": 375,
+      "helpText": "This refers to the reference number passed back to Prosthetics application from the PFSS IBB get account process. This field points to PFSS ACCOUNT  file (#375). ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PFSS CHARGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "A unique charge identifier for each charge entity. Prosthetics calls $$GETCHGID^IBBAPI() to obtain a Unique Charge Identifier. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "LATEST PSAS HCPCS",
+      "dataType": "POINTER",
+      "rawType": "P661.1'",
+      "required": false,
+      "pointerTo": 661.1,
+      "helpText": "This is the latest PSAS HCPCS code that is held and stored for comparison  during the account updates for the PFSS project. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "LATEST QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the latest QTY that is held and stored for comparison during the  account updates for the PFSS project. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "LATEST TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the latest Total Cost that is held and stored for comparison  during the account updates for the PFSS project. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "LATEST ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the latest attending physician (ordering provider) that is held  and stored for comparison during the account updates for the PFSS project. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "PFSS ACCOUNT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:READY TO PROCESS;",
+      "helpText": "Flag for ready to process PFSS Account Creation/Pre-Certification.  1 = Ready to process ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "PFSS CHARGE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:READY TO PROCESS;",
+      "helpText": "Flag for ready to process PFSS Charge message. 1 = Ready to process ",
+      "fieldNumber_": 107
+    }
+  ],
+  "fieldCount": 151,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "ALOG", "field": },
+    {"name": "APD", "field": },
+    {"name": "APH", "field": },
+    {"name": "APTASK01", "field": },
+    {"name": "APTASK45", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CD", "field": },
+    {"name": "CT", "field": },
+    {"name": "D", "field": },
+    {"name": "DDC", "field": },
+    {"name": "DVN", "field": },
+    {"name": "E", "field": },
+    {"name": "EIID", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "660", "field": .01, "type": "regular"},
+    {"name": "660", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "660", "field": .01, "type": "regular"},
+    {"name": "660", "field": .02, "type": "regular"},
+    {"name": "660", "field": 1, "type": "regular"},
+    {"name": "660", "field": 4, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "660", "field": 4.1, "type": "regular"},
+    {"name": "", "field": 4.5, "type": "regular"},
+    {"name": "660", "field": 4.5, "type": "regular"},
+    {"name": "", "field": 4.5, "type": "regular"},
+    {"name": "", "field": 4.5, "type": "regular"},
+    {"name": "660", "field": 4.5, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "660", "field": 8.13, "type": "regular"},
+    {"name": "", "field": 8.6, "type": "regular"},
+    {"name": "660", "field": 9, "type": "regular"},
+    {"name": "660", "field": 10, "type": "regular"},
+    {"name": "", "field": 14, "type": "regular"},
+    {"name": "660", "field": 19, "type": "regular"},
+    {"name": "660", "field": 23, "type": "regular"},
+    {"name": "660", "field": 39, "type": "regular"},
+    {"name": "660", "field": 42, "type": "regular"},
+    {"name": "660", "field": 50, "type": "regular"},
+    {"name": "660", "field": 60, "type": "regular"},
+    {"name": "660", "field": 68, "type": "regular"},
+    {"name": "660", "field": 83, "type": "regular"},
+    {"name": "660", "field": 89.1, "type": "regular"},
+    {"name": "660", "field": 106, "type": "regular"},
+    {"name": "660", "field": 107, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RMPR(665,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(665,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

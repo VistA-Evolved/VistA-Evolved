@@ -1,0 +1,70 @@
+{
+  "fileNumber": 690.97,
+  "fileName": "MCQ POLLING",
+  "globalRoot": "690.97",
+  "globalReference": "^MCAR(690.97,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PAT;2:PCC;3:DEL;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,6",
+      "length": 19,
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,6",
+      "length": 19,
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MCARGDA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,6",
+      "length": 19,
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MCQDEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "690.97", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

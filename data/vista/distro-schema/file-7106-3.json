@@ -1,0 +1,72 @@
+{
+  "fileNumber": 7106.3,
+  "fileName": "NOIS TASK",
+  "globalRoot": "7106.3",
+  "globalReference": "^FSC(\"TASK\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a task associated with a NOIS call. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will inactive selection of this task when set to YES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7106.39",
+      "required": false,
+      "helpText": "These are the synonyms for this NOIS task. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.39,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7106.31",
+      "required": false,
+      "helpText": "This is a description of this NOIS task. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.31,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7106.399",
+      "required": false,
+      "helpText": "These are the names used for the task by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7106.399,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7106.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

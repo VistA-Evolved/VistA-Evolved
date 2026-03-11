@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2261.24,
+  "fileName": "ASISTS PREVENTION METHODS",
+  "globalRoot": "2261.24",
+  "globalReference": "^OOPS(2261.24,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PREVENTION METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the best preventative method that could have been  employed to prevent the incident. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREVENTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the best preventative method code that could have been used to prevent the incident. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2261.24", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

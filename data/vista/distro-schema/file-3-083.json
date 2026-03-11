@@ -1,0 +1,36 @@
+{
+  "fileNumber": 3.083,
+  "fileName": "LOCKED IP or DEVICE",
+  "globalRoot": "3.083",
+  "globalReference": "^XUSEC(3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCKED IP/DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds a list of IP's or Device ID's that have been locked. These are cleaned up automatically. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCKED UNTIL",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field holds the fileman date/time that this IP should be locked  until. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.083", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

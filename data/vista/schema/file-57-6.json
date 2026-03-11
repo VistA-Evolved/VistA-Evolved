@@ -1,0 +1,35 @@
+{
+  "fileNumber": 57.6,
+  "fileName": "UNIT DOSE PICK LIST STATS",
+  "globalRoot": "57.6D",
+  "globalReference": "^PS(57.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDIX",
+      "required": true,
+      "helpText": "  This field should contain the date (no time) that the drug was dispensed or returned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "57.61PA",
+      "required": false,
+      "helpText": "  This is wards for which dispensing information has been entered. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

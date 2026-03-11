@@ -1,0 +1,27 @@
+{
+  "fileNumber": 366.13,
+  "fileName": "PLAN APPLICATION",
+  "globalRoot": "366.13",
+  "globalReference": "^IBCNR(366.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A Plan application name that identifies an electronic interface application. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 407.6,
+  "fileName": "LETTER TYPE",
+  "globalRoot": "407.6I",
+  "globalReference": "^VA(407.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "The code is the alpha character assigned to a particular type of letter, i.e. 'P' = PRE-APPOINTMENT. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code name is the name of the type of letter.  For example, PRE- APPOINTMENT letter is a letter generated from the scheduling module of the MAS DHCP software for veterans who have future appointments and these letters are 'reminder' letters sent to the veterans for their  future appointments. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The inactive date is the date/time entered by a user denoting that any particular letter type has been inactivated and no longer in use. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "407.6", "field": .01, "type": "regular"},
+    {"name": "407.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

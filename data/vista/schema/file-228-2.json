@@ -1,0 +1,1304 @@
+{
+  "fileNumber": 228.2,
+  "fileName": "TREATMENT PLAN TRANSACTION/EXAM",
+  "globalRoot": "228.2",
+  "globalReference": "^DENT(228.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the unique transaction ID for the treatment plan or examination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "*P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the dental patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the provider who is responsible for this transaction.   This applies to all record types, transaction, periodontal screening &  recording, periodontal examination, and soft tissue lesions. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ADA CODE",
+      "dataType": "POINTER",
+      "rawType": "*P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "Enter the ADA CDT code associated with this transaction ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ADA CODE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a short description for this ADA code.  The default value in the  Discus software will be the Short Description field from the CPT file  (#81).   But the Discus software allows for this text to be edited and  increased from the CPT Short Description length of 28 to 40 characters. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TP RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will indicate whether or not this record was entered via the  Treatment Planning module (DRM+Plus) or the DRM program.  Answer Yes if  this is entered via DRM+Plus.  This field is really only relevant to  assist the DRM M code to determine whether or not this record can be  deleted from this file.  That logic would only concern those records  which are Transaction data types (#29). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ASPECT",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "This indicates which part of the tooth this transaction applies to ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CHART TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "This indicates whether the treatment is planned or completed ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CONDITION",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "This indicates the type or condition of this treatment ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "MATERIAL",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter the type of material used in this treatment ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "REGION",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter the area where this treatment occurred, for example, OneSurf ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Enter the status of this transaction ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date (time optional) for this transaction ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TIME COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Unique counter for similar transactions on this date. (Not really a time) Used in the treatment planning software.  The values for this field start  with 1000 and is incremented by 10. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "TOOTH NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0O",
+      "length": 2,
+      "required": false,
+      "helpText": "Tooth number for items which require a tooth.   Tooth #0 is set so that the xref will be triggered so that all non tooth  related events can easily be looked up.  An output transform will convert  tooth=0 to tooth=\"\" ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "SURFACES/ROOTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a text string indicating the surfaces that were involved.  This  string is 1 to 7 characters long and can consist only of a combination  of the letters MBDIOLF.   If the string is uppercase, then the codes refer to tooth surfaces. If the string is lowercase, then the codes refer to roots. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PHASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Indicates phase that this item belongs to.  Used in treatment planning  and sequencing. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ISJUVENILE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether tooth is primary ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "CHART NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0X",
+      "length": 6,
+      "required": false,
+      "helpText": "Chart number is the particular plan for which a group of transactions  will belong.   For the Discus software, plan numbers between 0-59 are  active plans.  Plan numbers 60 and above indicate a completed plan.   All transactions completed on the same day will be assigned the same  chart number (>59).   This number is incremental and will be unique for  each patient.   Every patient starts with their first completed  transactions with a chart number 60. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "VISIBLE",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether this item should be displayed. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "NEXT APPT",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates that this planned treatment item will be performed during the  patient's next appointment. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "For grouped item (bridge, partial dentures) indicates number in group ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "DELETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Non-zero indicates deleted treatment ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Cost of performing treatment ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Optional category that this item falls under in treatment planning and  sequencing. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "SEQUENCE INDEX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Used in the treatment planning module to indicate this transaction's  order within a group. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PLAQUE INDEX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Used in treatment planning module to indicate the degree of plaque  buildup. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "READ ONLY",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "Used in treatment planning to indicate whether or not a user can delete  this record.  This is only used by treatment planning and is not used by  DRM. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:Transaction;2:PerioExam;3:PSR;4:Head&Neck;5:Exam;",
+      "helpText": "This is the type of record for this entry. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that this record was initially created. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the individual who initially created this record, ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE DELETED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "In accordance with HIPAA, records are not allowed to be deleted once they  are part of the official medical record.  This field being set indicates  that this record was deleted.  If this field is present, then the  Treatment plan software will not display this data in the GUI. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "DELETE PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the person who marked this record for deletion ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If there is a visit pointer in the Dental History entry, then this field  is the Visit file .01 (visit date), otherwise it's the create date of  the transaction. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ICD-1",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the primary diagnosis code for this procedure. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "ICD-2",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is a secondary diagnosis associated with this procedure ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "ICD-3",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is a secondary diagnosis associated with this procedure. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "ICD-4",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is a secondary diagnosis codes associated with this procedure. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "ICD-5",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is a secondary diagnosis associated with this procedure. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "CTV",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,1",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the value used in dental service to indicate the number of  10-minute intervals needed to complete the procedure. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "RVU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the Relative Value Unit used in the Decision Support System  (DSS).  A RVU is one minute. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "DAS FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Enter the field number from file 221 or its entire field name.  This  field in 228.2 will be used for new reports will replace the old DAS  reports. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "DENTAL ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P228.1'",
+      "required": false,
+      "pointerTo": 228.1,
+      "helpText": "Enter the dental encounter for which this transactions is related. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "PRODUCT LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the grouping for this CPT code at the time of the encounter.  It  is needed for the Decision Support System program. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "CANAL#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the number of root canals that were involved.  The only acceptable  input values are 1 or 2 or 3 or 3+. ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 1.18,
+      "fieldName": "HL7 STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:pending;T:transmitted;C:cancelled;E:error;",
+      "helpText": "This field will be populated by automated computer processes.  Once a  transaction type record has a status of completed, then a new style cross  reference will stuff a value of P in this field and set up the AXMIT  cross reference.  When the batch HL7 processor runs, if it successfully  transmits this record, then that batch process will change this flag to  transmitted.  If the HL7 message could not be generated because of a data  error, then the field will be set to E for error.   If a record",
+      "fieldNumber_": 1.18
+    },
+    {
+      "fieldNumber": 1.19,
+      "fieldName": "FILED TO PCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the transaction was filed to PCE. ",
+      "fieldNumber_": 1.19
+    },
+    {
+      "fieldNumber": 1.201,
+      "fieldName": "DAS DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value that was passed to file 221 when the data was filed.  It is stuffed with the value in the ADA table (#228) at the time the transaction is created. ",
+      "fieldNumber_": 1.201
+    },
+    {
+      "fieldNumber": 1.202,
+      "fieldName": "TREATMENT FLAGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds flags for treatment plan.  The 8 character numeric field  contains bit type flags, 1=true, 0=false.  The first character will  represent TOOTH RELATED.  The other characters are for future use. ",
+      "fieldNumber_": 1.202
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "QUADRANT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the quadrant invloved with this transaction.  It is calculated  from the TOOTH and REGION fields.  Only transactions whose REGION has a  value 6 (ien of 7) should have a QUADRANT field value.. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "CLEAN SLATE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the clean slate was applied to this record. The user can undo a clean slate as long as no newer transactions have been entered. If this field contains a value, field VISIBLE (#.2) should be 0. ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PE EXAM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Enter the number of exams (one per appointment) ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PERIO INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "228.221",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 228.221,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "PERIO NULLS DATA",
+      "dataType": "SUBFILE",
+      "rawType": "228.223",
+      "required": false,
+      "helpText": "This field contains the Discus dental hex code for perio nulls to  differentiate between a '0' value and no values entered by the user. ",
+      "isMultiple": true,
+      "subFileNumber": 228.223,
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "PSR SCORE STRING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Score of each sextant concatenated into single string. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "X COORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the X coordinate for the lesion ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "Y COORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the Y coordinate of the lesion ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "MARKER COLOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Color of marker used to indicate lesion ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "MARKER SHAPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Shape of marker used to indicate lesion ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "MARKER SIZE",
+      "dataType": "POINTER",
+      "rawType": "*P228.3'",
+      "required": false,
+      "pointerTo": 228.3,
+      "helpText": "Used in treatment planning to indicate the size of the lesion. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "MASTER",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "Used in treatment planning module to indicate whether or not this head &  neck record is a master lesion. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "LINK ID",
+      "dataType": "POINTER",
+      "rawType": "*P228.2'",
+      "required": false,
+      "pointerTo": 228.2,
+      "helpText": "Used in treatment planning module to indicate the master lesion record to  which this record is related. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "RESULT",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "Used in the treatment planning module to indicate whether or not this  head & neck transaction has been resolved. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "HEADNECK DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "228.41",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 228.41,
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "HISTORY ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether or not the head and neck transaction is a history  of head and neck reported by the patient. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "EDENTULOUS NON PROPHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "If a patient is marked as edentulous, the business rules introduced in the exam template will have to be altered to properly account for the  patient's condition. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "PLAQUE INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:None;1:Slight;2:Moderate;3:Heavy;4:Not Recorded;",
+      "helpText": "This is the plague index assessment for the patient. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "CARIES RISK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Edentulous;1:Low;2:Moderate;3:High;4:Not Recorded;",
+      "helpText": "This is the caries risk assessment for the patient. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "ORAL HYGIENE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Excellent;1:Good;2:Fair;3:Poor;4:Not Recorded;",
+      "helpText": "This is the oral hygiene assessment for the patient. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "XEROSTOMIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:None;1:Slight;2:Moderate;3:Significant;4:Not Recorded;",
+      "helpText": "This is the xerostomia assessment for the patient. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "MANDIBULAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Normal;2:Prognathic;3:Retrognathic;",
+      "helpText": "This is the patient's mandibular relationship determined during a dental examination. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "OPEN BITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Anterior;2:Bilateral posterior;3:Unilateral left posterior;4:Unilateral right posterior;",
+      "helpText": "This is the patient's open bite as determined during a dental exam. ",
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.12,
+      "fieldName": "CROSS BITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Anterior;2:Bilateral posterior;3:Unilateral left posterior;4:Unilateral right posterior;5:Anterior with bilateral posterior;6:Anterior with unilateral left posterior;7:Anterior with unilateral right posterior;",
+      "helpText": "This is the patient's cross bite assessment determined during a dental exam. ",
+      "fieldNumber_": 5.12
+    },
+    {
+      "fieldNumber": 5.13,
+      "fieldName": "LEFT MOLAR RELATIONSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Class I;2:Class II;3:Class III;",
+      "helpText": "This is the patient's left molar relationship assessed during a dental exam. ",
+      "fieldNumber_": 5.13
+    },
+    {
+      "fieldNumber": 5.14,
+      "fieldName": "RIGHT MOLAR RELATIONSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Class I;2:Class II;3:Class III;",
+      "helpText": "This is the patient's right molar relationship assessed during a dental exam. ",
+      "fieldNumber_": 5.14
+    },
+    {
+      "fieldNumber": 5.15,
+      "fieldName": "LEFT CUSPID RELATIONSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Class I;2:Class II;3:Class III;",
+      "helpText": "This is the value associated with a patient's left cuspid relationship assessed during a dental exam. ",
+      "fieldNumber_": 5.15
+    },
+    {
+      "fieldNumber": 5.16,
+      "fieldName": "RIGHT CUSPID RELATIONSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:Class I;2:Class II;3:Class III;",
+      "helpText": "This is the patient's right cuspid relationship assessed during a dental exam. ",
+      "fieldNumber_": 5.16
+    },
+    {
+      "fieldNumber": 5.17,
+      "fieldName": "OVERBITE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the value (in millimeters) that measures the patient's overbite (or negative for underbite). ",
+      "fieldNumber_": 5.17
+    },
+    {
+      "fieldNumber": 5.18,
+      "fieldName": "OVERJET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the value (in millimeters) that measures the patient's overjet (or negative for underjet). ",
+      "fieldNumber_": 5.18
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "PAR HABITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports parafunctional habits. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.31,
+      "fieldName": "BRUXING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether a patient reports bruxing. ",
+      "fieldNumber_": 5.31
+    },
+    {
+      "fieldNumber": 5.32,
+      "fieldName": "CLENCHING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports clenching. ",
+      "fieldNumber_": 5.32
+    },
+    {
+      "fieldNumber": 5.33,
+      "fieldName": "PAR HISTORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports a history of parafunctional  habits. ",
+      "fieldNumber_": 5.33
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "PAR EVIDENCED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:None;",
+      "helpText": "This indicates whether the patient has evidence of parafunctional habits. The details will be gathered in subsequent fields. ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.41,
+      "fieldName": "ATTRITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient has evidence of abrasion. ",
+      "fieldNumber_": 5.41
+    },
+    {
+      "fieldNumber": 5.42,
+      "fieldName": "ABRASION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient has evidence of abrasion. ",
+      "fieldNumber_": 5.42
+    },
+    {
+      "fieldNumber": 5.43,
+      "fieldName": "EROSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient has evidence of erosion. ",
+      "fieldNumber_": 5.43
+    },
+    {
+      "fieldNumber": 5.44,
+      "fieldName": "HYPERTROPHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient has evidence of hypertrophy. ",
+      "fieldNumber_": 5.44
+    },
+    {
+      "fieldNumber": 5.45,
+      "fieldName": "FACETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether the patient has clinical findings associated with faceted pertaining to parafunctional habits. ",
+      "fieldNumber_": 5.45
+    },
+    {
+      "fieldNumber": 5.46,
+      "fieldName": "ABFRACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether the patient has clinical findings associated with abfraction pertaining to parafunctional habits. ",
+      "fieldNumber_": 5.46
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "TMJ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports symptoms associated with TMJ. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.51,
+      "fieldName": "TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports trauma associated with TMJ. ",
+      "fieldNumber_": 5.51
+    },
+    {
+      "fieldNumber": 5.52,
+      "fieldName": "SPONTANEOUS PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports spontaneous pain associated with TMJ. ",
+      "fieldNumber_": 5.52
+    },
+    {
+      "fieldNumber": 5.53,
+      "fieldName": "POPPING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports popping associated with TMJ. ",
+      "fieldNumber_": 5.53
+    },
+    {
+      "fieldNumber": 5.54,
+      "fieldName": "CLICKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:None;",
+      "helpText": "This indicates whether the patient reports clicking associated with TMJ. ",
+      "fieldNumber_": 5.54
+    },
+    {
+      "fieldNumber": 5.55,
+      "fieldName": "PAIN OPENING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports pain when opening the jaw associated with TMJ. ",
+      "fieldNumber_": 5.55
+    },
+    {
+      "fieldNumber": 5.56,
+      "fieldName": "PAIN CHEWING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports pain while chewing associated with TMJ. ",
+      "fieldNumber_": 5.56
+    },
+    {
+      "fieldNumber": 5.57,
+      "fieldName": "LIMITED OPENING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This indicates whether the patient reports limited opening associated with TMJ. ",
+      "fieldNumber_": 5.57
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "MAX INCISAL OPENING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the measurement of the maximum incisal opening for the patient (in millimeters). ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.71,
+      "fieldName": "LEFT LATERAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the measurement of the left lateral for the patient (in  millimeters). ",
+      "fieldNumber_": 5.71
+    },
+    {
+      "fieldNumber": 5.72,
+      "fieldName": "RIGHT LATERAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the measurement of the right lateral for the patient (in  millimeters). ",
+      "fieldNumber_": 5.72
+    },
+    {
+      "fieldNumber": 5.73,
+      "fieldName": "CLINICAL FINDINGS POPPING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:None;2:Left;3:Right;4:Both;",
+      "helpText": "This is the location of TMJ/TMD popping assessed by examination of the patient. ",
+      "fieldNumber_": 5.73
+    },
+    {
+      "fieldNumber": 5.74,
+      "fieldName": "CLINICAL FINDINGS CLICKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:None;2:Left;3:Right;4:Both;",
+      "helpText": "This is the location of TMJ/TMD clicking assessed by examination of the patient. ",
+      "fieldNumber_": 5.74
+    },
+    {
+      "fieldNumber": 5.75,
+      "fieldName": "CLINICAL FINDINGS PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:None;2:Left;3:Right;4:Both;",
+      "helpText": "This is the location of TMJ/TMD pain assessed by examination of the patient. ",
+      "fieldNumber_": 5.75
+    },
+    {
+      "fieldNumber": 5.76,
+      "fieldName": "DEVIATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:-;1:None;2:Left;3:Right;",
+      "helpText": "This is the location of TMJ/TMD deviation assessed by examination of the patient. ",
+      "fieldNumber_": 5.76
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PAR OTHER NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "228.26",
+      "required": false,
+      "helpText": "Enter any additional notes regarding parafunctional habits as reported  by the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 228.26,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PAR CF NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "228.27",
+      "required": false,
+      "helpText": "Enter any parafunctional habits regarding clinical findings.  ",
+      "isMultiple": true,
+      "subFileNumber": 228.27,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TMJ OTHER NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "228.28",
+      "required": false,
+      "helpText": "Enter any additional notes regarding TMJ as reported by the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 228.28,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TMJ CF NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "228.29",
+      "required": false,
+      "helpText": "Enter any additional clinical finding notes regarding TMJ. ",
+      "isMultiple": true,
+      "subFileNumber": 228.29,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "SOCIAL HISTORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether the patient reports social history. A yes will mean subsequent data in the record will exist in fields #10.02 - #10.4. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "SH CIGARETTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Past;2:Present;3:Both Past & Present;",
+      "helpText": "This indicates the patient's history of smoking cigarettes. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "CIGARETTE QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This indicates the number of packs the patient reports smoking during the period represented in field CIG FREQUENCY (#10.04). ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "CIGARETTE FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:pack year history;1:packs per day for;2:packs per week for;",
+      "helpText": "This indicates the frequency of smoking cigarettes as reported by the patient in correlation to field CIGARETTE QUANTITY (#10.03). ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "CIGARETTE YEARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This indicates the number of years the patient reported smoking cigarettes at the quantity and frequency reported in fields CIGARETTE  QUANTITY (#10.03) and CIGARETTE FREQUENCY (#10.04). ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "SH PIPE/CIGAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Past;2:Present;3:Both Past & Present;",
+      "helpText": "This indicates the patient's history of smoking cigars or pipes. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "PIPE QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This indicates the number of pipes/cigars the patient reports smoking during the period represented in field PIPE FREQUENCY (#10.08). ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "PIPE FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:times per day for;1:times per week for;2:times per month for;3:times per year for;",
+      "helpText": "This indicates the frequency of smoking pipe/cigars as reported by the patient in correlation to field PIPE QUANTITY (#10.07). ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "PIPE YEARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This indicates the number of years the patient reported smoking pipes/cigars at the quantity and frequency reported in fields PIPE  QUANTITY (#10.07) and PIPE FREQUENCY (#10.08). ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "SH SMOKELESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Past;2:Present;3:Both Past & Present;",
+      "helpText": "This indicates the patient's history of using smokeless tobacco. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "SMOKELESS QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This indicates the number of times the patient reports consuming smokeless tobacco during the period represented in field SMOKELESS FREQUENCY (#10.12). ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "SMOKELESS FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:times per day for;1:times per week for;2:times per month for;3:times per year for;",
+      "helpText": "This indicates the frequency of using smokeless tobacco as reported by the patient in correlation to field SMOKELESS QUANTITY (#10.11). ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 10.13,
+      "fieldName": "SMOKELESS YEARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This indicates the number of years the patient reported consuming smokeless tobacco at the quantity and frequency reported in fields  SMOKELESS QUANTITY (#10.11) and SMOKELESS FREQUENCY (#10.12). ",
+      "fieldNumber_": 10.13
+    },
+    {
+      "fieldNumber": 10.14,
+      "fieldName": "SH ALCOHOL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Past;2:Present;3:Both Past & Present;",
+      "helpText": "This indicates the patient's history of consuming alcohol. ",
+      "fieldNumber_": 10.14
+    },
+    {
+      "fieldNumber": 10.15,
+      "fieldName": "ALCOHOL QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This indicates the number of alcoholic beverages the patient reports consuming during the period represented in field ALCOHOL FREQUENCY (#10.16). ",
+      "fieldNumber_": 10.15
+    },
+    {
+      "fieldNumber": 10.16,
+      "fieldName": "ALCOHOL FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:drinks per day for;1:drinks per week for;2:drinks per month for;3:drinks per year for;",
+      "helpText": "This indicates the frequency of using alcohol as reported by the  patient in correlation to field ALCOHOL QUANTITY (#10.15). ",
+      "fieldNumber_": 10.16
+    },
+    {
+      "fieldNumber": 10.17,
+      "fieldName": "ALCOHOL YEARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This indicates the number of years the patient reported consuming  alcohol at the quantity and frequency reported in fields ALCOHOL QUANTITY  (#10.15) and ALCOHOL FREQUENCY (#10.16). ",
+      "fieldNumber_": 10.17
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "SH DRUG ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Past;2:Present;3:Both Past & Present;",
+      "helpText": "This indicates the patient history of drug abuse. This includes both non-prescription and prescription drugs. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.31,
+      "fieldName": "SH DRUG ABUSE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains information regarding the type of drug abuse or the  names of drugs the patient reports. ",
+      "fieldNumber_": 10.31
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "SH NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "228.21",
+      "required": false,
+      "helpText": "This field contains any additional notes including possible eating  disorders, dietary concerns and piercings as reported by the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 228.21,
+      "fieldNumber_": 10.4
+    }
+  ],
+  "fieldCount": 129,
+  "crossReferences": [
+    {"name": "ADEL", "field": },
+    {"name": "B", "field": },
+    {"name": "228.2", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "228.2", "field": 1.03, "type": "regular"},
+    {"name": "", "field": 1.03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

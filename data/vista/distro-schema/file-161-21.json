@@ -1,0 +1,70 @@
+{
+  "fileNumber": 161.21,
+  "fileName": "FEE BASIS CNH CONTRACT",
+  "globalRoot": "161.21I",
+  "globalReference": "^FBAA(161.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Contract number assigned by contracting for the Community Nursing Home. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the beginning date of the contract. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date the contract expires. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP161.2'",
+      "required": true,
+      "pointerTo": 161.2,
+      "helpText": "Contains the vendor for which the contract applies. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "ACR", "field": },
+    {"name": "ACR1", "field": },
+    {"name": "ADR", "field": },
+    {"name": "ADR1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.21", "field": .01, "type": "regular"},
+    {"name": "161.21", "field": .02, "type": "regular"},
+    {"name": "161.21", "field": .02, "type": "regular"},
+    {"name": "161.21", "field": .03, "type": "regular"},
+    {"name": "161.21", "field": .04, "type": "regular"},
+    {"name": "161.21", "field": .04, "type": "regular"},
+    {"name": "161.21", "field": .04, "type": "regular"},
+    {"name": "161.21", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "W \"\""}
+  ]
+}

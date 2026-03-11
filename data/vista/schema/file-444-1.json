@@ -1,0 +1,259 @@
+{
+  "fileNumber": 444.1,
+  "fileName": "RFQ VENDOR",
+  "globalRoot": "444.1",
+  "globalReference": "^PRC(444.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VENDOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Vendor's Name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDER ADDR LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the Ordering Address. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER ADDR LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the Ordering Address. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORDER ADDR LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the third line of the Ordering Address. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORDER ADDR LINE 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the fourth line of the Ordering Address. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "ORDER ADDR CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the City field of the Ordering Address. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "ORDER ADDR STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the State of the Ordering Address. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "ORDER ADDR ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Zip Code of the Ordering Address. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 4.8,
+      "fieldName": "CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the contact person for information from this vendor. ",
+      "fieldNumber_": 4.8
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VOICE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the voice phone number for product and ordering information. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "BUSINESS TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SMALL;2:LARGE;3:OUTSIDE U.S.;4:STATE/LOC/ED/NPF;",
+      "helpText": "This is the type of business for FY89 FPDS reporting purposes. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "TYPE OF OWNERSHIP",
+      "dataType": "POINTER",
+      "rawType": "444.19P",
+      "required": false,
+      "helpText": "This is the type of ownership. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SOCIOECONOMIC GROUP",
+      "dataType": "POINTER",
+      "rawType": "444.11P",
+      "required": false,
+      "helpText": "This is the socioeconomic group. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "PAYMENT ADDR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the Payment Address' Name. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 17.15,
+      "fieldName": "PAYMENT ADDR NAME 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the Payment Address' Name. ",
+      "fieldNumber_": 17.15
+    },
+    {
+      "fieldNumber": 17.3,
+      "fieldName": "PAYMENT ADDR LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first line of the Payment Address. ",
+      "fieldNumber_": 17.3
+    },
+    {
+      "fieldNumber": 17.4,
+      "fieldName": "PAYMENT ADDR LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second line of the Payment Address. ",
+      "fieldNumber_": 17.4
+    },
+    {
+      "fieldNumber": 17.5,
+      "fieldName": "PAYMENT ADDR LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the third line of the Payment Address. ",
+      "fieldNumber_": 17.5
+    },
+    {
+      "fieldNumber": 17.7,
+      "fieldName": "PAYMENT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the City of the Payment Address. ",
+      "fieldNumber_": 17.7
+    },
+    {
+      "fieldNumber": 17.8,
+      "fieldName": "PAYMENT STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the State of the Payment Address. ",
+      "fieldNumber_": 17.8
+    },
+    {
+      "fieldNumber": 17.9,
+      "fieldName": "PAYMENT ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Zip Code of the Payment Address. ",
+      "fieldNumber_": 17.9
+    },
+    {
+      "fieldNumber": 18.3,
+      "fieldName": "DUN & BRADSTREET #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the Dun & Bradstreet # for the Vendor.  This is the unique key for the vendor. ",
+      "fieldNumber_": 18.3
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "TAX ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Tax ID or Social Security Number for the vendor. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "FAX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the fax phone number. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SECTION 8(a) PARTICIPANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether the vendor is a Section 8(a) program participant. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "LINK TO FILE 440 VENDOR",
+      "dataType": "POINTER",
+      "rawType": "*P440'X",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This field enables mapping of an entry  from RFQ Vendor file (a temporary file) to an entry in the VENDOR file so that 2237s and POs will be built with information from the VENDOR file if the equivalent entry has been added. ",
+      "fieldNumber_": 60
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "DB", "field": },
+    {"name": "444.1", "field": .01, "type": "regular"},
+    {"name": "444.1", "field": 18.3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 18.3, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

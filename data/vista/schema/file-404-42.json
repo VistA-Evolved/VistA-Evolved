@@ -1,0 +1,172 @@
+{
+  "fileNumber": 404.42,
+  "fileName": "PATIENT TEAM ASSIGNMENT",
+  "globalRoot": "404.42P",
+  "globalReference": "^SCPT(404.42,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TEAM ASSIGNED DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date that the patient joins the team's patient panel. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TEAM ASSIGNMENT",
+      "dataType": "POINTER",
+      "rawType": "P404.51'",
+      "required": false,
+      "pointerTo": 404.51,
+      "helpText": "This is the team assigned to patient as of the effective date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ASSIGNMENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY CARE;98:PENDING PRIMARY CARE;99:OTHER;",
+      "helpText": "This field indicates the type of care provided by this assignment. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TEAM DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date/time that the team ceased to be assigned to the patient. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RESTRICT CONSULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This attribute prevents users from making consult appointments to clinics in which the patient is not enrolled. This parameter overrides the same parameter at the team level. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "USER ENTERING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who entered this record. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the history of teams and practitioner positions was entered. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last edited the record. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DATE/TIME LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the record was last edited. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DU:DOD UNASSIGN;IU:INACTIVE UNASSIGN;DD:REASSIGN-DOD REMOVED;PR:PAT RELOCATED;RP:REQ BY PAT;NN:NOT NEEDED;PC:PROV CHANGE;PI:MVI MOVE/MERGE;FT:INTRA FAC TRANS;MU:MISSING/UNK;MD:M-PACT DENIAL/WDRAW;DC:DISCHARGE FROM CARE;ER:ERROR;",
+      "helpText": "The status reason the patient was unassigned from the team. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "MULTIPLE PCP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag indicates whether a patient may have additional Primary Care  Providers at other facilities. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PURPOSE",
+      "dataType": "SUBFILE",
+      "rawType": "404.421",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 404.421,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AIDT", "field": },
+    {"name": "AIDT1", "field": },
+    {"name": "AIDT2", "field": },
+    {"name": "AOUTPT", "field": },
+    {"name": "APCTM", "field": },
+    {"name": "APCTM1", "field": },
+    {"name": "APCTM2", "field": },
+    {"name": "APCTM3", "field": },
+    {"name": "APTTM", "field": },
+    {"name": "APTTM1", "field": },
+    {"name": "ATMPT", "field": },
+    {"name": "ATMPT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .01, "type": "regular"},
+    {"name": "404.42", "field": .02, "type": "regular"},
+    {"name": "404.42", "field": .02, "type": "regular"},
+    {"name": "404.42", "field": .03, "type": "regular"},
+    {"name": "404.42", "field": .03, "type": "regular"},
+    {"name": "404.42", "field": .03, "type": "regular"},
+    {"name": "404.42", "field": .03, "type": "regular"},
+    {"name": "404.42", "field": .03, "type": "regular"},
+    {"name": "404.42", "field": .08, "type": "regular"},
+    {"name": "404.42", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SCTM(404.51,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(404.51,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

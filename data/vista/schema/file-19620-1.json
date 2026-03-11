@@ -1,0 +1,127 @@
+{
+  "fileNumber": 19620.1,
+  "fileName": "DSIR RELEASED DOCUMENT",
+  "globalRoot": "19620.1",
+  "globalReference": "^DSIR(19620.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST_NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP19620'",
+      "required": true,
+      "pointerTo": 19620,
+      "helpText": "Points back to the IEN in ^DSIR(19620) which is also the request number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DOCUMENT_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP19620.4'",
+      "required": true,
+      "pointerTo": 19620.4,
+      "helpText": "Points to ^DSIR(19620.4), the Document Type file, to indicate what type  of document is being released. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOCUMENT_IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "IEN of document within the source file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DOCUMENT_MEDIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ELECTRONIC;1:PAPER;",
+      "helpText": "Type of media where the document is stored; electronic or paper.. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DOCUMENT_CAPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Caption to be displayed for this document whenever the documents for the  request are listed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DOCUMENT_LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This value contains the number of pages in a paper document to be released. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DOCUMENT_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the document was created. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DOCUMENT_AUTHOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to indicate the author of the document ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RELEASED_BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to indicate the person releasing the document. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.11",
+      "required": false,
+      "helpText": "Optionally contains further information concerning the document. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "INCLUDE IN BILLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  indicate whether or not the document is included in billing. ",
+      "fieldNumber_": 2.01
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.931,
+  "fileName": "IMAGING EVENT AUDITABLE ACTION",
+  "globalRoot": "2006.931",
+  "globalReference": "^MAGV(2006.931,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of an action to be audited. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.931", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

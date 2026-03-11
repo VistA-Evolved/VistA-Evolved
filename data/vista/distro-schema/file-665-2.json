@@ -1,0 +1,68 @@
+{
+  "fileNumber": 665.2,
+  "fileName": "PROS LETTER",
+  "globalRoot": "665.2",
+  "globalReference": "^RMPR(665.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the skeleton letter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LETTER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "665.21",
+      "required": false,
+      "helpText": "This is the text of the skeleton letter. ",
+      "isMultiple": true,
+      "subFileNumber": 665.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DENIAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field stores the denial flag for AMIS purposes. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADP FL 10-90 FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is set to 1 if the letter is an ADP FL 10-90. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NON EDITABLE LETTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this field is set to 1 this letter is marked as non editable. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "665.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

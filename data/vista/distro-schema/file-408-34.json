@@ -1,0 +1,48 @@
+{
+  "fileNumber": 408.34,
+  "fileName": "SOURCE OF INCOME TEST",
+  "globalRoot": "408.34",
+  "globalReference": "^DG(408.34,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file contains the various sources from which a DHCP income test may be received.  This would include, but is not limited to, USER if the  income test is administered by a DHCP user or IVM if the income test  is verified by the Income Verification Match Center.   This file is distributed with file entries intact.  It should not be edited for any reason.  Editing of this file, or entries in it, could  cause data corruption. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TEST IS EDITABLE?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will contain a 1 if income test from this source are editable. Otherwise, this field will contain a 0.   Data in this file is maintained by the software package and should not be altered in anyway.  Any change to data in this file could result in data corruption or software functioning improperly. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "408.341",
+      "required": false,
+      "helpText": "This field will contain a word processing description of the income source. ",
+      "isMultiple": true,
+      "subFileNumber": 408.341,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "408.34", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

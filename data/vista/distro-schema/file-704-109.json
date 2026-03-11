@@ -1,0 +1,56 @@
+{
+  "fileNumber": 704.109,
+  "fileName": "TERM_MAPPING_PAIR",
+  "globalRoot": "704.109",
+  "globalReference": "^MDC(704.109,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAPPING_TABLE_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.108'",
+      "required": true,
+      "pointerTo": 704.108,
+      "helpText": "This identifies the mapping-table of this TERM MAPPING PAIR entry. A sample could identify \"Mapping-TableXX\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TERM_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP704.102'",
+      "required": true,
+      "pointerTo": 704.102,
+      "helpText": "This field will determine the HL7 message segment relating to this term  mapping pair; and identifies a term-type in the TERM TYPE File (#704.102). A sample could be a TERM TYPE identifying the HL7 message segment with  \"XType\" data to be related to this term mapping pair. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TERM",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies the TERM relating to this term mapping pair. A sample TERM could identify \"TEMPERATURE\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "VENDOR_KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field indicates the vendor related to this term mapping pair. A sample VENDOR KEY could be \"111X213\".  ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

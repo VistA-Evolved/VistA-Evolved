@@ -1,0 +1,308 @@
+{
+  "fileNumber": 120.84,
+  "fileName": "GMR ALLERGY SITE PARAMETERS",
+  "globalRoot": "120.84",
+  "globalReference": "^GMRD(120.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the name of this set of parameters.  The name of the base set that is sent out is \"HOSPITAL\".  The code will work more efficiently if the name of the base set of parameters is not changed from \"HOSPITAL\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TOP 10 REACTIONS",
+      "dataType": "POINTER",
+      "rawType": "120.841IP",
+      "required": false,
+      "helpText": "A list of reactions for the user to choose from when selecting reactions for a patient allergy/adverse reactions.  These will be the ten most common reactions, and modifiable by the site. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTOVERIFY FOOD/DRUG/OTHER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO AUTOVERIFY;1:AUTOVERIFY DRUG ONLY;2:AUTOVERIFY FOOD ONLY;3:AUTOVERIFY DRUG/FOOD;4:AUTOVERIFY OTHER ONLY;5:AUTOVERIFY DRUG/OTHER;6:AUTOVERIFY FOOD/OTHER;7:AUTOVERIFY ALL;",
+      "helpText": "This field determines which types of allergies a site wants autoverified at the user sign off. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUTOVERIFY OBSERVED/HISTORICAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO AUTOVERIFY;1:AUTOVERIFY HISTORICAL ONLY;2:AUTOVERIFY OBSERVED ONLY;3:AUTOVERIFY BOTH;",
+      "helpText": "This field is configurable by the site to allow autoverification of observed or historical allergies. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "AUTOVERIFY LOGICAL OPERATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "!:OR;&:AND;",
+      "helpText": "This field will determine how the Autoverify Food/Drug/Other and Autoverify Observed/Historical parameters relate to each other.  OR means that the reaction will be autoverified if it meets the criteria of one of the two parameters, while AND means the reaction will be autoverified only if it meets the criteria of both parameters.  If this field is left null, the OR condition will be used.   For example, if you want to verify only observed drug reactions, you would set the Autoverify Food/Drug/O",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUIRE ORIGINATOR COMMENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the originator will be required to enter comments for an OBSERVED reaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*LAST DFN CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The data in this field is the entry number of the Patient file record whose data was last converted by the Patient file data conversion.  This field will be 0 before the conversion begins and after the conversion is over. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "*CONVERSION TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the TaskMan task number of the Patient file data conversion job. The data in this field will be null before the job is queued to run, and after it has finished running. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "*CONVERSION FINISHED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the Patient file data conversion has finished running or not.  The data in this field will be 1 if the Patient file data conversion has finished running, or did not need to run. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "120.846P",
+      "required": false,
+      "helpText": "The divisions associated with this set of site parameters. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MARK ID BAND FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is an indicator to denote whether the site wants to document if the patient ID band should be marked for a certain allergy. The system will assume the site wants to document the marking of inpatient ID bands.  If this field is answered NO, the site does not want to document the marking of inpatient ID bands. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "METHOD OF NOTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:BULLETIN;1:OE/RR TEAMS;2:NO NOTIFICATION;",
+      "helpText": "This field tells ART if or how the users should be notified for chart or ID band markings.  There are three methods. The first method is the use of BULLETINs,  which is the current way ART works.  The second method is the use of OE/RR Teams.  If this method is used, then you will need to set up different teams for each ward and also assign printers to these teams.  The third method is to turn off the function. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "ALERT ID BAND/CHART MARK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to let the system know if you want to issue alerts  if the fields have not been answered in the Enter/Edit Patient Reaction Data portion of the system.  If the field is answered yes(1) or is null then, the system will continue to issue the alerts.  If this field is no(0), then the system will not issue alerts for this record. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "NEW ADMISSION CHART MARK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is to indicate if the site wants to send chart mark bulletin for a new admission. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "*3.0 CONVERSION LAST DFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will contain the last field that has been fully converted. The field is initially set to 0. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "*3.0 TASK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the TaskMan number that was assigned.  In the event that there is a conversion failure this will enable the system to give the programmers the tools to investigate the problem. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "*CONVERSION FINISHED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the V3.0 data structure conversion has finished running.  The data in this field will be 1 if the conversion has finished running or did not need to run. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "NKA CONVERSION",
+      "dataType": "SUBFILE",
+      "rawType": "120.849",
+      "required": false,
+      "helpText": "This field contains all the entries that are to be converted in the 3.0 NKA conversion. ",
+      "isMultiple": true,
+      "subFileNumber": 120.849,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FDA DATA REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field will indicate whether the entry of FDA Data should be required during the Enter/Edit Patient Reaction Data.  If this field is answered \"YES\", then the user must enter the FDA Data at the time of entering a reaction. If this field is left null or answered \"NO\", then the FDA Data entry will not be required during the Enter/Edit Patient Reaction Data option. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "E/E DESCRIPTION ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Permit users to indicate why a reaction was Entered in Error. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REPORTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field would contain the default reporter name to be used on the FDA reports. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REPORTER ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field would contain the first line of the reporter address to be used as a default for the FDA reports. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REPORTER ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field would contain the second line of the reporter address to be used as the default on the FDA reports. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REPORTER ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field would contain the third line of the reporter address to be used as the default on the FDA reports. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REPORTER CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city to be used as the default on the FDA Reports. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "REPORTER STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains the default state to be used on the FDA reports. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "REPORTER ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contain the default Zip Code to be used on the FDA reports. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "REPORTER PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the default phone number to be used on the FDA reports. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reporter's occupation. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "*CONVERSION OF NKA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates if the NKA conversion is complete.  ATS 3.0 will not install onto a system that has ATS Version 2.2 if this field is not set.   ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "SITE", "field": },
+    {"name": "120.84", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "fileNumber": 64.21,
+  "fileName": "WKLD CODE LAB SECT",
+  "globalRoot": "64.21",
+  "globalReference": "^LAB(64.21,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "  This field contains the name of this national lab section. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREV",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": " This field contains the shorten name for this lab section. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " If this lab section is also known by another name, it should be entered in this field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAB DIVISION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AP:ANATOMIC PATH;CP:CLINICAL PATH;GL:GENERAL LAB SUPPORT;",
+      "helpText": " This field contains the major lab section to which it is associated with. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "VR", "field": },
+    {"name": "64.21", "field": .01, "type": "regular"},
+    {"name": "64.21", "field": .01, "type": "regular"},
+    {"name": "64.21", "field": .01, "type": "regular"},
+    {"name": "64.21", "field": 1, "type": "regular"},
+    {"name": "64.21", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "fileNumber": 12.12,
+  "fileName": "TELEPHONE COUNTRY CODE",
+  "globalRoot": "12.12",
+  "globalReference": "^DG(12.12,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This field contains the name of the country. This name will not appear on the screen at data entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COUNTRY DIALING CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This value is the dialing code required to call this country. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COUNTRY DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "This value is the display name for the country and is a shorter version of the full country name.  This value will display on screen after selecting a TELEPHONE COUNTRY CODE. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "12.12", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

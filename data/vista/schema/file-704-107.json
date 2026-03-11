@@ -1,0 +1,146 @@
+{
+  "fileNumber": 704.107,
+  "fileName": "TERM_RANGE_CHECK",
+  "globalRoot": "704.107",
+  "globalReference": "^MDC(704.107,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field indentifies the term to which a term range check is  applicable.     A sample TERM ID could identify the term \"TEMPERATURE\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "UNIT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the unit of measurement related to the TERM_ID  (field #.01).   A sample UNIT ID could identify \"DEGREES F\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Male;F:Female;N:Non-Specific;",
+      "helpText": "This field indicates the gender to which a term range check is  applicable. A sample SEX could be \"Male\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AGE_MINIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the minimum age which the term range check is applicable. A sample AGE MINIMUM could be \"55\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AGE_MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the maximum age which the term range check is applicable. A sample AGE MAXIMUM could be \"150\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PATIENT_ID",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field identifies a patient for which the term range check is  applicable.   A sample PATIENT ID could identify \"CP FLOWSHEETS,PATIENT1\". ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a DESCRIPTION of the term range check entry. A sample DESCRIPTION could be \"Senior male temperature\". ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CRITICAL_LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a \"CRITICAL LOW\" result when the term  range check is applied. A sample CRITICAL LOW could be \"80\". ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ABNORMAL_LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a \"ABNORMAL LOW\" result when the term  range check is applied. A sample ABNORMAL LOW could be \"85\". ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "NORMAL_LOW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a \"NORMAL LOW\" result when the term  range check is applied. A sample NORMAL LOW could be \"90\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "NORMAL_HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a \"NORMAL HIGH\" result when the term  range check is applied. A sample NORMAL HIGH could be \"100\". ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ABNORMAL_HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a \"ABNORMAL HIGH\" result when the term  range check is applied. A sample ABNORMAL HIGH could be \"103\". ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "CRITICAL_HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,7",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the value that will cause a CRITICAL HIGH\"\" result when the term  range check is applied. A sample CRITICAL HIGH could be \"106\". ",
+      "fieldNumber_": .16
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": .09, "value": "W \"   \",$P(^(0),U,9)"}
+  ]
+}

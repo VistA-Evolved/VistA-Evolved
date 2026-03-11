@@ -1,0 +1,38 @@
+{
+  "fileNumber": 58.4,
+  "fileName": "SPMP ASAP RECORD DEFINITION",
+  "globalRoot": "58.4",
+  "globalReference": "^PS(58.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the American Society for Automation in Pharmacy (ASAP) data format definition. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERSION",
+      "dataType": "SUBFILE",
+      "rawType": "58.4001",
+      "required": false,
+      "helpText": "This multiple contains information related to the version of the American Society for Automation in Pharmacy (ASAP) data format definition. ",
+      "isMultiple": true,
+      "subFileNumber": 58.4001,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

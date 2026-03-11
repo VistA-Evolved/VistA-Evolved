@@ -1,0 +1,86 @@
+{
+  "fileNumber": 442.8,
+  "fileName": "DELIVERY SCHEDULE (ORDER)",
+  "globalRoot": "442.8IsO",
+  "globalReference": "^PRC(442.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER NUMBER (PAT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the entire PAT (Pending Accounting Transaction) number that must be a Purchase Order or Requisition on the Procurement & Accounting Transactions File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Line-item number for a Purchase Order or Requisition. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which delivery of the item (s) is to be made. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCATION FOR DELIVERY",
+      "dataType": "POINTER",
+      "rawType": "RP410.8",
+      "required": true,
+      "pointerTo": 410.8,
+      "helpText": "This is the location to which the item should be delivered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "QUANTITY TO BE DELIVERED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the quantity to be delivered to the specified location on the specified date. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DELETE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DELETE;",
+      "helpText": "It is a flag to delete the Delivery Schedule, that is being displayed on the purchase order. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "442.8", "field": .01, "type": "regular"},
+    {"name": "442.8", "field": .01, "type": "regular"},
+    {"name": "442.8", "field": .01, "type": "regular"},
+    {"name": "442.8", "field": 1, "type": "regular"},
+    {"name": "442.8", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCS(410.8,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(410.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": A1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": Z1, "value": "W ?60,\"DELV.QTY:\",$J($P(^(0),U,5),6)"}
+  ]
+}

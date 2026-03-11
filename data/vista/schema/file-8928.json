@@ -1,0 +1,159 @@
+{
+  "fileNumber": 8928,
+  "fileName": "PASTED TEXT TRACKING",
+  "globalRoot": "8928",
+  "globalReference": "^TIUP(8928,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PASTE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the text was pasted into a document. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PASTING USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This stores the user responsible for pasting the text into a document. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the institution of the user at the time of the paste action. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PASTED TO IEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ16,4",
+      "length": 16,
+      "required": true,
+      "helpText": "This contains the IEN of the document which received pasted text. The file in which the IEN is located, is denoted by the PASTED TO DOCUMENT LOCATION (#.05) field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PASTED TO DOCUMENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This stores the file where the document which received pasted text, noted in the PASTED TO IEN (#.04) field is located. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COPY FROM IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,4",
+      "length": 17,
+      "required": false,
+      "helpText": "This stores the IEN of the document where the pasted to text was copied from. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COPY FROM LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This field stores the file where the document from which the pasted text was copied, noted in the COPY FROM IEN (#.06) field is located. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COPY/PASTE MATCH PCT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the percent of matching text found between the pasted text and the copied text from whence it originated as calculated by the capturing application, such as CPRS GUI. It is possible for the pasted text to not match 100% to the copied text due to the ability of a user to edit the copied text prior to pasting the text into a document. For example, the user copies text from TIU note 1 and places it into the Notepad application to edit. The user then copies the edited text and pastes it into",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CAPTURING APP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the application which captured the paste. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "OUTSIDE COPY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to store special information related to copied text. The capturing application has the ability to store identifier information which could not be stored in the COPY FROM IEN (#.06) and COPY FROM LOCATION (#.07) files. Piece one will always be \"-1\".  Piece two will contain semi-colon delimited information as determined by capturing application to determine where copied from text originated from if not identifiable by a file and entry number. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P8928'",
+      "required": false,
+      "pointerTo": 8928,
+      "helpText": "This indicates the original entry which resulted from saving pasted text which did not match the actually saved pasted text in the pasted to document. As the pasted text must match exactly what is in the pasted to document, the saved pasted text is searched and if not 100% matching, the found text is saved in multiple entries with the sections of text which were found. This situation may occur if the user edits the pasted text after pasting into the document, then an issue with identifying the e",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "FORCE SEARCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL SEARCH;1:FORCE SEARCH;2:PREVENT SEARCH;",
+      "helpText": "This field is used to inform the calling application of the need to modify the search behavior used to identify the pasted text. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PASTED TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8928.01",
+      "required": false,
+      "helpText": "This stores the text pasted by a user, which was saved as part of a note. ",
+      "isMultiple": true,
+      "subFileNumber": 8928.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COPIED TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8928.02",
+      "required": false,
+      "helpText": "This stores the text copied by a user, where the pasted text originated. ",
+      "isMultiple": true,
+      "subFileNumber": 8928.02,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8928", "field": .01, "type": "regular"},
+    {"name": "8928", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "fileNumber": 6917,
+  "fileName": "CATEGORY STOCK NUMBER",
+  "globalRoot": "6917I",
+  "globalReference": "^ENCSN(6917,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Ten digit number assigned centrally under the direction of Acquisition  and Materiel Management.  First four digits indicate the Federal Supply Classification.  Hyphen after the first four digits is for readability only. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIFE EXPECTANCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Estimated useful life of this particular type of equipment under normal conditions. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short verbal description.  Useful in selecting the Category Stock Number that best describes a particular piece of equipment. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPECIAL HANDLING CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Auto Data Process Equip;1:Closed Circuit TV (CCTV);2:Audio Visual Equip;3:Print & Repro Equip;",
+      "helpText": "Indicates that the Category Stock Number in question is subject to special reporting requirements.  This data element was explicitly added to DHCP in the summer of 1991.  '0' indicates COMPUTERS (ADP/WP); '1' indicates CCTV (CLOSED CIRCUIT TV); '2' indicates AUDIOVISUAL (OTHER THAN CCTV); and '3' indicates PRINTING AND REPRODUCTION. Numbers '4' thru '9' are reserved.   '1' indicates CCTV (CLOSED CIRCUIT TV)   '2' indicates AUDIOVISUAL (OTHER THAN CCTV)   '3' indicates PRINTING & REPRODUCTION. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NOMENCLATURE",
+      "dataType": "SUBFILE",
+      "rawType": "6917.04",
+      "required": false,
+      "helpText": "Complete verbal description of the Category Stock Number. ",
+      "isMultiple": true,
+      "subFileNumber": 6917.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SKU",
+      "dataType": "POINTER",
+      "rawType": "P420.5'",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "Store keeping unit.  Possible future use. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FSC CODE",
+      "dataType": "POINTER",
+      "rawType": "P441.2'",
+      "required": false,
+      "pointerTo": 441.2,
+      "helpText": "Federal supply classification code.  Normally the first four digits of the category stock number. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACCOUNT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Possible future use. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SUBACCOUNT",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "Possible future use. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ITEM NAME CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Possible future use. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE ACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date this entry became viable.  Possible future use. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Individual who activated this entry.  Possible future use. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE DEACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date this entry was removed from active the active list.  Possible future use. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DEACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who deactivated this entry.  Possible future use. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of last edit.  To be populated automatically.  Future use. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who made last edit.  To be populated automatically.  Future use. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "6917.016P",
+      "required": false,
+      "helpText": "Active vendors for items of this type.  Possible future use. ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6917", "field": .01, "type": "regular"},
+    {"name": "6917", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "fileNumber": 2275.3,
+  "fileName": "MHV REQUEST TYPE",
+  "globalRoot": "2275.3",
+  "globalReference": "^MHV(2275.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of request type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "Internal number to identify this request type.  Should be unique. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BLOCKED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Disable processing of this request type. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REALTIME?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ALLOWED;1:ALLOWED;",
+      "helpText": "Allow synchronous requests for this type. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXECUTE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter MUMPS tag and routine to execute for processing this request type. Use a tilde (~) instead of a circumflex (^). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BUILDER ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter MUMPS tag and routine to execute for building the request specific response message. Use a tilde (~) instead of a circumflex (^). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MHV DATATYPE",
+      "dataType": "SUBFILE",
+      "rawType": "2275.31",
+      "required": false,
+      "helpText": "String to identify request type in inbound message. ",
+      "isMultiple": true,
+      "subFileNumber": 2275.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "2275.32",
+      "required": false,
+      "helpText": "Information about this request type. ",
+      "isMultiple": true,
+      "subFileNumber": 2275.32,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2275.3", "field": .01, "type": "regular"},
+    {"name": "2275.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

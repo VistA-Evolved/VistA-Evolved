@@ -1,0 +1,82 @@
+{
+  "fileNumber": 420.1,
+  "fileName": "COST CENTER",
+  "globalRoot": "420.1s",
+  "globalReference": "^PRCD(420.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the 6 digit cost center number, a space and the cost center name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "DEACTIVATED COST CENTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YES indicates if this is a deactivated cost center. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "DEACTIVATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who deactivated the control point. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "DATE/TIME DEACTIVATED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time the cost center was deactivated. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BOC",
+      "dataType": "POINTER",
+      "rawType": "420.11P",
+      "required": false,
+      "helpText": "This is the budget object code for this cost center. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "420.12",
+      "required": false,
+      "helpText": "This is a description of the cost center (optional field). ",
+      "isMultiple": true,
+      "subFileNumber": 420.12,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "420.1", "field": .01, "type": "regular"},
+    {"name": "420.1", "field": .01, "type": "regular"},
+    {"name": "420.1", "field": .01, "type": "regular"},
+    {"name": "420.1", "field": .5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

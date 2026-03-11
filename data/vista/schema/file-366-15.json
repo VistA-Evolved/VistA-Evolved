@@ -1,0 +1,56 @@
+{
+  "fileNumber": 366.15,
+  "fileName": "IB NCPDP PRESCRIPTION",
+  "globalRoot": "366.15",
+  "globalReference": "^IBCNR(366.15,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRESCRIPTION REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This prescription reference consists of two semi-colon pieces.  The first  piece is the ien from file 52.  The second piece is the fill/refill  number, with 0 being the initial fill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RATE ELIGIBILITY DETERMINED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient Rx/Eligibility determination indicator.  This is the flag returned back to ECME/Pharmacy to indicate what eligibility was determined for this prescription.  This may effect if a medication can be dispensed to the patient if they are not returned as a V (veteran). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RATE TYPE DETERMINED",
+      "dataType": "POINTER",
+      "rawType": "P399.3'",
+      "required": false,
+      "pointerTo": 399.3,
+      "helpText": "This is the Rate Type that was determined at the time of the billable check to be used on the bill when the bill is created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COPAYMENT CHARGE",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This is the copayment charge that was created in association with this billing event. This is used to reverse previously billed copayment charges. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

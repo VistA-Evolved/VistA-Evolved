@@ -1,0 +1,195 @@
+{
+  "fileNumber": 14.72,
+  "fileName": "TASKMAN SNAPSHOT",
+  "globalRoot": "14.72",
+  "globalReference": "^%ZIS(14.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TASKMAN CURRENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:Yes;",
+      "helpText": "This hold the value returned by $$TM^%ZTLOAD. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TASKMAN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the count of the number of entries in the ^%ZTSCH(\"STATUS\")  global. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TASKMAN BALANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is what node is the current run node if taskman is doing load  balancing. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BALANCE WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the Balance Weight of the current Task Manager. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SCHEDULE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of tasks in the schedule list. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SCH LATE BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of seconds the first task in the schedule list is late. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SCH LATE CNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field holds a count of the number of late tasks in the schedule list. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IO DEVICE CNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of IO WAIT queues. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IO TASK COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of tasks in IO WAIT queues. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "IO LATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of seconds the first task is late. Will have to see if it has any value. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "JOBQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of tasks in the JOB and C lists waiting to run. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "JOBQ LATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of seconds the first task in the JOB list is late. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SUBMANAGER COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the total number of submanagers running. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RUNNING TASKS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of running tasks. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "TOTAL JOBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the total number of running jobs as reported by  $$ACTJ^%ZOSV. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MANAGERS",
+      "dataType": "SUBFILE",
+      "rawType": "14.72101",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 14.72101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "SUBMANAGERS",
+      "dataType": "SUBFILE",
+      "rawType": "14.72201",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 14.72201,
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "14.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

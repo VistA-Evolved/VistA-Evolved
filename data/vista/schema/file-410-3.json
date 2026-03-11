@@ -1,0 +1,110 @@
+{
+  "fileNumber": 410.3,
+  "fileName": "REPETITIVE ITEM LIST",
+  "globalRoot": "410.3I",
+  "globalReference": "^PRCS(410.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the entry number for this transaction.  It is used by the Control Point Clerk when generating requests. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "410.31IPA",
+      "required": false,
+      "helpText": "This is the item requested in this transaction. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the total cost of this item. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INVENTORY/DISTRIBUTION POINT",
+      "dataType": "POINTER",
+      "rawType": "*P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This is the inventory/distribution point for the items in the transaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the transaction was created. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REQUEST BEING CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter YES if a request is to be created. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REPETITIVE ITEM LIST TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:NARCOTIC;L:CONTROLLED SUBSTANCE;D:OTHER DRUGS;",
+      "helpText": "This field specifies the type of Repetitive Item List i.e. A,L or D for drug type, or a NULL for non-drug. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NEW SSO",
+      "dataType": "POINTER",
+      "rawType": "*P442.3'",
+      "required": false,
+      "pointerTo": 442.3,
+      "helpText": "This field points to the PURCHASE ORDER STATUS file.  It is used to build a cross-reference which notifies the PPM clerk that there is a new REPETITIVE ITEM LIST file entry created from a SSO transaction from Austin. This field is set in S2^PRCOSS6.  The ENTRY ACTION of the PRCHUSER PPM menu option calls the routine PRCHOSS3.  The routine will notify the user that there are new REPETITIVE ITEM LIST entries to turn into 2237s. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DATE/TIME IN DM",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This date and time signifies when a Requisition was generated in  DynaMed. This date is passed by DynaMed and it is used to determine  Fiscal Year and Quarter for the transaction in IFCAP. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "410.3", "field": .01, "type": "regular"},
+    {"name": "410.3", "field": .01, "type": "regular"},
+    {"name": "410.3", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""},
+    {"field": 4, "value": "W $E($P(^(0),U,4),4,5)_\"-\"_$E($P(^(0),U,4),6,7)_\"-\"_$E($P(^(0),U,4),2,3)"},
+    {"field": Z0, "value": "W:$D(^PRCS(410.3,+Y,1,0)) ?30,\"# OF ITEMS: \",$P(^(0),\"^\",4) W ?59,\"TOTAL COST: \",$J($P(^PRCS(410.3,+Y,0),U,2),9,2)"}
+  ]
+}

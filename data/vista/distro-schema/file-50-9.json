@@ -1,0 +1,210 @@
+{
+  "fileNumber": 50.9,
+  "fileName": "DRUG COST",
+  "globalRoot": "50.9D",
+  "globalReference": "^PSCST(",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILLED DATE",
+      "dataType": "DATE",
+      "rawType": "RDXI",
+      "required": true,
+      "helpText": "This field is used to enter the date that the prescription was filled. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "# ORG FILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Respond with the total number of prescriptions filled on the specified date. -- Should not include any refills -- ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "# REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Respond with the total number of refills for the specified date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .035,
+      "fieldName": "TOTAL FILLS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Respond by adding all new fills with all refills. ",
+      "fieldNumber_": .035
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,4I",
+      "length": 11,
+      "required": false,
+      "helpText": "Respond by entering the total dollar cost of prescriptions. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .045,
+      "fieldName": "AVE COST/FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Average prescription cost is found by dividing total prescription cost by total number of prescriptions filled. ",
+      "fieldNumber_": .045
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TOTAL QTY DISPENSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Respond by entering the actual number of pills dispensed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .055,
+      "fieldName": "AVE QTY DISPENSED/FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Divide the total number of pills dispensed by the total  number of prescriptions to find the average quantity dispensed. ",
+      "fieldNumber_": .055
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAILS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Respond with the number of prescriptions distributed by mail. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "WINDOWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Respond with the number of prescriptions distributed on site. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "COMPILE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Enter the date that the proceeding data was gathered. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "REQUESTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0I",
+      "length": 6,
+      "required": false,
+      "helpText": "Enter the number of different patients seen per day. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .125,
+      "fieldName": "AVE COST/REQUEST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the total cost divided by the number of patients for that day. ",
+      "fieldNumber_": .125
+    },
+    {
+      "fieldNumber": .126,
+      "fieldName": "AVE FILLS/REQUEST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "To find the average fill, divide the total fills by the number  of patients for a given day. ",
+      "fieldNumber_": .126
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHYSICIAN DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9001PA",
+      "required": false,
+      "helpText": "This sub-file is used to store prescription costs as it relates to the  prescribing physician. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DRUG DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9003PA",
+      "required": false,
+      "helpText": "This sub-file is used to store costs of drugs dispensed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT STATUS DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9005PA",
+      "required": false,
+      "helpText": "This sub-file is used to store drug costs associated with the clinical  status of the patient. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CLINIC DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9008P",
+      "required": false,
+      "helpText": "This sub-file is used to store drug cost data associated with clinics. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CLASS DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9009PA",
+      "required": false,
+      "helpText": "This sub-file is used to store drug cost data associated with drug class. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DIVISION DATA",
+      "dataType": "POINTER",
+      "rawType": "50.9006PA",
+      "required": false,
+      "helpText": "This sub-file is used to store drug costs associated with divisions within pharmacy. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

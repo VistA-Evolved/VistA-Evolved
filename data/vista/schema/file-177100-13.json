@@ -1,0 +1,78 @@
+{
+  "fileNumber": 177100.13,
+  "fileName": "CPRS MONITOR DATA",
+  "globalRoot": "177100.13",
+  "globalReference": "^AWC(177100.13,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the internal entry number of the data.  It is manually calculated  (\"next available\") by the editing routine. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SECONDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the total number of seconds required to retrieve the various CPRS data. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The DUZ of the user who was using the CPRS GUI. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRAN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to create a cross-reference for sorting the data for  the web page. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the division (DUZ(2) variable) for the user. It is used to report  multiple facilities on different web pages. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TIU TAB;2:LAB TAB;3:REMINDER TAB;",
+      "helpText": "This is the numeric value of type of data reported:           1 - TIU tab         2 - LAB info         3 - Reminder info ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "177100.13", "field": .01, "type": "regular"},
+    {"name": "177100.13", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

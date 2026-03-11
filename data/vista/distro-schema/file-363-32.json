@@ -1,0 +1,45 @@
+{
+  "fileNumber": 363.32,
+  "fileName": "BILLING SPECIAL GROUPS",
+  "globalRoot": "363.32",
+  "globalReference": "^IBE(363.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the billing group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:REVENUE CODE LINK;2:PROVIDER DISCOUNT;",
+      "helpText": "This defines the type of data that will be associated with this group. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "BILLING RATE/SET",
+      "dataType": "POINTER",
+      "rawType": "363.3211PA",
+      "required": false,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "363.32", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(363.32,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 64.1,
+  "fileName": "WKLD DATA",
+  "globalRoot": "64.1P",
+  "globalReference": "^LRO(64.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "  This is the medical center which will be credited with the work completed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "64.11DA",
+      "required": false,
+      "helpText": "  This is the date that the work was verified or completed. ",
+      "isMultiple": true,
+      "subFileNumber": 64.11,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GENERAL COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "64.12",
+      "required": false,
+      "helpText": "  General comments relating to this code can be entered in this field. These comment are used only by the site at this time. They are not transmitted by version 5.2 to the national data base. ",
+      "isMultiple": true,
+      "subFileNumber": 64.12,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WKLD CODE COMMENTS",
+      "dataType": "POINTER",
+      "rawType": "64.13P",
+      "required": false,
+      "helpText": " If there are specific comments about this wkld code the site wish to record for their own purposes, they may be entered in this field. These comments are not included in any national rolled up data. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "64.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

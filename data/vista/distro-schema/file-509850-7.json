@@ -1,0 +1,152 @@
+{
+  "fileNumber": 509850.7,
+  "fileName": "A&SP WORKLOAD",
+  "globalRoot": "509850.7D",
+  "globalReference": "^ACK(509850.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The MONTH field contains the date (month and year) for which statistical data is generated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The STATION NUMBER field contains the facility's 3 or 4 digit unique identification code.    Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report has been  discontinued.  However, because capitation data is vital to local  managers, the functionality will remain in QUASAR V. 2.0.  Eighteen  months after the release of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The DOMAIN field contains the facility's domain name.    Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report has been  discontinued.  However, because capitation data is vital to local  managers, the functionality will remain in QUASAR V. 2.0.  Eighteen  months after the release of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COMPILE START TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The COMPILE START TIME field contains the exact date and time that the capitation statistics started compiling. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "JOB NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The JOB NUMBER field identifies the job which is generating the capitation statistics. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPILE END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The COMPILE END TIME field contains the exact date and time that the capitation statistics completed compiling. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "*VERIFIED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report has been  discontinued.  However, because capitation data is vital to local  managers, the functionality will remain in QUASAR V. 2.0.  Eighteen  months after the release of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "*RELEASE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Due to insufficient resources for development and support of the  central data base, the QUASAR V. 1.0 workload rollup report has been  discontinued.  However, because capitation data is vital to local  managers, the functionality will remain in QUASAR V. 2.0.  Eighteen  months after the release of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CDR TOTAL PAID HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The CDR TOTAL PAID HOURS field contains the total number of paid hours  for the service for the month.  This field contains the total paid  hours for all staff members assigned to the service as FTEE including  secretarial or clerical staff.  This total does NOT include students  or trainees.  Supervisors need to be aware that total paid hours are  not always the number of FTEE times the number of paid hours in the  month.  The total paid hours must be calculated carefully when there  are LWOP h",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ICD",
+      "dataType": "SUBFILE",
+      "rawType": "509850.71A",
+      "required": false,
+      "helpText": "The ICD field is a multiple field containing diagnostic data for capitation statistics for a specific month.  This includes the ICD codes  codes, total patient count, unique patient count, stop code, and  demographic data. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.71,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CPT",
+      "dataType": "SUBFILE",
+      "rawType": "509850.72A",
+      "required": false,
+      "helpText": "The CPT field is a multiple field containing procedure data for capitation statistics for a specific month.  This includes CPT-4  codes, total patient count, unique patient count, stop code, and  demographic data. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.72,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ZIP CODE",
+      "dataType": "SUBFILE",
+      "rawType": "509850.73A",
+      "required": false,
+      "helpText": "The ZIP CODE field is a multiple field containing demographic data for capitation statistics for a specific month.  This includes zip code,  C and P visit totals, total patient count, unique patient count, and  stop code. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.73,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CDR",
+      "dataType": "SUBFILE",
+      "rawType": "509850.74A",
+      "required": false,
+      "helpText": "The CDR field is a multiple field containing CDR data for workload  statistics for a specific month.  This includes the CDR cost account  and the percentage of workload associated with that cost account. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.74,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "509850.75P",
+      "required": false,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "509850.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

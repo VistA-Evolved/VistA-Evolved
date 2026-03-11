@@ -1,0 +1,104 @@
+{
+  "fileNumber": 19620.91,
+  "fileName": "DSIR STATUS HISTORY",
+  "globalRoot": "19620.91",
+  "globalReference": "^DSIR(19620.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP19620'",
+      "required": true,
+      "pointerTo": 19620,
+      "helpText": "Pointer back to the ROI Instance file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPEN;C:CLOSED;P:PENDING;N:OTHER NONDISCLOSURE;X:CANCELLED;E:ERROR;A:APPEALED;",
+      "helpText": "This is the first part of the status code:    'O' FOR OPEN;  'C' FOR CLOSED;  'P' FOR PENDING;  'N' FOR OTHER NONDISCLOSURE;   'X' FOR CANCELLED;  'E' FOR ERROR;  'A' FOR APPEALED; ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the clerk entered for the status change. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to file 200 to access the clerk information. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the status was set, it is no editable, it is set by  the software. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLOSED DISPOSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is for a status of \"CLOSED\". With the status field, this creates a full status code.   CLOSED STATUS (C) DISPOSITIONS  'D'  DENIED;  'G'  GRANTED;  'P'  PARTIAL;  'PR' PENDING PAYMENT RELEASED   PENDING STATUS (P) DISPOSITIONS  ''   NULL IS SIMPLY PENDING  'C'  CLARIFICATION  'P'  PENDINGPAYMENT (OBSOLETE)  'H'  PENDING PAYMENT HELD    OTHER NON DISCLOSURE STATUS (N) DISPOSITIONS  'NR' NO RECORDS;  'RF' REFERRAL;  'ND' NOT DESCRIBED;  'NV' NOT VA RECORD;  'RC' REQUEST CLOSED;  'RV' RE",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PENDING PAYMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PAYMENT;",
+      "helpText": "If the status is pending due to an outstanding payment, this will be set  to 'P' for PAYMENT. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FULL STATUS CODE",
+      "dataType": "POINTER",
+      "rawType": "P19620.41'",
+      "required": false,
+      "pointerTo": 19620.41,
+      "helpText": "POINTER TO THE STATUS CODE FILE ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "OTHER REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Not currently used. ",
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

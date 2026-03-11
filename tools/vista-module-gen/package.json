@@ -1,0 +1,17 @@
+{
+  "name": "@vista-evolved/module-gen",
+  "version": "1.0.0",
+  "description": "VistA module code generator - generates M routines, API routes, TS types, React components, and docs from extracted VistA metadata",
+  "type": "module",
+  "bin": {
+    "vista-module-gen": "./cli.mjs"
+  },
+  "scripts": {
+    "generate": "node cli.mjs",
+    "generate:all": "node cli.mjs --all",
+    "generate:package": "node cli.mjs --package"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

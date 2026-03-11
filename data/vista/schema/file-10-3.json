@@ -1,0 +1,58 @@
+{
+  "fileNumber": 10.3,
+  "fileName": "RACE AND ETHNICITY COLLECTION METHOD",
+  "globalRoot": "10.3I",
+  "globalReference": "^DIC(10.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a collection method used to obtain a value for race and ethnicity during enter/edit of patient data information.   These entries are maintained by VA Central Office and entry/edit of entries is not allowed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the abbreviation for this collection method entry.   This may appear on various outputs where there is insufficient room to print the entire name of the collection method. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "HL7 VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "HL7 representation of this collection method ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PTF VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "PTF representation of this collection method ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AHL7", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "10.3", "field": .01, "type": "regular"},
+    {"name": "10.3", "field": .02, "type": "regular"},
+    {"name": "10.3", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "N TMP S TMP=$P($G(^(0)),\"^\",2) I TMP'=\"\" D EN^DDIOL(TMP,,\"?$X+2\")"}
+  ]
+}

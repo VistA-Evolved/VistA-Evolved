@@ -1,0 +1,27 @@
+{
+  "fileNumber": 26.16,
+  "fileName": "PRF TYPE",
+  "globalRoot": "26.16",
+  "globalReference": "^DGPF(26.16,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the name of the Patient Record Flag Type. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.16", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "fileNumber": 2006.19,
+  "fileName": "IMAGING USERS",
+  "globalRoot": "2006.19IP",
+  "globalReference": "^MAG(2006.19,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the mail domain name for the site. It cannot be altered expect by programmers.   A site that is not yet configured for Imaging will have an entry in this file created during a production account install, a local image prefix assigned to this entry that screens on this file to maintain uniqueness, that prefix is added to the file locally, and a message is sent to update the master file in the VistA Imaging development account.   An example of the .01 field is \"WASHINGTON.DOMAIN.EXT\".  Thi",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IMAGE FILE NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the alpha prefix code assigned to this site.  These characters are used as the first characters of image files created by this site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAIL DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADDITIONAL NAMESPACE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.191",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.191,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NEW NMSP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used by Imaging for recording the site's new namespace. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRODUCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to distinguish mail messages from production accounts and non production accounts. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "2006.19", "field": .01, "type": "regular"},
+    {"name": "2006.19", "field": .02, "type": "regular"},
+    {"name": "2006.19", "field": .05, "type": "regular"},
+    {"name": "2006.19", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W ?35,$P(^(0),U,2)"}
+  ]
+}

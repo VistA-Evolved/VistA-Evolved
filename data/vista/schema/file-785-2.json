@@ -1,0 +1,27 @@
+{
+  "fileNumber": 785.2,
+  "fileName": "EEO CORRECTIVE ACTIONS",
+  "globalRoot": "785.2",
+  "globalReference": "^EEO(785.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CORRECTIVE ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the corrective action that is selected at complaint intake may only be changed or added to by Central Office.          ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "785.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

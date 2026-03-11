@@ -1,0 +1,206 @@
+{
+  "fileNumber": 7118.29,
+  "fileName": "HDIS PARAMETER",
+  "globalRoot": "7118.29",
+  "globalReference": "^HDISF(7118.29,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP7118.21'",
+      "required": true,
+      "pointerTo": 7118.21,
+      "helpText": "The VAMC system that the parameter values are for ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SYSTEM TYPE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:CLIENT;2:SERVER;",
+      "helpText": "Denotes type of system ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISABLE VUID ACTIVITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag denoting if all VUID related activity should be disabled ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "VUID SERVER LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Where the VUID Server is located.  This could be a MailMan domain (ex:  FORUM.VA.GOV) or a TCP/IP address (ex: 127.0.0.1). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "VUID SERVER CONNECTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MAILMAN;",
+      "helpText": "Type of connection to use when communicating with the VUID Server ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "VUID SERVER OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of MailMan server type option that message should be forwarded to ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DISABLE STATUS UPDATES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag denoting if sending of status update messages to the Status Server  should be disabled ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "STATUS SERVER LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Where the Status Server is located.  This could be a MailMan domain (ex:  FORUM.VA.GOV) or a TCP/IP address (ex: 127.0.0.1). ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "STATUS SERVER CONNECTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MAILMAN;",
+      "helpText": "Type of connection to use when communicating with the Status Server ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "STATUS SERVER OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of MailMan server type option that message should be forwarded to ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LAST NON-STANDARD VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last non-standard VUID assigned by centralized VUID Server ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "ENDING NON-STANDARD VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last non-standard VUID that can be assigned by centralized VUID Server ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "TFD MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Local;R:Remote;F:File of Files;",
+      "helpText": "Local mode assumes that the files to be deployed have been downloaded to the local test system independently from the HL7 Text File Deployment  tool.  It will search a local directory for files to process. Remote mode will allow downloading files from an ftp server for  processing on the local test system. File of files mode will use a File-of-Files located on the ftp server to determine which files are downloaded for processing on the local test system. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "TFD LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the directory on the local system where the HL7 text files are stored. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "TFD FILE NAME PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The file name prefix used for the HL7 text file names. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "TFD FTP HOST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name or IP address of the remote ftp server where the HL7 text files are stored. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "TFD HOST DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the directory on the remote ftp server where the HL7 text files are stored. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "TFD TEMP DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the directory on the local system where temporary files are stored. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "TFD FoF FILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the file containing a list of HL7 text files on the ftp  server. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "TFD CHECKSUMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Turn on checksum processing: Answer YES to perform checksum processing,        NO to omit checksum processing. ",
+      "fieldNumber_": 68
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7118.29", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

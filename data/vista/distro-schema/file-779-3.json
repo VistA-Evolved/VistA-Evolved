@@ -1,0 +1,172 @@
+{
+  "fileNumber": 779.3,
+  "fileName": "HLO PROCESS REGISTRY",
+  "globalRoot": "779.3",
+  "globalReference": "^HLD(779.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCESS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A unique name for the type of process. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "A flag that indicates whether or not this type of process is active under  the HLO Process Manager. Some processes may not apply to some  systems, for example, a particular site may not use the Taskman  multi-listener.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MINIMUM ACTIVE PROCESSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the minimum number of concurrent processes of this  type.  The exact number changes as the HLO Process Manager starts and  stops processes in response to changes in workload. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAXIMUM ACTIVE PROCESSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SCHEDULING FREQUENCY (minutes)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is how long the Process Manager should wait between checks to see if  another process of this type should be started. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DT/TM LAST STARTED OR STOPPED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time when a process of this type was last started or  stopped. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "HANG TIME (seconds)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is how long a process should wait between attempts to find work to  do. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "GET WORK FUNCTION (TAG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The M entry point to the GET WORK function for this process type. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "GET WORK FUNCTION (ROUTINE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The routine in which this process type has located its GET WORK function. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DO WORK FUNCTION (TAG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The M entry point for the process's DO WORK function. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DO WORK FUNCTION (ROUTINE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The routine in which the process's DO WORK function is located. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "MAX TRIES FINDING WORK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "How many times should the process look for work and then quit if it  cannot find anything to do?  It'll hang between attempts the specified  length of time. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PERSISTENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this field to YES results in the process being made persistent  via the Taskman persistent parameter. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DEDICATED LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The primary use of this field is for TCP/IP listener processes, and  indicates which port (via the HL Logical Link) that the process should be  listening on.  However, it could be used to dedicate a client link  process to a particular link. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "VMS TCP SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "VMS services are not started or stopped via the HL7 Process Manager.   However, on a VMS system, these services are an important part of the HL7 system, and so an entry in the HL7 Process Registry should be created for  them.  The Process Manager will use the PING functionality to verify that  the listener is running. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "BOX-VOLUME PAIR",
+      "dataType": "POINTER",
+      "rawType": "P14.7'",
+      "required": false,
+      "pointerTo": 14.7,
+      "helpText": "The BOX-VOLUME PAIR field (#13) in the HLO SYSTEM PARAMETERS file (#779.1) may be used to optionally specify the node that the HL7 (optimized) software should run on.   The BOX-VLUME PAIR field (#16) of the HLO PROCESS REGISTRY file (#779.3) may be used to optionally specify the ndoe that a specify type of HL7 (optimized) software should execute on.  If this field has a value, it will override the value in the HLO SYSTEM PARAMETERS file (#779.1) for this type of HLO process.  It is generally not",
+      "fieldNumber_": .16
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "779.3", "field": .01, "type": "regular"},
+    {"name": "779.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

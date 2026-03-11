@@ -1,0 +1,48 @@
+{
+  "fileNumber": 445.6,
+  "fileName": "GROUP CATEGORY",
+  "globalRoot": "445.6Is",
+  "globalReference": "^PRCP(445.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GROUP CATEGORY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a code indicating the group category defined by each Inventory Point (i.e., grouping like items for printing of catalogs and other reports). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INVENTORY/DISTRIBUTION POINT",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "This is a pointer to the Generic Inventory file, #445. This field is used to 'screen' the group categories, enabling each Inventory Point to use only their own set of group category codes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of the group category to be printed on reports. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "445.6", "field": .01, "type": "regular"},
+    {"name": "445.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

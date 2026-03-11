@@ -1,0 +1,121 @@
+{
+  "fileNumber": 802.4,
+  "fileName": "REMINDER FUNCTION FINDING FUNCTIONS",
+  "globalRoot": "802.4",
+  "globalReference": "^PXRMD(802.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the function finding. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the entry point in the routine specified in the ROUTINE field.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of an M routine that contains the code for the function finding. The entry point to use is specified in the ENTRY POINT field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "802.41",
+      "required": false,
+      "helpText": "This is the description of the function finding. ",
+      "isMultiple": true,
+      "subFileNumber": 802.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARGUMENT PATTERN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a standard MUMPS pattern that is used to verify that the argument list for the function has the correct format. This is used when verification is done optimally by a single pattern. ARGUMENT PATTERNS (#3) field is used when verification is better done with a separate pattern for each argument.    ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ARGUMENT PATTERNS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a list of standard MUMPS patterns that are used to verify that each argument in the function argument list has the correct form. The patterns for each argument are separated by the \"~\" character. The ARGUMENT PATTERN (#2) field is used when verification is better done with a single pattern.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of the function finding. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this function finding. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the function finding should be reviewed to verify that it is current with the latest standards and guidelines.   ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "802.42DA",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the function finding. ",
+      "isMultiple": true,
+      "subFileNumber": 802.42,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

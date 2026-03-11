@@ -1,0 +1,41 @@
+{
+  "fileNumber": 696.5,
+  "fileName": "LEFT VENTRICULOGRAPHY",
+  "globalRoot": "696.5I",
+  "globalReference": "^MCAR(696.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file stores a list of Left Ventricular Segments for use by the Cardiac Catheterization sub-module. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the order corresponding to a heart diagram. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "696.5", "field": .01, "type": "regular"},
+    {"name": "696.5", "field": .01, "type": "regular"},
+    {"name": "696.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

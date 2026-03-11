@@ -1,0 +1,186 @@
+{
+  "fileNumber": 728.113,
+  "fileName": "IV EXTRACT DATA",
+  "globalRoot": "728.113",
+  "globalReference": "^ECX(728.113,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0XI",
+      "length": 6,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DFN",
+      "dataType": "POINTER",
+      "rawType": "P2'I",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Enter the name of the patient receiving medication for this extract  record. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the internal entry number of the order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'I",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the item dispensed as identified in the local DRUG file (#50). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time of the transaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:DISPENSED;2:RETURNED;3:DESTROYED;4:CANCELED;",
+      "helpText": "This is the type of the transaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ADDITIVE STRENGTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the amount of the additive used in the manufacturing of this  IV order. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADDITIVE STRENGTH UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the units in which the strength of this additive is measured. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOLUTION VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "The volume (in MLs) of this solution in this order. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the provider responsible for this medication order. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P727'",
+      "required": false,
+      "pointerTo": 727,
+      "helpText": "Pointer to the corresponding entry in the DSS EXTRACT LOG file (#727). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The type of IV dispensed - A for admixture, C for chemotherapy, H for  hyperal, P for piggyback, or S for syringe. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Cost of this item. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "If the patient is an outpatient, this holds a pointer to the clinic where the outpatient visit was held. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ORDER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the medication was ordered. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "IV ROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "IV room where IV was prepared for administration. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VERIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the order was acknowledged (through OE/RR) by the nurse  if it exist, otherwise this is the date and time the order was entered. ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AC", "field": },
+    {"name": "AINV", "field": },
+    {"name": "AREV", "field": },
+    {"name": "728.113", "field": .01, "type": "regular"},
+    {"name": "728.113", "field": 2, "type": "regular"},
+    {"name": "728.113", "field": 2, "type": "regular"},
+    {"name": "728.113", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

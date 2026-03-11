@@ -1,0 +1,39 @@
+{
+  "fileNumber": 695.8,
+  "fileName": "REASON (MEDICINE)",
+  "globalRoot": "695.8",
+  "globalReference": "^MCAR(695.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds a list of Medical reasons for various areas of Medicine. Examples:  Explain reasons for Pacemaker, Reason for stopping for PFT, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICIAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:REASON FOR STOPPING (ETT);P:REASON FOR PACEMAKER GENERATOR CHANGE;L:PACEMAKER LEAD CHANGE;R:REPROGAMMING PACEMAKER;T:REASON FOR TRANSMITTING REPORT;PF:REASON FOR STOPPING (PFT);",
+      "helpText": "This field is used as a screen to differentiate which area of Medicine the reason is associated with. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "695.8", "field": .01, "type": "regular"},
+    {"name": "695.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "fileNumber": 45.82,
+  "fileName": "CATEGORY OF BENEFICIARY",
+  "globalRoot": "45.82I",
+  "globalReference": "^DIC(45.82,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a '1' character code representing the Category of Beneficiary. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INTERPRETATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the interpretation of the '1' character code contained in the (.01) field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EARLIEST DATE OF ADMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the earlist date of admission for this Category of Beneficiary. This field is used for validating entries in PTF and ADT. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EARLIEST DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the earlist date of birth allowed for this Category of Beneficiary. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LATEST DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last date of birth allowed for this Category of Beneficary. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EARLIEST AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the earliest age that is allowed for this Category of Beneficiary. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATION TYPE",
+      "dataType": "POINTER",
+      "rawType": "45.821PA",
+      "required": false,
+      "helpText": "This multiple contains station types assigned to specified admission. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "45.82", "field": .01, "type": "regular"},
+    {"name": "45.82", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

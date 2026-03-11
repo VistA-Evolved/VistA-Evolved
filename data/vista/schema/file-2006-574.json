@@ -1,0 +1,115 @@
+{
+  "fileNumber": 2006.574,
+  "fileName": "DICOM OBJECT EXPORT",
+  "globalRoot": "2006.574",
+  "globalReference": "^MAGDOUTP(2006.574,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that identifies the application that will receive the image files for which this entry describes the parameters.   The name that is entered here corresponds to the name (.01 field) in file 2006.585 (stored in ^MAGDICOM(2006.585,...) of the storage provider that will receive the image files. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "The value of this field is a pointer that identifies the image that is the 'parent' of the group of images for which this entry describes the transmission to another storage provider.   The value of this field is a pointer to the Image File (2005, stored in ^MAG(2005,...). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The value of this field is the (short) case number for the study that is referenced in this entry.   A long case number consists of two groups of digits separated by a dash. The first group is 6 digits, and is derived from the date. The second group is an integer number that uniquely identifies the study for that date.   For this field, the whole accession number is entered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "2006.5744PA",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FROM",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer (to the Institution file, #4). This pointer identifies the location from which the image routing request originated. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is a positive integer number. This number indicates the relative priority of an entry in the queue.   A higher number indicates a higher priority, i.e. when two entries have different priorities, the entry with the higher priority will be processed before the one with the lower priority. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STUDY UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents a DICOM Unique Object Identifier. A DICOM UID is a string that consists of up to 64 characters, each character must be either a digit or a period, no two consecutive periods are allowed, none of the series of consecutive digits may start with a zero.   This UID identifies the study to which the images belong that are included in the current entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COPY TO RAID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Do not copy;1:Make a copy;",
+      "helpText": "The value of this field is a code that indicates whether or not a copy of the image file(s) is to be made on RAID. A value of 0 indicates that no copy is to be made on RAID. A value of 1 indicates that a copy should be made. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time of the DICOM export request. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IMAGE DATABASE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "LEGACY:Legacy database - file #2005;NEW:New SOP Class database - file #2005.6x;",
+      "helpText": "The field indicates which image database contains the DICOM objects to be exported. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2006.574", "field": 3, "type": "regular"},
+    {"name": "2006.574", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

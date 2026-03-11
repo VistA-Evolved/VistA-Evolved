@@ -1,0 +1,26 @@
+{
+  "fileNumber": 57,
+  "fileName": "ALLERGY/DISORDER",
+  "globalRoot": "57",
+  "globalReference": "^DIC(57,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "57", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

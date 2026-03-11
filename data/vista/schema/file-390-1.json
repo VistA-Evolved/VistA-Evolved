@@ -1,0 +1,106 @@
+{
+  "fileNumber": 390.1,
+  "fileName": "MARITAL/RELIGION CONVERSION",
+  "globalRoot": "390.1I",
+  "globalReference": "^XTMP(\"DGTMP\",390.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field holds the task number of the conversion job. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This field holds the number of the file being converted  (e.g., \"11\" for MARITAL STATUS file, \"13\" for RELIGION file). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,4",
+      "length": 15,
+      "required": true,
+      "helpText": "This field holds the number of the field being converted  from the MARITAL STATUS file or RELIGION file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "GLOBAL ROOT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the global root of the file being converted. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the node of the data being converted. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PIECE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field holds the piece position of the data being converted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "11:MARITAL;13:RELIGION;",
+      "helpText": "This field holds a type, '11' for MARITAL or '13' for RELIGION. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST ENTRY PROCESSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field holds the number of the last entry processed, between 0 and 999999999, 0 decimal digits. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE/TIME FINISHED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the Date/Time finished, an exact date is required (month  and day) as well as time. ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "390.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": .07, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(390.1,.07,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

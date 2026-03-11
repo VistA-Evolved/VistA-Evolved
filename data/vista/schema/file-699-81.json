@@ -1,0 +1,41 @@
+{
+  "fileNumber": 699.81,
+  "fileName": "RESULTS",
+  "globalRoot": "699.81",
+  "globalReference": "^MCAR(699.81,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENDOSCOPIC RESULTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a name of a result applicable to an Endoscopy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "699.811SA",
+      "required": false,
+      "helpText": "This field is used as a screen to allow results to be selectable by Medical procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 699.811,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "699.81", "field": .01, "type": "regular"},
+    {"name": "699.81", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

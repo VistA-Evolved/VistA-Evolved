@@ -1,0 +1,98 @@
+{
+  "fileNumber": 228.8,
+  "fileName": "DENTAL CODING CHECKS",
+  "globalRoot": "228.8",
+  "globalReference": "^DENT(228.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTERED CODE",
+      "dataType": "POINTER",
+      "rawType": "RP228'",
+      "required": true,
+      "pointerTo": 228,
+      "helpText": "This is the current code the user has entered into DRM Plus. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CHECK CODE",
+      "dataType": "POINTER",
+      "rawType": "P228'",
+      "required": false,
+      "pointerTo": 228,
+      "helpText": "This is a code to check against when the .01 field is entered by the user. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NUMBER OF DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days back in which to check for the .02 (CHECK  CODE) when the .01 (ENTERED CODE) is entered. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SAME PROVIDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Set to Yes if the checked code should be the same provider as the entered  code. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SAME AREA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:Tooth;Q:Quad;A:Arch;",
+      "helpText": "This field determines if the area (same tooth, same quadrant or same  arch) should be checked on the checked code. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MSG TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:Error;W:Warn;",
+      "helpText": "Error types will stop the user from entering the Entered Code (.01),  Warning types will display a warning the user must click past to enter  the code. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CODING REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "Yes means that the text 'This code is subject to compliance review' will  be displayed to the user.  The VHACO office will be monitoring compliance  of the codes in the national database. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message to show the user. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "228.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DENT(228,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(228,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .06, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(228.8,.06,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,6)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

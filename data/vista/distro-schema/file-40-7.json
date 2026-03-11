@@ -1,0 +1,87 @@
+{
+  "fileNumber": 40.7,
+  "fileName": "CLINIC STOP",
+  "globalRoot": "40.7I",
+  "globalReference": "^DIC(40.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the clinic stop code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AMIS REPORTING STOP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0I",
+      "length": 3,
+      "required": true,
+      "helpText": "This field contains the number related to the stop code that is used when generating the OPC file.  This number is what is transmitted. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains a date of when a Clinic Stop code has been inactivated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONVERT TO STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'I",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This field contains a pointer value to the new Clinic Stop code that has a three number AMIS REPORTING STOP CODE. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COST DISTRIBUTION CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field contains a number related to a cost distribution center.  This is related to the RAM. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESTRICTION TYPE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "P:Primary;S:Secondary;E:Either;",
+      "helpText": "This field describes a Stop Code restriction type.  Valid entries are:-      P - Primary    S - Secondary    E - Either ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RESTRICTION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date the Stop Code became restricted.  When the  'Restriction Type' field has a value of 'P' or 'S' then a 'Restriction Date' should be associated with it. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "40.7", "field": .01, "type": "regular"},
+    {"name": "40.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,3),6)"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 119.1,
+  "fileName": "UNITS",
+  "globalRoot": "119.1",
+  "globalReference": "^FH(119.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a unit which can be selected as the dietetic 'unit of issue' in the ingredient file. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "119.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

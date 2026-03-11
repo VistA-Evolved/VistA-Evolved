@@ -1,0 +1,58 @@
+{
+  "fileNumber": 860.1,
+  "fileName": "ORDER CHECK PATIENT ACTIVE DATA",
+  "globalRoot": "860.1P",
+  "globalReference": "^OCXD(860.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "    Pointer to the Patient (2) file. Points to the patient that this data belongs to.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE ELEMENT",
+      "dataType": "SUBFILE",
+      "rawType": "860.11",
+      "required": false,
+      "helpText": "     This is the list of Elements that have become TRUE for  this patient.   ",
+      "isMultiple": true,
+      "subFileNumber": 860.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCHEDULED EVENT",
+      "dataType": "DATE",
+      "rawType": "860.12D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 860.12,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "TIME", "field": },
+    {"name": "860.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

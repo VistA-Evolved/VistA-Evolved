@@ -1,0 +1,40 @@
+{
+  "fileNumber": 167.4,
+  "fileName": "ONCO PERIPHERAL BLOOD INVOLVEMENT",
+  "globalRoot": "167.4",
+  "globalReference": "^ONCO(167.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This is the numeric code for the entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ175",
+      "length": 175,
+      "required": true,
+      "helpText": "This is the description of the code for this entry. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "167.4", "field": .01, "type": "regular"},
+    {"name": "167.4", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

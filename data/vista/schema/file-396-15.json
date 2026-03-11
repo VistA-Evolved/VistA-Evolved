@@ -1,0 +1,89 @@
+{
+  "fileNumber": 396.15,
+  "fileName": "CAPRI DIVISION EXAM LIST",
+  "globalRoot": "396.15",
+  "globalReference": "^DVB(396.15,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Medical center divisions will automatically be added to this field when  the setup utility is accessed in the CAPRI GUI. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CUSTOM EXAM LISTS",
+      "dataType": "SUBFILE",
+      "rawType": "396.151",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 396.151,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMENT FOR GUI",
+      "dataType": "SUBFILE",
+      "rawType": "396.153",
+      "required": false,
+      "helpText": "This field holds a comment to be displayed in the CAPRI GUI when this  division is selected. ",
+      "isMultiple": true,
+      "subFileNumber": 396.153,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISABLE 2507 ROUTING LOCATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field should only be set by the CAPRI GUI. Used to determine if a division should show in the list of routing locations for 2507 Examinations in the CAPRI GUI. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISABLE 7131 ROUTING LOCATION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field should only be set by the CAPRI GUI. Used to determine if a  division should show in the list of routing locations for 7131 Requests in the CAPRI GUI. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DISABLE 2507 REQUESTS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is not specific to the selected division and will impact the entire site. This should only be set by the CAPRI GUI. Used to determine if this site should allow new C&P Examinations in the CAPRI GUI. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISABLE 7131 REQUESTS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is not specific to the selected division and will impact the entire site. This should only be set by the CAPRI GUI. Used to determine if this site should allow new 7131 Requests in the CAPRI GUI. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "396.15", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

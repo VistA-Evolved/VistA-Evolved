@@ -1,0 +1,40 @@
+{
+  "fileNumber": 600.7,
+  "fileName": "CRISIS NOTE DISPLAY",
+  "globalRoot": "600.7D",
+  "globalReference": "^YSG(\"CNT\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the crisis note was created or displayed, normally will be the current date. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME OF ACCESS",
+      "dataType": "DATE",
+      "rawType": "600.71DA",
+      "required": false,
+      "helpText": "Date and Time that the specific USER viewed the specific PATIENT's Crisis Note or Message. ",
+      "isMultiple": true,
+      "subFileNumber": 600.71,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "600.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

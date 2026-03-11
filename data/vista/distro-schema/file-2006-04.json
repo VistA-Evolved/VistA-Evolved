@@ -1,0 +1,47 @@
+{
+  "fileNumber": 2006.04,
+  "fileName": "ACQUISITION DEVICE",
+  "globalRoot": "2006.04",
+  "globalReference": "^MAG(2006.04,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the IMPORT device that is used to interface newly  captured diagnostic Images and procedures to the clinical database. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field references Institution file to designate the facility that  hosts this acquisition device. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field references the physical hospital location of the device that captured the images. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.04", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

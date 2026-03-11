@@ -1,0 +1,181 @@
+{
+  "fileNumber": 704.1122,
+  "fileName": "OBS_FLOWSHEET_SUPP_PAGE",
+  "globalRoot": "704.1122",
+  "globalReference": "^MDC(704.1122,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Global Unique IDentifier (GUID) for this entry. This value is maintained nationally, so this value identifies this supplemental page  throughout the enterprise. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VIEW_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.111'",
+      "required": true,
+      "pointerTo": 704.111,
+      "helpText": "This identifies the view for this supplemental page (#.01); correlates  this entry with an entry in the OBS_VIEW File (#704.111). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This identifies the patient assigned to this supplemental page (#.01);  correlates this entry with a PATIENT File (#2) entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT_METHOD_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the default method to use with this supplemental page  (#.01).  This method is a TERM File (#704.101) entry. A sample DEFAULT METHOD ID could be an identifier for the term  \"ARTERIAL LINE\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEFAULT_POSITION_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the default position to use with this supplemental page  (#.01).  This position is a TERM File (#704.101) entry. A sample DEFAULT POSITION ID could be an identifier for the term  \"LYING\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT_LOCATION_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the default location to use with this supplemental page  (#.01).  This location is a TERM File (#704.101) entry. A sample DEFAULT LOCATION ID could be an identifier for the term  \"ANKLE\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT_PRODUCT_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the default product to use with this supplemental page  (#.01).  This product is a TERM File (#704.101) entry. A sample DEFAULT PRODUCT ID could be an identifier for the term  \"5% PRODUCT X\". ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DISPLAY NAME to override the view display name (file  #704.111, field #.05) when activated. A sample DISPLAY NAME could be \"IV Input Blood Products\". ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This indicates whether this supplemental page (#.01) is active or  inactive for this patient's (#.03) treatment. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SET_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.116'",
+      "required": false,
+      "pointerTo": 704.116,
+      "helpText": "This field identifies the Observation Set file (#704.116) entry that correlates with this entry. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ACTIVATED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time this supplemental page (#.01) is activated. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ACTIVATED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) to activate this supplemental page  (#.01). ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ACTIVATED_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the user supplied comment stored when the page is activated. A sample ACTIVATED COMMENT could be \"supplemental page X activated by  request\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ACTIVATED_AS_TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Mandatory;1:Optional;2:Supplemental;",
+      "helpText": "This indicates a purpose for the activation of this supplemental page  (#.01). ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "DEACTIVATED_DATE_TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this supplemental page (#.01) was deactivated. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "DEACTIVATED_BY_ID",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This identifies the person (file #200) that deactivated this supplemental  page (#.01). ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "DEACTIVATED_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a user supplied comment stored when this supplemental page (#.01)  is deactivated. A sample DEACTIVATED COMMENT could be \"patient/treatment is no longer  applicable\". ",
+      "fieldNumber_": .23
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

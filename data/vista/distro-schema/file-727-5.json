@@ -1,0 +1,39 @@
+{
+  "fileNumber": 727.5,
+  "fileName": "DSS MH TESTS",
+  "globalRoot": "727.5",
+  "globalReference": "^ECX(727.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the MH INSTRUMENT test name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "727.51DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 727.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "727.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

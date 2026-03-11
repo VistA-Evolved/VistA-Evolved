@@ -1,0 +1,27 @@
+{
+  "fileNumber": 217.3,
+  "fileName": "NURQ FREQUENCY",
+  "globalRoot": "217.3",
+  "globalReference": "^NURQ(217.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The field contains frequency data (e.g., annually, monthly, quarterly) used to identify how often the data collected is reported. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "217.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

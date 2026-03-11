@@ -1,0 +1,38 @@
+{
+  "fileNumber": 53.41,
+  "fileName": "MAR LABELS",
+  "globalRoot": "53.41S",
+  "globalReference": "^PS(53.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE OF LABEL",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:AUTO-DISCONTINUED;2:OTHER ACTION;3:AUTO-REINSTATED;",
+      "helpText": "  This is the type of label.  A '1' indicates that the label was through the auto-discontinuing of the order.  A '2' indicates that the label was created through various other actions taken on the order. A '3' indicates  that the label was created through the auto-reinstating of the order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER OR WARD",
+      "dataType": "SUBFILE",
+      "rawType": "53.4101A",
+      "required": false,
+      "helpText": "  This contains information about Unit Dose labels created by actions taken on Unit Dose orders, such as either the user who took the action or the ward the patient was on when the label was created. ",
+      "isMultiple": true,
+      "subFileNumber": 53.4101,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

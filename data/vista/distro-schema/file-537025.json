@@ -1,0 +1,99 @@
+{
+  "fileNumber": 537025,
+  "fileName": "VAMC NETWORK HEALTH AUTHORIZED SITES",
+  "globalRoot": "537025I",
+  "globalReference": "^AFJ(537025,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P4.2'",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "Enter the name of the sites that you will send data requests to and receive data from.  (Include your own site). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the station number for the site. The 'ALL LOCAL AREA SITES' entry should have site numbers entered separated by commas (i.e., 612,662) for those sites you wish to request data from when selecting the ALL LOCAL AREA SITES entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "NICKNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the character that will be displayed upon Patient Lookup (if Update Network Identifier is set to YES) that will signify this site entry (i.e. 'W' for Chicago Westside or 'SF' for San Francisco VAMC).  If a patient has been seen at more than one site, these nicknames are strung together (i.e. WSF is displayed if patient has been seet at Chicago Westside AND San Francisco VAMCs). ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INCLUDE IN 'ALL'?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES to include this entry as one of the sites requests will be sent to if the user selects the ALL LOCAL AREA SITES entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEND UPDATE TO NETWORK FILE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "THIS FIELD DETERMINES WHETHER YOU WANT TO SEND YOUR NIGHTLY UPDATES TO ANOTHER SITE TO UPDATE THEIR NETWORK PATIENT FILE.   Any new patients seen at your site will be sent to this site and added to their Network Patient File as having data at your site. If your sites entry at this site is set to update the patient identifier, then that sites nickname for your site will be updated and displayed at patient lookup. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "# DAYS TO KEEP TRACKING DATA?",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACCEPT NETWORK FILE UPDATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "THIS FIELD DETERMINES WHETHER YOU WANT TO ACCEPT THE NIGHTLY UPDATE FROM ANOTHER SITE.  SITE MAY WANT TO SEND YOU THEIR UPDATE BUT YOU MAY NOT WANT TO ACCEPT BECAUSE THEY ARE NOT PART OF YOUR NETWORK. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "UPDATE NETWORK IDENTIFIER ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If yes, then the NETWORK IDENTIFIER field in the PATIENT FILE (#2) will be updated with the NICKNAME for this site entry and displayed at patient lookup.  Note: Network Identifiers from multiple sites are concatenated (strung) together. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "537025", "field": .01, "type": "regular"},
+    {"name": "537025", "field": 1, "type": "regular"},
+    {"name": "537025", "field": 1.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

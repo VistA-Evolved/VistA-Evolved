@@ -1,0 +1,80 @@
+{
+  "fileNumber": 430.3,
+  "fileName": "ACCOUNTS RECEIVABLE TRANS.TYPE",
+  "globalRoot": "430.3",
+  "globalReference": "^PRCA(430.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the type used to identify transactions in the Transaction File (No. 433). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is an abbreviation that can be used to enter or look-up the transaction. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XI",
+      "length": 3,
+      "required": false,
+      "helpText": "This is an internal number which the system uses to prevent duplicate transaction types. The user will not see this number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CALM CODE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This is a code used to indicate whether or not this transaction type needs to generate a CALM code sheet. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OLD BILL STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to a flag that will not allow the transaction type to be used with old bills that are back-loaded into the system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CBO EXTRACT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Include;0:Do not Include;",
+      "helpText": "This field will be used as a flag to determine if a record with this transaction type should be included in the CBOC data extract.    '1' will include this type and no entry or '0' will not include this type. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "430.3", "field": .01, "type": "regular"},
+    {"name": "430.3", "field": 1, "type": "regular"},
+    {"name": "430.3", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "fileNumber": 509850.3,
+  "fileName": "A&SP STAFF",
+  "globalRoot": "509850.3P",
+  "globalReference": "^ACK(509850.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The NAME field contains the name of the clinician, fee basis clinician,  other provider (e.g., health technician), or student providing direct care  in the clinic.  New names can be added to the A&SP STAFF file at any  time.  However, staff names should NEVER be deleted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STUDENT;C:CLINICIAN;F:FEE BASIS CLINICIAN;O:OTHER PROVIDER;",
+      "helpText": "STATUS identifies the position of the individual in the NAME field  as a clinician, fee basis clinician, other provider (e.g., health  technician), or student. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "ACTIVATION DATE is the earliest date that this individual is to be  associated with A&SP clinic visits.  You can enter EOD date or initial  QUASAR activation date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "INACTIVATION DATE is the date when this individual is no longer  associated with A&SP clinic visits.  You can enter the employee's  termination date. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The ID NUMBER field is used at stations that use code numbers in lieu of  provider names.  QUASAR provides a sequential default number staring with  0001, but any unique four digit number is accepted. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUPERVISOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The SUPERVISOR field determines whether or not this staff member is a  supervisor.  Supervisors have access to certain functions within the  QUASAR package that is not available to other staff members, such as C&P  exam adequation of exams performed by other clinicians.  Non-supervisory  clinicians can only adequate their own exams. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STAFF MEMBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the NEW PERSON file (#200) to ensure  that the NAME field (#.01) in the A&SP STAFF file (#509850.3) correctly  corresponds to the NAME field (#.01) in the NEW PERSON file (#200). ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ALID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "509850.3", "field": .01, "type": "regular"},
+    {"name": "509850.3", "field": .05, "type": "regular"},
+    {"name": "509850.3", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

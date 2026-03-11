@@ -1,0 +1,129 @@
+{
+  "fileNumber": 7103.2,
+  "fileName": "NOIS RECURRING EVENTS",
+  "globalRoot": "7103.2",
+  "globalReference": "^FSC(\"REVENT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "7103.21P",
+      "required": false,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIME ZONE",
+      "dataType": "POINTER",
+      "rawType": "P7106.5'",
+      "required": false,
+      "pointerTo": 7106.5,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "P7105.8'",
+      "required": false,
+      "pointerTo": 7105.8,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P7105.5'",
+      "required": false,
+      "pointerTo": 7105.5,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7103.29",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 7103.29,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FUNCTIONAL AREA",
+      "dataType": "POINTER",
+      "rawType": "P7106.4'",
+      "required": false,
+      "pointerTo": 7106.4,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OTHER GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7103.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

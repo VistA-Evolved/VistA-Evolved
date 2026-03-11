@@ -1,0 +1,159 @@
+{
+  "fileNumber": 133.2,
+  "fileName": "SURGERY INTERFACE PARAMETER",
+  "globalRoot": "133.2O",
+  "globalReference": "^SRO(133.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RIF",
+      "required": true,
+      "helpText": "This field is used to map VistA fields to HL7 (OBR-4 and OBX-3 identifiers) segment sequences.  This field is used as a text identifier for the field number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE/SUBFILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,4",
+      "length": 8,
+      "required": false,
+      "helpText": "This field holds the FILE/SUBFILE number of the VistA field that will be edited (e.g. 130). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,4",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the corresponding VistA field number of the text name that will be passed in either the OBX-3 or OBR-4 sequence. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INTERFACE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "R:RECEIVE;I:IGNORE;S:SEND;S/R:SEND AND RECEIVE;",
+      "helpText": "This field is used to determine ownership of data among systems.  Data should be entered in this field. Except for OBR segment identifiers like OPERATION and PROCEDURE that do not have a FILE/SUBFILE and FIELD associations, all other entries should be set to send, receive or ignore. Excluding these entries will allow the users to send or receive individual pieces of underlying information related to the operation or procedure. If the field is set to R, the information will be received into the S",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SEGMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies the HL7 segment that will be holding the information, (e.g., OBX). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ST:STRING;TX:TEXT;FT:FORMATTED TEXT;DT:DATE;TM:TIME;TS:TIME STAMP;PN:PERSON NAME;TN:TELEPHONE NUMBER;AD:ADDRESS;CK:COMPOSITE ID WITH CHECK DIGIT;CN:COMPOSITE ID AND NAME;CE:CODED ENTRY;RP:REFERENCE POINTER;NM:NUMERIC;",
+      "helpText": "This field is used to identify the type of information being passed by the OBX segment.  This field will be blank for all OBR segments. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HL7 SEQUENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the HL7 sequence and field position of the corresponding VistA field.  The field should contain the sequence number separated by a dash ('-') and followed by the sub-component location (value should be 1 if no sub-component separator). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the HL7 message sent for the information. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field corresponds to the VistA file location level in terms of a VA FileMan DIE call. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RELATED POINTER",
+      "dataType": "POINTER",
+      "rawType": "133.29P",
+      "required": false,
+      "helpText": "This field is used to link the HL7 sequence fields in a single segment for processing in a DR string.  This field should only link those fields located on a single segment. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RELATED MENU ITEMS",
+      "dataType": "POINTER",
+      "rawType": "133.21P",
+      "required": false,
+      "helpText": "This multiple is used to link all OBR segments to all underlying OBX segments. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to base the code that relates to the identifier.  HL7 standards call for information to be base in this form: <code><text><coding scheme>. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CODING SCHEME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to base the coding scheme that relates to the identifier.  The standard coding method is to use L for local fields and 99VAfile# (99VA200, NEW PERSON file) for VA specific files.  Other coding schemes include AS4 for (ASTM) American Society for testing and materials, C4 for CPT4, and I9 for ICD9. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represent the identified field's unit of measure.  This value must correspond to the ISO standards set forth by the HL7 standard. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ALWAYS CREATE NEW ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used by the incoming message processing routine to determine if the value should always create a new entry in the file. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "133.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "fileNumber": 580950.6,
+  "fileName": "*AJK1UB TRANSMISSION SET",
+  "globalRoot": "580950.6",
+  "globalReference": "^DIZ(580950.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAX STRING LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the maximum length of the string to be transmitted, as supplied by the collection agency.  The fields you enter will be evaluated against this length and the transmission will be rejected if, among other things, the sum of the elements length exceeds this value.  It's used primarily as a cross-check, to assist you in defining a proper string. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "580950.61P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "580950.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

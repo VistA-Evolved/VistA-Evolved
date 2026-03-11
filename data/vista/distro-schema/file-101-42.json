@@ -1,0 +1,52 @@
+{
+  "fileNumber": 101.42,
+  "fileName": "ORDER URGENCY",
+  "globalRoot": "101.42",
+  "globalReference": "^ORD(101.42,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an urgency that may be requested for an order; the Parameters Definition file will contain the different combinations that are allowable in different dialogs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USAGE",
+      "dataType": "SUBFILE",
+      "rawType": "101.421A",
+      "required": false,
+      "helpText": "This multiple contains all the possible ways to use this urgency. ",
+      "isMultiple": true,
+      "subFileNumber": 101.421,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the abbreviation to be used in HL7 messages and some displays. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "S", "field": },
+    {"name": "S1", "field": },
+    {"name": "101.42", "field": .01, "type": "regular"},
+    {"name": "101.42", "field": .01, "type": "regular"},
+    {"name": "101.42", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

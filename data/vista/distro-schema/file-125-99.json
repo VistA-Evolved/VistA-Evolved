@@ -1,0 +1,87 @@
+{
+  "fileNumber": 125.99,
+  "fileName": "PROBLEM LIST SITE PARAMETERS",
+  "globalRoot": "125.99",
+  "globalReference": "^GMPL(125.99,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the internal number of this file entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the site, commonly HOSPITAL or VAMC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VERIFY TRANSCRIBED PROBLEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a toggle which determines whether the PL application will flag entries made by a non-clinical user, and allow for subsequent confirmation of the entry by a clinician. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PROMPT FOR CHART COPY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, ASK;0:NO, DON'T ASK;",
+      "helpText": "This is a toggle which determines whether the PL application will prompt the user to print a new chartable copy of the patient's list when exiting the application or changing patients, if the current patient's list has been modified. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*USE CLINICAL LEXICON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "***This field is marked for deletion in preparation for the Problem List Data Standardization project and will be deleted 18 months from the release of patch GMPL*2*36.***    This is a toggle which determines whether the PL application will  allow the user to search the Clinical Lexicon when adding or editing  a problem; if a term is selected from the CL Utility, the standardized text will be displayed on the problem list, otherwise the text entered by the user to search on will be displayed.  P",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISPLAY ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CHRONOLOGICAL;R:REVERSE-CHRONOLOGICAL;",
+      "helpText": "This flag allows each site to control how the problem list is displayed, whether chronologically or reverse-chronologically by date recorded. This ordering will be the same both onscreen and on the printed copy. When new problems are added to a patient's list, they will be added as the most recent problems, i.e. at the top of the list if reverse-chronological or at the bottom if chronological. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SCREEN DUPLICATE ENTRIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If YES is entered in this field duplicate problems (those having the same  ICD9 code) will NOT be added to the problem list.  The primary purpose of this field in to screen entries added via the scannable encounter form. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "125.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

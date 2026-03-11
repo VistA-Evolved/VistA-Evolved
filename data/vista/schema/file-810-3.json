@@ -1,0 +1,223 @@
+{
+  "fileNumber": 810.3,
+  "fileName": "REMINDER EXTRACT SUMMARY",
+  "globalRoot": "810.3",
+  "globalReference": "^PXRMXT(810.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the extract summary number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The NAME is the combination of a unique abbreviations for the type of extract. The file contains different extract types:                                    1) EPI - Hep C Extract                                    Extracts of this type are prefixed LREPI. The following is an example of EPI lookup information:                                    LREPI 00/05 061500 LREPI 00/06 073100 LREPI 00/07 081500                                       The YY/MM represents the ending year and month of the extr",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the starting date that was used for the extract. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the ending date that was used for the extract. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TASK #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the task that was run to create the extract. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXTRACT OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who ran the extract job.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXTRACT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the extract entry was added to this file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PATIENTS EVALUATED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number of patients who had findings for the reminder and date range criteria selected. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PATIENTS WITH FINDINGS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total count of findings that met the extract criteria in the reminders and date range. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXTRACT DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "P810.2'",
+      "required": false,
+      "pointerTo": 810.2,
+      "helpText": "This is a pointer to the EXTRACT DEFINITION file. This shows what extract was run to create this extract summary.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF TOTALS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CT:COMPLIANCE TOTALS ONLY;CF:COMPLIANCE AND FINDING TOTALS;",
+      "helpText": "This is the type of totals requested for the extract parameter that was run to create this extract summary. An extract definition must contain Counting Rules in order for Finding Totals to be accumulated.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REPORTING PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to define the period of time that the extract was run.  The period can be for a calendar Month or quarter.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REPORTING YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is for the year that the extract was run against. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MANUAL/AUTOSCHEDULED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MANUAL;A:AUTOSCHEDULED;",
+      "helpText": "This field indicates if the extract summary was created from an  autoscheduled extract or as the result of a manual run. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HL7 MESSAGE ID",
+      "dataType": "SUBFILE",
+      "rawType": "810.36",
+      "required": false,
+      "helpText": "This multiple contains each HL7 ID for every time this extract summary was transmitted to Austin. ",
+      "isMultiple": true,
+      "subFileNumber": 810.36,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REPORT FREQUENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MONTHLY;Q:QUARTERLY;Y:YEARLY;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXTRACT FINDINGS",
+      "dataType": "POINTER",
+      "rawType": "810.31P",
+      "required": false,
+      "helpText": "This is the LREPI patient findings found during reminder extract processing for the specified date range.  Entries can be selected based on the NUMBER on the EXTRACT FINDINGS multiple or the Patient.  ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LREPI FINDING TOTALS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "810.32AV",
+      "required": false,
+      "helpText": "This is the total count for each finding item extracted during LREPI processing..  ",
+      "isMultiple": true,
+      "subFileNumber": 810.32,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COMPLIANCE TOTALS",
+      "dataType": "SUBFILE",
+      "rawType": "810.33I",
+      "required": false,
+      "helpText": "Used for Generic Extract reporting.  ",
+      "isMultiple": true,
+      "subFileNumber": 810.33,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AUTOMATICALLY PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is use to determine if the Extract Summary should be automatically  purge after five years. This field will be check by the Reminder Extract  code that runs monthly when running the National Extract. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of the extract summary. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local. National extract summaries  cannot be edited by sites. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AHLID", "field": }
+  ],
+  "identifiers": [
+    {"field": .06, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,6),5)"}
+  ]
+}

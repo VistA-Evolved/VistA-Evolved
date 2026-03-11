@@ -1,0 +1,192 @@
+{
+  "fileNumber": 404.52,
+  "fileName": "POSITION ASSIGNMENT HISTORY",
+  "globalRoot": "404.52PI",
+  "globalReference": "^SCTM(404.52,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEAM POSITION",
+      "dataType": "POINTER",
+      "rawType": "RP404.57'X",
+      "required": true,
+      "pointerTo": 404.57,
+      "helpText": "This is the entry in the Team Position file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the practitioner took over the team position. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRACTITIONER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is a staff member who is entered in the USR CLASS MEMBERSHIP file (8930.3). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This indicates whether the practitioner's position assignment is active or inactive. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS REASON",
+      "dataType": "POINTER",
+      "rawType": "R*P403.44'X",
+      "required": true,
+      "pointerTo": 403.44,
+      "helpText": "This is the reason that the position assignment changed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "USER ENTERING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the person responsible for entering this entry. It is triggered by the .01 field. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time this entry was added to this file.  It is triggered from the .01 field. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FTEE EQUIVALENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2X",
+      "length": 4,
+      "required": false,
+      "helpText": "Workload measurement. This information is transmitted in the HL7 workload  message. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "DATE FLAGGED FOR INACTIVATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Practitioners may be flagged for inactivation if their person class  is inconsistent with the position role and primary care designation. The flagging of providers is handled by PCMM NIGHTLY TASK option. ",
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": .096,
+      "fieldName": "AVAILABLE POSITIONS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .096
+    },
+    {
+      "fieldNumber": .097,
+      "fieldName": "MAX NUMBER OF PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .097
+    },
+    {
+      "fieldNumber": .098,
+      "fieldName": "CURRENT ACTIVE PATIENTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .098
+    },
+    {
+      "fieldNumber": .099,
+      "fieldName": "ADJUSTED PANEL SIZE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .099
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INACTIVATED AUTOMATICALLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Set by background job. Do not edit This is set by the PCMM NIGHTLY TASK option when a flagged record remains inconsistent 6 months after installation of patch SD*5.3*297 ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TEAMLET POSITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Historically, a patient encounter with a primary care provider or similar was necessary for that patient to avoid being inactivated from PCMM.  With the implementation of PCMMR this proviso was changed to include any provider assigned to a teamlet-designated position. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FTEE HISTORY",
+      "dataType": "DATE",
+      "rawType": "404.521DA",
+      "required": false,
+      "helpText": "Historical changes in FTEE values. This is maintained by PCMM Web and  should not be edited. ",
+      "isMultiple": true,
+      "subFileNumber": 404.521,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AEVENT09", "field": },
+    {"name": "AEVENT4", "field": },
+    {"name": "AFLAG", "field": },
+    {"name": "AIDT", "field": },
+    {"name": "AIDT1", "field": },
+    {"name": "AIDT2", "field": },
+    {"name": "AWRK", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.52", "field": .01, "type": "regular"},
+    {"name": "404.52", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "404.52", "field": .01, "type": "regular"},
+    {"name": "404.52", "field": .01, "type": "regular"},
+    {"name": "404.52", "field": .02, "type": "regular"},
+    {"name": "404.52", "field": .03, "type": "regular"},
+    {"name": "404.52", "field": .04, "type": "regular"},
+    {"name": "404.52", "field": .091, "type": "regular"},
+    {"name": "", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(404.52,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 19620.98,
+  "fileName": "DSIR DISCLOSURE ALERTS",
+  "globalRoot": "19620.98",
+  "globalReference": "^DSIR(19620.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This is a variable pointer field pointing back to the patient information  which is contained in the VA patient (DPT) file or the ROI non-computerized patient file (19620.96). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.9801",
+      "required": false,
+      "helpText": "Contains ROI department comments in a word processing format concerning  individual patient disclosure alerts. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.9801,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

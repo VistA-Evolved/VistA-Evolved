@@ -1,0 +1,51 @@
+{
+  "fileNumber": 2006.5757,
+  "fileName": "DICOM RADIOLOGY PROCEDURE MODIFIERS",
+  "globalRoot": "2006.5757",
+  "globalReference": "^MAGDICOM(2006.5757,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RAD PROC MOD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is a copy of the procedure modifier NAME (#.01) field of file PROCEDURE MODIFIERS (#71.2).   The DICOM Gateway's store redundant information in case the VistA connection is lost. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RAD PROC MOD IEN",
+      "dataType": "POINTER",
+      "rawType": "P71.2'",
+      "required": false,
+      "pointerTo": 71.2,
+      "helpText": "The Importer will use this procedure's value when placing an order on  Vista from the DICOM Gateway.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE OF IMAGING",
+      "dataType": "POINTER",
+      "rawType": "P79.2'",
+      "required": false,
+      "pointerTo": 79.2,
+      "helpText": "The Importer will use the corresponding TYPE OF IMAGING for the selected procedure when placing an order on VistA from the DICOM Gateway. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2006.5757", "field": .01, "type": "regular"},
+    {"name": "2006.5757", "field": 2, "type": "regular"},
+    {"name": "2006.5757", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

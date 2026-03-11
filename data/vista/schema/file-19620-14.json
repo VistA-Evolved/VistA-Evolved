@@ -1,0 +1,58 @@
+{
+  "fileNumber": 19620.14,
+  "fileName": "DSIR LABELS",
+  "globalRoot": "19620.14",
+  "globalReference": "^DSIR(19620.14,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the clerk that is requesting the label to be queued for printing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "RP19620.12'",
+      "required": true,
+      "pointerTo": 19620.12,
+      "helpText": "This field is the requestor for whom the label is being created.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "RP19620.92'",
+      "required": true,
+      "pointerTo": 19620.92,
+      "helpText": "This field is the address to be printed on the label being created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE QUEUED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date the label is created. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.14", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

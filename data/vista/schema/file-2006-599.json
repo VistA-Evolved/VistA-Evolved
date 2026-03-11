@@ -1,0 +1,123 @@
+{
+  "fileNumber": 2006.599,
+  "fileName": "DICOM Error Log",
+  "globalRoot": "2006.599",
+  "globalReference": "^MAGD(2006.599,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE & TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The value of this field is a string that denotes the date and time when this entry was logged into the database.   This timestamp is stored in FileMan format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that contains a brief description of the reason why the current entry is being entered into this table. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FILE DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the DICOM file that contains the information that was the reason why this error is being logged.   This file name contains the full directory (path) prefix. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the kind of modality that transmitted the image.   The two-letter codes for the modality types are defined in the DICOM standard. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DELETED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the name of the person who requested that one or more image files be deleted.   This field is only populated when a request to delete image files is being logged.   Removal of image files can be requested through either of the menu options  MAGD FIX DICOM and  MAGD FIX MEDICINE. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PATIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name value of this field is a string that represents the name of the patient for whom images are being deleted.   This field is only populated when a request to delete image files is being logged.   Removal of image files can be requested through either of the menu options  MAGD FIX DICOM and  MAGD FIX MEDICINE. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name value of this field is a string that represents the SSN of the patient for whom images are being deleted.   This field is only populated when a request to delete image files is being logged.   Removal of image files can be requested through either of the menu options  MAGD FIX DICOM and  MAGD FIX MEDICINE. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CASE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name value of this field is a string that represents the accession number for the study for which images are being deleted.   This field is only populated when a request to delete image files is being logged.   Removal of image files can be requested through either of the menu options  MAGD FIX DICOM and  MAGD FIX MEDICINE. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MACHINE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a single-character code that identifies the computer on which the problem occurred that is described in this entry. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.599", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

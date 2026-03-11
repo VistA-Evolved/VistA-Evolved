@@ -1,0 +1,47 @@
+{
+  "fileNumber": 66.9,
+  "fileName": "BLOOD COMPONENT REQUEST",
+  "globalRoot": "66.9",
+  "globalReference": "^LAB(66.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the Blood component ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRODUCTS",
+      "dataType": "POINTER",
+      "rawType": "66.91PA",
+      "required": false,
+      "helpText": " This field contains a listing of product relating to this component. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CRITERIA FOR USE",
+      "dataType": "SUBFILE",
+      "rawType": "66.92",
+      "required": false,
+      "helpText": " This field contains in special restriction or guidelines to be used with the particular component. ",
+      "isMultiple": true,
+      "subFileNumber": 66.92,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "66.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

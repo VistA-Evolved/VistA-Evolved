@@ -1,0 +1,66 @@
+{
+  "fileNumber": 161.43,
+  "fileName": "FEE BASIS CONTRACT",
+  "globalRoot": "161.43",
+  "globalReference": "^FBAA(161.43,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONTRACT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the contract number of the contract.  The contract  number cannot be changed if any authorization or payments point to the  contract. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "Only active contracts can be selected when authorizations or payments are  entered. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICABLE VENDORS",
+      "dataType": "POINTER",
+      "rawType": "161.433P",
+      "required": false,
+      "helpText": "Applicable vendors for the contract. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHOICE INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to identify Fee Basis Contracts associated with Non-VA  Care Vendors participating in the Veterans Choice Program. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHOICE PROVIDER AGREEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to identify Non-VA Care Vendors participating in the  Veterans Choice Program via a Choice Provider Agreement. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.43", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

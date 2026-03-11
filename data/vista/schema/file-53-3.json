@@ -1,0 +1,36 @@
+{
+  "fileNumber": 53.3,
+  "fileName": "ACTIVITY LOG REASON",
+  "globalRoot": "53.3OI",
+  "globalReference": "^PS(53.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is the reason for an activity that has taken placed on a verified Unit Dose order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OLD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is previous code used to look-up an entry in this file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "53.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "fileNumber": 579.5,
+  "fileName": "VDEF PARAMETERS",
+  "globalRoot": "579.5",
+  "globalReference": "^VDEFHL7(579.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VDEF SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP8989.3'",
+      "required": true,
+      "pointerTo": 8989.3,
+      "helpText": "Identifies the VistA System on which VDEF is running. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VDEF MONITOR DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0OX",
+      "length": 10,
+      "required": true,
+      "helpText": "How often the VDEF Monitor process runs. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TASKMAN TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The task number of the VDEF Monitor process. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "579.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "fileNumber": 120.83,
+  "fileName": "SIGN/SYMPTOMS",
+  "globalRoot": "120.83I",
+  "globalReference": "^GMRD(120.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A sign/symptom that can be associated with an allergy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NATIONAL SIGN/SYMPTOM",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:NATIONAL SIGN/SYMPTOM;",
+      "helpText": "Indicates whether this sign/symptom has been released with the national package or has been added locally. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "120.832",
+      "required": false,
+      "helpText": "A list of synonyms that can also be used to look up this sign/symptom. ",
+      "isMultiple": true,
+      "subFileNumber": 120.832,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "120.833A",
+      "required": false,
+      "helpText": "This multiple field holds the coding system (i.e., LOINC, SNOMED, RXNORM) that this code pertains to. ",
+      "isMultiple": true,
+      "subFileNumber": 120.833,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID).  A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "120.8399DA",
+      "required": false,
+      "helpText": "Describes the pair status and effective date/time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8399,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "120.83", "field": .01, "type": "regular"},
+    {"name": "120.83", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(120.83,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

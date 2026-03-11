@@ -1,0 +1,4485 @@
+{
+  "fileNumber": 509850.9,
+  "fileName": "AUDIOMETRIC EXAM DATA",
+  "globalRoot": "509850.9D",
+  "globalReference": "^ACK(509850.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF VISIT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is updated from the Audiometric Module enter/edit GUI application ACKQROES3E.EXE used in conjunction with  Remote Order Entry System 3.0 for ordering hearing aid products. Since it is crossreferenced on this field, if a previous entry already has the given date/time, it will be incremented by 1 second intervals until an unused date/time if found. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient for whom the audiometric data was created. It is the internal record number from the PATIENT file for the local clinic, except at the DDC.  At the DDC this field will be looked up in the DDC PATIENT file and filled in from there after transmission, from the SSN and NAME of the patient, if it can be found. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXAMINING AUDIOLOGIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This pointer to the new person file is retrieved from the Audiometric Module Enter/Edit program.  After transmission to the DDC, the name will be looked up in the database there, and if found will be updated with the pointer to their database. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REFERRAL SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is entered in the GUI application ACKQROES3E where it is validated and stored into this file.  After transmission to the DDC, a search of the local file is done and if a match is found, this is updated with that value. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AGE AT VISIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Age of patient at time of visit ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "*VA ELIGIBILITY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING VERIFICATION;R:PENDING RE-VERIFICATION;V:VERIFIED;",
+      "helpText": "MARKED FOR DELETION The eligibility status at the time of the visit as taken from the PATIENT file. It can be PENDING VERIFICATION, PENTING RE-VERIFICATION, or VERIFIED. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TYPE OF VISIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text for this field is taken from the radio buttons in the like named field in the GUI application ACKQROES3E. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TRANSDUCER TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EARPHONES;I:INSERT;",
+      "helpText": "Indicates if the test was performed using Ear Phones or an Insert. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the exam data is verified as accurate. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TESTING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the Station where the exam was entered ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ICN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pointer to the Master Patient Index file ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE SENT TO DDC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is filled in when the data is transmitted to the DDC. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "The pointer to the message that was sent to the DDC on the date in piece 12 ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CLAIM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the claim number of the patient at the time of the procedure. This is entered into the Audiogram Edit. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "RETRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the audiogram is retransmitted to the DDC this will track the last  date/time it was sent. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "RETRANSMISSION USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last retransmitted the audiogram to the DDC on the  date in field .15 of the zero node. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "RIGHT FOUR FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Based on the PURE TONE thresholds taken at 1000, 2000, 3000, and 4000 Hz, for the Right ear. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "LEFT FOUR FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a calculated field of the average of the readings from the 1000, 2000, 3000 and 4000 Hz fields for the Left ear. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "RIGHT THREE FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This average is based on the threshold readings from 500, 1000 and 2000 Hz. Right ear only. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LEFT THREE FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This average is based on the threshold readings from 500, 1000 and 2000 Hz. Left ear only. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "RIGHT TWO FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This average is based on the lowest two thresholds from 500, 1000 and  2000 hz for the Right ear. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "LEFT TWO FREQUENCY PTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This average is based on the lowest two thresholds from 500, 1000 and 2000 hz for the Left ear. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "RIGHT MCL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Most Comfortable Loudness for the Right ear. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "RIGHT UCL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Uncomfortable Loudness for the Right ear. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "LEFT MCL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Most Comfortable Loudness for the Left ear. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "LEFT UCL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Uncomfortable Loudness for the Left ear. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "R TYMPANOGRAM TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:As;2:Ad;3:A;4:B;5:C;6:FLAT;",
+      "helpText": "Tympanogram Type used for the Right ear. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "L TYMPANOGRAM TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:As;2:Ad;3:A;4:B;5:C;6:FLAT;",
+      "helpText": "Tympanogram Type used for the Left ear. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "INITIAL A/C THRESHOLD R 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 125 Hz test frequency is heard 50% of the time. Initial test on the Right ear. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "INITIAL A/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "INITIAL A/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "INITIAL A/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "INITIAL A/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "INITIAL A/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "INITIAL A/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "INITIAL A/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "INITIAL A/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "INITIAL A/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "INITIAL A/C THRESHOLD R 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 8000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "INITIAL A/C THRESHOLD R 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 12000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "*INITIAL A/C THRESH TAG R 125",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Set of codes indicating if the result was obtained using masking, and/or if no response was received. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "*INITIAL A/C THRESH TAG R 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "*INITIAL A/C THRESH TAG R 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "*INITIAL A/C THRESH TAG R 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no reponse;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 11.05,
+      "fieldName": "*INITIAL A/C THRESH TAG R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.05
+    },
+    {
+      "fieldNumber": 11.06,
+      "fieldName": "*INITIAL A/C THRESH TAG R 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.06
+    },
+    {
+      "fieldNumber": 11.07,
+      "fieldName": "*INITIAL A/C THRESH TAG R 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.07
+    },
+    {
+      "fieldNumber": 11.08,
+      "fieldName": "*INITIAL A/C THRESH TAG R 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.08
+    },
+    {
+      "fieldNumber": 11.09,
+      "fieldName": "*INITIAL A/C THRESH TAG R 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.09
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "*INITIAL A/C THRESH TAG R 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:unmasked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 11.11,
+      "fieldName": "*INITIAL A/C THRESH TAG R 8000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION The lowest level(dB) a 8000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 11.11
+    },
+    {
+      "fieldNumber": 11.12,
+      "fieldName": "*INITIAL A/C THRESH TAG R12000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 11.12
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "RETEST A/C THRESHOLD R 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 125 Hz for Right ear. ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 15.02,
+      "fieldName": "RETEST A/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 250 Hz for Right ear. ",
+      "fieldNumber_": 15.02
+    },
+    {
+      "fieldNumber": 15.03,
+      "fieldName": "RETEST A/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 500 Hz for Right ear. ",
+      "fieldNumber_": 15.03
+    },
+    {
+      "fieldNumber": 15.04,
+      "fieldName": "RETEST A/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 750 Hz for Right ear. ",
+      "fieldNumber_": 15.04
+    },
+    {
+      "fieldNumber": 15.05,
+      "fieldName": "RETEST A/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 1000 Hz for Right ear. ",
+      "fieldNumber_": 15.05
+    },
+    {
+      "fieldNumber": 15.06,
+      "fieldName": "RETEST A/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 1500 Hz for Right ear. ",
+      "fieldNumber_": 15.06
+    },
+    {
+      "fieldNumber": 15.07,
+      "fieldName": "RETEST A/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 2000 Hz for Right ear. ",
+      "fieldNumber_": 15.07
+    },
+    {
+      "fieldNumber": 15.08,
+      "fieldName": "RETEST A/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 3000 Hz for Right ear. ",
+      "fieldNumber_": 15.08
+    },
+    {
+      "fieldNumber": 15.09,
+      "fieldName": "RETEST A/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 4000 Hz for Right ear. ",
+      "fieldNumber_": 15.09
+    },
+    {
+      "fieldNumber": 15.1,
+      "fieldName": "RETEST A/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 6000 Hz for Right ear. ",
+      "fieldNumber_": 15.1
+    },
+    {
+      "fieldNumber": 15.11,
+      "fieldName": "RETEST A/C THRESHOLD R 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 8000 Hz for Right ear. ",
+      "fieldNumber_": 15.11
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "FINAL A/C THRESHOLD R 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 125 Hz test frequency is heard 50% of the time. Repeat testing of the Right ear. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "FINAL A/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "FINAL A/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "FINAL A/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "FINAL A/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "FINAL A/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.06
+    },
+    {
+      "fieldNumber": 20.07,
+      "fieldName": "FINAL A/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.07
+    },
+    {
+      "fieldNumber": 20.08,
+      "fieldName": "FINAL A/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.08
+    },
+    {
+      "fieldNumber": 20.09,
+      "fieldName": "FINAL A/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.09
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "FINAL A/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 20.11,
+      "fieldName": "FINAL A/C THRESHOLD R 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 8000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.11
+    },
+    {
+      "fieldNumber": 20.12,
+      "fieldName": "FINAL A/C THRESHOLD R 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 12000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 20.12
+    },
+    {
+      "fieldNumber": 21.01,
+      "fieldName": "*REPEAT A/C THRESH TAG R 125",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Set of codes indicating if the result was obtained using masking, and/or if a No-Response was obtained. ",
+      "fieldNumber_": 21.01
+    },
+    {
+      "fieldNumber": 21.02,
+      "fieldName": "*REPEAT A/C THRESH TAG R 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Set of codes indicating if the result was obtained using masking, and/or if a No-Response was obtained. ",
+      "fieldNumber_": 21.02
+    },
+    {
+      "fieldNumber": 21.03,
+      "fieldName": "*REPEAT A/C THRESH TAG R 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.03
+    },
+    {
+      "fieldNumber": 21.04,
+      "fieldName": "*REPEAT A/C THRESH TAG R 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.04
+    },
+    {
+      "fieldNumber": 21.05,
+      "fieldName": "*REPEAT A/C THRESH TAG R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.05
+    },
+    {
+      "fieldNumber": 21.06,
+      "fieldName": "*REPEAT A/C THRESH TAG R 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.06
+    },
+    {
+      "fieldNumber": 21.07,
+      "fieldName": "*REPEAT A/C THRESH TAG R 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.07
+    },
+    {
+      "fieldNumber": 21.08,
+      "fieldName": "*REPEAT A/C THRESH TAG R 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.08
+    },
+    {
+      "fieldNumber": 21.09,
+      "fieldName": "*REPEAT A/C THRESH TAG R 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.09
+    },
+    {
+      "fieldNumber": 21.1,
+      "fieldName": "*REPEAT A/C THRESH TAG R 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.1
+    },
+    {
+      "fieldNumber": 21.11,
+      "fieldName": "*REPEAT A/C THRESH TAG R 8000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.11
+    },
+    {
+      "fieldNumber": 21.12,
+      "fieldName": "*REPEAT A/C THRESH TAG R 12000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 21.12
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "INITIAL A/C THRESHOLD L 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 125 Hz test frequency is heard 50% of the time. During initial testing of the left ear. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "INITIAL A/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "INITIAL A/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 30.04,
+      "fieldName": "INITIAL A/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.04
+    },
+    {
+      "fieldNumber": 30.05,
+      "fieldName": "INITIAL A/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.05
+    },
+    {
+      "fieldNumber": 30.06,
+      "fieldName": "INITIAL A/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.06
+    },
+    {
+      "fieldNumber": 30.07,
+      "fieldName": "INITIAL A/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.07
+    },
+    {
+      "fieldNumber": 30.08,
+      "fieldName": "INITIAL A/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.08
+    },
+    {
+      "fieldNumber": 30.09,
+      "fieldName": "INITIAL A/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.09
+    },
+    {
+      "fieldNumber": 30.1,
+      "fieldName": "INITIAL A/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.1
+    },
+    {
+      "fieldNumber": 30.11,
+      "fieldName": "INITIAL A/C THRESHOLD L 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 8000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.11
+    },
+    {
+      "fieldNumber": 30.12,
+      "fieldName": "INITIAL A/C THRESHOLD L 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 12000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 30.12
+    },
+    {
+      "fieldNumber": 31.01,
+      "fieldName": "*INITIAL A/C THRESH TAG L 125",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Set of codes indicating if the result was obtained using masking, and/or if a No-Response was received. ",
+      "fieldNumber_": 31.01
+    },
+    {
+      "fieldNumber": 31.02,
+      "fieldName": "*INITIAL A/C THRESH TAG L 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.02
+    },
+    {
+      "fieldNumber": 31.03,
+      "fieldName": "*INITIAL A/C THRESH TAG L 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.03
+    },
+    {
+      "fieldNumber": 31.04,
+      "fieldName": "*INITIAL A/C THRESH TAG L 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.04
+    },
+    {
+      "fieldNumber": 31.05,
+      "fieldName": "*INITIAL A/C THRESH TAG L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.05
+    },
+    {
+      "fieldNumber": 31.06,
+      "fieldName": "*INITIAL A/C THRESH TAG L 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:unmasked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.06
+    },
+    {
+      "fieldNumber": 31.07,
+      "fieldName": "*INITIAL A/C THRESH TAG L 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.07
+    },
+    {
+      "fieldNumber": 31.08,
+      "fieldName": "*INITIAL A/C THRESH TAG L 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.08
+    },
+    {
+      "fieldNumber": 31.09,
+      "fieldName": "*INITIAL A/C THRESH TAG L 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.09
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "*INITIAL A/C THRESH TAG L 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.11,
+      "fieldName": "*INITIAL A/C THRESH TAG L 8000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.11
+    },
+    {
+      "fieldNumber": 31.12,
+      "fieldName": "*INITIAL A/C THRESH TAG L12000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 31.12
+    },
+    {
+      "fieldNumber": 35.01,
+      "fieldName": "RETEST A/C THRESHOLD L 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 125 Hz for Left ear. ",
+      "fieldNumber_": 35.01
+    },
+    {
+      "fieldNumber": 35.02,
+      "fieldName": "RETEST A/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 250 Hz for Left ear. ",
+      "fieldNumber_": 35.02
+    },
+    {
+      "fieldNumber": 35.03,
+      "fieldName": "RETEST A/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 500 Hz for Left ear. ",
+      "fieldNumber_": 35.03
+    },
+    {
+      "fieldNumber": 35.04,
+      "fieldName": "RETEST A/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 750 Hz for Left ear. ",
+      "fieldNumber_": 35.04
+    },
+    {
+      "fieldNumber": 35.05,
+      "fieldName": "RETEST A/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 1000 Hz for Left ear. ",
+      "fieldNumber_": 35.05
+    },
+    {
+      "fieldNumber": 35.06,
+      "fieldName": "RETEST A/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 1500 Hz for Left ear. ",
+      "fieldNumber_": 35.06
+    },
+    {
+      "fieldNumber": 35.07,
+      "fieldName": "RETEST A/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 2000 Hz for Left ear. ",
+      "fieldNumber_": 35.07
+    },
+    {
+      "fieldNumber": 35.08,
+      "fieldName": "RETEST A/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 3000 Hz for Left ear. ",
+      "fieldNumber_": 35.08
+    },
+    {
+      "fieldNumber": 35.09,
+      "fieldName": "RETEST A/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 4000 Hz for Left ear. ",
+      "fieldNumber_": 35.09
+    },
+    {
+      "fieldNumber": 35.1,
+      "fieldName": "RETEST A/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 6000 Hz for Left ear. ",
+      "fieldNumber_": 35.1
+    },
+    {
+      "fieldNumber": 35.11,
+      "fieldName": "RETEST A/C THRESHOLD L 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a retest was done at 8000 Hz for Left ear. ",
+      "fieldNumber_": 35.11
+    },
+    {
+      "fieldNumber": 40.01,
+      "fieldName": "FINAL A/C THRESHOLD L 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 125 Hz test frequency is heard 50% of the time. Repeat testing of the Left ear. ",
+      "fieldNumber_": 40.01
+    },
+    {
+      "fieldNumber": 40.02,
+      "fieldName": "FINAL A/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.02
+    },
+    {
+      "fieldNumber": 40.03,
+      "fieldName": "FINAL A/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.03
+    },
+    {
+      "fieldNumber": 40.04,
+      "fieldName": "FINAL A/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.04
+    },
+    {
+      "fieldNumber": 40.05,
+      "fieldName": "FINAL A/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.05
+    },
+    {
+      "fieldNumber": 40.06,
+      "fieldName": "FINAL A/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.06
+    },
+    {
+      "fieldNumber": 40.07,
+      "fieldName": "FINAL A/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.07
+    },
+    {
+      "fieldNumber": 40.08,
+      "fieldName": "FINAL A/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.08
+    },
+    {
+      "fieldNumber": 40.09,
+      "fieldName": "FINAL A/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.09
+    },
+    {
+      "fieldNumber": 40.1,
+      "fieldName": "FINAL A/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.1
+    },
+    {
+      "fieldNumber": 40.11,
+      "fieldName": "FINAL A/C THRESHOLD L 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 8000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.11
+    },
+    {
+      "fieldNumber": 40.12,
+      "fieldName": "FINAL A/C THRESHOLD L 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 12000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 40.12
+    },
+    {
+      "fieldNumber": 41.01,
+      "fieldName": "*REPEAT A/C THRESH TAG L 125",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Set of codes indicating if the result was obtained using masking, and/or if the result was a No-Response. ",
+      "fieldNumber_": 41.01
+    },
+    {
+      "fieldNumber": 41.02,
+      "fieldName": "*REPEAT A/C THRESH TAG L 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.02
+    },
+    {
+      "fieldNumber": 41.03,
+      "fieldName": "*REPEAT A/C THRESH TAG 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.03
+    },
+    {
+      "fieldNumber": 41.04,
+      "fieldName": "*REPEAT A/C THRESH TAAG L 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.04
+    },
+    {
+      "fieldNumber": 41.05,
+      "fieldName": "*REPEAT A/C THRESH TAG L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.05
+    },
+    {
+      "fieldNumber": 41.06,
+      "fieldName": "*REPEAT A/C THRESHOLD TAG 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.06
+    },
+    {
+      "fieldNumber": 41.07,
+      "fieldName": "*REPEAT A/C THRESH TAG L 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.07
+    },
+    {
+      "fieldNumber": 41.08,
+      "fieldName": "*REPEAT A/C THRESH TAG L 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.08
+    },
+    {
+      "fieldNumber": 41.09,
+      "fieldName": "*REPEAT A/C THRESH TAG L 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.09
+    },
+    {
+      "fieldNumber": 41.1,
+      "fieldName": "*REPEAT A/C THRESH TAG L 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.1
+    },
+    {
+      "fieldNumber": 41.11,
+      "fieldName": "*REPEAT A/C THRESH TAG L 8000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.11
+    },
+    {
+      "fieldNumber": 41.12,
+      "fieldName": "*REPEAT A/C THRESH TAG L 12000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 41.12
+    },
+    {
+      "fieldNumber": 50.01,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 125",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The initial masking noise level(dB) needed to obtain a true threshold  at 125 Hz for the Right ear ",
+      "fieldNumber_": 50.01
+    },
+    {
+      "fieldNumber": 50.02,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 250",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 250 Hz ",
+      "fieldNumber_": 50.02
+    },
+    {
+      "fieldNumber": 50.03,
+      "fieldName": "*INITIAL A/C MASK LEVELR 500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 50.03
+    },
+    {
+      "fieldNumber": 50.04,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 750",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 50.04
+    },
+    {
+      "fieldNumber": 50.05,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 1000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 50.05
+    },
+    {
+      "fieldNumber": 50.06,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 1500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 50.06
+    },
+    {
+      "fieldNumber": 50.07,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 2000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 50.07
+    },
+    {
+      "fieldNumber": 50.08,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 3000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 50.08
+    },
+    {
+      "fieldNumber": 50.09,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 4000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 50.09
+    },
+    {
+      "fieldNumber": 50.1,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 6000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 50.1
+    },
+    {
+      "fieldNumber": 50.11,
+      "fieldName": "*INITIAL A/C MASK LEVEL R 8000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 8000 Hz ",
+      "fieldNumber_": 50.11
+    },
+    {
+      "fieldNumber": 50.12,
+      "fieldName": "*INITIAL A/C MASK LEVEL R12000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 12000 Hz ",
+      "fieldNumber_": 50.12
+    },
+    {
+      "fieldNumber": 51.01,
+      "fieldName": "FINAL A/C MASK LEVEL R 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 125 Hz during final testing for the Right ear. ",
+      "fieldNumber_": 51.01
+    },
+    {
+      "fieldNumber": 51.02,
+      "fieldName": "FINAL A/C MASK LEVEL R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 250 Hz ",
+      "fieldNumber_": 51.02
+    },
+    {
+      "fieldNumber": 51.03,
+      "fieldName": "FINAL A/C MASK LEVEL R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 51.03
+    },
+    {
+      "fieldNumber": 51.04,
+      "fieldName": "FINAL A/C MASK LEVEL R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 51.04
+    },
+    {
+      "fieldNumber": 51.05,
+      "fieldName": "FINAL A/C MASK LEVEL R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 51.05
+    },
+    {
+      "fieldNumber": 51.06,
+      "fieldName": "FINAL A/C MASK LEVEL R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 51.06
+    },
+    {
+      "fieldNumber": 51.07,
+      "fieldName": "FINAL A/C MASK LEVEL R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 51.07
+    },
+    {
+      "fieldNumber": 51.08,
+      "fieldName": "FINAL A/C MASK LEVEL R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 51.08
+    },
+    {
+      "fieldNumber": 51.09,
+      "fieldName": "FINAL A/C MASK LEVEL R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 51.09
+    },
+    {
+      "fieldNumber": 51.1,
+      "fieldName": "FINAL A/C MASK LEVEL R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 51.1
+    },
+    {
+      "fieldNumber": 51.11,
+      "fieldName": "FINAL A/C MASK LEVEL R 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 8000 Hz ",
+      "fieldNumber_": 51.11
+    },
+    {
+      "fieldNumber": 51.12,
+      "fieldName": "FINAL A/C MASK LEVEL R 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 12000 Hz ",
+      "fieldNumber_": 51.12
+    },
+    {
+      "fieldNumber": 60.01,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 125",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The initial masking noise level(dB) needed to obtain a true threshold  at 125 Hz on the Left ear. ",
+      "fieldNumber_": 60.01
+    },
+    {
+      "fieldNumber": 60.02,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 250",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 250 Hz ",
+      "fieldNumber_": 60.02
+    },
+    {
+      "fieldNumber": 60.03,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 60.03
+    },
+    {
+      "fieldNumber": 60.04,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 750",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 60.04
+    },
+    {
+      "fieldNumber": 60.05,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 1000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 60.05
+    },
+    {
+      "fieldNumber": 60.06,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 1500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 60.06
+    },
+    {
+      "fieldNumber": 60.07,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 2000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 60.07
+    },
+    {
+      "fieldNumber": 60.08,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 3000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 60.08
+    },
+    {
+      "fieldNumber": 60.09,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 4000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 60.09
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 6000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 60.11,
+      "fieldName": "*INITIAL A/C MASK LEVEL L 8000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 8000 Hz ",
+      "fieldNumber_": 60.11
+    },
+    {
+      "fieldNumber": 60.12,
+      "fieldName": "*INITIAL A/C MASK LEVEL L12000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 12000 Hz ",
+      "fieldNumber_": 60.12
+    },
+    {
+      "fieldNumber": 61.01,
+      "fieldName": "FINAL A/C MASK LEVEL L 125",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 125 Hz during final testing of the Left ear. ",
+      "fieldNumber_": 61.01
+    },
+    {
+      "fieldNumber": 61.02,
+      "fieldName": "FINAL A/C MASK LEVEL L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 250 Hz ",
+      "fieldNumber_": 61.02
+    },
+    {
+      "fieldNumber": 61.03,
+      "fieldName": "FINAL A/C MASK LEVEL L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 61.03
+    },
+    {
+      "fieldNumber": 61.04,
+      "fieldName": "FINAL A/C MASK LEVEL L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 61.04
+    },
+    {
+      "fieldNumber": 61.05,
+      "fieldName": "FINAL A/C MASK LEVEL L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 61.05
+    },
+    {
+      "fieldNumber": 61.06,
+      "fieldName": "FINAL A/C MASK LEVEL L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 61.06
+    },
+    {
+      "fieldNumber": 61.07,
+      "fieldName": "FINAL A/C MASK LEVEL L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 61.07
+    },
+    {
+      "fieldNumber": 61.08,
+      "fieldName": "FINAL A/C MASK LEVEL L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 61.08
+    },
+    {
+      "fieldNumber": 61.09,
+      "fieldName": "FINAL A/C MASK LEVEL L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 61.09
+    },
+    {
+      "fieldNumber": 61.1,
+      "fieldName": "FINAL A/C MASK LEVEL L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 61.1
+    },
+    {
+      "fieldNumber": 61.11,
+      "fieldName": "FINAL A/C MASK LEVEL L 8000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 8000 Hz ",
+      "fieldNumber_": 61.11
+    },
+    {
+      "fieldNumber": 61.12,
+      "fieldName": "FINAL A/C MASK LEVEL L 12000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 12000 Hz ",
+      "fieldNumber_": 61.12
+    },
+    {
+      "fieldNumber": 70.01,
+      "fieldName": "INITIAL B/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time during bone conduction testing of the Right ear. ",
+      "fieldNumber_": 70.01
+    },
+    {
+      "fieldNumber": 70.02,
+      "fieldName": "INITIAL B/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.02
+    },
+    {
+      "fieldNumber": 70.03,
+      "fieldName": "INITIAL B/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.03
+    },
+    {
+      "fieldNumber": 70.04,
+      "fieldName": "INITIAL B/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.04
+    },
+    {
+      "fieldNumber": 70.05,
+      "fieldName": "INITIAL B/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.05
+    },
+    {
+      "fieldNumber": 70.06,
+      "fieldName": "INITIAL B/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.06
+    },
+    {
+      "fieldNumber": 70.07,
+      "fieldName": "INITIAL B/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.07
+    },
+    {
+      "fieldNumber": 70.08,
+      "fieldName": "INITIAL B/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.08
+    },
+    {
+      "fieldNumber": 70.09,
+      "fieldName": "INITIAL B/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 70.09
+    },
+    {
+      "fieldNumber": 71.01,
+      "fieldName": "*INITIAL B/C THRESH TAG R 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence during bone conduction testing at 250 Hz on the Right ear. ",
+      "fieldNumber_": 71.01
+    },
+    {
+      "fieldNumber": 71.02,
+      "fieldName": "*INITIAL B/C THRESH TAG R 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.02
+    },
+    {
+      "fieldNumber": 71.03,
+      "fieldName": "*INITIAL B/C THRESH TAG R 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.03
+    },
+    {
+      "fieldNumber": 71.04,
+      "fieldName": "*INITIAL B/C THRESH TAG R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.04
+    },
+    {
+      "fieldNumber": 71.05,
+      "fieldName": "*INITIAL B/C THRESH TAG R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.05
+    },
+    {
+      "fieldNumber": 71.06,
+      "fieldName": "*INITIAL B/C THRESH TAG R 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.06
+    },
+    {
+      "fieldNumber": 71.07,
+      "fieldName": "*INITIAL B/C THRESH TAG R 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.07
+    },
+    {
+      "fieldNumber": 71.08,
+      "fieldName": "*INITIAL B/C THRESH TAG R 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.08
+    },
+    {
+      "fieldNumber": 71.09,
+      "fieldName": "*INITIAL B/C THRESH TAG R 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 71.09
+    },
+    {
+      "fieldNumber": 72.01,
+      "fieldName": "RETEST B/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 250 Hz for Right ear. ",
+      "fieldNumber_": 72.01
+    },
+    {
+      "fieldNumber": 72.02,
+      "fieldName": "RETEST B/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 500 Hz for Right ear. ",
+      "fieldNumber_": 72.02
+    },
+    {
+      "fieldNumber": 72.03,
+      "fieldName": "RETEST B/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 750 Hz for Right ear. ",
+      "fieldNumber_": 72.03
+    },
+    {
+      "fieldNumber": 72.04,
+      "fieldName": "RETEST B/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 1000 Hz for Right ear. ",
+      "fieldNumber_": 72.04
+    },
+    {
+      "fieldNumber": 72.05,
+      "fieldName": "RETEST B/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 1500 Hz for Right ear. ",
+      "fieldNumber_": 72.05
+    },
+    {
+      "fieldNumber": 72.06,
+      "fieldName": "RETEST B/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 2000 Hz for Right ear. ",
+      "fieldNumber_": 72.06
+    },
+    {
+      "fieldNumber": 72.07,
+      "fieldName": "RETEST B/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 3000 Hz for Right ear. ",
+      "fieldNumber_": 72.07
+    },
+    {
+      "fieldNumber": 72.08,
+      "fieldName": "RETEST B/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 4000 Hz for Right ear. ",
+      "fieldNumber_": 72.08
+    },
+    {
+      "fieldNumber": 72.09,
+      "fieldName": "RETEST B/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 6000 Hz for Right ear. ",
+      "fieldNumber_": 72.09
+    },
+    {
+      "fieldNumber": 75.01,
+      "fieldName": "FINAL B/C THRESHOLD R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time during repeat bone conduction testing on the Right ear. ",
+      "fieldNumber_": 75.01
+    },
+    {
+      "fieldNumber": 75.02,
+      "fieldName": "FINAL B/C THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.02
+    },
+    {
+      "fieldNumber": 75.03,
+      "fieldName": "FINAL B/C THRESHOLD R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.03
+    },
+    {
+      "fieldNumber": 75.04,
+      "fieldName": "FINAL B/C THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.04
+    },
+    {
+      "fieldNumber": 75.05,
+      "fieldName": "FINAL B/C THRESHOLD R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.05
+    },
+    {
+      "fieldNumber": 75.06,
+      "fieldName": "FINAL B/C THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.06
+    },
+    {
+      "fieldNumber": 75.07,
+      "fieldName": "FINAL B/C THRESHOLD R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.07
+    },
+    {
+      "fieldNumber": 75.08,
+      "fieldName": "FINAL B/C THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.08
+    },
+    {
+      "fieldNumber": 75.09,
+      "fieldName": "FINAL B/C THRESHOLD R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 75.09
+    },
+    {
+      "fieldNumber": 76.01,
+      "fieldName": "*REPEAT B/C THRESH TAG R 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence during repeat bone conduction testing of the Right ear. ",
+      "fieldNumber_": 76.01
+    },
+    {
+      "fieldNumber": 76.02,
+      "fieldName": "*REPEAT B/C THRESH TAG R 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.02
+    },
+    {
+      "fieldNumber": 76.03,
+      "fieldName": "*REPEAT B/C THRESH TAG R 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.03
+    },
+    {
+      "fieldNumber": 76.04,
+      "fieldName": "*REPEAT B/C THRESH TAG R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.04
+    },
+    {
+      "fieldNumber": 76.05,
+      "fieldName": "*REPEAT B/C THRESH TAG R 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.05
+    },
+    {
+      "fieldNumber": 76.06,
+      "fieldName": "*REPEAT B/C THRESH TAG R 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.06
+    },
+    {
+      "fieldNumber": 76.07,
+      "fieldName": "*REPEAT B/C THRESH TAG R 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.07
+    },
+    {
+      "fieldNumber": 76.08,
+      "fieldName": "*REPEAT B/C THRESH TAG R 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.08
+    },
+    {
+      "fieldNumber": 76.09,
+      "fieldName": "*REPEAT B/C THRESH TAG R 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 76.09
+    },
+    {
+      "fieldNumber": 80.01,
+      "fieldName": "INITIAL B/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time during initial bone conduction testing on the Left ear. ",
+      "fieldNumber_": 80.01
+    },
+    {
+      "fieldNumber": 80.02,
+      "fieldName": "INITIAL B/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time during initial bone conduction testing on the Left ear. ",
+      "fieldNumber_": 80.02
+    },
+    {
+      "fieldNumber": 80.03,
+      "fieldName": "INITIAL B/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.03
+    },
+    {
+      "fieldNumber": 80.04,
+      "fieldName": "INITIAL B/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.04
+    },
+    {
+      "fieldNumber": 80.05,
+      "fieldName": "INITIAL B/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.05
+    },
+    {
+      "fieldNumber": 80.06,
+      "fieldName": "INITIAL B/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.06
+    },
+    {
+      "fieldNumber": 80.07,
+      "fieldName": "INITIAL B/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.07
+    },
+    {
+      "fieldNumber": 80.08,
+      "fieldName": "INITIAL B/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.08
+    },
+    {
+      "fieldNumber": 80.09,
+      "fieldName": "INITIAL B/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 80.09
+    },
+    {
+      "fieldNumber": 81.01,
+      "fieldName": "*INITIAL B/C THRESH TAG L 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence during bone conduction testing on the Left ear at 250 Hz. ",
+      "fieldNumber_": 81.01
+    },
+    {
+      "fieldNumber": 81.02,
+      "fieldName": "*INITIAL B/C THRESH TAG L 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.02
+    },
+    {
+      "fieldNumber": 81.03,
+      "fieldName": "*INITIAL B/C THRESH TAG L 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.03
+    },
+    {
+      "fieldNumber": 81.04,
+      "fieldName": "*INITIAL B/C THRESH TAG L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.04
+    },
+    {
+      "fieldNumber": 81.05,
+      "fieldName": "*INITIAL B/C THRESH TAG L 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.05
+    },
+    {
+      "fieldNumber": 81.06,
+      "fieldName": "*INITIAL B/C THRESH TAG L 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.06
+    },
+    {
+      "fieldNumber": 81.07,
+      "fieldName": "*INITIAL B/C THRESH TAG L 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.07
+    },
+    {
+      "fieldNumber": 81.08,
+      "fieldName": "*INITIAL B/C THRESH TAG L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.08
+    },
+    {
+      "fieldNumber": 81.09,
+      "fieldName": "*INITIAL B/C THRESH TAG L 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 81.09
+    },
+    {
+      "fieldNumber": 82.01,
+      "fieldName": "RETEST B/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 250 Hz for Left ear. ",
+      "fieldNumber_": 82.01
+    },
+    {
+      "fieldNumber": 82.02,
+      "fieldName": "RETEST B/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 500 Hz for Left ear. ",
+      "fieldNumber_": 82.02
+    },
+    {
+      "fieldNumber": 82.03,
+      "fieldName": "RETEST B/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 750 Hz for Left ear. ",
+      "fieldNumber_": 82.03
+    },
+    {
+      "fieldNumber": 82.04,
+      "fieldName": "RETEST B/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 1000 Hz for Left ear. ",
+      "fieldNumber_": 82.04
+    },
+    {
+      "fieldNumber": 82.05,
+      "fieldName": "RETEST B/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 1500 Hz for Left ear. ",
+      "fieldNumber_": 82.05
+    },
+    {
+      "fieldNumber": 82.06,
+      "fieldName": "RETEST B/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 2000 Hz for Left ear. ",
+      "fieldNumber_": 82.06
+    },
+    {
+      "fieldNumber": 82.07,
+      "fieldName": "RETEST B/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 3000 Hz for Left ear. ",
+      "fieldNumber_": 82.07
+    },
+    {
+      "fieldNumber": 82.08,
+      "fieldName": "RETEST B/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 4000 Hz for Left ear. ",
+      "fieldNumber_": 82.08
+    },
+    {
+      "fieldNumber": 82.09,
+      "fieldName": "RETEST B/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Value received if a bone conduction retest was done at 6000 Hz for Left ear. ",
+      "fieldNumber_": 82.09
+    },
+    {
+      "fieldNumber": 85.01,
+      "fieldName": "FINAL B/C THRESHOLD L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 250 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.01
+    },
+    {
+      "fieldNumber": 85.02,
+      "fieldName": "FINAL B/C THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.02
+    },
+    {
+      "fieldNumber": 85.03,
+      "fieldName": "FINAL B/C THRESHOLD L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 750 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.03
+    },
+    {
+      "fieldNumber": 85.04,
+      "fieldName": "FINAL B/C THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.04
+    },
+    {
+      "fieldNumber": 85.05,
+      "fieldName": "FINAL B/C THRESHOLD L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 1500 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.05
+    },
+    {
+      "fieldNumber": 85.06,
+      "fieldName": "FINAL B/C THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 2000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.06
+    },
+    {
+      "fieldNumber": 85.07,
+      "fieldName": "FINAL B/C THRESHOLD L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 3000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.07
+    },
+    {
+      "fieldNumber": 85.08,
+      "fieldName": "FINAL B/C THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 4000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.08
+    },
+    {
+      "fieldNumber": 85.09,
+      "fieldName": "FINAL B/C THRESHOLD L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lowest level(dB) a 6000 Hz test frequency is heard 50% of the time. ",
+      "fieldNumber_": 85.09
+    },
+    {
+      "fieldNumber": 86.01,
+      "fieldName": "*REPEAT B/C THRESH TAG L 250",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of final masking presence during bone conduction testing on the Left ear at 250 Hz. ",
+      "fieldNumber_": 86.01
+    },
+    {
+      "fieldNumber": 86.02,
+      "fieldName": "*REPEAT B/C THRESH TAG L 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.02
+    },
+    {
+      "fieldNumber": 86.03,
+      "fieldName": "*REPEAT B/C THRESH TAG  L 750",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.03
+    },
+    {
+      "fieldNumber": 86.04,
+      "fieldName": "*REPEAT B/C THRESH TAG L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.04
+    },
+    {
+      "fieldNumber": 86.05,
+      "fieldName": "*REPEAT B/C THRESH TAG L 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.05
+    },
+    {
+      "fieldNumber": 86.06,
+      "fieldName": "*REPEAT B/C THRESH TAG L 2000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.06
+    },
+    {
+      "fieldNumber": 86.07,
+      "fieldName": "*REPEAT B/C THRESH TAG L 3000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.07
+    },
+    {
+      "fieldNumber": 86.08,
+      "fieldName": "*REPEAT B/C THRESH TAG L 4000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.08
+    },
+    {
+      "fieldNumber": 86.09,
+      "fieldName": "*REPEAT B/C THRESH TAG L 6000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION Indicator of masking presence. ",
+      "fieldNumber_": 86.09
+    },
+    {
+      "fieldNumber": 90.01,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 250",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The initial masking noise level(dB) needed to obtain a true threshold  at 250 Hz on the Right ear. ",
+      "fieldNumber_": 90.01
+    },
+    {
+      "fieldNumber": 90.02,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 90.02
+    },
+    {
+      "fieldNumber": 90.03,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 750",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 90.03
+    },
+    {
+      "fieldNumber": 90.04,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 1000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 90.04
+    },
+    {
+      "fieldNumber": 90.05,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 1500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 90.05
+    },
+    {
+      "fieldNumber": 90.06,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 2000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 90.06
+    },
+    {
+      "fieldNumber": 90.07,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 3000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 90.07
+    },
+    {
+      "fieldNumber": 90.08,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 4000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 90.08
+    },
+    {
+      "fieldNumber": 90.09,
+      "fieldName": "*INITIAL B/C MASK LEVEL R 6000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 90.09
+    },
+    {
+      "fieldNumber": 91.01,
+      "fieldName": "FINAL B/C MASK LEVEL R 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The final masking noise level(dB) needed to obtain a true threshold at 250 Hz during bone conduction testing on the Right ear. ",
+      "fieldNumber_": 91.01
+    },
+    {
+      "fieldNumber": 91.02,
+      "fieldName": "FINAL B/C MASK LEVEL R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 91.02
+    },
+    {
+      "fieldNumber": 91.03,
+      "fieldName": "FINAL B/C MASK LEVEL R 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 91.03
+    },
+    {
+      "fieldNumber": 91.04,
+      "fieldName": "FINAL B/C MASK LEVEL R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 91.04
+    },
+    {
+      "fieldNumber": 91.05,
+      "fieldName": "FINAL B/C MASK LEVEL R 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 91.05
+    },
+    {
+      "fieldNumber": 91.06,
+      "fieldName": "FINAL B/C MASK LEVEL R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 91.06
+    },
+    {
+      "fieldNumber": 91.07,
+      "fieldName": "FINAL B/C MASK LEVEL R 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 91.07
+    },
+    {
+      "fieldNumber": 91.08,
+      "fieldName": "FINAL B/C MASK LEVEL R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 91.08
+    },
+    {
+      "fieldNumber": 91.09,
+      "fieldName": "FINAL B/C MASK LEVEL R 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 91.09
+    },
+    {
+      "fieldNumber": 100.01,
+      "fieldName": "*INITIAL B/C MASK LEVEL L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 250 Hz ",
+      "fieldNumber_": 100.01
+    },
+    {
+      "fieldNumber": 100.02,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 100.02
+    },
+    {
+      "fieldNumber": 100.03,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 750",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 100.03
+    },
+    {
+      "fieldNumber": 100.04,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 1000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 100.04
+    },
+    {
+      "fieldNumber": 100.05,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 1500",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 100.05
+    },
+    {
+      "fieldNumber": 100.06,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 2000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 100.06
+    },
+    {
+      "fieldNumber": 100.07,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 3000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 100.07
+    },
+    {
+      "fieldNumber": 100.08,
+      "fieldName": "*INITIAL B/C MASK LEVEL L 4000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 100.08
+    },
+    {
+      "fieldNumber": 100.09,
+      "fieldName": "*INITIAL B/C MASK LEVEL 6000",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "MARKED FOR DELETION  The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 100.09
+    },
+    {
+      "fieldNumber": 101.01,
+      "fieldName": "FINAL B/C MASK LEVEL L 250",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The final masking noise level(dB) needed to obtain a true threshold  at 250 Hz during bone conduction testing. ",
+      "fieldNumber_": 101.01
+    },
+    {
+      "fieldNumber": 101.02,
+      "fieldName": "FINAL B/C MASK LEVEL L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 500 Hz ",
+      "fieldNumber_": 101.02
+    },
+    {
+      "fieldNumber": 101.03,
+      "fieldName": "FINAL B/C MASK LEVEL L 750",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 750 Hz ",
+      "fieldNumber_": 101.03
+    },
+    {
+      "fieldNumber": 101.04,
+      "fieldName": "FINAL B/C MASK LEVEL L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1000 Hz ",
+      "fieldNumber_": 101.04
+    },
+    {
+      "fieldNumber": 101.05,
+      "fieldName": "FINAL B/C MASK LEVEL L 1500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 1500 Hz ",
+      "fieldNumber_": 101.05
+    },
+    {
+      "fieldNumber": 101.06,
+      "fieldName": "FINAL B/C MASK LEVEL L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 2000 Hz ",
+      "fieldNumber_": 101.06
+    },
+    {
+      "fieldNumber": 101.07,
+      "fieldName": "FINAL B/C MASK LEVEL L 3000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 3000 Hz ",
+      "fieldNumber_": 101.07
+    },
+    {
+      "fieldNumber": 101.08,
+      "fieldName": "FINAL B/C MASK LEVEL L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 4000 Hz ",
+      "fieldNumber_": 101.08
+    },
+    {
+      "fieldNumber": 101.09,
+      "fieldName": "FINAL B/C MASK LEVEL L 6000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The masking noise level(dB) needed to obtain a true threshold at 6000 Hz ",
+      "fieldNumber_": 101.09
+    },
+    {
+      "fieldNumber": 110.03,
+      "fieldName": "MATERIAL R-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "Standard word list used in test 1 for Right ear. ",
+      "fieldNumber_": 110.03
+    },
+    {
+      "fieldNumber": 110.04,
+      "fieldName": "PERCENT CORRECT R-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Right Ear Test 1 ",
+      "fieldNumber_": 110.04
+    },
+    {
+      "fieldNumber": 110.05,
+      "fieldName": "PRESENTATION METHOD R-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "Notes if presented by a Recorded medium or Monitored Live Voice(MLV)  All tests ",
+      "fieldNumber_": 110.05
+    },
+    {
+      "fieldNumber": 110.06,
+      "fieldName": "PRESENTATION LEVEL R-1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Rt ear on test 1. ",
+      "fieldNumber_": 110.06
+    },
+    {
+      "fieldNumber": 110.07,
+      "fieldName": "MASKING LEVEL R-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 1 on Right ear ",
+      "fieldNumber_": 110.07
+    },
+    {
+      "fieldNumber": 110.08,
+      "fieldName": "*WORD LIST R-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 2 for Right ear. ",
+      "fieldNumber_": 110.08
+    },
+    {
+      "fieldNumber": 110.09,
+      "fieldName": "PERCENT CORRECT R-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Right Ear Test 2 ",
+      "fieldNumber_": 110.09
+    },
+    {
+      "fieldNumber": 110.1,
+      "fieldName": "*PRESENTATION METHOD R-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Right ear - Test 2 ",
+      "fieldNumber_": 110.1
+    },
+    {
+      "fieldNumber": 110.11,
+      "fieldName": "PRESENTATION LEVEL R-2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Rt ear on test 2 ",
+      "fieldNumber_": 110.11
+    },
+    {
+      "fieldNumber": 110.12,
+      "fieldName": "MASKING LEVEL R-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB for Right ear on test 2 ",
+      "fieldNumber_": 110.12
+    },
+    {
+      "fieldNumber": 110.13,
+      "fieldName": "*WORD LIST R-3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 3 for Right ear. ",
+      "fieldNumber_": 110.13
+    },
+    {
+      "fieldNumber": 110.14,
+      "fieldName": "PERCENT CORRECT R-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Right Ear Test 3 ",
+      "fieldNumber_": 110.14
+    },
+    {
+      "fieldNumber": 110.15,
+      "fieldName": "*PRESENTATION METHOD R-3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Right ear - Test 3 ",
+      "fieldNumber_": 110.15
+    },
+    {
+      "fieldNumber": 110.16,
+      "fieldName": "PRESENTATION LEVEL R-3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Rt ear on test 3 ",
+      "fieldNumber_": 110.16
+    },
+    {
+      "fieldNumber": 110.17,
+      "fieldName": "MASKING LEVEL R-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB for Right ear on test 3 ",
+      "fieldNumber_": 110.17
+    },
+    {
+      "fieldNumber": 110.18,
+      "fieldName": "*WORD LIST R-4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 4 for Right ear. ",
+      "fieldNumber_": 110.18
+    },
+    {
+      "fieldNumber": 110.19,
+      "fieldName": "PERCENT CORRECT R-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Right Ear Test 4 ",
+      "fieldNumber_": 110.19
+    },
+    {
+      "fieldNumber": 110.2,
+      "fieldName": "*PRESENTATION METHOD R-4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Right ear - Test 4 ",
+      "fieldNumber_": 110.2
+    },
+    {
+      "fieldNumber": 110.21,
+      "fieldName": "PRESENTATION LEVEL R-4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Rt ear on test 4 ",
+      "fieldNumber_": 110.21
+    },
+    {
+      "fieldNumber": 110.22,
+      "fieldName": "MASKING LEVEL R-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB for Right ear on test 4 ",
+      "fieldNumber_": 110.22
+    },
+    {
+      "fieldNumber": 110.23,
+      "fieldName": "*WORD LIST R-5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 5 for Right ear. ",
+      "fieldNumber_": 110.23
+    },
+    {
+      "fieldNumber": 110.24,
+      "fieldName": "PERCENT CORRECT R-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Right Ear Test 5 ",
+      "fieldNumber_": 110.24
+    },
+    {
+      "fieldNumber": 110.25,
+      "fieldName": "*PRESENTATION METHOD R-5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Right ear - Test 5 ",
+      "fieldNumber_": 110.25
+    },
+    {
+      "fieldNumber": 110.26,
+      "fieldName": "PRESENTATION LEVEL R-5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Rt ear on test 5 ",
+      "fieldNumber_": 110.26
+    },
+    {
+      "fieldNumber": 110.27,
+      "fieldName": "MASKING LEVEL R-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB for Right ear on test 5 ",
+      "fieldNumber_": 110.27
+    },
+    {
+      "fieldNumber": 110.28,
+      "fieldName": "LIST R-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 1 of the Right ear. ",
+      "fieldNumber_": 110.28
+    },
+    {
+      "fieldNumber": 110.29,
+      "fieldName": "LIST R-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 2 of the Right ear. ",
+      "fieldNumber_": 110.29
+    },
+    {
+      "fieldNumber": 110.3,
+      "fieldName": "LIST R-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 3 of the Right ear. ",
+      "fieldNumber_": 110.3
+    },
+    {
+      "fieldNumber": 110.31,
+      "fieldName": "LIST R-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 4 of the Right ear. ",
+      "fieldNumber_": 110.31
+    },
+    {
+      "fieldNumber": 110.32,
+      "fieldName": "LIST R-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 5 of the Right ear. ",
+      "fieldNumber_": 110.32
+    },
+    {
+      "fieldNumber": 111.03,
+      "fieldName": "MATERIAL L-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "Standard word list used in test 1 for Left ear ",
+      "fieldNumber_": 111.03
+    },
+    {
+      "fieldNumber": 111.04,
+      "fieldName": "PERCENT CORRECT L-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Left Ear Test 1 ",
+      "fieldNumber_": 111.04
+    },
+    {
+      "fieldNumber": 111.05,
+      "fieldName": "*PRESENTATION METHOD L-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Left ear - Test 1 ",
+      "fieldNumber_": 111.05
+    },
+    {
+      "fieldNumber": 111.06,
+      "fieldName": "PRESENTATION LEVEL L-1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Left ear on test 1 ",
+      "fieldNumber_": 111.06
+    },
+    {
+      "fieldNumber": 111.07,
+      "fieldName": "MASKING LEVEL L-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 1 on Left ear ",
+      "fieldNumber_": 111.07
+    },
+    {
+      "fieldNumber": 111.08,
+      "fieldName": "*WORD LIST L-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 2 for Left ear ",
+      "fieldNumber_": 111.08
+    },
+    {
+      "fieldNumber": 111.09,
+      "fieldName": "PERCENT CORRECT L-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Left Ear Test 2 ",
+      "fieldNumber_": 111.09
+    },
+    {
+      "fieldNumber": 111.1,
+      "fieldName": "*PRESENTATION METHOD L-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Left ear - Test 2 ",
+      "fieldNumber_": 111.1
+    },
+    {
+      "fieldNumber": 111.11,
+      "fieldName": "PRESENTATION LEVEL L-2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Left ear on test 2 ",
+      "fieldNumber_": 111.11
+    },
+    {
+      "fieldNumber": 111.12,
+      "fieldName": "MASKING LEVEL L-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 2 on Left ear ",
+      "fieldNumber_": 111.12
+    },
+    {
+      "fieldNumber": 111.13,
+      "fieldName": "*WORD LIST L-3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 3 for Left ear ",
+      "fieldNumber_": 111.13
+    },
+    {
+      "fieldNumber": 111.14,
+      "fieldName": "PERCENT CORRECT L-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Left Ear Test 3 ",
+      "fieldNumber_": 111.14
+    },
+    {
+      "fieldNumber": 111.15,
+      "fieldName": "*PRESENTATION METHOD L-3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Left ear - Test 3 ",
+      "fieldNumber_": 111.15
+    },
+    {
+      "fieldNumber": 111.16,
+      "fieldName": "PRESENTATION LEVEL L-3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Left ear on test 3 ",
+      "fieldNumber_": 111.16
+    },
+    {
+      "fieldNumber": 111.17,
+      "fieldName": "MASKING LEVEL L-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 3 on Left ear ",
+      "fieldNumber_": 111.17
+    },
+    {
+      "fieldNumber": 111.18,
+      "fieldName": "*WORD LIST L-4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 4 for Left ear ",
+      "fieldNumber_": 111.18
+    },
+    {
+      "fieldNumber": 111.19,
+      "fieldName": "PERCENT CORRECT L-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Left Ear Test 4 ",
+      "fieldNumber_": 111.19
+    },
+    {
+      "fieldNumber": 111.2,
+      "fieldName": "*PRESENTATION METHOD L-4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Left ear - Test 4 ",
+      "fieldNumber_": 111.2
+    },
+    {
+      "fieldNumber": 111.21,
+      "fieldName": "PRESENTATION LEVEL L-4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Left ear on test 4 ",
+      "fieldNumber_": 111.21
+    },
+    {
+      "fieldNumber": 111.22,
+      "fieldName": "MASKING LEVEL L-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 4 on Left ear ",
+      "fieldNumber_": 111.22
+    },
+    {
+      "fieldNumber": 111.23,
+      "fieldName": "*WORD LIST L-5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NU6-25;2:W22-25;3:CNC-25;4:NU6-50;5:W22-50;6:CNC-50;7:OTHER;",
+      "helpText": "MARKED FOR DELETION Standard word list used in test 5 for Left ear ",
+      "fieldNumber_": 111.23
+    },
+    {
+      "fieldNumber": 111.24,
+      "fieldName": "PERCENT CORRECT L-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Percent Correct Left Ear Test 5 ",
+      "fieldNumber_": 111.24
+    },
+    {
+      "fieldNumber": 111.25,
+      "fieldName": "*PRESENTATION METHOD L-5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CD;2:Tape;3:MLV;",
+      "helpText": "MARKED FOR DELETION Notes if presented by CD,tape or Monitored Live Voice(MLV) Left ear - Test 5 ",
+      "fieldNumber_": 111.25
+    },
+    {
+      "fieldNumber": 111.26,
+      "fieldName": "PRESENTATION LEVEL L-5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Presentation level in dB for Left ear on test 5 ",
+      "fieldNumber_": 111.26
+    },
+    {
+      "fieldNumber": 111.27,
+      "fieldName": "MASKING LEVEL L-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Masking level in dB, required for test 5 on Left ear ",
+      "fieldNumber_": 111.27
+    },
+    {
+      "fieldNumber": 111.28,
+      "fieldName": "LIST L-1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 1 of the Left ear. ",
+      "fieldNumber_": 111.28
+    },
+    {
+      "fieldNumber": 111.29,
+      "fieldName": "LIST L-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 2 of the Left ear. ",
+      "fieldNumber_": 111.29
+    },
+    {
+      "fieldNumber": 111.3,
+      "fieldName": "LIST L-3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 3 of the Left ear. ",
+      "fieldNumber_": 111.3
+    },
+    {
+      "fieldNumber": 111.31,
+      "fieldName": "LIST L-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 4 of the Left ear. ",
+      "fieldNumber_": 111.31
+    },
+    {
+      "fieldNumber": 111.32,
+      "fieldName": "LIST L-5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Word list used for Test 5 of the Left ear. ",
+      "fieldNumber_": 111.32
+    },
+    {
+      "fieldNumber": 112.03,
+      "fieldName": "CI WORD LIST R-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Cuny Sentences;2:CID Sentences;3:Iowa Sentences;4:HINT;5:W-22;6:NU6;7:CNC;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.03
+    },
+    {
+      "fieldNumber": 112.04,
+      "fieldName": "CI PERCENT CORRECT R-1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.04
+    },
+    {
+      "fieldNumber": 112.08,
+      "fieldName": "CI WORD LIST R-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Cuny Sentences;2:CID Sentences;3:Iowa Sentences;4:HINT;5:W-22;6:NU6;7:CNC;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.08
+    },
+    {
+      "fieldNumber": 112.09,
+      "fieldName": "CI PERCENT CORRECT R-2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.09
+    },
+    {
+      "fieldNumber": 112.28,
+      "fieldName": "CI NOISE PERCENT RIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.28
+    },
+    {
+      "fieldNumber": 112.29,
+      "fieldName": "CI NOISE MATERIAL RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Multi Talker Babble;2:Speech Nois;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 112.29
+    },
+    {
+      "fieldNumber": 113.03,
+      "fieldName": "CI WORD LIST L-1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Cuny Sentences;2:CID Sentences;3:Iowa Sentences;4:HINT;5:W-22;6:NU6;7:CNC;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.03
+    },
+    {
+      "fieldNumber": 113.04,
+      "fieldName": "CI PERCENT CORRECT L-1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.04
+    },
+    {
+      "fieldNumber": 113.08,
+      "fieldName": "CI WORD LIST L-2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Cuny Sentences;2:CID Sentences;3:Iowa Sentences;4:HINT;5:W-22;6:NU6;7:CNC;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.08
+    },
+    {
+      "fieldNumber": 113.09,
+      "fieldName": "CI PERCENT CORRECT L-2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.09
+    },
+    {
+      "fieldNumber": 113.28,
+      "fieldName": "CI NOISE PERCENT LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.28
+    },
+    {
+      "fieldNumber": 113.29,
+      "fieldName": "CI NOISE MATERIAL LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Multi Talker Babble;2:Speech Nois;",
+      "helpText": "DDC field for Cochlear Implant registry ",
+      "fieldNumber_": 113.29
+    },
+    {
+      "fieldNumber": 115.01,
+      "fieldName": "INITIAL SRT THRESH R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial Speech Reception Threshold in dB for Rt ear ",
+      "fieldNumber_": 115.01
+    },
+    {
+      "fieldNumber": 115.02,
+      "fieldName": "REPEAT SRT THRESH R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Repeat Speech Reception Threshold in dB for Rt ear ",
+      "fieldNumber_": 115.02
+    },
+    {
+      "fieldNumber": 115.03,
+      "fieldName": "INITIAL SRT MASK LEVEL R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial Speech Reception Threshold Masking Level in dB for Rt ear ",
+      "fieldNumber_": 115.03
+    },
+    {
+      "fieldNumber": 115.04,
+      "fieldName": "FINAL SRT MASK LEVEL R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Final Speech Reception Threshold Masking Level in dB for Rt ear ",
+      "fieldNumber_": 115.04
+    },
+    {
+      "fieldNumber": 115.05,
+      "fieldName": "INITIAL SRT THRESH L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial Speech Reception Threshold in dB for Left ear ",
+      "fieldNumber_": 115.05
+    },
+    {
+      "fieldNumber": 115.06,
+      "fieldName": "REPEAT SRT THRESH L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Repeat Speech Reception Threshold in dB for Left ear ",
+      "fieldNumber_": 115.06
+    },
+    {
+      "fieldNumber": 115.07,
+      "fieldName": "INITIAL SRT MASK LEVEL L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Initial Speech Reception Threshold Masking Level in dB for Left ear ",
+      "fieldNumber_": 115.07
+    },
+    {
+      "fieldNumber": 115.08,
+      "fieldName": "FINAL SRT MASK LEVEL L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Final Speech Reception Threshold Masking Level in dB for Left ear ",
+      "fieldNumber_": 115.08
+    },
+    {
+      "fieldNumber": 115.09,
+      "fieldName": "PBMAX R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The best Phonetically Balanced score obtained in a series for Right ear ",
+      "fieldNumber_": 115.09
+    },
+    {
+      "fieldNumber": 115.1,
+      "fieldName": "PBMIN R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The lowest Phonetically Balanced score obtained in a series for Right ear  ",
+      "fieldNumber_": 115.1
+    },
+    {
+      "fieldNumber": 115.11,
+      "fieldName": "PI/PB R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "Basically this is the PB Max minus the PB Min score, divided by the  PB Max score. But, only occurs when a second score, obtained at a higher presentation level, is poorer than a prior score at a lower presentation level.  Right ear testing. Acronym for: Performance Intensity function for Phonetically Balanced word lists ",
+      "fieldNumber_": 115.11
+    },
+    {
+      "fieldNumber": 115.12,
+      "fieldName": "PBMAX L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The best Phonetically Balanced score obtained in a series for Left ear  ",
+      "fieldNumber_": 115.12
+    },
+    {
+      "fieldNumber": 115.13,
+      "fieldName": "PBMIN L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The lowest Phonetically Balanced score obtained in a series for Left ear  ",
+      "fieldNumber_": 115.13
+    },
+    {
+      "fieldNumber": 115.14,
+      "fieldName": "PI/PB L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "Basically this is the PB Max minus the PB Min score, divided by the PB Max score. But, only occurs when a second score, obtained at a higher presentation level, is poorer than a prior score at a lower presentation level.  Left ear testing.  Acronym for: Performance Intensity function for Phonetically Balanced word lists ",
+      "fieldNumber_": 115.14
+    },
+    {
+      "fieldNumber": 115.15,
+      "fieldName": "*FINAL SRT TAG R",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION The masking code associated with the final SRT masking level for the Right ear. ",
+      "fieldNumber_": 115.15
+    },
+    {
+      "fieldNumber": 115.16,
+      "fieldName": "*FINAL SRT TAG L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION The masking code associated with the final masking level for the Left ear. ",
+      "fieldNumber_": 115.16
+    },
+    {
+      "fieldNumber": 115.17,
+      "fieldName": "*INITIAL SRT TAG R",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 115.17
+    },
+    {
+      "fieldNumber": 115.18,
+      "fieldName": "*INITIAL SRT TAG L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:unmasked;1:masked;2:no response;3:masked no response;4:CNM;5:DNT;6:CNT;",
+      "helpText": "MARKED FOR DELETION ",
+      "fieldNumber_": 115.18
+    },
+    {
+      "fieldNumber": 115.19,
+      "fieldName": "APPLIED MAX R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the test to use for PB Max. It will be manually selected from the GUI if it is anything other than the default. ",
+      "fieldNumber_": 115.19
+    },
+    {
+      "fieldNumber": 115.2,
+      "fieldName": "APPLIED MAX L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the test to use for PB Max. It will be manually selected from the GUI if it is anything other than the default. ",
+      "fieldNumber_": 115.2
+    },
+    {
+      "fieldNumber": 120.01,
+      "fieldName": "MIDDLE EAR PRESSURE R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Middle Ear Pressure reading for the Right Ear ",
+      "fieldNumber_": 120.01
+    },
+    {
+      "fieldNumber": 120.02,
+      "fieldName": "PK IMMITTANCE 226 R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Peak Static Acoustic Immittance 226 value Right ear ",
+      "fieldNumber_": 120.02
+    },
+    {
+      "fieldNumber": 120.03,
+      "fieldName": "VEQ - EQUIV EAR CANAL VOL R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Equivalent Volume (Tympanometry) for Right ear ",
+      "fieldNumber_": 120.03
+    },
+    {
+      "fieldNumber": 120.04,
+      "fieldName": "IAR THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Right ear- 500 Hz ",
+      "fieldNumber_": 120.04
+    },
+    {
+      "fieldNumber": 120.05,
+      "fieldName": "IAR THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Right ear- 1000 Hz ",
+      "fieldNumber_": 120.05
+    },
+    {
+      "fieldNumber": 120.06,
+      "fieldName": "IAR THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Right ear- 2000 Hz ",
+      "fieldNumber_": 120.06
+    },
+    {
+      "fieldNumber": 120.07,
+      "fieldName": "IAR THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Right ear- 4000 Hz ",
+      "fieldNumber_": 120.07
+    },
+    {
+      "fieldNumber": 120.08,
+      "fieldName": "CAR THRESHOLD R 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Right ear - 500 Hz ",
+      "fieldNumber_": 120.08
+    },
+    {
+      "fieldNumber": 120.09,
+      "fieldName": "CAR THRESHOLD R 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Right ear - 1000 Hz ",
+      "fieldNumber_": 120.09
+    },
+    {
+      "fieldNumber": 120.1,
+      "fieldName": "CAR THRESHOLD R 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Right ear - 2000 Hz ",
+      "fieldNumber_": 120.1
+    },
+    {
+      "fieldNumber": 120.11,
+      "fieldName": "CAR THRESHOLD R 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Right ear - 4000 Hz ",
+      "fieldNumber_": 120.11
+    },
+    {
+      "fieldNumber": 120.12,
+      "fieldName": "ACOUSTIC REFLEX DECAY R 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:negative;1:positive;2:CNT;3:DNT;",
+      "helpText": "Pos or Neg Acoustic Reflex Decay in Right ear at 500 Hz ",
+      "fieldNumber_": 120.12
+    },
+    {
+      "fieldNumber": 120.13,
+      "fieldName": "ACOUSTIC REFLEX DECAY R 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:negative;1:positive;2:CNT;3:DNT;",
+      "helpText": "Acoustic Reflex Decay in Right ear at 1000 Hz ",
+      "fieldNumber_": 120.13
+    },
+    {
+      "fieldNumber": 120.14,
+      "fieldName": "AR HALF LIFE 500 R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Acoustic Reflex Half Life - Right ear at 500 Hz ",
+      "fieldNumber_": 120.14
+    },
+    {
+      "fieldNumber": 120.15,
+      "fieldName": "AR HALF LIFE 1000 R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Acoustic Reflex Half Life - Right ear at 1000 Hz ",
+      "fieldNumber_": 120.15
+    },
+    {
+      "fieldNumber": 120.16,
+      "fieldName": "INTER-TEST CONSISTENCY R",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GOOD;2:FAIR;3:POOR;",
+      "helpText": "Good,Fair or Poor Inter-test consistency for Right ear ",
+      "fieldNumber_": 120.16
+    },
+    {
+      "fieldNumber": 120.17,
+      "fieldName": "IAR BBN R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsillateral Acoustic Reflex for Right ear Broad Band Noise. ",
+      "fieldNumber_": 120.17
+    },
+    {
+      "fieldNumber": 120.18,
+      "fieldName": "CAR BBN R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contrlateral Acoustic Reflex for Right ear Broad Band Noise. ",
+      "fieldNumber_": 120.18
+    },
+    {
+      "fieldNumber": 120.19,
+      "fieldName": "PK IMMITTANCE 678 R",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Peak Static Acoustic Immittance 678 value Right ear ",
+      "fieldNumber_": 120.19
+    },
+    {
+      "fieldNumber": 120.2,
+      "fieldName": "WEBER R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of Weber Test for Right ear. ",
+      "fieldNumber_": 120.2
+    },
+    {
+      "fieldNumber": 120.21,
+      "fieldName": "PT STENGER R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of PT STENGER Test for Right ear. ",
+      "fieldNumber_": 120.21
+    },
+    {
+      "fieldNumber": 120.22,
+      "fieldName": "RINNE R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of RINNE Test for Right ear. ",
+      "fieldNumber_": 120.22
+    },
+    {
+      "fieldNumber": 120.23,
+      "fieldName": "OTHER TEST R",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of any other word test for Right ear. ",
+      "fieldNumber_": 120.23
+    },
+    {
+      "fieldNumber": 121.01,
+      "fieldName": "MIDDLE EAR PRESSURE L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Middle Ear Pressure reading for the Left Ear ",
+      "fieldNumber_": 121.01
+    },
+    {
+      "fieldNumber": 121.02,
+      "fieldName": "PK IMMITTANCE 226 L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Peak Static Acoustic Immittance 226 value Left ear ",
+      "fieldNumber_": 121.02
+    },
+    {
+      "fieldNumber": 121.03,
+      "fieldName": "VEQ - EQUIV EAR CANAL VOL L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Equivalent Volume (Tympanometry) for Left ear ",
+      "fieldNumber_": 121.03
+    },
+    {
+      "fieldNumber": 121.04,
+      "fieldName": "IAR THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Left ear- 500 Hz ",
+      "fieldNumber_": 121.04
+    },
+    {
+      "fieldNumber": 121.05,
+      "fieldName": "IAR THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Left ear- 1000 Hz ",
+      "fieldNumber_": 121.05
+    },
+    {
+      "fieldNumber": 121.06,
+      "fieldName": "IAR THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Left ear- 2000 Hz ",
+      "fieldNumber_": 121.06
+    },
+    {
+      "fieldNumber": 121.07,
+      "fieldName": "IAR THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex threshold Left ear- 4000 Hz ",
+      "fieldNumber_": 121.07
+    },
+    {
+      "fieldNumber": 121.08,
+      "fieldName": "CAR THRESHOLD L 500",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Left ear - 500 Hz ",
+      "fieldNumber_": 121.08
+    },
+    {
+      "fieldNumber": 121.09,
+      "fieldName": "CAR THRESHOLD L 1000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Left ear - 1000 Hz ",
+      "fieldNumber_": 121.09
+    },
+    {
+      "fieldNumber": 121.1,
+      "fieldName": "CAR THRESHOLD L 2000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Left ear - 2000 Hz ",
+      "fieldNumber_": 121.1
+    },
+    {
+      "fieldNumber": 121.11,
+      "fieldName": "CAR THRESHOLD L 4000",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex threshold Left ear - 4000 Hz ",
+      "fieldNumber_": 121.11
+    },
+    {
+      "fieldNumber": 121.12,
+      "fieldName": "ACOUSTIC REFLEX DECAY L 500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:negative;1:positive;2:CNT;3:DNT;",
+      "helpText": "Pos or Neg Acoustic Reflex Decay in Left ear at 500 Hz ",
+      "fieldNumber_": 121.12
+    },
+    {
+      "fieldNumber": 121.13,
+      "fieldName": "ACOUSTIC REFLEX DECAY L 1000",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:negative;1:positive;2:CNT;3:DNT;",
+      "helpText": "Pos or Neg Acoustic Reflex Decay in Left ear at 1000 Hz ",
+      "fieldNumber_": 121.13
+    },
+    {
+      "fieldNumber": 121.14,
+      "fieldName": "AR HALF LIFE 500 L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Acoustic Reflex Half Life - Left ear at 500 Hz ",
+      "fieldNumber_": 121.14
+    },
+    {
+      "fieldNumber": 121.15,
+      "fieldName": "AR HALF LIFE 1000 L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Acoustic Reflex Half Life - Left ear at 1000 Hz ",
+      "fieldNumber_": 121.15
+    },
+    {
+      "fieldNumber": 121.16,
+      "fieldName": "INTER-TEST CONSISTENCY L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GOOD;2:FAIR;3:POOR;",
+      "helpText": "Good,Fair or Poor Inter-test consistency for Left ear ",
+      "fieldNumber_": 121.16
+    },
+    {
+      "fieldNumber": 121.17,
+      "fieldName": "IAR BBN L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ipsilateral Acoustic Reflex Braod Band Noise Left ear result. ",
+      "fieldNumber_": 121.17
+    },
+    {
+      "fieldNumber": 121.18,
+      "fieldName": "CAR BBN L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contralateral Acoustic Reflex Braod Band Noise Left ear result. ",
+      "fieldNumber_": 121.18
+    },
+    {
+      "fieldNumber": 121.19,
+      "fieldName": "PK IMMITTANCE 678 L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Peak Static Acoustic Immittance 678 value Left ear ",
+      "fieldNumber_": 121.19
+    },
+    {
+      "fieldNumber": 121.2,
+      "fieldName": "WEBER L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of the WEBER word test for Left ear. ",
+      "fieldNumber_": 121.2
+    },
+    {
+      "fieldNumber": 121.21,
+      "fieldName": "PT STENGER L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of the PT STNEGER word test for Left ear. ",
+      "fieldNumber_": 121.21
+    },
+    {
+      "fieldNumber": 121.22,
+      "fieldName": "RINNE L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of the RINNE word test for Left ear. ",
+      "fieldNumber_": 121.22
+    },
+    {
+      "fieldNumber": 121.23,
+      "fieldName": "OTHER TEST L",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Result of any other word test for Left ear. ",
+      "fieldNumber_": 121.23
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "509850.9122",
+      "required": false,
+      "helpText": "This word processing field holds any comments entered into the Audiogram  Edit program before it is signed. The data is limited to 300 characters  by the edit program and will appear on VA form 10-2364, when that form is  generated from the Audiogram Display program. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.9122,
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 791000.01,
+      "fieldName": "SSN TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - text SSN of the patient ",
+      "fieldNumber_": 791000.01
+    },
+    {
+      "fieldNumber": 791000.02,
+      "fieldName": "DFN NAME TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - the text name of the patient ",
+      "fieldNumber_": 791000.02
+    },
+    {
+      "fieldNumber": 791000.03,
+      "fieldName": "EXAMINER NAME TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - text name of the examiner ",
+      "fieldNumber_": 791000.03
+    },
+    {
+      "fieldNumber": 791000.04,
+      "fieldName": "REFERRAL SOURCE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - text name of referral source (hospital location) ",
+      "fieldNumber_": 791000.04
+    },
+    {
+      "fieldNumber": 791000.05,
+      "fieldName": "BIRTH DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - date of Birth of patient ",
+      "fieldNumber_": 791000.05
+    },
+    {
+      "fieldNumber": 791000.06,
+      "fieldName": "*ELIGIBILITY STATUS TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "MARKED FOR DELETION DDC field - text eligibility status : see Set 7 (P,R,V) ",
+      "fieldNumber_": 791000.06
+    },
+    {
+      "fieldNumber": 791000.07,
+      "fieldName": "TYPE OF VET TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - abbreviation of visit type ",
+      "fieldNumber_": 791000.07
+    },
+    {
+      "fieldNumber": 791000.08,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - station Number of sending site ",
+      "fieldNumber_": 791000.08
+    },
+    {
+      "fieldNumber": 791000.09,
+      "fieldName": "DATE SIGNED AT SITE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DDC field - date signed at site ",
+      "fieldNumber_": 791000.09
+    },
+    {
+      "fieldNumber": 791000.1,
+      "fieldName": "AUDIOMETRIC DATA IEN AT SITE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "DDC field - IEN of Audiometric Exam File #791850.9 at site. ",
+      "fieldNumber_": 791000.1
+    },
+    {
+      "fieldNumber": 791000.11,
+      "fieldName": "SENDING USER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - name of the submitting user retrieved from mail msg ",
+      "fieldNumber_": 791000.11
+    },
+    {
+      "fieldNumber": 791000.12,
+      "fieldName": "SENDING SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DDC field - name of the Service of the submitting user ",
+      "fieldNumber_": 791000.12
+    }
+  ],
+  "fieldCount": 471,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "DFN", "field": },
+    {"name": "DFN2", "field": },
+    {"name": "ICN", "field": },
+    {"name": "NAME", "field": },
+    {"name": "NL4", "field": },
+    {"name": "NM", "field": },
+    {"name": "NM2", "field": },
+    {"name": "SSN", "field": },
+    {"name": "SSN2", "field": },
+    {"name": "509850.9", "field": .01, "type": "regular"},
+    {"name": "509850.9", "field": .02, "type": "regular"},
+    {"name": "509850.9", "field": .02, "type": "regular"},
+    {"name": "509850.9", "field": .02, "type": "regular"},
+    {"name": "509850.9", "field": .02, "type": "regular"},
+    {"name": "509850.9", "field": .02, "type": "regular"},
+    {"name": "509850.9", "field": .1, "type": "regular"},
+    {"name": "509850.9", "field": .11, "type": "regular"},
+    {"name": "509850.9", "field": 791000.01, "type": "regular"},
+    {"name": "509850.9", "field": 791000.02, "type": "regular"},
+    {"name": "509850.9", "field": 791000.02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

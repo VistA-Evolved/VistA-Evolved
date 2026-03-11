@@ -1,0 +1,88 @@
+{
+  "fileNumber": 351.62,
+  "fileName": "TRANSFER PRICING FIELD DEFINITION",
+  "globalRoot": "351.62",
+  "globalReference": "^IBAT(351.62,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the IEN of the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIELD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the names of the fields. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the max length of this field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MULTIPLE FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag to indicate if this extract can be multiple for the transaction. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYNONYM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the SYNONYM to be displayed for choosing this item. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NUMERIC FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Flag to indicate if this extract is numeric for the transaction.  Used to determine if the field needs to be formatted as such. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "EXTRACT CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the M code to extract the data. ",
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "351.62", "field": .01, "type": "regular"},
+    {"name": "351.62", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

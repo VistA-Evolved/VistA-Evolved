@@ -1,0 +1,74 @@
+{
+  "fileNumber": 6001,
+  "fileName": "VBECS DATA INTEGRITY/CONVERSION STATISTICS",
+  "globalRoot": "6001",
+  "globalReference": "^VBEC(6001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCESS START TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the process, either the data integrity check or  data conversion, started running on the host system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CONVERT DATA;0:VALIDATE DATA;",
+      "helpText": "This field identifies the goal of the process. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROCESS COMPLETION TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date/time the process, either the data integrity check or data conversion, finished running on the host system. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the user running this process. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DATA INTEGRITY ISSUES",
+      "dataType": "POINTER",
+      "rawType": "6001.01PA",
+      "required": false,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DATA CONVERSION STATISTICS",
+      "dataType": "SUBFILE",
+      "rawType": "6001.02A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6001.02,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6001", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

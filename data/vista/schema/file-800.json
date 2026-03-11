@@ -1,0 +1,197 @@
+{
+  "fileNumber": 800,
+  "fileName": "CLINICAL REMINDER PARAMETERS",
+  "globalRoot": "800",
+  "globalReference": "^PXRM(800,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE PARAMETERS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This file contains parameters used by the Clinical Reminders package.  There is one top-level entry per site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFAULT REMINDER DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "800.01",
+      "required": false,
+      "helpText": "This is the DEFAULT REMINDER DISCLAIMER that is distributed with the package. ",
+      "isMultiple": true,
+      "subFileNumber": 800.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE REMINDER DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "800.02",
+      "required": false,
+      "helpText": "This is the site-defined reminder disclaimer. If there is an entry in this field, then the site-defined disclaimer will override the default disclaimer. ",
+      "isMultiple": true,
+      "subFileNumber": 800.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REMINDER MANAGEMENT MAILGROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Members of the MailMan mail group pointed to by this field will receive various types of MailMan messages concerned with managing reminders.  Some examples: if there is an error during reminder evaluation, this mail group will be sent a message notifying them of the error. When the reminder indexes are built, the mail group will receive the messages this process generates.  When a message is generated, if the user is not a member of the mail group and the mail group is private, then no members o",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WEB SITES",
+      "dataType": "SUBFILE",
+      "rawType": "800.04",
+      "required": false,
+      "helpText": "In the CPRS GUI, if you right-click on a reminder, one of the choices is Reference Information, which will give a list of web sites that have information related to the reminder. The web sites listed in this multiple are the default set that apply to all reminders. ",
+      "isMultiple": true,
+      "subFileNumber": 800.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the current version number of the Clinical Reminders package. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FULL SSN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is the default for the Clinical Reminders display of Social Security numbers. It is a set of codes with the possible values of \"N\" or \"Y\". If the value is \"Y\" then the full SSN is printed; otherwise only the last four digits of the SSN are printed.   The standard setting for this field is N. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INITIAL MST SYNCH COMP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the initial MST synchronization was completed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INITIAL MST SYNCH UPDATE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of updates that were made during the initial synchronization. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DAILY MST SYNC COMP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the last daily MST synchronization was completed. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DAILY MST SYNCH UPDATE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of updates made during the last daily MST synchronization. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INITIAL MST SYNCH START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the initial Clinical Reminders MST synchronization was set to run. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DAILY MST SYNCH START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the last daily Clinical Reminders MST synchronization was set to start. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TRUNCATE EMPLOYEE SSN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The detailed reminders due report has the option to print the full SSN for the patients selected (see FULL SSN field). However, if a patient is an employee (fields 361 and 391 in PATIENT file) the SSN will be truncated.   If a site, for their own reasons, requires the full SSN for employees to be printed on their reports then this may be done by setting the TRUNCATE EMPLOYEE SSN field to 'No'.   The default value installed for this field is 'Yes'. This ensures that  full employee SSNs are not pr",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "EDIT HISTORY COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The option PXRM REMINDER EDIT HISTORY is used to display the edit history of a reminder definition from newest to oldest. One of the questions it asks the user is how many entries to display. This parameter sets the default number to display. The user can override this and select any number they want. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MAXIMUM NUMBER OF INDEX ERRORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "When indexing a global, details about entries that cannot be indexed are reported in a MailMan message that uses a line for each error. If there are large numbers of errors the message can become very large. This parameter establishes the maximum number of entries to list in the MailMan message so its size does not become unwieldy. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FORMATTED DISCLAIMER",
+      "dataType": "SUBFILE",
+      "rawType": "800.016",
+      "required": false,
+      "helpText": "This file contains two fields to store a disclaimer: DEFAULT REMINDER DISCLAIMER and SITE REMINDER DISCLAIMER. The DEFAULT REMINDER DISCLAIMER is distributed with the package. A site can create and store their own disclaimer in the SITE REMINDER DISCLAIMER field. If the SITE REMINDER DISCLAIMER is defined it is used otherwise the DEFAULT REMINDER DISCLAIMER is used.  The disclaimer needs to be formatted before it can be displayed so for efficiency purposes the disclaimer is formatted once and st",
+      "isMultiple": true,
+      "subFileNumber": 800.016,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MAXIMUM NUMBER OF MH QUESTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "When setting up a reminder dialog element, if a mental health test has more questions then the value defined in this field the test cannot be used in a dialog element. When PXRM*2.0*6 is installed the value will be set to 35. This parameter can be edited using the PAR option on the Reminders Managers Menu.   ",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "800", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

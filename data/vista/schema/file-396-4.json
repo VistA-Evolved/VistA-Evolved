@@ -1,0 +1,371 @@
+{
+  "fileNumber": 396.4,
+  "fileName": "2507 EXAM",
+  "globalRoot": "396.4",
+  "globalReference": "^DVB(396.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXAM REFERENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0I",
+      "length": 12,
+      "required": true,
+      "helpText": "This field contains an entry number of the exam in the 2507 Exam file. It is not related to an Exam number or a worksheet number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "2507 REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP396.3'I",
+      "required": true,
+      "pointerTo": 396.3,
+      "helpText": "This field connects the given record with the 2507 request record that the exam is on. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXAM TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP396.6'I",
+      "required": true,
+      "pointerTo": 396.6,
+      "helpText": "Contains the name of the exam. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPEN;C:COMPLETED;X:CANCELED BY MAS;RX:CANCELED BY RO;T:TRANSFERRED OUT;",
+      "helpText": "The value of the status of the exam record.  (Open, Closed, Transferred or Cancelled)   This field is used as part of the implementation of a Nationally Controlled Procedure (AMIS 290).  Per VHA Directive 10-93-142, the information  contained in this field is not to be changed as the results of local (site)  modifications. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "WORK SHEET PRINTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if the user has printed the worksheet when a request was logged or an exam was added to a request. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE OF EXAM",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the exam was performed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EXAMINING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the Doctor that performed the examination. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "FEE EXAM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if the exam was performed on a Fee basis. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXAM PLACE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLINIC;F:FEE LOCATION;O:OTHER STATION;",
+      "helpText": "Indicates where the exam was performed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DOCTOR'S ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "The doctor's electronic signature.  This is for use with the Kurzweil system. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "INSUFFICIENT REASON",
+      "dataType": "POINTER",
+      "rawType": "P396.94'",
+      "required": false,
+      "pointerTo": 396.94,
+      "helpText": "This field contains a pointer to the Insufficient Reason file (396.94). ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "ORIGINAL PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the provider who performed the original exam.  If the exam was transferred from another Medical Center, the name of that site should be included in this field. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CAPRI TEMPLATE ID",
+      "dataType": "POINTER",
+      "rawType": "P396.17'",
+      "required": false,
+      "pointerTo": 396.17,
+      "helpText": "Pointer to the CAPRI template used to complete this examination. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "CANCELLATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates when the exam was cancelled. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "CANCELED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Indicates who cancelled the exam. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "CANCELLATION REASON",
+      "dataType": "POINTER",
+      "rawType": "P396.5'",
+      "required": false,
+      "pointerTo": 396.5,
+      "helpText": "Contains the reason for cancellation from the 2507 CANCELLATION REASON file (396.5). ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "CANCELLATION COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "396.453",
+      "required": false,
+      "helpText": "This field captures the comments from the CAPRI GUI comments field of the 2507 EXAM Details Screen. ",
+      "isMultiple": true,
+      "subFileNumber": 396.453,
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DATE TRANSFERRED OUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the date an exam was transferred to another VAMC. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "TRANSFERRED OUT BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A Free Text field which contains the name of the user that transferred an exam to another VAMC. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "TRANSFERRED OUT TO",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "Contains the name of the institution that an exam was transferred out to. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "DATE TRANSFERRED IN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the date an exam was received at a remote site. that remote site. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "DATE RETURNED TO OWNER SITE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used by a remote site when an exam is transferred to that site for  completion.  Upon completion and release of a transferred exam, this field records at the remote site the date the exam was released to the originating site. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "EXAM RESULTS",
+      "dataType": "SUBFILE",
+      "rawType": "396.41",
+      "required": false,
+      "helpText": "Contains the results of a completed exam. ",
+      "isMultiple": true,
+      "subFileNumber": 396.41,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "EXAM RESULTS RTF",
+      "dataType": "SUBFILE",
+      "rawType": "396.471",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 396.471,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "EXAM RESULTS XML",
+      "dataType": "SUBFILE",
+      "rawType": "396.472",
+      "required": false,
+      "helpText": "This is a file that contains VLER DAS service requests and  responses. ",
+      "isMultiple": true,
+      "subFileNumber": 396.472,
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "XML DAS CONFIRMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the DAS status confirmation returned by VLER DAS. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "XML TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the system date and time stamp of when the VLER DAS XML was filed. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "TIU DOCUMENT ID",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "This field is a pointer to a TIU document containing the examination report.  The CAPRI GUI will automatically populate this field when a C&P exam template is completed via the CAPRI interface. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "INSUFFICIENT REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "396.42",
+      "required": false,
+      "helpText": "This field contains insufficient remarks entered by the Regional Office when the C&P Exam Request is returned with a Priority of 'E' (Insufficient). ",
+      "isMultiple": true,
+      "subFileNumber": 396.42,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "DATE TRANSCRIPTION COMPLETE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field records the date/time the user has marked the exam document as  complete. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CONTRACTOR",
+      "dataType": "POINTER",
+      "rawType": "P396.45'",
+      "required": false,
+      "pointerTo": 396.45,
+      "helpText": "This field stores the external Contractor (or Company) reference that has  been assigned to perform this 2507 exam. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DATE TRANSFERRED TO CONTRACTOR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the transaction date and time of when the patient's  2507 exam(s) was sent to the external Contractor (or Company) for  processing. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DATE RECEIVED FROM CONTRACTOR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the transaction date and time of when the patient's  completed 2507 exam was received by the VA from the external Contractor  (or Company). ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "REMARKS SENT TO CONTRACTOR",
+      "dataType": "SUBFILE",
+      "rawType": "396.4103",
+      "required": false,
+      "helpText": "This field captures the comments from the CAPRI GUI remarks sent to the  contractor. ",
+      "isMultiple": true,
+      "subFileNumber": 396.4103,
+      "fieldNumber_": 103
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AIT", "field": },
+    {"name": "AIT2", "field": },
+    {"name": "APE", "field": },
+    {"name": "APS", "field": },
+    {"name": "ARQ", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "F", "field": },
+    {"name": "396.4", "field": .01, "type": "regular"},
+    {"name": "396.4", "field": .02, "type": "regular"},
+    {"name": "396.4", "field": .02, "type": "regular"},
+    {"name": "396.4", "field": .02, "type": "regular"},
+    {"name": "396.4", "field": .02, "type": "regular"},
+    {"name": "396.4", "field": .03, "type": "regular"},
+    {"name": "396.4", "field": .03, "type": "regular"},
+    {"name": "396.4", "field": .03, "type": "regular"},
+    {"name": "396.4", "field": .03, "type": "regular"},
+    {"name": "396.4", "field": .03, "type": "regular"},
+    {"name": "396.4", "field": .04, "type": "regular"},
+    {"name": "396.4", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DVB(396.6,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(396.6,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

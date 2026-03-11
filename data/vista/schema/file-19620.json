@@ -1,0 +1,1359 @@
+{
+  "fileNumber": 19620,
+  "fileName": "DSIR ROI INSTANCE",
+  "globalRoot": "19620",
+  "globalReference": "^DSIR(19620,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT/FOIA",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This is a variable pointer to one of three files:  ^DPT(, ^DSIR(19620.95, and ^DSIR(19620.96.  These VistA files are the Patient File, FOIA  indicator, and Non-computerized Patient File respectively. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "*PURPOSE",
+      "dataType": "POINTER",
+      "rawType": "RP19620.3'",
+      "required": true,
+      "pointerTo": 19620.3,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ROI_CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the ROI clerk information in file ^VA(200  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EXPEDITE REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field uses a set of values to represent a boolean expression to  represent whether or not expedited processing was requested. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXPEDITE GRANTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field uses a set of values to represent a boolean expression to represent whether or not expedited processing was granted.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXPEDITE REQUESTED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the customer requested expedited processing ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EXPEDITE ADJUDICATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the request for expedited processing has been  adjudicated. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXPEDITE ADJUDICATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the request for expedited processing was adjudicated. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXPEDITE DAYS TO ADJUDICATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "CALENDAR DAYS TO ADJUDICATE AN EXPEDITED REQUEST. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "RP19620.12'",
+      "required": true,
+      "pointerTo": 19620.12,
+      "helpText": "Pointer to the Requestor File: ^DSIR(19620.12  value to avoid a cyclic reference.  ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "*AUTHORITY",
+      "dataType": "POINTER",
+      "rawType": "RP19620.5'",
+      "required": true,
+      "pointerTo": 19620.5,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "*TYPE",
+      "dataType": "POINTER",
+      "rawType": "P19620.6'",
+      "required": false,
+      "pointerTo": 19620.6,
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "*USE SECONDARY ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "*STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "O:OPEN;C:CLOSED;P:PENDING;D:DENIED;X:CANCELLED;E:ERROR",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "*RECEIVED DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "*RECIEVED DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "*CLOSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "*CLOSED DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "FOLLOWUP_LETTER_DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date follow-up letter was sent. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "CHARGES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.01",
+      "required": false,
+      "helpText": "Word processing field containing request comments. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.01,
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "INTERNAL COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "19620.02",
+      "required": false,
+      "helpText": "Word processing field containing request comments for internal use only. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.02,
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .41,
+      "fieldName": "*MEDS FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .41
+    },
+    {
+      "fieldNumber": .42,
+      "fieldName": "*MEDS TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .42
+    },
+    {
+      "fieldNumber": .43,
+      "fieldName": "*VITALS FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .43
+    },
+    {
+      "fieldNumber": .44,
+      "fieldName": "*VITALS TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .44
+    },
+    {
+      "fieldNumber": .45,
+      "fieldName": "*RADIOLOGY FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .45
+    },
+    {
+      "fieldNumber": .46,
+      "fieldName": "*RADIOLOGY TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .46
+    },
+    {
+      "fieldNumber": .47,
+      "fieldName": "*IMMUNIZATIONS FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .47
+    },
+    {
+      "fieldNumber": .48,
+      "fieldName": "*IMMUNIZATIONS TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .48
+    },
+    {
+      "fieldNumber": .49,
+      "fieldName": "*CONSULTS FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .49
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "*CONSULTS TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .511,
+      "fieldName": "*SURG FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .511
+    },
+    {
+      "fieldNumber": .512,
+      "fieldName": "*SURG TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .512
+    },
+    {
+      "fieldNumber": .52,
+      "fieldName": "*POSTINGS FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .52
+    },
+    {
+      "fieldNumber": .53,
+      "fieldName": "*POSTINGS TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .53
+    },
+    {
+      "fieldNumber": .54,
+      "fieldName": "*DIS SUM FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .54
+    },
+    {
+      "fieldNumber": .55,
+      "fieldName": "*DIS SUM TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .55
+    },
+    {
+      "fieldNumber": .56,
+      "fieldName": "*PROG NOTE FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .56
+    },
+    {
+      "fieldNumber": .57,
+      "fieldName": "*PROG NOTE TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .57
+    },
+    {
+      "fieldNumber": .58,
+      "fieldName": "*LAB FROM DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .58
+    },
+    {
+      "fieldNumber": .59,
+      "fieldName": "*LAB TO DT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .59
+    },
+    {
+      "fieldNumber": .61,
+      "fieldName": "*REQUESTOR_TYPE",
+      "dataType": "POINTER",
+      "rawType": "P19620.7'",
+      "required": false,
+      "pointerTo": 19620.7,
+      "helpText": "This is the type of the requestor for this instance. ",
+      "fieldNumber_": .61
+    },
+    {
+      "fieldNumber": .62,
+      "fieldName": "FEES_PAID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field tracks whether or not the fees for this request have been paid. ",
+      "fieldNumber_": .62
+    },
+    {
+      "fieldNumber": .63,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the division where the request was receieved. ",
+      "fieldNumber_": .63
+    },
+    {
+      "fieldNumber": .64,
+      "fieldName": "SYNC_5572",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If set to yes, the ROI executable will ensure synchronization occurs between the list of items to be released and the SF 5572.  If set to no, the system will not synchronize anything, as it will assume that the user want to enter their own data in the SF 5572. ",
+      "fieldNumber_": .64
+    },
+    {
+      "fieldNumber": .65,
+      "fieldName": "SF544",
+      "dataType": "POINTER",
+      "rawType": "P19620.13'",
+      "required": false,
+      "pointerTo": 19620.13,
+      "helpText": "If an SF544 form was created, this field points to the global that holds  the related data (^DSIR(19620.13)) ",
+      "fieldNumber_": .65
+    },
+    {
+      "fieldNumber": .66,
+      "fieldName": "REQUEST_PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HIGH;0:NORMAL;",
+      "helpText": "This field uses a set of values to represent a boolean expression to represent whether or not a request was set to high priority. ",
+      "fieldNumber_": .66
+    },
+    {
+      "fieldNumber": .71,
+      "fieldName": "DRUG_ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DON'T RELEASE;1:RELEASE;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has reported a history of drug abuse. ",
+      "fieldNumber_": .71
+    },
+    {
+      "fieldNumber": .72,
+      "fieldName": "ALCOHOLISM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DON'T RELEASE;1:RELEASE;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has reported a history of alcoholism. ",
+      "fieldNumber_": .72
+    },
+    {
+      "fieldNumber": .73,
+      "fieldName": "HIV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DON'T RELEASE;1:RELEASE;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has reported a history of HIV. ",
+      "fieldNumber_": .73
+    },
+    {
+      "fieldNumber": .74,
+      "fieldName": "SICKLE_CELL_ANEMIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DON'T RELEASE;1:RELEASE;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has reported a history of sickle cell anemia. ",
+      "fieldNumber_": .74
+    },
+    {
+      "fieldNumber": .75,
+      "fieldName": "INFO_REQ_HOSPITAL_SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT_REQUESTED;1:REQUESTED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has requested hospital summary information. ",
+      "fieldNumber_": .75
+    },
+    {
+      "fieldNumber": .76,
+      "fieldName": "INFO_REQ_OUTPATIENT_NOTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT_REQUESTED;1:REQUESTED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has requested outpatient notes. ",
+      "fieldNumber_": .76
+    },
+    {
+      "fieldNumber": .77,
+      "fieldName": "INFO_REQ_OTHER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT_REQUESTED;1:REQUESTED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if a patient has requested \"other\" information. ",
+      "fieldNumber_": .77
+    },
+    {
+      "fieldNumber": .81,
+      "fieldName": "MAIL TO ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "P19620.92'",
+      "required": false,
+      "pointerTo": 19620.92,
+      "helpText": "Points to an entry in the address file, ^DSIR(19620.12), that contains the address where to mail the request.  Prior to version 7.2 this was only  used for alternate addresses.  As of version 7.2, this pointer will  always be populated once a request is created. ",
+      "fieldNumber_": .81
+    },
+    {
+      "fieldNumber": .82,
+      "fieldName": "PATIENT ADDRESS",
+      "dataType": "POINTER",
+      "rawType": "P19620.92'",
+      "required": false,
+      "pointerTo": 19620.92,
+      "helpText": "Points to an entry in the address file, ^DSIR(19620.12), that contains the address of the patient at the time of the request. Prior to version 7.2 this was only used for alternate addresses.  As of version 7.2, this pointer will always be populated for first and third party requests.   It will be blank for FOIA requests.   ",
+      "fieldNumber_": .82
+    },
+    {
+      "fieldNumber": .83,
+      "fieldName": "PATIENT ADDRESS TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNDEFINED;1:PRIMARY ADDRESS;2:TEMPORARY ADDRESS;3:CONFIDENTIAL ADDRESS;",
+      "helpText": "This represents the type of address used for this patient on this request. ",
+      "fieldNumber_": .83
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "FEE WAIVER REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "SET OF VALUES USED TO INDECATE IF A FEE WAIVER HAS BEEN REQUESTED. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "FEE WAIVER REQUESTED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE THAT A FEE WAIVER WAS REQUESTED. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "FEE WAIVER ADJUDICATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "SET OF VALUES USED TO INDECATE IF A FEE WAIVER HAS BEEN ADJUDICATED. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "FEE WAIVER ADJUDICATED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "DATE FEE WAIVER WAS ADJUDICATED. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "FEE WAIVER GRANTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "SET OF VALUES INDICATING WHETHER OR NOT A REQUESTED FEE WAIVER HAS BEEN GRANTED. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "FEE WAIVER CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "CLERK WHO LAST UPDATED THE FEE WAIVER INFORMATION. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "FEE WAIVER DAYS TO ADJUDICATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF WORKDAYS TO ADJUDICATE A FEE WAIVER REQUEST. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "DELIVERY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT SPECIFIED;1:IN PERSON;2:BY MAIL;3:BY FAX;4:CD;5:ELECTRONIC TRANSFER;",
+      "helpText": "This field holds an entry from a set of values indicating how information has been delivered to a requestor.  ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.08,
+      "fieldName": "RECEIVED TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT SPECIFIED;1:IN-PERSON;2:MAIL;3:FAX;4:OTHER;",
+      "helpText": "Was this request received via a walk-in, mail, fax, or other.? ",
+      "fieldNumber_": 6.08
+    },
+    {
+      "fieldNumber": 6.09,
+      "fieldName": "HOW CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:NEW REQUEST WIZARD;P:MULTIPLE PATIENT BATCH;R:MULTIPLE REQUESTOR BATCH;",
+      "helpText": "Identifies how this request was created so that a clerk can be alerted  about required modifications to this request. ",
+      "fieldNumber_": 6.09
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "TYPE OF REQUEST",
+      "dataType": "POINTER",
+      "rawType": "RP19620.61'",
+      "required": true,
+      "pointerTo": 19620.61,
+      "helpText": "Pointer to the Type of Request file; ^DSIR(19620.61).  Identifies what type of request was requested. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "REASON FOR REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P19620.31'",
+      "required": false,
+      "pointerTo": 19620.31,
+      "helpText": "Pointer to the Request Reason file; ^DSIR(19620.31). Identifies the  reason for the request. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "AUTHORITY FOR REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P19620.51'",
+      "required": false,
+      "pointerTo": 19620.51,
+      "helpText": "Pointer to the Authority for Request file; ^DSIR(19620.51).  Indicates  under what authority the request was submitted. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "REQUESTOR TYPE",
+      "dataType": "POINTER",
+      "rawType": "P19620.71'",
+      "required": false,
+      "pointerTo": 19620.71,
+      "helpText": "Pointer to the Requestor Type file; ^DSIR(19620.71).  Indicates what type  of requestor submitted the request. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:APPEALED;C:CLOSED;E:ERROR;N:OTHER NONDISCLOSURE;O:OPEN;P:PENDING;X:CANCELLED;",
+      "helpText": "Uses a set of values to represent the current status of a request (i.e. C=CLOSED, N=NON DISCLOSURE, O=OPEN). ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "DATE REQUEST RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the request was received. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "DATE REQUEST CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the request was closed. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "STATUS DISPOSITION",
+      "dataType": "POINTER",
+      "rawType": "P19620.41'",
+      "required": false,
+      "pointerTo": 19620.41,
+      "helpText": "Pointer to the Status Codes file (19620.41).  Indicating the current status with disposition. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "PEND4CLR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if a request has ever been in a \"PENDING  CLARIFICATION\" status.  The set of values are as follows:   0=NO 1=YES ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "WORKDAYS TO CLOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF WORKDAYS FROM THE RECEIVED DATE TO THE CLOSED DATE. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "CALENDAR DAYS TO CLOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "NUMBER OF CALENDAR DAYS FROM THE RECEIVED DATE TO THE CLOSED DATE. ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 10.12,
+      "fieldName": "PNDPMT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "SET OF VALUES INDICATING WHETHER OR NOT THE REQUEST HAS EVER BEEN IN A  PENDING PAYMENT STATUS.  0=NO, 1=YES ",
+      "fieldNumber_": 10.12
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "OTHER REASON COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text field to hold Other Reason comment. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "EXEMPTION 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 1 has been selected. ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "EXEMPTION 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 2 has been selected. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 12.03,
+      "fieldName": "EXEMPTION 3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 3 has been selected. ",
+      "fieldNumber_": 12.03
+    },
+    {
+      "fieldNumber": 12.04,
+      "fieldName": "EXEMPTION 4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 4 has been selected. ",
+      "fieldNumber_": 12.04
+    },
+    {
+      "fieldNumber": 12.05,
+      "fieldName": "EXEMPTION 5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 5 has been selected. ",
+      "fieldNumber_": 12.05
+    },
+    {
+      "fieldNumber": 12.06,
+      "fieldName": "EXEMPTION 6",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 6 has been selected. ",
+      "fieldNumber_": 12.06
+    },
+    {
+      "fieldNumber": 12.07,
+      "fieldName": "EXEMPTION 7(A)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(A) has been selected. ",
+      "fieldNumber_": 12.07
+    },
+    {
+      "fieldNumber": 12.08,
+      "fieldName": "EXEMPTION 7(B)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(B) has been selected. ",
+      "fieldNumber_": 12.08
+    },
+    {
+      "fieldNumber": 12.09,
+      "fieldName": "EXEMPTION 7(C)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(C) has been selected. ",
+      "fieldNumber_": 12.09
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "EXEMPTION 7(D)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(D) has been selected. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 12.11,
+      "fieldName": "EXEMPTION 7(E)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(E) has been selected. ",
+      "fieldNumber_": 12.11
+    },
+    {
+      "fieldNumber": 12.12,
+      "fieldName": "EXEMPTION 7(F)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 7(F) has been selected. ",
+      "fieldNumber_": 12.12
+    },
+    {
+      "fieldNumber": 12.13,
+      "fieldName": "EXEMPTION 8",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 8 has been selected. ",
+      "fieldNumber_": 12.13
+    },
+    {
+      "fieldNumber": 12.14,
+      "fieldName": "EXEMPTION 9",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:USED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an Exemption 9 has been selected. ",
+      "fieldNumber_": 12.14
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "NO RECORDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "PARTIAL GRANT STATUS OF NO RECORDS ",
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 12.51,
+      "fieldName": "REFERRAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "PARTIAL GRANT STATUS OF REFERRAL ",
+      "fieldNumber_": 12.51
+    },
+    {
+      "fieldNumber": 12.52,
+      "fieldName": "NOT REASONABLY DESCRIBED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "PARTIAL GRANT STATUS OF RECORDS NOT REASONABLY DESCRIBED ",
+      "fieldNumber_": 12.52
+    },
+    {
+      "fieldNumber": 12.53,
+      "fieldName": "NOT AN AGENCY RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "PARTIAL GRANT STATUS OF NOT AN AGENCY RECORD ",
+      "fieldNumber_": 12.53
+    },
+    {
+      "fieldNumber": 12.54,
+      "fieldName": "DUPLICATE RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 12.54
+    },
+    {
+      "fieldNumber": 12.55,
+      "fieldName": "MEDICALLY SENSITIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Indicates that a request was only partially fulfilled due to medically  sensitive data.  ",
+      "fieldNumber_": 12.55
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "38 USC 5701",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this  field indicates if a 38 USC 5701 statute was selected. ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.02,
+      "fieldName": "38 USC 5705",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this field indicates if a 38 USC 5705 statute was selected. ",
+      "fieldNumber_": 13.02
+    },
+    {
+      "fieldNumber": 13.03,
+      "fieldName": "35 USC 205",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this field indicates if a 35 USC 205 statute was selected. ",
+      "fieldNumber_": 13.03
+    },
+    {
+      "fieldNumber": 13.04,
+      "fieldName": "38 USC 7332",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this field indicates if a 38 USC 7332 statute was selected. ",
+      "fieldNumber_": 13.04
+    },
+    {
+      "fieldNumber": 13.05,
+      "fieldName": "EXEMPTION 3 OTHER 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.05
+    },
+    {
+      "fieldNumber": 13.06,
+      "fieldName": "EXEMPTION 3 OTHER 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.06
+    },
+    {
+      "fieldNumber": 13.07,
+      "fieldName": "EXEMPTION 3 OTHER 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.07
+    },
+    {
+      "fieldNumber": 13.08,
+      "fieldName": "EXEMPTION 3 OTHER 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.08
+    },
+    {
+      "fieldNumber": 13.09,
+      "fieldName": "EXEMPTION 3 OTHER 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.09
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "EXEMPTION 3 OTHER 6",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "No longer used. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.11,
+      "fieldName": "41 USC 253B",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this field indicates if a 41 USC 253b(m) statute was selected. ",
+      "fieldNumber_": 13.11
+    },
+    {
+      "fieldNumber": 13.12,
+      "fieldName": "5 USC APP3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is active when an exemption 3 status was selected. If so, this field indicates if a 5 USC App. 3 statute was selected. ",
+      "fieldNumber_": 13.12
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "MEDS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Meds. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "MEDS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Meds. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "VITALS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Vitals. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "VITALS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Vitals. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "RADIOLOGY FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Radiology ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "RADIOLOGY TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Radiology. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "IMMUNIZATIONS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Immunizations. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "IMMUNIZATIONS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Immunizations. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "CONSULTS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Consults. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "CONSULTS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Consults. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "POSTINGS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Postings. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "POSTINGS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Postings. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "DISCHARGE SUMMARIES FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Discharge Summaries. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "DISCHARGE SUMMARIES TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Discharge Summaries. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "PROGRESS NOTES FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Progress Notes. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "PROGRESS NOTES TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Progress Notes. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "LABS FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Labs. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "LABS TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Labs. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "SURGERY FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to begin search for Surgery. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "SURGERY TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date to finish search for Surgery. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DOCUMENT PRINT ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Holds the custom print order if one was created. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DOCUMENT PRINT ORDER CONTINUED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Holds the continuation of a custom print order if one was created. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "NO EXEMPTION REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N/A;1:NO EXEMPTION REQUIRED;",
+      "helpText": "This field uses a set of values to represent a boolean expression to indicate if an no exemption is needed. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "SSN COMPUTED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ",
+      "required": false,
+      "helpText": "Computed SSN field used in the ad-hoc reporting.   MUMPS CODE:       N A S A=$P(^DSIR(19620,D0,0),U) S X=$SELECT(A[\" DPT\":$$GET1^DIQ(2,+A,.09),A[\"DSIR(19620.96\":$$G ET1^DIQ(19620.96,+A,.09),1:\"\")   ALGORITHM:        N A S A=$P(^DSIR(19620,D0,0),U) S X=$SELECT(A[\" DPT\":$$GET1^DIQ(2,+A,.09),A[\"DSIR(19620.96\":$$G  ET1^DIQ(19620.96,+A,.09),1:\"\") ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ25",
+      "length": 25,
+      "required": false,
+      "helpText": "Computed Patient type.  Used by ad-hoc reporting.   MUMPS CODE:       N A S A=$P(^DSIR(19620,D0,0),U),X=$S(A[\"DPT\":\"P ATIENT\",A[\"DSIR(19620.95\":\"FOIA\",A[\"DSIR(19620. 96\":\"NON COMPUTERIZED PATIENT\",1:\"UNKNOWN\")   ALGORITHM:        N A S A=$P(^DSIR(19620,D0,0),U),X=$S(A[\"DPT\":\"P ATIENT\",A[\"DSIR(19620.95\":\"FOIA\",A[\"DSIR(19620. 96\":\"NON COMPUTERIZED PATIENT\",1:\"UNKNOWN\") ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "LAB RESULTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field holds the selected lab options.  It is set to a zero by default for cumulative labs. The number is associated with an index for a list box in the ROI GUI application. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "LAB LIST",
+      "dataType": "SUBFILE",
+      "rawType": "19620.0206A",
+      "required": false,
+      "helpText": "This is a multiple field for holding the details of specific labs associated with this request.   Note: data is present only if specific labs are selected. This field is not used for any of the cumulative lab reports. ",
+      "isMultiple": true,
+      "subFileNumber": 19620.0206,
+      "fieldNumber_": 206
+    }
+  ],
+  "fieldCount": 140,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "ACLRK", "field": },
+    {"name": "ACST", "field": },
+    {"name": "ADELIVRY", "field": },
+    {"name": "ADISP", "field": },
+    {"name": "ADIV", "field": },
+    {"name": "AEXPROC", "field": },
+    {"name": "AFCLD", "field": },
+    {"name": "AFOIA", "field": },
+    {"name": "AFWREQST", "field": },
+    {"name": "AOP", "field": },
+    {"name": "ARCVDTYP", "field": },
+    {"name": "AREQ", "field": },
+    {"name": "AREQRSN", "field": },
+    {"name": "ARQRTP", "field": },
+    {"name": "ATPRQST", "field": },
+    {"name": "B", "field": },
+    {"name": "19620", "field": .01, "type": "regular"},
+    {"name": "19620", "field": .03, "type": "regular"},
+    {"name": "19620", "field": .04, "type": "regular"},
+    {"name": "19620", "field": .11, "type": "regular"},
+    {"name": "19620", "field": .63, "type": "regular"},
+    {"name": "19620", "field": 4.01, "type": "regular"},
+    {"name": "19620", "field": 6.07, "type": "regular"},
+    {"name": "19620", "field": 6.08, "type": "regular"},
+    {"name": "19620", "field": 10.01, "type": "regular"},
+    {"name": "19620", "field": 10.02, "type": "regular"},
+    {"name": "19620", "field": 10.04, "type": "regular"},
+    {"name": "19620", "field": 10.05, "type": "regular"},
+    {"name": "19620", "field": 10.06, "type": "regular"},
+    {"name": "19620", "field": 10.06, "type": "regular"},
+    {"name": "19620", "field": 10.07, "type": "regular"},
+    {"name": "19620", "field": 10.07, "type": "regular"},
+    {"name": "19620", "field": 10.08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

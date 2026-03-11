@@ -1,0 +1,131 @@
+{
+  "fileNumber": 367,
+  "fileName": "HPID/OEID RESPONSE",
+  "globalRoot": "367",
+  "globalReference": "^IBCNH(367,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the message control ID number assigned by the HL7 package when a message is created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSMISSION QUEUE",
+      "dataType": "POINTER",
+      "rawType": "P367.1'",
+      "required": false,
+      "pointerTo": 367.1,
+      "helpText": "This field is used to link the response with its corresponding entry in the HPID/OEID TRANSMISSION QUEUE file. It will not be populated for  unsolicited messages. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RESPONSE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:REQUESTED;U:UNSOLICITED;",
+      "helpText": "This field indicates whether the response was requested by VISTA or was unsolicited from the NIF (National Insurance File). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Insurance Company name in the received response. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROCESSING STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RESPONSE PROCESSED;X:EXCEPTION REPORT;EL:ERROR WITH LEGACY IDS;ED:ERROR WITH DATA;EXR:ERROR - EXCEPTION REPORT REJECT;",
+      "helpText": "This field tracks the processing status of the response received. Changes to this field will update the STATUS DATE/TIME field and  the TRANSMISSION STATUS in the HPID/OEID TRANSMISSION QUEUE file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STATUS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the response record was received.   ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VISTA UNIQUE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VAMC Station number and Internal Entry Number of the Insurance Company in this site's INSURANCE COMPANY file in the following format: STATION#.IEN in INSURANCE COMPANY file ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PARENT CHP (HPID)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HPID of the Parent CHP, if applicable. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CHP/SHP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CHP;S:SHP;",
+      "helpText": "Defines whether this health plan is a Controlling Health Plan (CHP) or a  Sub-health Plan (SHP).  CHP is a health plan that controls its own business  activities, actions or policies. A plan can have 0 to many sub-health plans  associated to it. SHP is a health plan whose business activities, actions  or policies are directed by a CHP.  This field does NOT apply to OEIDs,  only insurance companies with HPIDs can be designated as CHPs or SHPs. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE OF FUTURE PURGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the response and, if applicable, its corresponding HPID/OEID TRANSMISSION QUEUE entry may be purged. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IDENTIFIERS",
+      "dataType": "POINTER",
+      "rawType": "367.01PA",
+      "required": false,
+      "helpText": "This is a record of all INSURANCE COMPANY IDs received in the response from the NIF (National Insurance File). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "UID", "field": },
+    {"name": "367", "field": .01, "type": "regular"},
+    {"name": "367", "field": .02, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "", "field": .05, "type": "regular"},
+    {"name": "367", "field": .07, "type": "regular"},
+    {"name": "367", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

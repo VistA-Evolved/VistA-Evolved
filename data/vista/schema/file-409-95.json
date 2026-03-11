@@ -1,0 +1,153 @@
+{
+  "fileNumber": 409.95,
+  "fileName": "PRINT MANAGER CLINIC SETUP",
+  "globalRoot": "",
+  "globalReference": "^SD(409.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "Enter a clinic or ward. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BASIC DEFAULT ENCOUNTER FORM",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "  The encounter form that will be printed for every appointment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUPPLMNTL FORM - ESTBLSHED PT.",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "  This is a supplemental form that will print only for patients that have been seen in the clinic previously. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SUPPLMNTL FORM - FIRST VISIT",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "  This is a supplemental for that will print only for patients that have not been seen previously at the clinic. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FORM W/O PATIENT DATA",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "  This is the encounter form that should be printed for unscheduled visits. It may have a space in the top left hand corner for imprinting the embossed patient card or space to write in the name, ssn, etc. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SUPPLMNTL FORM #1 ALL PATIENTS",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "  This is a supplemental form to be used by all patients of the clinic. A form in this category should not also be in one of the other categories for supplemental forms, else it will be printed twice. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESERVED FOR FUTURE USE",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "This category was created for clinics to assign new forms that are not yet complete without fear that they would be accidently printed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SUPPLMNTL FORM #2 ALL PATIENTS",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SUPPLMNTL FORM #3 ALL PATIENTS",
+      "dataType": "POINTER",
+      "rawType": "*P357'",
+      "required": false,
+      "pointerTo": 357,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DON'T USE PCMM PROVIDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "AICS defaults to printing providers specified in PCMM if they are defined otherwise the providers from the clinic setup is used. Answering this field \"YES\" for a clinic will cause AICS to print the providers from clinic setup irregardless PCMM.  This is intended for use by sites bringing up PCMM but who have not completed the entry of providers. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT",
+      "dataType": "POINTER",
+      "rawType": "409.9501IP",
+      "required": false,
+      "helpText": "  This is a list of reports or forms that should be printed under certain circumstances. The only types of forms or reports that can be printed are ones that are defined in the Package Interface file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXCLUDED REPORT",
+      "dataType": "POINTER",
+      "rawType": "409.9502P",
+      "required": false,
+      "helpText": "Used to override reports defined to print for the division.  Reports defined to print for the division will not print if they are excluded for the clinic. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "A1", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "J", "field": },
+    {"name": "409.95", "field": .01, "type": "regular"},
+    {"name": "409.95", "field": .02, "type": "regular"},
+    {"name": "409.95", "field": .03, "type": "regular"},
+    {"name": "409.95", "field": .04, "type": "regular"},
+    {"name": "409.95", "field": .05, "type": "regular"},
+    {"name": "409.95", "field": .06, "type": "regular"},
+    {"name": "409.95", "field": .07, "type": "regular"},
+    {"name": "409.95", "field": .08, "type": "regular"},
+    {"name": "409.95", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

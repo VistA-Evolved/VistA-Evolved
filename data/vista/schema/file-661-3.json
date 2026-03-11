@@ -1,0 +1,60 @@
+{
+  "fileNumber": 661.3,
+  "fileName": "PROS ITEM LOCATION",
+  "globalRoot": "661.3",
+  "globalReference": "^RMPR(661.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a location of an item or stock being tracked for inventory. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the address of the LOCATION field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is station or site where an inventory transaction is done and responsible of reporting a workload. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HCPCS",
+      "dataType": "POINTER",
+      "rawType": "661.31P",
+      "required": false,
+      "helpText": "This is an HCPCS multiple keep in a Location for Prosthetics Inventory module. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "D1", "field": },
+    {"name": "E", "field": },
+    {"name": "661.3", "field": .01, "type": "regular"},
+    {"name": "661.3", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

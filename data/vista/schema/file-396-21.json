@@ -1,0 +1,92 @@
+{
+  "fileNumber": 396.21,
+  "fileName": "CAPRI CLINICAL EFOLDER TRANSMISSIONS",
+  "globalRoot": "396.21",
+  "globalReference": "^DVB(396.21,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is the date and time the Clinical Document was transmitted from CAPRI GUI. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTHORIZED SENDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the User of the Authorized CAPRI GUI User who sent the Clinical  Document. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Patient of who the Clinical Documents pertains to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMISSION PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ250",
+      "length": 250,
+      "required": true,
+      "helpText": "Clinical Document transmission path, it will be either PIV or PROXY to  document which path as used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:UNSUCCESSFUL;1:SUCCESSFUL;",
+      "helpText": "Status of the Clinical Documents Transmission, \"0\" is Unsuccessful and \"1  \" is Successful. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "ERROR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "Clinical Documents Transmission Error, if any, received from the URL. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPORT DETAILS",
+      "dataType": "SUBFILE",
+      "rawType": "396.212A",
+      "required": false,
+      "helpText": "Report Details of selected individual documents requested to build the one Clinical Document by the Report Builder function sent by the CAPRI GUI. ",
+      "isMultiple": true,
+      "subFileNumber": 396.212,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "396.21", "field": .01, "type": "regular"},
+    {"name": "396.21", "field": .02, "type": "regular"},
+    {"name": "396.21", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

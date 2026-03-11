@@ -1,0 +1,212 @@
+{
+  "fileNumber": 452.8,
+  "fileName": "PRSE EDUCATION REGISTRATION",
+  "globalRoot": "452.8OIP",
+  "globalReference": "^PRSE(452.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLASS NAME",
+      "dataType": "POINTER",
+      "rawType": "P452.1X",
+      "required": false,
+      "pointerTo": 452.1,
+      "helpText": "This field contains the name of a specific program or class. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCAL/NON-LOCAL CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL CLASS;N:NON-LOCAL CLASS;",
+      "helpText": "This field indicates whether the class is being presented locally or outside the facility. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF MEDIA",
+      "dataType": "POINTER",
+      "rawType": "P452.5'",
+      "required": false,
+      "pointerTo": 452.5,
+      "helpText": "This is the type of media used to present this program or class. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "SPONSORING SERVICE/SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP454.1'",
+      "required": true,
+      "pointerTo": 454.1,
+      "helpText": "This field contains the service/section that is sponsoring this class. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GOVERNMENT FUNDED",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "G:GOVERNMENT FUNDED;E:EMPLOYEE FUNDED;",
+      "helpText": "This field indicates whether this class is government funded or not. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "M:MANDATORY;C:CONTINUING EDUCATION;O:OTHER TRAINING;W:WARD INSERVICE;",
+      "helpText": "This field categorizes the class as mandatory inservice, continuing education, ward inservice, or other. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ROUTINE/NON-ROUTINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:ROUTINE;N:NON-ROUTINE;",
+      "helpText": " This field indicates whether or not the class enhances or does not enhance the employee's job qualifications. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SOURCE OF TRAINING",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:V.A.;2:INTERAGENCY (e.g. Courses given by (OPM);3:NON-GOVERNMENT (Designed for V.A.);4:N0N-GOVERNMENT (e.g. Institution, Company or Unversity);5:STATE OR LOCAL GOVERNMENT;",
+      "helpText": "This field contains the agency who is financing this course. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACCREDITING ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P452.9'",
+      "required": false,
+      "pointerTo": 452.9,
+      "helpText": "This field contains the name of the organization accrediting the program. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "CLASS HRS DURING ON-DUTY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This field indicates the number of classroom hours used to attend a program during the student's tour of duty. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "CLASS HRS DURING OFF-DUTY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field indicates the number of classroom hours used to attend a program during a student's off-duty time. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "CEUs",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of continuing education units associated with the class. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 7.6,
+      "fieldName": "CONTACT HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the number of contact hours associated with this  program. ",
+      "fieldNumber_": 7.6
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CLASS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP452.4'",
+      "required": true,
+      "pointerTo": 452.4,
+      "helpText": "This field categorizes a specific class or program. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PURPOSE OF CLASS",
+      "dataType": "POINTER",
+      "rawType": "RP452.51'",
+      "required": true,
+      "pointerTo": 452.51,
+      "helpText": "This field contains the reason this program/class is given. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CODE FOR OLDE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether or not this record should be transmitted to Austin, Texas. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRSE PROGRAM/CLASS LENGTH HRS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,2",
+      "length": 7,
+      "required": true,
+      "helpText": "This field indicates the class duration in hours. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "SERVICE REASON FOR CLASS",
+      "dataType": "POINTER",
+      "rawType": "452.877PA",
+      "required": false,
+      "helpText": "This field contains the service's reason for having an individual attend this program/class. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "START DATE/TIME OF CLASS",
+      "dataType": "DATE",
+      "rawType": "452.889ID",
+      "required": false,
+      "helpText": "This multiple contains the scheduled start dates/times for this program/class. ",
+      "isMultiple": true,
+      "subFileNumber": 452.889,
+      "fieldNumber_": 89
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AA01", "field": },
+    {"name": "AA27", "field": },
+    {"name": "B", "field": },
+    {"name": "452.8", "field": .01, "type": "regular"},
+    {"name": "452.8", "field": .01, "type": "regular"},
+    {"name": "452.8", "field": 2.7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

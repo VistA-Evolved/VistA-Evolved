@@ -1,0 +1,39 @@
+{
+  "fileNumber": 403.52,
+  "fileName": "RECALL REMINDERS LETTERS",
+  "globalRoot": "403.52",
+  "globalReference": "^SD(403.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "The Clinic name that this letter should be used with. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LETTER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "403.521",
+      "required": false,
+      "helpText": "Enter the text that you would like the patient to see in their Recall  letter. ",
+      "isMultiple": true,
+      "subFileNumber": 403.521,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "403.52", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

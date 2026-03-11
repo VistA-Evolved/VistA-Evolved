@@ -1,0 +1,205 @@
+{
+  "fileNumber": 9999999.41,
+  "fileName": "IMMUNIZATION LOT",
+  "globalRoot": "9999999.41",
+  "globalReference": "^AUTTIML(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "This is the lot number of a manufacturer's immunization/vaccine product. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.04'Xa",
+      "required": true,
+      "pointerTo": 9999999.04,
+      "helpText": "This is the manufacturer using this lot number.  You will only be able to select manufacturers with a STATUS of ACTIVE. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "2:EXPIRED;1:INACTIVE;0:ACTIVE;",
+      "helpText": "This is the status of this lot number, used to determine if this lot is usable.  As long this field is blank or has a value of '0', it will be seen as ACTIVE.  If a '1' is entered, it will be seen as INACTIVE. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "VACCINE",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.14'Xa",
+      "required": true,
+      "pointerTo": 9999999.14,
+      "helpText": "This is a VACCINE that is labeled with this lot number and produced by lot's manufacturer.  The vaccine must designated as active. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VACCINE #2",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is a VACCINE that is labeled with this lot number and produced by lot's manufacturer. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VACCINE #3",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is a VACCINE that is labeled with this lot number and produced by lot's manufacturer. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VACCINE #4",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is a VACCINE that is labeled with this lot number and produced by lot's manufacturer. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "VACCINE #5",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is a VACCINE that is labeled with this lot number and produced by lot's manufacturer. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "RDXa",
+      "required": true,
+      "helpText": "This is the date that the immunization represented by this lot number is due to expire, as determined by the manufacturer. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ASSOCIATED VA FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'aI",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the VA facility associated with this lot number. At  multi-division institutions this facility is a division of that multi-division institution. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "STARTING COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0a",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the starting number of doses for this lot, from 1 to 99,999. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DOSES UNUSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0Xa",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of remaining doses available for this lot.  The number cannot be greater than the original number of doses for this lot. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "VACCINE SOURCE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "v:VFC;n:NON-VFC;o:Other State;i:IHS/Tribal;",
+      "helpText": "This is the source of this lot, where it was obtained. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "HEALTH CARE FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P9999999.06'a",
+      "required": false,
+      "pointerTo": 9999999.06,
+      "helpText": "This is the location (facility) where this lot will be stored and used. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "LOW SUPPLY ALERT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0Xa",
+      "length": 5,
+      "required": false,
+      "helpText": "This is a number that is used to determine if a Low Supply alert should be issued.  The number must be between 0 and 99,998 and cannot be greater than the STARTING COUNT. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "LOT NUMBER FOR EXPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is this lot number's corresponding official lot number to be used for exporting to other registries. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "NDC CODE",
+      "dataType": "POINTER",
+      "rawType": "P9002084.95'a",
+      "required": false,
+      "pointerTo": 9002084.95,
+      "helpText": "This is the NDC Code for this lot. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "NDC CODE (VA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaXO",
+      "required": false,
+      "helpText": "This is the National Drug Code (NDC) for this lot. ",
+      "fieldNumber_": .18
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9999999.41", "field": .01, "type": "regular"},
+    {"name": "9999999.41", "field": .04, "type": "regular"},
+    {"name": "9999999.41", "field": .09, "type": "regular"},
+    {"name": "9999999.41", "field": .1, "type": "regular"},
+    {"name": "", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^AUTTIMAN(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(9999999.04,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^AUTTIMM(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(9999999.14,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .09, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,9),6)"},
+    {"field": .1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,10),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .12, "value": "D EN^DDIOL(\"   \"_+$P(^(0),U,12)_\" DOSES UNUSED\")"}
+  ]
+}

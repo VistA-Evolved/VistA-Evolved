@@ -1,0 +1,87 @@
+{
+  "fileNumber": 18.01,
+  "fileName": "FOUNDATIONS SITE PARAMETERS",
+  "globalRoot": "18.01",
+  "globalReference": "^XOB(18.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'X",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is the domain name of this installation of the Foundations and VistALink application as it is known to the rest of the network.   This name applies to all CPUs or Volume sets which access this ^XOB global and the ^XWB global. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HEARTBEAT RATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field indicates the rate (in seconds) the VistALink heartbeat message should be expected from a client. If there is no activity on the connection for this amount of time, the client will send a system heartbeat message.   The client, as part of the initial connection protocol, retrieves this  value. As a result, the client and the M server are always synchronized regarding the heartbeat rate.     See also: LATENCY DELTA ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LATENCY DELTA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field indicates the number of seconds to add to the HEARTBEAT RATE  when calculating the initial timeout value for the VistALink Listener.   The client and the M server are synchronized regarding the HEARTBEAT  RATE. This latency parameter allows the site to fine tune the timeout value. The site can to take into account any network slowness or other factors that may delay the arrival of the system heartbeat message from the client.   See also: HEARTBEAT RATE ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "J2EE CONNECTION TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field indicates the number of seconds that a VistaLink connection from J2EE to M should be allowed to remain connected but inactive, before M drops the connection.   It is recommended that this J2EE CONNECTION TIMEOUT parameter be set relatively high, for example 1 day (86400 seconds).   A high setting is recommended because all the major application server implementations have more robust mechanisms for controlling connection pools. The site should use the tools/mechanisms supplied by the ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "J2EE REAUTHENTICATION TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of seconds a connection is considered reauthenicated after a  successful reauthentication has occurred.   Rules Enforced: =============== - If a connection in the application server's pool is not   reused by the reauthenticated user before this timeout   limit is reached, the reauthentication is considered expired.   - If expiration does occur, the re-authentication process is   performed again.   - If expiration does not occur, the session is considered   reauthenticated for these number",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DEFAULT HTTP TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates the default HTTP time-out (in seconds) for call out of the M to a J2EE application server using the M2J feature in VistALink.   This time-out value can be overridden by specifying a time-out for an particular application server. This is accomplished by entering a time-out value for DEFAULT HTTP TIMEOUT (#.1) field in the VISTALINK J2EE APP  SERVERS (#18.08) file.     Note: This field is only used by the VistALink v2.0 codebase. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "LISTENER CONFIGURATION",
+      "dataType": "POINTER",
+      "rawType": "18.012P",
+      "required": false,
+      "helpText": "This multiple field contains the VistALink Listener configurations for  BOX-VOLUME entries in the DOMAIN NAME's scope.   Each configuration is used by the XOBV LISTENER STARTUP menu option. This option is typically scheduled to run as part of the system startup after the VistA system has been restarted. The option will start up VistALink Listeners for the BOX-VOLUME where Task Manager is running.   Note: This only applies to Cache NT systems. VMS/DSM systems need to use  the TCP/IP (UCX) utility",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "18.01", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

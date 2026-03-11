@@ -1,0 +1,45 @@
+{
+  "fileNumber": 161.45,
+  "fileName": "FEE BASIS PAYMENT MOVES",
+  "globalRoot": "161.45",
+  "globalReference": "^FBAA(161.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Identifies the file (or subfile) number where the payment is stored. For example, subfile 162.03 contains medical payments and subfile 162.04 contains travel payments. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OLD IENS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The internal entry numbers (iens) that describe the original location of the payment before the patient merge. The iens are delimited by commas (,) beginning with the ien of the lowest level subentry. For example, a travel payment (subfile 162.04) with iens \"1,2000,\" would be located at ^FBAAC(2000,3,1,0). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NEW IENS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The internal entry numbers (iens) that describe the new location of the payment after the patient merge has completed. The iens are delimited by commas (,) beginning with the ien of the lowest level subentry. For example, a travel payment (subfile 162.04) with iens \"1,3000,\" would be located at ^FBAAC(3000,3,1,0). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 698.9,
+  "fileName": "NON-MAGNET ECG RHYTHM",
+  "globalRoot": "698.9",
+  "globalReference": "^MCAR(698.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ECG RHYTHM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies the ECG rhythm. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the shortened form of the rhythm identifier. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "698.9", "field": .01, "type": "regular"},
+    {"name": "698.9", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

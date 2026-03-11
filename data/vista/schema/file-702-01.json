@@ -1,0 +1,158 @@
+{
+  "fileNumber": 702.01,
+  "fileName": "CP DEFINITION",
+  "globalRoot": "702.01I",
+  "globalReference": "^MDS(702.01,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the procedure.  It should be descriptive of the procedure and contain 3-30 alphanumeric characters.  The first character MUST be a letter.  To maintain consistency it is recommended that all procedures be entered in UPPERCASE letters as well.   (Reference IA #3139) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "This field defines the specialty that this procedure falls under. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REQUIRE EXTERNAL DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Setting this field to Yes will force this procedure to be processed via the CPUser executable for matching whether or not there are instruments associated with it. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT TIU NOTE",
+      "dataType": "POINTER",
+      "rawType": "P8925.1'",
+      "required": false,
+      "pointerTo": 8925.1,
+      "helpText": "This field contains a TIU Note Title to use as the default when CP creates a note for interpretation for this procedure.  (Reference IA #3377) ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the location that will be used when creating the TIU note for interpretation.  This location will be used for workload reporting. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROCESSING APPLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEFAULT;2:HEMODIALYSIS;",
+      "helpText": "This field is used to indicate if this is a Hemodialysis procedure or not.  The field is a set of codes, 1=DEFAULT so it will be processed by Clinical Procedures or 2=HEMODIALYSIS and the procedure will be processed by the Hemodialysis application. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AUTO SUBMIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No, manually complete;1:Yes, Submit to VistA Imaging;",
+      "helpText": "This field only applies to procedures that are performed by instruments with Bi-directional interface capabilities.  This field is used to indicate whether the image attachment should be automatically submitted to VistA Imaging once the procedure is performed and the result is passed to CP or the submission process of the image should be done manually with user interface. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXTERNAL DATA DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a reference to a network share where user supplied attachments are located for this procedure. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Yes/No to indicate active procedures that can be linked to Consults. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "702.011P",
+      "required": false,
+      "helpText": "This multiple contains instruments that generate results for this procedure. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "HIGH VOLUME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is used as a flag indicator to specify if this procedure is high volume or not. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PROCESSED RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Final Result;1:Multiple Results;2:Cumulative Result;",
+      "helpText": "This field is a flag which indicates whether a final result, multiple results, or cumulative result is associated with this procedure. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a Globally Unique IDentifier (GUID) for this procedure. This is  maintained nationally so it is the same throughout the enterprise.  A  sample ID could be \"{69DBD11E-9A8C-4ECE-AFA4-73947218807D}\". ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .9,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a detailed DESCRIPTION of this procedure.  A sample DESCRIPTION  could be \"ABD Paracentisis followup\". ",
+      "fieldNumber_": .9
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AINST", "field": },
+    {"name": "ASPEC", "field": },
+    {"name": "B", "field": },
+    {"name": "UC", "field": },
+    {"name": "702.01", "field": .01, "type": "regular"},
+    {"name": "702.01", "field": .01, "type": "regular"},
+    {"name": "702.01", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(702.01,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

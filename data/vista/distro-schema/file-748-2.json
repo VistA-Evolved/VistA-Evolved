@@ -1,0 +1,28 @@
+{
+  "fileNumber": 748.2,
+  "fileName": "DEMOGRAPHIC REFERENCE",
+  "globalRoot": "748.2IP",
+  "globalReference": "^QA(748.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NAME",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This file will contain the names of files which may be referenced by survey creators for purposes of assimilating demographical information about each survey.  The local IRM will be in control of what files are entered and should screen each for the intent desired by a survey creator. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "748.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

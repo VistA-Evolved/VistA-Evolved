@@ -1,0 +1,321 @@
+{
+  "fileNumber": 103,
+  "fileName": "ORAM FLOWSHEET",
+  "globalRoot": "103",
+  "globalReference": "^ORAM(103,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2X",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Patient DFN from file 2 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GOAL INR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the INR GOAL RANGE set by the user in the ANTICOAGULATOR.   Contains a free text range, like: 2.0-3.0 ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores indication set in the Anticoagulator and ICD9 code for the  indication. Example: A Flutter=427.32 ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NEXT LAB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Fileman date of the next scheduled INR draw. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "START DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Date patient was started in Anticoagulation clinic; in free text format  (request from the field); contains whatever the operator entered. example: 09/26/08 example: unknown ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STOP DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Date patient was stopped OR expected to be stopped from needing followup in Anticoagulation clinic; in free text format (request from the field); contains whatever the operator entered. example: 09/26/08 example: indefinite ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Expected length of time patient will be followed in Anticoagulation  clinic. Example: 6 months ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SPECIAL INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "103.07",
+      "required": false,
+      "helpText": "Word processing set of special instrections inputted into the Anticoagulator. Visible in the Anticoagulator and in the Header of the flow sheet on the  REPORTS tab. ",
+      "isMultiple": true,
+      "subFileNumber": 103.07,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RISK FACTORS",
+      "dataType": "SUBFILE",
+      "rawType": "103.08",
+      "required": false,
+      "helpText": "Word processing set of risk factors inputted into the Anticoagulator.   Visible in the Anticoagulator and in the Header of the flow sheet on the  REPORTS tab. ",
+      "isMultiple": true,
+      "subFileNumber": 103.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SIGNED AGREEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "Stores if patient has a signed agreement Y=yes; N or \"\"=No. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ORIENTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry for date of orientation classs. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FS DATE",
+      "dataType": "DATE",
+      "rawType": "103.011DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 103.011,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "COMPLEXITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:STANDARD PT;1:COMPLEX PT;2:INACTIVE PT;",
+      "helpText": "INDICATES IF PATIENT IS CURRENTLY COMPLEX, STANDARD OR INACTIVE ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MSG-PHONE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ASKED;1:NO MSGS;2:OK MSG;",
+      "helpText": "PT PRIVACY ISSUE; indicates if pt approved leaving of msg on phone  answering machine. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MSG WITH",
+      "dataType": "SUBFILE",
+      "rawType": "103.035",
+      "required": false,
+      "helpText": "If patient allows leaving of anticoagulation messages with others at  his/her phone number, this indicates WHO is allowed to receive the  messages. ",
+      "isMultiple": true,
+      "subFileNumber": 103.035,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "AM MEDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PM MEDS;1:AM MEDS;2:UNKNOWN;",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "SAVE STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates if this entry is complete (\"SAVE\") or incomplete (\"TEMPSAVE\"). ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "FEE BASIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:PRIMARY;2:SECONDARY;",
+      "helpText": "  ****Not in use for export version; here for legacy systems*****   RECORDS IF FEE BASIS IS AUTHORIZED AND IF PRIMARY OR SECONDARY STATUS ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "FEE BASIS EXPIRATION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "****Not in use for export version; here for legacy systems*****   DATE WHICH FEE BASIS QUALIFICATION EXPIRES AND NEEDS TO BE REASSESSED. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "FEE BASIS EVALUATED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "****Not in use for export version; here for legacy systems*****   PERSON WHO EVALUATED PATIENT FOR FEE BASIS ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "OUTSIDE LAB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "*****Note in use for exported version*******************   expiration date for outside lab agreement. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "Reminder Date",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If reminder is set; this is the first date it will begin to appear when  the Anticoagulator is accessed.  It is only viewable in the  Anticoagulator. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "REMINDER",
+      "dataType": "SUBFILE",
+      "rawType": "103.085",
+      "required": false,
+      "helpText": "Free text item to remind person who is accessing the Anticoagulator on a  specific patient that something needs to be done.  Will only appear at or  after the reminder date (field 80). example: \"CBC due\" ",
+      "isMultiple": true,
+      "subFileNumber": 103.085,
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "LOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OPEN;1:LOCKED;",
+      "helpText": "IF 1; CHART IS IN USE BY SOMEONE ELSE. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "NEXT DAY CALLBACK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This Boolean field indicates whether the Clinician should wait until the  day after the next INR Draw to call the patient. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "RESTRICT LAB DRAWS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates days the patient does not want lab drawn. Represented by a  string, example: 135 means Mon,Wed,Friday ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Clinic which is currently following the patient.   Clinic determines many of the parameters which will determine the  behavior of the Anticoagulation Management Application (e.g., Team  List membership, Letterhead values, Visit locations for PCE, etc.). If clinic is missing, it will be assigned when the user files the first  flowsheet entry. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "CMPLX",
+      "dataType": "POINTER",
+      "rawType": "P100.21'",
+      "required": false,
+      "pointerTo": 100.21,
+      "helpText": "THIS FIELD IS NOT IN USE AT THIS TIME. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "OUTSIDE HCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Outside HCT lab value, entered by the pharmacist through the GUI, is  stored here in the following format: value | DATE  date is not in fileman format example: 21.6|9/19/2008 ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "ELIGIBLE FOR LMWH BRIDGING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Please indicate whether the patient is eligible for perioperative Low Molecular Weight Heparin bridging. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "BRIDGING COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "103.0112",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 103.0112,
+      "fieldNumber_": 112
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CL", "field": },
+    {"name": "L", "field": },
+    {"name": "103", "field": .01, "type": "regular"},
+    {"name": "103", "field": 3, "type": "regular"},
+    {"name": "103", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

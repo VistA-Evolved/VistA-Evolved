@@ -1,0 +1,329 @@
+{
+  "fileNumber": 741,
+  "fileName": "QA OCCURRENCE SCREEN",
+  "globalRoot": "741IP",
+  "globalReference": "^QA(741,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QA PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Select a patient who has met one of the screens.  A patient may be selected by: Name, SSN, Last four digits of SSN, or Last initial and last four digits of SSN. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ASSOCIATED ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "*P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field contains the MAS admission movement associated with this occurrence. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date the occurrence took place.  For auto enrolled occurrences it is the date that this occurrence was picked up by auto enroll. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OCCURRENCE IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This identifier is computed from the patient's name, SSN, occurrence date and internal entry number in the occurrence screen file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCREEN",
+      "dataType": "POINTER",
+      "rawType": "R*P741.1'",
+      "required": true,
+      "pointerTo": 741.1,
+      "helpText": "This is the screen that best describes this patient's occurrence. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the ward/clinic of the occurrence as defined by the Occurrence Screen circular. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is the service associated with this occurrence. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TREATING SPECIALTY/BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "This is the treating specialty associated with this occurrence. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MEDICAL TEAM",
+      "dataType": "POINTER",
+      "rawType": "P741.93'",
+      "required": false,
+      "pointerTo": 741.93,
+      "helpText": "This is the medical team associated with this occurrence. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the patient's attending physician. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RESIDENT/PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the patient's resident/provider. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REVIEWER",
+      "dataType": "POINTER",
+      "rawType": "741.01IPA",
+      "required": false,
+      "helpText": "This is where the reviewer data for Clinical, Peer, and Management reviews is entered or changed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OPEN;1:CLOSED;2:DELETED;",
+      "helpText": "This is the status of this occurrence record.  Occurrences are automatically marked as open when they are first entered into the system.  When a final disposition date is entered they are marked as closed.  An occurrence may be marked as deleted at any time by using the delete occurrence screen record option in the manager menu. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PEER DUE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date all peer reviews should be completed by.  It is computed by adding the peer review days entry in the parameters file to the date the clinical review was completed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MANAGEMENT DUE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date by which all management reviews should be completed. It is computed by adding the management review days entry from the parameters file to the date the clinical review was completed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FINAL DISPOSITION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date of the final disposition.  Only the last final disposition is tracked.  Some options allow this date to be entered manually, while others automatically store the current date. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TOTAL ELAPSED DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days between the occurrence date and the final disposition date. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FINAL DISPOSITION REACHED BY",
+      "dataType": "POINTER",
+      "rawType": "*P741.2'",
+      "required": false,
+      "pointerTo": 741.2,
+      "helpText": "This field tracks which review level entered a final disposition.  Some options allow data to be entered manually while others automatically store the data. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "COMMITTEE",
+      "dataType": "POINTER",
+      "rawType": "741.017PA",
+      "required": false,
+      "helpText": "This is where all data on committee reviews is stored. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*DATE VALIDATED/CONFIRMED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the occurrence was validated/confirmed. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SEVERITY OF OUTCOME",
+      "dataType": "POINTER",
+      "rawType": "P741.8'O",
+      "required": false,
+      "pointerTo": 741.8,
+      "helpText": "This is the severity of outcome for the occurrence. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "*QUALITY OF CARE SCALE",
+      "dataType": "POINTER",
+      "rawType": "*P741.6'O",
+      "required": false,
+      "pointerTo": 741.6,
+      "helpText": "This is the validated/confirmed quality of care. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "*VALIDATED/CONFIRMED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EQUIPMENT PROBLEMS;2:SYSTEM PROBLEMS;3:EQUIPMENT & SYSTEM PROBLEMS;",
+      "helpText": "This is the type of problem that led to this occurrence. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "*VALIDATION COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any comment regarding the validation of this occurrence. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PEER ATTRIBUTION (INDIVIDUAL)",
+      "dataType": "POINTER",
+      "rawType": "741.024PA",
+      "required": false,
+      "helpText": "This is where the occurrence is attributed to the individuals involved in this patient's care. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PEER ATTRIBUTION (MED TEAM)",
+      "dataType": "POINTER",
+      "rawType": "741.025PA",
+      "required": false,
+      "helpText": "This is where the medical team attribution data is stored. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PEER ATTRIBUTION (HOSP LOC)",
+      "dataType": "POINTER",
+      "rawType": "741.026PA",
+      "required": false,
+      "helpText": "This is where the data is stored for the attribution to hospital location. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "AUDIT",
+      "dataType": "POINTER",
+      "rawType": "P740.5'",
+      "required": false,
+      "pointerTo": 740.5,
+      "helpText": "This is a pointer to the audit file entry for this occurrence screen record.  The audit file contains data on what was done to this record and when it was done. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RECORD CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is automatically set to TODAY whenever a new record is entered into this file.  The record creation date is used by auto enroll to count the occurrences that are entered manually. ",
+      "fieldNumber_": 28
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AED", "field": },
+    {"name": "AOCID", "field": },
+    {"name": "AOCID2", "field": },
+    {"name": "ARCD", "field": },
+    {"name": "ATED", "field": },
+    {"name": "AUDIT", "field": },
+    {"name": "AVAL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "741", "field": .01, "type": "regular"},
+    {"name": "741", "field": .01, "type": "regular"},
+    {"name": "741", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "741", "field": 1, "type": "regular"},
+    {"name": "741", "field": 1, "type": "regular"},
+    {"name": "741", "field": 1, "type": "regular"},
+    {"name": "741", "field": 1, "type": "regular"},
+    {"name": "741", "field": 1, "type": "regular"},
+    {"name": "741", "field": 2, "type": "regular"},
+    {"name": "741", "field": 3, "type": "regular"},
+    {"name": "741", "field": 3, "type": "regular"},
+    {"name": "741", "field": 11, "type": "regular"},
+    {"name": "741", "field": 14, "type": "regular"},
+    {"name": "", "field": 14, "type": "regular"},
+    {"name": "741", "field": 18, "type": "regular"},
+    {"name": "741", "field": 27, "type": "regular"},
+    {"name": "741", "field": 28, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(\"SCRN\")):\"\",$D(^QA(741.1,+$P(^(\"SCRN\"),U,1),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(741.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(741,11,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,11)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

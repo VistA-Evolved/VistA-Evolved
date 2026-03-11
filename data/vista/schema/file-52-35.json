@@ -1,0 +1,55 @@
+{
+  "fileNumber": 52.35,
+  "fileName": "ERX HOLDING QUEUE PREFERENCES",
+  "globalRoot": "52.35",
+  "globalReference": "^PS(52.35,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "This is a one-entry record that holds user preferences for the eRx Holding Queue. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PATIENT CENTRIC VIEW",
+      "dataType": "POINTER",
+      "rawType": "52.351PA",
+      "required": false,
+      "helpText": "This sub-file contains user specific preferences for the Patient Centric Queue in the eRx Holding Queue option. Users without an entry in this sub-file will have the following default values for each field:                                                    LOOK BACK DAYS: 365 DAYS                                     SORT BY: ELAPSED DAYS                                     SORT ORDER: DESCENDING                       INCLUDE CS/NON-CS: BOTH                    CS SCHEDULE: SCHEDULES II -V       ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SINGLE PATIENT VIEW",
+      "dataType": "POINTER",
+      "rawType": "52.352PA",
+      "required": false,
+      "helpText": "This sub-file contains user specific preferences for the Single Patient Queue in the eRx Holding Queue option. Users without an entry in this sub-file will have the following default values for each field:               LOOK BACK DAYS: 365 DAYS                   SORT BY: RECEIVED DATE                SORT ORDER: DESCENDING               DISPLAY SIG: OFF        GROUP BY CS/NON-CS: OFF      INCLUDE ALL STATUSES: OFF ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PRESCRIPTION VIEW",
+      "dataType": "POINTER",
+      "rawType": "52.353PA",
+      "required": false,
+      "helpText": "This sub-file contains user specific preferences for the Rx Medication Queue in the eRx Holding Queue option. Users without an entry in this sub-file will have the following default values for each field:                                                LOOK BACK DAYS: 365 DAYS                   SORT BY: RECEIVED DATE                SORT ORDER: DESCENDING         INCLUDE CS/NON-CS: BOTH               CS SCHEDULE: SCHEDULES II - V        GROUP BY CS/NON-CS: OFF      INCLUDE ALL STATUSES: OFF       ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

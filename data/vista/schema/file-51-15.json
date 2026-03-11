@@ -1,0 +1,75 @@
+{
+  "fileNumber": 51.15,
+  "fileName": "ADMINISTRATION SHIFT",
+  "globalRoot": "51.15",
+  "globalReference": "^PS(51.15,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is an arbitrary name for a shift, such as 'MORNING'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is a one character code for the shift, such as 'M' for 'MORNING'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STANDARD START/STOP TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is two times of the day that define the shift by designating the  range over which an action is to take place.  The two times must be in military format and must both be either two or four characters, and be separated by a dash, such as '09-13' or '0900-1300'. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "51.153P",
+      "required": false,
+      "helpText": "  This allows the site to enter information pertaining to a shift on a hospital location by hospital location basis.  The wards used are from the HOSPITAL LOCATION file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PACKAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is the package prefix (as found in the Package file (9.4)) for the package that will be the primary user of this shift.  This is used primarily as a screen to allow various packages to enter and edit their own set of shifts.  This is NOT to be set through the VA FileMan, but only through the designated utilities. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACC", "field": },
+    {"name": "ACP", "field": },
+    {"name": "AP", "field": },
+    {"name": "APP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "51.15", "field": .01, "type": "regular"},
+    {"name": "51.15", "field": .01, "type": "regular"},
+    {"name": "51.15", "field": .01, "type": "regular"},
+    {"name": "51.15", "field": 1, "type": "regular"},
+    {"name": "51.15", "field": 1, "type": "regular"},
+    {"name": "51.15", "field": 4, "type": "regular"},
+    {"name": "51.15", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

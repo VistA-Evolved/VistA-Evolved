@@ -1,0 +1,127 @@
+{
+  "fileNumber": 6919,
+  "fileName": "ENG ARCHIVE LOG",
+  "globalRoot": "6919",
+  "globalReference": "^ENG(6919,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARCHIVE I.D.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Unique identifier of each archival episode.  Computer generated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECORDS TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ENG. WORK ORDERS;2:2162 ACCIDENT REPORTS;3:EQUIPMENT INVENTORY;4:PROJECTS;5:CONTROL POINT TRANSACTIOONS;",
+      "helpText": "Identifies the file from which archived records were taken. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECORDS START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The beginning date specified by the user when archiving was requested. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RECORDS STOP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The ending date specified by the user when archiving was requested. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPT. SEARCH PARAMS.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Options specified by the user for archival of specific records. These options vary with file type.  Automatically captured by the system during the archival process. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NO. RECORDS SAVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Count of records that were archived.  Recorded automatically. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PHYS. LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Physical storage of archival medium.  Entered by user for future reference. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TAPE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "General description of archival set, entered at the discretion of the user. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILE TYPE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates revision of archival record type.  Internal use only. Generated automatically. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "6919.01DA",
+      "required": false,
+      "helpText": "Record of all activity on a defined archival set.  This log is maintained by the system automatically. ",
+      "isMultiple": true,
+      "subFileNumber": 6919.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "EQUIPMENT INV. ENTRY #",
+      "dataType": "SUBFILE",
+      "rawType": "6919.02",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6919.02,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6919", "field": .01, "type": "regular"},
+    {"name": "6919", "field": 6, "type": "regular"},
+    {"name": "6919", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

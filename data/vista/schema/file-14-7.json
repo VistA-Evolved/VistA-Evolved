@@ -1,0 +1,199 @@
+{
+  "fileNumber": 14.7,
+  "fileName": "TASKMAN SITE PARAMETERS",
+  "globalRoot": "14.7",
+  "globalReference": "^%ZIS(14.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BOX-VOLUME PAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "Your answer should be the  volume set name concatenated with \":\" concatenated with the name of the CPU.   The value for the current process can be found by doing GETENV^%ZOSV and checking the fourth ^-piece of Y.  This allows the TaskMan site parameters to be applied extremely precisely, depending both upon which volume set and cpu which is affected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESERVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Answer YES to activate response time monitoring for processes using this pair of resources. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOG TASKS?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If you answer YES, then tasks will gerenarate entries in the sign-on log file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT TASK PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0a",
+      "length": 2,
+      "required": false,
+      "helpText": "Your answer will set the default Kernel priority assigned to tasks. This value will be overridden only for special options, devices, and tasks.   If this value is too low, jobs started by TaskMan will be unable to process tasks fast enough to keep up with demand.  7-10 are good values, depending on whether interactive users' priorities are set higher or lower on the local system. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TASK PARTITION SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "Under MSM only, this field will be used to change the maximum partition size for a JOB.  It will be used by both interactive and Tasked jobs.   The answer is in K bytes to pass into MSM's %PARTSIZ utility. Check with the 486 team for the latest recommendations. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUBMANAGER RETENTION TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "Answer will determine how long submanagers wait for new tasks, in seconds.   The goal of this field is to reduce the number of JOB commands needed to process a site's tasks.  By keeping old submanagers around to run new tasks, new process creation is severely reduced.  Good values are 300-600 seconds for VAX sites, and 10-50 for others. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TASKMAN JOB LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0a",
+      "length": 4,
+      "required": true,
+      "helpText": "If there are more active processes on the system than this number, TaskMan will not create new submanagers to handle tasks.  Task processing will be left to existing submanagers until the number of processes falls back below this number.   This number should be slightly lower than the Max Signons field of the Kernel Site Parameters file, so that the system manager still has room to sign on when TaskMan is using its greatest number of partitions. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TASKMAN HANG BETWEEN NEW JOBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0a",
+      "length": 2,
+      "required": false,
+      "helpText": "Answer will set a delay between the creation of new submanagers, in seconds.   Such a delay is necessary where the Retention Time is low and task creation cost is high. This prevents the creation of many new submanagers in quick succession from causing a perceivable delay to users.  The number should be the lowest value that prevents the problem. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MODE OF TASKMAN",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "G:GENERAL PROCESSOR;P:PRINT SERVER;C:COMPUTE SERVER;O:OTHER NON-TASKMAN;",
+      "helpText": "This field describes how TaskMan should act.  It takes over many of the 486 configuration functions handled by the Out of Order and Replacement Volume Set fields in versions 6.5 and 7.0.   General Processor:  The Manager on a G type will usually send tasks back to the volume set where they were created, except that tasks that explicitly request a different volume set will be sent where they ask.  (Explicit volume set requests are made by using 1) the ZTCPU input variable to the %ZTLOAD entry poi",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VAX ENVIROMENT FOR DCL",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field only has meaning on OpenVMS systems.   If this field is empty, then the M JOB command will be used.   If this field has a value, it will cause TM to SUBMIT submanagers to run from a VMS batch queue with a name of TM$<nodename>.   For Cache VMS, Put the VMS NODE name in this field as the BOX:VOLUME field  has the configuration name in it.   For VAX DSM, Put the NAME of the DSM manager that starts the environment.   TM will submit submanagers to the queue TM$<node_name>, have this queue",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OUT OF SERVICE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used by the TASK Manager to control if any new sub-manager jobs are sent to this Box-Volume Pair. If the manager gets an error when jobbing to another CPU it will change the flag to mark the Box-Volume as Out of Service. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MIN SUBMANAGER CNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0a",
+      "length": 2,
+      "required": false,
+      "helpText": "This field sets a value that free submanagers will check and not stop if there count doesn't exceed. The manager will check this and start new submangers if the free count is below this value.  If this field is left blank a default value of 1 is used. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TM MASTER",
+      "dataType": "POINTER",
+      "rawType": "P14.7'a",
+      "required": false,
+      "pointerTo": 14.7,
+      "helpText": "This field is holds a pointer to the TaskMan Master Box-Volume. This is only needed if this Box-Volume is mounted on an other configuration and shares the library account with that other configuration.  ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "Balance Interval",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "This field sets the time interval in seconds that the Task Manager will wait before running the \"LOAD BALANCE ROUTINE\". If this field in empty a value of 30 will be used.  A lower value will cause more resources to be used calculating the balance. A large value will allow a node to pick-up a lot of work before balancing. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LOAD BALANCE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This field holds the name of a Function, Extrinsic function or External routine call that returns a load rating. If this field contains a value, TaskMan will use this name in preforming Load Balancing.   Only use Load Balancing if you have two or more CPU's running TM that share the same %ZTSCH global.   The Load Balancing function must return a value between 1 and 256. Where: 1 represents a CPU with no capacity for any more work.        256 represents a CPU that is Idle.   The only included fun",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "Auto Delete Tasks",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This Field is used by the Sub-manager to control if the Sub-manger should set the ZTREQ variable to \"@\" so a task will be killed when it finishes unless the application modifies ZTREQ.   Unless there is a need to save the enties in the ^%ZTSK global set this field to YES.  If you are researching task errors you should set to NO untill you have the data you need.   This data will still be cleaned up by the XUTMK option. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "Manager Startup Delay",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used by the Task Manager to control the delay (hang) the manager will do during a START. This field is not used with a RESTART.   The Manager Startup Delay was hard set at 60 before. After requests to change the delay it has been made a parameter.   I would think that 5 to 30 would be OK. If you get errors because jobs start running before DDP/Cluster is up that use a larger number. ",
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "B", "field": },
+    {"name": "14.7", "field": .01, "type": "regular"},
+    {"name": "14.7", "field": .01, "type": "regular"},
+    {"name": "14.7", "field": 4, "type": "regular"},
+    {"name": "14.7", "field": 6, "type": "regular"},
+    {"name": "14.7", "field": 7, "type": "regular"},
+    {"name": "14.7", "field": 11, "type": "regular"},
+    {"name": "14.7", "field": 13, "type": "regular"},
+    {"name": "14.7", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.9414,
+  "fileName": "MAG WORK ITEM SUBTYPE",
+  "globalRoot": "2006.9414",
+  "globalReference": "^MAGV(2006.9414,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a subtype. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.9414", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

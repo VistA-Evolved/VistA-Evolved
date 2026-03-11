@@ -1,0 +1,64 @@
+{
+  "fileNumber": 8973.3,
+  "fileName": "CP REPORTS",
+  "globalRoot": "8973.3",
+  "globalReference": "^KMPD(8973.3,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LOCAL/REMOTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:LOCAL;1:REMOTE;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "8973.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8973.31,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8973.3", "field": .01, "type": "regular"},
+    {"name": "8973.3", "field": 2.01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "fileNumber": 409.41,
+  "fileName": "OUTPATIENT CLASSIFICATION TYPE",
+  "globalRoot": "409.41",
+  "globalReference": "^SD(409.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter in this field the internal entry number associated with this outpatient classification type. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter in this field the name of the outpatient classification type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter in this field the prompt to be used as when this outpatient classification is asked.  If this field is not defined the NAME field will be used.  For example, this field might contain the following:      Was treatment for an SC condition ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INPUT TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "F:FREE-TEXT;N:NUMERIC;S:SET;Y:YES/NO;",
+      "helpText": "Enter in this field the input type to be used when this outpatient classification is asked. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Enter in this field the default to be used when this outpatient classification is asked.   For example, this field might contain the following if the input type is YES/NO:  NO ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REQUIRED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter in this field whether or not a response is required when this outpatient classification is asked. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter in this field the text to be displayed on the check out screen. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ABBREVATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Enter in this field the abbreviation for the outpatient classification type.  For example, AO for Agent Orange Exposure. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "KI",
+      "required": false,
+      "helpText": "Enter in this field MUMPS code to be used as a screen to determine whether or not a patient should be asked this outpatient classification type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INPUT PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Enter in this field the input parameters to be used when this outpatient classification is asked.  For example, this field might contain the following if the input type is a SET:  1:MARRIED;2:SINGLE ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "409.415",
+      "required": false,
+      "helpText": "Enter in this field the description associated with this outpatient classification type. ",
+      "isMultiple": true,
+      "subFileNumber": 409.415,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "409.4175DA",
+      "required": false,
+      "helpText": "Enter in this field the effective date of the outpatient classification type. ",
+      "isMultiple": true,
+      "subFileNumber": 409.4175,
+      "fieldNumber_": 75
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AID", "field": },
+    {"name": "B", "field": },
+    {"name": "409.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

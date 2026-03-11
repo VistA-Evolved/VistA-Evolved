@@ -1,0 +1,65 @@
+{
+  "fileNumber": 350.4,
+  "fileName": "BILLABLE AMBULATORY SURGICAL CODE",
+  "globalRoot": "350.4ID",
+  "globalReference": "^IBE(350.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date when the new status or rate group for a procedure becomes effective. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "The ambulatory surgery associated with this entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RATE GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P350.1'",
+      "required": true,
+      "pointerTo": 350.1,
+      "helpText": "This is the HCFA rate group assigned to this procedure beginning with this entry's effective date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "The STATUS for this procedure beginning with the EFFECTIVE DATE. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "350.4", "field": .01, "type": "regular"},
+    {"name": "350.4", "field": .01, "type": "regular"},
+    {"name": "350.4", "field": .02, "type": "regular"},
+    {"name": "350.4", "field": .02, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SD(409.71,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(409.71,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(350.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(350.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

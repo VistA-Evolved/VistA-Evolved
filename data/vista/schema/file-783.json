@@ -1,0 +1,1323 @@
+{
+  "fileNumber": 783,
+  "fileName": "FUNCTIONAL INDEPENDENCE MEASUREMENT RECORD",
+  "globalRoot": "783",
+  "globalReference": "^RMIM(783,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the entry number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SITE CASE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "Internal use due to cases that could be deleted or new cases created by edits, may be utilized in future design for the OP code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field points to the Patient file. The patient is selected from the FIM template.  This field is populated by the FIM Template via a broker call. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient ID (Social Security Number).  Linked to FSOD Database with Patient_Code/Patient ID.  This data is obtained from the Patient file via a broker call from the FIM template when a user makes a patient selection. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PT DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the Patient date of birth.  It corresponds with the Austin FSOD database BIRTH_DATE.  This data is obtained from the Patient file via a broker call from the FIM template when a user makes a patient selection. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FACILITY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Facility Code which is linked to FSOD Database field FACILITY_ID.  UDSmr assigns facility codes to the sites.  This is not to be confused with Site number.  The facility codes and the type of care that is associated with facility codes for the Site are located in the 783.9 (RMIM FIM SITE PARAMETER). This field keeps track of the facility code for this episode. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CONTINUUM OF CARE;2:ACUTE;3:SUBACUTE;",
+      "helpText": "This field contains the type of care; continuum, acute or subacute.  It corresponds with the Austin FSOD database CARE_CLASS_CODE. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "IMPAIRMENT GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Impairment Group which is linked to FSOD Database field IMPAIRMENT_CODE. These choices can be observed in the FIM template where this information is obtained from. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ONSET DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the onset date.  It corresponds to the Austin FSOD database ONSET_DATE.  The field reflects the the date of the onset of the impairment that was coded in the Impairment Group field for which the subject was rehabilitated.  Date of Onset: Complete this data field with the date of the onset of the impairment that was coded in the Impairment Group field for which the subject was rehabilitated.  Record eight digits (including century).  For conditions that have an insidious onset",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ADMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the admit date.  It corresponds to the Austin FSOD database ADMIT_DATE. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the discharge date.  It corresponds to the Austin FSOD database DISCHARGE_DATE. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date entry which is linked to the FSOD Database field ASSESSMENT_DATE for Interims and follow-ups only.  This field keeps track of the last date the form was edited. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "XMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the transmit date from site to Austin. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "OP CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ADD;E:EDIT;D:DELETE;",
+      "helpText": "Internal use due to cases that could be deleted or new cases created by edits, may be utilized in future design for the site case number. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "READY FOR XMIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains a yes or no for ready for transmit. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PROG NOTE IEN",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "Progress note IEN. Used to keep all addendums attached to the original progress note. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "EMAIL ID",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This field contains MailMan message number.  This field is used to put responses to the original message when FIM template is used to update an existing entry. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "AUSTIN STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACK;1:ERR;",
+      "helpText": "This will either be an ACK or ERR depending on the message received back from Austin regarding the data sent from the sites. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "ERROR DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an error description of messages coming back from Austin.  It documents why a particular entry received an ERR status and should be retransmitted to Austin. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STREET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's street address which is pulled from the patient file and is linked to the FSOD Database field STREET. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "City information which is pulled from the patient file and is linked to the FSOD Database field CITY ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's state.  This field corresponds to the Austin FSOD database STATE. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "POSTAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Entry is free text, but must be between 5-10 characters in length.  This field is linked to the FSOD Database field POSTAL_CODE ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's phone number which is pulled from the patient file. This corresponds with the Austin FSOD database TELEPHONE. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "GENDER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry is linked to the FSOD Database field GENDER_CODE.  This data is obtained from the Patient file via a broker call from the FIM template when a user makes a patient selection. This field can be changed in the template if there appears to be a discrepancy in the Patient file.  Users final input will be stored in this field. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "ETHNIC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's ethnicity.  This corresponds with the Austin FSOD database ETHNICITY_CODE.  This data is obtained from the Patient file via a broker call from the FIM template when a user makes a patient selection. The broker call looks at the patient file Race fields (.06 and 2). This field can be changed in the template if there appears to be a discrepancy in the Patient file.  Users final input will be stored in this field in the format that FSOD will accept. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "MARITAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry linked to the FSOD Database field MARITAL_CODE.   This data is obtained from the Patient file via a broker call from the FIM template when a user makes a patient selection. This field can be changed in the template if there appears to be a discrepancy in the Patient file.  Users final input will be stored in this field. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "ACTIVE MIL IND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the active military ind. of the patient.  This corresponds with the FSOD datbase ACTIVE_MIL_IND.  A-Active Military N-Not Active Military ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "ADMIT CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the admit class of the patient.  This corresponds with the FSOD database ADMIT_CLASS_CODE. Admit Class Code              1= Initial Rehab              2= Short Stay              3= Readmission  The Uniform Data System for Medical Rehabilitation (UDSmr) manual is where the codes come from. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "INTERRUPTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the interruption code.  This corresponds with the FSOD database INTERRUPTION_CODE.  Program Interruptions: If a subject is transferred to an acute care setting for a temporary period of time and cannot participate in his/her rehabilitation program during that temporary period, but is able to return within 30 days to participate in the rehab program, he/she is coded as having an interruption (1) for that period of time. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "TRANSFER 1 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption began.  Date entry which is linked to the FSOD Database field TRANSFER1_DATE ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "RETURN 1 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption ended and patient returned.  This corresponds with the FSOD database RETURN1_DATE. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "TRANSFER 2 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption began.  Date entry which is linked to the FSOD Database field TRANSFER2_DATE ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "RETURN 2 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption ended and patient returned.  This corresponds with the FSOD database RETURN2_DATE. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "TRANSFER 3 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption began.  Date entry which is linked to the FSOD Database field TRANSFER3_DATE ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "RETURN 3 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date interruption ended and patient returned.  This corresponds with the FSOD database RETURN3_DATE. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "ASIA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the asia code.  This corresponds with the FSOD datbase ASIA_CODE. USDmr:  .  Asia Code: This field is completed for subjects with traumatic spinal cord injuries only.  Enter the category which best describes the degree of motor and sensory involvement on admission to the rehab program:                 A Complete: No motor or sensory function is preserved in the sacral segments S4-S5                 B Incomplete (Sensory Preserved): Sensory function, but not motor function, is",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "A EAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of eating for admission. This corresponds to the Austin FSOD database EAT_FIM. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "A GROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field GROOM_FIM. This field contains the FIM Score for assessment of grooming for admission. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "A BATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bathing for admission. This corresponds to the Austin FSOD database BATH_FIM. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "A DRESS UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field DRESS_UP_FIM This field contains the FIM Score for assessment of dressing for admission. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "A DRESS LO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of dressing for admission. This corresponds to the Austin FSOD database DRESS_LO_FIM. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "A TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TOILET_FIM This field contains the FIM Score for assessment of toileting for admission. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "A BLADDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bladder for admission. This corresponds to the Austin FSOD database BLADDER_FIM. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "A BOWEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field BOWEL_FIM This field contains the FIM Score for assessment of bowel functions for admission. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "A TRANS CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a chair for admission. This corresponds to the Austin FSOD database TRANS_CHAIR_FIM. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "A TRANS TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TRANS_TOILET_FIM This field contains the FIM Score for assessment of transport to toilet for admission. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "A TRANS TUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a tub for admission. This corresponds to the Austin FSOD database TRANS_TUB_FIM. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "A LOCOM WALK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field pertains to locom walk. This corresponds to the Austin FSOD database LOCOM_WALK_FIM.  This field contains the FIM Score for assessment of locom walk for admission ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "A LOCOM STAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of locom stair for admission. This corresponds to the Austin FSOD database LOCUM_STAIR_FIM. ",
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "A COMPREHEND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_FIM This field contains the FIM Score for assessment of comprehending for admission. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 4.15,
+      "fieldName": "A EXPRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express for admission. This corresponds to the Austin FSOD database EXPRESS_FIM. ",
+      "fieldNumber_": 4.15
+    },
+    {
+      "fieldNumber": 4.16,
+      "fieldName": "A INTERACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field INTERACT_FIM This field contains the FIM Score for assessment of interacting for admission. ",
+      "fieldNumber_": 4.16
+    },
+    {
+      "fieldNumber": 4.17,
+      "fieldName": "A PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of a problem for admission. This corresponds to the Austin FSOD database PROBLEM_FIM. ",
+      "fieldNumber_": 4.17
+    },
+    {
+      "fieldNumber": 4.18,
+      "fieldName": "A MEMORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field MEMORY_FIM This field contains the FIM Score for assessment of memory for admission. ",
+      "fieldNumber_": 4.18
+    },
+    {
+      "fieldNumber": 4.19,
+      "fieldName": "A WALK MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of walk mode for admission. This corresponds to the Austin FSOD database WALK_MODE_FIM. ",
+      "fieldNumber_": 4.19
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "A COMPREHEND MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_MODE.  This field contains the FIM Score for assessment of comprehend mode for admission. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.21,
+      "fieldName": "A EXPRESS MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express mode for admission. This corresponds to the Austin FSOD database EXPRESS_MODE_FIM. ",
+      "fieldNumber_": 4.21
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "D EAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of eating for discharge. This corresponds to the Austin FSOD database EAT_FIM. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "D GROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field GROOM_FIM This field contains the FIM Score for assessment of grooming for discharge ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "D BATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bathing for discharge. This corresponds to the Austin FSOD database BATH_FIM. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "D DRESS UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field DRESS_UP_FIM This field contains the FIM Score for assessment of dressing for discharge ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "D DRESS LO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of dressing for discharge. This corresponds to the Austin FSOD database DRESS_LO_FIM. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "D TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TOILET_FIM This field contains the FIM Score for assessment of toileting for discharge ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "D BLADDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bladder for discharge. This corresponds to the Austin FSOD database BLADDER_FIM. ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 5.08,
+      "fieldName": "D BOWEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field BOWEL_FIM This field contains the FIM Score for assessment of bowel functions for discharge ",
+      "fieldNumber_": 5.08
+    },
+    {
+      "fieldNumber": 5.09,
+      "fieldName": "D TRANS CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a chair for discharge. This corresponds to the Austin FSOD database TRANS_CHAIR_FIM. ",
+      "fieldNumber_": 5.09
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "D TRANS TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TRANS_TOILET_FIM This field contains the FIM Score for assessment of transport to toilet for discharge ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "D TRANS TUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a tub for discharge. This corresponds to the Austin FSOD database TRANS_TUB_FIM. ",
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.12,
+      "fieldName": "D LOCOM WALK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field LOCOM_WALK_FIM.  This field contains the FIM Score for assessment of locom walk for discharge ",
+      "fieldNumber_": 5.12
+    },
+    {
+      "fieldNumber": 5.13,
+      "fieldName": "D LOCOM STAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of locom stair for discharge. This corresponds to the Austin FSOD database LOCUM_STAIR_FIM. ",
+      "fieldNumber_": 5.13
+    },
+    {
+      "fieldNumber": 5.14,
+      "fieldName": "D COMPREHEND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_FIM.  This field contains the FIM Score for assessment of comprehending for discharge ",
+      "fieldNumber_": 5.14
+    },
+    {
+      "fieldNumber": 5.15,
+      "fieldName": "D EXPRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express for discharge. This corresponds to the Austin FSOD database EXPRESS_FIM. ",
+      "fieldNumber_": 5.15
+    },
+    {
+      "fieldNumber": 5.16,
+      "fieldName": "D INTERACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field INTERACT_FIM.  This field contains the FIM Score for assessment of interacting for discharge ",
+      "fieldNumber_": 5.16
+    },
+    {
+      "fieldNumber": 5.17,
+      "fieldName": "D PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of a problem for discharge. This corresponds to the Austin FSOD database PROBLEM_FIM. ",
+      "fieldNumber_": 5.17
+    },
+    {
+      "fieldNumber": 5.18,
+      "fieldName": "D MEMORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field MEMORY_FIM.  This field contains the FIM Score for assessment of memory for discharge ",
+      "fieldNumber_": 5.18
+    },
+    {
+      "fieldNumber": 5.19,
+      "fieldName": "D WALK MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of walk mode for discharge. This corresponds to the Austin FSOD database WALK_MODE_FIM. ",
+      "fieldNumber_": 5.19
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "D COMPREHEND MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_MODE.  This field contains the FIM Score for assessment of comprehend mode for discharge ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.21,
+      "fieldName": "D EXPRESS MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express mode for discharge. This corresponds to the Austin FSOD database EXPRESS_MODE_FIM. ",
+      "fieldNumber_": 5.21
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "I EAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of eating for the interim. This corresponds to the Austin FSOD database EAT_FIM. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "I GROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field GROOM_FIM This field contains the FIM Score for assessment of grooming for interm ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "I BATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bathing for the interim. This corresponds to the Austin FSOD database BATH_FIM. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "I DRESS UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field DRESS_UP_FIM.  This field contains the FIM Score for assessment of dressing for interm ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "I DRESS LO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of dressing for the interim. This corresponds to the Austin FSOD database DRESS_LO_FIM. ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "I TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TOILET_FIM.  This field contains the FIM Score for assessment of toilet for interm ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "I BLADDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bladder for the interim. This corresponds to the Austin FSOD database BLADDER_FIM. ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.08,
+      "fieldName": "I BOWEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field BOWEL_FIM.  This field contains the FIM Score for assessment of bowel for interm ",
+      "fieldNumber_": 6.08
+    },
+    {
+      "fieldNumber": 6.09,
+      "fieldName": "I TRANS CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a chair for the iterim. This corresponds to the Austin FSOD database TRANS_CHAIR_FIM. ",
+      "fieldNumber_": 6.09
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "I TRANS TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TRANS_TOILET_FIM This field contains the FIM Score for assessment of transport to toilet for interm ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.11,
+      "fieldName": "I TRANS TUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a tub for the interim. This corresponds to the Austin FSOD database TRANS_TUB_FIM. ",
+      "fieldNumber_": 6.11
+    },
+    {
+      "fieldNumber": 6.12,
+      "fieldName": "I LOCOM WALK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field LOCOM_WALK_FIM.  This field contains the FIM Score for assessment of locom walk for interm ",
+      "fieldNumber_": 6.12
+    },
+    {
+      "fieldNumber": 6.13,
+      "fieldName": "I LOCOM STAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of locom stair for the interim. This corresponds to the Austin FSOD database LOCUM_STAIR_FIM. ",
+      "fieldNumber_": 6.13
+    },
+    {
+      "fieldNumber": 6.14,
+      "fieldName": "I COMPREHEND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_FIM.  This field contains the FIM Score for assessment of comprehending for interm ",
+      "fieldNumber_": 6.14
+    },
+    {
+      "fieldNumber": 6.15,
+      "fieldName": "I EXPRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express for the interim. This corresponds to the Austin FSOD database EXPRESS_FIM. ",
+      "fieldNumber_": 6.15
+    },
+    {
+      "fieldNumber": 6.16,
+      "fieldName": "I INTERACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field INTERACT_FIM.  This field contains the FIM Score for assessment of interacting for interm ",
+      "fieldNumber_": 6.16
+    },
+    {
+      "fieldNumber": 6.17,
+      "fieldName": "I PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of a problem for the interim. This corresponds to the Austin FSOD database PROBLEM_FIM. ",
+      "fieldNumber_": 6.17
+    },
+    {
+      "fieldNumber": 6.18,
+      "fieldName": "I MEMORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field MEMORY_FIM.  This field contains the FIM Score for assessment of memory for interm ",
+      "fieldNumber_": 6.18
+    },
+    {
+      "fieldNumber": 6.19,
+      "fieldName": "I WALK MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of walk mode for the interim. This corresponds to the Austin FSOD database WALK_MODE_FIM. ",
+      "fieldNumber_": 6.19
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "I COMPREHEND MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_MODE.  This field contains the FIM Score for assessment of comprehend mode for interm ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.21,
+      "fieldName": "I EXPRESS MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express mode for the interim. This corresponds to the Austin FSOD database EXPRESS_MODE_FIM. ",
+      "fieldNumber_": 6.21
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "F EAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of eating for follow-up. This corresponds to the Austin FSOD database EAT_FIM. c ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "F GROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field GROOM_FIM This field contains the FIM Score for assessment of grooming for followup ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "F BATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bathing for follow-up. This corresponds to the Austin FSOD database BATH_FIM. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 7.04,
+      "fieldName": "F DRESS UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field DRESS_UP_FIM.  This field contains the FIM Score for assessment of dressing for followup ",
+      "fieldNumber_": 7.04
+    },
+    {
+      "fieldNumber": 7.05,
+      "fieldName": "F DRESS LO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of dressing for follow-up. This corresponds to the Austin FSOD database DRESS_LO_FIM. ",
+      "fieldNumber_": 7.05
+    },
+    {
+      "fieldNumber": 7.06,
+      "fieldName": "F TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TOILET_FIM.  This field contains the FIM Score for assessment of toilet for followup ",
+      "fieldNumber_": 7.06
+    },
+    {
+      "fieldNumber": 7.07,
+      "fieldName": "F BLADDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bladder for follow-up. This corresponds to the Austin FSOD database BLADDER_FIM. ",
+      "fieldNumber_": 7.07
+    },
+    {
+      "fieldNumber": 7.08,
+      "fieldName": "F BOWEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field BOWEL_FIM.  This field contains the FIM Score for assessment of bowel for followup ",
+      "fieldNumber_": 7.08
+    },
+    {
+      "fieldNumber": 7.09,
+      "fieldName": "F TRANS CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a chair for follow-up. This corresponds to the Austin FSOD database TRANS_CHAIR_FIM. ",
+      "fieldNumber_": 7.09
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "F TRANS TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TRANS_TOILET_FIM This field contains the FIM Score for assessment of transport to toilet for followup ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.11,
+      "fieldName": "F TRANS TUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a tub for follow-up. This corresponds to the Austin FSOD database TRANS_TUB_FIM. ",
+      "fieldNumber_": 7.11
+    },
+    {
+      "fieldNumber": 7.12,
+      "fieldName": "F LOCOM WALK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field LOCOM_WALK_FIM This field contains the FIM Score for assessment of locom walk for followup ",
+      "fieldNumber_": 7.12
+    },
+    {
+      "fieldNumber": 7.13,
+      "fieldName": "F LOCOM STAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of locom stair for follow-up. This corresponds to the Austin FSOD database LOCUM_STAIR_FIM. ",
+      "fieldNumber_": 7.13
+    },
+    {
+      "fieldNumber": 7.14,
+      "fieldName": "F COMPREHEND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_FIM ",
+      "fieldNumber_": 7.14
+    },
+    {
+      "fieldNumber": 7.15,
+      "fieldName": "F EXPRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express for follow-up. This corresponds to the Austin FSOD database EXPRESS_FIM. ",
+      "fieldNumber_": 7.15
+    },
+    {
+      "fieldNumber": 7.16,
+      "fieldName": "F INTERACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field INTERACT_FIM.  This field contains the FIM Score for assessment of interacting for interm ",
+      "fieldNumber_": 7.16
+    },
+    {
+      "fieldNumber": 7.17,
+      "fieldName": "F PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of a problem for follow-up. This corresponds to the Austin FSOD database PROBLEM_FIM. ",
+      "fieldNumber_": 7.17
+    },
+    {
+      "fieldNumber": 7.18,
+      "fieldName": "F MEMORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field MEMORY_FIM.  This field contains the FIM Score for assessment of memory for followup ",
+      "fieldNumber_": 7.18
+    },
+    {
+      "fieldNumber": 7.19,
+      "fieldName": "F WALK MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of walk mode for follow-up. This corresponds to the Austin FSOD database WALK_MODE_FIM. ",
+      "fieldNumber_": 7.19
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "F COMPREHEND MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_MODE.  This field contains the FIM Score for assessment of comprehend mode for followup ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.21,
+      "fieldName": "F EXPRESS MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express mode for follow-up. This corresponds to the Austin FSOD database EXPRESS_MODE_FIM. ",
+      "fieldNumber_": 7.21
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "G EAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of eating for goals. This corresponds to the Austin FSOD database EAT_FIM. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "G GROOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field GROOM_FIM This field contains the FIM Score for assessment of grooming for goals ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "G BATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bathing for goals This corresponds to the Austin FSOD database BATH_FIM. ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "G DRESS UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field DRESS_UP_FIM.  This field contains the FIM Score for assessment of dressing for goals ",
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 8.05,
+      "fieldName": "G DRESS LO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of dressing for goals. This corresponds to the Austin FSOD database DRESS_LO_FIM. ",
+      "fieldNumber_": 8.05
+    },
+    {
+      "fieldNumber": 8.06,
+      "fieldName": "G TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TOILET_FIM.  This field contains the FIM Score for assessment of toilet for goal ",
+      "fieldNumber_": 8.06
+    },
+    {
+      "fieldNumber": 8.07,
+      "fieldName": "G BLADDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of bladder for goals. This corresponds to the Austin FSOD database BLADDER_FIM. ",
+      "fieldNumber_": 8.07
+    },
+    {
+      "fieldNumber": 8.08,
+      "fieldName": "G BOWEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field BOWEL_FIM.  This field contains the FIM Score for assessment of bowel for goals ",
+      "fieldNumber_": 8.08
+    },
+    {
+      "fieldNumber": 8.09,
+      "fieldName": "G TRANS CHAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field pertains to the patient needing to be transported to a chair. This corresponds to the Austin FSOD database TRANS_CHAIR_FIM. ",
+      "fieldNumber_": 8.09
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "G TRANS TOILET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field TRANS_TOILET_FIM This field contains the FIM Score for assessment of transport to toilet for goals ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.11,
+      "fieldName": "G TRANS TUB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of transport to a tub for admission. This corresponds to the Austin FSOD database TRANS_TUB_FIM. ",
+      "fieldNumber_": 8.11
+    },
+    {
+      "fieldNumber": 8.12,
+      "fieldName": "G LOCOM WALK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field LOCOM_WALK_FIM.  This field contains the FIM Score for assessment of locom walk for goals ",
+      "fieldNumber_": 8.12
+    },
+    {
+      "fieldNumber": 8.13,
+      "fieldName": "G LOCOM STAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of locom stair for goals. This corresponds to the Austin FSOD database LOCUM_STAIR_FIM. ",
+      "fieldNumber_": 8.13
+    },
+    {
+      "fieldNumber": 8.14,
+      "fieldName": "G COMPREHEND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_FIM.  This field contains the FIM Score for assessment of comprehending for goals ",
+      "fieldNumber_": 8.14
+    },
+    {
+      "fieldNumber": 8.15,
+      "fieldName": "G EXPRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express for goals. This corresponds to the Austin FSOD database EXPRESS_FIM. ",
+      "fieldNumber_": 8.15
+    },
+    {
+      "fieldNumber": 8.16,
+      "fieldName": "G INTERACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field INTERACT_FIM.  This field contains the FIM Score for assessment of interacting for goals ",
+      "fieldNumber_": 8.16
+    },
+    {
+      "fieldNumber": 8.17,
+      "fieldName": "G PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of a problem for goals. This corresponds to the Austin FSOD database PROBLEM_FIM. ",
+      "fieldNumber_": 8.17
+    },
+    {
+      "fieldNumber": 8.18,
+      "fieldName": "G MEMORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field MEMORY_FIM.  This field contains the FIM Score for assessment of memory for goals ",
+      "fieldNumber_": 8.18
+    },
+    {
+      "fieldNumber": 8.19,
+      "fieldName": "G WALK MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of walk mode for goals. This corresponds to the Austin FSOD database WALK_MODE_FIM. ",
+      "fieldNumber_": 8.19
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "G COMPREHEND MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text entry of only one character and is linked to the FSOD Database field COMPREHEND_MODE.  This field contains the FIM Score for assessment of comprehend mode for goals ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.21,
+      "fieldName": "G EXPRESS MODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FIM Score for assessment of express mode for goals. This corresponds to the Austin FSOD database EXPRESS_MODE_FIM. ",
+      "fieldNumber_": 8.21
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "783.01",
+      "required": false,
+      "helpText": "This is where case notes from the FIM form is stored.  This does not get transmitted to Austin. ",
+      "isMultiple": true,
+      "subFileNumber": 783.01,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 143,
+  "crossReferences": [
+    {"name": "ATRAN", "field": },
+    {"name": "B", "field": },
+    {"name": "CASE", "field": },
+    {"name": "DFN", "field": },
+    {"name": "783", "field": .01, "type": "regular"},
+    {"name": "783", "field": .02, "type": "regular"},
+    {"name": "783", "field": .03, "type": "regular"},
+    {"name": "", "field": .13, "type": "regular"},
+    {"name": "783", "field": .15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

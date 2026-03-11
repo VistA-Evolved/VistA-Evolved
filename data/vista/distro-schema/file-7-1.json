@@ -1,0 +1,46 @@
+{
+  "fileNumber": 7.1,
+  "fileName": "SPECIALITY",
+  "globalRoot": "7.1",
+  "globalReference": "^DIC(7.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "Name of this specialty entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation for this specialty. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;R:REHAB MEDICINE;N:NEUROLOGY;P:MENTAL HEALTH;",
+      "helpText": "The assocaited service for this specialty. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,467 @@
+{
+  "fileNumber": 213.2,
+  "fileName": "NURS AMIS 1106B FTEE",
+  "globalRoot": "213.2",
+  "globalReference": "^NURSA(213.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Compares budgeted/ceiling FTEE against the actual FTEE present within Nursing Service for a specific facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "(01) BUDGETED RN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of (budgeted/ceiling) FTEE designated as RN positions.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "(02) BUDGETED LPN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of (budgeted/ceiling) FTEE designated as LPN/LVN positions. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "(03) BUDGETED NA",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of (budgeted/ceiling) FTEE designated as NA positions. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "(04) BUDGETED CLERICAL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of (budgeted/ceiling) FTEE designated as 'clerical' positions. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "(05) BUDGETED ADMIN OFFICER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of (budgeted/ceiling) FTEE designated as 'administrative officer' positions. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "(06) BUDGETED CLIN SPECIALIST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'clinical specialist' positions. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "(07) BUDGETED RN PRACTITIONER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'nurse practitioner' positions. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "(08) BUDGETED INFECT. CONTROL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'infection control' positions. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "(09) BUDGETED PUBLIC HEALTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'public health' positions. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "(10) BUDGETED STAFF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'staff nurse' positions. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "(11) BUDGETED CHIEF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'chief nurse' positions. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "(12) BUDGETED ASST CHIEF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'asst chief nurse' positions. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "(13) BUDGETED ASSOC CHIEF N.S.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'associate chief for N.S.' positions. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "(14) BUDGETED SUPERVISOR",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'supervisor' positions. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "(15) BUDGETED HEAD NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'head nurse' positions. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "(16) BUDGETED OTHER NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated for special positions not identified in fields 6 thru 15 or 17 thru 20. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "(17) BUDGETED NURSE RESHR",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'nurse researcher' positions. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "(18) BUDGETED ASSOC CHIEF/RESH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'associate chief/research' positions. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "(19) BUDGETED ASSOC CHIEF/EDU",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'associate chief/education' positions. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "(20) BUDGETED INSTR/EDU",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,3",
+      "length": 9,
+      "required": true,
+      "helpText": "Total number of RN (budgeted/ceiling) FTEE designated as 'instructor/ education' positions. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "(21) ACTUAL RN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of FTEE currently in RN positions. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "(22) ACTUAL LPN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of FTEE currently in LPN/LVN positions. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "(23) ACTUAL NA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of FTEE currently in 'nursing assistant' positions. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "(24) ACTUAL CLERICAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of FTEE currently in clerical positions. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "(25) ACTUAL ADMIN OFFICER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of FTEE currently in 'administrative officer' positions. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "(26) ACTUAL CLIN SPECIALIST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'clinical specialist' positions. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "(27) ACTUAL RN PRACTITIONER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'nurse practitioner' positions. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "(28) ACTUAL INFECTION CONTROL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'infection control' positions. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "(29) ACTUAL PUBLIC HEALTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'public health' positions. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "(30) ACTUAL STAFF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'staff nurse' positions. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "(31) ACTUAL CHIEF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE in 'chief nurse' positions. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "(32) ACTUAL ASST CHIEF NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'assistant chief' positions. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "(33) ACTUAL ASSOC CHIEF N.S.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE in 'associate chief/N.S.' positions. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "(34) ACTUAL SUPERVISOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'supervisor' positions. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "(35) ACTUAL HEAD NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'head nurse' positions. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "(36) ACTUAL OTHER NURSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in special positions. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "(37) ACTUAL NURSE RESHR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'nurse researcher' positions. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "(38) ACTUAL ASSOC CHIEF/RESHR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'associate chief/research' positions. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "(39) ACTUAL ASSOC CHIEF/EDU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'associate chief/education' positions. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "(40) ACTUAL INSTR/EDU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of RN FTEE currently in 'instructor/education' positions. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "TOTAL ACTUAL 26-40",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed total of actual RN FTEE from fields 26 thru 40. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 41.5,
+      "fieldName": "TOTAL BUDGET 6-20",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Computed total of budgeted/ceiling RN FTEE from fields 6 thru 20. ",
+      "fieldNumber_": 41.5
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DISCREPANCY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "The difference between the total actual FTEE and total budgeted FTEE. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date for which this budgeted FTEE information was entered. ",
+      "fieldNumber_": 43
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "213.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

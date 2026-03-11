@@ -1,0 +1,88 @@
+{
+  "fileNumber": 410.9,
+  "fileName": "AUTHORITY OF REQUEST",
+  "globalRoot": "410.9",
+  "globalReference": "^PRCS(410.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUTHORITY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the code for quick selection of the authority.  For primary  authorities they are numeric sequential.  For secondary authorities they  are alpha characters.  Alpha characters can be duplicated but not in  relation to the same primary authority. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTHORITY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the text description of the 1358 authority to be used for display  and reports. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRIMARY AUTHORITY",
+      "dataType": "POINTER",
+      "rawType": "*P410.9'",
+      "required": false,
+      "pointerTo": 410.9,
+      "helpText": "This field is used to point to the primary authority.  When entering a 1358 after selecting a primary authority, you will only be able to select associated sub-authorities that relate to the primary authority. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE INACTIVE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the authority is no longer valid for selection in association with creation of a 1358.  If the date is past the entry will no longer be available for selection. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VENDOR MANDATORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This will specify if a vendor selection is mandatory for this type of  authority on a 1358. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CONTRACT MANDATORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This will specify if a contract selection is mandatory for this type of  authority on a 1358. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FMS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 1-3 digit code to be included on code sheets transmitted to FMS that indicates the authority that was used for the 1358 creation. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "410.9", "field": .01, "type": "regular"},
+    {"name": "410.9", "field": .02, "type": "regular"},
+    {"name": "410.9", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

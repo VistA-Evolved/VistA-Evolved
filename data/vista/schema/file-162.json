@@ -1,0 +1,81 @@
+{
+  "fileNumber": 162,
+  "fileName": "FEE BASIS PAYMENT",
+  "globalRoot": "162P",
+  "globalReference": "^FBAAC(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The veteran for which service was provided. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "162.01P",
+      "required": false,
+      "helpText": "This mutiple keeps track of all the vendors used by the Fee Basis patient. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRAVEL PAYMENT DATE",
+      "dataType": "DATE",
+      "rawType": "162.04DA",
+      "required": false,
+      "helpText": "This multiple keeps track of any travel paid to a Fee Basis patient, in conjunction with an outpatient service. ",
+      "isMultiple": true,
+      "subFileNumber": 162.04,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DATE OF PURGE",
+      "dataType": "DATE",
+      "rawType": "162.099DA",
+      "required": false,
+      "helpText": "Date that the purge routine was run which resulted in the purging of payment data for this patient.  This data will exist ONLY IF data was purged for the patient for the specific purge run. ",
+      "isMultiple": true,
+      "subFileNumber": 162.099,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACK", "field": },
+    {"name": "ACKT", "field": },
+    {"name": "ACN", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AFN", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "AO", "field": },
+    {"name": "AP", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DODI", "field": },
+    {"name": "IPAC", "field": },
+    {"name": "162", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

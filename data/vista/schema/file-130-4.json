@@ -1,0 +1,79 @@
+{
+  "fileNumber": 130.4,
+  "fileName": "ICD SEARCH API",
+  "globalRoot": "130.4I",
+  "globalReference": "^DIC(130.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal entry number for this field. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the application that this API will be used by. A package may have more than one application name if it is required. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P80.4'",
+      "required": false,
+      "pointerTo": 80.4,
+      "helpText": "This is the version that this API will be used to retrieve data for. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DIAG:DIAGNOSIS;PROC:PROCEDURE;",
+      "helpText": "This is the Type of ICD search API that will be executed for this entry. Current choices are Diagnosis or Procedure. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OWNER PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "RP9.4",
+      "required": true,
+      "pointerTo": 9.4,
+      "helpText": "This is the package that is responsible for this entry.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MUMPS CODE TO EXECUTE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Enter the MUMPS code to execute the correct search user interface for this coding system. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "130.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "130.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICDS(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(80.4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

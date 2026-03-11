@@ -1,0 +1,49 @@
+{
+  "fileNumber": 3.54,
+  "fileName": "RESOURCE",
+  "globalRoot": "3.54",
+  "globalReference": "^%ZISL(3.54,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file is for internal use by TaskMan and the Device Handler.  Names of resources are defined by the Device Handler according to the $I value of resource-type devices in the Device file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AVAILABLE SLOTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates whether another task can be sent to this resource. For sequential or single thread processing, this field will have a constant value of one.  The RESOURCE SLOTS field in the Device file is used to determine the number.  If the RESOURCE SLOTS are greater than one, the value of this field will change as the beginning tasks complete and slots become available for other tasks that have been directed to this resource. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SLOTS IN USE",
+      "dataType": "SUBFILE",
+      "rawType": "3.542A",
+      "required": false,
+      "helpText": "This multiple field stores information about the jobs that currently own this resource. ",
+      "isMultiple": true,
+      "subFileNumber": 3.542,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AJ", "field": },
+    {"name": "B", "field": },
+    {"name": "3.54", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

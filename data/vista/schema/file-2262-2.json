@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2262.2,
+  "fileName": "ASISTS DEVICE SIZE",
+  "globalRoot": "2262.2",
+  "globalReference": "^OOPS(2262.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:Needle;S:Syringe;NS:Needle or Syringe;",
+      "helpText": "This file contains valid device size selections for OBJECTS CAUSING INJURY field (#38) whose description contains either the word Needle or Syringe. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2262.2", "field": .01, "type": "regular"},
+    {"name": "2262.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

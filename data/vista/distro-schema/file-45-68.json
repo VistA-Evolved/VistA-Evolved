@@ -1,0 +1,38 @@
+{
+  "fileNumber": 45.68,
+  "fileName": "FACILITY SUFFIX",
+  "globalRoot": "45.68O",
+  "globalReference": "^DIC(45.68,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the facility suffix. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "45.69D",
+      "required": false,
+      "helpText": "The effective date multiple contains the effective date(s) and active/inactive flag(s) for each facility suffix.  ",
+      "isMultiple": true,
+      "subFileNumber": 45.69,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "45.68", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

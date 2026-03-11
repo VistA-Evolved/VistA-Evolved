@@ -1,0 +1,27 @@
+{
+  "fileNumber": 301.93,
+  "fileName": "IVM CASE CLOSURE REASON",
+  "globalRoot": "301.93",
+  "globalReference": "^IVM(301.93,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLOSURE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to describe the reason that an IVM PATIENT (Means Test case) record was closed. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "301.93", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

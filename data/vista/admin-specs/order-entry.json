@@ -1,0 +1,4275 @@
+{
+  "id": "order-entry",
+  "name": "Order Entry / CPRS",
+  "description": "Clinical orders, quick orders, order checks, order sets",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.858Z",
+  "files": {
+    "count": 6,
+    "items": [
+      {
+        "fileNumber": 100,
+        "fileName": "File #100",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 100.01,
+        "fileName": "File #100.01",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 100.02,
+        "fileName": "File #100.02",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 100.98,
+        "fileName": "File #100.98",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 101,
+        "fileName": "File #101",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 101.41,
+        "fileName": "File #101.41",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 188,
+    "items": [
+      {
+        "name": "ORQQAL LIST",
+        "tag": "LIST",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergies for a patient. "
+      },
+      {
+        "name": "ORQQAL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ALLERGY ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns a string of information for a specific allergy/ adverse reaction.  Returned data is delimited by \"^\" and includes: allergen/reactant, originator, originator title, verified/not verified,  observed/historical,<blank>,type, observation date, severity, drug class,  symptoms/reacti"
+      },
+      {
+        "name": "ORQQPL LIST",
+        "tag": "LIST",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of problems for a patient. "
+      },
+      {
+        "name": "ORQQPL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PROBLEM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a string of detailed information for a problem. "
+      },
+      {
+        "name": "ORQQXQA PATIENT",
+        "tag": "PATIENT",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of notifications for a patient for the current user. "
+      },
+      {
+        "name": "ORQQXQA USER",
+        "tag": "USER",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "USER ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns notifications for current user. "
+      },
+      {
+        "name": "ORQQVI VITALS",
+        "tag": "FASTVIT",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Array of patient most recent vitals within start and stop date/times.  If no start and stop dates are indicated, the most recent are returned.   If no start date is passed then the start date is 1 (i.e. before any dates).   If no stop date is passed then the start date is also the stop date and if t"
+      },
+      {
+        "name": "ORQPT DEFAULT PATIENT LIST",
+        "tag": "DEFLIST",
+        "routine": "ORQPTQ11",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns the current user's default patient list. "
+      },
+      {
+        "name": "ORQPT PROVIDERS",
+        "tag": "PROV",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns an array of providers. "
+      },
+      {
+        "name": "ORQPT PROVIDER PATIENTS",
+        "tag": "PROVPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USER ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients linked to a provider/user. "
+      },
+      {
+        "name": "ORQPT CLINIC PATIENTS",
+        "tag": "CLINPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "CLINIC ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns patients with appointments at a clinic between start and stop dates "
+      },
+      {
+        "name": "ORQPT SPECIALTIES",
+        "tag": "SPEC",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns an array of treating specialties. "
+      },
+      {
+        "name": "ORQPT SPECIALTY PATIENTS",
+        "tag": "SPECPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SPECIALTY ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients linked to a treating specialty. "
+      },
+      {
+        "name": "ORQPT TEAMS",
+        "tag": "TEAMS",
+        "routine": "ORQPTQ1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of teams. "
+      },
+      {
+        "name": "ORQPT TEAM PATIENTS",
+        "tag": "TEAMPTS",
+        "routine": "ORQPTQ1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TEAM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients on a team. "
+      },
+      {
+        "name": "ORQPT WARD PATIENTS",
+        "tag": "WARDPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "WARD ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of patients on a ward. "
+      },
+      {
+        "name": "ORQPT CLINICS",
+        "tag": "CLIN",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of clinics. "
+      },
+      {
+        "name": "ORQQPS LIST",
+        "tag": "LIST",
+        "routine": "ORQQPS",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of a patient's medications. "
+      },
+      {
+        "name": "ORB FOLLOW-UP STRING",
+        "tag": "GUI",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns a string of follow-up data.  Content of the data  varies by notification. "
+      },
+      {
+        "name": "ORB DELETE ALERT",
+        "tag": "DEL",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function deletes an alert. "
+      },
+      {
+        "name": "ORQPT WARDS",
+        "tag": "WARD",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of wards. "
+      },
+      {
+        "name": "ORB FOLLOW-UP TYPE",
+        "tag": "TYPE",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the follow-up action type for a notification as identified via the alert xqaid. "
+      },
+      {
+        "name": "ORB FOLLOW-UP ARRAY",
+        "tag": "GUI",
+        "routine": "ORB3FUP1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns an array of follow-up data.  Content of the data varies by notification. "
+      },
+      {
+        "name": "ORQOR DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORWOR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ORDER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns detailed information regarding an order. "
+      },
+      {
+        "name": "ORQPT DEFAULT LIST SOURCE",
+        "tag": "DEFSRC",
+        "routine": "ORQPTQ11",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns the source of the current user's default patient list. "
+      },
+      {
+        "name": "ORWPT ID INFO",
+        "tag": "IDINFO",
+        "routine": "ORWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns identifying information for a patient. "
+      },
+      {
+        "name": "ORWPT LIST ALL",
+        "tag": "LISTALL",
+        "routine": "ORWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a set of patient names for use with a long list box. "
+      },
+      {
+        "name": "ORWUH POPUP",
+        "tag": "POPUP",
+        "routine": "ORWUH",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Retrieves the \"What's This\" text for a given control. "
+      },
+      {
+        "name": "ORWLR CUMULATIVE REPORT",
+        "tag": "CUM",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call returns an up to date laboratory cumulative report for a given  patient. "
+      },
+      {
+        "name": "ORQQVS VISITS/APPTS",
+        "tag": "VSITAPPT",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DUMMY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient appointments and visits for a date/time range. location. "
+      },
+      {
+        "name": "ORQQPP LIST",
+        "tag": "LIST",
+        "routine": "ORQQPP",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of active Patient Postings for a patient. "
+      },
+      {
+        "name": "ORQPT WARDRMBED",
+        "tag": "WRB",
+        "routine": "ORQPTQ3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the ward, room-bed for a patient. "
+      },
+      {
+        "name": "ORQQPX IMMUN LIST",
+        "tag": "IMMLIST",
+        "routine": "ORQQPX",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient immunizations. "
+      },
+      {
+        "name": "ORQOR LIST",
+        "tag": "LIST",
+        "routine": "ORQOR1",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GROUP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STARTDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOPDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient orders. "
+      },
+      {
+        "name": "ORQQLR DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQLR",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORDER NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the details of a lab order. "
+      },
+      {
+        "name": "ORQQVS DETAIL NOTES",
+        "tag": "DETNOTE",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "Patient DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "Visit",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the progress notes based on patient and visit identifier. "
+      },
+      {
+        "name": "ORQQVS DETAIL SUMMARY",
+        "tag": "DETSUM",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "Patient",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "Visit",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns discharge summary for a visit. "
+      },
+      {
+        "name": "ORQQPS DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQPS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MEDICATION ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the details of a medication order. "
+      },
+      {
+        "name": "ORB SORT METHOD",
+        "tag": "SORT",
+        "routine": "ORQORB",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the default sort method for notification display based on the  precedence USER, DIVISION, SYSTEM, PACKAGE. "
+      },
+      {
+        "name": "ORQQXMB MAIL GROUPS",
+        "tag": "MAILG",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns mail groups in a system. "
+      },
+      {
+        "name": "ORQPT ATTENDING/PRIMARY",
+        "tag": "ATTPRIM",
+        "routine": "ORQPTQ3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a patient's attending physician and primary provider. "
+      },
+      {
+        "name": "ORWD DEF",
+        "tag": "DEF",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the formatting definition for an ordering dialog from the ORDER DIALOG file (101.41). "
+      },
+      {
+        "name": "ORQ NULL LIST",
+        "tag": "NLIST",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a null list. "
+      },
+      {
+        "name": "ORQQLR SEARCH RANGE OUTPT",
+        "tag": "SROUT",
+        "routine": "ORQQLR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the date search range in number of days (e.g. 90) to begin the  search before today.  For example, a value of 90 would indicate to limit the search between ninety day. Limited to Outpatients. "
+      },
+      {
+        "name": "ORQQAL LIST REPORT",
+        "tag": "LRPT",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergens, severity and signs/symptoms in a report format which can be used in a \"detailed\" display.  This RPC was set up to support the listing of allergies when selected from the Patient Postings list. "
+      },
+      {
+        "name": "ORWORR GET",
+        "tag": "GET",
+        "routine": "ORWORR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of orders & and associated fields and text. "
+      },
+      {
+        "name": "ORWU USERINFO",
+        "tag": "USERINFO",
+        "routine": "ORWU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns preferences for the current user. "
+      },
+      {
+        "name": "ORWD SAVE",
+        "tag": "SAVE",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Saves an order.  The order is passed in ORDIALOG format. "
+      },
+      {
+        "name": "ORWD SIGN",
+        "tag": "SIGN",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Changes signature status on a list of orders and optionally releases the orders to their respective services. "
+      },
+      {
+        "name": "ORWD OI",
+        "tag": "OI",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a group of orderable items to be used in the OnNeedData event for a long list box. "
+      },
+      {
+        "name": "ORQQAL LIST",
+        "tag": "LIST",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergies for a patient. "
+      },
+      {
+        "name": "ORQQAL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ALLERGY ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns a string of information for a specific allergy/ adverse reaction.  Returned data is delimited by \"^\" and includes: allergen/reactant, originator, originator title, verified/not verified,  observed/historical,<blank>,type, observation date, severity, drug class,  symptoms/reacti"
+      },
+      {
+        "name": "ORQQPL LIST",
+        "tag": "LIST",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of problems for a patient. "
+      },
+      {
+        "name": "ORQQPL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PROBLEM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a string of detailed information for a problem. "
+      },
+      {
+        "name": "ORQQXQA PATIENT",
+        "tag": "PATIENT",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of notifications for a patient for the current user. "
+      },
+      {
+        "name": "ORQQXQA USER",
+        "tag": "USER",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "USER ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns notifications for current user. "
+      },
+      {
+        "name": "ORQQVI VITALS",
+        "tag": "FASTVIT",
+        "routine": "ORQQVI",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Array of patient most recent vitals within start and stop date/times.  If no start and stop dates are indicated, the most recent are returned.   If no start date is passed then the start date is 1 (i.e. before any dates).   If no stop date is passed then the start date is also the stop date and if t"
+      },
+      {
+        "name": "ORQPT DEFAULT PATIENT LIST",
+        "tag": "DEFLIST",
+        "routine": "ORQPTQ11",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns the current user's default patient list. "
+      },
+      {
+        "name": "ORQPT PROVIDERS",
+        "tag": "PROV",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns an array of providers. "
+      },
+      {
+        "name": "ORQPT PROVIDER PATIENTS",
+        "tag": "PROVPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "USER ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients linked to a provider/user. "
+      },
+      {
+        "name": "ORQPT CLINIC PATIENTS",
+        "tag": "CLINPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "CLINIC ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns patients with appointments at a clinic between start and stop dates "
+      },
+      {
+        "name": "ORQPT SPECIALTIES",
+        "tag": "SPEC",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns an array of treating specialties. "
+      },
+      {
+        "name": "ORQPT SPECIALTY PATIENTS",
+        "tag": "SPECPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "SPECIALTY ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients linked to a treating specialty. "
+      },
+      {
+        "name": "ORQPT TEAMS",
+        "tag": "TEAMS",
+        "routine": "ORQPTQ1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of teams. "
+      },
+      {
+        "name": "ORQPT TEAM PATIENTS",
+        "tag": "TEAMPTS",
+        "routine": "ORQPTQ1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TEAM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns an array of patients on a team. "
+      },
+      {
+        "name": "ORQPT WARD PATIENTS",
+        "tag": "WARDPTS",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "WARD ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of patients on a ward. "
+      },
+      {
+        "name": "ORQPT CLINICS",
+        "tag": "CLIN",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of clinics. "
+      },
+      {
+        "name": "ORQQPS LIST",
+        "tag": "LIST",
+        "routine": "ORQQPS",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of a patient's medications. "
+      },
+      {
+        "name": "ORQPT WARDS",
+        "tag": "WARD",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns a list of wards. "
+      },
+      {
+        "name": "ORQOR DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORWOR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ORDER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns detailed information regarding an order. "
+      },
+      {
+        "name": "ORQPT DEFAULT LIST SOURCE",
+        "tag": "DEFSRC",
+        "routine": "ORQPTQ11",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Function returns the source of the current user's default patient list. "
+      },
+      {
+        "name": "ORQQVS VISITS/APPTS",
+        "tag": "VSITAPPT",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "START DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOP DATE/TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DUMMY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient appointments and visits for a date/time range. location. "
+      },
+      {
+        "name": "ORQQPP LIST",
+        "tag": "LIST",
+        "routine": "ORQQPP",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of active Patient Postings for a patient. "
+      },
+      {
+        "name": "ORQPT WARDRMBED",
+        "tag": "WRB",
+        "routine": "ORQPTQ3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the ward, room-bed for a patient. "
+      },
+      {
+        "name": "ORQQPX IMMUN LIST",
+        "tag": "IMMLIST",
+        "routine": "ORQQPX",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient immunizations. "
+      },
+      {
+        "name": "ORQOR LIST",
+        "tag": "LIST",
+        "routine": "ORQOR1",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GROUP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STARTDATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STOPDATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of patient orders. "
+      },
+      {
+        "name": "ORQQLR DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQLR",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORDER NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the details of a lab order. "
+      },
+      {
+        "name": "ORQQVS DETAIL NOTES",
+        "tag": "DETNOTE",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "Patient DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "Visit",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the progress notes based on patient and visit identifier. "
+      },
+      {
+        "name": "ORQQVS DETAIL SUMMARY",
+        "tag": "DETSUM",
+        "routine": "ORQQVS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "Patient",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "Visit",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns discharge summary for a visit. "
+      },
+      {
+        "name": "ORQQPS DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQPS",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MEDICATION ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the details of a medication order. "
+      },
+      {
+        "name": "ORQQXMB MAIL GROUPS",
+        "tag": "MAILG",
+        "routine": "ORQQXQA",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns mail groups in a system. "
+      },
+      {
+        "name": "ORQPT ATTENDING/PRIMARY",
+        "tag": "ATTPRIM",
+        "routine": "ORQPTQ3",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a patient's attending physician and primary provider. "
+      },
+      {
+        "name": "ORQ NULL LIST",
+        "tag": "NLIST",
+        "routine": "ORQPTQ2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a null list. "
+      },
+      {
+        "name": "ORQQLR SEARCH RANGE OUTPT",
+        "tag": "SROUT",
+        "routine": "ORQQLR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the date search range in number of days (e.g. 90) to begin the  search before today.  For example, a value of 90 would indicate to limit the search between ninety day. Limited to Outpatients. "
+      },
+      {
+        "name": "ORQQAL LIST REPORT",
+        "tag": "LRPT",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergens, severity and signs/symptoms in a report format which can be used in a \"detailed\" display.  This RPC was set up to support the listing of allergies when selected from the Patient Postings list. "
+      },
+      {
+        "name": "ORQPT PATIENT TEAM PROVIDERS",
+        "tag": "TPTPR",
+        "routine": "ORQPTQ1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of providers linked to a patient via teams. "
+      },
+      {
+        "name": "ORQQPL PROBLEM LIST",
+        "tag": "PROBL",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Problem list for CPRS GUI client "
+      },
+      {
+        "name": "ORQQPL USER PROB CATS",
+        "tag": "CAT",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "rETURNS ARRAY OF CATEGORIES FOR USER TO SELECT FROM "
+      },
+      {
+        "name": "ORQQPL USER PROB LIST",
+        "tag": "PROB",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Category",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns array of user specific problems to select from "
+      },
+      {
+        "name": "ORQQPL PROBLEM LEX SEARCH",
+        "tag": "LEXSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NUM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get a list from clinical lexicon for display in list or combo box "
+      },
+      {
+        "name": "ORQQPL EDIT LOAD",
+        "tag": "EDLOAD",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "provider",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "vamc",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return array of default fields and original fields - GMPFLD() and GMPORIG() "
+      },
+      {
+        "name": "ORQQPL INIT PT",
+        "tag": "INITPT",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "returns death indicator, sc and exposures "
+      },
+      {
+        "name": "ORQQPL PROVIDER LIST",
+        "tag": "PROVSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "RETURNS ARRAY OF PROVIDERS MATCHING INPUT "
+      },
+      {
+        "name": "ORQQPL EDIT SAVE",
+        "tag": "EDSAVE",
+        "routine": "ORQQPL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PROV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VAMC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "sAVES EDITED PROBLEM RECORD "
+      },
+      {
+        "name": "ORQQPL CLIN SRCH",
+        "tag": "CLINSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns list of clinics for problem list. Should be replaced by CLIN^ORQPT "
+      },
+      {
+        "name": "ORQQPL ADD SAVE",
+        "tag": "ADDSAVE",
+        "routine": "ORQQPL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "GMPDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMPROV",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "GMPVAMC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADDARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Add new problem record "
+      },
+      {
+        "name": "ORQQPL INIT USER",
+        "tag": "INITUSER",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "Returns user parameters for problem list "
+      },
+      {
+        "name": "ORQQPL UPDATE",
+        "tag": "UPDATE",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "UPDARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Updates problem record "
+      },
+      {
+        "name": "ORQQPL DELETE",
+        "tag": "DELETE",
+        "routine": "ORQQPL2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PROVIDERID",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "VAMC",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "DELETES A PROBLEM "
+      },
+      {
+        "name": "ORQQPL AUDIT HIST",
+        "tag": "HIST",
+        "routine": "ORQQPL2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMPIFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RETURN PROBLEM AUDIT HISTORY "
+      },
+      {
+        "name": "ORWPT ID INFO",
+        "tag": "IDINFO",
+        "routine": "ORWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns identifying information for a patient. "
+      },
+      {
+        "name": "ORWPT LIST ALL",
+        "tag": "LISTALL",
+        "routine": "ORWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a set of patient names for use with a long list box. "
+      },
+      {
+        "name": "ORWUH POPUP",
+        "tag": "POPUP",
+        "routine": "ORWUH",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Retrieves the \"What's This\" text for a given control. "
+      },
+      {
+        "name": "ORWLR CUMULATIVE REPORT",
+        "tag": "CUM",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call returns an up to date laboratory cumulative report for a given  patient. "
+      },
+      {
+        "name": "ORWD DEF",
+        "tag": "DEF",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the formatting definition for an ordering dialog from the ORDER DIALOG file (101.41). "
+      },
+      {
+        "name": "ORWORR GET",
+        "tag": "GET",
+        "routine": "ORWORR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of orders & and associated fields and text. "
+      },
+      {
+        "name": "ORWU USERINFO",
+        "tag": "USERINFO",
+        "routine": "ORWU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns preferences for the current user. "
+      },
+      {
+        "name": "ORWD SAVE",
+        "tag": "SAVE",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Saves an order.  The order is passed in ORDIALOG format. "
+      },
+      {
+        "name": "ORWD SIGN",
+        "tag": "SIGN",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Changes signature status on a list of orders and optionally releases the orders to their respective services. "
+      },
+      {
+        "name": "ORWD OI",
+        "tag": "OI",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a group of orderable items to be used in the OnNeedData event for a long list box. "
+      },
+      {
+        "name": "ORWDLR DEF",
+        "tag": "DEF",
+        "routine": "ORWDLR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads dialog data (lists & defaults) for a lab order. "
+      },
+      {
+        "name": "ORWDLR LOAD",
+        "tag": "LOAD",
+        "routine": "ORWDLR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads sample, specimen, and urgency information for a given lab test. "
+      },
+      {
+        "name": "ORWDLR ABBSPEC",
+        "tag": "ABBSPEC",
+        "routine": "ORWDLR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns lab specimens that have an abbreviation (used as default list). "
+      },
+      {
+        "name": "ORWDLR ALLSAMP",
+        "tag": "ALLSAMP",
+        "routine": "ORWDLR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of collection samples for a lab order. "
+      },
+      {
+        "name": "ORWDLR OIPARAM",
+        "tag": "LOAD",
+        "routine": "ORWDLR",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "No longer used. "
+      },
+      {
+        "name": "ORWU VALIDSIG",
+        "tag": "VALIDSIG",
+        "routine": "ORWU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Validates a broker encrypted electronic signature. "
+      },
+      {
+        "name": "ORWPT APPTLST",
+        "tag": "APPTLST",
+        "routine": "ORWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of appointments for a patient (for visit selection). "
+      },
+      {
+        "name": "ORWU HOSPLOC",
+        "tag": "HOSPLOC",
+        "routine": "ORWU",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a set of hospital locations for use in a long list box. "
+      },
+      {
+        "name": "ORWPT ADMITLST",
+        "tag": "ADMITLST",
+        "routine": "ORWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of admissions for a patient (for visit selection). "
+      },
+      {
+        "name": "ORWD FORMID",
+        "tag": "FORMID",
+        "routine": "ORWD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the Form ID (mapping to a windows form) for an ordering dialog. "
+      },
+      {
+        "name": "ORWD GET4EDIT",
+        "tag": "GET4EDIT",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the responses for an already existing order. "
+      },
+      {
+        "name": "ORWD VALIDACT",
+        "tag": "VALIDACT",
+        "routine": "ORWD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns 1 if action is valid for an order, otherwise 0^error. "
+      },
+      {
+        "name": "ORWD SAVEACT",
+        "tag": "SAVEACT",
+        "routine": "ORWD",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Saves the action on a order in an unsigned/unreleased state. "
+      },
+      {
+        "name": "ORWD DT",
+        "tag": "DT",
+        "routine": "ORWD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a date in internal Fileman format. "
+      },
+      {
+        "name": "ORWDCSLT LOOK200",
+        "tag": "LOOK200",
+        "routine": "ORWDCSLT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Validates Attn: field of a consult order. "
+      },
+      {
+        "name": "ORWDCSLT DEF",
+        "tag": "DEF",
+        "routine": "ORWDCSLT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Load dialog data (lists & defaults) for a consult order. (16-BIT) "
+      },
+      {
+        "name": "ORWD PROVKEY",
+        "tag": "PROVKEY",
+        "routine": "ORWD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns 1 if the users possesses the PROVIDER key. "
+      },
+      {
+        "name": "ORWDGX LOAD",
+        "tag": "LOAD",
+        "routine": "ORWDGX",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads a list of activities for an activity order. "
+      },
+      {
+        "name": "ORWDPS LOAD",
+        "tag": "LOAD",
+        "routine": "ORWDPS",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads dialog data (lists & defaults) for a pharmacy order once an orderable item (Drug & Form) is selected. "
+      },
+      {
+        "name": "ORWDRA DEF",
+        "tag": "DEF",
+        "routine": "ORWDRA",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads dialog data (lists & defaults) for a radiology order. "
+      },
+      {
+        "name": "ORWDGX VMDEF",
+        "tag": "VMDEF",
+        "routine": "ORWDGX",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads dialog data (lists & defaults) for a vitals order. "
+      },
+      {
+        "name": "ORWDPS DEF",
+        "tag": "DEF",
+        "routine": "ORWDPS",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Loads dialog data (lists & defaults) for a pharmacy order (inpatient and outpatient). "
+      },
+      {
+        "name": "ORWDLR STOP",
+        "tag": "STOP",
+        "routine": "ORWDLR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Calculates a stop date (for lab orders with schedules). "
+      },
+      {
+        "name": "ORWU NEWPERS",
+        "tag": "NEWPERS",
+        "routine": "ORWU",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a set of New Person file entries for use in a long list box. "
+      },
+      {
+        "name": "ORWU DEVICE",
+        "tag": "DEVICE",
+        "routine": "ORWU",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of print devices. "
+      },
+      {
+        "name": "ORWRA IMAGING EXAMS",
+        "tag": "EXAMS",
+        "routine": "ORWRA",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns a list on imaging exams for a specific patient. "
+      },
+      {
+        "name": "ORWRA REPORT TEXT",
+        "tag": "RPT",
+        "routine": "ORWRA",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EXAMID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns an array containing a formattied imaging report. This array matches exactly the report format on the roll 'n scroll version of CPRS. "
+      },
+      {
+        "name": "ORWRP REPORT LISTS",
+        "tag": "LIST",
+        "routine": "ORWRP",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This remote procedure call returns a list of reports, Health Summary types and date ranges that can be displayed at the workstation. There are no input parameters fo this rpc. "
+      },
+      {
+        "name": "ORWRP REPORT TEXT",
+        "tag": "RPT",
+        "routine": "ORWRP",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REPORT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "HEALTH SUMMARY TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE RANGE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REPORT SECTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc retrieves the report text for a report selected on the Report tab. the report format on the roll 'n scroll version of CPRS. "
+      },
+      {
+        "name": "ORWRP PRINT REPORT",
+        "tag": "PRINT",
+        "routine": "ORWRPP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 6,
+        "params": [
+          {
+            "name": "DEVICE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REPORT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "HEALTH SUMMARY TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE RANGE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EXAM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc is used to print a report on the Report tab in CPRS. "
+      },
+      {
+        "name": "ORWLR REPORT LISTS",
+        "tag": "LIST",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This remote procedure call returns a list of lab cumulative sections, and date ranges that can be displayed at the workstation. There are no input parameters fo this rpc. "
+      },
+      {
+        "name": "ORWLR CUMULATIVE SECTION",
+        "tag": "RPT",
+        "routine": "ORWLR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PART OF CUMULATIVE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATE RANGE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REPORT SECTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc retrieves the part of the lab cumulative report  selected by the user on the Labs tab. "
+      },
+      {
+        "name": "ORWRA PRINT REPORT",
+        "tag": "PRINT",
+        "routine": "ORWRAP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DEVICE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "EXAM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc is used to print an imaging report on the Imaging tab in CPRS. "
+      },
+      {
+        "name": "ORWDPS INPT",
+        "tag": "INPT",
+        "routine": "ORWDPS",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Checks restrictions for entering inpatient meds.  If no restrictions, a 0 is returned.  If there is a restriction, it is returned in the format:      1^restriction text "
+      },
+      {
+        "name": "ORWDPS OUTPT",
+        "tag": "OUTPT",
+        "routine": "ORWDPS",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Checks restrictions for entering outpatient meds.  If no restrictions, a 0 is returned.  If there is a restriction, it is returned in the format:      1^restriction text "
+      },
+      {
+        "name": "ORWCS LIST OF CONSULT REPORTS",
+        "tag": "LIST",
+        "routine": "ORWCS",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns a list on consult reports for a specific patient. "
+      },
+      {
+        "name": "ORWCS REPORT TEXT",
+        "tag": "RPT",
+        "routine": "ORWCS",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CONSULT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns an array containing a formattied consult report. This array matches exactly the report format on the roll 'n scroll version of CPRS. "
+      },
+      {
+        "name": "ORWCS PRINT REPORT",
+        "tag": "PRINT",
+        "routine": "ORWCSP",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DEVICE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CONSULT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc is used to print a consult report on the Consult tab in CPRS. "
+      },
+      {
+        "name": "ORWD KEY",
+        "tag": "KEY",
+        "routine": "ORWD",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "RPC which receives a key name and returns a 1 if the user holds the key, otherwise a 0 is returned. "
+      },
+      {
+        "name": "ORWPT LAST5",
+        "tag": "LAST5",
+        "routine": "ORWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of patients matching the string of Last Name Initial_Last 4 SSN (Initial/Last 4 look-up to PATIENT file). "
+      },
+      {
+        "name": "ORB FOLLOW-UP STRING",
+        "tag": "GUI",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns a string of follow-up data.  Content of the data  varies by notification. "
+      },
+      {
+        "name": "ORB DELETE ALERT",
+        "tag": "DEL",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function deletes an alert. "
+      },
+      {
+        "name": "ORB FOLLOW-UP TYPE",
+        "tag": "TYPE",
+        "routine": "ORB3FUP1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the follow-up action type for a notification as identified via the alert xqaid. "
+      },
+      {
+        "name": "ORB FOLLOW-UP ARRAY",
+        "tag": "GUI",
+        "routine": "ORB3FUP1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns an array of follow-up data.  Content of the data varies by notification. "
+      },
+      {
+        "name": "ORB SORT METHOD",
+        "tag": "SORT",
+        "routine": "ORQORB",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the default sort method for notification display based on the  precedence USER, DIVISION, SYSTEM, PACKAGE. "
+      },
+      {
+        "name": "ORBCMA5 GETUD",
+        "tag": "GETUD",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA5 GETUDID",
+        "tag": "GETUDID",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA5 GETIVID",
+        "tag": "GETIVID",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA5 ODITMBC",
+        "tag": "ODITMBC",
+        "routine": "ORBCMA5",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 DLGSLCT",
+        "tag": "DLGSLCT",
+        "routine": "ORBCMA32",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 ODSLCT",
+        "tag": "ODSLCT",
+        "routine": "ORBCMA1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 CHK94",
+        "tag": "CHK94",
+        "routine": "ORBCMA1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 FAILDEA",
+        "tag": "FAILDEA",
+        "routine": "ORBCMA1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 FORMALT",
+        "tag": "FORMALT",
+        "routine": "ORBCMA1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 DOSEALT",
+        "tag": "DOSEALT",
+        "routine": "ORBCMA1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA1 SCHALL",
+        "tag": "SCHALL",
+        "routine": "ORBCMA1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 AUTH",
+        "tag": "AUTH",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 DRUGMSG",
+        "tag": "DRUGMSG",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "BOWDPS32 FORMALT",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 FORMALT",
+        "tag": "FORMALT",
+        "routine": "ORBCMA32",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 VALROUTE",
+        "tag": "VALROUTE",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 ISSPLY",
+        "tag": "ISSPLY",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 IVAMT",
+        "tag": "IVAMT",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 VALRATE",
+        "tag": "VALRATE",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA32 VALSCH",
+        "tag": "VALSCH",
+        "routine": "ORBCMA32",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORB FORWARD ALERT",
+        "tag": "FWD",
+        "routine": "ORB31",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RECIPIENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "COMMENT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The rpc forwards an alert. "
+      },
+      {
+        "name": "ORB RENEW ALERT",
+        "tag": "RENEW",
+        "routine": "ORB31",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "XQAID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This rpc renews an alert. "
+      },
+      {
+        "name": "ORBCMA5 LOCK",
+        "tag": "LOCK",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORJOB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Due to issues with LOCKing between the CPRS GUI chart and the  BCMAOrderCom dll, some changes are necessary to how locks are handled  when locking the patient chart.   Using the $J value for the CPRS GUI session, the CPRS GUI will call the  BCMAOrderCom dll and pass in the $J value and this value is"
+      },
+      {
+        "name": "ORBCMA5 UNLOCK",
+        "tag": "UNLOCK",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBCMA5 JOB",
+        "tag": "JOB",
+        "routine": "ORBCMA5",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Due to issues with LOCKing between the CPRS GUI chart and the  BCMAOrderCom dll, some changes are necessary to how locks are handled  when locking the patient chart.   In order to facility those changes, the CPRS GUI chart needs to know the  $J value for the running process for the open connection o"
+      },
+      {
+        "name": "ORB3UTL DEFER",
+        "tag": "DEFER",
+        "routine": "ORB3UTL",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "ORPROV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORALERT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORDT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "allows to defer an alert DEFER(ORY,ORPROV,ORALERT,ORDT)  ;defer an alert         ;ORALERT - alert to defer         ;ORPROV - provider to defer the alert for         ;ORDT - date/time to defer the alert until "
+      },
+      {
+        "name": "ORB3UTL NOTIFPG",
+        "tag": "NOTIFPG",
+        "routine": "ORB3UTL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "ORPAT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORPG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "NOTIFPG(ORY,ORPAT,ORPG) ;page through a patients alerts         ;ORPAT - patient DFN         ;ORPG - page to get "
+      },
+      {
+        "name": "ORB3UTL GET NOTIFICATION",
+        "tag": "GETNOTIF",
+        "routine": "ORB3UTL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the entire notificaiton entry as a name=value set. "
+      },
+      {
+        "name": "ORB3UTL GET DESCRIPTION",
+        "tag": "GETDESC",
+        "routine": "ORB3UTL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORB3UTL GET EXISTING NOTES",
+        "tag": "GETNOTES",
+        "routine": "ORB3UTL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBSMART ISSMNOT",
+        "tag": "ISSMNOT",
+        "routine": "ORBSMART",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBSMART INSMALRT",
+        "tag": "INSMALRT",
+        "routine": "ORBSMART",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORBSMART OUSMALRT",
+        "tag": "OUSMALRT",
+        "routine": "ORBSMART",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      },
+      {
+        "name": "ORB3U2 GETRCPNT",
+        "tag": "GETRCPNT",
+        "routine": "ORB3U2",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": ""
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "OR ADD ORDERS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR REVIEW ORDERS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PROFILES",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR RESULTS REPORTING",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR MAIN MENU NURSE",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR MAIN MENU WARD CLERK",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR OE/RR MENU WARD CLERK",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR OE/RR MENU NURSE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR OE/RR MENU CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR ADD MENU WARD CLERK",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR ADD MENU NURSE",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR ADD MENU CLINICIAN",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR MAIN MENU CLINICIAN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR CPRS GUI CHART",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM CHART COPY",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM ORDER MISC",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM PRINTS (HOSP)",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM PRINTS (LOC)",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM REQ/LABEL",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM SERVICE COPY",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM SUMMARY REPORTS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM WORK COPY",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM PRINTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM ADD MENU",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM IRM MENU",
+        "type": "menu",
+        "securityKey": "XUPROG",
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM COORDINATOR MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR PARAM UNSIGNED ORDERS VIEW",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR TERMINATE CLEANUP",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR UNSIGNED ORDERS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "OR NATURE/STATUS ORDER SEARCH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 173,
+    "items": [
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ALLERGY ID:",
+        "rpcName": "ORQQAL DETAIL",
+        "paramName": "ALLERGY ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROBLEM ID:",
+        "rpcName": "ORQQPL DETAIL",
+        "paramName": "PROBLEM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER ID:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "USER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER ID:",
+        "rpcName": "ORQPT PROVIDER PATIENTS",
+        "paramName": "USER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC ID:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "CLINIC ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SPECIALTY ID:",
+        "rpcName": "ORQPT SPECIALTY PATIENTS",
+        "paramName": "SPECIALTY ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TEAM ID:",
+        "rpcName": "ORQPT TEAM PATIENTS",
+        "paramName": "TEAM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "WARD ID:",
+        "rpcName": "ORQPT WARD PATIENTS",
+        "paramName": "WARD ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP STRING",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB DELETE ALERT",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP TYPE",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP ARRAY",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDER:",
+        "rpcName": "ORQOR DETAIL",
+        "paramName": "ORDER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWPT ID INFO",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWLR CUMULATIVE REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUMMY:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "DUMMY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPP LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQPT WARDRMBED",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPX IMMUN LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GROUP:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "GROUP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STARTDATE:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "STARTDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOPDATE:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "STOPDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQQLR DETAIL",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDER NUMBER:",
+        "rpcName": "ORQQLR DETAIL",
+        "paramName": "ORDER NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Patient DFN:",
+        "rpcName": "ORQQVS DETAIL NOTES",
+        "paramName": "Patient DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Visit:",
+        "rpcName": "ORQQVS DETAIL NOTES",
+        "paramName": "Visit",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Patient:",
+        "rpcName": "ORQQVS DETAIL SUMMARY",
+        "paramName": "Patient",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Visit:",
+        "rpcName": "ORQQVS DETAIL SUMMARY",
+        "paramName": "Visit",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPS DETAIL",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MEDICATION ID:",
+        "rpcName": "ORQQPS DETAIL",
+        "paramName": "MEDICATION ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQPT ATTENDING/PRIMARY",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST REPORT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ALLERGY ID:",
+        "rpcName": "ORQQAL DETAIL",
+        "paramName": "ALLERGY ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROBLEM ID:",
+        "rpcName": "ORQQPL DETAIL",
+        "paramName": "PROBLEM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQQXQA PATIENT",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER ID:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "USER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQQXQA USER",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVI VITALS",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER ID:",
+        "rpcName": "ORQPT PROVIDER PATIENTS",
+        "paramName": "USER ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC ID:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "CLINIC ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "START DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE:",
+        "rpcName": "ORQPT CLINIC PATIENTS",
+        "paramName": "STOP DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SPECIALTY ID:",
+        "rpcName": "ORQPT SPECIALTY PATIENTS",
+        "paramName": "SPECIALTY ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TEAM ID:",
+        "rpcName": "ORQPT TEAM PATIENTS",
+        "paramName": "TEAM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "WARD ID:",
+        "rpcName": "ORQPT WARD PATIENTS",
+        "paramName": "WARD ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQPS LIST",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDER:",
+        "rpcName": "ORQOR DETAIL",
+        "paramName": "ORDER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "START DATE/TIME:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "START DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOP DATE/TIME:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "STOP DATE/TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUMMY:",
+        "rpcName": "ORQQVS VISITS/APPTS",
+        "paramName": "DUMMY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPP LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQPT WARDRMBED",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPX IMMUN LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GROUP:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "GROUP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STARTDATE:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "STARTDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STOPDATE:",
+        "rpcName": "ORQOR LIST",
+        "paramName": "STOPDATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQQLR DETAIL",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDER NUMBER:",
+        "rpcName": "ORQQLR DETAIL",
+        "paramName": "ORDER NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Patient DFN:",
+        "rpcName": "ORQQVS DETAIL NOTES",
+        "paramName": "Patient DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Visit:",
+        "rpcName": "ORQQVS DETAIL NOTES",
+        "paramName": "Visit",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Patient:",
+        "rpcName": "ORQQVS DETAIL SUMMARY",
+        "paramName": "Patient",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Visit:",
+        "rpcName": "ORQQVS DETAIL SUMMARY",
+        "paramName": "Visit",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPS DETAIL",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MEDICATION ID:",
+        "rpcName": "ORQQPS DETAIL",
+        "paramName": "MEDICATION ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQPT ATTENDING/PRIMARY",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST REPORT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT:",
+        "rpcName": "ORQPT PATIENT TEAM PROVIDERS",
+        "paramName": "PATIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORQQPL PROBLEM LIST",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "ORQQPL USER PROB CATS",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "ORQQPL USER PROB CATS",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Category:",
+        "rpcName": "ORQQPL USER PROB LIST",
+        "paramName": "Category",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "ORQQPL PROBLEM LEX SEARCH",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NUM:",
+        "rpcName": "ORQQPL PROBLEM LEX SEARCH",
+        "paramName": "NUM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "provider:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "provider",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "vamc:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "vamc",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORQQPL INIT PT",
+        "paramName": "DFN",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROV:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "PROV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VAMC:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "VAMC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPDFN:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPROV:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPROV",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPVAMC:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPVAMC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADDARRAY:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "ADDARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "ORQQPL INIT USER",
+        "paramName": "DUZ",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "UPDARRAY:",
+        "rpcName": "ORQQPL UPDATE",
+        "paramName": "UPDARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROVIDERID:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "PROVIDERID",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VAMC:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "VAMC",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPIFN:",
+        "rpcName": "ORQQPL AUDIT HIST",
+        "paramName": "GMPIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWPT ID INFO",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWLR CUMULATIVE REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWRA IMAGING EXAMS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWRA REPORT TEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EXAMID:",
+        "rpcName": "ORWRA REPORT TEXT",
+        "paramName": "EXAMID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWRP REPORT TEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REPORT ID:",
+        "rpcName": "ORWRP REPORT TEXT",
+        "paramName": "REPORT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HEALTH SUMMARY TYPE:",
+        "rpcName": "ORWRP REPORT TEXT",
+        "paramName": "HEALTH SUMMARY TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE RANGE:",
+        "rpcName": "ORWRP REPORT TEXT",
+        "paramName": "DATE RANGE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REPORT SECTION:",
+        "rpcName": "ORWRP REPORT TEXT",
+        "paramName": "REPORT SECTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEVICE:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "DEVICE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REPORT ID:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "REPORT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HEALTH SUMMARY TYPE:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "HEALTH SUMMARY TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE RANGE:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "DATE RANGE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EXAM ID:",
+        "rpcName": "ORWRP PRINT REPORT",
+        "paramName": "EXAM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PART OF CUMULATIVE:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "PART OF CUMULATIVE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATE RANGE:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "DATE RANGE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REPORT SECTION:",
+        "rpcName": "ORWLR CUMULATIVE SECTION",
+        "paramName": "REPORT SECTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEVICE:",
+        "rpcName": "ORWRA PRINT REPORT",
+        "paramName": "DEVICE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWRA PRINT REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EXAM ID:",
+        "rpcName": "ORWRA PRINT REPORT",
+        "paramName": "EXAM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWCS LIST OF CONSULT REPORTS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWCS REPORT TEXT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CONSULT ID:",
+        "rpcName": "ORWCS REPORT TEXT",
+        "paramName": "CONSULT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEVICE:",
+        "rpcName": "ORWCS PRINT REPORT",
+        "paramName": "DEVICE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORWCS PRINT REPORT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CONSULT ID:",
+        "rpcName": "ORWCS PRINT REPORT",
+        "paramName": "CONSULT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP STRING",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB DELETE ALERT",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP TYPE",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FOLLOW-UP ARRAY",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "BOWDPS32 FORMALT:",
+        "rpcName": "ORBCMA32 DRUGMSG",
+        "paramName": "BOWDPS32 FORMALT",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB FORWARD ALERT",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RECIPIENT:",
+        "rpcName": "ORB FORWARD ALERT",
+        "paramName": "RECIPIENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TYPE:",
+        "rpcName": "ORB FORWARD ALERT",
+        "paramName": "TYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "COMMENT:",
+        "rpcName": "ORB FORWARD ALERT",
+        "paramName": "COMMENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XQAID:",
+        "rpcName": "ORB RENEW ALERT",
+        "paramName": "XQAID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORBCMA5 LOCK",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORJOB:",
+        "rpcName": "ORBCMA5 LOCK",
+        "paramName": "ORJOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORY:",
+        "rpcName": "ORBCMA5 LOCK",
+        "paramName": "ORY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORPROV:",
+        "rpcName": "ORB3UTL DEFER",
+        "paramName": "ORPROV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORALERT:",
+        "rpcName": "ORB3UTL DEFER",
+        "paramName": "ORALERT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDT:",
+        "rpcName": "ORB3UTL DEFER",
+        "paramName": "ORDT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORPAT:",
+        "rpcName": "ORB3UTL NOTIFPG",
+        "paramName": "ORPAT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORPG:",
+        "rpcName": "ORB3UTL NOTIFPG",
+        "paramName": "ORPG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "ORB3UTL GET NOTIFICATION",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

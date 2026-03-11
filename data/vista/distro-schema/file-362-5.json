@@ -1,0 +1,71 @@
+{
+  "fileNumber": 362.5,
+  "fileName": "IB BILL/CLAIMS PROSTHETICS",
+  "globalRoot": "362.5D",
+  "globalReference": "^IBA(362.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the prosthetic item was delivered and accepted by the patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P399'X",
+      "required": true,
+      "pointerTo": 399,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The prosthetic item added to the bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RECORD",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "This is the Prosthetic record for this item transaction. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ITEM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name or short description of the Prosthetics Item. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "AIFN", "field": },
+    {"name": "AIFN1", "field": },
+    {"name": "B", "field": },
+    {"name": "362.5", "field": .01, "type": "regular"},
+    {"name": "362.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "362.5", "field": .02, "type": "regular"},
+    {"name": "362.5", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

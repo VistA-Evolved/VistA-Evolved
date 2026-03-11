@@ -1,0 +1,151 @@
+{
+  "fileNumber": 71.98,
+  "fileName": "MASTER RADIOLOGY SITE",
+  "globalRoot": "71.98",
+  "globalReference": "^RAMRPF(71.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The .01 field is the facility number.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FACILITY RADIOLOGY ADPAC",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field holds the name of the facility radiology ADPAC, or the person who performs the actions of the ADPAC. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DAYS FOR DEACTIVATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days for automatic deactivation of a new procedure. This date is deleted by the NTRT approval and local mapping of the new procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MATCHING COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field will be null until the matching of the RAD/NUC MED PROCEDURE file to the MASTER RADIOLOGY PROCEDURE file.  When matching is complete this field will be set to 'YES'. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST PROCEDURE MATCHED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last procedure to be matched from the RAD/NUC MED PROCEDURES  file.  This will be the starting point if the matching process has been interrupted and the MATCHING COMPLETE field is not set to YES. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DAYS AFTER CREATION BULLETIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DAILY;W:WEEKLY;M:MONTHLY;Q:QUARTERLY;S:SEMI-ANNUAL;A:ANNUAL;",
+      "helpText": "If a response with the new procedure data is not received from NTRT in this amount of time a reminder bulletin will be sent. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RADIOLOGY NTRT MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field holds the name of the local mailgroup that will receive messages from the NTRT team. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NTRT ISAAC SCHEMA PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the path for the ISAAC SCHEMA NAME that ISAAC will use to process incoming Radiology NTRT requests. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ISAAC ON LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "When ISAAC comes on line any changes in the processing of data that is different from the method used by VETS will be used. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SEEDING COMPLETE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will indicate that the MASTER RADIOLOGY PROCEDURE FILE (#71.99) has been seeded with the national procedures. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NTRT AITC PORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the port number for accessing the NTRT directory in AITC that will hold the nbew procedure request. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NTRT IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ip address for the NTRT server at the AITC ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "NTRT IP ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IP address for the repository of messages to NTRT on the NTRT server at AITC which will hold the NTRT new procedure requests. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 11.6,
+      "fieldName": "NTRT ISAAC SCHEMA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the schema name that ISAAC will use to process Radiology NTRT request XML's. Example is 'ISAAC-NTRT.XSD'. ",
+      "fieldNumber_": 11.6
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "71.98", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

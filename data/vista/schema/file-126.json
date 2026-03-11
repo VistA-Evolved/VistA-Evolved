@@ -1,0 +1,73 @@
+{
+  "fileNumber": 126,
+  "fileName": "GMRY PATIENT I/O FILE",
+  "globalRoot": "126P",
+  "globalReference": "^GMR(126,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field identifies the patient for whom these intake/output measurements pertain.  Pointer to the Patient file (#2). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INTAKE",
+      "dataType": "DATE",
+      "rawType": "126.01IDA",
+      "required": false,
+      "helpText": "This field contains the patient's cumulative intake within an interval of time. ",
+      "isMultiple": true,
+      "subFileNumber": 126.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OUTPUT",
+      "dataType": "DATE",
+      "rawType": "126.02IDA",
+      "required": false,
+      "helpText": "This field contains the patient's cumulative output for an interval of time. ",
+      "isMultiple": true,
+      "subFileNumber": 126.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IV",
+      "dataType": "DATE",
+      "rawType": "126.03IDA",
+      "required": false,
+      "helpText": "This multiple documents all information specific to the starting and discontinuation of an intravenous(IV) fluid on a patient. ",
+      "isMultiple": true,
+      "subFileNumber": 126.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IV MAINTENANCE",
+      "dataType": "SUBFILE",
+      "rawType": "126.04",
+      "required": false,
+      "helpText": "This multiple records the patient's IV maintenance or care including the IV infusion site care, IV tube change(s) and dressing change(s). ",
+      "isMultiple": true,
+      "subFileNumber": 126.04,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "126", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

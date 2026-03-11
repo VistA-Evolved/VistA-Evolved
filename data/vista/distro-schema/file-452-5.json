@@ -1,0 +1,27 @@
+{
+  "fileNumber": 452.5,
+  "fileName": "PRSE EDUCATION PRESENTATION MEDIA",
+  "globalRoot": "452.5",
+  "globalReference": "^PRSE(452.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEDIA SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the method of media presentation, e.g., video, class room. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "452.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

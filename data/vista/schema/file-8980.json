@@ -1,0 +1,101 @@
+{
+  "fileNumber": 8980,
+  "fileName": "KERMIT HOLDING",
+  "globalRoot": "8980s",
+  "globalReference": "^DIZ(8980,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a name used to identify the KERMIT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME LAST ACCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This holds the date/time that the KERMIT routines last access this entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Replace File Name",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "If this field is set to YES then KERMIT will replace the name with the FILE NAME received from the remote computer. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KERMIT transfer mode",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:IMAGE;1:DATA;2:TEXT;",
+      "helpText": "This holds a flag that tells KERMIT how to handle the tranfered data. TEXT will wrap the data in a WP type style. DATA will only wrap if the line in greater than 255. IMAGE stores the KERMIT packets just as they arrive. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who owns this entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Want to edit the data?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "This is used as a question to control an edit template. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACCESS ALLOWED TO USER",
+      "dataType": "POINTER",
+      "rawType": "8980.01P",
+      "required": false,
+      "helpText": "This multipule is used to allow other users access to a KERMIT HOLDING data file created by someone else. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATA",
+      "dataType": "SUBFILE",
+      "rawType": "8980.021",
+      "required": false,
+      "helpText": "This field holds the data. ",
+      "isMultiple": true,
+      "subFileNumber": 8980.021,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AOK", "field": },
+    {"name": "B", "field": },
+    {"name": "8980", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "8980", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

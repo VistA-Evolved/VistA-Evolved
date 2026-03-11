@@ -1,0 +1,186 @@
+{
+  "fileNumber": 66.4,
+  "fileName": "LAB MLTF MANAGED ITEMS",
+  "globalRoot": "66.4",
+  "globalReference": "^LAB(66.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION POINTER",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the institution for the facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NTRT SEND METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MAILMAN;X:XML;N:NONE DO NOT SEND;",
+      "helpText": "This is the method for sending NTRT requests for new lab tests/specimens. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUTO REMINDERS PARAMETER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the default number for the Auto Reminders Parameter for use by the VHA Program Office. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AUDIT PURGE DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days of the AUDIT DATE/TIME multiple in the   60 file (field 140), the minimum is 220, the max is 600. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CTT TOOLING ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if CTT TOOLING is active for the facility to send new lab test/specimens NTRT requests to. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LAB IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the lab IEN when patch was loaded and is used for determining exception tests  This field is set once and should not be changed. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SUBSCRIPT FOR NTRT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CH;2:MI;4:SP;5:CY;7:CH AND MI;8:ALL SUBSCRIPTS;",
+      "helpText": "This is used by the NTRT message program to determine which new lab tests/specimens are sent to NTRT. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST AUTO TEST ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the field that will be populated with the file 60 TEST IEN that has been evaluated for MLTF  by the auto walk routine LR60AM. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SEND NTRT MESSAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field allows the facilities to control the sending of New Laboratory Tests that are  not associated with the MLTF to NTRT for evaluation. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFAULT NTRT MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default mail group to send NTRT request to when a new test/specimen is created ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEFAULT SITE LAB MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default 'G.' local site lab mail group to send/receive messages with NTRT. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SITE LAB SERVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the server that Lab Program Office will use to request reports. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CTT TOOLING WEB ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This is the CTT TOOLING system NTRT web address for processing NTRT requests. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CTT TOOLING PORT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the port number that the CTT TOOLING system uses for the NTRT process. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CTT TOOLING NTRT PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This is the path used in the CTT TOOLING system NTRT process. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CTT TOOLING SCHEMA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "This is the Schema name that CTT TOOLING will use to process NTRT request XML's. Example is 'CTT-TOOLING-NTRT.XSD'. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CTT TOOLING SCHEMA PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This is the path to the CTT TOOLING SCHEMA NAME that CTT TOOLING will use to process incoming NTRT request XML's. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "ANM", "field": },
+    {"name": "B", "field": },
+    {"name": "66.4", "field": .01, "type": "regular"},
+    {"name": "66.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

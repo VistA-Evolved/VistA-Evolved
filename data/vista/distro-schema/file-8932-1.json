@@ -1,0 +1,220 @@
+{
+  "fileNumber": 8932.1,
+  "fileName": "PERSON CLASS",
+  "globalRoot": "8932.1",
+  "globalReference": "^USC(8932.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is a number field to allow adding new entries by number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROVIDER TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXJ100",
+      "length": 100,
+      "required": true,
+      "helpText": "This is Level I of NUCC's structure of the Provider Taxonomy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "PROVIDER TYPE CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This is Level I, Provider Type - 2 byte alphanumeric consisting of the 1st and 2nd characters of X12 CODE:   A code that identifies a major grouping of service(s) or occupation(s) of health care providers. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ110",
+      "length": 110,
+      "required": false,
+      "helpText": "This is the CMS (X12) Classification (Level II). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "CLASSIFICATION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This is Level II, Classification Code - 2 byte alphanumeric consisting of the 3rd and 4th characters of the X12 CODE:   A code that identifies more specific services(s) or occupation(s) within the health care provider type. The coding is based on licensed provider classifications. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AREA OF SPECIALIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXJ90",
+      "length": 90,
+      "required": false,
+      "helpText": "This is Level III in NUCC's structure of the Provider Taxonomy.  It is the most specific, but sometimes defines a \"sub-category\" of Classification. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "AREA OF SPECIALIZATION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "This is Level III, Area of Specialization - a 5 byte alphanumeric consisting of the 5th through 9th characters of the X12 CODE:   A code that identifies the provider's specialization, a segment of the population that a health care provider chooses to service, a specific medical service, a specialization in treating a specific disease, or any other descriptive characteristic about the providers practice relating to the services rendered. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:Active;i:Inactive;",
+      "helpText": "This field will allow old entries to be disabled without removing them from the table. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date that this Class was inactivated. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VA CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the 7 character VA assigned code for national roll-up. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "X12 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10X",
+      "length": 10X,
+      "required": false,
+      "helpText": "This is the code assigned by X12N.  X12 published the joint X12N and CMS Health Care Provider Taxonomy following the June 1997 X12 meeting. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "reserved",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is only to help a conversion routine for updates to the file. Any data is used only be a update routine. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SPECIALTY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the specialty code associated with the classification ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEFINITION",
+      "dataType": "SUBFILE",
+      "rawType": "8932.111",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8932.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P8932.1'",
+      "required": false,
+      "pointerTo": 8932.1,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "8932.199DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 8932.199,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 90002,
+      "fieldName": "INDIVIDUAL/NON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INDIVIDUAL;N:NON-INDIVIDUAL;",
+      "helpText": "This field indicates whether the entry is for an Individual or for a Non-Individual, and was added at the request of IHS in their namespace, until the file supporting Non-Individuals can be defined.   Note that the current definition of the X12 CODE does not explicitly indicate whether an entry is for an Individual or for a Non-Individual, either in value or structure definition. ",
+      "fieldNumber_": 90002
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "8932.1", "field": .01, "type": "regular"},
+    {"name": "8932.1", "field": .01, "type": "regular"},
+    {"name": "8932.1", "field": 1, "type": "regular"},
+    {"name": "8932.1", "field": 2, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "8932.1", "field": 5, "type": "regular"},
+    {"name": "8932.1", "field": 6, "type": "regular"},
+    {"name": "8932.1", "field": 99.97, "type": "regular"},
+    {"name": "8932.1", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "W \"   \",$P(^(0),U,7)"},
+    {"field": WRITE, "value": "N % S %=^(0) D:$L($P(%,U,2)) EN^DDIOL($P(%,U,2),\"\",\"!,?20\") D:$L($P(%,U,3)) EN^DDIOL($P(%,U,3),\"\",\"!,?25\")"}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 410.8,
+  "fileName": "DELIVERY POINT",
+  "globalRoot": "410.8",
+  "globalReference": "^PRCS(410.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the delivery point. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "410.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

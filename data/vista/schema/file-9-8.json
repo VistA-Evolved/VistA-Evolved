@@ -1,0 +1,269 @@
+{
+  "fileNumber": 9.8,
+  "fileName": "ROUTINE",
+  "globalRoot": "9.8",
+  "globalReference": "^DIC(9.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "RX",
+      "required": true,
+      "helpText": "The name of the PACKAGE, ROUTINE, or PROGRAM being documented. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "PK:PACKAGE;R:ROUTINE;",
+      "helpText": "This defines whether an entire PACKAGE of programs is being documented, or a single pecific ROUTINE. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "SIZE (BYTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "When XINDEX is run, the size of the routine is calculated and entered into this field. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "DATE OF %INDEX RUN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date when %INDEX was run. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "RSUM VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field is used by the Routine monitor program to store a check sum of the routine. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "RSUM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date of the last change in the RSUM value. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9.81LA",
+      "required": false,
+      "helpText": "This is a description of the PACKAGE, ROUTINE, or PROGRAM being documented. ",
+      "isMultiple": true,
+      "subFileNumber": 9.81,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "BRIEF DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "9.808",
+      "required": false,
+      "helpText": "This field holds a short description of the routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.808,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PARAMETERS (IN/OUT)",
+      "dataType": "SUBFILE",
+      "rawType": "9.83A",
+      "required": false,
+      "helpText": "Any essential or useful parameters are documented here. ",
+      "isMultiple": true,
+      "subFileNumber": 9.83,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TAG",
+      "dataType": "SUBFILE",
+      "rawType": "9.801",
+      "required": false,
+      "helpText": "Any important TAGs or ENTRY POINTs in the program are documented here. ",
+      "isMultiple": true,
+      "subFileNumber": 9.801,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CHECKSUM REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Local - don't report;1:Local - report;2:National - report;3:National - Deleted or NOT tracked;",
+      "helpText": "Entries flagged with \"National - report\" should not be changed, with \"FOR  National - Deleted or NOT tracked\" for routines that do not exist in the  system. Sites may determine if they want reports on checksum differences for local routines by selecting \"Local - report\". ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "LOCALLY MODIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field was introduced by the VISTA Auto-patch Utility v2.0 for the  purpose of not installing patches that contain routines with local mods.  If the value is set to YES for a given routine VAPU will not install a  patch or any of the routines contained in the patch. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "DELETED BY PATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is set by KIDS during an Install when the routine is sent with the 'delete at site'. It holds the patch name. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "CHECKSUM DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date the Checksum was last saved. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "CHECKSUM VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the saved Checksum value. The letter at the front tells us what checksum algorithm was used. It is loaded from the KIDS build on FORUM and sent to the sites. The only application that should load date into this field are on FORUM and the Master File Update routines in the field. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "PATCH LIST AT CHECKSUM TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the patch list from the second line of the routine at the time the checksum was updated by the XTRUTL routine. in new code on the fly. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 7.4,
+      "fieldName": "KIDS INSTALL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be updated by KIDS when a package is installed.      ",
+      "fieldNumber_": 7.4
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PATCH",
+      "dataType": "SUBFILE",
+      "rawType": "9.818",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9.818,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEV PATCH",
+      "dataType": "SUBFILE",
+      "rawType": "9.819A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 9.819,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ROUTINE INVOKED",
+      "dataType": "SUBFILE",
+      "rawType": "9.803A",
+      "required": false,
+      "helpText": "The names of the routines which this routine uses. ",
+      "isMultiple": true,
+      "subFileNumber": 9.803,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "INVOKED BY",
+      "dataType": "SUBFILE",
+      "rawType": "9.804",
+      "required": false,
+      "helpText": "The names of the routines which use this routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.804,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "VARIABLES",
+      "dataType": "SUBFILE",
+      "rawType": "9.805",
+      "required": false,
+      "helpText": "This subfile holds a list of the variables used in the routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.805,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "GLOBALS",
+      "dataType": "SUBFILE",
+      "rawType": "9.806",
+      "required": false,
+      "helpText": "This subfile lists the globals that are referenced in this routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.806,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "9.823DA",
+      "required": false,
+      "helpText": "This subfile provides an edit history of this routine according to the date that the %Z editor was used to modify the routine. ",
+      "isMultiple": true,
+      "subFileNumber": 9.823,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 6000,
+      "fieldName": "SIZE (BYTES)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field may be used to calculate the size of the routine as an alternative to the %INDEX calculation stored in Field 1.2 of this file. ",
+      "fieldNumber_": 6000
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

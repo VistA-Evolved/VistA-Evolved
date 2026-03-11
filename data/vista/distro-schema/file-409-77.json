@@ -1,0 +1,139 @@
+{
+  "fileNumber": 409.77,
+  "fileName": "ACRP TRANSMISSION HISTORY",
+  "globalRoot": "409.77",
+  "globalReference": "^SD(409.77,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMITTED OUTPAT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "RP409.73'",
+      "required": true,
+      "pointerTo": 409.73,
+      "helpText": "Entry in the Transmitted Outpatient Encounter file (#409.73) that was transmitted.  Following this pointer will allow navigation to the Outpatient Encounter and Deleted Outpatient Encounter files (#409.68 and 409.76), which are pointed to by the Transmitted Outpatient Encounter file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME OF ENCOUNTER",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date & time that the related Outpatient Encounter took place. This equates to the Date field (#.01) of the Outpatient Encounter file (#409.68) and the first piece of the Old Encounter Zero Node field (#11) of the Deleted Outpatient Encounter file (#409.74). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient of the related Outpatient Encounter.  This equates to the Patient field (#.02) of the Outpatient Encounter file (#409.68) and the second piece of the Old Encounter Zero Node field (#11) of the Deleted Outpatient Encounter file (#409.74). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the location (i.e. clinic) that the Outpatient Encounter occurred at.  This equates to the Location field (#.04) of the Outpatient Encounter file (#409.68) and the fourth piece of the Old Encounter Zero Node field (#11) of the Deleted Outpatient Encounter file (#409.74). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "This is the division that the location belonged to at the time the Outpatient Encounter occurred.  This equates to the Medical Center Division field (#.11) of the Outpatient Encounter file (#409.68) and the eleventh piece of the Old Encounter Zero Node field (#11) of the Deleted Outpatient Encounter file (#409.74). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "UNIQUE VISIT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Unique Visit ID of the related Outpatient Encounter.  This equates to the Unique Visit Number field (#.2) of the Outpatient Encounter file (#409.68) and the twentieth piece of the Old Encounter Zero Node field (#11) of the Deleted Outpatient Encounter file (#409.74). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE/TIME OF TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date & time that the transmission being recorded took place. This equates to the Date/time of Xmit to NPCDB field (#11) of the Transmitted Outpatient Encounter file (#409.73). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MESSAGE ID OF TRANSMISSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HL7 Message Control ID that was given to the message used to transmit the related Outpatient Encounter information.  This equates to the Message ID of Xmit to NPCDB field (#12) of the Transmitted Outpatient Encounter file (#409.73). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "BATCH ID OF TRANSMISSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HL7 Batch Control ID that was given to the message used to transmit the related Outpatient Encounter information.  This equates to the Batch ID of Xmit to NPCDB field (#13) of the Transmitted Outpatient Encounter file (#409.73). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE/TIME OF ACKNOWLEDGEMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date & time that the resulting acknowledgement was received. This equates to the Date/time of Ack from NPCDB field (#14) of the Transmitted Outpatient Encounter file (#409.73). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ACKNOWLEDGEMENT CODE RECEIVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;R:REJECTED;E:ERROR;",
+      "helpText": "This is the acknowledgement code that was returned in the resulting acknowledgement.  This equates to the Ack Code for Ack from NPCDB field (#15) of the Transmitted Outpatient Encounter file (#409.73). ",
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ABID", "field": },
+    {"name": "ADFN02", "field": },
+    {"name": "ADFN03", "field": },
+    {"name": "AMID", "field": },
+    {"name": "AVID", "field": },
+    {"name": "AXMIT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.77", "field": .01, "type": "regular"},
+    {"name": "409.77", "field": .02, "type": "regular"},
+    {"name": "409.77", "field": .03, "type": "regular"},
+    {"name": "409.77", "field": .03, "type": "regular"},
+    {"name": "409.77", "field": .06, "type": "regular"},
+    {"name": "409.77", "field": 11, "type": "regular"},
+    {"name": "409.77", "field": 12, "type": "regular"},
+    {"name": "409.77", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,1),4,5)_\"-\"_$E($P(^(1),U,1),6,7)_\"-\"_$E($P(^(1),U,1),2,3)"}
+  ]
+}

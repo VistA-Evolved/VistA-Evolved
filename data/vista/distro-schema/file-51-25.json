@@ -1,0 +1,38 @@
+{
+  "fileNumber": 51.25,
+  "fileName": "DOSE UNIT CONVERSION",
+  "globalRoot": "51.25",
+  "globalReference": "^PS(51.25,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOSE UNIT 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Dose Unit value to be converted from. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOSE UNIT 2",
+      "dataType": "SUBFILE",
+      "rawType": "51.251",
+      "required": false,
+      "helpText": "A list of child DOSE UNIT 2 values with an associated CONVERSION FACTOR for the parent DOSE UNIT 1. ",
+      "isMultiple": true,
+      "subFileNumber": 51.251,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "51.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

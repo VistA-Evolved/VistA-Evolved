@@ -1,0 +1,117 @@
+{
+  "fileNumber": 9002313.31,
+  "fileName": "BPS CERTIFICATION",
+  "globalRoot": "9002313.31",
+  "globalReference": "^BPS(9002313.31,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the certification - typically whichever Processor the  certification is being done for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLAIM",
+      "dataType": "POINTER",
+      "rawType": "P9002313.02'",
+      "required": false,
+      "pointerTo": 9002313.02,
+      "helpText": "This is the last BPS CLAIMS (#9002313.02) record that was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BILLING PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet to be used for Certification Testing when the test claim is a billing request. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REVERSAL PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet that will be used for certification testing when  the test is a reversal. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MAX CLAIMS PER TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the maximum number of claims that can be bundled in a  transmission.  If not entered, the certification code will set this to 1. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COB INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "This field is used to indicate the order of the payer (first-primary,  second-secondary, third-tertiary). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ELIGIBILITY PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet to be used for Certification Testing when the  test claim is an eligibility verification claim. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NCPDP FIELD #",
+      "dataType": "POINTER",
+      "rawType": "9002313.311PA",
+      "required": false,
+      "helpText": "Contains field information for any NCPDP fields which need to be defaulted. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RX IN POSITION #",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.312A",
+      "required": false,
+      "helpText": "The prescription order when submitting multiple claims in one  transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.312,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 903,
+      "fieldName": "PATIENT IEN",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Pointer to the patient file to link the patient being used for  certification to the certification being performed. ",
+      "fieldNumber_": 903
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

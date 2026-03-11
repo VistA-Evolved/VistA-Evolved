@@ -1,0 +1,237 @@
+{
+  "fileNumber": 8991.9,
+  "fileName": "DEA NUMBERS",
+  "globalRoot": "8991.9",
+  "globalReference": "^XTV(8991.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ9X",
+      "length": 9X,
+      "required": true,
+      "helpText": "This field is used to enter the providers' Drug Enforcement Administration (DEA) number. Enter the DEA number as two upper case letters followed  by 7 digits. e.g., AA1234567. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BUSINESS ACTIVITY CODE",
+      "dataType": "POINTER",
+      "rawType": "P8991.8'",
+      "required": false,
+      "pointerTo": 8991.8,
+      "helpText": "This is the business activity code related to this DEA Number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DETOX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "If the DEA provider has detox privileges, this field will be populated  with a 'VX' or 'XA' followed by the numeric portion of the DEA number. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of expiration for the DEA Number. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "USE FOR INPATIENT ORDERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if this DEA number can be used for inpatient orders. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INSTITUTIONAL;2:INDIVIDUAL;",
+      "helpText": "This identifies whether the DEA number is an individual DEA number or an  Institutional DEA number. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "NAME (PROVIDER OR INSTITUTION)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the name of the facility or person who is associated with this  DEA Number. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "ADDITIONAL COMPANY INFO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the additional company information of the person or institution associated with this DEA Number. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the first line of the street address of the permanent address of the person or institution associated with this DEA Number. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the second line of the street address of the permanent address of the person or institution associated with this DEA Number. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ33",
+      "length": 33,
+      "required": false,
+      "helpText": "This is the city of the permanent address of the person or institution  related to this DEA Number. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state of the permanent address of the person or institution  associated with this DEA Number. ",
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the postal ZIP code of the person or institution associated with  this DEA Number. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "SCHEDULE II NARCOTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for Schedule II drugs. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "SCHEDULE II NON-NARCOTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for  Schedule II non-narcotic. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "SCHEDULE III NARCOTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for  Schedule III narcotic. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "SCHEDULE III NON-NARCOTIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for  Schedule III non-narcotic. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "SCHEDULE IV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for  Schedule IV controlled substances. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "SCHEDULE V",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if the provider has privileges for  Schedule V controlled substances. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "LAST UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person from the NEW PERSON file who last initiated an update  to this DEA record. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "LAST UPDATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of the last update to this DEA record. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "LAST DOJ UPDATE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the DOJ (Department of Justice) data was used to  update this DEA record. ",
+      "fieldNumber_": 10.3
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "8991.9", "field": .01, "type": "regular"},
+    {"name": "8991.9", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

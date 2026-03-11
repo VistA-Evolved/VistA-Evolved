@@ -1,0 +1,132 @@
+{
+  "fileNumber": 301.62,
+  "fileName": "IVM FINANCIAL QUERY LOG",
+  "globalRoot": "",
+  "globalReference": "^IVM(301.62,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient for whom the query was sent. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUERY TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the the date/time that the query for the PATIENT was transmitted to the HEC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "QUERY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TRANSMITTED;1:CLOSED;",
+      "helpText": "This field will contain a 0 if the record has been transmitted to the HEC.  It will contain a 1 if acknowledgement of the transmission has has been received from the HEC or the IVM software module has closed the query record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to indicate which person caused the query transmission to be sent to the HEC. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HL7 MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the unique identifier assigned to the query by the HL7 package. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "QUERY RESPONSE REC'D DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that a response to a query has been received from the HEC. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DHCP OPTION",
+      "dataType": "POINTER",
+      "rawType": "P19",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This field will contain the option from which the query transmission was invoked. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NOTIFY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be used to determine if a notification message should be sent to the user that initiated the query. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "CLOSURE REASON",
+      "dataType": "POINTER",
+      "rawType": "P301.94'",
+      "required": false,
+      "pointerTo": 301.94,
+      "helpText": "If a query transmission record has been closed (the [#.03] field is set to 1], this field wll store the reason that the query transmission record was closed. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "CLOSURE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a query transmission record has been closed, this field will be used to store the date and time that it was closed. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "CLOSURE SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HEC (DCD);2:DHCP (SYSTEM);",
+      "helpText": "If a QUERY TRANSMISSION LOG record has been closed, this field is used to store the source which was responsible for closing the record. ",
+      "fieldNumber_": 1.03
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADT", "field": },
+    {"name": "ADT1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "301.62", "field": .01, "type": "regular"},
+    {"name": "301.62", "field": .02, "type": "regular"},
+    {"name": "301.62", "field": .02, "type": "regular"},
+    {"name": "301.62", "field": .03, "type": "regular"},
+    {"name": "301.62", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

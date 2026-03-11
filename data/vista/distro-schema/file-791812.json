@@ -1,0 +1,127 @@
+{
+  "fileNumber": 791812,
+  "fileName": "TRANSMISSION BATCH",
+  "globalRoot": "791812D",
+  "globalReference": "^RMPF(791812,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the order batch was created.  It is automatically assigned when a batch is opened. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATUS OF BATCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPEN;2:CLOSED;3:TRANSMITTED;4:QUEUED FOR TRANSMISSION;",
+      "helpText": "This is the current status of the batch. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the batch was closed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "# ACTIVE IN BATCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the current number of active orders in the batch.  When an order is deleted from the batch, it is removed from the number of active orders. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the New Person File for the person who closed the batch. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TRANSMISSION MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P3.9'",
+      "required": false,
+      "pointerTo": 3.9,
+      "helpText": "This is a pointer to the message file indicating the message in which the batch was transmitted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the batch was transmitted to the DDC. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the free text station number and name for the station originating the order. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ALLOCIATED MENU",
+      "dataType": "POINTER",
+      "rawType": "P791810.5'",
+      "required": false,
+      "pointerTo": 791810.5,
+      "helpText": "This field holds the name of the menu associated with the transmission batch.  The entry in this field restricts selection of a batch to users holding the menu for the service that created the batch. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TASK NUMBER OF AUTO-QUEUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field holds that task number of the transmission queue for batches that have been queued by the auto-queue option.  This task number may be retrieved to reschedule the closing and transmission of the batch. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ORDER",
+      "dataType": "POINTER",
+      "rawType": "791812.0101PA",
+      "required": false,
+      "helpText": "This is a multiple field that lists the orders in the batch. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "791812", "field": .01, "type": "regular"},
+    {"name": "791812", "field": .01, "type": "regular"},
+    {"name": "791812", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

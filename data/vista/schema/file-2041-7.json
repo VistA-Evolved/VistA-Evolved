@@ -1,0 +1,347 @@
+{
+  "fileNumber": 2041.7,
+  "fileName": "VIST BENEFITS AND SERVICES CHECKLIST",
+  "globalRoot": "2041.7",
+  "globalReference": "^ANRV(2041.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2040'",
+      "required": true,
+      "pointerTo": 2040,
+      "helpText": "Enter veteran's name.  It must be in the main VIST roster. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AUTO GRANT",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field denotes whether the veteran has exercised his/her right to an Auto Grant. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BLIND REHAB. TRAINING",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to note whether the veteran has attended or declined blind rehabilitation services.  You may also indicated if the veteran has a pending application for blind rehab. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CHAMPUS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to indicate if the veteran/family is eligible for CHAMPUS. You may also indicate if an application is pending for CHAMPUS. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHAMPVA",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to indicate if the veteran/family is eligible for CHAMPVA.  You can also indicate if an application is pending for CHAMPVA. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CLOTHING ALLOWANCE",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to indicate if the veteran is eligible for the clothing allowance.  You can also indicate if an application for the clothing allowance is pending approval by PSAS. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EDUCATION - VA",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to indicate if the veteran/family have taken advantage of the Education benefit.  You may also note if an application is pending. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FEE BASIS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field will indicate a veteran's eligibility for and status with Fee Basis services.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HISA",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field indicates if the veteran has eligibility for and/or used the HISA grant. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "INSURANCE - SDVI",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This indicates if the veteran has insurance. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INSURANCE - WAIVE PREMIUM",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field indicates whether or not the veteran is eligible for and has applied for a waiver of the premiums for the SDVI Life Insurance. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROSTHETICS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field describes if the veteran is eligible for prosthetic items. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SAH - 801(a)",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is the structural alteration to housing program administered by the VARO.  This field allows you to enter the veteran's use and eligibility for this grant. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SAH - 801(b)",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is the structural alteration to housing program administered by the VARO.  This field allows you to enter the veteran's use and eligibility for this grant. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "VA VOCATIONAL REHABILITATION",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This denotes if the veteran has participated in the VA vocational  rehabilitation program. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "VIST ANNUAL REVIEW",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This field allows you to enter information regarding the veteran's participation in the annual VIST review in your program. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "IDENTIFICATION CARD",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "The AFB form of identification is no longer available.  Individuals should apply at their state motor vehicle offices for non-drivers identification cards that serve the same purpose and provide legal identification comparable to the sighted person's drivers license. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "BLINDED VETERANS ASSOCIATION",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is the Congressionally chartered service organization established for blind veterans.  Although originally established for SC veterans, over the years the BVA has amended its bylaws and now allows all NSC veterans with vision problems to join as equal members with a few significant exceptions including the necessity to be a SC veteran for blindness in order to stand for the offices of President and Vice President of the organization. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "COMMISSARY AND EXCHANGE",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "These are privileges granted to SC veterans rated 100%.  A blind veteran may also select a sighted companion who will be admitted with a letter of proof by the eligible veteran. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "NATIONAL CONSUMER GROUPS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "These are the principal advocacy organizations of and for the blind.  The American Council of the Blind, the National Federation of the Blind and the Guide Dog Users, Inc. are among the major organizations. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FREE POSTAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is the provision by which a blind person may send large print, Braille and taped materials free of postage to a person requiring these media.  ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PHONE DIRECTORY ASSISTANCE",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is the service available in most areas of the country enabling a blind customer to be waived of information charges on their residential phone.  You must apply for this service with both your local and long distance carrier. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DOG GUIDE TRAINING",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "There are approximately 16 schools across the country that provide selection of, matching with and training in the use of guide dogs for legally blind persons.  ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "HADLEY SCHOOL FOR THE BLIND",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is an international correspondence school providing courses in many subject areas. Instructional materials are provided in Braille, large print and tape formats. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "HANDICAP PARKING PLACARD",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a privilege granted to eligible disabled persons that will allow them to park in designated handicapped parking spaces or to park free of meter charges or to remain in time-restricted parking spaces beyond the posted limit with the display of the placard or with disabled license tags on the car.  The disabled person may but does not need to be the driver, so a blind person may obtain disabled tags or the placard for use in a vehicle he/she owns or in which he/she rides. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "INCOME TAX DEDUCTION",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a provision in the IRS code that enables a legally blind person to take an extra amount in deductions from their long form tax return.  In the past this was a full dependent's deduction but was reduced in the IRS reforms of 1993 and is currently approximately $600. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "NAT'L PARKS ADMISSION PERMIT",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a life-long permit a disabled person may obtain at any National park that will entitle them and any companions accompanying them in the same vehicle free admission to National parks. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "RADIO READING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a service available in many parts of the country that provides materials such as the local paper and current publication read over a closed circuit radio receiver for which a special receiver must be obtained from the service. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RECORDING FOR THE BLIND",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a service that provides text and professional materials recorded on tape.  ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "SOCIAL SECURITY",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "The Social Security Administration has several benefits a blind person may be eligible for including SSI and SSDI.  For blind persons receiving SSDI, the earning limit for gainful employment is higher than for other disabled persons; currently it is $1000 a month. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "TALKING BOOKS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "This is a service available from the National Library Service, Library of Congress that provides recorded books for persons unable to read regular print.  The NLS program also provides books and magazines in Braille. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "VOTING RIGHTS",
+      "dataType": "POINTER",
+      "rawType": "RP2041.6'",
+      "required": true,
+      "pointerTo": 2041.6,
+      "helpText": "A blind or visually impaired person has the right to be accompanied by the person of their choice into the voting booth to assist them in casting their vote.  There are some slight variations in some jurisdictions with respect to what forms of identification the escort must provide. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LOCAL BENEFITS AND SERVICES",
+      "dataType": "POINTER",
+      "rawType": "2041.732P",
+      "required": false,
+      "helpText": "There are a variety of local programs, services and benefits from which a blind or visually impaired veteran may benefit.  These vary widely throughout the country and it is important to be familiar with those in your area in order to provide blind veterans the greatest array of services. ",
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2041.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

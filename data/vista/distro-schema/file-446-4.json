@@ -1,0 +1,155 @@
+{
+  "fileNumber": 446.4,
+  "fileName": "BARCODE PROGRAM",
+  "globalRoot": "446.4I",
+  "globalReference": "^PRCT(446.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field should be a short description of the data that will be collected and stored using the barcode program (field #1) that is contained in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is a unique IDENTIFIER of the data that will be stored in this file.  When data is downloaded from a barcode program, the first record received should be the IDENTIFIER of the data being downloaded.   Once the IDENTIFIER is known, then the data will stored in the BARCODE DATA multiple (446.42,1) for the appropriate entry.  After the data has successfully been uploaded, then the proper LINE TAG (field #.03) and ROUTINE (field #.04) can be tasked to process the data.   NOTE: The Identif",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "POST UPLOAD ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the ANSI-MUMPS routine that will be called directly after a successful upload of data has taken place.   This field can also contain a line tag.  The dash (-) is used, instead of the up-arrow (^) to separate the line tag from the routine.  For example, if the routine that should be called is EN^ENG you would enter EN-ENG in this field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATA PROCESSOR ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the ANSI-MUMPS routine that will be tasked to taskmanager after data is uploaded from the barcode reader.  This routine will be responsible for the processing of data in the BARCODE DATA multiple (data upload from the barcode reader).   This field can also contain a line tag.  The dash (-) is used, instead of the up-arrow (^) to separate the line tag from routine.  For example, if the routine that should be called is EN^ENG you would enter EN-ENG in this field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TIME TO QUEUE ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the time of day that processing of data for this entry should take place.  For example, if 1AM is entered into this field, then any data that needs to be processed for this entry will not take place until 1AM.  This means that users could be allowed to upload data from a barcode reader during anytime of the day, but allows the local site to use this field to specify what time of the day the data should be processed.   If this field is blank, then the processing of data will b",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "IS DEVICE REQUIRED ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether or not the user, after uploaded data to this file entry, is prompted for a device to task the processing.   For example, some programs that process barcode data from this file will require a printer.  If this field is set to 1 (YES), then the user will be prompted for a device.  If this field is set to 0 (NO), then the user will not be prompted for a device and the job will run as a background job with no device associated with it. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PURGE DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is the maximum number of days that the DATE/TIME OF DATA UPLOAD data should exist on the computer system.   For example: If this field is 20, any data that may have been uploaded over 20 days ago for this entry will be automatically deleted.  Since barcode data is usually 'processed' within a day or two, it is not necessary to keep this information for a long period of time.  It is recommended to keep this data for at least 7 days incase trouble-shooting is necessary.   If no data is ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST DATA PURGE FLAG",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field is a flag set by the computer.  It is updated by the computer as a means to keep track of when the next purge is scheduled to run or was last run.  The purging of data is handled automatically and does not need to be run or queued to run by a user. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SPECIALTY COMMANDS",
+      "dataType": "POINTER",
+      "rawType": "P446.6'",
+      "required": false,
+      "pointerTo": 446.6,
+      "helpText": "This field identifies the specialty commands for the barcode program. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the user creating the barcode program. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the site creating the barcode program. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "GENERIC DOWNLOADING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "   This field determines whether or not a bar code program may be downloaded generally (via option PRCT DOWNLOAD BARCODE PROGRAM).    If a bar code program expects that certain parameters will be passed to it from the host system, this field should be blank. Otherwise it may be set to '1'. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BARCODE PROGRAM",
+      "dataType": "SUBFILE",
+      "rawType": "446.41",
+      "required": false,
+      "helpText": "This word-processing field is used for the storage of the barcode program for the barcode reader.  The program can be downloaded from this field into the barcode reader directly.   Comments should be included in the barcode program starting with two colons.  During downloading of program from this file to the reader, all comments that use two colons will be striped off and not sent to the barcode reader.  Comments do not need to be resident on the barcode reader itself and it is not recommended ",
+      "isMultiple": true,
+      "subFileNumber": 446.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME OF DATA UPLOAD",
+      "dataType": "DATE",
+      "rawType": "446.42DI",
+      "required": false,
+      "helpText": "This multiple field stores the date and time of when the data was uploaded from a barcode reader and stored in this file. ",
+      "isMultiple": true,
+      "subFileNumber": 446.42,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "446.4", "field": .01, "type": "regular"},
+    {"name": "446.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

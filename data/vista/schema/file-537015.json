@@ -1,0 +1,26 @@
+{
+  "fileNumber": 537015,
+  "fileName": "VAMC NETWORK HEALTH TYPES",
+  "globalRoot": "537015",
+  "globalReference": "^AFJ(537015,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "537015", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "fileNumber": 627.8,
+  "fileName": "DIAGNOSTIC RESULTS - MENTAL HEALTH",
+  "globalRoot": "627.8D",
+  "globalReference": "^YSD(627.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date/time patient data entered into file.  Transparent to user. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Patient name.  Set through the routine, ^YSLRP. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME OF DIAGNOSIS",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time of diagnosis as indicated by person formulating the dx. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DIAGNOSIS BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person responsible for dx.  Not necessarily the transcriber. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSCRIBER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person entering data into the file.  Transparent to user. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "The diagnosis is a condition which may be responsible for the  evaluation or admission to clinical care.       ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS (V/P/R/I/N/RU)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "v:VERIFIED;p:PROVISIONAL;r:REFORMULATED;i:INACTIVE;n:NOT FOUND;ru:RULE OUT;",
+      "helpText": "This is a SET of codes defining the status of the diagnosis. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CONDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVATED;",
+      "helpText": "States whether a dx is clinically active or inactive.  (Active is based on the status of verified or provisional.  All others are considered inactive.) ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INACTIVATED DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "When a dx status changes from active to inactive, this flags is set. This permits the system to show only truly active dx while maintaining a history of the dx's status. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATUS CHANGED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if this dx's status has been changes from Active to Inactive. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DXLS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "y:YES;n:NO;c:CHANGED;",
+      "helpText": "This is the diagnosis accounting for the largest % of length of stay for an admission.  There may only be ONE DXLS (DSM or ICD DIAGNOSIS) per admission.     This information may not be the same as that stored in the Patient Treatment Folder (PTF).   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "MODIFIERS",
+      "dataType": "POINTER",
+      "rawType": "627.82PA",
+      "required": false,
+      "helpText": "Modifiers further clarify the diagnosis.  They are entered in accordance with the DSM-IV Manual. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PSYCHOSOCIAL STRESSOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A stressor frequently plays a precipitating role in a disorder or it may also be a consequence of the person's psychopathology. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "SEVERITY CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NONE;2:MILD;3:MODERATE;4:SEVERE;5:EXTREME;6:CATASTROPHIC;0:INADEQUATE INFORMATION/NO CHANGE IN CONDITION;",
+      "helpText": "Axis 4 provides a scale, the Severity of Psychosocial Stressors Scale, for coding overall severity of a psychosocial stressor or multiple psychosocial stressors that have occurred in the year preceding the current evaluation. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "AXIS 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Axis 5 permits the clinician to indicate his/her overall judgment of a person's psychological, social and occupation functioning on a scale, the Global Assessment of Functioning (GAF Scale), that assesses mental illness. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:In-Patient;O:Out-Patient;",
+      "helpText": "Patient Type indicates that the patient is either an 'I'n-Patient or 'O'ut-Patient.  ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "627.81",
+      "required": false,
+      "helpText": "This is additional comments describing this diagnosis. ",
+      "isMultiple": true,
+      "subFileNumber": 627.81,
+      "fieldNumber_": 80
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AX4", "field": },
+    {"name": "AX5", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "627.8", "field": .01, "type": "regular"},
+    {"name": "627.8", "field": .02, "type": "regular"},
+    {"name": "627.8", "field": 1, "type": "regular"},
+    {"name": "627.8", "field": 1, "type": "regular"},
+    {"name": "627.8", "field": 1, "type": "regular"},
+    {"name": "627.8", "field": 7, "type": "regular"},
+    {"name": "627.8", "field": 10, "type": "regular"},
+    {"name": "627.8", "field": 10, "type": "regular"},
+    {"name": "627.8", "field": 61, "type": "regular"},
+    {"name": "627.8", "field": 65, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

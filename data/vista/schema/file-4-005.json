@@ -1,0 +1,103 @@
+{
+  "fileNumber": 4.005,
+  "fileName": "MD5 Signature",
+  "globalRoot": "4.005",
+  "globalReference": "^DIC(4.005,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MD5 CODE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the Domain name of SDS for which MD5 will be requested. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE/SUBFILE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "4.0051",
+      "required": false,
+      "helpText": "This field is the Internal File Number (IFN) of the MD5 table supported  by the Master File Server (MFS). ",
+      "isMultiple": true,
+      "subFileNumber": 4.0051,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Vets Code System Version",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,5",
+      "length": 16,
+      "required": false,
+      "helpText": "Vets Code System Version ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Vets MD5 Hash",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Vets MD5 Hash ENTRY ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Date of MD5 verification",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of MD5 verification ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Computed MD5 value",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Computed MD5 checksum value, 32 cha long. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "Debug Mode",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Field indicates the level of response. MODE = 0 regular mode.. last HASH value returned in Apl. ACK.        1 debugging mode.. all values + hash codess returned in Apl ACK        1.1 debugging mode.. all values (no hash codes) returned in Apl ACK        2 debugging mode.. all fields values, all hash values,all hash           codes returned in Apl. ACK. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SORT BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field determines the sorting of records for MD5 checksum  calculation.  It defaults to VUID order.  Enter the name of a field  cross-reference in order to sort by that field.  The cross-reference must exist in the target file.  If the cross-reference name does not exist, it will default to VUID order.  The field cross-referenced must not be a multiple.   To sort by the .01 field, enter \"B\" without the quotes.  This will sort  by the \"B\" cross reference, which is always the .01 field. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILTER BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "You can specify a query filter by field.  Enter the field number to  filter by. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.005", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

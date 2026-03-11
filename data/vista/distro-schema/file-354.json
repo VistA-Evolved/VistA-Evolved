@@ -1,0 +1,90 @@
+{
+  "fileNumber": 354,
+  "fileName": "BILLING PATIENT",
+  "globalRoot": "354PI",
+  "globalReference": "^IBA(354,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient as it appears in the patient file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "COPAY EXEMPTION STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "DO NOT EDIT THIS FIELD.  It is maintained by the Copay Exemption Software.   This is the date that this patients Medication Copay Income Exemption  Status was last updated.  If this date is not in the current calendar  year this patient will be flagged as needing to have his status updated. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COPAY INCOME EXEMPTION STATUS",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "1:EXEMPT;0:NON-EXEMPT;",
+      "helpText": "DO NOT EDIT THIS FIELD.  It is maintained by the Copay Exemption Software.   This is the patients current Medication Copay Income Exemption Status.  It is updated whenever an entry in the Billing Exemptions file is made.   If a patient's income is less than the pension level, effective 10/29/92 the patient is exempt from paying the Medication Copayment.  If a patient is receiving a VA Pension, or is receiving Aid and Attendence or House Bound benefits, or his income for the previous year is less",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COPAY EXEMPTION REASON",
+      "dataType": "POINTER",
+      "rawType": "R*P354.2'",
+      "required": true,
+      "pointerTo": 354.2,
+      "helpText": "DO NOT EDIT THIS FIELD.  It is maintained by the Copay Exemption Software.   This is the exemption reason for the current copay exemption.  It will be entered by the system.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "EVER HAD IVM INSURANCE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field flags patients who have ever had at least one insurance policy that was identified by the IVM Center.  ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "NO COVERAGE VERIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that verification was made that this patient does not have any type of insurance coverage.   When a policy is entered for a patient, this field will be deleted. ",
+      "fieldNumber_": 60
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AENR04", "field": },
+    {"name": "AEX", "field": },
+    {"name": "AIVM", "field": },
+    {"name": "AVDT", "field": },
+    {"name": "B", "field": },
+    {"name": "354", "field": .01, "type": "regular"},
+    {"name": "354", "field": .03, "type": "regular"},
+    {"name": "354", "field": .04, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"},
+    {"name": "354", "field": .04, "type": "regular"},
+    {"name": "354", "field": .05, "type": "regular"},
+    {"name": "354", "field": 50, "type": "regular"},
+    {"name": "354", "field": 60, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(354.2,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(354.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

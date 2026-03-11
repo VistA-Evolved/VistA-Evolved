@@ -1,0 +1,203 @@
+{
+  "fileNumber": 115,
+  "fileName": "NUTRITION PERSON",
+  "globalRoot": "115",
+  "globalReference": "^FHPT(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Beginning with the Outpatient Meals release this field will simply be a free text field.  This file will need to point to either File #2 or File #200 and those pointer values will be stored in fields #14 & #15 respectively. Those 2 fields will be mutually exclusive, ie, each entry in this file must have a pointer value in EITHER field #14 OR field #15, BUT NOT BOTH.  Previously, this field was a pointer to the main ^DPT file and had the same internal number as that file. Thus, the patient's name",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMISSION",
+      "dataType": "DATE",
+      "rawType": "115.01D",
+      "required": false,
+      "helpText": "This multiple contains all dietetic information pertaining to this particular admission. ",
+      "isMultiple": true,
+      "subFileNumber": 115.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FOOD PREFERENCES",
+      "dataType": "POINTER",
+      "rawType": "115.09PA",
+      "required": false,
+      "helpText": "This multiple contains the food preferences selected by the patient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NUTRITION ASSESSMENT",
+      "dataType": "DATE",
+      "rawType": "115.011DI",
+      "required": false,
+      "helpText": "This field contains Nutrition Assessments performed for this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 115.011,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NUTRITION STATUS",
+      "dataType": "DATE",
+      "rawType": "115.012D",
+      "required": false,
+      "helpText": "This multiple contains the nutrition assessment statuses that have been entered for this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 115.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field, if populated, will contain a pointer to the Patient (#2) file, if the Nutrition Person is a patient.  This field and field #15 are mutually exclusive, in other words each entry in this file should have a value in either this field or field #15. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "NEW PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field, if populated, will contain a pointer to the New Person (#200) file, if the Nutrition Person is a NOT a patient.  This field and field #14 are mutually exclusive, in other words each entry in this file should have a value in either this field or field #14. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "RECURRING MEALS",
+      "dataType": "DATE",
+      "rawType": "115.016D",
+      "required": false,
+      "helpText": "This multiple stores the recurring meals data. ",
+      "isMultiple": true,
+      "subFileNumber": 115.016,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SPECIAL MEALS",
+      "dataType": "DATE",
+      "rawType": "115.017D",
+      "required": false,
+      "helpText": "This multiple stores special meals data. ",
+      "isMultiple": true,
+      "subFileNumber": 115.017,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GUEST MEALS",
+      "dataType": "DATE",
+      "rawType": "115.018D",
+      "required": false,
+      "helpText": "This multiple stores the guest meals data. ",
+      "isMultiple": true,
+      "subFileNumber": 115.018,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ISOLATION/PRECAUTION (OUTPT)",
+      "dataType": "POINTER",
+      "rawType": "P119.4'",
+      "required": false,
+      "pointerTo": 119.4,
+      "helpText": "This field, if present, indicates that the outpatient is presently on isolation or special precautions.  Note: this field is for outpatients and is different from the isolation/precautions field for inpatients which is associated with a specific admission. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "IP OE/RR ORDER (OUTPT)",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "Pointer to File #100 for I/P's entered thru OE/RR. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ALERT",
+      "dataType": "DATE",
+      "rawType": "115.12D",
+      "required": false,
+      "helpText": "This is a multiple for food/drug alert for a patient. ",
+      "isMultiple": true,
+      "subFileNumber": 115.12,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "BREAKFAST FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ18",
+      "length": 18,
+      "required": false,
+      "helpText": "Enter the text that should appear at the bottom of the tray ticket. Text is up to 18 characters. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.1,
+      "fieldName": "NOON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ18",
+      "length": 18,
+      "required": false,
+      "helpText": "Enter the text that should appear at the bottom of the tray ticket. Text is up to 18 characters. ",
+      "fieldNumber_": 22.1
+    },
+    {
+      "fieldNumber": 22.2,
+      "fieldName": "EVENING FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ18",
+      "length": 18,
+      "required": false,
+      "helpText": "Enter the text that should appear at the bottom of the tray ticket. Text is up to 18 characters. ",
+      "fieldNumber_": 22.2
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "ADLT", "field": },
+    {"name": "ADR", "field": },
+    {"name": "ADRU", "field": },
+    {"name": "ADRV", "field": },
+    {"name": "ADTF", "field": },
+    {"name": "AIS", "field": },
+    {"name": "AOO", "field": },
+    {"name": "ASP", "field": },
+    {"name": "ASP1", "field": },
+    {"name": "AW", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "GM", "field": },
+    {"name": "IP", "field": },
+    {"name": "OP", "field": },
+    {"name": "RM", "field": },
+    {"name": "SM", "field": },
+    {"name": "115", "field": .01, "type": "regular"},
+    {"name": "115", "field": 19, "type": "regular"},
+    {"name": "115", "field": 19, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

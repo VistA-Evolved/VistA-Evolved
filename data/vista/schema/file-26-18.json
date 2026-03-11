@@ -1,0 +1,85 @@
+{
+  "fileNumber": 26.18,
+  "fileName": "PRF PARAMETERS",
+  "globalRoot": "26.18",
+  "globalReference": "^DGPF(26.18,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0I",
+      "length": 1,
+      "required": true,
+      "helpText": "'One' designates the 'one' PRF Parameter.  There can only be one set of parameters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRF SOFTWARE ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field will contain the date that the Patient Record Flag software  (DGPF*) will become active. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRF HL7 UPDATE STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This field is used to enable or disable the Unsolicited Observation Update (ORU~R01) HL7 interface for the Patient Record Flag module. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRF HL7 QUERY STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:DIRECT;2:DEFERRED;",
+      "helpText": "This field controls the PRF HL7 query (QRY~R02) interface.  Setting the  value to '0' disables the interface.  Setting the value to '1' enables  the interface using a VistA HL7 'direct' connection.  Setting the value to '2' enables the interface using a VistA HL7 'deferred' connection. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRF HL7 RETRANSMIT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the transmission date/time of the last record  scanned during the HL7 retransmission processing from the \"ASTAT\" cross reference of the (#26.17) PRF HL7 TRANSMISSION LOG file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRF HL7 AUTO RETRANSMIT PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field represents the number of days to wait before an auto retransmission of Rejected HL7 messages should occur. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRF PHASE 2 ACTIVATION",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date that is used to restrict access to specific Patient Record Flags functionality in production environments until all sites have installed the PRF Phase II software. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26.18", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

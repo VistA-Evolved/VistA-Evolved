@@ -1,0 +1,37 @@
+{
+  "fileNumber": 727.7,
+  "fileName": "LAB RESULTS TRANSLATION",
+  "globalRoot": "727.7",
+  "globalReference": "^ECX(727.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RESULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Lab results free text value for conversion.   Note: All lower case characters entered into this field are converted to  upper case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSLATION CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Negative, Non-Reactive;1:Positive, Reactive;2:Borderline, Indeterminate;3:Test Not Performed, Qty not sufficient or other reason;5:Result cannot be translated;",
+      "helpText": "Numerice Translation Code that the Result will be translated to. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "727.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

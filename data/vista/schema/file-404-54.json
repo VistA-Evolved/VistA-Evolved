@@ -1,0 +1,58 @@
+{
+  "fileNumber": 404.54,
+  "fileName": "PCMM PATIENT EVENTS",
+  "globalRoot": "404.54",
+  "globalReference": "^SCPT(404.54,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Patient to which the Event pertains. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time when the event occurred. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EVENT CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AD:DATE OF DEATH SET;AR:DATE OF DEATH UNSET;",
+      "helpText": "This is a code to indicate the type of event that occurred. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EVENT DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is additional information pertaining to the event. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.54", "field": .01, "type": "regular"},
+    {"name": "404.54", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

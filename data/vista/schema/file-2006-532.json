@@ -1,0 +1,55 @@
+{
+  "fileNumber": 2006.532,
+  "fileName": "DICOM SOP CLASS",
+  "globalRoot": "2006.532",
+  "globalReference": "^MAG(2006.532,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOP CLASS UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a DICOM UID. A unique identifier (UID) in DICOM is a string of up to 64 characters long that consists of only digits and periods.   The UIDs that are stored in this file identify the SOP Classes that are being used for Image Acquisition. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOP CLASS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string. This string identifies a DICOM SOP Class.   Valid names for SOP Classes are defined in the DICOM Standard. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EQUIVALENCE CLASS",
+      "dataType": "POINTER",
+      "rawType": "P2006.532'",
+      "required": false,
+      "pointerTo": 2006.532,
+      "helpText": "The value of this field is a pointer to another entry in this same table. If the SOP Class that is described in the current record is equivalent to another one, the value of this field identifies this other SOP Class.   If there is no equivalent SOP Class, this field is empty. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:Active;R:Retired;",
+      "helpText": "The value of this field is a code that indicates whether the SOP Class that is described in the current entry is active or retired.   Retired entries cannot be removed from this table (because they may still be \"pointed to\"). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

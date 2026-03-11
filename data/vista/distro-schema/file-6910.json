@@ -1,0 +1,208 @@
+{
+  "fileNumber": 6910,
+  "fileName": "ENG INIT PARAMETERS",
+  "globalRoot": "6910",
+  "globalReference": "^DIC(6910,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Facility name.  Should correspond to an entry in the DHCP Institution File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Facility identifier, usually three digits. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PM HOURLY LABOR COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Default value. If a device has an entry for estimated PM hours AND an entry for responsible tech, the labor cost will be taken from the Engineering Employee File (No. 6929). If there is an entry for estimated hours but NO entry for responsible tech, then this hourly figure will be used to compute total labor cost. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DELETE PM WORK ORDERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Setting this field to 'YES' will cause PM work orders to be deleted from the system at close out time. Deletion of PM work orders is strongly recommended for sites that are short on disk space. The PMI will be posted to the equipment history (File 6914) before the actual work order is deleted. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TEMPORARY WORK ORDER SECTION",
+      "dataType": "POINTER",
+      "rawType": "*P6922'",
+      "required": false,
+      "pointerTo": 6922,
+      "helpText": " Intended for use at sites that allow direct entry of Engineering work orders by end-users. Since assignment of work requests to specific shops is an Engineering responsibility; 'electronic work orders' are initially directed to a 'fictitious shop' (or receiving area). Engineering should clean out a receiving area at least once a day. Electronic work orders may be transferred to working shops or disapproved.  The system will keep a permanent record of the number originally assigned to each work ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "INCOMING INSPECTION SECTION",
+      "dataType": "POINTER",
+      "rawType": "P6922'",
+      "required": false,
+      "pointerTo": 6922,
+      "helpText": "Engineering section that receives all incoming inspection work orders.   This optional field is intended for use at sites that allow incoming inspection work orders to be generated during new equipment entry. The shop for these work orders will default to the shop specified here. If this field is left blank, the default work order shop will be the RESPONSIBLE SHOP for the equipment (if available) or a Receiving Area shop (similar to electronic work orders). Note that users who hold the ENPM secu",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REGION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The VA Region (1 thru 4) in which facility is located. Used in electronic transmission of Five Year Facility Plans, Project Applications (Form 1193), and Construction Project Progress Reports (Form 10-0051). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "EQPT CAT ON BAR CODE LABEL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Should be set to 'YES' if you want to print the EQUIPMENT CATEGORY at the top of your bar coded EQUIPMENT LABELs (instead of the words 'EQUIPMENT LABEL'.  Due to space limitations on label stock, only the first twenty (20) characters of the EQUIPMENT CATEGORY will be printable. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EQPT LABEL PRINT FIELD",
+      "dataType": "SUBFILE",
+      "rawType": "6910.08",
+      "required": false,
+      "helpText": "Enter the FIELD NUMBER (from the Equipment File) of a field that you want to have printed (in human readable format) on your bar coded EQUIPMENT LABEL's.  Please do not enter more than two (2) such fields.  If more than two fields are specified, the system will accept the first two and ignore all others.   MULTIPLE fields, WORD PROCESSING fields, and COMPUTED fields should not be selected for inclusion on bar coded EQUIPMENT LABEL's. ",
+      "isMultiple": true,
+      "subFileNumber": 6910.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "COMP LIST PRINT FIELD",
+      "dataType": "SUBFILE",
+      "rawType": "6910.09",
+      "required": false,
+      "helpText": "The field number (from the Equipment File) of a field or fields (no more than two) that you want to see on your Companion Lists. ",
+      "isMultiple": true,
+      "subFileNumber": 6910.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SPACE FUNCT ON LOCATION LABEL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If set to 'YES' and if a SPACE FUNCTION exists for the subject location, then the first 20 characters of the SPACE FUNCTION will be printed at the top of your bar coded LOCATION LABELS. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MULTI-DIVISION (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "An indicator of whether a site is single or multi-divisional. Used primarily to determine whether or not users should be prompted for DIVISION when sorting selected reports. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ALTERNATE STATION NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "6910.012",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6910.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "VISN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the VISN to which this facility belongs. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "NETWORK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the network for this facility. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "EQUIPMENT TURN-IN SECTION",
+      "dataType": "POINTER",
+      "rawType": "P6922",
+      "required": false,
+      "pointerTo": 6922,
+      "helpText": "The Engineering Shop to which requests for assistance in de-installing a piece of equipment are to be automatically directed. This may be a fictitious shop (or holding area), much like the TEMPORARY WORK ORDER SECTION used for initial receipt of electronic work orders. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "WORK ORDER MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "6910.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6910.01,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PROJECT PLANNING ROLLUP DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This field identifies the domain where the project planning module electronic transmissions should be sent. The 5-Yr Plan and Project Applications can be transmitted from the Project Planning module. This field does not have any effect on the destination of Progress Report (10-0051) transmissions. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PROJECT TRACKING ROLLUP DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This field identifies the domain where the project tracking module electronic transmissions should be sent. Construction Project Progress reports (0051) can be transmitted from this module. This field does not have any effect on the destination of project planning (Five Year Plan Project or Project Application) transmissions. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6910", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

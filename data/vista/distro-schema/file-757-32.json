@@ -1,0 +1,77 @@
+{
+  "fileNumber": 757.32,
+  "fileName": "MAPPING DEFINITIONS",
+  "globalRoot": "757.32I",
+  "globalReference": "^LEX(757.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAPPING MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a mnemonic by which the mapping may be identified. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAPPING NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Descriptive name of the Mapping Definition. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAPPING PURPOSE",
+      "dataType": "SUBFILE",
+      "rawType": "757.322",
+      "required": false,
+      "helpText": "This field describes the purpose of the mapping. Mappings that look the same might have very different purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 757.322,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOURCE CODING SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P757.03'",
+      "required": false,
+      "pointerTo": 757.03,
+      "helpText": "This is the coding system containing a code to be mapped from. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TARGET CODING SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P757.03'",
+      "required": false,
+      "pointerTo": 757.03,
+      "helpText": "This is the coding system containing a code to be mapped to. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAPPING VUID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This field stores the VUID for a specific mapping. The VUID for a given mapping will be assigned by terminologists using the Standards &  Terminology Services team's technologies. One use for this field will be  to identify which mapping is being deployed by the terminology server's deployment processes. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757.32", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

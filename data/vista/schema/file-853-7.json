@@ -1,0 +1,56 @@
+{
+  "fileNumber": 853.7,
+  "fileName": "VPS MED DISCREPANCY INDICATORS",
+  "globalRoot": "853.7",
+  "globalReference": "^VPS(853.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the internal entry number for the medication discrepancy indicator entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "INDICATOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name of the medication discrepancy indicator entry. It is a variation of medication changed, medication confirmed, or medication discrepancy indicator on the Kiosk. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a detailed description of the medication discrepancy indicator entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CONFIRMED;D:DISCREPANCY;X:CHANGED;",
+      "helpText": "This is the type of medication discrepancy indicator entry. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "853.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

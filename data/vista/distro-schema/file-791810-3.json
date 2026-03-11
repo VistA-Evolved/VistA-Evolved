@@ -1,0 +1,28 @@
+{
+  "fileNumber": 791810.3,
+  "fileName": "DISABILITY",
+  "globalRoot": "791810.3",
+  "globalReference": "^RMPF(791810.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISABILITY DX CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the diagnostic code entries for VA disability conditions that apply to a specific product group. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791810.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

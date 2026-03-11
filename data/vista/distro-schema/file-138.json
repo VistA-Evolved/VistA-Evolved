@@ -1,0 +1,48 @@
+{
+  "fileNumber": 138,
+  "fileName": "ELECTROGROUND POSITIONS",
+  "globalRoot": "138",
+  "globalReference": "^SRO(138,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Electroground Position.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code corresponding to the name of the electroground  position.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;",
+      "helpText": "Enter 'YES' to inactivate this entry and to prevent its selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "138", "field": .01, "type": "regular"},
+    {"name": "138", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

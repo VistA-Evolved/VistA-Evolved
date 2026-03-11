@@ -1,0 +1,27 @@
+{
+  "fileNumber": 396.25,
+  "fileName": "2507 SPECIAL CONSIDERATIONS",
+  "globalRoot": "396.25",
+  "globalReference": "^DVB(396.25,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the Special Consideration for the 2507  Request. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "396.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

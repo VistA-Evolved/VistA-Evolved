@@ -1,0 +1,59 @@
+{
+  "fileNumber": 869.1,
+  "fileName": "HL LOWER LEVEL PROTOCOL TYPE",
+  "globalRoot": "869.1",
+  "globalReference": "^HLCS(869.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "BACKGROUND ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "ENVIRONMENT CHECK ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "869.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

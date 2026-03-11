@@ -1,0 +1,1417 @@
+{
+  "fileNumber": 36,
+  "fileName": "INSURANCE COMPANY",
+  "globalRoot": "36I",
+  "globalReference": "^DIC(36,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "Enter the name of the insurance carrier which at least one patient seen at your facility has.  This information must be updated using the 'Insurance Company Entry/Edit' option, NOT using VA FileMan.  Editing of this data through a filemanager option could cause negative impacts on the MAS and IB software modules in addition to other DHCP modules. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "SXa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this insurance company is no longer active in your area, enter INACTIVE here.  This will disallow users from selecting this insurance company entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ALLOW MULTIPLE BEDSECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines whether this insurance company will accept multiple bedsections on one claim form.  If answered 'YES' then selection of the PRIMARY INSURANCE CARRIER in MCCR will trigger revenue codes for all bedsections within the STATEMENT COVERS FROM and STATEMENT COVERS TO dates. If this is answered 'NO' or left blank then only the first bedsection in the date range will be used. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DIFFERENT REVENUE CODES TO USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to replace standard revenue codes used on a bill with revenue codes requested by an insurance company.   The standard revenue codes are those codes found in the Charge Master and are used for most bills.   Enter the standard revenue code to be replaced followed by ':' followed by the revenue code the insurance company requires:     500:510  will result in revenue code 500 being replaced            by 510 on this insurance company bills   Separate multiple revenue code replacem",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ONE OPT. VISIT ON BILL ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is answered 'YES' then only one outpatient visit will be allowed per claim form for this Insurance Company.   If it is unanswered or answered 'NO' then multiple (up to 10) outpatient bills will be allowed per claim form. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AMBULATORY SURG. REV. CODE",
+      "dataType": "POINTER",
+      "rawType": "*P399.2'",
+      "required": false,
+      "pointerTo": 399.2,
+      "helpText": "This is the Revenue Code that will automatically be generated for this insurance company if a billable Ambulatory Surgical Code is listed as a procedure in this this bill. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ATTENDING PHYSICIAN ID.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is no longer used.  Provider id's now come from the 355.9 files. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "*HOSPITAL PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An identifier assigned to the facility by the insurance company. It will be printed in form locator 51 of the UB-92 of bills for this insurance company.   This field is marked for deletion and can be deleted 11/23/2008. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "STREET ADDRESS [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "Enter the first line of this company's street address with 3-35  characters. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "STREET ADDRESS [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "If the Street Address is longer than one line, enter a second line  between 3-30 characters.  It can not be the same as Line 1. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "STREET ADDRESS [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Street Address is longer than two lines, enter a third line  between 3-30 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the city of the mailing address for this insurance carrier. ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'X",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state of the mailing address for this insurance carrier. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the payer's main mailing address. Enter a 9 or  10 character ZIP code. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "BILLING COMPANY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the insurance carrier's billing company. ",
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .119,
+      "fieldName": "FAX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of this insurance carrier. ",
+      "fieldNumber_": .119
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "FILING TIME FRAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the maximum amount of time from the date of service that the insurance company allows for submitting claims.  Examples:  60 days, 90 days, 6 months, 1 year, 18 months;  March 30 following year of service, June 1 following year of service. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .121,
+      "fieldName": "CLAIMS (INPT) STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the inpatient claims process address of this company is different  from its main address, enter Line 1 of the inpatient claims street address. Answer must be 3-30 characters in length. ",
+      "fieldNumber_": .121
+    },
+    {
+      "fieldNumber": .122,
+      "fieldName": "CLAIMS (INPT) STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Inpatient Claims Process Address is longer than one line, enter a second line between 3-30 characters.  It can not be the same as Line 1. ",
+      "fieldNumber_": .122
+    },
+    {
+      "fieldNumber": .123,
+      "fieldName": "CLAIMS (INPT) STREET ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Inpatient Claims Process Address is longer than two lines, enter a third line between 3-30 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .123
+    },
+    {
+      "fieldNumber": .124,
+      "fieldName": "CLAIMS (INPT) PROCESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which this insurance company's inpatient claims office is located. ",
+      "fieldNumber_": .124
+    },
+    {
+      "fieldNumber": .125,
+      "fieldName": "CLAIMS (INPT) PROCESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which this insurance company's inpatient claims  office is located.  Enter state even if it is the same as the state of the company's main address. ",
+      "fieldNumber_": .125
+    },
+    {
+      "fieldNumber": .126,
+      "fieldName": "CLAIMS (INPT) PROCESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the inpatient claims processing  location when it differs from the payer's main mailing address. Enter a  9 or 10 character ZIP code. ",
+      "fieldNumber_": .126
+    },
+    {
+      "fieldNumber": .127,
+      "fieldName": "CLAIMS (INPT) COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes claims.  The company specified in this field must be an active insurance company, not the same company as the entry being edited, and must not have another company specified as handling Inpatient Claims for it. ",
+      "fieldNumber_": .127
+    },
+    {
+      "fieldNumber": .128,
+      "fieldName": "ANOTHER CO. PROCESS IP CLAIMS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes Inpatient Claims. ",
+      "fieldNumber_": .128
+    },
+    {
+      "fieldNumber": .129,
+      "fieldName": "CLAIMS (INPT) FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of this insurance carrier's inpatient claims office. ",
+      "fieldNumber_": .129
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "TYPE OF COVERAGE",
+      "dataType": "POINTER",
+      "rawType": "P355.2'",
+      "required": false,
+      "pointerTo": 355.2,
+      "helpText": "If this insurance carrier provides only one type of coverage then select the entry that best describes this carriers type of coverage.  If this carrier provides more than one type of coverage then select HEALTH INSURANCE.  The default answer if left unanswered is Health Insurance.   This is useful information when contacting carriers, when creating  claims for reimbursement, and when estimating if the payment received is appropriate.   If this field is answered it may affect choices that can be ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the phone number at which this insurance carrier can be reached. ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .1311,
+      "fieldName": "CLAIMS (RX) PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number at which the prescription claims office of this insurance carrier can be reached. ",
+      "fieldNumber_": .1311
+    },
+    {
+      "fieldNumber": .132,
+      "fieldName": "BILLING PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number of the insurance carrier where inquiries about patient billing should be made. ",
+      "fieldNumber_": .132
+    },
+    {
+      "fieldNumber": .133,
+      "fieldName": "PRECERTIFICATION PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If precertification is required prior to a patient being treated, enter the number of the insurance carrier to which this request can be made. ",
+      "fieldNumber_": .133
+    },
+    {
+      "fieldNumber": .134,
+      "fieldName": "VERIFICATION PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number of the insurance carrier to which a Verification request can be made. ",
+      "fieldNumber_": .134
+    },
+    {
+      "fieldNumber": .135,
+      "fieldName": "CLAIMS (INPT) PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number at which this insurance carrier's  inpatient claims office can be reached. ",
+      "fieldNumber_": .135
+    },
+    {
+      "fieldNumber": .136,
+      "fieldName": "CLAIMS (OPT) PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the phone number at which the outpatient claims office  of this insurance carrier can be reached. ",
+      "fieldNumber_": .136
+    },
+    {
+      "fieldNumber": .137,
+      "fieldName": "APPEALS PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number at which the appeals office of this insurance carrier can be reached. ",
+      "fieldNumber_": .137
+    },
+    {
+      "fieldNumber": .138,
+      "fieldName": "INQUIRY PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number at which the inquiry office of this insurance carrier can be reached. ",
+      "fieldNumber_": .138
+    },
+    {
+      "fieldNumber": .139,
+      "fieldName": "PRECERT COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes Precerts.  The company specified in this field must be an active insurance company, not the same company specified as handling Precerts for it. ",
+      "fieldNumber_": .139
+    },
+    {
+      "fieldNumber": .141,
+      "fieldName": "APPEALS ADDRESS ST. [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the appeals address of this company is different from its main  address, enter Line 1 of the appeals street address.  Answer must be 3-30 characters in length. ",
+      "fieldNumber_": .141
+    },
+    {
+      "fieldNumber": .142,
+      "fieldName": "APPEALS ADDRESS ST. [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Appeals Address is longer than one line, enter a second line  between 3-30 characters.  It can not be the same as Line 1. ",
+      "fieldNumber_": .142
+    },
+    {
+      "fieldNumber": .143,
+      "fieldName": "APPEALS ADDRESS ST. [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Appeals Address is longer than two lines, enter a third line  between 3-30 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .143
+    },
+    {
+      "fieldNumber": .144,
+      "fieldName": "APPEALS ADDRESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which the appeals office of this insurance company is located. ",
+      "fieldNumber_": .144
+    },
+    {
+      "fieldNumber": .145,
+      "fieldName": "APPEALS ADDRESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which the appeals office of this insurance company is located.  Enter state even if it is the same as the state of the company's main address. ",
+      "fieldNumber_": .145
+    },
+    {
+      "fieldNumber": .146,
+      "fieldName": "APPEALS ADDRESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the appeals processing location  when it differs from the payer's main mailing address. Enter a 9 or 10  character ZIP code. ",
+      "fieldNumber_": .146
+    },
+    {
+      "fieldNumber": .147,
+      "fieldName": "APPEALS COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes Appeals.  The company specified in this field must be an active insurance company, not the same company as the entry being edited, and must not have another company specified as handling Appeals for it. ",
+      "fieldNumber_": .147
+    },
+    {
+      "fieldNumber": .148,
+      "fieldName": "ANOTHER CO. PROCESS APPEALS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes appeals. ",
+      "fieldNumber_": .148
+    },
+    {
+      "fieldNumber": .149,
+      "fieldName": "APPEALS FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of the appeals office of this insurance carrier. ",
+      "fieldNumber_": .149
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRESCRIPTION REFILL REV. CODE",
+      "dataType": "POINTER",
+      "rawType": "*P399.2'",
+      "required": false,
+      "pointerTo": 399.2,
+      "helpText": "This is the Revenue Code that will automatically be generated for this insurance company if a prescription refill is listed on this bill. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .151,
+      "fieldName": "INQUIRY ADDRESS ST. [LINE 1]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the inquiry address of this company is different from its main  address, enter Line 1 of the inquiry street address.  Answer must be  3-30 characters in length. ",
+      "fieldNumber_": .151
+    },
+    {
+      "fieldNumber": .152,
+      "fieldName": "INQUIRY ADDRESS ST. [LINE 2]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Inquiry Address is longer than one line, enter a second line  between 3-30 characters.  It can not be the same as Line 1. ",
+      "fieldNumber_": .152
+    },
+    {
+      "fieldNumber": .153,
+      "fieldName": "INQUIRY ADDRESS ST. [LINE 3]",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Inquiry Address is longer than two lines, enter a third line  between 3-30 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .153
+    },
+    {
+      "fieldNumber": .154,
+      "fieldName": "INQUIRY ADDRESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which this insurance company's inquiry address office is located. ",
+      "fieldNumber_": .154
+    },
+    {
+      "fieldNumber": .155,
+      "fieldName": "INQUIRY ADDRESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which this insurance company's inquiry address office is located.  Enter state even if it is the same as the state of the company's main address. ",
+      "fieldNumber_": .155
+    },
+    {
+      "fieldNumber": .156,
+      "fieldName": "INQUIRY ADDRESS ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the inquiry processing location  when it differs from the payer's main mailing address. Enter a 9 or 10  character ZIP code. ",
+      "fieldNumber_": .156
+    },
+    {
+      "fieldNumber": .157,
+      "fieldName": "INQUIRY COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes Inquiries.  The company specified in this field must be an active insurance company, not the same company as the entry being edited, and must not have another company specified as handling Inquiries for it. ",
+      "fieldNumber_": .157
+    },
+    {
+      "fieldNumber": .158,
+      "fieldName": "ANOTHER CO. PROCESS INQUIRIES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes Inquiries. ",
+      "fieldNumber_": .158
+    },
+    {
+      "fieldNumber": .159,
+      "fieldName": "INQUIRY FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of the inquiries office of this insurance carrier. ",
+      "fieldNumber_": .159
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "REPOINT PATIENTS TO",
+      "dataType": "POINTER",
+      "rawType": "P36",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "If an insurance company has been inactivated and the patients repointed to another company then this is the company that they are assigned. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .161,
+      "fieldName": "CLAIMS (OPT) STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the outpatient claims process address of this company is different  from its main address, enter Line 1 of the outpatient claims street  address.  Answer must be 3-35 characters in length. ",
+      "fieldNumber_": .161
+    },
+    {
+      "fieldNumber": .162,
+      "fieldName": "CLAIMS (OPT) STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Outpatient Claims Process Address is longer than one line, enter a second line between 3-35 characters.  It can not be the same as Line 1. ",
+      "fieldNumber_": .162
+    },
+    {
+      "fieldNumber": .163,
+      "fieldName": "CLAIMS (OPT) STREET ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Outpatient Claims Process Address is longer than two lines,  enter a third line between 3-35 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .163
+    },
+    {
+      "fieldNumber": .164,
+      "fieldName": "CLAIMS (OPT) PROCESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which this insurance company's outpatient claims office is located. ",
+      "fieldNumber_": .164
+    },
+    {
+      "fieldNumber": .165,
+      "fieldName": "CLAIMS (OPT) PROCESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which this insurance company's outpatient claims office is located.  Enter state even if it is the same as the state of the company's main address. ",
+      "fieldNumber_": .165
+    },
+    {
+      "fieldNumber": .166,
+      "fieldName": "CLAIMS (OPT) PROCESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the outpatient claims  processing location when it differs from the payer's main mailing  address. Enter a 9 or 10 character ZIP code. ",
+      "fieldNumber_": .166
+    },
+    {
+      "fieldNumber": .167,
+      "fieldName": "CLAIMS (OPT) COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes claims.  The company specified in this field must be an active insurance company, not the same company as the entry being edited, and must not have another company specified as handling Outpatient Claims for it. ",
+      "fieldNumber_": .167
+    },
+    {
+      "fieldNumber": .168,
+      "fieldName": "ANOTHER CO. PROCESS OP CLAIMS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes Outpatient Claims. ",
+      "fieldNumber_": .168
+    },
+    {
+      "fieldNumber": .169,
+      "fieldName": "CLAIMS (OPT) FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of the outpatient claims office of this insurance carrier. ",
+      "fieldNumber_": .169
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PROFESSIONAL PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An identifier for professional (CMS-1500) bills assigned by the insurance  company.  This field is a counterpart to the Hospital Provider Number. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .178,
+      "fieldName": "ANOTHER CO. PROCESS PRECERTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes precerts. ",
+      "fieldNumber_": .178
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "STANDARD FTF",
+      "dataType": "POINTER",
+      "rawType": "P355.13'",
+      "required": false,
+      "pointerTo": 355.13,
+      "helpText": "This is the standard filing time frame for the insurance company.   It may be automatically applied to dates of service. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .181,
+      "fieldName": "CLAIMS (RX) STREET ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the prescription claims address of this company is different from its main address, enter Line 1 of the prescription claims address. Answer must be 3-30 characters in length. ",
+      "fieldNumber_": .181
+    },
+    {
+      "fieldNumber": .182,
+      "fieldName": "CLAIMS (RX) STREET ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Prescription Claims Address is longer than one line, enter a  second line between 3-30 characters.  It can not be the same as  Line 1. ",
+      "fieldNumber_": .182
+    },
+    {
+      "fieldNumber": .183,
+      "fieldName": "CLAIMS (RX) STREET ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If the Prescription Claims Address is longer than two lines, enter a  third line between 3-30 characters.  It can not be the same as Line 1 or Line 2. ",
+      "fieldNumber_": .183
+    },
+    {
+      "fieldNumber": .184,
+      "fieldName": "CLAIMS (RX) CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the city in which this insurance company's prescription claims office is located. ",
+      "fieldNumber_": .184
+    },
+    {
+      "fieldNumber": .185,
+      "fieldName": "CLAIMS (RX) STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which this insurance company's prescription claims office is located.  Enter state even if it is the same as the state of the company's main address. ",
+      "fieldNumber_": .185
+    },
+    {
+      "fieldNumber": .186,
+      "fieldName": "CLAIMS (RX) ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XO",
+      "length": 10XO,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the prescription claims  processing location when it differs from the payer's main mailing  address. Enter a 9 or 10 character ZIP code. ",
+      "fieldNumber_": .186
+    },
+    {
+      "fieldNumber": .187,
+      "fieldName": "CLAIMS (RX) COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes Prescriptions.  The company specified in this field must be an active insurance company, not the same company as the entry being edited, and must not have another company specified as handling Prescriptions for it. ",
+      "fieldNumber_": .187
+    },
+    {
+      "fieldNumber": .188,
+      "fieldName": "ANOTHER CO. PROCESS RX CLAIMS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter \"Yes\" if another insurance company processes prescription claims. ",
+      "fieldNumber_": .188
+    },
+    {
+      "fieldNumber": .189,
+      "fieldName": "CLAIMS (RX) FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the fax number of the prescription claims office of this insurance carrier. ",
+      "fieldNumber_": .189
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "STANDARD FTF VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the value corresponding to the Standard Filing Time Frame.  For example, for the time frame of Days, enter the number of days. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .191,
+      "fieldName": "CLAIMS (DENTAL) STREET ADDR 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30Xa",
+      "length": 30Xa,
+      "required": false,
+      "helpText": "If the Dental claims process address of this company is different from  its main address, enter Line 1 of the Dental claims street address.   Answer must be 3-30 characters in length. ",
+      "fieldNumber_": .191
+    },
+    {
+      "fieldNumber": .1911,
+      "fieldName": "CLAIMS (DENTAL) PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20a",
+      "length": 20a,
+      "required": false,
+      "helpText": "Enter the telephone number at which this insurance carrier's Dental  claims office can be reached. ",
+      "fieldNumber_": .1911
+    },
+    {
+      "fieldNumber": .192,
+      "fieldName": "CLAIMS (DENTAL) STREET ADDR 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30Xa",
+      "length": 30Xa,
+      "required": false,
+      "helpText": "If the Dental Claims Process Address is longer than one line, enter a  second line between 3-30 characters.  The response can not be the same as line 1. ",
+      "fieldNumber_": .192
+    },
+    {
+      "fieldNumber": .193,
+      "fieldName": "BLANK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30a",
+      "length": 30a,
+      "required": false,
+      "helpText": "This is a place holder for a 3rd address line, if needed. ",
+      "fieldNumber_": .193
+    },
+    {
+      "fieldNumber": .194,
+      "fieldName": "CLAIMS (DENTAL) PROCESS CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ25a",
+      "length": 25a,
+      "required": false,
+      "helpText": "Enter the state in which this insurance company's Dental claims office is  located.  Enter state even if it is the same as the state of the  company's main address. ",
+      "fieldNumber_": .194
+    },
+    {
+      "fieldNumber": .195,
+      "fieldName": "CLAIMS (DENTAL) PROCESS STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'a",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the state in which this insurance company's Dental claims office is  located.  Enter state even if it is the same as the state of the  company's main address. ",
+      "fieldNumber_": .195
+    },
+    {
+      "fieldNumber": .196,
+      "fieldName": "CLAIMS (DENTAL) PROCESS ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10XOa",
+      "length": 10XOa,
+      "required": false,
+      "helpText": "This is the ZIP code for the address of the Dental claims processing  location when it differs from the payer's main mailing address.  Enter a  9 or 10 character ZIP code. ",
+      "fieldNumber_": .196
+    },
+    {
+      "fieldNumber": .197,
+      "fieldName": "CLAIMS (DENTAL) COMPANY NAME",
+      "dataType": "POINTER",
+      "rawType": "*P36'Xa",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "You can only select a company that processes claims.  The company  specified in this field must be an active insurance company, not the same  company as the entry being edited, and must not have another company  specified as handling Dental Claims for it. ",
+      "fieldNumber_": .197
+    },
+    {
+      "fieldNumber": .198,
+      "fieldName": "ANOTHER CO. PROC DENT CLAIMS?",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If another insurance company processes Dental Claims for this company,  enter 'YES'.  Otherwise, enter 'NO'. ",
+      "fieldNumber_": .198
+    },
+    {
+      "fieldNumber": .199,
+      "fieldName": "CLAIMS (DENTAL) FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20a",
+      "length": 20a,
+      "required": false,
+      "helpText": "Enter the fax number of this insurance carrier's Dental claims office. ",
+      "fieldNumber_": .199
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REIMBURSE?",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "Y:WILL REIMBURSE;*:WILL REIMBURSE IF TREATED UNDER VAR 6046(C) OR VAR 6060.2(A);**:DEPENDS ON POLICY, CHECK WITH COMPANY;N:WILL NOT REIMBURSE;",
+      "helpText": "Choose from the available list of choices the appropriate code denoting whether or not and under which circumstances this insurance carrier will reimburse the Dept of Veterans Affairs for care received. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SIGNATURE REQUIRED ON BILL?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter a yes or no in this field denoting whether a signature is required on a bill before being submitted to the insurance carrier. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "TRANSMIT ELECTRONICALLY",
+      "dataType": "SET",
+      "rawType": "RSXa",
+      "required": true,
+      "setOfCodes": "1:YES-LIVE;2:YES-TEST;",
+      "helpText": "This field determines whether an electronic claim to this insurance  company is sent as a test or a production claim. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "EDI ID NUMBER - PROF",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the ID number used to identify the Payer on professional claim transmissions. PRNT values are not valid Payer IDs. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "BIN NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for facilities who are billing CHAMPUS prescription charges electronically to the CHAMPUS fiscal intermediary.  The Bin number identifies this company as the CHAMPUS FI to the electronic billing system so that the claim is correctly routed to the FI. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "EDI ID NUMBER - INST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the ID number used to identify the Payer on institutional claim transmissions. PRNT values are not valid Payer IDs. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "LAST EXTRACT DATE FOR TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date that bills for this insurance company were extracted. This date is used to reset the counter for the # of test bills submitted. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "MAX NUMBER TEST BILLS PER DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to indicate the maximum number of test bills to send per day to this insurance company. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "NUMBER TEST BILLS FOR LAST DT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of test bills that were sent on the last date when test bills were sent electronically for this insurance company. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "ELECTRONIC INSURANCE TYPE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:HMO;2:COMMERCIAL;3:MEDICARE;4:MEDICAID;5:GROUP POLICY;9:OTHER;",
+      "helpText": "This field contains the code to be used in the electronic transmission of claims to identify the type of insurance company the claim is for. The default, if this field is blank, is Group Policy. If you select GROUP POLICY, this will force a check in the GROUP insurance box of the CMS 1500/BOX 1. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "PAYER",
+      "dataType": "POINTER",
+      "rawType": "*P365.12'a",
+      "required": false,
+      "pointerTo": 365.12,
+      "helpText": "This field points to an entry in the Payer File (#365.12).  This field is not required, but it allows the insurance company entry to be able to conduct business electronically by linking the insurance company with a payer for various electronic applications. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.13,
+      "fieldName": "INS COMPANY LINK TYPE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "P:PARENT;C:CHILD;",
+      "helpText": "This field indicates if the insurance company is identified as a Parent insurance company or a Child insurance company. This linkage between parent insurance companies and children insurance companies allows for easier maintenance of billing provider secondary ID's.   If this insurance company is currently defined as a Parent insurance company and there are Children insurance companies associated with it, then this field cannot be changed. You must first disassociate the Children from the Parent",
+      "fieldNumber_": 3.13
+    },
+    {
+      "fieldNumber": 3.14,
+      "fieldName": "INS COMPANY LINK PARENT",
+      "dataType": "POINTER",
+      "rawType": "*P36'X",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This field identifies the parent insurance company link for maintenance of billing provider secondary ID's. This field is only valid for insurance companies identified as children. ",
+      "fieldNumber_": 3.14
+    },
+    {
+      "fieldNumber": 3.15,
+      "fieldName": "EDI ID NUMBER - DENTAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30Xa",
+      "length": 30Xa,
+      "required": false,
+      "helpText": "This is the ID number used to identify the Payer on Dental claim  transmissions.  PRNT values are not valid Payer IDs. ",
+      "fieldNumber_": 3.15
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "PERF PROV SECOND ID TYPE 1500",
+      "dataType": "POINTER",
+      "rawType": "*P355.97'",
+      "required": false,
+      "pointerTo": 355.97,
+      "helpText": "This is the type of performing provider secondary id # that the  insurance company expects on CMS-1500 bills received from the  V.A.  When the payer-specific provider id is extracted, this field is used to determine where to get the default data from if another secondary id is not entered for the claim. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "PERF PROV SECOND ID TYPE UB",
+      "dataType": "POINTER",
+      "rawType": "*P355.97'",
+      "required": false,
+      "pointerTo": 355.97,
+      "helpText": "This is the type of performing provider id # that the insurance company expects on UB-04 bills received from the V.A.  When the payer-specific provider id is extracted, this field is used to  determine where to get the data from. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "SECONDARY ID REQUIREMENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE REQUIRED;1:CMS-1500 REQUIRED;2:UB-04 REQUIRED;3:BOTH UB-04 AND CMS-1500 REQUIRED;",
+      "helpText": "This field is used to identify if the insurance company requires the performing provider secondary id on the UB-04, the CMS-1500 or both. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "REF PROV SEC ID DEF CMS-1500",
+      "dataType": "POINTER",
+      "rawType": "*P355.97'",
+      "required": false,
+      "pointerTo": 355.97,
+      "helpText": "This is the default qualifier for a referring provider if there is a  referring provider and the form type is CMS-1500. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "REF PROV SEC ID REQ ON CLAIMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CMS-1500;0:NONE;",
+      "helpText": "Set this field to CMS-1500 if the default ID for a Referring Provider is REQUIRED on a claim. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "ATT/REND ID BILL SEC ID PROF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag is set for insurance companies that wish to have the  attending/rendering provider secondary ID used as a billing provider  secondary ID.  This applies to CMS-1500 claims. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "*SEND LAB OR FAC IDS FOR VAMC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag determines whether to send the lab/facility IDs and facility data when services are performed at the VAMC. Some payers will not accept the same data in both the Billing Provider and the Service Facility loops.   This flag only affects electronic claims and is only valid when one of the \"Always use main VAMC as Billing Provider\" fields (4.11 or 4.12) is set to \"Yes\". MRD;IB*2.0*516 - This field has been marked for deletion and can be deleted after 3/15/2018. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "ATT/REND ID BILL SEC ID INST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag is set for insurance companies that wish to have the attending/rendering provider secondary ID used as a billing provider secondary ID.  This applies to UB claims. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "PERF PROV CARE UNIT PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the specific care unit this insurance company needs on each claim to determine the correct performing provider id #. For example, if specialty code is the care unit that the provider id # is based on, you would enter SPECIALTY CODE here and, on each claim, enter the actual specialty code in the PROVIDER ID CARE UNIT field for the performing provider. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "DELETE 2006 4.1",
+      "dataType": "POINTER",
+      "rawType": "*P355.97'",
+      "required": false,
+      "pointerTo": 355.97,
+      "helpText": "This is the alternate provider id type to use to find the performing provider's id when the default id as defined by the performing provider id type cannot be found. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "*USE VAMC AS BILL PROV ON 1500",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this parameter to YES will cause the following to occur: the system will no longer determine the Billing Provider based upon the location of care; the Billing Provider on a professional claim will be the VAMC; the Division on the claim will print/transmit as the Service Facility. MRD;IB*2.0*516 - This field has been marked for deletion and can be  deleted after 3/15/2018. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "*USE VAMC AS BILL PROV ON UB04",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this parameter to YES will cause the following to occur: the system will no longer determine the Billing Provider based upon the location of care; the Billing Provider on an institutional claim will be the VAMC; the Division on the claim will transmit as the Service Facility. MRD;IB*2.0*516 - This field has been marked for deletion and can be deleted after 3/15/2018. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "*USE BILL PROV VAMC ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When this parameter is set to YES, the Billing Provider on a claim will be the VAMC but the name and address will be the name and street address from the institution file. When this parameter is set to NO, the Billing Provider on a claim will be the VAMC but the name and address will be the name and address of the VAMC's Pay-to Provider. MRD;IB*2.0*516 - This field has been marked for deletion and can be deleted after 3/15/2018. ",
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "SCHEDULED FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be used if a company is scheduled for deletion. Setting this field to 'Yes' will set a cross-reference which will allow quick retrieval of this company when the deletion clean-up background job begins to run.  That job will delete the entire insurance company entry. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "REPOINT DELETED COMPANY TO",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "When an Insurance Company is deleted, it may be necessary to repoint billing activity associated with that company to another company.  This field stored the pointer to that company. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "EDI INST SECONDARY ID QUAL(1)",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "2U:PAYER ID #;FY:CLAIM OFFICE #;NF:NAIC CODE;TJ:FED TAXPAYER #;",
+      "helpText": "Enter a secondary payer ID qualifier if provided by the payer. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "EDI INST SECONDARY ID(1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a secondary payer ID number if provided by the payer. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "EDI INST SECONDARY ID QUAL(2)",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "2U:PAYER ID #;FY:CLAIM OFFICE #;NF:NAIC CODE;TJ:FED TAXPAYER #;",
+      "helpText": "Enter a secondary payer ID qualifier if provided by the payer. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "EDI INST SECONDARY ID(2)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a secondary payer ID number if provided by the payer. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "EDI PROF SECONDARY ID QUAL(1)",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "2U:PAYER ID #;FY:CLAIM OFFICE #;NF:NAIC CODE;TJ:FED TAXPAYER #;",
+      "helpText": "Enter a secondary payer ID qualifier if provided by the payer. ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "EDI PROF SECONDARY ID(1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a secondary payer ID number if provided by the payer. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "EDI PROF SECONDARY ID QUAL(2)",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "2U:PAYER ID #;FY:CLAIM OFFICE #;NF:NAIC CODE;TJ:FED TAXPAYER #;",
+      "helpText": "Enter a secondary payer ID qualifier if provided by the payer. ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.08,
+      "fieldName": "EDI PROF SECONDARY ID(2)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a secondary payer ID number if provided by the payer. ",
+      "fieldNumber_": 6.08
+    },
+    {
+      "fieldNumber": 6.09,
+      "fieldName": "PRINT SEC/TERT AUTO CLAIMS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YES means that automatically-processed secondary or tertiary claims to  this payer must be printed locally. ",
+      "fieldNumber_": 6.09
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "PRINT SEC MED CLAIMS W/O MRA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YES means that secondary Medicare claims to this payer which have not  been transmitted to Medicare and for which no MRA has been received, must be printed locally. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "EDI - UMO (278) ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Utilization Management Organization identifier which will be sent in the 278 transaction with the qualifier of PI. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "HPID/OEID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The HPID/OEID is a 10-digit, all-numeric identifier following the ISO  Standard 7812 format with a Luhn check-digit as the tenth digit. The  start digit of the HPID/OEID signals whether the identifier has been  provided to a health plan and not to an \"other entity\". If the start  digit is a seven (7) then it is an HPID and identifies a health plan,  a six (6) indicates an \"other entity\" (OEID). The OEID serves as the  identifier for entities that are not health plans, healthcare  providers, or i",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "CHP/SHP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:Controlling Health Plan (CHP);S:Subhealth Plan (SHP);",
+      "helpText": "Define whether this health plan is a Controlling Health Plan (CHP) or  a Sub-health Plan (SHP). CHP is a health plan that controls its own  business activities, actions, or policies. A plan can have 0 to many  sub-health plans associated to it. SHP is a health plan whose business  activities, actions, or policies are directed by a CHP.  ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 8.03,
+      "fieldName": "PARENT CHP (HPID)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Only enter data IF this insurance company entry is NOT the parent CHP  for this HPID/OEID.  This would be the HPID of the parent Insurance Company.   ",
+      "fieldNumber_": 8.03
+    },
+    {
+      "fieldNumber": 8.04,
+      "fieldName": "NIF ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the internal identifier of the correlated entry in the FSC NIF.   The NIF ID associates the new HPID/OEID data element with their  correlated entry in the NIF (National Insurance File) so that there will  be a linkage between VA/VistA  and the FSC's NIF.   ",
+      "fieldNumber_": 8.04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "36.03",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 36.03,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "36.011",
+      "required": false,
+      "helpText": "You may enter unlimited free text comments about this insurance company. It may be helpful to date ongoing comments and identify the source of  the comments. ",
+      "isMultiple": true,
+      "subFileNumber": 36.011,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PLAN TYPES NO BILL PRV SEC ID",
+      "dataType": "SET",
+      "rawType": "36.013SA",
+      "required": false,
+      "helpText": "Enter all the Electronic plan types which will suppress Billing Provider  Secondary and Additional IDs from being sent. ",
+      "isMultiple": true,
+      "subFileNumber": 36.013,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ALTERNATE INST PAYER ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "36.015P",
+      "required": false,
+      "helpText": "This ID Type designates the type of claims which are processed by a different Administration Contractor than normal claims. It determines which Alternate Institutional Payer Primary ID will be transmitted.   In order for an Alternate ID to be added to the Bill/Claims, it has to be  in this sub-file. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ALTERNATE PROF PAYER ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "36.016P",
+      "required": false,
+      "helpText": "This ID Type designates the type of claims which are processed by a different Administration Contractor than normal claims. It determines which Alternate Professional Payer Primary ID will be transmitted.   In order for an Alternate ID to be added to the Bill/Claims, it has to be  in this sub-file. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "277EDI ID NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "36.017A",
+      "required": false,
+      "helpText": "This is the ID information needed to capture data for reporting purposes  from processing 277stat transactions. ",
+      "isMultiple": true,
+      "subFileNumber": 36.017,
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 139,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "AED", "field": },
+    {"name": "AEI", "field": },
+    {"name": "AEP", "field": },
+    {"name": "AHOD", "field": },
+    {"name": "ANIF", "field": },
+    {"name": "APC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "36", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .111, "type": "regular"},
+    {"name": "", "field": .111, "type": "regular"},
+    {"name": "", "field": .112, "type": "regular"},
+    {"name": "", "field": .121, "type": "regular"},
+    {"name": "", "field": .121, "type": "regular"},
+    {"name": "", "field": .122, "type": "regular"},
+    {"name": "", "field": .128, "type": "regular"},
+    {"name": "", "field": .141, "type": "regular"},
+    {"name": "", "field": .141, "type": "regular"},
+    {"name": "", "field": .142, "type": "regular"},
+    {"name": "", "field": .148, "type": "regular"},
+    {"name": "", "field": .151, "type": "regular"},
+    {"name": "", "field": .151, "type": "regular"},
+    {"name": "", "field": .152, "type": "regular"},
+    {"name": "", "field": .158, "type": "regular"},
+    {"name": "", "field": .161, "type": "regular"},
+    {"name": "", "field": .161, "type": "regular"},
+    {"name": "", "field": .162, "type": "regular"},
+    {"name": "", "field": .168, "type": "regular"},
+    {"name": "", "field": .178, "type": "regular"},
+    {"name": "", "field": .18, "type": "regular"},
+    {"name": "", "field": .181, "type": "regular"},
+    {"name": "", "field": .181, "type": "regular"},
+    {"name": "", "field": .182, "type": "regular"},
+    {"name": "", "field": .188, "type": "regular"},
+    {"name": "", "field": .191, "type": "regular"},
+    {"name": "", "field": .198, "type": "regular"},
+    {"name": "36", "field": 3.02, "type": "regular"},
+    {"name": "36", "field": 3.04, "type": "regular"},
+    {"name": "36", "field": 3.1, "type": "regular"},
+    {"name": "", "field": 3.13, "type": "regular"},
+    {"name": "36", "field": 3.14, "type": "regular"},
+    {"name": "", "field": 3.14, "type": "regular"},
+    {"name": "36", "field": 3.15, "type": "regular"},
+    {"name": "36", "field": 5.01, "type": "regular"},
+    {"name": "", "field": 6.01, "type": "regular"},
+    {"name": "", "field": 6.02, "type": "regular"},
+    {"name": "", "field": 6.03, "type": "regular"},
+    {"name": "", "field": 6.04, "type": "regular"},
+    {"name": "", "field": 6.05, "type": "regular"},
+    {"name": "", "field": 6.06, "type": "regular"},
+    {"name": "", "field": 6.07, "type": "regular"},
+    {"name": "", "field": 6.08, "type": "regular"},
+    {"name": "36", "field": 8.01, "type": "regular"},
+    {"name": "36", "field": 8.04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .111, "value": "W:$D(^(.11)) \"   \",$P(^(.11),U,1)"},
+    {"field": .112, "value": "W \"\""},
+    {"field": .113, "value": "W \"\""},
+    {"field": .114, "value": "W:$D(^(.11)) \"   \",$P(^(.11),U,4)"},
+    {"field": .115, "value": "S %I=Y,Y=$S('$D(^(.11)):\"\",$D(^DIC(5,+$P(^(.11),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(5,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .116, "value": "W \"\""},
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"}
+  ]
+}

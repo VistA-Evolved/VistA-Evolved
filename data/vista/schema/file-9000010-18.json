@@ -1,0 +1,307 @@
+{
+  "fileNumber": 9000010.18,
+  "fileName": "V CPT",
+  "globalRoot": "9000010.18IP",
+  "globalReference": "^AUPNVCPT(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT",
+      "dataType": "POINTER",
+      "rawType": "R*P81'X",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "This is the entry in the CPT file that most closely represents the clinical procedure done to the patient during the encounter. The preferred text for the procedure performed may be specified in the Provider Narrative field.      This field is used for Administrative and Clinical purposes. If a procedure performed is to be billable, the CPT code must be specified here.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient to whom the procedure was done during the encounter.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "R*P9000010'I",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "This is the encounter or occasion of service defined in the VISIT file that represents when and where the procedure was done.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROVIDER NARRATIVE",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.27",
+      "required": true,
+      "pointerTo": 9999999.27,
+      "helpText": "This is the narrative the provider uses to represent the procedure that was done. The text may be different from the CPT file's procedure name text, but should not have a significantly different meaning. The CPT code in the CPT (.01) field should be the CPT code that \"most closely\" represents the provider narrative for the procedure done.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PRINCIPAL PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies this procedure as the principal procedure done to the patient at the encounter.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DIAGNOSIS 2",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DIAGNOSIS 3",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DIAGNOSIS 4",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DIAGNOSIS 5",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DIAGNOSIS 6",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DIAGNOSIS 7",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DIAGNOSIS 8",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis, from the ICD Diagnosis file, associated with the procedure performed.  ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of times this procedure was done to the patient during the encounter. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "ORDER REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "Pointer to the order in the ORDER file, #100, that ordered the procedure.  ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "DEPARTMENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The 3-digit code that defines the service area associated with the charge by the sending application. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "PFSS CHARGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "A numeric identifier of not more than 8 digits that uniquely identifies the charge item in the external medical billing system. This data item is referred to as the \"PFSS Charge Identifier\" within the PFSS project documentation.  ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "POINTER",
+      "rawType": "9000010.181PA",
+      "required": false,
+      "helpText": " ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the procedure was performed. This date and time may be different from the visit date and time. For example, for clinic appointment visits, the Visit Date and Time is the date and time of the appointment, not the time the provider performed the clinical event.                                    The date may be an imprecise date.                                     Date and time may be before or after the Visit date, with the restriction the date cannot be a future date. ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field can be used to document the provider who ordered the procedure. ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who performed the procedure. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any original procedure data is being edited.  ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is populated automatically by the PCE filing logic. The format of the field is as follows: Pointer to PCE data source file_\"-\"_A for Add or E for Edit_\" \"_DUZ of the person who entered the data_\";\"...  ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 80201,
+      "fieldName": "PROVIDER NARRATIVE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P9999999.27",
+      "required": false,
+      "pointerTo": 9999999.27,
+      "helpText": "This field is the heading or category used to represent the provider  narrative on the scanner form. It may be useful for understanding how providers are grouping data for use on the encounter form, and may help determine clinical data base definitions in the future.  ",
+      "fieldNumber_": 80201
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ245",
+      "length": 245,
+      "required": false,
+      "helpText": "This is a comment related to the procedure performed. The provider may enter this manually via the PCE User Interface.  ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ELECTRONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "helpText": "This is used to note how the event was verified and is automatically entered by the software.  ",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the VistA package from which this procedure originated through PCE.                                     This is automatically entered by the software and uneditable by users.  ",
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "helpText": "This is the data source for this procedure. It is set automatically and uneditable by users.  ",
+      "fieldNumber_": 81203
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AATOO", "field": },
+    {"name": "AATOO2", "field": },
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9000010.18", "field": .01, "type": "regular"},
+    {"name": "9000010.18", "field": .01, "type": "regular"},
+    {"name": "9000010.18", "field": .02, "type": "regular"},
+    {"name": "9000010.18", "field": .02, "type": "regular"},
+    {"name": "9000010.18", "field": .03, "type": "regular"},
+    {"name": "9000010.18", "field": .03, "type": "regular"},
+    {"name": "9000010.18", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

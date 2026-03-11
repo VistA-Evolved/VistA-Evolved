@@ -1,0 +1,173 @@
+{
+  "fileNumber": 704.101,
+  "fileName": "TERM",
+  "globalRoot": "704.101",
+  "globalReference": "^MDC(704.101,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the unique identifier for this entry or term. This data is maintained nationally and will be the identifier for this term  enterprise-wide. A sample ID could be \"{D9FF5CA8-09AF-4318-B784-DEB3A8F819D8}\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the name of this TERM entry, in accordance with  enterprise-wide terminology standards. A sample TERM could be \"PICC LINE\". ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the enterprise wide ABBREVIATION for this term.  This value will  be used throughout the Clinical Flowsheets system in dropdowns and list  boxes where screen real estate is tight. A sample ABBREVIATION could be \"PICC LINE\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is a case sensitive, user friendly, DISPLAY NAME for this  term.  This is the full name for this term for display in the  Clinical Flowsheets application. A sample DISPLAY NAME could be \"PICC Line\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TERM_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP704.102'",
+      "required": true,
+      "pointerTo": 704.102,
+      "helpText": "This field correlates this term with an entry in the TERM TYPE File  (#704.102).  This field should define the \"purpose\" of this term in the  Clinical Data Model. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATA_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Qualifier;1:Complex;2:Numeric;3:PickList;4:Boolean;5:String;6:Range;",
+      "helpText": "This field is to specify the type of data this term represents.  ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VALUE_TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Unspecified;1:Temperature;2:Length;3:Volume;4:Rate;5:Time;6:Mass;7:Scale;",
+      "helpText": "This field is to specify the VALUE TYPE this term represents.  This data  will be used for more reliable conversion utilities. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is to indicate whether a term is ACTIVE or not.  Only an ACTIVE term can be used in new clinical observations. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a full DESCRIPTION of this term. A sample DESCRIPTION could be: \"Peripherally Inserted Central Catheter Line\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "HELP_TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text that will display as help for the term, within the  Clinical Flowsheets application. A sample HELP TEXT could be: \"Peripherally Ins Cen Cath Line\". ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "BOOLEAN_VALUE_TRUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the text that will display for boolean DATA  TYPE (field #.06) observations that are \"true\". A sample BOOLEAN VALUE TRUE could be \"TRUE\". ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "BOOLEAN_VALUE_FALSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the text that will display for boolean DATA  TYPE (field #.06) observations that are \"false\". A sample BOOLEAN VALUE FALSE could be \"FALSE\". ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "MULTI_SELECT_PICKLIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field determines if more than one value may be selected from a  \"picklist\" for an observation. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": .34,
+      "fieldName": "SCHEDULE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is the minutes of interval per SCHEDULE. A sample SCHEDULE could be \"120\". ",
+      "fieldNumber_": .34
+    },
+    {
+      "fieldNumber": .35,
+      "fieldName": "SCHEDULE_TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Continuous;1:PRN;2:Stat;3:One-Time;",
+      "helpText": "This field is the type of schedule. ",
+      "fieldNumber_": .35
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the VHA Unique IDentifier (VUID) for this term.   A sample VUID could be \"4688703\". ",
+      "fieldNumber_": 99.99
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "ACTIVE", "field": },
+    {"name": "ATYPE", "field": },
+    {"name": "C", "field": },
+    {"name": "704.101", "field": .02, "type": "regular"},
+    {"name": "704.101", "field": .05, "type": "regular"},
+    {"name": "704.101", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

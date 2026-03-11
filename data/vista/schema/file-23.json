@@ -1,0 +1,48 @@
+{
+  "fileNumber": 23,
+  "fileName": "BRANCH OF SERVICE",
+  "globalRoot": "23s",
+  "globalReference": "^DIC(23,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This file contains the internal entry number for this branch of service.  This number may be used by various software packages. This must not be edited and entries must not be added or deleted unless done through a software upgrade of the MAS package. | ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains that NAME of the Branch of Service.  It should not be altered or deleted unless done through an upgrade of an MAS package installation. | ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a synonym or shortened name associated with a specific branch of service. | ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "23", "field": .01, "type": "regular"},
+    {"name": "23", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

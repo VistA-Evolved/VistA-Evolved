@@ -1,0 +1,48 @@
+{
+  "fileNumber": 6924.3,
+  "fileName": "FSA-DIVISION/SERVICE",
+  "globalRoot": "6924.3I",
+  "globalReference": "^ENG(6924.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIV./SERVICE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Standardized functional area within Department of Veterans Affairs. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIV./SERVICE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text representation of standardized functional area. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEPARTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DVB:DEPT. of VETERANS BENIFITS;ODM&T:OFFICE OF DATA MGMT. & TELE.;DMA:DEPT. OF MEMORIAL AFFAIRS;DM&S:DEPT. OF MEDICINE & SURGERY;N.E.C:NOT ELSEWHERE CLASSIFIED;",
+      "helpText": "Agency division (old formats). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6924.3", "field": .01, "type": "regular"},
+    {"name": "6924.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "fileNumber": .85,
+  "fileName": "LANGUAGE",
+  "globalRoot": ".85",
+  "globalReference": "^DI(.85,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "A number that is used to uniquely identify a language.  This number corresponds to the Kernel system variable DUZ(\"LANG\"), which is set during Kernel signon to signify which language Fileman should use. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "Enter the English name of the language, not the native name.    The default is the English name from ISO 639, converted where necessary to ASCII. Where the ISO 639 standards disagree (cf. \"Central Khmer\" in ISO 639-1 to \"Khmer\" in ISO 639-3), the most recent standard's spelling is used.   However, this use of ISO 639's spelling as a default is overridden in  several different ways to improve consistency across entries and to  reduce selection error. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TWO LETTER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the two-letter code defined for this language in the ISO 639-1 standard. Not every language has a two-letter code; for those that do not leave this field blank. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "THREE LETTER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the three-letter code defined for this language in the ISO 639-2/B standard. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FOUR LETTER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the four letter code associated with the language in ISO-639-6.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ALTERNATE THREE LETTER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the alternate three letter code for a language. This will only be  used in cases where the language abbreviation is different in English  than in the native language. E.g. GER instead of DEU; for German instead  of Deutsch. This alternate abbreviation can be found in ISO 639-2/B. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SCOPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:Individual;M:Macrolanguage;C:Collective;S:Special;L:Local;",
+      "helpText": "Enter the Scope of a Language.   Individual if the language is an individually identifiable language  (e.g. 'Cantonese').   Macrolanguage if the language encopasses several other languages (e.g.  'Chinese')   Collective if the language is a language group (e.g. 'Languages,  Sino-Tibetan')   Special and Local are reserved for specific entries. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Living;C:Constructed;A:Ancient;H:Historical;E:Extinct;",
+      "helpText": "Living means that the language is spoken today (e.g. English).   Constructed means that the language is artificial (e.g. Esperanto).   Ancient means that the language is very old and not spoken any more (e.g. Ancient Egyptian).   Historical means that the language was being used in the Medieval times  and is not spoken any more (e.g. Old High German).   Extinct means that the language was being used recently but has died out  (e.g. Cornish). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LINGUISTIC CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P.85'",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "Enter a language collection to which this language belongs. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MEMBER OF LANGUAGE SET",
+      "dataType": "POINTER",
+      "rawType": "*P.85'",
+      "required": false,
+      "pointerTo": .85,
+      "helpText": "If this language is a dialect of a macrolanguage, select the  macrolanguage to which it belongs. (E.g. Cantonese is a dialect of  Chinese; thus Chinese is Cantonese's macrolanguage.) ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALTERNATE NAME",
+      "dataType": "SUBFILE",
+      "rawType": ".8501",
+      "required": false,
+      "helpText": "This multiple contains other names by which the language in this entry is known.   ",
+      "isMultiple": true,
+      "subFileNumber": .8501,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".8502",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .8502,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "ORDINAL NUMBER FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to transfer a number in Y to its ordinal equivalent in this language. The code should set Y to the ordinal equivalent without altering any other variables in the environment.  Ex. in English:        Y=1     becomes         Y=1ST        Y=2     becomes         Y=2ND        Y=3     becomes         Y=3RD  etc. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "DATE/TIME FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to transfer a date or date/time in Y from FileMan internal format, to printable format equivalent to English MMM DD,YYYY@HH.MM.SS. The code should set Y to the output, without altering any other variables in the environment.  Ex. in English:          Y=2940612.031245        becomes         Y=JUN 12,1994@03:12:45 ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.21,
+      "fieldName": "DATE/TIME FORMAT (FMTE)",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to transfer a date or date/time in Y from FileMan internal format, to printable format based on the various outputs from routine FMTE^DILIBF.  This is an extrinsic function.  Coming in to this MUMPS code, in addition to the internal date in Y, a third parameter will be defined to contain flags equivalent to the flag passed as the second input parameter to FMTE^DILIBF. The code should set Y to the output, without altering any other variables in the environment.  The output should ",
+      "fieldNumber_": 10.21
+    },
+    {
+      "fieldNumber": 10.22,
+      "fieldName": "TIME",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code stored here will be used to get formatted output of the time part belonging to a FileMan Date/Time value. ",
+      "fieldNumber_": 10.22
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "CARDINAL NUMBER FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to transfer a number in Y to its cardinal equivalent in this language. The code should set Y to the cardinal equivalent without altering any other variables in the environment.  Ex. in English:        Y=2000     becomes         Y=2,000        Y=1234567  becomes         Y=1,234,567 ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.4,
+      "fieldName": "UPPERCASE CONVERSION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to convert text in Y to its upper-case equivalent in this language. The code should set Y to the external format without altering any other variables in the environment.  In English, changes    abCdeF      to: ABCDEF ",
+      "fieldNumber_": 10.4
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "LOWERCASE CONVERSION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "MUMPS code used to convert text in Y to its lower-case equivalent in   this language. The code should set Y to the external format without altering any other variables in the environment.  In English, changes:     ABcdEFgHij         to:  abcdefghij ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 20.2,
+      "fieldName": "DATE INPUT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "fieldNumber_": 20.2
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "F", "field": }
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

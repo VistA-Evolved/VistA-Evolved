@@ -1,0 +1,37 @@
+{
+  "fileNumber": 757.07,
+  "fileName": "TOKENS",
+  "globalRoot": "757.07",
+  "globalReference": "^LEX(757.07,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TOKEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is an abbreviation or token that may have special considerations for lookup or case determinations. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDER",
+      "dataType": "SUBFILE",
+      "rawType": "757.0701I",
+      "required": false,
+      "helpText": "This is a series of rules in the order they will be applied. ",
+      "isMultiple": true,
+      "subFileNumber": 757.0701,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

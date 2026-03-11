@@ -1,0 +1,77 @@
+{
+  "fileNumber": 399.2,
+  "fileName": "REVENUE CODE",
+  "globalRoot": "399.2I",
+  "globalReference": "^DGCR(399.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REVENUE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "This is the 3-digit numeric code associated with this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STANDARD ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the abbreviation of the description field of this entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVATE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:ACTIVATE CODE;0:INACTIVATE CODE;",
+      "helpText": "This indicates whether or not this revenue code has been activated for use. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the full length description of this entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ALL INCLUSIVE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not this revenue code is an all inclusive rate. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D1", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "399.2", "field": .01, "type": "regular"},
+    {"name": "399.2", "field": .01, "type": "regular"},
+    {"name": "399.2", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "399.2", "field": 2, "type": "regular"},
+    {"name": "399.2", "field": 2, "type": "regular"},
+    {"name": "399.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

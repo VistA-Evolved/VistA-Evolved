@@ -1,0 +1,38 @@
+{
+  "fileNumber": 9002313.38,
+  "fileName": "BPS NCPDP OTHER PAYER PROGRAM TYPE",
+  "globalRoot": "9002313.38",
+  "globalReference": "^BPS(9002313.38,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Other Payer Adjudicated Program Type being sent on the claim and/or being  returned by the payer.  This is based on the NCPDP Standards for field  C47-9T. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "The description of the Other Payer Adjudicated Program Type. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.38", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

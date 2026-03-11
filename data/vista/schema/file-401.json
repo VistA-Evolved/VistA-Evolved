@@ -1,0 +1,725 @@
+{
+  "fileNumber": 401,
+  "fileName": "PAID EXTRACT",
+  "globalRoot": "401",
+  "globalReference": "^PRCM(401,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SS#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PP#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "STATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ADJ. INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DUTY STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "COST CTR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "SUB ACCT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "T&L UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "FUND CONTROL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PAY PLAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "GRADE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "STEP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "SAL. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "RETIRE. FICA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "PAY BASIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "DUTY BASIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "TYPE OF APPT.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "LEAVE GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "H.I. CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "NORMAL HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "NORMAL HOUR TRANSFORM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Changes PAID NORMAL HRS element for Full Time Physicians, Dentists, Career Medical & Dental House Staff  (Sub Accounts 1071,76,81,86) and SES from \"0\" to \"80\" hours, and trainees with less than full time equivalents to their appropriate hours to calculate FTE, 1=8, 2=16, 3=24. ",
+      "fieldNumber_": 211
+    },
+    {
+      "fieldNumber": 213,
+      "fieldName": "TRAINEE HRS (1)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Converts Trainee Normal Hours from 0 to appropriate Hours based upon , field 610- FTE ADJ. FACTOR- codes when 1=1/10 FTEE, 4=4/10 FTEE, etc. ",
+      "fieldNumber_": 213
+    },
+    {
+      "fieldNumber": 220,
+      "fieldName": "UNSCHED. HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 220
+    },
+    {
+      "fieldNumber": 230,
+      "fieldName": "OT HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 230
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "SCHED. OT HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "N/D HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "HOL. HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 270,
+      "fieldName": "SAT/SUN HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 270
+    },
+    {
+      "fieldNumber": 280,
+      "fieldName": "ON-CALL HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 280
+    },
+    {
+      "fieldNumber": 290,
+      "fieldName": "BASE PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 290
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "OT PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "N/D PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 320,
+      "fieldName": "HOL. PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 320
+    },
+    {
+      "fieldNumber": 330,
+      "fieldName": "SAT. PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 330
+    },
+    {
+      "fieldNumber": 340,
+      "fieldName": "SUN. PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 340
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "STANDBY PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 360,
+      "fieldName": "ON-CALL PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 360
+    },
+    {
+      "fieldNumber": 369,
+      "fieldName": "TOTAL COMPENSATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is the sum of the Personnel Compensation Payroll Analysis Accounts (11--) downloaded to the PAID Extract File from the Austin DPC. ",
+      "fieldNumber_": 369
+    },
+    {
+      "fieldNumber": 370,
+      "fieldName": "MD/DD SP. PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 370
+    },
+    {
+      "fieldNumber": 380,
+      "fieldName": "LIVING ALLOW.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 380
+    },
+    {
+      "fieldNumber": 390,
+      "fieldName": "UNIFORM ALLOW.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 390
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "AWARDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "MOVING EXPENSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 420,
+      "fieldName": "LUMP SUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 420
+    },
+    {
+      "fieldNumber": 430,
+      "fieldName": "SEVERANCE PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 430
+    },
+    {
+      "fieldNumber": 431,
+      "fieldName": "VARIABLE COSTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Sums the costs which are of a \"one-time\" nature, or vary each pay period. Includes, O/T, HOL., AWRDS, MOVING EXP., LUMP SUM, SEVERANCE. ",
+      "fieldNumber_": 431
+    },
+    {
+      "fieldNumber": 439,
+      "fieldName": "TOTAL BENEFITS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field represents the total of all elements of PAID data identified in MP4, Part V, Appendix B-4 as Payroll Analysis Accounts 12--, Personnel Benefits, and included in the PAID File download from Austin DPC.  ",
+      "fieldNumber_": 439
+    },
+    {
+      "fieldNumber": 440,
+      "fieldName": "GROSS PAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 440
+    },
+    {
+      "fieldNumber": 441,
+      "fieldName": "GROSS PAY & BENEFITS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Gross pay and uniform allow, , severance pay, moving expenses, Medi-  care tax, VA L/I, VA H/B, VA FICA, VA Retire, VA Thrift, plus re-employed  annuitants reimbursements to CSR fund. ",
+      "fieldNumber_": 441
+    },
+    {
+      "fieldNumber": 450,
+      "fieldName": "ANNUAL SALARY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 450
+    },
+    {
+      "fieldNumber": 460,
+      "fieldName": "MEDICARE TAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 460
+    },
+    {
+      "fieldNumber": 470,
+      "fieldName": "NP TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 470
+    },
+    {
+      "fieldNumber": 480,
+      "fieldName": "C/T USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 480
+    },
+    {
+      "fieldNumber": 490,
+      "fieldName": "C/T EARNED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 490
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "A/L USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "A/L USED TRANSFORM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Changes PAID A/L USED element for F/T Physicians, Dentists and SES from  number of days to 8 hours/day. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 510,
+      "fieldName": "S/L USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 510
+    },
+    {
+      "fieldNumber": 511,
+      "fieldName": "S/L USED TRANSFORM",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Changes PAID S/L USED for F/T Physicians, Dentists & SES from days used to  8 hours/day. ",
+      "fieldNumber_": 511
+    },
+    {
+      "fieldNumber": 520,
+      "fieldName": "LWOP HRS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 520
+    },
+    {
+      "fieldNumber": 530,
+      "fieldName": "LWOP HRS/SAL STEP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 530
+    },
+    {
+      "fieldNumber": 540,
+      "fieldName": "VA L/I COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 540
+    },
+    {
+      "fieldNumber": 550,
+      "fieldName": "VA H/B COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 550
+    },
+    {
+      "fieldNumber": 560,
+      "fieldName": "VA RETIRE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 560
+    },
+    {
+      "fieldNumber": 570,
+      "fieldName": "VA FICA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 570
+    },
+    {
+      "fieldNumber": 580,
+      "fieldName": "MIL. HRS USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 580
+    },
+    {
+      "fieldNumber": 590,
+      "fieldName": "MIL. LEAVE HRS BAL.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 590
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "CHECK MAIL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 610,
+      "fieldName": "FTE ADJ. FACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 610
+    },
+    {
+      "fieldNumber": 620,
+      "fieldName": "SAL/HRS LIMIT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 620
+    },
+    {
+      "fieldNumber": 630,
+      "fieldName": "SAL. LIMIT HRS/DOLLARS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 630
+    },
+    {
+      "fieldNumber": 640,
+      "fieldName": "SAL LIMIT HRS/$ ACCUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": 640
+    },
+    {
+      "fieldNumber": 650,
+      "fieldName": "SAL. LIMIT ANNIV. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 650
+    },
+    {
+      "fieldNumber": 660,
+      "fieldName": "ANNUITY REDUCT. AMT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 660
+    },
+    {
+      "fieldNumber": 670,
+      "fieldName": "SES AWARDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 670
+    },
+    {
+      "fieldNumber": 671,
+      "fieldName": "MOD CC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ4",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 671
+    },
+    {
+      "fieldNumber": 672,
+      "fieldName": "CC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 672
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "THRIFT SAVING PLAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 79,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "401", "field": .01, "type": "regular"},
+    {"name": "401", "field": 10, "type": "regular"},
+    {"name": "", "field": 60, "type": "regular"},
+    {"name": "401", "field": 70, "type": "regular"},
+    {"name": "401", "field": 80, "type": "regular"},
+    {"name": "401", "field": 90, "type": "regular"},
+    {"name": "401", "field": 672, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 10, "value": "W ?35,$P(^(0),U,2)"}
+  ]
+}

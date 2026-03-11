@@ -1,0 +1,86 @@
+{
+  "fileNumber": 601.6,
+  "fileName": "MH MULTIPLE SCORING",
+  "globalRoot": "601.6",
+  "globalReference": "^YTT(601.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP601'X",
+      "required": true,
+      "pointerTo": 601,
+      "helpText": "A Psychological test or interview from the MH Instrument File (#601) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALLOW MULTIPLE SCORING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Boolean to allow use of instrument in multiple test scoring. This field is set to 'N' when instrument is an interview or cannot be scored. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXECUTABLE SCORING CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Standard M code for multiple scoring. This code is executed to score the tests as raw and transformed scoring is not saved but recreated on each printing. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text describing the type of Instrument being scored. This field will contain a description of how the scores are to be evaluated. Estimated range descriptions will be placed here. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "APPROPRIATE FOR GUI INPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the MH SHG believes this instrument is  appropriate for GUI presentation to the clinician and or patient ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OUTCOMES",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This executable Mumps code generates a number which corresponds to the  results text number appropriate for this administration ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RESULTS",
+      "dataType": "SUBFILE",
+      "rawType": "601.66I",
+      "required": false,
+      "helpText": "Based on the decision rules coded in the Outcome field, Results are the short text to be placed in a progress note or on-screen report detailing the meaning of the data. ",
+      "isMultiple": true,
+      "subFileNumber": 601.66,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

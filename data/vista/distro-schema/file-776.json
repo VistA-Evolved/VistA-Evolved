@@ -1,0 +1,148 @@
+{
+  "fileNumber": 776,
+  "fileName": "HL7 MONITOR JOB",
+  "globalRoot": "776",
+  "globalReference": "^HLEV(776,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "START TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field holds the time when the HL7 Monitor Job file (#776) entry was created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPLETION TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the time the background job finished. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MONITOR-PTR",
+      "dataType": "POINTER",
+      "rawType": "P776.1'",
+      "required": false,
+      "pointerTo": 776.1,
+      "helpText": "This field holds the internal entry number of the monitor entry in the HL  Event Monitor file (#776.1). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS-RUNTIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ERROR;F:FINISHED;Q:QUEUED;R:RUNNING;",
+      "helpText": "This field holds the run-time status of the background job. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS-APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the status provided by the application.  Entry of this  field is optional. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Periodically, during the running of the job, this field is updated with  the time \"now\", which is stored in this field. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAILMAN PTR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "When the job finishes, if a notification Mailman message is sent, it's  internal entry number if stored in this field. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TASK NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This field holds the task number for the background job. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MASTER JOB PTR",
+      "dataType": "POINTER",
+      "rawType": "P776.2'",
+      "required": false,
+      "pointerTo": 776.2,
+      "helpText": "The master job checks all monitors, and where appropriate queues  background jobs for each monitor.  These background jobs are linked to  this file, and to entries in this file.  This field holds the master job  internal entry number in the HL7 Monitor Master Job file (#776.2). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUEUE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Normally, a background monitor job is queued to run now.  However, at  times a monitor job is queued to a future time.  When this occurs, the  future queue time is stored in this field. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "RUN DIARY",
+      "dataType": "SUBFILE",
+      "rawType": "776.001",
+      "required": false,
+      "helpText": "Text is placed in this word processing field using the RUNDIARY^HLEVAPI  API.  The contents of this field is under complete control by the using  application. ",
+      "isMultiple": true,
+      "subFileNumber": 776.001,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "776.002",
+      "required": false,
+      "helpText": "Text is placed in this word processing field using the MSGTEXT^HLEVAPI API.  The contents of this field is under complete control by the using application. ",
+      "isMultiple": true,
+      "subFileNumber": 776.002,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "VARIABLE VALUE",
+      "dataType": "SUBFILE",
+      "rawType": "776.003A",
+      "required": false,
+      "helpText": "This field holds the variable names and values declared by the calling  application. ",
+      "isMultiple": true,
+      "subFileNumber": 776.003,
+      "fieldNumber_": 52
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "M", "field": },
+    {"name": "776", "field": .01, "type": "regular"},
+    {"name": "776", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

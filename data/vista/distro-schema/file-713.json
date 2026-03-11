@@ -1,0 +1,125 @@
+{
+  "fileNumber": 713,
+  "fileName": "EAS MT PARAMETERS",
+  "globalRoot": "713",
+  "globalReference": "^EAS(713,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "'One' designates the 'one' EAS MT Parameter.  There can only be one set of parameters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the last means test letter generator searched for letter candidates.  This date may be either a tasked run date or an interactive run date. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST INTERACTIVE USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The last user to initiate an interactive letter generation. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST INTERACTIVE RUN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the letter generator was last run interactively. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIMARY PRINT DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This the default printer to send the MT letters and 10-10EZ forms to. This is primarily used when the letter generator is run in a tasked environment. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MT COMPLETION BULLETIN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If YES, a completion bulletin is send upon completion of a Means Test ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ALLOW FILTERING BY LOCATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This switch allows the filtering by PREFERRED FACILITY to be truned on or  off by the site.  If on, users will be prompted to filter letters for a  specific Preferred Facility.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ALLOW OTHER RETURN ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A NO will force all letters to print the primary facility's return  address on the letters.  A YES will allow the printing of the return  address listed for the preferred facility as entered in the PATIENT File,  #2. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ENVELOPE OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Offset for printing means test letters for samll adjustments to fit  windowed envelopes.  This field should not be changed unless the patient address is not aligning with the envelope window. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "*ADDITIONAL PRINT LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "713.025PA",
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "IN USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be set to YES when an automated MT Letters generator process is running.  If no process is running, the field will be NO. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ALOCK", "field": },
+    {"name": "B", "field": },
+    {"name": "713", "field": .01, "type": "regular"},
+    {"name": "713", "field": 30, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 52.54,
+  "fileName": "CLOZAPINE OVERRIDE REASONS",
+  "globalRoot": "52.54",
+  "globalReference": "^PS(52.54,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OVERRIDE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the reason for the Clozapine lockout override. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.54", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

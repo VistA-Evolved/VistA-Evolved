@@ -1,0 +1,117 @@
+{
+  "fileNumber": 503331,
+  "fileName": "VOLUNTEER DAILY TIME",
+  "globalRoot": "503331PI",
+  "globalReference": "^ABS(503331,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP503330'",
+      "required": true,
+      "pointerTo": 503330,
+      "helpText": "This field contains the name of volunteer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field contains the site number associated with this daily record.  It is the number assigned by the Austin voluntary system defining the specific facility.  It can be 3 numbers or 3 numbers followed by 1 uppercase character. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE WORKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the volunteer has worked. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "*P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "helpText": "This field contains the service organization the volunteer is representing during this period of work. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P503332'",
+      "required": false,
+      "pointerTo": 503332,
+      "helpText": "This field contains the medical center service the volunteer is working for during this period. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NUMBER OF HOURS WORKED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This field contains the numbers of hours worked by the volunteer during this period. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MONTH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the month during which the work was performed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "COMBINATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A combination is a string of 7 to 8 characters representing the service organization represented, the work schedule and the medical center service for which the work was performed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REVIEW DAILY ENTRY LIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field contains a \"yes\" if it is to be used in displaying the daily records of an individual volunteer. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "503331", "field": .01, "type": "regular"},
+    {"name": "503331", "field": 2, "type": "regular"},
+    {"name": "503331", "field": 2, "type": "regular"},
+    {"name": "503331", "field": 3, "type": "regular"},
+    {"name": "503331", "field": 3.5, "type": "regular"},
+    {"name": "503331", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": 4, "value": "W \"   \",$P(^(0),U,5)"},
+    {"field": 6, "value": "W \"   \",$P(^(0),U,6)"},
+    {"field": W6, "value": "W \"   \",$P(^(0),U,6)"}
+  ]
+}

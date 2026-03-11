@@ -1,0 +1,36 @@
+{
+  "fileNumber": 351.91,
+  "fileName": "CLAIMSMANAGER STATUS",
+  "globalRoot": "351.91",
+  "globalReference": "^IBA(351.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the STATUS for the ClaimsManager bills that will be pointed to by the CLAIMSMANAGER file (#351.9). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an abbreviation of the status for reports. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

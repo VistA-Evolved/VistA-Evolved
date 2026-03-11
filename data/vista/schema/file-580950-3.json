@@ -1,0 +1,91 @@
+{
+  "fileNumber": 580950.3,
+  "fileName": "*AJK1UB STATUS CHANGE",
+  "globalRoot": "580950.3",
+  "globalReference": "^AJK1UBS(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP433'",
+      "required": true,
+      "pointerTo": 433,
+      "helpText": "This is a pointer to the AR TRANSACTION file.  All entries in this file are transactions associated with a primary bill, located in the AJK1UB TRANSMITAL file.  These are the transactions which have been reported to the collection agency following initial transmission. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The local message number in which this status update was transmitted. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, NOT SENT;",
+      "helpText": "This flag is set to 1 when the record is created by the transmission processor.  At the time it's placed into a message the flag is deleted along with the \"AO\" cross-reference. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PRIMARY RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP580950.2'",
+      "required": true,
+      "pointerTo": 580950.2,
+      "helpText": "This is a pointer to the AJK1UB TRANSMITAL file.  This is used to group the status updates by primary record number. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*XMIT RECORD",
+      "dataType": "SUBFILE",
+      "rawType": "580950.31",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 580950.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "XMIT RECORD (NEW)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the transmission status change record which was transmitted to the collection agency. ",
+      "fieldNumber_": 5.1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "AO", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "580950.3", "field": .01, "type": "regular"},
+    {"name": "580950.3", "field": .03, "type": "regular"},
+    {"name": "580950.3", "field": .04, "type": "regular"},
+    {"name": "580950.3", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^AJK1UB(+$P(^(0),U,10),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(580950.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

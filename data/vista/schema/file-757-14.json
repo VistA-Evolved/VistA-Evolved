@@ -1,0 +1,46 @@
+{
+  "fileNumber": 757.14,
+  "fileName": "SOURCE",
+  "globalRoot": "757.14",
+  "globalReference": "^LEX(757.14,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name of the source of terminology/vocabulary. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ21,8",
+      "length": 21,
+      "required": false,
+      "helpText": "If the source is a VistA file, the file number will be included in the source reference. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DOCUMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the source is from a document, the document title will be included in the source reference. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

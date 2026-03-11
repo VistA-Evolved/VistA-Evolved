@@ -1,0 +1,27 @@
+{
+  "fileNumber": 452.6,
+  "fileName": "PRSE SVC REASONS FOR TRAINING",
+  "globalRoot": "452.6",
+  "globalReference": "^PRSE(452.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON FOR EMPLOYEE TRAINING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the service's reason for attending this program/class. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "452.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

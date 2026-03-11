@@ -1,0 +1,100 @@
+{
+  "fileNumber": 2006.582,
+  "fileName": "MODALITY TYPE DICTIONARY",
+  "globalRoot": "2006.582",
+  "globalReference": "^MAGDICOM(2006.582,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the company the produces this equipment. The value of this field is a text that identifies the manufacturer of the modality that is described in the current entry.   This name must be spelled exactly as it is presented in the headers of the image files that are produced by modalities of this type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a text that identifies the model of the modality that is described in the current entry.   This name must be spelled exactly as it is presented in the headers of the image files that are produced by modalities of this type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the type of modality for the current entry.   The possible values for this two-letter code are defined in the DICOM standard, and are also stored in file 73.1, stored in ^RAMIS(73.1,...) ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DICOM TO TARGA PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that provides the parameters that are to be specified when the program is called that converts an image in DICOM format to Targa(TM) format.   These parameters will apply to files that originate from the type of modality that is described in the current entry.   When the parameters are different for the conversion to an 'clinical resolution' image than they are for a 'full resolution' image, the value of this field consists of two parts, separated by a slash (",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CASE LOOKUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the entry point that is called as a subroutine when the DICOM Image Gateway needs to look up the Accession Number number, given the information provided by the modality that is described in this entry.   In the name of this entry point, the caret that separates the name of the label from the name of the routine is replaced by a period. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATA EXTRACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the entry point that is called as a subroutine when the DICOM Image Gateway needs to extract data, given the information provided by the modality that is described in this entry.   In the name of this entry point, the caret that separates the name of the label from the name of the routine is replaced by a period. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "EXTRACTION FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the name of a file that contains a list of additional fields to be displayed on a diagnostic workstation for images that are produced by a modality of the type that is described in the current entry.   Currently, three such files exist:    datamisc.dic    data_cr.dic    datagect.dic ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IMAGING SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:Radiology;CON:Consults;",
+      "helpText": "The value of this field is a code that indicates the \"Imaging Service\" for this type of instrument.  Possible Imaging Services are:    RAD:   Radiology    CON:   Consults ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Active;0:Not Currently Used;",
+      "helpText": "The value of this field is a code that indicates whether or not this entry is currently active. Possible values:     1: active     0: currently not in use ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

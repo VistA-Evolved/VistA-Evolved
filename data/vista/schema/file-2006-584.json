@@ -1,0 +1,66 @@
+{
+  "fileNumber": 2006.584,
+  "fileName": "TCP/IP PROVIDER PORT LIST",
+  "globalRoot": "2006.584",
+  "globalReference": "^MAGDICOM(2006.584,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MENU OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a text that is presented as a menu-prompt to select the equipment that is described in this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the equipment being described in the current entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port number to which the equipment connects that is described in this entry.   TCP/IP port numbers are integers between 1 and 65535. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FIFO Queue;D:Direct;",
+      "helpText": "The value of this field is a code that specifies how the communication takes place with the equipment that is described in this entry.   Possible values are DIRECT and by FIFO queue (First In, First Out). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHANNEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the channel that is used for the communication with the equipment described in this entry.   Channel numbers are integer numbers. The lowest channel number is one; typically, a site has only two channels, on occasion a higher number of channels may be utilized. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.584", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "fileNumber": 631.8,
+  "fileName": "HBHC VALID STATE CODE",
+  "globalRoot": "631.8P",
+  "globalReference": "^HBHC(631.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This field represents 2 digit numeric state code which is valid for site's HBHC program area.  Some sites may have more than one valid state code.  All State Codes must exist in State file (#5). ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

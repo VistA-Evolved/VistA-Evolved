@@ -1,0 +1,197 @@
+{
+  "fileNumber": 801.1,
+  "fileName": "REMINDER ORDER CHECK RULES",
+  "globalRoot": "801.1",
+  "globalReference": "^PXD(801.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the internal name of the rule. The name may not start with \"VA-\", as that is reserved for  national reminder components. The name you enter will be made upper case.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name that will display in the CPRS Order Check Window. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INACTIVE;P:PRODUCTION;T:TESTING;",
+      "helpText": "This field determines if the rule is inactive, set for production use,  or for testing use. If the rule is set to INACTIVE, then the rule will not be evaluated for the orderable item list. The value should be set to TESTING when a rule is first created so the creator of the rule can test it before turning it on for the entire facility. To turn it on for the entire facility, this field must be set to PRODUCTION. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SEVERITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "3:LOW;2:MEDIUM;1:HIGH;",
+      "helpText": "Enter a severity for the order check. If multiple reminder order checks  are run against an orderable item, the results are displayed by order of  severity, from high to low. Also, a severity of HIGH requires the user to enter an override reason when signing the order.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RULE DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.11",
+      "required": false,
+      "helpText": "This is the description of what the creator is trying to accomplish with this particular rule.  ",
+      "isMultiple": true,
+      "subFileNumber": 801.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REMINDER TERM",
+      "dataType": "POINTER",
+      "rawType": "P811.5'",
+      "required": false,
+      "pointerTo": 811.5,
+      "helpText": "If a reminder term is defined in this field when an order is placed in CPRS, the reminder term will be evaluated. The reminder term evaluation will return  either a TRUE or FALSE value. The value returned by the reminder term evaluation is used in conjunction with the TERM EVALUATION STATUS field.  ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TERM EVALUATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "This field is used in conjunction with the REMINDER TERM field; it will be used to determine if the rule should appear in the order check window in CPRS. When the reminder term is defined in field #20, the TRUE/FALSE result of the term evaluation will be compared to the value defined in this field. If the value matches, the text defined in the Order Check Text field will appear in the order check window with the DISPLAY NAME. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "REMINDER DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "*P811.9'",
+      "required": false,
+      "pointerTo": 811.9,
+      "helpText": "If a reminder definition is defined in this field when an order is placed in CPRS, the reminder definition will be evaluated. The reminder definition evaluation will return an evaluation status. The value of the status  returned by the reminder definition evaluation is used in conjunction with the DEFINITION EVALUATION STATUS field.  ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DEFINITION EVALUATION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DUE;A:APPLICABLE;N:N/A;",
+      "helpText": "This field is used in conjunction with the REMINDER DEFINITION field. It will be used to determine if the rule should appear in the order check window in CPRS. When a reminder definition is defined in field #30, the status value from the definition evaluation will be compared to the value defined in this field. If the evaluation status value matches then the rule will appear in the order check window. This field can have one of three possible values: DUE, APPLICABLE, and N/A.                    ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "OUTPUT TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ORDER CHECK TEXT ONLY;D:DEFINITION TEXT ONLY;B:BOTH ORDER CHECK AND DEFINITION TEXT;",
+      "helpText": "This field controls which text will appear in the order check window.                                   ORDER CHECK TEXT ONLY will display the text defined in the ORDER CHECK TEXT field in the Order Check Window.                                   DEFINITION TEXT ONLY will display the text returned from the reminder evaluation. This text is similar to the Clinical Maintenance Output, but without the status line and the frequency line in the output.                                   BOTH ORDER CHE",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ORDER CHECK TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "801.12",
+      "required": false,
+      "helpText": "This field stores the text that should display in the Order Check Window. This text will only appear if the rule is true and the evaluation is done for a reminder term or if the evaluation is done for a reminder definition and the value of the OUTPUT TEXT field is not DEFINITION TEXT ONLY.   ",
+      "isMultiple": true,
+      "subFileNumber": 801.12,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "NO. OF ORDER CHECK TEXT LINES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number of lines in the ORDER CHECK TEXT. If the number ends with \"T\" then the text contains a TIU object. This field is set automatically during the rule edit and should never be edited by hand. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "NO. OF FORMATTED LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of formatted Order Check Text lines, it is set automatically. If the Order Check Text contains a TIU Object it cannot be formatted and this will be set to 0.  ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "FORMATTED ORDER CHECK TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "801.147",
+      "required": false,
+      "helpText": "This word-processing field contains the formatted Order Check Text. This speeds up order checking because the text does not have to be formatted every time. This field is set automatically by the software.  ",
+      "isMultiple": true,
+      "subFileNumber": 801.147,
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL;V:VISN;N:NATIONAL;",
+      "helpText": "This is the CLASS of the Orderable Item Group.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this orderable item group. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the orderable item group should be reviewed to verify that it is current with the latest standards and guidelines. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "801.13DA",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the order check rule.  ",
+      "isMultiple": true,
+      "subFileNumber": 801.13,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

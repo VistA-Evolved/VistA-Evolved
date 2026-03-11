@@ -1,0 +1,251 @@
+{
+  "fileNumber": 80.2,
+  "fileName": "DRG",
+  "globalRoot": "80.2",
+  "globalReference": "^ICD(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the DRG number ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This is the DRG number with \"DRG\" affixed as a prefix. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "*SURGERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is OBSOLETE as of 10/1/2004. This field is now being updated/maintained in the EFFECTIVE DATE multiple.   This is a flag set =1 if this is a surgical DRG. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "80.21A",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2004.   This is the description of the DRG ",
+      "isMultiple": true,
+      "subFileNumber": 80.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "*WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015. This field is now being updated/maintained in the FISCAL YEAR WEIGHTS&TRIMS multiple.   This field contains the weighted work unit (WWU) value assigned to the DRG. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "*LOW TRIM(days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015. This field is now being updated/maintained in the FISCAL YEAR WEIGHTS&TRIMS multiple.   Lowest # days of stay for this DRG ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "*HIGH TRIM(days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015. This field is now being updated/maintained in the FISCAL YEAR WEIGHTS&TRIMS multiple.   Highest # of days of stay for this DRG ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "*MDC#",
+      "dataType": "POINTER",
+      "rawType": "P80.3'",
+      "required": false,
+      "pointerTo": 80.3,
+      "helpText": "This field is OBSOLETE as of 10/1/2004. This field is now being updated/maintained in the EFFECTIVE DATE multiple.   MDC for this DRG. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "*WEIGHT(nonAffil)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   This field contains the weighted work unit (WWU) value assigned to the  DRG. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "*WEIGHT(IntAffil)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   This field contains the weighted work unit (WWU) value assigned to the  DRG. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*AVG LENGTH OF STAY(days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015. This field is now being updated/maintained in the FISCAL YEAR WEIGHTS&TRIMS multiple.   Average Length of Stay for this DRG ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*LOCAL LOW TRIM(Days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   Low # days of stay for this (local) facility ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "*LOCAL HIGH TRIM(Days)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   High # days of stay for this (local) facility ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "*LOCAL BREAKEVEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   The day on which the actual cost of care equals the estimated allocation for the assigned medical center. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "*ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   ACTIVATION DATE FOR THE DRG CODE ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "*INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   INACTIVE FLAG FOR DRG CODE ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   DATE THAT THE CODE BECAME INACTIVE ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FISCAL YEAR WEIGHTS&TRIMS",
+      "dataType": "DATE",
+      "rawType": "80.22D",
+      "required": false,
+      "helpText": "Weight and Trims by fiscal year ",
+      "isMultiple": true,
+      "subFileNumber": 80.22,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "*BREAKEVEN FISCAL YEAR/QUARTER",
+      "dataType": "SUBFILE",
+      "rawType": "80.23",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   This field contains the breakeven FY quarter. ",
+      "isMultiple": true,
+      "subFileNumber": 80.23,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "80.266D",
+      "required": false,
+      "helpText": "Effective date of the code set versioned level. ",
+      "isMultiple": true,
+      "subFileNumber": 80.266,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "DESCRIPTION (VERSIONED)",
+      "dataType": "DATE",
+      "rawType": "80.268D",
+      "required": false,
+      "helpText": "This is a history of the descriptive text to include the date the text  was first used and the text used. ",
+      "isMultiple": true,
+      "subFileNumber": 80.268,
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "*DRG GROUPER EFFECIVE DATE",
+      "dataType": "DATE",
+      "rawType": "80.271D",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015. ",
+      "isMultiple": true,
+      "subFileNumber": 80.271,
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "*REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is OBSOLETE as of 10/1/2015.   This field contains the name of the routine that contains the grouper logic for this field. ",
+      "fieldNumber_": 900
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "ADS", "field": },
+    {"name": "B", "field": },
+    {"name": "80.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 15, "value": "D EN^DDIOL((\" \"_$$IDDGS^ICDID(+Y)),\"\",\"?0\")"}
+  ]
+}

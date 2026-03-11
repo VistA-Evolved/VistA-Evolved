@@ -1,0 +1,42 @@
+{
+  "fileNumber": 64.22,
+  "fileName": "WKLD ITEM FOR COUNT",
+  "globalRoot": "64.22I",
+  "globalReference": "^LAB(64.22,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREV",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": " This field contains a short version of this item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Full Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field has the longer version of the name. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "VR", "field": },
+    {"name": "64.22", "field": .01, "type": "regular"},
+    {"name": "64.22", "field": .01, "type": "regular"},
+    {"name": "64.22", "field": 1, "type": "regular"},
+    {"name": "64.22", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

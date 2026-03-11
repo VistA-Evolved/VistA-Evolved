@@ -1,0 +1,92 @@
+{
+  "fileNumber": 920.1,
+  "fileName": "IMMUNIZATION INFO SOURCE",
+  "globalRoot": "920.1",
+  "globalReference": "^PXV(920.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This is the source of the information being provided for an immunization event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HL7 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "This is the HL7 code used for this SOURCE.  It is a required entry of 2 numbers.  A  leading zero is acceptable.  NO TWO SOURCES MAY USE THE SAME HL7 CODE. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "SaO",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This is used to show if the Source is ACTIVE OR INACTIVE.  This should be a '1' if it is INACTIVE or a '0' or no value if it is ACTIVE. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P920.1'Ia",
+      "required": false,
+      "pointerTo": 920.1,
+      "helpText": "This is populated when one Term/Concept replaces another Term/Concept. This field is controlled by standardization and should only be changed  by standardization processes.  This field contains a pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master Entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID).  A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "920.199DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 920.199,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "H", "field": },
+    {"name": "920.1", "field": .01, "type": "regular"},
+    {"name": "920.1", "field": .02, "type": "regular"},
+    {"name": "920.1", "field": 99.97, "type": "regular"},
+    {"name": "920.1", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   HL7:\",$P(^(0),U,2)"}
+  ]
+}

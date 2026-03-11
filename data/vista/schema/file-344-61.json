@@ -1,0 +1,362 @@
+{
+  "fileNumber": 344.61,
+  "fileName": "RCDPE PARAMETER",
+  "globalRoot": "344.61",
+  "globalReference": "^RCY(344.61,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the site for which the Accounts Receivable activity will be tracked.  A station can only have one site defined and multiple divisional sites are not supported.                                   This identifies charges or events to a site in the event that information is shared or sent to a centralized system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTO-POST MED CLAIMS ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Determines if auto-posting of medical claims is enabled for this site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUTO-DECREASE MED ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Determines if a medical claim amount can be auto-decreased for claims with non-zero payments during the auto-post processing. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AUTO-DECREASE MED DAYS DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This parameter determines the default number of days to wait before  applying the auto-decrease adjustment to non-zero medical payments being  processed by the auto-post processing. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AUTO-DECREASE MED AMT DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This parameter allows sites to specify the claim dollar amount maximum of  an automatic decrease adjustment that is made for third party medical claims, if auto-posting and auto-decrease of third party medical claims is turned on for the site. This parameter will default to null and require a response from 1 to 99999 dollars for the parameter question to allow sites to specify the claim dollar amount maximum of an automatic decrease adjustment that is made for third party medical claims. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "MEDICAL EFT POST PREVENT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of calendar days beyond which un-posted medical payments  (EFTs) will prevent the user from posting newer medical EFTs without  posting the older payments first.   A value of 21 is the initial default.  The user can reset the value to a  number from 14 to 60, inclusive, but cannot delete the value. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PHARMACY EFT POST PREVENT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of calendar days beyond which unposted pharmacy payments  (EFTs) will prevent the user from posting newer pharmacy EFTs without  posting the older payments first.   The user can reset the value to a number between 21 and 99, inclusive, but the user cannot delete the value. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST UPDATE PAYER EXCLUSIONS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the date/time the RCDPE AUTO-PAY EXCLUSION file (#344.6) was updated for new payers by the Accounts Receivable Nightly Process. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "EFT CUTOFF DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Used in posting prevention when working on the ERA Worklist.  Unposted  EFTs that are at least two months older than this date are not considered  when determining if there are aged, unposted EFTs on the system.   Do not edit this date.  It is set at package installation and must not be  changed. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DAY FOR WORKLOAD NOTIFICATIONS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "MO:MONDAY;TU:TUESDAY;WE:WEDNESDAY;TH:THURSDAY;FR:FRIDAY;SA:SATURDAY;SU:SUNDAY;",
+      "helpText": "This field determines on which day of the week that workload notification  bulletins are to be sent to the RCDPE AUDIT mail group. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "AUTO-DECREASE MED ZERO ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Determines if a medical claim amount can be auto-decreased for claims with no payments (zero dollar) that are not reversals during the auto-post processing.  ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "AUTO-DECREASE MED NO PAY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This parameter determines the default number of days to wait before applying the auto-decrease adjustment to medical claims with no payments on denial ERAs being processed by the auto-post processing. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "TRICARE EFT POST PREVENT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of calendar days beyond which un-posted Tricare  payments (EFTs) will prevent the user from posting newer  medical EFTs without posting the older payments first.                 A value of 30 is the initial default.  The user can set the value to a number from 14 to 60, inclusive, but cannot delete the value. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "AUTO-POST RX CLAIMS ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Determines if auto-posting of pharmacy claims is enabled for this site. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "AUTO-DECREASE PHARM ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Determines if a pharmacy claim amount can be auto-decreased for claims with non-zero payments during the auto-post processing. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "AUTO-DECREASE PHARM DAYS DEFAU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The complete label: AUTO-DECREASE PHARM DAYS DEFAULT   This parameter determines the default number of days to wait before applying the auto-decrease adjustment to pharmacy claims with non-zero payments being processed by the auto-post processing. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "AUTO-DECREASE PHARM AMT DEFAUL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The complete label: AUTO-DECREASE PHARM AMT DEFAULT   This parameter allows sites to specify the claim dollar amount maximum of an automatic decrease adjustment that is made for third party pharmacy claims, if auto-posting and auto-decrease of third party pharmacy claims is turned on for the site. This parameter will default to null and require a response from 1 to 99999 dollars for the parameter question to allow sites to specify the claim dollar amount maximum of an automatic decrease adjustme",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "AUTO-POST TRICARE CLAIMS ENBLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The complete label: AUTO-POST TRICARE CLAIMS ENABLED   Determines if auto-posting of TRICARE claims is enabled for this site. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "AUTO-DECREASE TRICARE PD ENBLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The complete label: AUTO-DECREASE TRICARE PAID ENABLED    Determines if a TRICARE claim amount can be auto-decreased for claims with non-zero payments during the auto-post processing. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "AUTO-DECREASE TRICARE AMT DFLT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The complete label: AUTO-DECREASE TRICARE AMT DEFAULT    This parameter allows sites to specify the claim dollar amount maximum of an automatic decrease adjustment that is made for third party TRICARE claims, if auto-posting and auto-decrease of third party TRICARE claims is turned on for the site. This parameter will default to null and require a response from 1 to 99999 dollars for the parameter question to allow sites to specify the claim dollar amount maximum of an automatic decrease adjustm",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "AUTO-DECREASE TRICARE DYS DFLT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The complete label: AUTO-DECREASE TRICARE DAYS DEFAULT    This parameter determines the default number of days to wait before applying the auto-decrease adjustment to TRICARE claims with non-zero  payments being processed by the auto-post processing. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "AUTO-DECREASE TRICARE ZRO ENBL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "The complete label: AUTO-DECREASE TRICARE ZERO ENABLED    Determines if a TRICARE claim amount can be auto-decreased for claims with no payments (zero dollar) that are not reversals during the auto-post processing. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "AUTO-DECREASE TRICARE DYS ZERO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The complete label: AUTO-DECREASE TRICARE DAYS (ZERO)   This parameter determines the default number of days to wait before applying the auto-decrease adjustment to TRICARE claims with no payments (zero dollar) being processed by the auto-post processing. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "AUTO-POST ZERO PAY ENABLED",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "Determines if auto-posting zero payment amount ERAs is enabled for this  site. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HISTORY",
+      "dataType": "DATE",
+      "rawType": "344.611D",
+      "required": false,
+      "helpText": "The history multiple contains a log of changes to EDI Lockbox auto-post and auto-decrease parameters.  The date and time of the change, the user who made the change and the old and new values of the parameter are stored.  This information is used to print the Auto Parameter History Report on demand. ",
+      "isMultiple": true,
+      "subFileNumber": 344.611,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EFT LOCKOUT OVERRIDE HISTORY",
+      "dataType": "DATE",
+      "rawType": "344.612DA",
+      "required": false,
+      "helpText": "This multiple is used to capture a history of EFT Lockout Override usage. Each time the Lockout is overridden for medical, pharmacy or TRICARE  EFTs, an entry will be added to this multiple.  The information will be  used to produce the 'EFT Unlock Lockout Override Report' on demand. ",
+      "isMultiple": true,
+      "subFileNumber": 344.612,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MEDICAL EFT OVERRIDE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "An override will allow unrestricted scratchpad creation within the ERA  Worklist option for one day. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PHARMACY EFT OVERRIDE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "An override will allow unrestricted scratchpad creation within the ERA  Worklist option for one day. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "USER - MEDICAL OVERRIDE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A record of the person who entered the medical override is needed for auditing purposes. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "USER - PHARMACY OVERRIDE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A record of the person who entered the pharmacy override is needed for auditing purposes. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "COMMENT - MEDICAL OVERRIDE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason for entering the Medical Override must be recorded for auditing purposes. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COMMENT - PHARMACY OVERRIDE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The reason for entering the Pharmacy Override must be recorded for auditing purposes. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TRICARE EFT OVERRIDE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "An override will allow unrestricted scratchpad creation within  the ERA Worklist option for one day. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "USER - TRICARE OVERRIDE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A record of the person who entered the Tricare override is needed for auditing purposes. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "COMMENT - TRICARE OVERRIDE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "The reason for entering the Tricare override must be recorded for auditing purposes. ",
+      "fieldNumber_": 28
+    }
+  ],
+  "fieldCount": 35,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "344.61", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

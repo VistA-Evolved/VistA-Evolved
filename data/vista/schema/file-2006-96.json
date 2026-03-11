@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2006.96,
+  "fileName": "IMAGE INDEX CONVERSION",
+  "globalRoot": "2006.96",
+  "globalReference": "^MAGIXCVT(2006.96,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "IMAGE FILE IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONVERTED BY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:UNKNOWN;1:PATCH 25;2:PATCH 59;",
+      "helpText": "This field indicates by what means the index values were converted. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

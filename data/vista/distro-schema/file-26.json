@@ -1,0 +1,38 @@
+{
+  "fileNumber": 26,
+  "fileName": "SEPARATION REASON",
+  "globalRoot": "26",
+  "globalReference": "^DIC(26,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ3I",
+      "length": 3I,
+      "required": true,
+      "helpText": "The three-digit numeric identifying code for the Separation Reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ128I",
+      "length": 128I,
+      "required": true,
+      "helpText": "The Separation Reason Description explains why a service member was discharged early. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "26", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

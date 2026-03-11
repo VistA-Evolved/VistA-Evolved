@@ -1,0 +1,142 @@
+{
+  "fileNumber": 424.1,
+  "fileName": "1358 AUTHORIZATION DETAIL",
+  "globalRoot": "424.1I",
+  "globalReference": "^PRC(424.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the sequence number of each bill on a 1358. the format is station PO number - 424 sequence number - sequence number. ie 503-C10001-1-1. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "RECORD TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "AU:AUTHORIZATION;A:ADJUSTMENT;P:PAYMENT TO AUTHORIZATION;",
+      "helpText": "   This field is used to store the type of transaction for recalculating the authorization. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTHORIZATION POINTER",
+      "dataType": "POINTER",
+      "rawType": "RP424'",
+      "required": true,
+      "pointerTo": 424,
+      "helpText": "pointer to file 424 ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AUTHORIZATION AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "Dollar amount of bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time bill entered. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User number of person entering bill. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VENDOR INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Vendor invoice number found on bill. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FINAL BILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FINAL;",
+      "helpText": "When flagged as a final bill against an authorization, posting of additional bills will be prohibited. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An optional field to further identify why payment is authorized. e.g.  If authorization is set for an ambulance, this field could be used to identify the patient transported. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CERTIFY FOR LIQUIDATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "When set to YES this field will flag Fiscal that a bill is ready to be paid for this entry. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "     This field is used to store the last user who edited this record. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used for comments/remarks for each authorization ",
+      "fieldNumber_": 1.1
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "424.1", "field": .01, "type": "regular"},
+    {"name": "424.1", "field": .011, "type": "regular"},
+    {"name": "424.1", "field": .02, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "424.1", "field": .08, "type": "regular"},
+    {"name": "424.1", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .08, "value": "W \"   \",$P(^(0),U,8)"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 409.89,
+  "fileName": "SDEC STOP CODE",
+  "globalRoot": "409.89",
+  "globalReference": "^SDEC(409.89,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ90",
+      "length": 90,
+      "required": true,
+      "helpText": "This field contains the name of the clinic stop code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STOP CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field contains the number related to the stop code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRIMARY;M:MENTAL HEALTH;S:SPECIAL CARE;",
+      "helpText": "This field describes a Stop Code Type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RSt11",
+      "required": true,
+      "helpText": "This field describes if Stop Code is Active or Not. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.89", "field": .01, "type": "regular"},
+    {"name": "409.89", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

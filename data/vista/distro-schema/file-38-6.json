@@ -1,0 +1,96 @@
+{
+  "fileNumber": 38.6,
+  "fileName": "INCONSISTENT DATA ELEMENTS",
+  "globalRoot": "",
+  "globalReference": "^DGIN(38.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the inconsistency.  This number is used by the consistency checker routines to determine what action needs to be taken.  Entries in this file must not be added nor altered in any way as this would cause the consistency checker functionality to act incorrectly. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the inconsistency that will be reported when utilizing various registration and consistency checker options.  This name will appear on the screen and in a mailmessage should the inconsistency not be reported. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the text for this inconsistency.  This text will display on the inconsistent data reports.  It describes how the inconsistency occurs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KEY REQUIRED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO KEY REQUIRED;1:ELIGIBILITY VERIFIED;2:MONEY VERFIED;3:SERVICE VERIFIED;4:KEY ALWAYS REQUIRED;",
+      "helpText": "Various entries in the PATIENT file become uneditable by certain hospital personnel once the data has been verified.  If the data has been verified, the user must hold a key in order to make a change to it.  If the inconsistency in this file requires a user to hold a key to edit the data once it has been verified, that key must be listed here.   Altering of data in this field could cause data to be edited inappropriately.  This field should not be changed! ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SET ELIG DR STRING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the data required to clean-up this inconsistency requires editing of data that is related to eligibility, this field should be answered yes. For example, if the inconsistency is 'SC PROMPT UNANSWERED', this field would be yes because this prompt is required in order to select a patient's eligibility.  If this field is answered yes, all eligibility related questions will also be asked.   Data in this field must not be altered in any way or it could cause inaccrarate patient data to be entered ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CHECK/DON'T CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CHECK;1:DON'T CHECK;",
+      "helpText": "Answer '0' if you want to check this inconsistency locally or '1' if you wish to ignore it whenever found.   Most checks provide the ability for them to be turned off locally, however, there are some consistency checks ('SC PROMPT UNANSWERED', for example) which will always be turned on regardless of how this promt is answered.   This field can be edited at the site level.   The consistency checks that will always be on are 'VETERAN STATUS UNSPECIFIED', 'SC PROMPT UNANSWERED', 'POS UNSPECIFIED',",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "USE FOR Z07 CHECK",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "38.61",
+      "required": false,
+      "helpText": "This field contains a full description of how the inconsistency is created.  This data is provided and maintained by the MAS package and should not be altered at the site level. ",
+      "isMultiple": true,
+      "subFileNumber": 38.61,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "38.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

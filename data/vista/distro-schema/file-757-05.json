@@ -1,0 +1,62 @@
+{
+  "fileNumber": 757.05,
+  "fileName": "REPLACEMENT WORDS",
+  "globalRoot": "757.05I",
+  "globalReference": "^LEX(757.05,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains words which are meant to be replaced (either physically or logically) prior to calling the look-up utility. This is a single word (no spaces, hypens or slashes). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPLACEMENT TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This word/multiple word term will either physically or logically replace WORD (.01) when it is contained in the user's input. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:REPLACEABLE WORD;L:LINKED WORD;N:NO ACTION TAKEN;",
+      "helpText": "Action indicates whether a WORD is physically (R)eplaced by the REPLACEMENT TERM in the user's input, or (L)ogically replaced by linking the WORD to each occurrence of the REPLACEMENT TERM which carries the same meaning. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LINKAGES",
+      "dataType": "POINTER",
+      "rawType": "757.53P",
+      "required": false,
+      "helpText": "This is a series of pointers to expressions to which the WORD (.01) is linked to.  When a word like \"CANCER\" is linked to an expression like \"CARCINOMA OF THE LUNG\", the pointer of the expression is listed here and a separate index node is created in the expression file (757.01) at ^LEX(757.01,\"AWRD\",\"CANCER\",DA,\"LINKED\")=\"\"  Subsequent searches for \"LUNG CANCER\" will be able to retrieve \"CARCINOMA OF THE LUNG.\"  During input, editing of this multiple field will only occur if ACTION (2) is set t",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AEXP", "field": },
+    {"name": "ALINK", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "757.05", "field": .01, "type": "regular"},
+    {"name": "757.05", "field": .01, "type": "regular"},
+    {"name": "757.05", "field": 1, "type": "regular"},
+    {"name": "757.05", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

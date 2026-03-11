@@ -1,0 +1,27 @@
+{
+  "fileNumber": 366.11,
+  "fileName": "NCPDP PROCESSOR APPLICATION",
+  "globalRoot": "366.11",
+  "globalReference": "^IBCNR(366.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A NCPDP Processor application name that identifies an electronic interface application. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "366.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

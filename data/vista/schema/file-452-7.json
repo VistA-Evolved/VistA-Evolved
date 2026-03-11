@@ -1,0 +1,76 @@
+{
+  "fileNumber": 452.7,
+  "fileName": "PRSE PARAMETERS",
+  "globalRoot": "452.7",
+  "globalReference": "^PRSE(452.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This field contains the word ONE, and can only contain this word.  Also there can only be one entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRSE OFFLINE/ON-LINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OFF-LINE;0:ON-LINE;",
+      "helpText": "this switch will allow the Education Tracking Appliocation to be taken off- line without bringing the entire system down. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRSE INITIALIZATION SWITCH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This switch is used by the developer only.  NO EDITING ALLOWED. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUPPLIER/PRESENTER LAYGO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LAYGO ACCESS;0:NO LAYGO ACCESS;",
+      "helpText": "This field allows IRM to turn on/off laygo access to the Supplier/Presenter File in the Education Tracking Application. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field should contain the station name or the desired default location for all locally presented training (e.g., VAMC HINES). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEW PERSON FILE ACCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACCESS TO NEW PERSON FILE;0:NO ACCESS TO NEW PERSON FILE;",
+      "helpText": "This field allows IRM to turn on/off access to the New Person File from the Education Tracking Application. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "452.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

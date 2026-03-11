@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2006.596,
+  "fileName": "ACTION QUEUE STATUS",
+  "globalRoot": "2006.596",
+  "globalReference": "^MAGDICOM(2006.596,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACTION QUEUE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "SEND:Send;",
+      "helpText": "The value of this field is the name of an \"action queue\". Currently, only one action queue exists, which has the name \"SEND\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "THREAD",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5961A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5961,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.596", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

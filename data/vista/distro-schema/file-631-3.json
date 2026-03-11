@@ -1,0 +1,37 @@
+{
+  "fileNumber": 631.3,
+  "fileName": "HBHC RECEPTIVE COMMUNICATION",
+  "globalRoot": "631.3",
+  "globalReference": "^HBHC(631.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0I",
+      "length": 1,
+      "required": false,
+      "helpText": "This field represents 1 digit numeric code for HBHC Receptive Communication.  Valid entries are 1-5 or 9. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field represents HBHC Receptive Communication text.  Field allows for 1-90 characters of free text. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

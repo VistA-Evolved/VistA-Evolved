@@ -1,0 +1,695 @@
+{
+  "fileNumber": 4.3,
+  "fileName": "MAILMAN SITE PARAMETERS",
+  "globalRoot": "4.3P",
+  "globalReference": "^XMB(1,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Used to have VA fileman only have one entry in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'X",
+      "required": true,
+      "pointerTo": 4.2,
+      "helpText": "This is the name of this installation of MailMan, as it is known to the rest of the network. It must appear in the DOMAIN file. This name applies to all CPUs or Volume sets which access this ^XMB global. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TIME ZONE",
+      "dataType": "POINTER",
+      "rawType": "RP4.4'",
+      "required": true,
+      "pointerTo": 4.4,
+      "helpText": "This field defines the timezone in which this domain is located. Note that Standard and Daylight savings times are considered two different timezones, requiring that the timezone be changed with the changing of daylight savings.  The timezones are located in the MailMan timezone file.  The values of the cross references on this field are appended to message dates as they are sent over the network. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SUBORDINATE DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "4.31P",
+      "required": false,
+      "helpText": "This field is not currently used. This field describes the domains which are subordinate to this one; that is, those domains which consider this domain a parent. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "*P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This field holds the name of the domain which is considered the parent of this domain.  The parent domain's subordinate domain list will contain this domain, also.   Parent domains are used for routing messages when a subordinate domain does not know a direct path to the selected domain.   Domains are connected to their parents as follows:   1.  The local domain is named. 2.  The parent is named at the local site. 3.  A script from the parent to the subordinate domain is created. 4.  A christeni",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE CHRISTENED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This holds the date on which this local domain was christened by its parent domain. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.301,
+      "fieldName": "NO-PURGE DAYS BUFFER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is used by the unreferenced messages purge to avoid purging the last few days worth of messages in the message file.  It should be a number sufficiently high so as to avoid purging messages which are in danger of being purged before they can be delivered.  This includes incoming network mail messages.   The minimum (and default if this field is null) is two days.  For example, if this field is 2, then messages up to and including those whose local create date is 2 days ago are subject",
+      "fieldNumber_": 4.301
+    },
+    {
+      "fieldNumber": 4.302,
+      "fieldName": "PURGE AUDIT",
+      "dataType": "DATE",
+      "rawType": "4.302D",
+      "required": false,
+      "helpText": "This multiple contains a history of Message file purges.  Generally, a record of the last 20 purges is kept.  MailMan has two ways to purge messages.  The option XMAUTOPURGE is generally run after XMCLEAN (the waste basket cleaner) and will purge any messages that are not pointed at by any recipients nor the sender.  The option XMPURGE-BY-DATE can also be run to purge messages that have an origination date older than one used to initiate the process.  It is recommended that  before XMPURGE-BY-DA",
+      "isMultiple": true,
+      "subFileNumber": 4.302,
+      "fieldNumber_": 4.302
+    },
+    {
+      "fieldNumber": 4.303,
+      "fieldName": "AUTOMATIC INTEGRITY CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:YES;1:NO;",
+      "helpText": "XMAUTOPURGE is generally run at least once a week at most sites.  It is the process that purges messages that are no longer referenced.  Before it is run, XMCLEAN is generally run.  XMCLEAN removes messages from WASTE baskets so that they will be unreferenced when XMAUTOPURGE comes along. XMAUTOPURGE kicks off the part of XMUTCHECKFILE that checks the Mail Box file.  XMUTCHECKFILE also resets and cleans up the  x-refs of this file. If your system has had fairly clean runs of XMUTCHECKFILE or if ",
+      "fieldNumber_": 4.303
+    },
+    {
+      "fieldNumber": 4.304,
+      "fieldName": "WEEKDAY DAYS TO PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "When the unreferenced messages purge runs, it purges messages from the message file, ^XMB(3.9, which are no longer referenced, meaning they aren't in anyone's mailbox.  If this field is null, OR if the purge is run on Saturday, the purge starts at the beginning of the message file.   If this field has a value, AND the purge is run on Sunday through Friday, the purge starts at the message create date calculated by subtracting the number of days from today's date.  So, if this number is 45, the un",
+      "fieldNumber_": 4.304
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SHOW INSTITUTION IN MAILMAN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field controls whether mailman will show the user's organization after his name.  This is useful when MailMan has many remote users, who may not know each other's location or affiliation. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "MESSAGE ACTION DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:IGNORE;D:DELETE;",
+      "helpText": "This is the default for the user prompt, \"Message Action\".  The user may over-ride this default by selecting his own under \"Edit User Options\". ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "COPY LIMIT - RECIPIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field enables site management to control whether a message with more than a certain number of recipients may be copied.  A user may not copy a message which has more than this number of recipients.  If this field is null, then the limit is 2999. ",
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.12,
+      "fieldName": "COPY LIMIT - RESPONSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field enables site management to limit the number of responses to a message that may be copied.  A user may not copy more than this number of responses to a message.  If this field is null, then the limit is 99. ",
+      "fieldNumber_": 5.12
+    },
+    {
+      "fieldNumber": 5.13,
+      "fieldName": "COPY LIMIT - LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field enables site management to limit the number of lines that may be copied from a message and its responses.  A user may not copy more than this number of message lines.  If this field is null, then the limit is 3999. ",
+      "fieldNumber_": 5.13
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUIRE INTRODUCTIONS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If this is turned on, then users must introduce themselves when they first log in to MailMan.  This forces users to describe themselves, and enter their phone numbers and addresses for others to query with the HELP options in MailMan. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "FWD TEST MESSAGE TO POSTMASTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;0:YES;",
+      "helpText": "Messages are sent automatically to a user's forwarding address if he changes it.  If you want these messages to be sent to the Postmaster, also, so that he is aware that the forwarding addresses are proper mark this field with \"YES\". ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "BIG GROUP SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "During message addressing, when a user addresses a message to a mail group with a lot of members, it can seem to take forever to process the group. (Dots of death!)  This field, BIG GROUP SIZE, can help.  IF you enter a number in this field, AND     - If the group contains member groups  or - If the group contains distribution lists  or - If the number of local members plus the number of remote members exceeds or equals the BIG GROUP SIZE boundary  THEN the user is asked whether s/he wants to qu",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 7.3,
+      "fieldName": "SHOW DUZ WHEN ADDRESS MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When someone addresses a message to a local user, should the DUZ of the local user be displayed?  (If this field is null, the default answer is \"no\".)  Disadvantages:  - Your site's DUZs may be SSNs.  They should not be displayed.  - Users may be confused by the display.  Advantages:  - A DUZ is unique, whereas some users may share the same or very similar name.  If a user knows the addressee's DUZ, the DUZ may be used to address a message, instead of the name. ",
+      "fieldNumber_": 7.3
+    },
+    {
+      "fieldNumber": 7.4,
+      "fieldName": "SHOW ADDRESS ON USER LOOKUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Option XMHELPUSER displays user information.  Among the items displayed are the address fields (.111 through .116) from the NEW PERSON file.  Some sites have home address information in these fields, which should not be displayed.  If the address fields should be displayed, answer YES; otherwise, answer NO.  If this field is null, the default answer is NO. ",
+      "fieldNumber_": 7.4
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "CPU (UCI,VOL) FOR FILER TO RUN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the UCI,VOL of where you want the background filer routines to run. It is recommended that the XMB global also reside in this location. If you are unsure what to enter, leave this field blank. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 7.6,
+      "fieldName": "FTP ADDRESS FOR BLOB <GET>",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "If your images are on a network that is available via FTP from your main node and you have no other way of accessing those message to get them onto you main node so that you can FTP them to other sites, put the IP address of the machine that you will GET your images from into this field. ",
+      "fieldNumber_": 7.6
+    },
+    {
+      "fieldNumber": 7.7,
+      "fieldName": "FTP RECEIVE DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the path for BLOBs to be received in. It is communicated to the transmitter of messages containing BLOBS so that they can be FTP'd to the correct directory once the disk has been designated with field 7.711.   If the receiving system is a DOS system the disk portion of the path  is in the field 'FTP RECEIVE DISK'. ",
+      "fieldNumber_": 7.7
+    },
+    {
+      "fieldNumber": 7.71,
+      "fieldName": "FTP RECEIVE NETWORK LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field should be the name of an entry in your 2005.2 file (Network Location).  It maps where incoming BLOBs will be placed and is the logical equivalent of field 7.7.   ",
+      "fieldNumber_": 7.71
+    },
+    {
+      "fieldNumber": 7.711,
+      "fieldName": "FTP RECEIVE DISK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the physical disk that the FTP Receive Network Location is on if the receiving system is a DOS system. ",
+      "fieldNumber_": 7.711
+    },
+    {
+      "fieldNumber": 7.72,
+      "fieldName": "FTP ADDRESS FOR BLOB RECEIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the IP address that you will advertise to other sites that wish to send you images that attach to multimedia messages. ",
+      "fieldNumber_": 7.72
+    },
+    {
+      "fieldNumber": 7.73,
+      "fieldName": "FTP USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VMS username that the sender will be told to use when he FTP's BLOBs to this domain. ",
+      "fieldNumber_": 7.73
+    },
+    {
+      "fieldNumber": 7.731,
+      "fieldName": "FTP PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the password if any that a BLOB sender needs to have when he FTPs into the system. ",
+      "fieldNumber_": 7.731
+    },
+    {
+      "fieldNumber": 7.7999,
+      "fieldName": "FTP NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "4.37",
+      "required": false,
+      "helpText": "This field holds site specific notes for this site on FTP operations. It is not used by MailMan. ",
+      "isMultiple": true,
+      "subFileNumber": 4.37,
+      "fieldNumber_": 7.7999
+    },
+    {
+      "fieldNumber": 8.11,
+      "fieldName": "LPC CHECKSUM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The code in this field will be obsolete after installation of KERNEL 6, if the \"LPC\" node in ^%ZOSF [^%ZOSF(\"LPC\")] is defined.  This field is inserted by the MailMan POST-init if the ^%ZOSF(\"OS\") is defined, contains \"DSM\" and does not contain \"VAX\".  This is because of a situation that  exists where DSM for PDP-aa series used to use on $ZCALL anbd in the updated version uses a slightly different one.  Both do not exist in one system. The way it is inserted is by setting an error trap and then ",
+      "fieldNumber_": 8.11
+    },
+    {
+      "fieldNumber": 8.12,
+      "fieldName": "TCP CHANNEL - MAXIMUM TO USE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains a value that is checked before starting a process to transmit mail via a TCP/IP channel.  If there are already as many processes running as is in this field, no process is started. ",
+      "fieldNumber_": 8.12
+    },
+    {
+      "fieldNumber": 8.13,
+      "fieldName": "STATS NORMALIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This option allows the user to customize the normalized report. ",
+      "fieldNumber_": 8.13
+    },
+    {
+      "fieldNumber": 8.14,
+      "fieldName": "LARGE MESSAGE REPORT LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used by the large message report. Any message with more than this many lines is included in the report. If this field is null, the default is 100. ",
+      "fieldNumber_": 8.14
+    },
+    {
+      "fieldNumber": 8.15,
+      "fieldName": "TCP/IP POLLER RUN FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STOP RUNNING;0:OKAY TO RUN;",
+      "helpText": "This field is checked every time the background tcp poller, XMRTCP, starts to process poller request.  If it is set to 1, XMRTCP stops running. If it is null or zero, XMRTCP processes the next entry.  If XMRTCP is not running it will not be restarted if the field is set to 1. If it is null or 0, and XMRTCP is not running, a background task will be created to restart it. ",
+      "fieldNumber_": 8.15
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "RECORD NETMAIL TRANSCRIPT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field allows the site manager to turn on and off (toggle) whether or not MailMan records all script transcripts in background.  The send portion of scripts played (using the 'Play Script' option) will not be recorded. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.21,
+      "fieldName": "XMITS TILL ERROR MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "How many times will a transmission be attempted before a message is sent to the Postmaster indicating that there have been multiple, unsuccessful transmissions to a domain. ",
+      "fieldNumber_": 8.21
+    },
+    {
+      "fieldNumber": 8.22,
+      "fieldName": "DNS AWARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "In order for MailMan to be DNS aware, the site must have installed the requisite Kernel patches for DNS.  - DNS IP (field 51 in file 8989.3) must contain an IP address for a DNS server.  - Routine ^XLFNSLK must exist.  If you answer 'no', MailMan will use the IP addresses in the domain scripts.  If you answer 'yes', MailMan will use the IP addresses in the domain scripts, but if they fail, or don't exist, MailMan will use DNS to ascertain other IP addresses to try.  MailMan will replace failed s",
+      "fieldNumber_": 8.22
+    },
+    {
+      "fieldNumber": 8.23,
+      "fieldName": "TCP/IP COMMUNICATIONS PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P3.4'",
+      "required": false,
+      "pointerTo": 3.4,
+      "helpText": "For TCP/IP connections, the scripts (the TEXT field, 2, in the TRANSMISSION SCRIPT multiple, 4, of the DOMAIN file, 4.2) can be built on-the-fly, if they don't exist, and if both this field and field 8.24 are filled in.  We identify the TCP/IP transmission scripts in file 4.2 by the TYPE field, 1.2, within the TRANSMISSION SCRIPT multiple.  Those whose TYPE is 'SMTP', 'TCPCHAN', or null are considered TCP/IP transmission scripts.  We can build the scripts, because they are standard.  Here's an e",
+      "fieldNumber_": 8.23
+    },
+    {
+      "fieldNumber": 8.24,
+      "fieldName": "TCP/IP TRANSMISSION SCRIPT",
+      "dataType": "POINTER",
+      "rawType": "P4.6'",
+      "required": false,
+      "pointerTo": 4.6,
+      "helpText": "For TCP/IP connections, the scripts (the TEXT field, 2, in the TRANSMISSION SCRIPT multiple, 4, of the DOMAIN file, 4.2) can be built on-the-fly, if they don't exist, and if both this field and field 8.23 are filled in.  We identify the TCP/IP transmission scripts in file 4.2 by the TYPE field, 1.2, within the TRANSMISSION SCRIPT multiple.  Those whose TYPE is 'SMTP', 'TCPCHAN', or null are considered TCP/IP transmission scripts.  We can build the scripts, because they are standard.  Here's an e",
+      "fieldNumber_": 8.24
+    },
+    {
+      "fieldNumber": 8.25,
+      "fieldName": "TCP/IP DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For TCP/IP connections, the physical link/device to be used is usually standard - some sort of NULL device.  This field is a free-text pointer to that device in the DEVICE (#3.5) file.  The device pointed to by this field will be used for a TCP/IP connection if, in the DOMAIN (#4.2) file, the device field is null in both of the following fields:  - PHYSICAL LINK / DEVICE (#1.3) field of the TRANSMISSION SCRIPT (#4) multiple  - PHYSICAL LINK DEVICE (#17) field  For more information, see the PHYSI",
+      "fieldNumber_": 8.25
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "NETWORK - MAX LINES SEND",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field enables site management to limit the number of lines which a message may have when it is addressed to a remote recipient.  A user may not send a message across the network with more than this number of lines.  If this field is null, there is no limit. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 8.31,
+      "fieldName": "NETWORK - MAX LINES RECEIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field enables site management to limit the number of lines which a message may have when it is received from a remote site.  Any message received from a remote site which has more lines than this number is automatically rejected.  If this field is null, there is no limit.  KIDS and PackMan messages are not affected by this limit. ",
+      "fieldNumber_": 8.31
+    },
+    {
+      "fieldNumber": 8.32,
+      "fieldName": "NETWORK - BLOCK SIZE RECEIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:255;B:512;",
+      "helpText": "*** This field is reserved for future use.  Not currently used. ***  This is the maximum number of characters to read at a time when receiving incoming transmissions.  Default is 255.   Limiting factors are:  - Maximum string length on the system.  - Maximum global length on the system.  In particular, maximum (desirable) length of a line of message text in the MESSAGE file:    S ^XMB(3.9,xmz,2,x,0)=<line of message text>  You may also wish to consider the maximum string length that the system's",
+      "fieldNumber_": 8.32
+    },
+    {
+      "fieldNumber": 8.4,
+      "fieldName": "DIRECTORY REQUEST FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Requests will NOT be granted.;1:Requests will be granted.;",
+      "helpText": "This field controls whether or not the XMMGR-DIRECTORY-RECV option will grant request from remote site to send domain user directory information.   If the value is null or zero, request is rejected.  If the value is one, a request is granted and domain user directory will be made available to the remote site. ",
+      "fieldNumber_": 8.4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IN-BASKET-PURGE DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used by the IN BASKET PURGE to identify inactive messages and mark them for purging.  A message is considered inactive if it has not been accessed in the past number of days specified here.  The default is 30 days.  The IN BASKET PURGE sends a message to each user listing all messages which it has marked for purging and stating that they will be purged in an additional 30 days if they remain in the 'IN' basket and are not accessed again. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "IN-BASKET-PURGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:IN BASKET ONLY;1:ALL BASKETS;",
+      "helpText": "This field controls the extent of the IN-BASKET-PURGE. If is is not filled in the effect on the IN-BASKET-PURGE is the same as it would be if the value of the field is zero.   The field can have the following values:    0 or null = The IN-BASKET-PURGE will affect user IN baskets only.  1 = The IN-BASKET-PURGE will affect all user baskets.  (This is not the normal way for this process to be run.  It is recommended that you discuss this with site management and get user input before doing this.)  ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "DATE PURGE CUTOFF DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used by the option XMPURGE-BY-DATE.  When this option is run, the date purge will be set to purge all messages originating this many days ago and before.   If this field is null, the default will be 730 days (2 years). ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "DATE PURGE GRACE PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the number of days' warning the users get before the date purge, XMPURGE-BY-DATE, is run.   This field is used by the option XMPURGE-BY-DATE only if that option is scheduled, not if it is run interactively.   At the scheduled date/time, the bulletin, XM DATE PURGE WARNING, is broadcast to all users to warn them of the coming date purge, and the actual date purge is then queued to run this many days later.   If this field is null, the date purge will run at the scheduled date/time, and no",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "BACKGROUND FILER HANG TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used by the background filer when it is started up to determine the amount of time it will hang between deliveries of messages.  Since mail is not delivered, even to the sender, unless the backgournd filer delivers it, it should not be too long a period so that your users are inconvenienced. If this field is not filled in the background filer will hang for 5 seconds between deliveries.  5 to 15 seconds is the recommended range. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "BACKGROUND FILER RUN FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STOP RUNNING;0:OKAY TO RUN;",
+      "helpText": "The background filer checks this field every time it is about to deliver a message or response.  If it is set to 1, it stops running, and will not restart until it is set to null or zero.  If it is null or zero, and is already running, it continues.  If it is null or zero, and is not running, a background task will be created to restart it. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "BACKGROUND FILER RUN PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used by the background filer to set its priority at runtime. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "P-MESSAGE LINE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field enables site management to limit the number of lines which may be printed to P-MESSAGE.  If this field is null, there is no limit. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "MAX DIGITS FOR MESSAGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to control the size of the message number in ^XMB(3.9, the MESSAGE file.  If this field is null, its default  will be 8 digits.  If the message number becomes greater than this many digits, the message numbers will recycle back to the next vacant message number after 999999.  In this way, message numbers will cease being too ungainly in size.  So message numbers will be re-used.  If MailMan is not able to find a vacant message number less than this number of digits, then MailM",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "FORWARD PRIORITY MAIL TO GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter YES if you wish to allow users to forward priority messages to mail groups.   Enter NO if you don't.  (This is the default, if this field is null.) Then only the message originator or anyone with the XM GROUP PRIORITY key may forward priority messages to mail groups. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DROP OUT OF RESTRICTED GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter YES if you wish to allow users to drop out of non-self-enrolling mail groups.  The user will be warned that this is a non-self-enrolling group, and that they won't be allowed to rejoin later, and then they will be asked to re-confirm the decision to drop out.   Enter NO if you don't.  (This is the default if this field is null.) Then users will have to contact IRM or the mail group coordinator to ask to be dropped. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TITLE SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SIGNATURE BLOCK TITLE;T:TITLE;",
+      "helpText": "Where in the NEW PERSON file should the user's title come from?   Enter 'S' if the user's title should come from field 20.3, SIGNATURE BLOCK TITLE.  If that field is empty, then we'll try field 8, TITLE.   Enter 'T' if the user's title should come from field 8, TITLE. If that field is empty, we won't show any title.   The default is 'T', if this field is not filled in. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "AUTO-FORWARD LIMITED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "For security or privacy reasons, you may wish to limit the sites to which users may have their mail auto-forwarded.  If so, set this field to YES, and enter the approved sites in the AUTO-FORWARD APPROVED SITE multiple.  For VA sites, this field must be set to YES.  The only approved sites are those ending in \".VA.GOV\".  If this field is set to YES, MailMan will limit auto-forwarding to only those sites whose names are in (or end in the ones in) the AUTO-FORWARD APPROVED SITE multiple. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "AUTO-FORWARD APPROVED SITE",
+      "dataType": "SUBFILE",
+      "rawType": "4.33",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.33,
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.2,
+      "fieldName": "AUTO-FORWARD WAIVER SITE",
+      "dataType": "SUBFILE",
+      "rawType": "4.34",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.34,
+      "fieldNumber_": 31.2
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PREVENT MESSAGE RELAY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer YES if you want to prevent outside sites from sending mail through your site to other outside sites.  Spammers and Virus propagators use this technique to disguise the source of their mail, and to make it appear to come from a trusted source, namely your site.  Answer NO if you want your site to act as a relay site for anyone.  It is strongly recommended that you answer YES to prevent your site from unwittingly relaying destructive mail.  If you answer YES, you should define your \"inside\"",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "MY DOMAINS",
+      "dataType": "SUBFILE",
+      "rawType": "4.341",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.341,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LIMITED BROADCAST",
+      "dataType": "SUBFILE",
+      "rawType": "4.32",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 4.32,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LIMITED BROADCAST DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "When sending a limited broadcast message, this is the default which will appear when the user is presented with limited broadcast choices.   If you don't want a default to appear, delete this entry. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "NO-PURGE DAYS BUFFER (LOCAL)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used during the un-referenced-messages purge to avoid purging the last few messages in the message file, according to their local create date.   We subtract the NO-PURGE DAYS BUFFER (LOCAL) from today's date, giving a 'no-purge date'.  Local messages which were created on or after that date and which were sent to remote sites are not subject to purge. Other messages are not affected by this buffer.  If this field is not filled in, it defaults to 7 days.  This is the recommended val",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "FAX ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:no;1:yes;",
+      "helpText": "Your site is fax enabled if you have the suite of fax software and files (^AKF) and fax capability and you choose to allow faxes to be sent via MailMan.  To send faxes via MailMan, Mail groups (file 3.8) must first be populated in the fax recipient and fax group multiples.  Then, when a user sends a message to a mail group, the message is also faxed to any fax recipients in that mail group. Responses to the message are not faxed. ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 217,
+      "fieldName": "DEFAULT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is the default institution that is shown for any user who hasn't chosen one under \"edit user options\" ",
+      "fieldNumber_": 217
+    },
+    {
+      "fieldNumber": 241,
+      "fieldName": "BACKGROUND MESSAGE DELIVERERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used by the background filer to determine how many message delivery queues (and tasks) there should be and how to separate them. ",
+      "fieldNumber_": 241
+    },
+    {
+      "fieldNumber": 242,
+      "fieldName": "BACKGROUND RESPONSE DELIVERERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used by the background filer to determine how many response delivery queues (and tasks) there will be and how to separate them. ",
+      "fieldNumber_": 242
+    }
+  ],
+  "fieldCount": 68,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "4.3", "field": .01, "type": "regular"},
+    {"name": "4.3", "field": .01, "type": "regular"},
+    {"name": "4.3", "field": .01, "type": "regular"},
+    {"name": "4.3", "field": 1, "type": "regular"},
+    {"name": "4.3", "field": 1, "type": "regular"},
+    {"name": "4.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

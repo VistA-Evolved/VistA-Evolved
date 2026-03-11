@@ -1,0 +1,297 @@
+{
+  "fileNumber": 409.84,
+  "fileName": "SDEC APPOINTMENT",
+  "globalRoot": "409.84",
+  "globalReference": "^SDEC(409.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STARTTIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and Time this appointment is scheduled to start. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENDTIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time that this appointment ended. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHECKIN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and Time of the Check-In for this appointment. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHECK IN TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time the Check-In was entered. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P9000001'",
+      "required": false,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient that this appointment is scheduled for. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P409.1'",
+      "required": false,
+      "pointerTo": 409.1,
+      "helpText": "This field represents the Appointment Type. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESOURCE",
+      "dataType": "POINTER",
+      "rawType": "P409.831'",
+      "required": false,
+      "pointerTo": 409.831,
+      "helpText": "This field represents the resource that is scheduled for this appointment. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATA ENTRY CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Field contains the ien of the clerk who made the appointment. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE APPT MADE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Field contains the date the appointment was made. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "NOSHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No field indicating this appointment was a No-Show. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .101,
+      "fieldName": "NOSHOW DATETIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time that the No-Show was entered. ",
+      "fieldNumber_": .101
+    },
+    {
+      "fieldNumber": .102,
+      "fieldName": "NOSHOW BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the User that entered the No-Show. ",
+      "fieldNumber_": .102
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "REBOOK DATETIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This the date and time that the rebooking was entered. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "CANCEL DATETIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the cancellation was entered. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .121,
+      "fieldName": "CANCELLED BY USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that entered the cancellation. ",
+      "fieldNumber_": .121
+    },
+    {
+      "fieldNumber": .122,
+      "fieldName": "CANCELLATION REASON",
+      "dataType": "POINTER",
+      "rawType": "P409.2'",
+      "required": false,
+      "pointerTo": 409.2,
+      "helpText": "Reason for Cancellation that was selected from the CANCELLATION REASON  file 409.2. ",
+      "fieldNumber_": .122
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "WALKIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Yes/No field to indicate that this appointment was a Walk-in or adhoc  appointment. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CHECKOUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "CHECKOUT DATE/TIME FOR APPOINTMENT. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "V PROVIDER IEN",
+      "dataType": "POINTER",
+      "rawType": "P9000010.06'",
+      "required": false,
+      "pointerTo": 9000010.06,
+      "helpText": "V PROVIDER IEN is the pointer to the V PROVIDER file for the patient. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The primary provider for this appointment. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO-SHOW;C:CANCELLED BY CLINIC;NA:NO-SHOW & AUTO RE-BOOK;CA:CANCELLED BY CLINIC & AUTO RE-BOOK;I:INPATIENT APPOINTMENT;PC:CANCELLED BY PATIENT;PCA:CANCELLED BY PATIENT & AUTO-REBOOK;NT:NO ACTION TAKEN;",
+      "helpText": "Populated by SDEC CANCEL APPOINTMENT in the event there is an 'undo' of a  Cancelled Appointment. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "LENGTH OF APPT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This represents the length of this appointment in minutes. This is  populated when an appointment is cancelled and is used in the event that  the appointment is re-instated. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "PREV APPT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P409.63'",
+      "required": false,
+      "pointerTo": 409.63,
+      "helpText": "Pointer to APPOINTMENT STATUS file; used to restore status in visit  encounter in the event that a user re-instates the appointment after  a 'cancel' has been processed. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "DESIRED DATE OF APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the appointment date that is needed/desired. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "EXTERNAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to hold an external identifier. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "APPT REQUEST TYPE",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "VO",
+      "required": false,
+      "helpText": "This Variable Pointer field holds a pointer to either the SD WAIT LIST  file, REQUEST/CONSULTATION file, SDEC APPT REQUEST, or RECALL REMINDERS  file. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;E:ESTABLISHED;",
+      "helpText": "This field represents the status of the patient in regards to being a  'NEW' or 'ESTABLISHED' patient. An ESTABLISHED patient has been seen within the past 24 months. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NOTE",
+      "dataType": "SUBFILE",
+      "rawType": "409.841",
+      "required": false,
+      "helpText": "This holds the text regarding the reason for the appointment. ",
+      "isMultiple": true,
+      "subFileNumber": 409.841,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AEX", "field": },
+    {"name": "ARSRC", "field": },
+    {"name": "B", "field": },
+    {"name": "CPAT", "field": },
+    {"name": "409.84", "field": .01, "type": "regular"},
+    {"name": "409.84", "field": .05, "type": "regular"},
+    {"name": "409.84", "field": .07, "type": "regular"},
+    {"name": "409.84", "field": .09, "type": "regular"},
+    {"name": "409.84", "field": .12, "type": "regular"},
+    {"name": "409.84", "field": .21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fileNumber": 53.66,
+  "fileName": "BCMA IV PARAMETERS",
+  "globalRoot": "53.66",
+  "globalReference": "^PSB(53.66,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "RP42'",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "The name of the ward that IV parameters are defined for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The institution that this ward is associated with. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "IV TYPE",
+      "dataType": "SET",
+      "rawType": "53.67SA",
+      "required": false,
+      "helpText": "The IV type - Admixture; Chemotherapy; Hyperal; Piggyback; or Syringe. ",
+      "isMultiple": true,
+      "subFileNumber": 53.67,
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "53.66", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

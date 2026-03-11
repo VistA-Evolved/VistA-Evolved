@@ -1,0 +1,297 @@
+{
+  "fileNumber": 365.1,
+  "fileName": "IIV TRANSMISSION QUEUE",
+  "globalRoot": "365.1",
+  "globalReference": "^IBCN(365.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This field is a sequential number used to uniquely identify a record when creating an entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient who needs to have insurance identification or verification performed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PAYER",
+      "dataType": "POINTER",
+      "rawType": "P365.12'",
+      "required": false,
+      "pointerTo": 365.12,
+      "helpText": "This is the Payer to whom the insurance identification or verification is to be submitted to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "POINTER",
+      "rawType": "P365.14'",
+      "required": false,
+      "pointerTo": 365.14,
+      "helpText": "This is the current status of a transmission record. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BUFFER ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P355.33'",
+      "required": false,
+      "pointerTo": 355.33,
+      "helpText": "This field will be populated if either the transmission record was created from a buffer entry or if a problem exists with the transmission record, a buffer entry will be created. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the transmission record was created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NO. OF TRANSMISSIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is a count of how many HL7 messages have been generated and transmitted. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NO. OF RETRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number of retry messages that have been created an re-transmitted. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE OF FUTURE TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that if the transmission record status is \"hold\" that the record should be resent. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "WHICH EXTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Buffer;2:Appt;3:Non-verified;4:EICD;5:REQUEST ELECTRONIC;6:ICB/VISTA;7:MBI REQUEST;",
+      "helpText": "This field identifies which data extract that the transmission record was generated from. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "QUERY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:Identification;V:Verification;",
+      "helpText": "This field identifies whether the transmission record is an identification or a verification record.  Identification records will be checked against the National Insurance Cache to identify any insurance. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that was determined by the system to submit to the Payer as the date that service was performed. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "INSUR RECORD IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is the IEN of the insurance record which the data extract used to determine that a valid payer record was to be placed in the Transmission Queue file.  This is used to help retrieve important information for the HL7 message. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "OVERRIDE FRESHNESS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The presence of this flag will alert the process that electronically transmits the insurance verification request, that this entry should get transmitted to the Payer -  bypassing the National Insurance Cache.  This is regardless of the freshness date or of any other data elements. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the status field was changed. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "HL7 SUBSCRIBER ID FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the data that will be used to populate the Subscriber ID field in  the HL7 message for the electronic Insurance Identification and  Verification project. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "FRESHNESS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "PASS BUFFER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field is a flag on whether to pass the Buffer IEN on to the Response file. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "HL7 PATIENT ID FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the data that will be used to populate the Patient ID field in  the HL7 message for the outbound 270 inquiry to Austin. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "SERVICE TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P365.013'",
+      "required": false,
+      "pointerTo": 365.013,
+      "helpText": "Service Type code to be sent with eIV insurance inquiry. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "EICD INS-FND IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field points to discovered insurance returned from an EICD Identification response. The data will be used to track an EICD  Verification inquiry and response.   ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ORIGINAL INSUR CO NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the transmission record is created from an Insurance Buffer entry, this is the data value of the equivalent field at time of creation. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "ORIGINAL GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the transmission record is created from an Insurance Buffer entry, this is the data value of the equivalent field at time of creation. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "ORIGINAL GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the transmission record is created from an Insurance Buffer entry, this is the data value of the equivalent field at time of creation. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ORIGINAL SUBSCRIBER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the transmission record is created from an Insurance Buffer entry, this is the data value of the equivalent field at time of creation. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HL7 MESSAGES",
+      "dataType": "DATE",
+      "rawType": "365.16D",
+      "required": false,
+      "helpText": "This is a record of all HL7 messages generated for a transmission record. ",
+      "isMultiple": true,
+      "subFileNumber": 365.16,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "MANUAL REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time a service type inquiry was triggered from the option,  Request Electronic Inquiry. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "SOURCE OF INFORMATION",
+      "dataType": "POINTER",
+      "rawType": "P355.12'",
+      "required": false,
+      "pointerTo": 355.12,
+      "helpText": "This is the source of information for when the transmission record was  created. ",
+      "fieldNumber_": 3.02
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "365.1", "field": .01, "type": "regular"},
+    {"name": "365.1", "field": .02, "type": "regular"},
+    {"name": "365.1", "field": .03, "type": "regular"},
+    {"name": "365.1", "field": .04, "type": "regular"},
+    {"name": "365.1", "field": .05, "type": "regular"},
+    {"name": "365.1", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

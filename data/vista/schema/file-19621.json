@@ -1,0 +1,118 @@
+{
+  "fileNumber": 19621,
+  "fileName": "DSIV VISTA IMAGING QUEUE TRACKING",
+  "globalRoot": "19621",
+  "globalReference": "^DSI(19621,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique identifier used by VistA Imaging. For DocManager, it is of the form DSS;<sql record#> or     DSS;<sql record #><-><date.time> For all other DSS applications, it will be in the form     DSS;<app code><fileman date.time> ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUEUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the queue number passed back to the calling application after  invoking the MAG4 REMOTE IMPORT rpc which imports an image into VistA Imaging. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Error;1:Successful;p:Pending;",
+      "helpText": "This is the current status of this import request to VistA Imaging.   p - Pending - this means the request has been successfully placed in the VistA Imaging queue, but the background processor has not processed the request and has not called the callback status routine   1 - Successful - request was successfully processed by the VistA Imaging background processor.  There may or may not be associated warning text.   0 - Error - request was processed by the VistA Imaging background processor but w",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SUBMITTER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the person who was the last one to submit (or resubmit) this request to VistA Imaging Queue. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE SUBMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that this request was originally accepted by VistA Imaging Queue.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "APP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The APP CODE is a prefix assigned to a specific DSS application based on  the table below:   DSS Products for VistA Imaging:  Prefix  Product Name  DM      DocManager  CNT     Clinical Note Templates  TNT     Total Notes  PFCS    Profee Compliance Suite  PTF     PTF  VRM     Voice Recognition Manager  DRM     Dental Record Manager  TRM     Telcare Record Manager  PSS     PSS  ROI     Release of Information  MHTP    Mental Health Treatment Planner  DRG     Draeger  VGPRO   VistA Gateway/ProVation",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RETRIEVED BY APP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "There may be a need to keep a history of import requests to VistA Imaging  by DSS applications (or one of it partners) which do not have their own  external database to track this information.  The DSS application  DocManager does not have need of this as it has it own SQL database where  it keeps track of VI import requests.   This field will be updated by any non-DocManager GUI application which  invokes the RPC: DSIV DM GET STATUS. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TIU DOCUMENT",
+      "dataType": "POINTER",
+      "rawType": "P8925'",
+      "required": false,
+      "pointerTo": 8925,
+      "helpText": "Contains the TIU Document (note) associated with the image, if any. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARNINGS",
+      "dataType": "SUBFILE",
+      "rawType": "19621.01",
+      "required": false,
+      "helpText": "Contains warnings about about the image queue process, for example, format errors in the import message to VistA Imaging, or the inability to log into a server. ",
+      "isMultiple": true,
+      "subFileNumber": 19621.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the text for the status of the request to import an image.  This will be the text in the 2nd ^-piece of the zero node of the array returned to the callback routine by the VistA Imaging background processor. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "19621", "field": .01, "type": "regular"},
+    {"name": "19621", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(19621,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .06, "value": "W \"   \",$P(^(0),U,6)"}
+  ]
+}

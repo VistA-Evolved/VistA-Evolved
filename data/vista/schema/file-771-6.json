@@ -1,0 +1,54 @@
+{
+  "fileNumber": 771.6,
+  "fileName": "HL7 MESSAGE STATUS",
+  "globalRoot": "771.6",
+  "globalReference": "^HL(771.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,1",
+      "length": 7,
+      "required": false,
+      "helpText": "This number is meaning in the Messaging System software. The number is used to determine a message state for processing and purging.  ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "771.63",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 771.63,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

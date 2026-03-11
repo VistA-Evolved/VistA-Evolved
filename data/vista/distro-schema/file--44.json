@@ -1,0 +1,203 @@
+{
+  "fileNumber": .44,
+  "fileName": "FOREIGN FORMAT",
+  "globalRoot": ".44",
+  "globalReference": "^DIST(.44,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies the format used by the non-VA FileMan application. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD DELIMITER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Contents of the field delimiter is output between each field.  Depending on the contents of the SEND LAST FIELD DELIMITER? field, the delimiter may be output after the last field, too. Identify the delimiter either by 1-15 characters not beginning with a number or by the ASCII value of the delimiter.  When specifying the ASCII value, use 3 numbers (e.g., '009' for ASCII 9).  Up to four ASCII-character values can be specified, separated by commas.   If 'Ask' is entered, the user will be prompted ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RECORD DELIMITER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contents of the record delimiter is output after each record.  Identify the delimiter either by 1-15 characters not beginning with a number or by the ASCII value of the delimiter.  When specifying the ASCII value, use 3 numbers (e.g., '009' for ASCII 9).  Up to four ASCII-character values can be specified, separated by commas.   If 'Ask' is entered, the user is prompted for the record delimiter when creating the EXPORT template. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LINE CONTINUATION CHARACTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Not used yet. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LINE CONTINUATION LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "e:END OF LINE;b:BEGINNING OF LINE;",
+      "helpText": "Not used yet. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECORD LENGTH FIXED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if the fields will be fixed length causing a fixed length record to be created.  When the EXPORT template is created, the user is prompted for the length of each field in the TARGET file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NEED FOREIGN FIELD NAMES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer YES if it is necessary to save the field names from the foreign file in the export file.  The user will be prompted for the names when the EXPORT template is created. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAXIMUM OUTPUT LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The maximum length of a \"line\" of output; maximum number of characters before a LINE FEED is issued.  For most exports, this will be the maximum record length.   If 0 is entered, the user will be prompted for maximum length when creating the EXPORT template.  If nothing is entered, the default will be 80. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "QUOTE NON-NUMERIC FIELDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If you want the values of fields that have a data type other than numeric to be surrounded by quotation marks (\"), set this field to YES.   NOTE:  Only numeric fields in the home file (including multiples) are automatically considered to have a numeric data type.  If you want the user to indicate which fields should be numeric, answer YES to the PROMPT FOR DATA TYPE? field. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROMPT FOR DATA TYPE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer YES if you want the user to be prompted for the data type of the various fields at the time that an export template is being created. Otherwise, the data types will be automatically  derived. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEND LAST FIELD DELIMITER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter NO if you do not want a field delimiter to be output after the last field in a record.  Enter YES if you do want a final field delimiter output. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SUBSTITUTE FOR NULL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field only affects numeric values exported in a delimited format. If nothing is entered in this field, data values of null will cause nothing to be exported for that field in the particular record.  If you want something to be exported when the data value is null, enter the character or characters in this field. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FILE HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Use this field to produce output preceding the exported records.  This will become part of your exported data.   Enter either a literal string enclosed in quotation marks (\"like this\") or MUMPS code that will WRITE the desired output when XECUTED.  For example:          W \"EXPORT CREATED BY USER NUMBER: \"_$G(DUZ) ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FILE TRAILER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Use this field to produce output following the the exported records.  This will become part of your exported data.   Enter either a literal string enclosed in quotation marks (\"like this\") or MUMPS code that will WRITE the desired output when XECUTED.  For example:          W \"EXPORT CREATED BY USER NUMBER: \"_$G(DUZ) ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DATE FORMAT",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "If you want dates output in VA FileMan's standard external date/time format, make NO entry in this field.   If you want another format, enter MUMPS code here. The variable X will contain the date/time in VA FileMan's internal format.  The MUMPS code should SET Y to the date/time in the format you desire. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".447",
+      "required": false,
+      "helpText": "A description of the foreign format. ",
+      "isMultiple": true,
+      "subFileNumber": .447,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "USAGE NOTES",
+      "dataType": "SUBFILE",
+      "rawType": ".448",
+      "required": false,
+      "helpText": "Information about the use of the format; for example, which commands on the foreign system should be used to load the file. ",
+      "isMultiple": true,
+      "subFileNumber": .448,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "FORMAT USED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to YES, this field means that this Foriegn Format entry has been used to create an Export Template. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "OTHER NAME FOR FORMAT",
+      "dataType": "SUBFILE",
+      "rawType": ".441",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .441,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": ".44", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D:Y<1 EN^DDIOL(\"** DISTRIBUTED BY VA FILEMAN **\",\"\",\"?35\")"}
+  ]
+}

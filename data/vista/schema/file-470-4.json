@@ -1,0 +1,86 @@
+{
+  "fileNumber": 470.4,
+  "fileName": "PATIENT FUNDS CONVERSION DISCREPANCY",
+  "globalRoot": "470.4",
+  "globalReference": "^PRPF(470.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DISCREPANCY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This Discrepancy ID is just a number to identify this error record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the file number in which the signature code  conversion error originated. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELD #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,3",
+      "length": 13,
+      "required": false,
+      "helpText": "This field contains the field number in which the signature code conversion error originated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the specific record number in which the signature code conversion error originated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ERROR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Pointer to missing record in File 16.;2:A3 cross-reference to file 200 missing.;",
+      "helpText": "This field contains the type of error discovered when converting signature code. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ENTRY POINT OF PROGRAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the entry point of the routine which reported the error during conversion. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CONVERSION PROGRAM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the M program which reported the conversion error. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "470.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

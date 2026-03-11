@@ -1,0 +1,100 @@
+{
+  "fileNumber": 503334,
+  "fileName": "VOLUNTEER ORGANIZATION CODES",
+  "globalRoot": "503334I",
+  "globalReference": "^ABS(503334,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This field is the Internal Reference Number for file 503334.  The IRN is calculated as the integer equivalent of the Organization Code. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the code from the Voluntary Service Manual representing the organizations providing service to the Medical Center. This field contains the approved codes representing the organizations providing service to the Medical Center. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORGANIZATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the full name of the organization providing service to the Medical Center. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "LOWERCASE PRINTING NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the lowercase value of the Organization Name for printing.  It is triggered by the ORGANIZATION field but can be modified as appropriate. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for the specific organization. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCAL ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for the organization selected by the local facility. local facility. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE AUSTIN ORGANIZATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains a flag which indicates which organizations are in the AUSTIN DPC Volunteer database. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DONATIONS COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "503334", "field": .01, "type": "regular"},
+    {"name": "503334", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "503334", "field": 2, "type": "regular"},
+    {"name": "503334", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

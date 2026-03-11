@@ -1,0 +1,107 @@
+{
+  "fileNumber": 125.8,
+  "fileName": "PROBLEM LIST AUDIT",
+  "globalRoot": "125.8P",
+  "globalReference": "^GMPL(125.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "RP9000011'",
+      "required": true,
+      "pointerTo": 9000011,
+      "helpText": "This is the problem for which a change is being recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,4",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the number of the field for which a change is being recorded. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME MODIFIED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that this data was changed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WHO MODIFIED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who actually made the change to this data; the current user's DUZ is stuffed in here. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the original value as stored in the Problem file global (internal format). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the new value now stored in the Problem file global (internal format). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "REASON FOR CHANGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of why the change was made, if known. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUESTING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who either changed this data, or directed it to be changed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OLD PROBLEM ENTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the entire problem entry (internal format) as it existed prior to changing this data. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "B", "field": },
+    {"name": "125.8", "field": .01, "type": "regular"},
+    {"name": "125.8", "field": .01, "type": "regular"},
+    {"name": "125.8", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

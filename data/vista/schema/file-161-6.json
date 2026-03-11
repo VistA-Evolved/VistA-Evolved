@@ -1,0 +1,38 @@
+{
+  "fileNumber": 161.6,
+  "fileName": "FEE BASIS SPECIALTY CODE",
+  "globalRoot": "161.6I",
+  "globalReference": "^FBAA(161.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of this specialty code. Each vendor must be assigned a specialty code which identifies their area of expertise. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPECIALTY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The specialty code for this entry. Detail description and list of most current codes can be found in M-1, Part I, Chapter 18. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "161.6", "field": .01, "type": "regular"},
+    {"name": "161.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,1115 @@
+{
+  "fileNumber": 44,
+  "fileName": "HOSPITAL LOCATION",
+  "globalRoot": "44I",
+  "globalReference": "^SC(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "Name given by user to any ward, clinic, fileroom, operating room or other location within a VA facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation given by user to any ward, clinic, fileroom, operating room or other location associated with the NAME. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RSXa",
+      "required": true,
+      "setOfCodes": "C:CLINIC;M:MODULE;W:WARD;Z:OTHER LOCATION;N:NON-CLINIC STOP;F:FILE AREA;I:IMAGING;OR:OPERATING ROOM;",
+      "helpText": "Type of location assigned to entries into this file, i.e. Ward, Clinic, Fileroom, Operating Room, Other. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "TYPE EXTENSION",
+      "dataType": "POINTER",
+      "rawType": "RP40.9'X",
+      "required": true,
+      "pointerTo": 40.9,
+      "helpText": "Type extension of a location assigned to entries into this file to insure user is not allowed to use a previously designated Ward Location as a Clinic Location for example. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'a",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field has been deprecated and should no longer be used.  Institution name assigned to each entry in this file to identify where the specific location is. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'a",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Division name assigned to each entry in this file to identify where the specific location is.  There can be multiple divisions assigned to an Institution, but only one division per location. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MODULE",
+      "dataType": "POINTER",
+      "rawType": "P44",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Module or name of hospital location. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DEFAULT DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Default device to which information should print for a specific location.  This field is not currently being utilized. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DISPOSITION ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:APPOINTMENT REC REQ;2:SCHEDULING;",
+      "helpText": "A disposition action associated with specific location, i.e. '0'= none; '1'=appointment record request; '2'=scheduling. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VISIT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Location of visit for specified entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STOP CODE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P40.7'Xa",
+      "required": true,
+      "pointerTo": 40.7,
+      "helpText": "Three digit stop code number assigned to specific location.  Each stop code number represents a type of care or Service/treating specialty (clinics only). ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "PRV. YEAR STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'IX",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "Previous year's three digit stop code number that was assigned to specific location (clinics only). ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;P:PSYCHIATRY;R:REHAB MEDICINE;N:NEUROLOGY;0:NONE;D:DENTAL;",
+      "helpText": "Service assigned to specific location, i.e. Medicine, Surgery, Psychiatry, etc. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "IS THIS A PBSP CLINIC?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates whether a clinic is a PROVIDER BASED SCHEDULING PROFILE CLINIC. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "RP45.7'",
+      "required": true,
+      "pointerTo": 45.7,
+      "helpText": "Treating specialty assigned a specific location, i.e. neurosurgery, alcohol/drug rehabilitation, dermatology (specialties within Services usually). ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PHYSICAL LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Physical location of a specific ward or clinic, etc., i.e. 3rd floor,  Wing A. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*OKC A",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "*OKC B",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "44.01A",
+      "required": false,
+      "helpText": "Synonym or shortened name associated with a specific location. ",
+      "isMultiple": true,
+      "subFileNumber": 44.01,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SPECIAL AMIS STOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "10:MENTAL HYGEINE;11:DAY TREATMENT;12:DAY HOSPITAL;13:DRUG DEPENDANCE;14:ALCOHOL TREATMENT;15:EMERGENCY UNIT;16:EMPLOYEE HEALTH;",
+      "helpText": "Special AMIS stop associated with a specific location based on the Service assigned. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CATEGORY OF VISIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Category of visit associated with a specific location. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DEFAULT PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'a",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Default provider or physician that is assigned to specific clinic. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PROHIBITED TERMINAL",
+      "dataType": "SUBFILE",
+      "rawType": "44.02",
+      "required": false,
+      "helpText": "Terminals that cannot be utilized from specific location. ",
+      "isMultiple": true,
+      "subFileNumber": 44.02,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "E-CHECKIN ALLOWED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will determine if E-Checkin is allowed for the clinic. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PRE-CHECKIN ALLOWED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will determine if PRE-Checkin is allowed for this clinic. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "AGENCY",
+      "dataType": "POINTER",
+      "rawType": "P4.11'",
+      "required": false,
+      "pointerTo": 4.11,
+      "helpText": "Agency associated with specific location, i.e. Veterans Affairs, Department of Defense, etc. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ASK FOR CHECK IN/OUT TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When checking in/out a patient for an appointment, should the user be prompted for date and time?   If this field is set to 'YES', the user will be prompted for the date and time.  The current date and time will be the default.   If this field is set to 'NO' or is not entered, the user will not be prompted and the current date and time will automatically be entered.   If an appointment is scheduled retroactively then the system will use the date and time of the appointment as the check in/out ti",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "*CLINIC SERVICES RESOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is used to associate the clinic with a Clinic Services Resource. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "WORKLOAD VALIDATION AT CHK OUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes or 1 will result in a validation being performed on each checked out encounter for this clinic.  No or zero will stop the validation of the encounters as they are checked out for this clinic.  This validation is to help ensure that the workload data is acceptable to the Austin National Patient Care Database. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "CLINIC GROUP (REPORTS)",
+      "dataType": "POINTER",
+      "rawType": "*P409.67'",
+      "required": false,
+      "pointerTo": 409.67,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "WARD LOCATION FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P42X",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "If location is a ward, this is the file pointer to the Ward Location File, File 42 in which this location is also stored. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 50.01,
+      "fieldName": "OCCASION OF SERVICE CLINIC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is non-editable.  It is created automatically by a scheduling API and must NOT be edited by the site.  It designates clinic locations added by ancillary packages for occasions of service.  These clinics can not be edited through Scheduling options.  They can only be altered using the API. ",
+      "fieldNumber_": 50.01
+    },
+    {
+      "fieldNumber": 50.02,
+      "fieldName": "OOS CALLING PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field stores the package which created the occasion of service location.  This field should NOT be altered by the site.  It is uneditable through FileMan. ",
+      "fieldNumber_": 50.02
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PATIENT FRIENDLY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Populate this field with a description of the clinic that will be meaningful to patients. Do not enter any sensitive patient information  in this field such as HIV CLINIC as an example. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DIRECT PATIENT SCHEDULING?",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will determine if patients can self-schedule into this  clinic. A \"Yes\" in this field will enable patients to directly schedule  appointments into this clinic. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DISPLAY CLIN APPT TO PATIENTS?",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will determine if the clinic appointment information will be  displayed to patients. A \"Yes\" in this field will enable patients to see their appointments in this clinic. If DIRECT PATIENT SCHEDULING? (#61)  is set to YES, this field defaults to YES and is not editable. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "VETERAN SELF-CANCEL?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field indicates if a patient can self-cancel for the clinic. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TELEPHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Telephone number for specific location. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "TELEPHONE EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Clinic telephone extension number where patients can call directly. ",
+      "fieldNumber_": 99.1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EAS TRACKING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40a",
+      "length": 40a,
+      "required": false,
+      "helpText": "The EAS tracking number originates from the Enterprise Appointment Scheduling system. This number allows actions performed by a proxy user to be traceable back to the end user. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ASSOCIATED LOCATION TYPES",
+      "dataType": "POINTER",
+      "rawType": "44.101P",
+      "required": false,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "PBSP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ100",
+      "length": 100,
+      "required": false,
+      "helpText": "This Provider Based Scheduling Profile ID uniquely identifies that this clinic supports Provider Based Scheduling Profile and the ID of the primary Provider associated with this clinic. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "SECONDARY SUBSPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "44.0301PA",
+      "required": false,
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "TERTIARY SUBSPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "44.0302PA",
+      "required": false,
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 1900,
+      "fieldName": "APPOINTMENT",
+      "dataType": "DATE",
+      "rawType": "44.001DA",
+      "required": false,
+      "helpText": "Appointment multiple stores all data related to outpatient visits including basic demographic data on a patient, appointment data, lab, x-ray and EKG appointment dates/times. ",
+      "isMultiple": true,
+      "subFileNumber": 44.001,
+      "fieldNumber_": 1900
+    },
+    {
+      "fieldNumber": 1901,
+      "fieldName": "CANCEL DATE/TIME BEGIN",
+      "dataType": "DATE",
+      "rawType": "44.05D",
+      "required": false,
+      "helpText": "Cancellation date/time beginning for a clinic. ",
+      "isMultiple": true,
+      "subFileNumber": 44.05,
+      "fieldNumber_": 1901
+    },
+    {
+      "fieldNumber": 1902,
+      "fieldName": "FULL DAY CANCEL",
+      "dataType": "DATE",
+      "rawType": "44.1902D",
+      "required": false,
+      "helpText": "This subfile stores dates that represent full day cancellations. ",
+      "isMultiple": true,
+      "subFileNumber": 44.1902,
+      "fieldNumber_": 1902
+    },
+    {
+      "fieldNumber": 1906,
+      "fieldName": "CHART CHECK",
+      "dataType": "DATE",
+      "rawType": "44.006DA",
+      "required": false,
+      "helpText": "Does user want the chart checked for availability for this clinic. ",
+      "isMultiple": true,
+      "subFileNumber": 44.006,
+      "fieldNumber_": 1906
+    },
+    {
+      "fieldNumber": 1910,
+      "fieldName": "SPECIAL INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "44.03A",
+      "required": false,
+      "helpText": "Special instructions (free text) entered by clerk at time of making the appointment. ",
+      "isMultiple": true,
+      "subFileNumber": 44.03,
+      "fieldNumber_": 1910
+    },
+    {
+      "fieldNumber": 1912,
+      "fieldName": "LENGTH OF APP'T",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Length of appointment designated for clinic. ",
+      "fieldNumber_": 1912
+    },
+    {
+      "fieldNumber": 1913,
+      "fieldName": "VARIABLE APP'NTMENT LENGTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:YES, VARIABLE LENGTH;",
+      "helpText": "Does the clinic have variable appointment lengths?  Can, if length of appointment is 10 minutes, user make longer appointments in increments of 10 at time of making appointment? ",
+      "fieldNumber_": 1913
+    },
+    {
+      "fieldNumber": 1914,
+      "fieldName": "HOUR CLINIC DISPLAY BEGINS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The hour clinic will begin displaying availability (i.e. 8AM). ",
+      "fieldNumber_": 1914
+    },
+    {
+      "fieldNumber": 1915,
+      "fieldName": "HOLD SC SLOTS UNTIL # OF DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Should service connected slots be held open for a set number of days?  Service connected veterans have priority over NSC veterans when scheduling appointments. ",
+      "fieldNumber_": 1915
+    },
+    {
+      "fieldNumber": 1916,
+      "fieldName": "PRINCIPAL CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Principal clinic or main clinic assigned to a specific location. ",
+      "fieldNumber_": 1916
+    },
+    {
+      "fieldNumber": 1917,
+      "fieldName": "DISPLAY INCREMENTS PER HOUR",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:60-MIN ;2:30-MIN ;4:15-MIN ;3:20-MIN ;6:10-MIN ;",
+      "helpText": "     This field SHOULD NOT BE EDITED when patterns have been established using another increment per hour. Editing this field will cause  existing patterns to be erroneous and scheduling conflicts may also occur  if the increments are changed. ",
+      "fieldNumber_": 1917
+    },
+    {
+      "fieldNumber": 1918,
+      "fieldName": "OVERBOOKS/DAY MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "Number of allowable overbooks per day.  If overbooks are not allowed, the number should be set to zero. ",
+      "fieldNumber_": 1918
+    },
+    {
+      "fieldNumber": 1918.5,
+      "fieldName": "SCHEDULE ON HOLIDAYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Should the user be able to schedule appointments on holiday's for specific location? ",
+      "fieldNumber_": 1918.5
+    },
+    {
+      "fieldNumber": 1919,
+      "fieldName": "COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "How many copies of appointment lists should be generated for this clinic? ",
+      "fieldNumber_": 1919
+    },
+    {
+      "fieldNumber": 1920,
+      "fieldName": "AVAILABILITY",
+      "dataType": "DATE",
+      "rawType": "44.002DA",
+      "required": false,
+      "helpText": "Multiple that stores clinic availability information. ",
+      "isMultiple": true,
+      "subFileNumber": 44.002,
+      "fieldNumber_": 1920
+    },
+    {
+      "fieldNumber": 1920.9,
+      "fieldName": "AVAILABILITY FLAG",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time set up for clinic availability. ",
+      "fieldNumber_": 1920.9
+    },
+    {
+      "fieldNumber": 1921,
+      "fieldName": "PATTERN",
+      "dataType": "DATE",
+      "rawType": "44.005DA",
+      "required": false,
+      "helpText": "Pattern for clinic availability information. ",
+      "isMultiple": true,
+      "subFileNumber": 44.005,
+      "fieldNumber_": 1921
+    },
+    {
+      "fieldNumber": 1921.5,
+      "fieldName": "SPECIAL PATTERN",
+      "dataType": "DATE",
+      "rawType": "44.0002DA",
+      "required": false,
+      "helpText": "Special pattern information (storage of previous clinic patterns and current one). ",
+      "isMultiple": true,
+      "subFileNumber": 44.0002,
+      "fieldNumber_": 1921.5
+    },
+    {
+      "fieldNumber": 1922,
+      "fieldName": "SUNDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.06A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Sundays.  These fields are overridden by patterns entered for a specific (Sunday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.06,
+      "fieldNumber_": 1922
+    },
+    {
+      "fieldNumber": 1923,
+      "fieldName": "MONDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.07A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Mondays.  These fields are overridden by patterns entered for a specific (Monday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.07,
+      "fieldNumber_": 1923
+    },
+    {
+      "fieldNumber": 1924,
+      "fieldName": "TUESDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.08A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Tuesdays.  These fields are overridden by patterns entered for a specific (Tuesday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.08,
+      "fieldNumber_": 1924
+    },
+    {
+      "fieldNumber": 1925,
+      "fieldName": "WEDNESDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.09A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Wednesdays.  These fields are overridden by patterns entered for a specific (Wednesday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.09,
+      "fieldNumber_": 1925
+    },
+    {
+      "fieldNumber": 1926,
+      "fieldName": "THURSDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.008A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Thursdays.  These fields are overridden by patterns entered for a specific (Thursday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.008,
+      "fieldNumber_": 1926
+    },
+    {
+      "fieldNumber": 1927,
+      "fieldName": "FRIDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.009A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Fridays.  These fields are overridden by patterns entered for a specific (Friday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.009,
+      "fieldNumber_": 1927
+    },
+    {
+      "fieldNumber": 1928,
+      "fieldName": "SATURDAY TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "44.0001A",
+      "required": false,
+      "helpText": "This field contains the patterns and limit dates applicable to scheduling appointments on Saturdays.  These fields are overridden by patterns entered for a specific (Saturday) date and stored on the \"OST\" nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 44.0001,
+      "fieldNumber_": 1928
+    },
+    {
+      "fieldNumber": 2000,
+      "fieldName": "REQUIRE X-RAY FILMS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Will x-ray films be required for patients scheduled in this clinic? ",
+      "fieldNumber_": 2000
+    },
+    {
+      "fieldNumber": 2000.5,
+      "fieldName": "REQUIRE ACTION PROFILES?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:YES;1:NO;",
+      "helpText": "Will pharmacy action profiles be required for patients scheduled in this clinic? ",
+      "fieldNumber_": 2000.5
+    },
+    {
+      "fieldNumber": 2001,
+      "fieldName": "ALLOWABLE CONSECUTIVE NO-SHOWS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of times in a row that a patient can be a no-show in a clinic before he/she is flagged for possible discharge from the clinic. ",
+      "fieldNumber_": 2001
+    },
+    {
+      "fieldNumber": 2002,
+      "fieldName": "MAX # DAYS FOR FUTURE BOOKING",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "Maximum number of days that can be available when clerk searching for open clinic slots in the future. ",
+      "fieldNumber_": 2002
+    },
+    {
+      "fieldNumber": 2003,
+      "fieldName": "START TIME FOR AUTO REBOOK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Start time (hour of day) that should be searched for when user auto rebooking an appointment.  For example, if the clinic regularly starts at 8am, user may wish to set this parameter to 9am so that the next available slot at 9am or later will be stuffed with new appointment. ",
+      "fieldNumber_": 2003
+    },
+    {
+      "fieldNumber": 2004,
+      "fieldName": "COLLATERAL VISITS? (Y OR N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Are collateral visits allowed to this clinic? Yes or No ",
+      "fieldNumber_": 2004
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "MAX # DAYS FOR AUTO-REBOOK",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "Maximum number of days the system can be set to search up to when auto rebooking appointments.  For instance, if an appointment to this clinic is cancelled and the latest time that should be allowed for rescheduling is a period of two weeks (set parameter), then auto rebook function will quit after searching a two week period in future for available slots. ",
+      "fieldNumber_": 2005
+    },
+    {
+      "fieldNumber": 2006,
+      "fieldName": "*RECORD TRACKING COMMUNICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MESSAGE;N:NOTICE;",
+      "fieldNumber_": 2006
+    },
+    {
+      "fieldNumber": 2007,
+      "fieldName": "*COMMUNICATION FORMAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2007
+    },
+    {
+      "fieldNumber": 2008,
+      "fieldName": "*RECORD REQUEST DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2008
+    },
+    {
+      "fieldNumber": 2009,
+      "fieldName": "*RT AT HOME RETREIVER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "fieldNumber_": 2009
+    },
+    {
+      "fieldNumber": 2010,
+      "fieldName": "*RT NOT AT HOME RETREIVER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "fieldNumber_": 2010
+    },
+    {
+      "fieldNumber": 2011,
+      "fieldName": "*RECORD REQUEST PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 2011
+    },
+    {
+      "fieldNumber": 2012,
+      "fieldName": "*RECORD APPOINTMENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ASK APPOINTMENT DATE;0:DON'T ASK APPOINTMENT DATE;",
+      "fieldNumber_": 2012
+    },
+    {
+      "fieldNumber": 2500,
+      "fieldName": "PROHIBIT ACCESS TO CLINIC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Should only privileged users have access to book to this clinic? ",
+      "fieldNumber_": 2500
+    },
+    {
+      "fieldNumber": 2501,
+      "fieldName": "PRIVILEGED USER",
+      "dataType": "POINTER",
+      "rawType": "44.04PA",
+      "required": false,
+      "helpText": "Privileged users set up to have access to book to clinic. Once one privileged user is entered into this multiple, no other user will have access to book to the clinic.  Each individual who should have access to clinic must be entered one at a time. ",
+      "fieldNumber_": 2501
+    },
+    {
+      "fieldNumber": 2502,
+      "fieldName": "NON-COUNT CLINIC? (Y OR N)",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Is this clinic to be a non-count clinic for workload purposes? OR Are visits to this clinic to be included in workload statistics? ",
+      "fieldNumber_": 2502
+    },
+    {
+      "fieldNumber": 2502.5,
+      "fieldName": "INCLUDE ON FILE ROOM LISTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should contain a Yes if this is a non-count clinic that should be included on the file room lists. ",
+      "fieldNumber_": 2502.5
+    },
+    {
+      "fieldNumber": 2503,
+      "fieldName": "CREDIT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "*P40.7'Xa",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "Appointments to this clinic will receive this stop code credit in addition to the 'normal' stop code credit if a stop code different from the 'normal' stop code for this clinic is entered here. ",
+      "fieldNumber_": 2503
+    },
+    {
+      "fieldNumber": 2503.1,
+      "fieldName": "PRV. YEAR CREDIT STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "P40.7'IX",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "Previous year's credit stop code assigned to clinic. ",
+      "fieldNumber_": 2503.1
+    },
+    {
+      "fieldNumber": 2504,
+      "fieldName": "CLINIC MEETS AT THIS FACILITY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Does clinic meet at designated facility? ",
+      "fieldNumber_": 2504
+    },
+    {
+      "fieldNumber": 2505,
+      "fieldName": "INACTIVATE DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "Date clinic was inactivated. ",
+      "fieldNumber_": 2505
+    },
+    {
+      "fieldNumber": 2506,
+      "fieldName": "REACTIVATE DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "Date clinic was reactivated. ",
+      "fieldNumber_": 2506
+    },
+    {
+      "fieldNumber": 2507,
+      "fieldName": "DEFAULT APPOINTMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P409.1'",
+      "required": false,
+      "pointerTo": 409.1,
+      "helpText": "The default or usual appointment type to be associated with this clinic. ",
+      "fieldNumber_": 2507
+    },
+    {
+      "fieldNumber": 2508,
+      "fieldName": "NO SHOW LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P407.5'",
+      "required": false,
+      "pointerTo": 407.5,
+      "helpText": "Enter the no-show letter to be associated with this clinic, so if patient does not show for appointment, this specific no-show letter will print as opposed to the generic no-show letter. ",
+      "fieldNumber_": 2508
+    },
+    {
+      "fieldNumber": 2509,
+      "fieldName": "PRE-APPOINTMENT LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P407.5'",
+      "required": false,
+      "pointerTo": 407.5,
+      "helpText": "Enter the pre-appointment letter to be associated with this clinic, so if letters are generated, this specific pre-appointment letter will print as opposed to the generic pre-appointment letter. ",
+      "fieldNumber_": 2509
+    },
+    {
+      "fieldNumber": 2510,
+      "fieldName": "CLINIC CANCELLATION LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P407.5'",
+      "required": false,
+      "pointerTo": 407.5,
+      "helpText": "Enter the clinic cancellation letter to be associated with this clinic, so if clinic is cancelled, this letter will print as opposed to generic clinic cancellation letter. ",
+      "fieldNumber_": 2510
+    },
+    {
+      "fieldNumber": 2511,
+      "fieldName": "APPT. CANCELLATION LETTER",
+      "dataType": "POINTER",
+      "rawType": "*P407.5'",
+      "required": false,
+      "pointerTo": 407.5,
+      "helpText": "Enter appointment cancellation letter to be associated with this clinic, so if veteran cancels appointment, this letter will print as opposed to generic appointment cancellation letter. ",
+      "fieldNumber_": 2511
+    },
+    {
+      "fieldNumber": 2600,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "44.1P",
+      "required": false,
+      "helpText": "Enter in this field the providers associated with this clinic.  These providers will then be displayed when updating the provider through Appointment Management or Check Out to assist the user in entering the correct provider. ",
+      "fieldNumber_": 2600
+    },
+    {
+      "fieldNumber": 2700,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "44.11P",
+      "required": false,
+      "helpText": "These are the diagnoses associated with this clinic.  These diagnoses will be displayed when updating the diagnosis through Appointment Management or Check Out to assist the user in entering the correct diagnosis. ",
+      "fieldNumber_": 2700
+    },
+    {
+      "fieldNumber": 2800,
+      "fieldName": "TEAM POSITIONS",
+      "dataType": "POINTER",
+      "rawType": "44.40457PA",
+      "required": false,
+      "helpText": "This contains one or more team positions that have this clinic as an 'ASSOCIATE CLINIC' - defined in the TEAM POSITION (#404.57) File. ",
+      "fieldNumber_": 2800
+    },
+    {
+      "fieldNumber": 2801,
+      "fieldName": "DEFAULT TO PC PRACTITIONER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This only is relevant if there is no default provider.  If so, if there is a current primary care practitioner for the patient - it will be provided as the default provider. ",
+      "fieldNumber_": 2801
+    },
+    {
+      "fieldNumber": 2802,
+      "fieldName": "ADMINISTER INPATIENT MEDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field should contain a YES only if the clinic location is authorized to dispense inpatient medications to outpatients. ",
+      "fieldNumber_": 2802
+    },
+    {
+      "fieldNumber": 2900,
+      "fieldName": "CLINIC HASH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ120I",
+      "length": 120I,
+      "required": false,
+      "helpText": "This field stores a SHA-1 hash of the RPC, SDES GET CLINIC INFO, output.   Hash is calculated by calling the SDES HASH ALL CLINIC option. ",
+      "fieldNumber_": 2900
+    },
+    {
+      "fieldNumber": 2901,
+      "fieldName": "CLINIC HASH DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date/time SHA-1 hash was created via option SDES HASH ALL CLINICS. ",
+      "fieldNumber_": 2901
+    },
+    {
+      "fieldNumber": 22900,
+      "fieldName": "AUTOFINISH RX SITE",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This field is a pointer to File#59, Outpatient Site, that this hospital  location is associated with.  If this field is not set autofinishing of  Rx's for this hospital location will not take place. ",
+      "fieldNumber_": 22900
+    },
+    {
+      "fieldNumber": 22901,
+      "fieldName": "AUTOFINISH CLINIC PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Printer where autofinished Rx's will print for a particular clinic. ",
+      "fieldNumber_": 22901
+    },
+    {
+      "fieldNumber": 648009,
+      "fieldName": "EXCLUDE ON INELIGIBLE SCREEN?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 648009
+    },
+    {
+      "fieldNumber": 999999,
+      "fieldName": "ON MUMPS TALK SYSTEM?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "fieldNumber_": 999999
+    }
+  ],
+  "fieldCount": 108,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADDX", "field": },
+    {"name": "ADP", "field": },
+    {"name": "ADPR", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AH", "field": },
+    {"name": "AHST1", "field": },
+    {"name": "ALTA", "field": },
+    {"name": "ALTC", "field": },
+    {"name": "ALTN", "field": },
+    {"name": "ALTP", "field": },
+    {"name": "AOOS", "field": },
+    {"name": "ARAD", "field": },
+    {"name": "ARU", "field": },
+    {"name": "ASCRPW", "field": },
+    {"name": "ATEAM", "field": },
+    {"name": "AVADPR", "field": },
+    {"name": "AWAS1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "44", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "44", "field": .01, "type": "regular"},
+    {"name": "44", "field": .01, "type": "regular"},
+    {"name": "44", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "44", "field": 1, "type": "regular"},
+    {"name": "44", "field": 1, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "44", "field": 2.1, "type": "regular"},
+    {"name": "44", "field": 31, "type": "regular"},
+    {"name": "", "field": 42, "type": "regular"},
+    {"name": "44", "field": 50.01, "type": "regular"},
+    {"name": "", "field": 2502, "type": "regular"},
+    {"name": "44", "field": 2508, "type": "regular"},
+    {"name": "44", "field": 2509, "type": "regular"},
+    {"name": "44", "field": 2510, "type": "regular"},
+    {"name": "44", "field": 2511, "type": "regular"},
+    {"name": "44", "field": 2802, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""},
+    {"field": 2.1, "value": "W \"\""},
+    {"field": WRITE, "value": "I $P(^(0),U,3)=\"C\" N SCMSG S SCMSG=\"   \"_$$PRDEF^SDCO31(+Y) D EN^DDIOL(SCMSG,\"\",\"?5\")"}
+  ]
+}

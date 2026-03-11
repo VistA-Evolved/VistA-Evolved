@@ -1,0 +1,36 @@
+{
+  "fileNumber": 727.4,
+  "fileName": "DSS WARD",
+  "globalRoot": "727.4",
+  "globalReference": "^ECX(727.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEDICAL CENTER WARD",
+      "dataType": "POINTER",
+      "rawType": "RP42'",
+      "required": true,
+      "pointerTo": 42,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DSS DEPARTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The DSS Department code consists of a minimum of 4 characters as:         ABBCxxx    Derived as follows:    A  = DSS CODE in NATIONAL SERVICE file (#730) BB = DSS PRODUCTION UNIT CODE in DSS PRODUCTION UNIT file (#729)  C  = DSS DIVISION IDENTIFIER in DSS DIVISION IDENTIFIER file (#727.3)    xxx = A suffix of not more than three characters which must be numeric       digits or uppercase alpha characters.  The first character of the       string may be \"-\", but that is not recommended.    This fi",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "727.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

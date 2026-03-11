@@ -1,0 +1,36 @@
+{
+  "fileNumber": 62.487,
+  "fileName": "FOREIGN INTERFACE",
+  "globalRoot": "62.487",
+  "globalReference": "^LAB(62.487,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FCS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "NAME OF SYSTEM ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUPPORTED WARD",
+      "dataType": "POINTER",
+      "rawType": "62.4871P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "62.487", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

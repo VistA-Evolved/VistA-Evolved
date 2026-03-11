@@ -1,0 +1,142 @@
+{
+  "fileNumber": 163.5,
+  "fileName": "FPPS QUEUED INVOICES",
+  "globalRoot": "163.5",
+  "globalReference": "^FBHL(163.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The invoice number as represented throughout the system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INVOICE FILE NUMBER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "3:162 (OUTP);5:162.1 (PHARM);9:162.5 (INP);",
+      "helpText": "This field represents the invoice file associated with this invoice (i.e.  FEE BASIS INVOICE, FEE BASIS PHARMACY INVOICE, etc.) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:PENDING;1:TRANSMITTED;2:ACKNOWLEDGED;",
+      "helpText": "This field represents the status of this entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Message ID as assigned by the HL7 package. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MESSAGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that Fee Basis submitted the message to the HL7 package. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLAIM LEVEL;L:LINE LEVEL;X:CANCELLATION;",
+      "helpText": "This field contains the transaction code that was included in the HL  message. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station number that was included in the HL  message. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "163.57",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 163.57,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACK FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;R:REJECTED;",
+      "helpText": "This field contains the result of the commit acknowledgement from the VistA Interface Engine. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ACK DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the HL message status was updated. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REJECT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NOT REPORTED;R:REPORTED;",
+      "helpText": "This field will only be populated when the HL message is rejected.  It  indicates if the rejection has been reported to users yet. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REJECT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "163.511",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 163.511,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AMD", "field": },
+    {"name": "AMI", "field": },
+    {"name": "ARS", "field": },
+    {"name": "B", "field": },
+    {"name": "163.5", "field": .01, "type": "regular"},
+    {"name": "163.5", "field": 2, "type": "regular"},
+    {"name": "163.5", "field": 3, "type": "regular"},
+    {"name": "163.5", "field": 4, "type": "regular"},
+    {"name": "163.5", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(163.5,1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(163.5,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

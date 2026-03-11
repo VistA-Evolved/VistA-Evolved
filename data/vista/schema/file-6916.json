@@ -1,0 +1,252 @@
+{
+  "fileNumber": 6916,
+  "fileName": "BERS SURVEY",
+  "globalRoot": "6916O",
+  "globalReference": "^ENGS(6916,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VAMC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Fiscal year being reported concatenated with official facility number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOSPCODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "Official facility number, usually three digits. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PCYCLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For use by the Engineering Service Center only. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "CCYCLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For use by the Engineering Service Center only. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "GCYCLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For use by the Engineering Service Center only. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VAMC ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Address of facility.  Should include city, state, and zip code. Street address not required. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FYEARRPT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "Fiscal year being reported. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "I.A.1. NAME",
+      "dataType": "SUBFILE",
+      "rawType": "6916.07A",
+      "required": false,
+      "helpText": "Name of biomedical maintenance employee. ",
+      "isMultiple": true,
+      "subFileNumber": 6916.07,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "II.A. WORK AREA (SQFT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Net square feet assigned to actual biomedical maintenance and repair activity. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "II.B. STORAGE AREA (SQFT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Net square feet assigned to biomedical engineering for storage of test equipment, parts, and documents. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "II.C. BME OFFICE (SQFT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "Net square feet used for office work. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "III.A. TOTAL ACQUISITION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Approximate cost of all test equipment assigned to the biomedical maintenance activity. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "IV.A. COST OF PARTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Cost of parts purchased at the request of biomedical engineering during the reporting year. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "*IV.B. COST OF X-RAY PART N/T",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Approximate cost of parts purchased for repair of X-ray equipment during the reporting year, excluding tubes.   The field is no longer used in the BERS Survey as of 10/3/94. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "IV.B. COST OF X-RAY (TUBES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Approximate cost of X-ray tubes purchased during the reporting year. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "V.A. COST OF REPAIRS (NON)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Approximate cost (parts and labor) of maintenance and repair performed by vendors during the reporting year, not including work done under service contracts. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "*V.B. COST OF X-RAY CALLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Approximate cost of vendor service calls on X-ray equipment.   This field is no longer used in the BERS Survey as of 10/3/94. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "VI.A. CONTRACT SERVICE",
+      "dataType": "SET",
+      "rawType": "6916.1ISA",
+      "required": false,
+      "helpText": "Individual maintenance contracts in force during the reporting year. ",
+      "isMultiple": true,
+      "subFileNumber": 6916.1,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VII. ADDITIONAL SUPPORT AREAS",
+      "dataType": "SET",
+      "rawType": "6916.11SA",
+      "required": false,
+      "helpText": "Special areas that may be supported with biomedical engineering resources. ",
+      "isMultiple": true,
+      "subFileNumber": 6916.11,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "VIII.A.TOTAL PERSONAL PROPERTY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,2",
+      "length": 15,
+      "required": true,
+      "helpText": "The total value of non expendable equipment for the VAMC. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "VIII.B. LAB TOTAL EQUIP. COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,2",
+      "length": 15,
+      "required": true,
+      "helpText": "The total value of Laboratory medical equipment at the VAMC. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "VIII.C. RAD TOTAL EQUIP. COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,2",
+      "length": 15,
+      "required": true,
+      "helpText": "The total value of Radiology medical equipment at the VAMC. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "VIII.D. OTHER TOTAL EQUIP. CST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,2",
+      "length": 15,
+      "required": true,
+      "helpText": "The total value of all other medical equipment at the VAMC. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "6916", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "6916", "field": 2.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

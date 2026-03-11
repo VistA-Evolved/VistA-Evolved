@@ -1,0 +1,42 @@
+{
+  "fileNumber": 165.7,
+  "fileName": "ONCOLOGY STAGED BY CODES",
+  "globalRoot": "165.7",
+  "globalReference": "^ONCO(165.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ2",
+      "length": 2,
+      "required": true,
+      "helpText": "Identifies the 2-digit STAGED BY code.  Refer to Facility Oncology Registry Data Standards (FORDS) 2016. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80",
+      "length": 80,
+      "required": true,
+      "helpText": "Defines the meaning of the STAGED BY code. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "165.7", "field": .01, "type": "regular"},
+    {"name": "165.7", "field": 1, "type": "regular"},
+    {"name": "165.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

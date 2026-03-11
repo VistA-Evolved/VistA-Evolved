@@ -1,0 +1,37 @@
+{
+  "fileNumber": 860.5,
+  "fileName": "ORDER CHECK DATA SOURCE",
+  "globalRoot": "860.5",
+  "globalReference": "^OCXS(860.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CONTEXT",
+      "dataType": "POINTER",
+      "rawType": "P860.6'",
+      "required": false,
+      "pointerTo": 860.6,
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "860.5", "field": .01, "type": "regular"},
+    {"name": "860.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

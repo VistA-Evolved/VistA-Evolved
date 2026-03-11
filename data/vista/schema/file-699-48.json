@@ -1,0 +1,41 @@
+{
+  "fileNumber": 699.48,
+  "fileName": "INSTRUMENT",
+  "globalRoot": "699.48",
+  "globalReference": "^MCAR(699.48,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains instruments used in GI and Pulmonary procedures. This list is built locally through options on the management menus. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "G:GI;P:PULMONARY;",
+      "helpText": "This field is used as a screen to distinguish GI instruments from Pulmonary instruments. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.48", "field": .01, "type": "regular"},
+    {"name": "699.48", "field": .01, "type": "regular"},
+    {"name": "699.48", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

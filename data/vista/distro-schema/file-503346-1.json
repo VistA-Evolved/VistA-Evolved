@@ -1,0 +1,35 @@
+{
+  "fileNumber": 503346.1,
+  "fileName": "INDIVIDUAL DONOR",
+  "globalRoot": "503346.1",
+  "globalReference": "^ABS(503346.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "503346.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

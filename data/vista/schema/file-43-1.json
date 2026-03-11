@@ -1,0 +1,235 @@
+{
+  "fileNumber": 43.1,
+  "fileName": "MAS EVENT RATES",
+  "globalRoot": "43.1D",
+  "globalReference": "^DG(43.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date the listed outpatient and inpatient rates are effective. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "OPT FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for an outpatient visit at a VA facility. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "MEDICINE (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Medicine ward at a VA facility. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "SURGERY (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Surgical ward at a VA facility. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "SPINAL CORD INJURY (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Spinal Cord Injury ward at a VA facility. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "PSYCHIATRY (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Psychiatry ward at a VA facility. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "VA NHCU (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay in a VA Nursing Home Care Unit. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "INTERMEDIATE CARE (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on an Intermediate Care ward at a VA facility. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "REHAB. MEDICINE (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Rehabilitation Medicine ward at a VA facility. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 10.09,
+      "fieldName": "BLIND REHAB (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Blind Rehabilitation ward at a VA facility. ",
+      "fieldNumber_": 10.09
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "NEUROLOGY (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on a Neurology ward at a VA facility. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.11,
+      "fieldName": "ALCOHOL/DRUG TREATMENT (1-DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "Charge for a one-day stay on an Alcohol and Drug Treatment ward at a VA facility. ",
+      "fieldNumber_": 10.11
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "$ PER WWU",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "Dollar amount per Weighted Work Unit. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "COST FOR 1-DAY LOS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Charge/cost for a one-day length of stay in a VA facility. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "CENSUS PER DIEM COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The value assigned to per diem cost for census patients. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "HIGH OUTLIER COST PER DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Value assigned to a high outlier or hospital stay beyond the expected number of days for a specific condition based on national statistics for a period of one day. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "DEDUCTIBLE/VISIT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "Dollar amount deductible allowed for each outpatient visit at a VA facility. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "DEDUCTIBLE/MONTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "Dollar amount deductible allowed for  outpatient visits per month at a  ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 30.03,
+      "fieldName": "MILEAGE RATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,2X",
+      "length": 4,
+      "required": true,
+      "helpText": "Mileage rate (dollar amount) allowed per mile for eligible veterans to travel to and/or from a VA hospital for scheduled clinic visits and scheduled hospital admissions or discharges to home. ",
+      "fieldNumber_": 30.03
+    },
+    {
+      "fieldNumber": 30.04,
+      "fieldName": "FISCAL SYMBOLS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fiscal appropriation numbers assigned to travel vouchers given to eligible veterans for payment of travel expenses to and from a VA facility. ",
+      "fieldNumber_": 30.04
+    },
+    {
+      "fieldNumber": 30.05,
+      "fieldName": "C&P REVIEW VISIT MILEAGE RATE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,2X",
+      "length": 4,
+      "required": true,
+      "helpText": "Compensation and Pension review visit mileage rate allowed for eligible veterans.  The mileage rate for a C&P visit as opposed to a regularly scheduled outpatient visit can be a higher rate as the DVB requests the exam and not the patient. ",
+      "fieldNumber_": 30.05
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MONETARY AWARD(S)",
+      "dataType": "POINTER",
+      "rawType": "43.12PA",
+      "required": false,
+      "helpText": "Monetary awards granted eligible veterans by the Department of Veterans Benefits for non service connected disabilities (VA Pension). ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "43.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

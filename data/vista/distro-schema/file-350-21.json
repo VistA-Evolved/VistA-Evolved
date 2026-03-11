@@ -1,0 +1,75 @@
+{
+  "fileNumber": 350.21,
+  "fileName": "IB ACTION STATUS",
+  "globalRoot": "350.21",
+  "globalReference": "^IBE(350.21,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of the STATUS field matches the name of the code from STATUS (#.05) field of the INTEGRATED BILLING ACTION (#350) file prior to Integrated Billing version 2.0.   This field should not be edited! ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a displayable status name which may be used in reports. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The abbreviation is a short-hand notation for the status which may be used for display in space-limited outputs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PASSED TO AR?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine if IB actions with this status have already been passed to the Accounts Receivable module. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CANCELLED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine if IB actions with this status have been cancelled. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ON HOLD?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine if IB actions are being held in the Integrated Billing module waiting to be passed to Accounts Receivable. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "350.21", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

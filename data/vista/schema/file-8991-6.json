@@ -1,0 +1,94 @@
+{
+  "fileNumber": 8991.6,
+  "fileName": "XUEPCS DATA",
+  "globalRoot": "8991.6",
+  "globalReference": "^XTV(8991.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field captures the internal entry number in file 200 of the  individual who did the editing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD EDITED",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the field number (#55.1-55.6) in NEW PERSON file  (#200) or the field number (#2.1-2.6 and #.04) in DEA NUMBERS (#8991.9)  that was edited. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ORIGINAL DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EDITED DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME EDITED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FILE EDITED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the file number for the file being edited.  ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DEA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used to enter the provider's Drug Enforcement  Administration (DEA) number. Enter the DEA number as two upper case  letters followed by 7 digits, e.g., AA1234567. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DT", "field": },
+    {"name": "8991.6", "field": .01, "type": "regular"},
+    {"name": "8991.6", "field": .02, "type": "regular"},
+    {"name": "8991.6", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

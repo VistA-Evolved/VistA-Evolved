@@ -1,0 +1,97 @@
+{
+  "fileNumber": 409.5,
+  "fileName": "SCHEDULING VISITS",
+  "globalRoot": "409.5ID",
+  "globalReference": "^SDV(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The data/time a veteran was scheduled for an outpatient visit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The name of the patient who had a scheduled outpatient visit which is a pointer to File 2, Patient File ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "The division a veteran was seen at for a scheduled visit in an outpatient clinic.  For example, Albany VA Medical Center is considered a division. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLINIC STOP CODE",
+      "dataType": "POINTER",
+      "rawType": "409.51P",
+      "required": false,
+      "helpText": "Clinic stop code is one of many codes assigned to specialties of care by VA Central Office for nationwide use.  For example, the stop code number 102 is 'admissions/screening' which can be associated with any clinic in which the veteran will be screened for treatment and possibly admitted. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "# OF AMBULATORY PROCEDURES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field returns the total number of ambulatory procedures performed on the patient for the visit date. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "PROCEDURE REIMBURSEMENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This computed fields returns the total RAM reimbursement for all the procedures performed on the patient for the visit date. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "TOTAL LOCAL COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This computed field returns the total local cost for all the ambulatory procedures performed on the patient for the visit date.   The 'LOCAL COST' in the AMBULATORY PROCEDURE TIME SENSITIVE DATA file is used if entered for the appropriate entry. Otherwise, the appropriate RAM reimbursement amount, effective on the visit date, is used.   In other words, if no local costs are entered for any of the procedures performed, then the value returned will be equal to the value returned for the PROCEDURE ",
+      "fieldNumber_": 206
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ACG", "field": },
+    {"name": "ADT", "field": },
+    {"name": "AG", "field": },
+    {"name": "AP", "field": },
+    {"name": "ASDPSD", "field": },
+    {"name": "ASDPSD1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.5", "field": .01, "type": "regular"},
+    {"name": "409.5", "field": .01, "type": "regular"},
+    {"name": "409.5", "field": 2, "type": "regular"},
+    {"name": "409.5", "field": 2, "type": "regular"},
+    {"name": "409.5", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

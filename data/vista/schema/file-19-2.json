@@ -1,0 +1,139 @@
+{
+  "fileNumber": 19.2,
+  "fileName": "OPTION SCHEDULING",
+  "globalRoot": "19.2P",
+  "globalReference": "^DIC(19.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P19'",
+      "required": true,
+      "pointerTo": 19,
+      "helpText": "This field is a pointer to the OPTION file and indicates which option is to be scheduled to be run by taskman.   Only options that have the 'Scheduleing Recommended' field set to YES can be selected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUED TO RUN AT WHAT TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "If this field has a value, the Task Manager will try to run this OPTION on or after the date/time entered.  This field should NOT have a value if the OPTION TYPE is MENU, INQUIRY, or EDIT, since it doesn't make sense to start up automatically a process that requires user terminal input. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEVICE FOR QUEUED JOB OUTPUT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The name of the device on which this Option will be queued to print by TaskMan. If, at the time the queueing, TaskMan cannot identify a device by this name, then the job will not be run. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OTHER DEVICE PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not in use yet. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUEUED TO RUN ON VOLUME SET",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to let the Task Manager know where to run the queued job. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RESCHEDULING FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field has a value only if the OPTION is to be re-queued automatically for a subsequent run every time it is run by the TaskManager. Valid codes are:        Every n seconds         nS        Every n hours           nH        Every n days            nD        Every n months          nM        Day of Week             day[@time]        weekday                 D[@time]         weekend day             E[@time] (saturday, sunday)        Different days in month nM(sch...)              sch:    dd[@t",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SPECIAL QUEUEING",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "S:STARTUP;SP:Startup Persistent;P:Persistent;",
+      "helpText": "If this Option is set for \"STARTUP\", then TaskMan will queue the job to run whenever the TaskMan/computer is started up, i.e. at System Boot.  If this Option is set for \"Startup/Persistent\", then Taskman will queue the job as it does for \"STARTUP\" and it will mark it as a persistent task to be restarted if it stops unexpectedly. If this Option is set for \"Persistent\" then TaskMan will run it on its normal schedule, marking it as Persistent, This way TaskMan will restart the task if it stops unex",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OTHER PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "19.21",
+      "required": false,
+      "helpText": "This multipule holds name-value pairs that are setup before the option is run. ",
+      "isMultiple": true,
+      "subFileNumber": 19.21,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "USER TO RUN TASK",
+      "dataType": "POINTER",
+      "rawType": "*P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will allow a site to select the user that should run  a given scheduled task.  To set this field you must hold the XUMGR key. The user must be an ACTIVE user on the system. This is checked with $$ACTIVE^XUSER() An example would be to have Postmaster run the MailMan background filers. Or to create a special user to run HL7 background filers. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TASK ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is only to be set by TASKMAN. It holds the TASK number that was assigned to run the option. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TASK PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a string that is passed to queued jobs thru the variable ZTQPARAM.  You will have to lookup in the options description how to use this field. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "TASK DEFIND",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": 99.1
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "ASTARTUP", "field": },
+    {"name": "AZT", "field": },
+    {"name": "AZTIO", "field": },
+    {"name": "AZTVOL", "field": },
+    {"name": "B", "field": },
+    {"name": "19.2", "field": .01, "type": "regular"},
+    {"name": "19.2", "field": 2, "type": "regular"},
+    {"name": "19.2", "field": 3, "type": "regular"},
+    {"name": "19.2", "field": 5, "type": "regular"},
+    {"name": "19.2", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

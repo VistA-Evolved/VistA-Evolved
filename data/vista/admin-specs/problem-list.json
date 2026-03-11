@@ -1,0 +1,968 @@
+{
+  "id": "problem-list",
+  "name": "Problem List",
+  "description": "Patient problems, conditions, ICD coding",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.883Z",
+  "files": {
+    "count": 2,
+    "items": [
+      {
+        "fileNumber": 9000011,
+        "fileName": "File #9000011",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 9000011.12,
+        "fileName": "File #9000011.12",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 28,
+    "items": [
+      {
+        "name": "ORQQPL LIST",
+        "tag": "LIST",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "STATUS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a list of problems for a patient. "
+      },
+      {
+        "name": "ORQQPL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQPL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PROBLEM ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Function returns a string of detailed information for a problem. "
+      },
+      {
+        "name": "ORQQPL PROBLEM LIST",
+        "tag": "PROBL",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Problem list for CPRS GUI client "
+      },
+      {
+        "name": "ORQQPL USER PROB CATS",
+        "tag": "CAT",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLINIC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "rETURNS ARRAY OF CATEGORIES FOR USER TO SELECT FROM "
+      },
+      {
+        "name": "ORQQPL USER PROB LIST",
+        "tag": "PROB",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Category",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns array of user specific problems to select from "
+      },
+      {
+        "name": "ORQQPL PROBLEM LEX SEARCH",
+        "tag": "LEXSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NUM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get a list from clinical lexicon for display in list or combo box "
+      },
+      {
+        "name": "ORQQPL EDIT LOAD",
+        "tag": "EDLOAD",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "provider",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "vamc",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return array of default fields and original fields - GMPFLD() and GMPORIG() "
+      },
+      {
+        "name": "ORQQPL INIT PT",
+        "tag": "INITPT",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "returns death indicator, sc and exposures "
+      },
+      {
+        "name": "ORQQPL PROVIDER LIST",
+        "tag": "PROVSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "RETURNS ARRAY OF PROVIDERS MATCHING INPUT "
+      },
+      {
+        "name": "ORQQPL EDIT SAVE",
+        "tag": "EDSAVE",
+        "routine": "ORQQPL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PROV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VAMC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "sAVES EDITED PROBLEM RECORD "
+      },
+      {
+        "name": "ORQQPL CLIN SRCH",
+        "tag": "CLINSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns list of clinics for problem list. Should be replaced by CLIN^ORQPT "
+      },
+      {
+        "name": "ORQQPL ADD SAVE",
+        "tag": "ADDSAVE",
+        "routine": "ORQQPL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "GMPDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "GMPROV",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "GMPVAMC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ADDARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Add new problem record "
+      },
+      {
+        "name": "ORQQPL INIT USER",
+        "tag": "INITUSER",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "Returns user parameters for problem list "
+      },
+      {
+        "name": "ORQQPL UPDATE",
+        "tag": "UPDATE",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "UPDARRAY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Updates problem record "
+      },
+      {
+        "name": "ORQQPL DELETE",
+        "tag": "DELETE",
+        "routine": "ORQQPL2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PROVIDERID",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "VAMC",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "REASON",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "DELETES A PROBLEM "
+      },
+      {
+        "name": "ORQQPL AUDIT HIST",
+        "tag": "HIST",
+        "routine": "ORQQPL2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMPIFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RETURN PROBLEM AUDIT HISTORY "
+      },
+      {
+        "name": "ORQQPL REPLACE",
+        "tag": "REPLACE",
+        "routine": "ORQQPL2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "REPLACES A PROBLEM THAT WAS PREVIOUSLY DELETED "
+      },
+      {
+        "name": "ORQQPL VERIFY",
+        "tag": "VERIFY",
+        "routine": "ORQQPL2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMPIFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "VERIFY A TRANSCRIBED PROBLEM "
+      },
+      {
+        "name": "ORQQPL PROV FILTER LIST",
+        "tag": "GETRPRV",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "INP",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "RETURNS A LIST OF PROVIDERS CORRESPONDING TO INPUT ARRAY OF IEN "
+      },
+      {
+        "name": "ORQQPL CLIN FILTER LIST",
+        "tag": "GETCLIN",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "rETURNS ARRAY OF IEN^NAME FOR AN ARRAY OF IEN PASSED IN "
+      },
+      {
+        "name": "ORQQPL SERV FILTER LIST",
+        "tag": "GETSRVC",
+        "routine": "ORQQPL3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "RETURNS ARRAY OF IEN^NAME FOR INPUT ARRAY OF IEN "
+      },
+      {
+        "name": "ORQQPL SRVC SRCH",
+        "tag": "SRVCSRCH",
+        "routine": "ORQQPL1",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "gET LIST OF AVAILABLE SERVICES "
+      },
+      {
+        "name": "ORQQPL PROB COMMENTS",
+        "tag": "GETCOMM",
+        "routine": "ORQQPL2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Problem IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of comments associated with a problem IEN. "
+      },
+      {
+        "name": "ORQQPL INACTIVATE",
+        "tag": "INACT",
+        "routine": "ORQQPL2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Problem IFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "ORQQPL SAVEVIEW",
+        "tag": "SAVEVIEW",
+        "routine": "ORQQPL2",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "GMPLVIEW",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Saves preferred view (inpatient/outpatient) and list of preferred clinics/services to NEW PERSON file, field 125.nn.  Also sets value of parameter [ORCH CONTEXT PROBLEMS], which controls the default status of the problems shown, as well as whether comments should be displayed. Preferences take effec"
+      },
+      {
+        "name": "ORQQPL PROBLEM NTRT BULLETIN",
+        "tag": "NTRTBULL",
+        "routine": "ORQQPL2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ORTERM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC generates a bulletin to the OR CAC Mail Group, indicating that  an unresolved term needs to be requested using the New Term Rapid  Turnaround website at http://hdrmul7.aac.va.gov:7151/ntrt/. "
+      },
+      {
+        "name": "ORQQPL CHECK DUP",
+        "tag": "DUP",
+        "routine": "ORQQPL1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TERM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TEXT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "ORQQPL4 LEX",
+        "tag": "LEX",
+        "routine": "ORQQPL4",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC supports the Clinical Lexicon Search for Problem List. It will  return an indefinite list of terms that match the user's search string. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 29,
+    "items": [
+      {
+        "name": "GMPL CLINICAL USER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL DATA ENTRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL MGT MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL PARAMETER EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER VIEW",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP DEFAULTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER PREFS MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL PATIENT LISTING",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL PROBLEM LISTING",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL BUILD SELECTION LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LIST",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL BUILD LIST MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL ASSIGN LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL BUILD ENC FORM LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL CODE LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL DELETE LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL REPLACE PROBLEMS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP FILTER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP DISPLAY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP VOCABULARY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP SHORTCUTS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL USER LOOK-UP LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL SELECTION LIST CSV CHECK",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL NTRT F/U RPT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL FREETEXT F/U REPORT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL DIAG ERROR REPORT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL DIAG CLEANUP REPORT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL GENERATE DIAG RPTS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMPL SELECTION LIST IMPORT",
+        "type": "run-routine",
+        "securityKey": "GMPL IMPRT UTIL",
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 37,
+    "items": [
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATUS:",
+        "rpcName": "ORQQPL LIST",
+        "paramName": "STATUS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROBLEM ID:",
+        "rpcName": "ORQQPL DETAIL",
+        "paramName": "PROBLEM ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORQQPL PROBLEM LIST",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "ORQQPL USER PROB CATS",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLINIC:",
+        "rpcName": "ORQQPL USER PROB CATS",
+        "paramName": "CLINIC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Category:",
+        "rpcName": "ORQQPL USER PROB LIST",
+        "paramName": "Category",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "ORQQPL PROBLEM LEX SEARCH",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NUM:",
+        "rpcName": "ORQQPL PROBLEM LEX SEARCH",
+        "paramName": "NUM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "provider:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "provider",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "vamc:",
+        "rpcName": "ORQQPL EDIT LOAD",
+        "paramName": "vamc",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORQQPL INIT PT",
+        "paramName": "DFN",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROV:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "PROV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VAMC:",
+        "rpcName": "ORQQPL EDIT SAVE",
+        "paramName": "VAMC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPDFN:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPROV:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPROV",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPVAMC:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "GMPVAMC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ADDARRAY:",
+        "rpcName": "ORQQPL ADD SAVE",
+        "paramName": "ADDARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "ORQQPL INIT USER",
+        "paramName": "DUZ",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "UPDARRAY:",
+        "rpcName": "ORQQPL UPDATE",
+        "paramName": "UPDARRAY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PROVIDERID:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "PROVIDERID",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VAMC:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "VAMC",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REASON:",
+        "rpcName": "ORQQPL DELETE",
+        "paramName": "REASON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPIFN:",
+        "rpcName": "ORQQPL AUDIT HIST",
+        "paramName": "GMPIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IFN:",
+        "rpcName": "ORQQPL REPLACE",
+        "paramName": "IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPIFN:",
+        "rpcName": "ORQQPL VERIFY",
+        "paramName": "GMPIFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "INP:",
+        "rpcName": "ORQQPL PROV FILTER LIST",
+        "paramName": "INP",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Problem IEN:",
+        "rpcName": "ORQQPL PROB COMMENTS",
+        "paramName": "Problem IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Problem IFN:",
+        "rpcName": "ORQQPL INACTIVATE",
+        "paramName": "Problem IFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "GMPLVIEW:",
+        "rpcName": "ORQQPL SAVEVIEW",
+        "paramName": "GMPLVIEW",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORTERM:",
+        "rpcName": "ORQQPL PROBLEM NTRT BULLETIN",
+        "paramName": "ORTERM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "ORQQPL CHECK DUP",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TERM:",
+        "rpcName": "ORQQPL CHECK DUP",
+        "paramName": "TERM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TEXT:",
+        "rpcName": "ORQQPL CHECK DUP",
+        "paramName": "TEXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

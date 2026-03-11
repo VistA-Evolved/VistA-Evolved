@@ -1,0 +1,112 @@
+{
+  "fileNumber": 631.9,
+  "fileName": "HBHC SYSTEM PARAMETERS",
+  "globalRoot": "631.9",
+  "globalReference": "^HBHC(631.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PACKAGE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains 'Hospital Based Home Care' and is uneditable. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST MAIL MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field represents date of last electronic record transmission via MailMan to Austin.  Field updated by package only, no user input.  Field is Uneditable. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PACKAGE STARTUP DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field represents official startup date for visit records to be electronically transmitted to Austin.  Date must be 6/1/1992 or later.  Field is Uneditable. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NUMBER OF VISIT DAYS TO SCAN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field represents number of visit days HBHC package will scan when visit (appointment) data in Patient (2) file is processed for automatically updating HBHC Visit (632) file.  Valid entries are 7 thru 365.  (e.g. If 7 entered, visits for last 7 days would be written to HBHC Visit file.) This field also controls date range of visits that are displayed for selection during HBHC Visit file lookup.  (e.g.  If 7 entered, only visits for last 7 days would be displayed for selection from HBHC Visit",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HOSPITAL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field represents 3-7 digit hospital number in Institution file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMISSION IN PROGRESS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Transmission in Progress;",
+      "helpText": "This field represents a flag used to determine if transmission is currently in progress. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRANSMIT REPORT PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FILE UPDATE IN PROGRESS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:File Update in Progress;",
+      "helpText": "This field represents a flag used to determine if file updating is currently in progress. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MED FOSTER HOME SANCTION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field represents Date site was Sanctioned as Medical Foster Home (MFH) by VACO. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PARENT SITE",
+      "dataType": "POINTER",
+      "rawType": "631.99P",
+      "required": false,
+      "helpText": "This field is used to enter all HBPC program facilities which might be  assigned to a patient's care. Facilities must be pre-defined in the  MEDICAL CENTER DIVISION (#40.8) file. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

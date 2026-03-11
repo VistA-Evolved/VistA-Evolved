@@ -1,0 +1,198 @@
+{
+  "fileNumber": 301.61,
+  "fileName": "IVM BILLING TRANSMISSION",
+  "globalRoot": "301.61",
+  "globalReference": "^IVM(301.61,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to uniquely identify each bill or charge which is stored in this file.  This number will be equal to the bill number for insurance claims, or to the REFERENCE NUMBER (#.01) for charges stored in file #350, INTEGRATED BILLING ACTIONS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field points to the patient (in file #2) for whom the charge or bill was created. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLASSIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INPATIENT;2:OUTPATIENT;3:PHARMACY REFILL;4:PROSTHETICS;",
+      "helpText": "This field is used to determine whether the bill was for inpatient or outpatient care, or for a Pharmacy refill or a Prosthetics bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BILL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INS CLAIM;2:COPAYMENT;3:PER DIEM;",
+      "helpText": "This field is used to determine whether the bill was a claim to an insurance company or direct charge to the patient (Means Test copayment or per diem charge). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILL FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the initial date of care which is covered on the bill. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BILL TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the final date for care which is covered by the bill. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE BILL CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date on which the bill was processed and passed to the Accounts Receivable module. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "AMOUNT BILLED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field is used to store the total amount that was billed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AMOUNT COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field is used to store the total amount collected an the bill. This field will only be used for insurance claims. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE BILL CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date that a bill was closed out in Accounts Receivable.  This field is only used for insurance claims. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "BILL CANCELLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to flag bills which were subsequently cancelled. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TRANSMIT BILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine whether the billing information should be transmitted to the IVM Center. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE LAST TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the last date/time that the billing information was transmitted to the IVM Center. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "STOP TRANSMISSIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to determine whether any additional billing information needs to be transmitted to the IVM Center. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTRY ADDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date/time that the entry was added to the file. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the user who added, or caused the entry to be added to the file. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date/time that the entry was last updated. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "USER UPDATING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the user who updated, or caused the record to be updated. ",
+      "fieldNumber_": 1.04
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "ATR", "field": },
+    {"name": "ATR1", "field": },
+    {"name": "ATR2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "301.61", "field": .01, "type": "regular"},
+    {"name": "301.61", "field": .02, "type": "regular"},
+    {"name": "301.61", "field": .02, "type": "regular"},
+    {"name": "301.61", "field": .05, "type": "regular"},
+    {"name": "301.61", "field": .12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "fileNumber": 355.35,
+  "fileName": "HMS EXTRACT FILE STATUS",
+  "globalRoot": "355.35",
+  "globalReference": "^IBA(355.35,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EXTRACT FILE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NOINSUR:NOINSUR;ENHNOIN:ENHNOIN;NORXINS:NORXINS;NONVERINS:NONVERINS;",
+      "helpText": "Type of Extract file.  Depending on your site requirements, you may want to define one or more of the following Extract types:    NOINSUR - (HMS No Insurance Data Extract) Pulls patients with no insurance info on file.      ENHNOIN - (HMS Enhanced No Insurance Data Extract) Pulls patients with only Medicare insurance on file and no commercial insurance.     NORXINS - (HMS No Prescription Insurance Extract) Pulls patients with active insurance that is not \"Prescription Only\" and identifies Prescr",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROCESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the eII software first noticed the existence of the extract file for the given file type. After noticing this, the eII software reads the file, wraps it into message(s), and sends it to the associated DMI Queue address. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGES",
+      "dataType": "POINTER",
+      "rawType": "355.3503P",
+      "required": false,
+      "helpText": "This sub-file keeps track of the Message(s) sent to AITC  for this Extract file type.  ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "355.3505D",
+      "required": false,
+      "helpText": "The Activity Log keeps track of the top level fields past history.  It is mainly used for trouble shooting. Only 6 months (180 days) worth of data is kept in this sub-file in order to keep the file small. ",
+      "isMultiple": true,
+      "subFileNumber": 355.3505,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

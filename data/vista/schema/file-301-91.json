@@ -1,0 +1,39 @@
+{
+  "fileNumber": 301.91,
+  "fileName": "IVM REASONS FOR NOT UPLOADING INSURANCE",
+  "globalRoot": "301.91I",
+  "globalReference": "^IVM(301.91,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "  This field contains the reason code for why the facility did not  upload the insurance policy sent from the IVM Center. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REASON DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reason description for the code. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "301.91", "field": .01, "type": "regular"},
+    {"name": "301.91", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

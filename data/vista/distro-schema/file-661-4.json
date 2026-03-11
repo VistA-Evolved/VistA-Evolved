@@ -1,0 +1,79 @@
+{
+  "fileNumber": 661.4,
+  "fileName": "HCPCS INVENTORY",
+  "globalRoot": "661.4",
+  "globalReference": "^RMPR(661.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the HCPCS code ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This field is a pointer to the HCPCS ITEM sub-file (661.12) of the PROSTHETIC HCPCS file (661.1).   ********* S I T E  I N T E G R A T O R S  B E W A R E ********* It is defined as free text as FM does not allow sub-file pointers to be defined explicitly. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the INSTITUTION file (4). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RE-ORDER QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is the re-order quantity for a HCPCS item at a Station and is used to drive reports which alert sites to the need to re-order. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUANTITY ON ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is the current quantity on order for a HCPCS Item at a Station. It is used to inform sites that although a stock item might be below the proscribed re-order level, orders have been placed to re-stock. A distinction should be made on low stock warning type reports between the situation where the current on-hand quantity + on-order quantity is below the re-order level, and that where it is not. This field will be updated for any receipt or order type transaction recorded in the PROSTHET",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "RP661.5'",
+      "required": true,
+      "pointerTo": 661.5,
+      "helpText": "This field is a pointer to the Prosthetic Stock Location file (661.5). ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "661.4", "field": .01, "type": "regular"},
+    {"name": "661.4", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

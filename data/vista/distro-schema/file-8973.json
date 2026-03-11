@@ -1,0 +1,650 @@
+{
+  "fileNumber": 8973,
+  "fileName": "CP PARAMETERS",
+  "globalRoot": "8973",
+  "globalReference": "^KMPD(8973,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CM TOOLS CURRENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CM TOOLS CURRENT VERSION INST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CM TOOLS CURRENT PATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CM TOOLS CURRENT PATCH INST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SAGG CURRENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "SAGG CURRENT VERSION INSTALL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "SAGG CURRENT PATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "SAGG CURRENT PATCH INSTALL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "SAGG DLY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "SAGG DLY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "SAGG DLY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "SAGG WKY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "SAGG WKY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SAGG WKY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "SAGG WEEKS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "SAGG DLY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "SAGG DLY PURGE STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "SAGG DLY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "SAGG WKY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "SAGG WKY PURGE STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "SAGG WKY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "RUM CURRENT VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "RUM CURRENT VERSION INSTALL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "RUM CURRENT PATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "RUM CURRENT PATCH INSTALL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "RUM DLY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "RUM DLY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "RUM DLY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "RUM WKY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "RUM WKY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "RUM WKY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "RUM WEEKS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "RUM DLY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "RUM DLY PURGE STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 2.14,
+      "fieldName": "RUM DLY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.14
+    },
+    {
+      "fieldNumber": 2.15,
+      "fieldName": "RUM WKY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.15
+    },
+    {
+      "fieldNumber": 2.16,
+      "fieldName": "RUM WKY PURGE STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.16
+    },
+    {
+      "fieldNumber": 2.17,
+      "fieldName": "RUM WKY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.17
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "HL7 DLY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "HL7 DLY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "HL7 DLY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "HL7 WKY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "HL7 WKY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "HL7 WKY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.11,
+      "fieldName": "HL7 WEEKS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 3.11
+    },
+    {
+      "fieldNumber": 3.12,
+      "fieldName": "HL7 DLY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.12
+    },
+    {
+      "fieldNumber": 3.13,
+      "fieldName": "HL7 DLY PURGE END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.13
+    },
+    {
+      "fieldNumber": 3.14,
+      "fieldName": "HL7 DLY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.14
+    },
+    {
+      "fieldNumber": 3.15,
+      "fieldName": "HL7 WKY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.15
+    },
+    {
+      "fieldNumber": 3.16,
+      "fieldName": "HL7 WKY PURGE END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3.16
+    },
+    {
+      "fieldNumber": 3.17,
+      "fieldName": "HL7 WKY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.17
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "TIMING DLY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "TIMING DLY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "TIMING DLY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "TIMING WKY BKG START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "TIMING WKY BKG STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "TIMING WKY BKG DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "TIMING WEEKS TO KEEP DATA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "TIMING DLY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "TIMING DLY PURGE END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "TIMING DLY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 4.15,
+      "fieldName": "TIMING WKY PURGE START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.15
+    },
+    {
+      "fieldNumber": 4.16,
+      "fieldName": "TIMING WKY PURGE END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4.16
+    },
+    {
+      "fieldNumber": 4.17,
+      "fieldName": "TIMING WKY PURGE DELTA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4.17
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "SCHEDULED DOWN TIME START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "SCHEDULED DOWN TIME STOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "REASON FOR DOWN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "MONITOR UPDATE RATE - MINUTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 19.02,
+      "fieldName": "MONITOR ALERT - SECONDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 19.02
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CPU",
+      "dataType": "SUBFILE",
+      "rawType": "8973.201",
+      "required": false,
+      "helpText": "Current CPU/Node data. ",
+      "isMultiple": true,
+      "subFileNumber": 8973.201,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21.1,
+      "fieldName": "SAGG TRANSMIT TO",
+      "dataType": "SUBFILE",
+      "rawType": "8973.01",
+      "required": false,
+      "helpText": "This represents the location(s) where the SAGG data is transmitted after  being compiled at the sites.  *** THESE ENTRIES SHOULD NOT BE CHANGED BY  THE LOCAL FACILITY *** ",
+      "isMultiple": true,
+      "subFileNumber": 8973.01,
+      "fieldNumber_": 21.1
+    },
+    {
+      "fieldNumber": 21.2,
+      "fieldName": "RUM TRANSMIT TO",
+      "dataType": "SUBFILE",
+      "rawType": "8973.02",
+      "required": false,
+      "helpText": "This represents the location(s) where the RUM data is transmitted after  being compiled at the sites.  *** THESE ENTRIES SHOULD NOT BE CHANGED BY  THE LOCAL FACILITY *** ",
+      "isMultiple": true,
+      "subFileNumber": 8973.02,
+      "fieldNumber_": 21.2
+    },
+    {
+      "fieldNumber": 21.3,
+      "fieldName": "HL7 TRANSMIT TO",
+      "dataType": "SUBFILE",
+      "rawType": "8973.03",
+      "required": false,
+      "helpText": "This represents the location(s) where the HL7 data is transmitted after  being compiled at the sites.  *** THESE ENTRIES SHOULD NOT BE CHANGED BY  THE LOCAL FACILITY *** ",
+      "isMultiple": true,
+      "subFileNumber": 8973.03,
+      "fieldNumber_": 21.3
+    },
+    {
+      "fieldNumber": 21.4,
+      "fieldName": "TIMING TRANSMIT TO",
+      "dataType": "SUBFILE",
+      "rawType": "8973.04",
+      "required": false,
+      "helpText": "This represents the location(s) where the TIMING data is transmitted after being compiled at the sites.  *** THESE ENTRIES SHOULD NOT BE CHANGED BY  THE LOCAL FACILITY *** ",
+      "isMultiple": true,
+      "subFileNumber": 8973.04,
+      "fieldNumber_": 21.4
+    },
+    {
+      "fieldNumber": 21.5,
+      "fieldName": "VISTA MONITOR TRANSMIT TO",
+      "dataType": "SUBFILE",
+      "rawType": "8973.05",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8973.05,
+      "fieldNumber_": 21.5
+    }
+  ],
+  "fieldCount": 76,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8973", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

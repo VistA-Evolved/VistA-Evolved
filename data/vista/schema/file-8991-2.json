@@ -1,0 +1,39 @@
+{
+  "fileNumber": 8991.2,
+  "fileName": "XTV GLOBAL CHANGES",
+  "globalRoot": "8991.2P",
+  "globalReference": "^XTV(8991.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP8991.19'",
+      "required": true,
+      "pointerTo": 8991.19,
+      "helpText": "This is the name of the XTV VERIFICATION PACKAGE which is to be incorporated for evaluating global changes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE RECORDED",
+      "dataType": "DATE",
+      "rawType": "8991.21DA",
+      "required": false,
+      "helpText": "This is a multiple node for identifying different (if multiple records are created) records of the global nodes and their contents. ",
+      "isMultiple": true,
+      "subFileNumber": 8991.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8991.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

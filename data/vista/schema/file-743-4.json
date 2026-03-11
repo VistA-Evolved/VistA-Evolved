@@ -1,0 +1,143 @@
+{
+  "fileNumber": 743.4,
+  "fileName": "DATA ELEMENT",
+  "globalRoot": "743.4I",
+  "globalReference": "^QA(743.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the data element that the user will see. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "R*P1'I",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "This field is a pointer to the file that the data element belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DICTIONARY NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "743.42A",
+      "required": false,
+      "helpText": "Enter the (sub) dictionary number where this field resides. ",
+      "isMultiple": true,
+      "subFileNumber": 743.42,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DIR(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used in the manual entry of a fall out.  Enter the DIR(0) code(s) used to validate the data for this data element. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DIR(?)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter help text or an up-arrow followed by MUMPS code. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DIR(?,#)",
+      "dataType": "SUBFILE",
+      "rawType": "743.422",
+      "required": false,
+      "helpText": "This field is used as the data for the DIR(\"?\",#) strings.  The first line of text goes into DIR(\"?\",1), the second into DIR(\"?\",2), and so on. ",
+      "isMultiple": true,
+      "subFileNumber": 743.422,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DIR OUTPUT TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Enter standard MUMPS code that takes the output of DIR and returns the variable Y in the external format. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DIR(??)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the help frame ^ MUMPS code to be used by DIR. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DIR(A)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the prompt the user will see for this data element when a fall out is being edited.  If nothing is entered in this field the text of the NAME field is used. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DIR(B)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the default value for this data element.  It will be used if:  1) No data was previously entered for this data element for a fall     out, and  2) No default value can be calculated for this data element. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DIR(T)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is the time out value (in seconds) that will be used when a fall out is being edited.  If nothing is entered in this field the value of DTIME will be used. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DIR(A,#)",
+      "dataType": "SUBFILE",
+      "rawType": "743.428",
+      "required": false,
+      "helpText": "This is a larger message shown to the user before the prompt for this data element is presented. ",
+      "isMultiple": true,
+      "subFileNumber": 743.428,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CODE TO CREATE DATA POINTERS",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "The MUMPS code in this field should take the variables QAMDFN (= pointer to the patient file) and QAMEVENT (= an event date/time) and return the QAMDTPT(1,2,3,...,n) array.  The QAMDTPT array will be used to capture a default value for this data element when the user is manually entering a fall out. ",
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "743.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

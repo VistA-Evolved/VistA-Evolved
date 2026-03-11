@@ -1,0 +1,964 @@
+{
+  "fileNumber": 691.6,
+  "fileName": "HOLTER",
+  "globalRoot": "691.6ID",
+  "globalReference": "^MCAR(691.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HOOK-UP DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field identifies the specific Holter procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the patient's identification number assigned by the medical facility.  In most cases it is the person's social security number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;T:TECHNICALLY UNSATISFACTORY;",
+      "helpText": "This field contains the gross evaluation of the results  of this procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYMPTOM",
+      "dataType": "POINTER",
+      "rawType": "691.66PA",
+      "required": false,
+      "helpText": "This field contains the patient's physical complaints or symptoms. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RISK FACTOR",
+      "dataType": "POINTER",
+      "rawType": "691.67PA",
+      "required": false,
+      "helpText": "This field contains the morbidity factors which this patient is most susceptible to in regards to this procedure. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient's last name, followed by a comma, followed by a space(optional), followed by the first name, followed by a space, followed by the middle initial. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HT IN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the patient's height in inches at the time of the procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WT LBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the weight of the  patient at the time of the procedure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUESTED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the medical provider who ordered this procedure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE REQUESTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the time/date the procedure was ordered. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "REASON FOR STUDY",
+      "dataType": "SET",
+      "rawType": "691.65SA",
+      "required": false,
+      "helpText": "This field contains the rationale for ordering this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.65,
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.8,
+      "fieldName": "OTHER INDICATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "691.68",
+      "required": false,
+      "helpText": "This field identifies field is used to define indications  not included in the Reason for Study set. ",
+      "isMultiple": true,
+      "subFileNumber": 691.68,
+      "fieldNumber_": 5.8
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the medical provider who approved the request for this procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE APPROVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to document the date of  procedure request approval. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "APPOINTMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date this procedure is/was scheduled. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HOOK-UP BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the medical provider who physically initiated this procedure. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RETURN DATE & TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the time/date which the patient  is scheduled for return.  This date is automatically  set to the appointment time/date plus 24 hours by the system. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SCANNED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field documents the medical provider who performed the Holter scan. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SCANNED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field documents the date the  scanning procedure was performed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the medical provider who reviewed this procedure. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field documents the date the review occurred. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This field defines either inpatient or outpatient status. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in house address of the patient. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "HEART MED",
+      "dataType": "POINTER",
+      "rawType": "691.61PA",
+      "required": false,
+      "helpText": "This field contains the multiple cardiac medicines  that the patient was taking at the time of this procedure. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "HOLTER RUN NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the facility generated procedure number. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RECORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the recorder used in this procedure. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "BATTERY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the battery used in this procedure. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MALFUNCTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field documents whether any procedure malfunction occurred. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MALFUNCTION TYPE",
+      "dataType": "SUBFILE",
+      "rawType": "691.62",
+      "required": false,
+      "helpText": "This free text field provides documentation or comments regarding the malfunction. ",
+      "isMultiple": true,
+      "subFileNumber": 691.62,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "TAPE QUALITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "G:GOOD;P:POOR;U:UNREADABLE;",
+      "helpText": "This contains the gross evaluation of the tape quality. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TOTAL HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field documents the length in hours of this procedure. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "READABLE HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field documents the length in hours of distortion free procedure readings. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "AVERAGE HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the average heart rate for the entire Holter session. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MAX HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies documents the greatest heart rate that was monitored during this procedure. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "TIME MAX HR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies field documents the exact time at which maximum heart rate occurred. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "MIN HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies documents the lowest heart rate that was monitored during this procedure. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "TIME MIN HR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This documents the time at which minimum heart rate occurred during this procedure. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "QRS TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular complexes generated (monitored) during this procedure. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "VPBS (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular ectopic beats monitored during this procedure. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "VPBS PERCENT (VENT)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies is computed from VPBS(VENT)/QRS TOTAL. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "AVE/HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the average rate of premature ventricular ectopy per hour.  ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "MAX/HR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the maximum number of ventricular ectopy monitored during any hour of this procedure. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "ISOLATED (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of isolated ventricular ectopy. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "BIGEMINY (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular ectopy occurring in a bigeminal pattern during this procedure. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "COUPLETS (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular ectopy occurring in a couplet pattern during this procedure. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "NUM OF RUNS 3 OR MORE (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of occurrences of ventricular ectopy in groups of 3 or more monitored during this procedure. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 40.5,
+      "fieldName": "RUNS 100 BPM OR MORE (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the total number of occurrences of ventricular tachycardia monitored during this procedure. ",
+      "fieldNumber_": 40.5
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "BEATS IN RUNS (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular ectopy occurring in groups of 3 or more monitored during this procedure. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "BEATS LONGEST RUN (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the number of ventricular complexes that occurred in the longest ventricular tachycardia event monitored during this procedure. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "BEATS FASTEST RUN (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the total number of ventricular ectopy occurring in the fastest run of ventricular ectopy monitored during this procedure. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "BPM IN FASTEST RUN (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the highest ventricular rate occurring in ectopic runs of 3 or more monitored during this procedure. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ATRIAL BEATS TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies is the sum of all P waves monitored during this procedure. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ECTOPICS (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies is the total number of atrial  complexes of non-SA node origin monitored during this procedure. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "ECTOPICS PERCENT (ATR)",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1X",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies is computed from ECTOPICS/ATRIAL BEATS TOTAL. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "AV/H (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the average rate of supraventricular ectopy per hour. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "MAX/H (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the maximum number of atrial ectopy monitored during any hour of this procedure. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "ISOLATED (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of single atrial ectopy monitored during this procedure. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 50.5,
+      "fieldName": "COUPLETS (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used to quantify the amount of back-to-back PVC's or PVC's occurring in pairs. ",
+      "fieldNumber_": 50.5
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "BLOCKED APC (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies is the total number of non-conducted atrial ectopy monitored during this procedure. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "NUM. RUNS SVT (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the total number of occurrences of groups of supraventricular tachycardia monitored during this procedure. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "BTS IN RUNS (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the average number of atrial ectopy occurring in groups of 3 or more monitored during this procedure. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "BTS LONGEST RUN (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the total number of supraventricular ectopy in the largest group monitored during this procedure. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "BTS FASTEST RUN (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the total number of atrial ectopy monitored  during the fastest run of atrial tachycardia. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "BPM FASTEST RUN (ATR)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies is the fastest rate of atrial tachycardia monitored during this procedure(beats/minute). ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "HEART BLOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ABSENT;FD:FIRST DEGREE BLOCK;MI:MOBITZ I SECOND DEGREE, FREQ, RARE;MII:MOBITZ II SECOND DEGREE, FREQ, RARE;TD:THIRD DEGREE HEART BLOCK, FREQ, RARE;",
+      "helpText": "This field contains the degree of heart block monitored during this procedure. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "PAUSES (SINUS)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates whether sinus pauses were monitored during this procedure. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "LONGEST SINUS PAUSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the length of the longest sinus pause monitored during this procedure in the range of .1 and 10 seconds. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PAUSES (VENT)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates the occurrence of ventricular pauses monitored during this procedure. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "LONGEST PAUSE (VENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the longest occurrence of ventricular pause monitored during this procedure in the range of .1 and 10 seconds. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "INTERPRETATION",
+      "dataType": "SUBFILE",
+      "rawType": "691.63",
+      "required": false,
+      "helpText": "This free text field contains the clinical  evaluation of the patient's cardiac condition based on the information collected by this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.63,
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.64",
+      "required": false,
+      "helpText": "This free text field provides an area for the medical provider to remark on the data collected in this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.64,
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ST LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies is the level of ST segment deviation from baseline monitored during this procedure in the range of 0 and 5  millimeters using 2 decimal digits. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "ST LEVEL DEP/ELEV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D-SY:DEPRESSION WITH SYMPTOMS;D:DEPRESSION WITHOUT SYMPTOMS;E-SY:ELEVATION WITH SYMPTOMS;E:ELEVATION WITHOUT SYMPTOMS;",
+      "helpText": "This field contains the evaluation of ST segment deviation monitored during this procedure. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "AUTOMATED INSTRUMENT DATA",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date that the ECG was successfully transferred into the DHCP system through the automated interface. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to identify the Holter System Manufacturer. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This 1-79 character field will be displayed on the Summary of Patient Procedures.  ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.69P",
+      "required": false,
+      "helpText": "This field identifies the ICD Diagnosis(es) for the procedure.  ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    }
+  ],
+  "fieldCount": 97,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "691.6", "field": .01, "type": "regular"},
+    {"name": "691.6", "field": .01, "type": "regular"},
+    {"name": "691.6", "field": 1, "type": "regular"},
+    {"name": "691.6", "field": 1, "type": "regular"},
+    {"name": "", "field": 14, "type": "regular"},
+    {"name": "691.6", "field": 900, "type": "regular"},
+    {"name": "691.6", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S ZZ=+$P(^(0),\"^\",2) W \"   \",$S($D(^MCAR(690,ZZ,0))#2:$P(^DPT(ZZ,0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\") K ZZ"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(691.6,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

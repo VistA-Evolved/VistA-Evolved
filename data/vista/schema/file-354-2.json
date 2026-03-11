@@ -1,0 +1,87 @@
+{
+  "fileNumber": 354.2,
+  "fileName": "EXEMPTION REASON",
+  "globalRoot": "354.2I",
+  "globalReference": "^IBE(354.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the exemption reason.  Do not edit this field.   This field can be printed as the short name of the exemption reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LONG NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a long description to explain this exemption reason.  This field will generally be displayed to users along with the Exemption Status to explain the status of an exemption. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COPAY INCOME EXEMPTION;",
+      "helpText": "This is the type of exemption this reason is for.  When creating an exemption of Pharmacy Copay based on Income, only the type COPAY INCOME EXEMPTION reason can be selected.   In a future release additional types of exemptions may be created. Do not modify this field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NON-EXEMPT;1:EXEMPT;",
+      "helpText": "This is the status of this type of record.  Whether it is an exempt or non-exempt reason.  This status will be automatically stored in the Billing Exemptions file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the internal code used to look up entries by the billing system.  This should not be altered except by the developing ISC. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "Enter whether or not this Billing Exemption Reason can currently be used or not. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "ACODE", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "354.2", "field": .01, "type": "regular"},
+    {"name": "354.2", "field": .04, "type": "regular"},
+    {"name": "354.2", "field": .05, "type": "regular"},
+    {"name": "354.2", "field": .05, "type": "regular"},
+    {"name": "354.2", "field": .1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.2,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.2,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "W \"   \",$P(^(0),U,5)"},
+    {"field": .1, "value": "W:$D(^(10)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(354.2,.1,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(10),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2261.9,
+  "fileName": "ASISTS SAFETY CHARACTERISTICS",
+  "globalRoot": "2261.9",
+  "globalReference": "^OOPS(2261.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file contains valid responses to the Engineered Safety Characteristics field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2261.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

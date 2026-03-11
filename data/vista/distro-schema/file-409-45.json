@@ -1,0 +1,39 @@
+{
+  "fileNumber": 409.45,
+  "fileName": "OUTPATIENT CLASSIFICATION STOP CODE EXCEPTION",
+  "globalRoot": "409.45",
+  "globalReference": "^SD(409.45,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STOP CODE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0I",
+      "length": 3,
+      "required": true,
+      "helpText": "Enter in this field the clinic stop code exempted from the outpatient classification questions. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "409.4575DA",
+      "required": false,
+      "helpText": "Enter in this field the effective date of the outpatient classification stop code exception. ",
+      "isMultiple": true,
+      "subFileNumber": 409.4575,
+      "fieldNumber_": 75
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

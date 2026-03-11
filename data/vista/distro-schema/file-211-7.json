@@ -1,0 +1,46 @@
+{
+  "fileNumber": 211.7,
+  "fileName": "NURS AMIS POSITION",
+  "globalRoot": "211.7I",
+  "globalReference": "^NURSF(211.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AMIS NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "A field number related to staffing positions contained on the  VAF 10-1106b (AMIS). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AMIS DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Name of specific staffing position contained on VAF 10-1106b (AMIS). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0I",
+      "length": 2,
+      "required": true,
+      "helpText": "This field is used by the Nursing Package to determine levels of security access to nursing data. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "211.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

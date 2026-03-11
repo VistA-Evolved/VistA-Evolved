@@ -1,0 +1,56 @@
+{
+  "fileNumber": 69,
+  "fileName": "LAB ORDER ENTRY",
+  "globalRoot": "69D",
+  "globalReference": "^LRO(69,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE ORDERED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date of order. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "CURRENT ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The count of the order number for the current year. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPECIMEN #",
+      "dataType": "POINTER",
+      "rawType": "69.01PA",
+      "required": false,
+      "helpText": "The sequential specimen number. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AN", "field": },
+    {"name": "AVFDOR", "field": },
+    {"name": "AZ", "field": },
+    {"name": "AZZ", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "69", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

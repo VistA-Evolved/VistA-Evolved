@@ -1,0 +1,180 @@
+{
+  "fileNumber": 51,
+  "fileName": "MEDICATION INSTRUCTION",
+  "globalRoot": "51I",
+  "globalReference": "^PS(51,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  For inpatient pharmacy use, you may enter one of the following standard times or you may use a non-standard schedule when appropriate.  For example,  Q36H  or Q17H. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to indicate the synonym if applicable. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  This is the full explanation of the instruction and will print on some reports. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "OTHER LANGUAGE EXPANSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the expansion in another language. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MED ROUTE",
+      "dataType": "POINTER",
+      "rawType": "P51.2'",
+      "required": false,
+      "pointerTo": 51.2,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Schedule that is associated with the Medication Instruction. Prior to the Pharmacy Ordering Enhancements project, this field was used to associate schedules with Outpatient prescriptions, by running each word of the Sig through the Medication Instruction file to look for an associated Schedule. The field is currently not being used by the Pharmacy software. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ADDITIONAL INSTRUCTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PLURAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to indicate if there's a plural name for this instruction. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEFAULT ADMIN TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to indicate a default admin time if applicable. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "WARD",
+      "dataType": "POINTER",
+      "rawType": "51.01P",
+      "required": false,
+      "helpText": "This sub file is used to indicate any wards associated with a medication instruction. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INTENDED USE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:OUTPATIENT ONLY;1:IN & OUTPATIENT;2:INPATIENT ONLY;",
+      "helpText": "  This controls the users' view of this file.  If the entry is marked as OUTPATIENT ONLY (0), then only the Outpatient package will use it as a valid abbreviation.  If marked INPATIENT ONLY (2), then only the Inpatient package will use the entry as a valid abbreviation.  The entry may be marked as Inpatient and Outpatient (1). ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "FREQUENCY (IN MINUTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of minutes between each time that the action should take place. This field will be used to calculate defaults for Quantity and Days Supply in the Outpatient Pharmacy Package. It will also be used to calculate defaults for the fields in the pharmacy dialog in Computerized Patient Record System (CPRS). ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DOSING CHECK FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30X",
+      "length": 30X,
+      "required": false,
+      "helpText": "The DOSING CHECK FREQUENCY field takes priority over all other fields/values when determining frequency.     PLEASE BE AWARE that the format of the frequency in this field must employ the format patterns of the vendor database.    The text examples within the following brackets [] provide clarification of the literal medication instruction translation for the possible formats. Enter the dosing check frequency in one of the following specified formats shown below ('#' represents a whole number, w",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "DRUG(S) FOR DOSING CHK FREQ",
+      "dataType": "POINTER",
+      "rawType": "51.321P",
+      "required": false,
+      "helpText": "  This multiple field allows dispense drugs from the DRUG (#50) file to be associated with the DOSING CHECK FREQUENCY (#32) field value within the MEDICATION INSTRUCTION (#51) file.                                     When a value is entered for \"DOSING CHECK FREQUENCY:\" and NO drug(s) is entered for \"Select DRUG(S) FOR DOSING CHK FREQ:\", the dosing check will use the value for \"DOSING CHECK FREQUENCY:\" to derive a frequency for all orders that have that medication instruction.                  ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OLD MED INSTRUCTION NAME(S)",
+      "dataType": "SUBFILE",
+      "rawType": "51.33",
+      "required": false,
+      "helpText": "  This multiple stores the old values of the medication instruction when  the NAME (#.01) field is edited.  Values can also be added to this field  directly. ",
+      "isMultiple": true,
+      "subFileNumber": 51.33,
+      "fieldNumber_": 33
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AI", "field": },
+    {"name": "AIN", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "51", "field": .01, "type": "regular"},
+    {"name": "51", "field": .01, "type": "regular"},
+    {"name": "51", "field": .01, "type": "regular"},
+    {"name": "51", "field": .5, "type": "regular"},
+    {"name": "51", "field": .5, "type": "regular"},
+    {"name": "51", "field": 1, "type": "regular"},
+    {"name": "51", "field": 9, "type": "regular"},
+    {"name": "51", "field": 30, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W ?12,$P(^(\"0\"),U,2)"}
+  ]
+}

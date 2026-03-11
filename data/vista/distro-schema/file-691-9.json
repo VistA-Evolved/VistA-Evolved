@@ -1,0 +1,334 @@
+{
+  "fileNumber": 691.9,
+  "fileName": "ATRIAL STUDY",
+  "globalRoot": "691.9D",
+  "globalReference": "^MCAR(691.9,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field identifies the specific Atrial Study. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "EP RECORD",
+      "dataType": "POINTER",
+      "rawType": "RP691.8'XIO",
+      "required": true,
+      "pointerTo": 691.8,
+      "helpText": "This field identifies the electrophysiologic record. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INTERVENTION",
+      "dataType": "POINTER",
+      "rawType": "P693.6'",
+      "required": false,
+      "pointerTo": 693.6,
+      "helpText": "This describes the intervention associated with this procedure. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREMEDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This documents the medication used prior to the start of this procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "EKG",
+      "dataType": "DATE",
+      "rawType": "691.93DA",
+      "required": false,
+      "helpText": "This field identifies the EKG's associated with this procedure. ",
+      "isMultiple": true,
+      "subFileNumber": 691.93,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ENTRY SITE",
+      "dataType": "POINTER",
+      "rawType": "*P697'X",
+      "required": false,
+      "pointerTo": 697,
+      "helpText": "This field describes the catheter entry site used during this procedure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECORDING SITE",
+      "dataType": "POINTER",
+      "rawType": "P693.5'",
+      "required": false,
+      "pointerTo": 693.5,
+      "helpText": "This field documents the anatomical location of the catheter. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PACING SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HRA:HIGH RIGHT ATRIUM;LRA:LOW RIGHT ATRIUM;MRA:MID RIGHT ATRIUM;CSD:CORONARY SINUS, DISTAL;CSP:CORONARY SINUS, PROXIMAL;ESO:ESOPHAGEAL PACING;",
+      "helpText": "This field identifies the anatomical location of the pacing mechanism. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ATRIAL THRESHOLD (mA)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the atrial threshold in milliamperes. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "P-A INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the P-A interval. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "A-H INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the A-H interval. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "H-V INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the H-V interval. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DRIVE CYCLE LENGTH",
+      "dataType": "SUBFILE",
+      "rawType": "691.911A",
+      "required": false,
+      "helpText": "This field identifies the drive cycle length. ",
+      "isMultiple": true,
+      "subFileNumber": 691.911,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MAX 1:1 AV CONDUCTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the maximum 1:1 AV conduction. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "WENCKE CYCLE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the Wencke cycle length. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "BLOCK SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PROXIMAL BLOCK;D:DISTAL;",
+      "helpText": "This field identifies the block site. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TACHYCARDIA WINDOW",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the tachycardia window. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "TACHYCARDIA CYCLE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the tachycardia cycle length. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TACHYCARDIA MORPHOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NARROW QRS;2:RBBB;3:LBBB;4:RBBB+LAFB;5:RBBB+LPFB;",
+      "helpText": "This field identifies the tachycardia morphology. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "PR INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the P-R interval. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 17.2,
+      "fieldName": "RP INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the RP interval. ",
+      "fieldNumber_": 17.2
+    },
+    {
+      "fieldNumber": 17.3,
+      "fieldName": "RP/PR RATIO",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the RP/PR ratio. ",
+      "fieldNumber_": 17.3
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ABERRATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RBBB:RBBB;LBBB:LBBB;R+L:RBBB+LBBB;",
+      "helpText": "This field identifies the aberration found in this study. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SACT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the SACT. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CSART",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the CSART. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "BYPASS TRACT",
+      "dataType": "SET",
+      "rawType": "691.921SA",
+      "required": false,
+      "helpText": "This field identifies the bypass tract. ",
+      "isMultiple": true,
+      "subFileNumber": 691.921,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "691.922DA",
+      "required": false,
+      "helpText": "This field identifies the discharge date. ",
+      "isMultiple": true,
+      "subFileNumber": 691.922,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.923",
+      "required": false,
+      "helpText": "This field identifies the comment field. ",
+      "isMultiple": true,
+      "subFileNumber": 691.923,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CARDIOLOGY STAFF",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the cardiology staff attending this procedure. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.9001P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "691.9", "field": .01, "type": "regular"},
+    {"name": "691.9", "field": .01, "type": "regular"},
+    {"name": "691.9", "field": .5, "type": "regular"},
+    {"name": "", "field": 24, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

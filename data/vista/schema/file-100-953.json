@@ -1,0 +1,37 @@
+{
+  "fileNumber": 100.953,
+  "fileName": "QUICK ORDER DIVISION GROUPS",
+  "globalRoot": "100.953",
+  "globalReference": "^OR(100.953,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "The names of groups in this file are locally defined for the purpose of  organizing divisions whose antimicrobial ordering results need to be  on the same monthly report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "100.9531P",
+      "required": false,
+      "helpText": "This field holds the names of the medical center divisions desired to be grouped together under a designated group name. It is used when printing the antimicrobial decision tree quick order audit monthly report. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.953", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

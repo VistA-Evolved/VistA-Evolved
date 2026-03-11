@@ -1,0 +1,178 @@
+{
+  "fileNumber": 136,
+  "fileName": "SURGERY PROCEDURE/DIAGNOSIS CODES",
+  "globalRoot": "136",
+  "globalReference": "^SRO(136,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SURGERY CASE",
+      "dataType": "POINTER",
+      "rawType": "RP130'X",
+      "required": true,
+      "pointerTo": 130,
+      "helpText": "This is the case in the SURGERY file associated with this file entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINCIPAL PROCEDURE CODE",
+      "dataType": "POINTER",
+      "rawType": "*P81'OX",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This is the Current Procedural Terminology (CPT) code corresponding with the principal procedure.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRIN POSTOP DIAGNOSIS CODE",
+      "dataType": "POINTER",
+      "rawType": "*P80'X",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the principal postoperative ICD diagnosis code. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SERVICE CONNECTED (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is a service connected  problem. This information may be passed to the VISIT file (#9000010)  for use by PCE. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AGENT ORANGE EXPOSURE (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is an agent orange  exposure problem. This information may be passed to the VISIT file (#9000010) for use by PCE. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "IONIZING RAD EXPOSURE (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is an ionizing  radiation exposure problem. This information may be passed to the VISIT file (#9000010) for use by PCE. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SOUTHWEST ASIA CONDITIONS (PR)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is related to service in  SW Asia. This information may be passed to the VISIT file (#9000010) for  use by PCE. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MILITARY SEXUAL TRAUMA (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is a military sexual  trauma problem. This information may be passed to the VISIT file (#9000010) for use by PCE. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HEAD AND/OR NECK CANCER (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is a head and/or neck  cancer problem. This information may be passed to the VISIT file (#9000010) for use by PCE. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COMBAT VET (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is a combat related problem. This information may be passed to the VISIT file (#9000010) for use by PCE. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PROJ 112/SHAD (PRIN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the principal diagnosis is a PROJ 112/SHAD  related problem. This information may be passed to the VISIT file  (#9000010) for use by PCE. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIN PROCEDURE CPT MODIFIERS",
+      "dataType": "POINTER",
+      "rawType": "136.01P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIN ASSOCIATED DIAGNOSES",
+      "dataType": "POINTER",
+      "rawType": "136.02PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OTHER PROCEDURE CODES",
+      "dataType": "POINTER",
+      "rawType": "136.03PA",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OTHER POSTOP DIAGNOSIS CODES",
+      "dataType": "POINTER",
+      "rawType": "136.04PA",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CODING COMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the coding record is complete for this case and  is ready to send to PCE. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CODING COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "136.011PA",
+      "required": false,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "136", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "fileNumber": 548270,
+  "fileName": "IRM PERSON",
+  "globalRoot": "548270",
+  "globalReference": "^AXA(548270,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OPERATIONS;2:APPLICATIONS;3:CLINICAL APPLICATION COORDINATOR;4:TELEPHONE;5:ADMINISTRATIVE;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUPERVISOR STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ON CALL ALT PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 261,
+      "fieldName": "INITIAL PATCH STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 261
+    },
+    {
+      "fieldNumber": 262,
+      "fieldName": "PATCH DISPLAY ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ASCENDING;-1:DESCENDING;",
+      "fieldNumber_": 262
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PROJECT SORT ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DESCENDING;1:ASCENDING;",
+      "helpText": "     When using the IRM PROJECT TRACKING software, this field controls whether projects are displayed in ascending or descending chronological order. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 702,
+      "fieldName": "PROJECT ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "     When using the IRM PROJECT TRACKING software, this field controls whether this employee should receive an alert when a new project is entered. ",
+      "fieldNumber_": 702
+    },
+    {
+      "fieldNumber": 703,
+      "fieldName": "SHOW ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "     When using the IRM PROJECT TRACKING software, this field controls whether ACTIVE projects will show in the default view. ",
+      "fieldNumber_": 703
+    },
+    {
+      "fieldNumber": 704,
+      "fieldName": "SHOW COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "     When using the IRM PROJECT TRACKING software, this field controls whether COMPLETED projects will be shown in the default view. ",
+      "fieldNumber_": 704
+    },
+    {
+      "fieldNumber": 705,
+      "fieldName": "SHOW CANCELLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "     When using the IRM PROJECT TRACKING software, this field controls whether CANCELLED projects will be shown in the default view. ",
+      "fieldNumber_": 705
+    },
+    {
+      "fieldNumber": 706,
+      "fieldName": "TOUR OF DUTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 706
+    },
+    {
+      "fieldNumber": 707,
+      "fieldName": "WORK MONDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 707
+    },
+    {
+      "fieldNumber": 708,
+      "fieldName": "WORK TUESDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 708
+    },
+    {
+      "fieldNumber": 709,
+      "fieldName": "WORK WEDNESDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 709
+    },
+    {
+      "fieldNumber": 710,
+      "fieldName": "WORK THURSDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 710
+    },
+    {
+      "fieldNumber": 711,
+      "fieldName": "WORK FRIDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 711
+    },
+    {
+      "fieldNumber": 712,
+      "fieldName": "WORK SATURDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 712
+    },
+    {
+      "fieldNumber": 713,
+      "fieldName": "WORK SUNDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 713
+    },
+    {
+      "fieldNumber": 714,
+      "fieldName": "TIME ADJUST METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DATE;1:ELAPSED MINUTES;",
+      "fieldNumber_": 714
+    },
+    {
+      "fieldNumber": 715,
+      "fieldName": "PRIMARY SORT FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PROJECT NUMBER;2:TITLE;3:SERVICE;4:STATUS;5:STAFF PERSON;",
+      "fieldNumber_": 715
+    },
+    {
+      "fieldNumber": 716,
+      "fieldName": "SHOW WHOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:MINE;1:ALL;",
+      "fieldNumber_": 716
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "ASUPV", "field": },
+    {"name": "B", "field": },
+    {"name": "548270", "field": .01, "type": "regular"},
+    {"name": "548270", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

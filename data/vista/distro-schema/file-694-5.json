@@ -1,0 +1,936 @@
+{
+  "fileNumber": 694.5,
+  "fileName": "CARDIAC SURGERY RISK ASSESSMENT",
+  "globalRoot": "694.5DI",
+  "globalReference": "^MCAR(694.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF PHYSICIAN'S ESTIMATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The Date of Completion of Physician's Estimate of Operative Mortality ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOSPITAL OF SURGERY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the Hospital where Surgery is to be performed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the patient's age, between 15 and 99. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HT (IN)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "HEIGHT OF THE PATIENT IN INCHES ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HT (CM)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Height of the patient in centimeters. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WT (LBS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the Patient in pounds. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WT (KG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the weight of the Patient in kilograms. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BODY SURFACE AREA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2I",
+      "length": 5,
+      "required": false,
+      "helpText": "Body surface area in square meters, computed from weight and height. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DIABETES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "A 'Yes' indicates Glucose Intolerance Requiring Treatment with Oral Hypoglycemic Agents or Insulin within 30 days Preceding Heart Surgery ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "COPD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "A 'Yes' indicates Chronic Obstructive Pulmonary Disease Resulting in Functional Disability, and/or Hospitalization, and/or Requiring Bronchodilator Therapy, and/or FEV1>75% of Predicted. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CIGARETTE SMOKING (PACK YEARS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "In Pack-Years, average number of packs per day times year smoked. (Do not include Pipe, Cigar Smoking, or Chewing Tobacco). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CURRENT SMOKER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates the patient is a current smoker. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ACTIVE ENDOCARDITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' if 2 or More positive blood cultures, or new vegetations, or acute valve dysfunction of infectious cause, or on antibiotic RX for  endocarditis within 2 weeks preceding surgery. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "I.V. NTG PREOPERATIVELY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates I.V. Nitroglycerine administered within 48 hours  preceding surgery. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ANGIOPLASTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates Percutaneous Transluminal Coronary Angioplasty performed or attempted within the 24 hours preceding surgery. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PRIOR HEART SURGERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates any form of Prior Heart Surgery performed through a Thoracotomy during separate, preceding hospitalization. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "HISTORY OF CHF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates symptoms of Pulmonary Congestion or Low Cardiac Output Requiring Therapy with Digitalis, and/or Diuretic, and/or an ACE Inhibitor ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "CURRENT DIGITALIS USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates use of any Digitalis preparation (Digoxin, Lanoxin, Digitoxin, etc.) within 2 weeks preceding surgery. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CURRENT DIURETIC USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates use of any Diuretic agent within 2 weeks preceding surgery. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PERIPHERAL VASCULAR DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates obstruction of Arteries to Legs resulting in Symptoms, and/or Surgery, and/or Angiographically demonstrated Stenosis=>50%. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CEREBRAL VASCULAR DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates history of TIA, nonembolic stroke, or angiographic evidence of cerebral arterial obstruction => 50%, or Ulcerated plaque. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PRIOR MYOCARDIAL INFARCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OCCURED WITHIN 24 HRS OF SURGERY;2:OCCURED BETWEEN 24 HRS AND 7 DAYS OF SURGERY;3:OCCURED BETWEEN 7 DAYS AND NOT MORE THAN 30 DAYS OF SURGERY;4:OCCURED GREATER THAN 30 DAYS OF SURGERY;",
+      "helpText": "Enter 1-4 if two of the following occurred: 1)Typical Pain, 2)Enzyme Rise and Fall, and 3) New Q-waves on the electrocardiogram. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.5,
+      "fieldName": "PRIOR MI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:None;2:< or equal to 7 days of surg.;3:> 7 days of surg.;",
+      "helpText": "Enter 1 did not occur:       2 occured within a week before surgery:       3 occured more than a week before surgery   if two of the following occurred: a) Typical Pain, b) Enzyme Rise and Fall, and c) New Q-waves on the electrocardiogram. ",
+      "fieldNumber_": 33.5
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "PREOPERATIVE IABP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates intra-aortic balloon pump (IABP) in use at some time during the 48 hours preceding surgery. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "UNSTABLE ANGINA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates angina occurring at rest or prolonged angina unresponsive to nitroglycerine. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "NYHA FUNCTIONAL CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO SYMPTOMS AT ANY LEVEL OF ACTIVITY;2:SYMPTOMS ON MORE THAN ORDINARY ACTIVITY;3:SYMPTOMS ON ACTIVITIES OF DAILY LIVING;4:SYMPTOMS AT REST;",
+      "helpText": " The following functional classes are defined :        I - heart disease with no symptoms limiting activity        II - slight limitation of physical activity by fatigue, dyspnea,            or angina        III - marked limitation of physical activity by fatigue, dyspnea,             or angina, but no symptoms at rest        IV - symptoms at rest and/or inability to carry out any physical           activity without symptoms of dyspnea, fatigue, or angina ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "HYPERTENSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates any history of hypertension requiring therapy, and/or 2 or more blood pressures > 140/95. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PULMONARY RALES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates rales heard at lung base(s) not clearing with cough and not due to pneumonic process within 2 weeks of surgery. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "RESTING ST-SEGMENT DEPRESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates horizontal or downsloping ST-segment depression on the resting electrocardiogram => 0.5 mm within 2 weeks of surgery. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "CARDIOMEGALY BY CHEST X-RAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates overall cardiac enlargement, and/or cardiothoracic ration => 0.5 on chest x-ray within the 30 days preceding surgery. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PLEURAL EFFUSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates pleural effusion on any chest x-ray in the month preceding surgery. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "SERUM CREATININE (MG/DL)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 20, 1 decimal digit. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "ROOM AIR PaO2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the partial pressure of oxygen (in mm Hg) of oxygen in arterial blood while breathing room air for => 15 minutes (20-105). ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "FEV1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the forced expired volume in 1 second (FEV1) expressed as % of predicted normal value measured within the 6 months preceding surgery (10-100). ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "LV SYSTOLIC PRESSURE (mm Hg)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the Left Ventricular Systolic pressure measured at the catheterization most closely preceding surgery.  Use the 1 most closely reflecting basal conditions (40-240). ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "AORTIC SYSTOLIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 300, 0 decimal digits. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "PA SYSTOLIC PRESSURE (MM HG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 150, 0 decimal digits. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "MEAN PA WEDGE PRESSURE (MM HG)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 99, 0 decimal digits. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "MEAN RA PRESSURE (mm Hg)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the average right atrial pressure measured at the catheterization most closely preceding surgery.  Use the 1 most closely reflecting basal conditions (0-40). ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LV END-DIASTOLIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 99, 0 decimal digits. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "LV EJECTION FRACTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the left ventricular ejection fraction measures by catheterization, radionuclide angiogram (MUGA), or echo within 6 months preceding surgery (.02 - .99). ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PROXIMAL ANTERIOR SEGMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL MOTION;2:MILD HYPOKINESIS;3:SEVERE HYPOKINESIS;4:AKINESIS;5:DYSKINESIS;6:FRANK ANEURYSM;",
+      "helpText": "This field identifies the score of the right anterior oblique contrast angiogram or apical 2 chamber 2D echo view:  1-6. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "MIDANTERIOR SEGMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL MOTION;2:MILD HYPOKINESIS;3:SEVERE HYPOKINESIS;4:AKINESIS;5:DYSKINESIS;6:FRANK ANEURYSM;",
+      "helpText": "This field identifies the score of the right anterior oblique contrast angiogram or apical 2 chamber 2D echo view:  1-6. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "APEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL MOTION;2:MILD HYPOKINESIS;3:SEVERE HYPOKINESIS;4:AKINESIS;5:DYSKINESIS;6:FRANK ANEURYSM;",
+      "helpText": "This field identifies the score of the right anterior oblique contrast angiogram  or apical 2 chamber 2D echo view:  1-6. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "MIDINFERIOR SEGMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL MOTION;2:MILD HYPOKINESIS;3:SEVERE HYPOKINESIS;4:AKINESIS;5:DYSKINESIS;6:FRANK ANEURYSM;",
+      "helpText": "This field identifies the score of the right anterior oblique contrast angiogram or apical 2 chamber 2D echo view:  1-6. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PROXIMAL INFERIOR SEGMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL MOTION;2:MILD HYPOKINESIS;3:SEVERE HYPOKINESIS;4:AKINESIS;5:DYSKINESIS;6:FRANK ANEURYSM;",
+      "helpText": "This field identifies the score of the right anterior oblique contrast angiogram or apical 2 chamber 2D echo view:  1-6. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "LEFT MAIN CORONARY STENOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This gives % reduction in luminal diameter of most severe stenosis (0-100) ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 66.5,
+      "fieldName": "NUMBER OF MAJOR CORONARIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This gives number of major coronary arteries (LAD), right with PDA. ",
+      "fieldNumber_": 66.5
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "LEFT ANT. DESC. STENOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This gives % reduction in luminal diameter of most severe stenosis (0-100) ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "LEFT ANT. DESC. DISTAL DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO SIGNIFICANT DISTAL DISEASE (< 20% DIAMETER REDUCTION);2:MODERATE DISTAL DISEASE (20-50 % DIAMETER REDUCTION);3:SEVERE DISTAL DISEASE (GREATER THAN OR EQUAL TO 50% DIAMETER REDUCTION);",
+      "helpText": "Score Distal Vessel Disease as 0, 2, or 3. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "RIGHT CORONARY STENOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Gives % reduction in luminal diameter of most severe stenosis (0-100). Include posterior descending regardless or origin. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "R. COR. DISTAL VES. DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO SIGNIFICANT DISTAL DISEASE (< 20% DIAMETER REDUCTION);2:MODERATE DISTAL DISEASE (20-50 % DIAMETER REDUCTION);3:SEVERE DISTAL DISEASE (GREATER THAN OR EQUAL TO 50% DIAMETER REDUCTION);",
+      "helpText": "This field identifies the Distal Vessel Disease as 0, 2, or 3. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "CIRCUMFLEX CORONARY STENOSIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Gives % reduction in luminal diameter of most severe stenosis; include all significant marginals (0-100). ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "CIRC. COR. DISTAL VES. DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO SIGNIFICANT DISTAL DISEASE (< 20% DIAMETER REDUCTION);2:MODERATE DISTAL DISEASE (20-50 % DIAMETER REDUCTION);3:SEVERE DISTAL DISEASE (GREATER THAN OR EQUAL TO 50% DIAMETER REDUCTION);",
+      "helpText": "Scores Distal Vessel Disease as 0, 2, or 3. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "GENERAL MEDICAL CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:GOOD;1:FAIR;2:POOR;",
+      "helpText": "Grades according to general nutrition, concomitant non-cardiac diseases, mental status, debility, etc. (0-2). ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "PRIORITY OF SURGERY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ELECTIVE;2:URGENT;3:EMERGENT;",
+      "helpText": "This elective indicates No Alteration in Surgical Schedule, Urgent indicates Surgery must be performed within 24-72 hours, Emergent indicates surgery must be performed with 24 hours of diagnosis. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "ESTIMATE OF MORTALITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 100. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 75.5,
+      "fieldName": "INTENDED OPERATIVE PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Coronary Artery Bypass Graft(s) and/or LV Aneurysectomy;2:Aortic Valve Replacement-with or without CABG;3:Mitral Valve Replacement-with or without CABG;4:Great Vessel Repair;5:Any Other Procedure;",
+      "helpText": "This allows the user to choose the intended operative procedure. ",
+      "fieldNumber_": 75.5
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "DATE/TIME SURGERY BEGAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date/time the surgery began.  If this time and date precedes time and date that physician's estimate or mortality was entered, no estimated risk will be calculated. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "BYPASS GRAFTS WITH VEIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the number of distal anastomoses constructed with vein grafts (0-9). ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "BYPASS GRAFTS WITH ARTERY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the number of distal anastomoses constructed with an internal mammary artery (0-4). ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "GREAT VESSEL REPAIR W BYPASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates primary procedure was repair of aorta or other great vessels requiring left heart bypass with or without aortic valve  replacement or CABG. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "CARDIAC TRANSPLANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates orthotopic or heterotopic transplant.  Heart-lung  transplant should be listed under 'Other'. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "MITRAL VALVE REPLACEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates mitral valve replacement was performed with or without additional procedure(s). ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "AORTIC VALVE REPLACEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates aortic valve replacement was performed with or without  additional procedure(s). ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "TRICUSPID VALVE REPLACEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates tricuspid valve replacement was performed with  cardiopulmonary bypass with or without additional procedure(s). ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "VALVE REPAIR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates repair of any cardiac valve was performed with  cardiopulmonary bypass with or without additional procedure(s). ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "LV ANEURYSECTOMY OR PLICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates resection or plication of left ventricular aneurysm with or without additional procedure(s). ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "OTHER PROCEDURE(S)",
+      "dataType": "POINTER",
+      "rawType": "694.586PA",
+      "required": false,
+      "helpText": "This allows the user to enter information about other procedures. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "TOTAL CROSS CLAMP TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This enters the total duration of aortic cross clamp time in minutes (0-600) ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "TOTAL CIRCULATORY ARREST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Should answer with 'Yes' or 'No'. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "INTEROPERATIVE USE OF BALLOON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates use of intra-aortic balloon regardless of whether placed pre- or intra-operatively. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "OPERATIVE DEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates death from any cause within 30 days of surgery in or out of the hospital, or after 30 days if a direct result of a surgical complication. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "DATE OF OPERATIVE DEATH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date of operative death. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "POSTOPERATIVE IABP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates an Intra-aortic balloon pump was used at any time during the  post operative hospitalization, regardless of whether it had been placed earlier. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "PERIOPERATIVE MYOCAR. INFARC.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates appearance of new or significantly widened Q-waves on postoperative electrocardiogram. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "ENDOCARDITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates new onset of endocarditis diagnosed within the 30 days following surgery. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "RENAL FAILURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates development of exacerbation of renal failure requiring initiation of dialysis during the postoperative hospitalization. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "LOW CARDIAC OUTPUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates cardiac index < 2.0 L/min/M2 for => 6 hours postoperative or evidence of poor peripheral perfusion (e.g. IABP or sustained use of positive inotropic agents). ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "MEDIASTINITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates any infection below sternum during postoperative  hospitalization or appearing within the 30 days following surgery. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "REOPERATION FOR BLEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' if any re-exploration of thorax for excessive bleeding during postoperative hospitalization. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "REPEAT CARDIOPULMONARY BYPASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates any surgical procedure requiring cardiopulmonary bypass during post-operative hospitalization or within 30 days of initial  operation. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ON VENTILATOR (48 HRS OR MORE)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates total duration of ventilator-assisted respiration during postoperative hospitalization was => 48 hours. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "COMA (24 HRS OR MORE)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates significantly impaired level of consciousness (exclude transient disorientation or psychosis) for => 48 hours during postoperative hospitalization. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "STROKE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "'Yes' indicates objective neurologic deficit lasting => 30 minutes with onset intra- or post-operatively. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "PTCA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:none recent;2:12 - 72 hr;3:<12 hr;",
+      "helpText": "This field identifies percutaneous transluminal coronary artery angioplasty. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "LV CONTRACTION SCORE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:I    > 0.54     Normal;2:II   0.45-0.54  Mild dysfunction;3:III  0.35-0.44  Moderate dysfunction;4:IV   0.25-0.34  Severe dysfunction;5:V    <0.25      Very severe dysfunction;0:?    unknown    No LV study;",
+      "helpText": "This field identifies the LV Contraction score. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "ELECTROPHYSIOLOGIC PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies the electrophysiologic procedure. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "PHYSICIAN ESTIMATE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the physician's estimate date. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "PHYSICIAN'S ESTIMATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies a number between 0 and 100, 2 decimal digits and is the estimate survival rate of the patient. ",
+      "fieldNumber_": 107
+    }
+  ],
+  "fieldCount": 91,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "694.5", "field": .01, "type": "regular"},
+    {"name": "694.5", "field": 1, "type": "regular"},
+    {"name": "694.5", "field": 4, "type": "regular"},
+    {"name": "694.5", "field": 5, "type": "regular"},
+    {"name": "694.5", "field": 6, "type": "regular"},
+    {"name": "694.5", "field": 7, "type": "regular"},
+    {"name": "694.5", "field": 107, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 76, "value": "W:$D(^(10)) \"   \",$E($P(^(10),U,1),4,5)_\"-\"_$E($P(^(10),U,1),6,7)_\"-\"_$E($P(^(10),U,1),2,3)"}
+  ]
+}

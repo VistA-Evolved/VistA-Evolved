@@ -1,0 +1,63 @@
+{
+  "fileNumber": 853,
+  "fileName": "VPS CONFIG HISTORY",
+  "globalRoot": "853",
+  "globalReference": "^VPS(853,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PARAMETER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "K:KIOSK GROUP;C:CLINIC;",
+      "helpText": "When Vetlink makes changes to Kiosk's parameters, the changes are made  for a Kiosk Group or a clinic. This field identifies this type (Kiosk  Group or Clinic). For Parameter Type \"K\", KIOSK GROUP field (#.03) will  contain the Kiosk Group otherwise CLINIC field (#.02) will contain the  Clinic. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the clinic for which the changes to the Kiosk Parameters were made. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "KIOSK GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the Kiosk Group for which the changes to the Kiosk Parameters were made. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PARAM INSTANCE",
+      "dataType": "DATE",
+      "rawType": "853.01D",
+      "required": false,
+      "helpText": "This multiple contains transactions sent to VistA by Vetlink. The transactions contain changes made to Kiosk parameters in Vetlink for a Kiosk Group or a Clinic. ",
+      "isMultiple": true,
+      "subFileNumber": 853.01,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "853", "field": .01, "type": "regular"},
+    {"name": "853", "field": .02, "type": "regular"},
+    {"name": "853", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

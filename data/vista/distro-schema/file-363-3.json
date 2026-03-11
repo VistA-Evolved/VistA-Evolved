@@ -1,0 +1,76 @@
+{
+  "fileNumber": 363.3,
+  "fileName": "BILLING RATE",
+  "globalRoot": "363.3",
+  "globalReference": "^IBE(363.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of this rate.  A rate defines a set of charges billable to a specific set of payers. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a short identifier for this rate.  This may be used on reports and displays. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DISTRIBUTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NATIONAL;2:LOCAL;",
+      "helpText": "This indicates how the rate and all corresponding data is distributed to the sites.  All National entries will be exported nationally and should not be modified locally. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BILLABLE ITEM",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:BEDSECTION;2:CPT;3:NDC #;4:DRG;9:MISCELLANEOUS;",
+      "helpText": "This is the type of item that will be found in the Charge Item list for all charges of this rate. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CHARGE METHOD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:COUNT;2:VA COST;3:QUANTITY;4:MILES;5:MINUTES;6:HOURS;",
+      "helpText": "Indicates how the charge will be calculated for the Billable Items found on the bills. COUNT:    charge per Item found on the bill VA COST:  calculated value of the VA cost for an item QUANTITY: price per dispense unit (NDC # charges only) MILES:    charge per mile MINUTES:  charge with base plus incremental charge per 15 minutes HOURS:    charge with base plus incremental charge per hour ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BASE CHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Certain types of charges require both an incremental charge per unit  and base charge applied once per item.  Enter yes if this Billing  Rate allows a base charge plus the unit charge for an item. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "363.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

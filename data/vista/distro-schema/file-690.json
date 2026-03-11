@@ -1,0 +1,204 @@
+{
+  "fileNumber": 690,
+  "fileName": "MEDICAL PATIENT",
+  "globalRoot": "690P",
+  "globalReference": "^MCAR(690,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field identifies the medical patient's name followed by his/her first name followed by a space and his/her middle initial and a period. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIVER BIOPSY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies if a liver biopsy has been done. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ALLERGIES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies if the patient has allergies. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HISTORY OF BLEEDING DISORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies if the patient has a history of bleeding disorder. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VALVULAR HEART DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies if the patient has a valvular heart disease. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "GLAUCOMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field identifies if the patient has glaucoma. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HISTORY COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a free text field.  Enter any pertinent history comments. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACING INDICATION",
+      "dataType": "POINTER",
+      "rawType": "690.07PA",
+      "required": false,
+      "helpText": "This field defines the medical rationale for electronic cardiac regulation. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RISK FACTOR (PACE)",
+      "dataType": "POINTER",
+      "rawType": "690.08PA",
+      "required": false,
+      "helpText": "This field indicates the conditions for which electronic cardiac  regulation is a hazard for this patient. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PSC STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EAST PSC FOLLOW-UP;2:ARTIFICIAL;3:DEAD;4:REGISTRY ONLY;5:EXPLANT TEST ONLY;6:EXPLANTED,NO REPLACEMENT;7:WEST PSC FOLLOW-UP;8:LOST TO FOLLOW-UP;",
+      "helpText": "This field indicates the Pacemaker Surveillance Center Status. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INDICATION FOR FILE CLOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEATH;2:LOST TO FOLLOW-UP;3:PACEMAKER REMOVAL;4:DISCHARGE FOR ANOTHER REASON;",
+      "helpText": "This field identifies the reason for the file to be closed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CAUSE OF DEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RELATED TO PACEMAKER;2:RELATED TO ELECTRODE;3:CARDIAC-UNRELATED TO PACEMAKER;4:NON-CARDIAC-UNRELATED TO PACEMAKER;5:CAUSE UNKNOWN;",
+      "helpText": "This field identifies the cause of death. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SUDDENNESS OF DEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUDDEN-WITHIN ONE HOUR OF SYMPTOMS;2:NON-SUDDEN;3:UNKNOWN;",
+      "helpText": "This field identifies the reason for the sudden death. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE OF FILE CLOSURE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date when the file is closed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DISCHARGE (PACEMAKER) REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the rationale for the release of the patient. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TRANSMITTED PACEMAKER REPORTS",
+      "dataType": "DATE",
+      "rawType": "690.015DA",
+      "required": false,
+      "helpText": "This field contains the date of each report. ",
+      "isMultiple": true,
+      "subFileNumber": 690.015,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE OF INITIAL IMPLANT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date of implant. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TELEPHONE FOLLOWUP PROVIDED BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:VA EASTERN PACEMAKER SURVEILLANCE CENTER;W:VA WESTERN PACEMAKER SURVEILLANCE CENTER;L:LOCAL VAMC;",
+      "helpText": "This field identifies the location for a follow-up visit. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "REASON FOR FILE CLOSURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies an extended explanation for the file to be closed. ",
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "690", "field": .01, "type": "regular"},
+    {"name": "690", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 100.8,
+  "fileName": "ORDER CHECKS",
+  "globalRoot": "100.8",
+  "globalReference": "^ORD(100.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the order check. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "100.82",
+      "required": false,
+      "helpText": "This field describes the order check. ",
+      "isMultiple": true,
+      "subFileNumber": 100.82,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

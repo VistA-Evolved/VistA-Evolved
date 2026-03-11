@@ -1,0 +1,49 @@
+{
+  "fileNumber": 2006.65,
+  "fileName": "MAG RAD PRIOR EXAMS LOGIC",
+  "globalRoot": "2006.65",
+  "globalReference": "^MAG(2006.65,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CURRENT CASE CPT GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The CPT \"GROUP\" corresponds to the Current Case's CPT code, by which logic is defined for finding other exams (by their CPT codes) that may be of interest when viewing an exam that is part of the defined CPT GROUP.  The CPT GROUP is either: A 5-digit CPT code; the first 4 digits; or, the first 3 digits of the CPT code.  For example, possible CPT GROUP values for the CPT code 71020 are: 71020; 7102; and 710.  CPT GROUP thus allows rules to be defined for specific CPT codes, or whole groups of cod",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CURRENT CPT DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text description for the current CPT group. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRIOR CASE MATCHING CPT GROUP",
+      "dataType": "SUBFILE",
+      "rawType": "2006.66AI",
+      "required": false,
+      "helpText": "The CPT GROUP concept, explained above in the CURRENT CASE CPT GROUP field, applies here.  These are the codes which, if associated with Prior Cases for a patient, will cause the system to retrieve the images and/or information automatically for the intended purposes (e.g., Pre-Fetch or Auto-Display). ",
+      "isMultiple": true,
+      "subFileNumber": 2006.66,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.65", "field": .01, "type": "regular"},
+    {"name": "2006.65", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

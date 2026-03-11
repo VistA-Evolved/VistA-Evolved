@@ -1,0 +1,356 @@
+{
+  "fileNumber": 58.6,
+  "fileName": "PADE INBOUND TRANSACTIONS",
+  "globalRoot": "58.6",
+  "globalReference": "^PS(58.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,0",
+      "length": 13,
+      "required": false,
+      "helpText": "This field is intended to allow for multiple transaction filed at the  exact same Date and Time, with identical Internal Entry Numbers equal to  the same Date and Time. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the Date and Time the transaction occurred at the PADE device. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPENSING DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the dispensive device or cabinet where the actions described by the transaction were performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "INBOUND PADE SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This fields contains a pointer to the PADE INVENTORY SYSTEM (#58.601) file. This represents the Pharmacy Automation Dispensing Equipment (PADE) system from which this transaction originated. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "DRAWER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the PADE drawer from which, or into which, the drug item in the trasaction was added or removed. A PADE drawer is a storage location for drugs within a PADE dispensing device or cabinet. A drawer is the primary storage location within a cabinet and may be subdivided into pockets and/or sub-drawers. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "RP50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "This field contains the drug in the PADE device acted upon by the transaction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the quantity of the drug acted upon in the transaction. The quantity is a physical item count of drug items in the  units in which the drug items are stocked and dispensed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF TRANSACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:LOAD;U:UNLOAD;R:RETURN;V:VEND;W:WASTE;C:COUNT;F:REFILL;B:EMPTY;E:EXPIRED;D:DESTOCK;A:DISCREPANCY;N:CANCEL;",
+      "helpText": "This field contains the type of the transaction. LOAD and RETURN transactions indicate item(s) were added to a PADE device, UNLOAD and DISPENSE transactions indicate item(s) were removed from a PADE device. A COUNT transaction neither adds nor removes items from the PADE device. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DRUG FORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the dispense form of the transaction's drug item. This should indicate exactly what was added or removed from the PADE device. For instance: TABLET, BOTTLE, INHALER. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the user physically adding or removing the drug item(s) from or to the PADE device. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "USER EXTERNAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the external ID of the user performing the  addition or removal of the drug item from the PADE dispensing  device, as received from the PADE system via the PADE HL7 interface. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "USER TEXT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the text name of the user performing the transaction,  as received from the vendor via the PADE HL7 interface. This should be  the same as the user's name in VistA, however, this is not enforced by  any automated process. Discrepancies in the user's name between VistA and the vendor database should be reviewed and corrected. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "WITNESS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the user formally witnessing the adding or removing of drug item(s) to or from the PADE. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "WITNESS EXTERNAL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the external PADE system identifier for the user  acting as a witness to the addition or removal of the drug item from the  PADE dispensing device, as received from the PADE system via the PADE HL7  interface. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "WITNESS TEXT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the text name of the person witnessing the transaction, as received from the vendor via the PADE HL7  interface. This should be the same as the person's name in VistA; however, as this is not enforced by any automated process,  discrepancies in the witnesses' name between VistA and the vendor database should be reviewed and corrected. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field conains the medical division associated with the PADE device from which the transaction originated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "HOSPITAL LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the ward or clinic location associated with the PADE  device from which the transaction originated. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "POCKET",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the storage pocket in the PADE transaction, from which or to which the transaction's drug item was  removed or added. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SUBDRAWER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the PADE device's subdrawer, from which  the transaction's drug item was removed, or to which the transaction's  drug was added. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EXPECTED BEGIN BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains a transaction's expected balance of a drug within a  specific PADE drawer/pocket, prior to any actions described by the  transaction. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ACTUAL BEGIN BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains a physical count of drug items in the specific PADE storage location sent in the transaction, prior to any action described by the transaction. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the patient in the transaction for whom a drug item was removed or returned to the PADE. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "PATIENT TEXT LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's last name received in field 5, component 1 of the  PID segment received from the PADE vendor when a patient is involved in  activity at the PADE dispensing device. ",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 14.2,
+      "fieldName": "PATIENT TEXT FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's first name received in field 5, component 2 of the  PID segment received from the PADE vendor when a patient is involved in  activity at the PADE dispensing device. ",
+      "fieldNumber_": 14.2
+    },
+    {
+      "fieldNumber": 14.3,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient's identifier received in field 3, component 1 of the  PID segment received from the PADE vendor when a patient is involved in  activity at the PADE dispensing device. ",
+      "fieldNumber_": 14.3
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PHARMACY ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the pharmacy order from the transaction for which the  drug item was removed or returned to the PADE device. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "POCKET BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the sum of the Actual Begin Balance received in the  transaction and the Quantity received in the transaction and represents  the new balance in the PADE device after the event described by the  transaction was completed. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "DEVICE BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the total balance of a drug item within a PADE  device as reported by the PADE device in the transaction. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DRUG NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the drug in the transaction, as it is defined in the PADE device. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ALTERNATE DRUG ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an alternate ID of the drug in the PADE device acted transaction. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DRUG LOT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the lot number of the drug in the transaction. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TRANSACTION COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains comments entered by the user performing the action  described by the transaction. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING;C:COMPLETED;I:INCOMPLETE;",
+      "helpText": "This field indicates the status of the transaction's update to the  PADE INVENTORY file (#58.601). The status is set to P (Pending) at the time the transaction is filed, then changed to I (In Progress) when  procesing of the transaction begins, and C (Complete) when the  transaction has been successfully processed to update the PADE INVENTORY  file. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PAR QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "PAR Quantity represents the minimum quantity of the item that should be  stocked in the PADE device; an inventory count below this level indicates  the item should be restocked/refilled.  ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "MISSING PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient received from PADE via HL7 is not on file in the local  VistA system, this field is populated with the unknown patient's ID. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MISSING PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient received from PADE via HL7 is not on file in the local  VistA system, this field is populated with the unknown patient's name. ",
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

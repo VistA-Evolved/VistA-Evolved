@@ -1,0 +1,75 @@
+{
+  "fileNumber": 359,
+  "fileName": "CONVERTED FORMS",
+  "globalRoot": "359",
+  "globalReference": "^IBD(359,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONVERTED FORM",
+      "dataType": "POINTER",
+      "rawType": "RP357'",
+      "required": true,
+      "pointerTo": 357,
+      "helpText": "The new form that was created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ORIGINAL FORM",
+      "dataType": "POINTER",
+      "rawType": "P357'",
+      "required": false,
+      "pointerTo": 357,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAME OF ORIGINAL FORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE OF CONVERSION",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the converted form was created. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUBSTITUTION OCCURRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "WARNINGS",
+      "dataType": "SUBFILE",
+      "rawType": "359.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 359.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AORIG", "field": },
+    {"name": "B", "field": },
+    {"name": "359", "field": .01, "type": "regular"},
+    {"name": "359", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "fileNumber": 220.5,
+  "fileName": "DENTAL PROVIDER",
+  "globalRoot": "220.5IP",
+  "globalReference": "^DENT(220.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NEW DENTAL PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Dental Provider Number.  The first two characters are the  zero-filled DENTAL PROVIDER TYPE, the second two characters are the  zero-filled DENTAL PROVIDER SPECIALTY and the last 4 characters are  system generated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DENTAL PROVIDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "220.5", "field": .01, "type": "regular"},
+    {"name": "220.5", "field": .04, "type": "regular"},
+    {"name": "220.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"},
+    {"field": 1, "value": "W ?30,$P(^(0),U,2)"}
+  ]
+}

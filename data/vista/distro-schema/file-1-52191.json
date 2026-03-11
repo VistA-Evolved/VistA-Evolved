@@ -1,0 +1,27 @@
+{
+  "fileNumber": 1.52191,
+  "fileName": "SQLI_ERROR_TEXT",
+  "globalRoot": "1.52191",
+  "globalReference": "^DMSQ(\"ET\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR_TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Description of error ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.52191", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

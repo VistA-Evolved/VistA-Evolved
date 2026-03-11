@@ -1,0 +1,45 @@
+{
+  "fileNumber": 2006.83,
+  "fileName": "DICOM WORKSTATION",
+  "globalRoot": "2006.83",
+  "globalReference": "^MAG(2006.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of a DICOM Gateway computer. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date/time value that represents the date and time of the most recent time that this record was updated.   This value is (re)defined when the daily 'scrutinizer' program completes its report for the workstation in question. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERSION AND BUILD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that represents the build number for the software distribution of the DICOM Gateway software.   Typically, such a value will look like \"2.5;DICOM42\", indicating that the software is at version 2.5, build number 42. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.83", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "fileNumber": 9002313.58,
+  "fileName": "BPS STATISTICS",
+  "globalRoot": "9002313.58",
+  "globalReference": "^BPSECX(\"S\",",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the Statistical group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Date/Time Cleared",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that the claim cleared the queue. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "Submissions - Total",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of submissions to ECME. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "Submissions - Unique",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of unique claim submissions to ECME. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "Submissions - Repeat",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of repeat claim submissions to ECME. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "Result - Count",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims for which a response was received. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "Result - Unbillable",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims that were unbillable. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "Result - Rejected",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims that were rejected by the payer. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "Result - Paid",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims that were paid by the payer. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "Result - Duplicate",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims for which a duplicate result was received. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "Result - Captured",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims that was captured by the payer but has not been  adjudicated by the payer yet. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "Result - Accepted Reversal",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field holds the number of reversals that are accepted ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "Result - Rejected Reversal",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field holds the number of rejected reversals ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "Result - Dropped to Paper",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the number of claims that were dropped to paper ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "RESULT - ELIGIBILITY ACCEPTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the number of eligibility verification requests that  were accepted by the third-party payer. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "RESULT - ELIGIBILITY REJECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the number of eligibility verification requests that  were rejected by the third-party payer. ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 219,
+      "fieldName": "Result - Other",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Total number of claims that did not fall into the other categories. ",
+      "fieldNumber_": 219
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.58", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

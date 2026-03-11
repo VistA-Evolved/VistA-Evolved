@@ -1,0 +1,47 @@
+{
+  "fileNumber": 340.501,
+  "fileName": "AR RPP AUDIT LOG COMMENT",
+  "globalRoot": "340.501",
+  "globalReference": "^RCRP(340.501,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ3",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the code for this audit log comment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This describes the audit log comment in more detail. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field will be marked inactive if a code is determined to be no longer in use. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "340.501", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

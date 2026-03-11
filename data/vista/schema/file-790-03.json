@@ -1,0 +1,41 @@
+{
+  "fileNumber": 790.03,
+  "fileName": "WV PAP REGIMEN",
+  "globalRoot": "790.03",
+  "globalReference": "^WV(790.03,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAP REGIMEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores information used to describe a PAP regimen, such as a procedure and its frequency or a follow-up action. The regimen appears in abbreviated form so that it can display on several screens where there is limited space. The following abbreviations may apply to the PAP regimen string:        Symbol    Meaning    ------    -------         P       PAP      C       Colposcopy      wk      Week      m       Month      y       Year      q       Every      pp      Postpartum      x2     ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SELECTION#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to order the regimens within displays or selection lists. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "U", "field": },
+    {"name": "790.03", "field": .01, "type": "regular"},
+    {"name": "790.03", "field": .01, "type": "regular"},
+    {"name": "790.03", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

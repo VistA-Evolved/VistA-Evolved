@@ -1,0 +1,38 @@
+{
+  "fileNumber": 123.7,
+  "fileName": "IFC REASON FOR REQUEST MAPPING",
+  "globalRoot": "123.7",
+  "globalReference": "^GMR(123.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ60",
+      "length": 60,
+      "required": true,
+      "helpText": "The NAME field in this file is used by the IFC order processing code to  identify those orderable items whose reasons for request are subject to  re-sequencing before they are filed in the REQUEST/CONSULTATION file  (#123).  The value in the NAME field must match the value passed by  Cerner in OBR-19. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA FIELD NAME",
+      "dataType": "SUBFILE",
+      "rawType": "123.71",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 123.71,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "123.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

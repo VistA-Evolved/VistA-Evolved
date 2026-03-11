@@ -1,0 +1,46 @@
+{
+  "fileNumber": 702.001,
+  "fileName": "CP_TRANSACTION_TIU_HISTORY",
+  "globalRoot": "702.001",
+  "globalReference": "^MDD(702.001,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STUDY_ID",
+      "dataType": "POINTER",
+      "rawType": "RP702'",
+      "required": true,
+      "pointerTo": 702,
+      "helpText": "This field contains a pointer to the CP Transaction file (#702). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TIU_NOTE_ID",
+      "dataType": "POINTER",
+      "rawType": "RP8925'",
+      "required": true,
+      "pointerTo": 8925,
+      "helpText": "This field contains a pointer to the TIU Document file (#8925) representing the note that contains the interpretation of this CP Transaction.  (Reference IA #3376) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE_ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time when the TIU note was assigned to this transaction. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

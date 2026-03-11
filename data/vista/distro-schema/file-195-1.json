@@ -1,0 +1,314 @@
+{
+  "fileNumber": 195.1,
+  "fileName": "RECORD TRACKING APPLICATION",
+  "globalRoot": "195.1",
+  "globalReference": "^DIC(195.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This identifies the application or functional work group which is using record tracking. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This links the application with an entry in the service/section file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BORROWER BARCODE FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P194.4'",
+      "required": false,
+      "pointerTo": 194.4,
+      "helpText": "This defines which label format will be used to print Borrower labels for this application. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FILE ROOM STAFF KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This identifies the Security key which is necessary to charge-out and check-in records to a file room. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FILE ROOM SUPERVISOR KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This defines the security key which is required to cancel, edit requests, define or find missing records. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ENTITY DISPLAY HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text used when displaying the record data. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DEFAULT RECORD CREATION TYPE",
+      "dataType": "POINTER",
+      "rawType": "*P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "This identifies the type of record which is normally created by the system for this application. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MISSING RECORD MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This identifies the mail group which is notified when missing records are accessed or identified. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CLINIC REQUESTS MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This identifies the mail group which receives notification when requests for records, xrays are generated at night by the clinic request initialization. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CANCELATION BULLETIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOTHING;1:BULLETIN;2:DEVICE;3:BOTH;",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CANCELATION MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "TERMINATED BORROWERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CANCEL REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "OK TO RETIRE RECORDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ENTITY SELECT PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the prompt which is used when the system prompts for a record. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "BORROWER SELECT PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This identifies the prompt used when the system asks for a Borrower. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "EXCLUDE INPATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DEFAULT SCHEDULED ADMISSIONS",
+      "dataType": "POINTER",
+      "rawType": "*P195.9'",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This defines the borrower/file areas which will be used in  generating a pull list from the scheduled admissions file. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CREATE RECORDS-CLINIC REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If set to yes a clinic request for a record will generate a record if none exists.  If set to no, a request, pull list and record will not be created if there is no record at the time of the request. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "DEFAULT RETIREMENT BORROWER",
+      "dataType": "POINTER",
+      "rawType": "*P195.9'",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This field contains the default Borrower to charge/transfer records  when they are retired. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DEFAULT PERPETUAL RECORD",
+      "dataType": "POINTER",
+      "rawType": "*P195.2'",
+      "required": false,
+      "pointerTo": 195.2,
+      "helpText": "This contains the record type that should be created when records are retired. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "195.11A",
+      "required": false,
+      "helpText": "This allows the application to be selected by different names. ",
+      "isMultiple": true,
+      "subFileNumber": 195.11,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "PROFILE/REPORT HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the text which will be displayed on various reports for this application. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "195.12PA",
+      "required": false,
+      "helpText": "This defines the institutions using this application. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "BORROWER FILE PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "195.16P",
+      "required": false,
+      "helpText": "This defines that the system should ask for phone/room, associated borrower and show charged records when a borrower is accessed. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "MAS RECORDS NEEDED BY CLINICS",
+      "dataType": "POINTER",
+      "rawType": "195.14PA",
+      "required": false,
+      "helpText": "This defines the type of record, volumes needed, and application when a clinic schedules a visit. ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "*EXCLUDE COLLATERAL REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "YES means do not request records for scheduled clinics if the patient type is collateral. ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "*EXCLUDE C&P REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "YES means do not request records for a scheduled clinic if the patient type is C&P. ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "EXCLUDE APPOINTMENT TYPES",
+      "dataType": "POINTER",
+      "rawType": "195.1165P",
+      "required": false,
+      "helpText": "Appointment types listed in this field are excluded from pull lists generated for clinics ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "RAD FOLDERS NEEDED BY CLINICS",
+      "dataType": "POINTER",
+      "rawType": "195.15PA",
+      "required": false,
+      "helpText": "This defines the folder, volume and application that should be  requested when a scheduled clinic requires x-rays. ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "ENTITY FILE",
+      "dataType": "POINTER",
+      "rawType": "195.17P",
+      "required": false,
+      "helpText": "This defines by application the file which the record file points to. ",
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "S", "field": },
+    {"name": "195.1", "field": .01, "type": "regular"},
+    {"name": "195.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

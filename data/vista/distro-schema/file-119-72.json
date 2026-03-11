@@ -1,0 +1,99 @@
+{
+  "fileNumber": 119.72,
+  "fileName": "SERVICE POINT",
+  "globalRoot": "119.72",
+  "globalReference": "^FH(119.72,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Service Point. It is either a tray assembly line or a cafeteria. It provides food to a group of wards. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a 6-character short-name to be used on various production reports. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "C:CAFETERIA;T:TRAY LINE;",
+      "helpText": "This indicates whether the Service Point is a Tray assembly point or a Cafeteria. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRODUCTION FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP119.71'",
+      "required": true,
+      "pointerTo": 119.71,
+      "helpText": "This field indicates the Production Facility responsible for preparing the food served by this Service Point. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADDITIONAL MEALS",
+      "dataType": "POINTER",
+      "rawType": "119.721P",
+      "required": false,
+      "helpText": "This multiple represents the number of additional meals, over and above the forecast or inpatient census, which are to be produced for each meal for each day of the week. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRODUCTION DIET PERCENTAGE",
+      "dataType": "POINTER",
+      "rawType": "119.7211P",
+      "required": false,
+      "helpText": "This multiple contains the percentage of the total census represented by each production diet for each day of the week. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "CENSUS DATE",
+      "dataType": "DATE",
+      "rawType": "119.722DA",
+      "required": false,
+      "helpText": "This field contains the date for which various census forecast data is available. ",
+      "isMultiple": true,
+      "subFileNumber": 119.722,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "119.72", "field": .01, "type": "regular"},
+    {"name": "119.72", "field": .5, "type": "regular"},
+    {"name": "119.72", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

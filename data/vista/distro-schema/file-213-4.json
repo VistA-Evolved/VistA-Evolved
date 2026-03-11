@@ -1,0 +1,107 @@
+{
+  "fileNumber": 213.4,
+  "fileName": "NURS AMIS 1106 MANHOURS",
+  "globalRoot": "213.4",
+  "globalReference": "^NURSA(213.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/SHIFT/WARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is composed of the DATE of the data concatenated to the SHIFT (D=Day, E=Evening, N=Night) of the data concatenated with the WARD associated with the data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTUAL HOURS ON DUTY RN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Actual number of RN manhours worked for this ward on this shift on this day. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTUAL HOURS ON DUTY LPN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Indicates the number of LPN manhours worked for this ward on this shift on this day. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTUAL HOURS ON DUTY NA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Indicates the number of NA manhours worked for this ward on this shift on this day. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACUITY",
+      "dataType": "POINTER",
+      "rawType": "213.41PA",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user entering the manhour entries. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "CDJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the date of this entry. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SHIFT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the shift associated with this entry. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "WARD",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field indicates the location associated with this entry. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "213.4", "field": .01, "type": "regular"},
+    {"name": "213.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

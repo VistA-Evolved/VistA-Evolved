@@ -1,0 +1,37 @@
+{
+  "fileNumber": 67.11,
+  "fileName": "LR LAB LIM FILE",
+  "globalRoot": "67.11",
+  "globalReference": "^LAB(67.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This field is used by the Laboratory Information Manager to assign recipients of location abbreviation messages. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIM",
+      "dataType": "POINTER",
+      "rawType": "67.111P",
+      "required": false,
+      "helpText": "This field points to the name in NEW PERSON file (#200) of the person assigned as the Laboratory Information Manager. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "67.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

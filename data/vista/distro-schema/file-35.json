@@ -1,0 +1,58 @@
+{
+  "fileNumber": 35,
+  "fileName": "OTHER FEDERAL AGENCY",
+  "globalRoot": "35",
+  "globalReference": "^DIC(35,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of a federal agency other than the Department of Veterans Affairs where a patient seen in the VA may be employed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this federal agency.  On outputs and other displays where the entire name of the federal agency may not fit, this abbreviation may appear instead. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ELIGIBILITY CODE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter in this field the internal entry number of the MAS ELIGIBILITY CODE under which a patient receiving care from this federal agency may be entitled. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ENTRY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:COUNTRY;A:OTHER AGENCY;",
+      "helpText": "Enter the type of federal agency.  If the entry is a country, enter C.  If the entry is another federal agency, enter A. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "35", "field": .01, "type": "regular"},
+    {"name": "35", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "fileNumber": 409.66,
+  "fileName": "APPOINTMENT TRANSACTION TYPE",
+  "globalRoot": "409.66",
+  "globalReference": "^SD(409.66,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This internal number identifies the transaction type.  Some application code uses this number during processing. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the transaction type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:APPOINTMENT;S:STOP CODE;D:DISPOSITION;",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.66", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

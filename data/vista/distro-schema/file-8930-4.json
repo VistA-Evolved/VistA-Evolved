@@ -1,0 +1,55 @@
+{
+  "fileNumber": 8930.4,
+  "fileName": "USR SEARCH CATEGORIES",
+  "globalRoot": "8930.4",
+  "globalReference": "^USR(8930.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEARCH CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name the search category by which the list of business rules will be generated. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SELECTION FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "Name the file from which the value of the search category will be selected. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CROSS-REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identify the cross-reference in file 8930.1 to be used in building the list for business rules which apply to the search category in question. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field must be valid MUMPS code which sets DIC(\"S\") for the selection of the search value (e.g., S DIC(\"S\")=\"I $O(^USR(8930.1,\"\"B\"\",+Y,0))\" would require that any DOCUMENT to be selected must have at least one rule that pertains to it). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8930.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

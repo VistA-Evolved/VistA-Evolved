@@ -1,0 +1,114 @@
+{
+  "fileNumber": 355.32,
+  "fileName": "PLAN COVERAGE LIMITATIONS",
+  "globalRoot": "355.32IP",
+  "globalReference": "^IBA(355.32,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP355.3'X",
+      "required": true,
+      "pointerTo": 355.3,
+      "helpText": "The plan that this limitation will apply to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COVERAGE CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "RP355.31'",
+      "required": true,
+      "pointerTo": 355.31,
+      "helpText": "The type of coverage that the insurance company plan has reimbursement limits on. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date on which the type of coverage for this limitation becomes limited for insurance billing purposes. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COVERAGE STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NOT COVERED;1:COVERED;2:CONDITIONAL COVERAGE;",
+      "helpText": "This is the status of the coverage associated with this record on the effective date associated with this record. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this limitation was entered.  It is triggered by the creation of this entry. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who created this entry.  It is automatically triggered by the creation of this entry. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this limitation was last edited.  It is automatically updated any time the limitation is edited using one of the options provided. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who last edited this limitation.  It is automatically updated any time a person edits this limitation using one of the options provided. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LIMITATION COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "355.321A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 355.321,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "APCD", "field": },
+    {"name": "APCD1", "field": },
+    {"name": "APCD2", "field": },
+    {"name": "B", "field": },
+    {"name": "355.32", "field": .01, "type": "regular"},
+    {"name": "355.32", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "355.32", "field": .02, "type": "regular"},
+    {"name": "355.32", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(355.31,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(355.31,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

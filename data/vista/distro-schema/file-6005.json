@@ -1,0 +1,99 @@
+{
+  "fileNumber": 6005,
+  "fileName": "VBECS MATCHING TABLE",
+  "globalRoot": "6005",
+  "globalReference": "^VBEC(6005,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE-IEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field identifies the file and record number (ien) of the data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME ATTRIBUTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The intention is to keep track of any edits to the name attribute.  If  the name attribute changes through edits on the VistA side, the mapping  process will need to be performed. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IDENTIFIER ATTRIBUTE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The intention is to keep track of any edits to the identifier attribute.  If the identifier attribute changes on the VistA side, the mapping process will need to be performed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ANTIGEN/ANTIBODY IDENTFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "AB:Antibody;AN:Antigen;",
+      "helpText": "This field is used to identify the entity to a greater granularity.  When mapping Function Field (#61.3) data only, it will need to be known whether the entity is an antigen or an antibody. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STANDARD VBECS DATA",
+      "dataType": "POINTER",
+      "rawType": "P6007'",
+      "required": false,
+      "pointerTo": 6007,
+      "helpText": "This field will store the pointer to the STANDARD VBECS DATA (#6007) file. From this, we can derive the globally unique identifier (GUID) of the  standard data value. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CHECKSUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "Indicates the total checksum values of the name attribute and identifier  attribute (optional). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Indicates the date/time the record was added, edited, or deleted. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AB1", "field": },
+    {"name": "AB2", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "N", "field": },
+    {"name": "VA", "field": },
+    {"name": "6005", "field": .01, "type": "regular"},
+    {"name": "6005", "field": .01, "type": "regular"},
+    {"name": "6005", "field": .01, "type": "regular"},
+    {"name": "6005", "field": .02, "type": "regular"},
+    {"name": "6005", "field": .02, "type": "regular"},
+    {"name": "6005", "field": .03, "type": "regular"},
+    {"name": "6005", "field": .05, "type": "regular"},
+    {"name": "6005", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""},
+    {"field": .03, "value": "W \"\""}
+  ]
+}

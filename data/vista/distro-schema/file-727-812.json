@@ -1,0 +1,630 @@
+{
+  "fileNumber": 727.812,
+  "fileName": "MENTAL HEALTH EXTRACT",
+  "globalRoot": "727.812",
+  "globalReference": "^ECX(727.812,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this extract entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "YEAR MONTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A six character string representing the year and the month for which this extract was performed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXTRACT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP727'",
+      "required": true,
+      "pointerTo": 727,
+      "helpText": "The corresponding entry in the DSS EXTRACT LOG file (#727) for this  extract. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Identifies the facility associated with the extract data by its  station number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT NO. - DFN",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Internal entry number of the PATIENT file (#2) record identifying the patient associated with the Mental Health information. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The patient's social security number.   Any patient with an SSN beginning with \"00000\" is considered a \"test patient\" and will not be included in the extract.   ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The first four characters of the patient's last name. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IN OUT PATIENT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates whether the patient was an inpatient or an outpatient on the date in the DAY field (#8) for this extract record. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Date in format YYYYMMDD; date with which the Mental Health extract data is associated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the admission occurred, if the patient referenced in the PATIENT NO. - DFN field is an inpatient on the date shown in the DAY field. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DISCHARGE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This 8-character string represents the date on which the discharge occurred, if the patient referenced in the PATIENT NO. - DFN field was an inpatient on the date shown in the DAY field, but has been discharged before the run date of the extract. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DSS IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The DSS Identifier is defined as the stop code pair associated with an outpatient encounter.  The Mental Health data currently being extracted cannot be associated with a specific patient encounter.  Therefore, a  new unique DSS Identifier will be used for every Mental Health extract record. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRIMARY CARE TEAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Primary Care Team assigned to this patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PRIMARY CARE PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Primary Care Provider assigned to this patient. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PC PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Primary Care Provider as assigned by through the PCMM application. The VA Code is always of the form \"V\"_six numeric digits; exactly 7  characters in length.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The person who administered or ordered the Mental Health test/interview associated with this extract record. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Provider. The VA Code is always of the form \"V\"_six numeric digits; exactly 7 characters in length.  ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TEST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The acronym that represents the name of test, interview, or diagnostic data contained in this extract record. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "TEST IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The internal entry number in the MH INSTRUMENT file (#601) for the test data, if appropriate. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SCALE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "SCALE NUMBER is an identifying element for data extracted from PSYCH INSTRUMENT PATIENT file (#601.2). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SCALE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "SCALE NAME is an identifying element for data extracted from PSYCH INSTRUMENT PATIENT file (#601.2) or from the ADDICTION SEVERITY INDEX file (#604). ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "TEST SCORE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TEST SCORE contains the score for a Mental Health test, which is expressed as a single, overall score, and which is not expressed as one or more scale scores. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SCALE SCORE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "SCALE SCORE contains the score of one scale of a Mental Health  test, which is expressed as one or more scale scores. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient identified in the PATIENT NO.  DFN field (#4) was an inpatient on the date contained the DAY field (#8), then ATTENDING PHYSICIAN will refer to the provider who was the ward-attending physician for the patient. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "WARD PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient identified in the PATIENT NO.  DFN field (#4) was an inpatient on the date contained the DAY field (#8), then WARD PROVIDER will refer to the provider who was the primary ward provider for the patient. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MASTER PATIENT INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A national VA system identifier which uniquely identifies a patient. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ASSOCIATE PC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a reference to the NEW PERSON file (#200) for the provider who is the patients Associate Provider for Primary Care as assigned with the PCMM application.  The IEN to file #200 is prefixed with the  character 2. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Currently NULL. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ASSOC. PC PROV. PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Associate Primary Care Provider as assigned by through the PCMM appilcation.  The VA Code is always of the form \"V\"_six numeric digits;   exactly 7 characters in length.  ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "CLASS FOR ASI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FULL;2:LITE;3:FOLLOW-UP;4:ASI-MV;",
+      "helpText": "Classification for ASI data only. 1 = FULL 2 = LITE 3 = FOLLOW-UP 4 = ASI-MV ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SPECIAL FOR ASI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PATIENT TERMINATED;2:PATIENT REFUSED;3:PATIENT UNABLE TO RESPOND;N:INTERVIEW COMPLETED;",
+      "helpText": "Signifies completion status for ASI data only. 1 = PATIENT TERMINATED  2 = PATIENT REFUSED  3 = PATIENT UNABLE TO RESPOND N = INTERVIEW COMPLETED ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ASI ENCOUNTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the patient had the ASI encounter. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PURPLE HEART INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates whether or not a patient is a Purple Heart recipient. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DOM,PRRTP AND SAARTP INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DOM, PRRTP and SAARTP Indicator indicates if the patient is admitted to either a DOM, PRRTP or SAARTP at the time hospital service is provided. Domiciliary (DOM) Psychiatric Residential Rehabilitation Treatment Program (PRRTP) Substance Abuse Residential Rehabiltation Treatment Program (SARRTP) ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "ENROLLMENT CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Derived from the Patient Enrollment File #27.11 ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ENROLLMENT STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Derived from the Patient Enrollment File #27.11 ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PLACEHOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The period of service that best classifies the patient based on eligibility code. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "OBSERVATION PATIENT INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is derived from the inpatient/outpatient status, treating specialty, and DSS Identifier or feeder key values in the record. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "ENCOUNTER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is derived from the inpatient/outpatient status, SSN, admit/visit date, treating specialty, observation patient indicator, and DSS Identifier or feeder key values in the record. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "AGENT ORANGE LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Agent Orange exposure location. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PATIENT BIRTH DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the patient's birth date in YYYYMMDD format. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "PRODUCTION DIVISION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 3-6 character division where the work took place.  This data would correspond to the entries in the Institution (#4) file. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "DSS PRODUCT DEPARTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Department Number designated to  the Mental care product. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "HEAD & NECK CANCER INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Identifies whether treatment was for head and/or neck cancer. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "ETHNICITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's PTF Ethnicity code. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "RACE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The patient's PTF Race code(s). ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DSS IP #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "The nationally defined DSS Intermediate Product Number designated to the  patient care product. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ENROLLMENT PRIORITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ENROLLMENT PRIORITY field contains the enrollment piority group and the  enrollment priority subgroup from the Patient Enrollment File #27.11. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "USER ENROLLEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "User enrollee is determined by checking the Patient Enrollment file  27.11, when a user has a current or future fiscal year in the VistA User  Enrollee Status field set value to 'U' and Null if no date or a past  year's value is contained.  ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The medical center division associated with the extract data. For DSS purposes, this must correspond to the labor pool that generated the  workload. The division identifier is taken from the DSS DIVISION  IDENTIFIER file (#727.3). ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "PATIENT TYPE refers to the various types of patient which might be seen  at a VA facility. It is determined by the TYPE field of the PATIENT  File #2 which points to the TYPE OF PATIENT entries in File #391. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "CV STATUS ELIGIBILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "CV STATUS ELIGIBILITY is determined by the use of  API $$CVEDT^DGCV (DFN.  DATE) that checks the Combat Vet End Date field .5295 from the  Patient File #2 to determine CV Status. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "CV ELIGIBILITY END DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "CV ELIGIBILITY END DATE is determined by the use of  API $$CVEDT^DGCV  (DFN. DATE) that checks the Combat Vet End Date field .5295 from the  Patient File #2 to determine CV Status. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "ENCOUNTER CV",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ENCOUNTER CV is determined by the use of  API $$CVEDT^DGCV (DFN. DATE)  that checks the Combat Vet End Date field .5295 from the Patient File #  2 to determine CV Status. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "NATIONAL PATIENT RECORD FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NATIONAL PATIENT RECORD FLAG is located in the PRF National Flag File #  26.15.  This file contains a list of the Category 1 (National) Patient  Record Flags that can be assigned to a patient. Category I flags are  established at a National level.   NATIONAL PATIENT RECORD FLAG is  retrieved via an API  $$GETACT^DGPFAPI(DFN, TARGET_ROOT . Field value is  \"Y  if the Category I flag is present and active, otherwise it is  NULL. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "ATTENDING PHYSICIAN PC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Attending Physician. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "WARD PROVIDER PERSON CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The field will hold the VA Code associated with the active Person Class of the Attending Physician. The VA Code is always of the form \"V\"_six numeric digits; exactly 7. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "AGENT ORANGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;U:UNKNOWN;",
+      "helpText": "Data is Y if this patient was exposed to agent orange, N if not, or U if unknown. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "ASSOCIATE PC PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the associate primary care  provider. This field has a length of fifteen characters. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ATTENDING PHYSICIAN NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the attending physician.  This  field has a length of fifteen characters.  ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "PRIMARY CARE PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the primary care provider.   This field has a length of fifteen characters.  ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the individuals providing  health care services. This field has a length of fifteen characters.  ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "WARD PROVIDER NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A standard unique life-long identifier of the ward provider.  This field  has a length of fifteen characters. ",
+      "fieldNumber_": 66
+    }
+  ],
+  "fieldCount": 67,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "727.812", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

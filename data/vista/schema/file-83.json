@@ -1,0 +1,74 @@
+{
+  "fileNumber": 83,
+  "fileName": "DRG MDC CATEGORY",
+  "globalRoot": "83",
+  "globalReference": "^ICDD(83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MDC-CAT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "MDC-Category unique identifier.  This is the combination of the standard  MDC ID and an assigned Category ID.  Format: 'MDC '_MDC ID_'-CAT '_CAT ID. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MDC ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The MDC ID is the standard MDC identifier.  The MDC is the highest level  grouping of related DRGs.  MDC's 00 - 25 are CMS defined.  MDC 00 are the  Pre-MDC Categories and MDC 99 are the Procedure Unrelated to Principal  Diagnosis Categories. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CATEGORY ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The Category ID is an assigned number that provides a unique identifier  for the Category within an MDC.  The Category is the second level grouping  of related DRGs.  The Category ID combined with the MDC ID creates a  unique identifier for the MDC-Category subgroup.   The top level of an MDC is assigned a Category of 0.  The Diagnosis  assigned to this Category together define the MDC group and may be used  by one or more (or no) other Category within the MDC.  There are no DRGs  assigned to th",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MDC TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNLIMITED;1:EXCLUSIVE;2:GENERAL;",
+      "helpText": "The MDC Type defines the relationship between MDCs when DRGs across  multiple MDCs are satisfied.  Given that an MDC/DRG Case is satisfied  but is rejected because of extraneous Operating Room Procedures then  the MDC Type indicates which other MDC/DRGs are allowed.  The value  applies to all DRGs within an MDC.  Overrides the DRG Hierarchy.     UNLIMITED MDCs (00, 99) are allowed with all other MDCs.   EXCLUSIVE MDCs (24, 25) are those when a DRG Case is satisfied then only  DRGs from that MDC ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MDC NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The full text MDC name. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CATEGORY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The full text Category name. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "83", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(83,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

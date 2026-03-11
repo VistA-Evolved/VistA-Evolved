@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2006.5715,
+  "fileName": "CURRENT IMAGE",
+  "globalRoot": "2006.5715",
+  "globalReference": "^MAGD(2006.5715,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MACHINE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a 1-character string. This value identifies the DICOM Gateway for which the current image is tracked in this record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string. This string conforms to the DICOM definition of a UID (unique object identifier). This value identifies the image that is currently being processed for the DICOM Gateway that is registered in this record. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5715", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

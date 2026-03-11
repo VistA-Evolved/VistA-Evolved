@@ -1,0 +1,118 @@
+{
+  "fileNumber": 990.8,
+  "fileName": "CIRN REPOSITORY SITE PARAMETER",
+  "globalRoot": "990.8",
+  "globalReference": "^RGSITE(\"COR\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0XI",
+      "length": 1,
+      "required": true,
+      "helpText": "This is a dummy field whose value should always be 1. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "PACKAGE MANAGER MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the mail group to whom package-critical status messages  should be sent. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECENT RESULTS INDEX RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Whenever new data are stored in the COR, an entry is made in the Recent  Results Index that shows the date when the entry was stored.  This index  can be used when browsing the COR to restrict the search to data stored  within the recent past.  This parameter permits the site to dictate how  many days worth of data are to be tracked by this index.  The nightly  purge will remove any entries older than the threshold set by this  parameter.  Typical values will range from 3-5 days, but should be  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCESS LOG RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This parameter dictates how many days worth of CIRN ACCESS LOG data are  to be maintained.  Entries older than this threshold are removed by the  nightly purge.  The value of this parameter is entirely up to the  discretion of the local site.  Obviously, larger values will incur more  storage requirements. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRANSMITTED RESULT RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Number of days to retain verified and transmitted data from the CIRN  data entry holding area.  Data older than this threshold are deleted by  the nightly purge. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EXCEPTION LOG RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "Number of days to retain entries in the CIRN HL7 EXCEPTION LOG file.   See a description of this file for information about its purpose.   Entries older than this threshold are removed by the nightly purge. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SUPPRESS EXCEPTION ALERTS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When set to yes, this parameter suppresses the generation of all alerts  or email messages when an exception is logged.  This setting overrides  that specified for individual exception types.  It is advisable to set  this parameter to yes during historical load operations to avoid  transmitting large numbers of alerts. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MINIMAL EXCEPTION LOGGING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If yes, entries are created in the CIRN HL7 EXCEPTION file only if an  exception is logged.  Otherwise, an entry is created each time an event  or message is processed.  The latter permits better tracking of  background activity, but at the expense of greater storage consumption. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STANDARD TIMEZONE",
+      "dataType": "POINTER",
+      "rawType": "P4.4'",
+      "required": false,
+      "pointerTo": 4.4,
+      "helpText": "This is a pointer to the MAILMAN TIME ZONE file (#4.4) and indicates the standard time zone for this site. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DST TIMEZONE",
+      "dataType": "POINTER",
+      "rawType": "P4.4'",
+      "required": false,
+      "pointerTo": 4.4,
+      "helpText": "Timezone active during daylight savings time. If this locale does not honor daylight savings time, you may either leave this entry blank or enter same timezone as standard time. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "990.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

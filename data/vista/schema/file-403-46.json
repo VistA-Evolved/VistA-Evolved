@@ -1,0 +1,68 @@
+{
+  "fileNumber": 403.46,
+  "fileName": "STANDARD POSITION",
+  "globalRoot": "403.46",
+  "globalReference": "^SD(403.46,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STANDARD POSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Standard role the provider performs as part of this team.   These standard positions are defined by Central Office. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER CLASSIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P8930'",
+      "required": false,
+      "pointerTo": 8930,
+      "helpText": "Name of the user class that may fill this standard position. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ALLOWED TO BE PRIMARY CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:CAN BE PRIMARY AS PRECEPTED;3:NP CAN BE PRIMARY;",
+      "helpText": "Can this position provide Primary Care to the patient This field is used to determine inconsistencies between the Team Position Role and the ability of that role to act a Primary Care Provider. This fields value is distributed by patch SD*5.3*297 and should not be changed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "403.46001",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 403.46001,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PERSON CLASS",
+      "dataType": "POINTER",
+      "rawType": "403.462PA",
+      "required": false,
+      "helpText": "This multiple defines which Person Class(es) are allowed in this position. If none is indicated all Person Classes are permitted. This field is used to insure consistency between Practitioner and Team Position Standard Role. This field is populated with patch SD*5.3*297 and should not be edited. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "USR", "field": },
+    {"name": "403.46", "field": .01, "type": "regular"},
+    {"name": "403.46", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "fileNumber": 2262,
+  "fileName": "ASISTS SITE PARAMETER",
+  "globalRoot": "2262",
+  "globalReference": "^OOPS(2262,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the site that this entry is being created for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OWCP AGENCY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a four digit (or four digits plus two letter) code used by the  employing agency.  The proper code may be obtained from your personnel or compensation office, or by contacting the Office of Worker Compensation(OWCP). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OWCP DISTRICT CODE",
+      "dataType": "POINTER",
+      "rawType": "P2262.1'",
+      "required": false,
+      "pointerTo": 2262.1,
+      "helpText": "This is the Office of Worker Compensation (OWCP) District Office. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "2262.03P",
+      "required": false,
+      "helpText": "This is a pointer to the station sub-file (2262.03) ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2262", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

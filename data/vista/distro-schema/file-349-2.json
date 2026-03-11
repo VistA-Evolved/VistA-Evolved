@@ -1,0 +1,319 @@
+{
+  "fileNumber": 349.2,
+  "fileName": "AR CCPC STATEMENTS",
+  "globalRoot": "349.2",
+  "globalReference": "^RCPS(349.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP340'X",
+      "required": true,
+      "pointerTo": 340,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the SSN for the patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the patient name as it appears on the statement. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AMOUNT DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total amount due for that statement period. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PREV BAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "helpText": "This is the amount of the previous balance on the previous statement. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TOTAL CHARGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total amount of charges for this statement. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TOTAL CREDITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total amount of charges for this patient statement. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "NEW BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total credits to the patient account for this statement period. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PROCESS#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the process number for that patient statement. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PROCESS END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the process that sets the entries ended. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PS SEGMENT",
+      "dataType": "POINTER",
+      "rawType": "P349'",
+      "required": false,
+      "pointerTo": 349,
+      "helpText": "This is the PS SEGMENT that contains this PH segment. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "INVALID STATEMENT ERROR",
+      "dataType": "POINTER",
+      "rawType": "P349.7'",
+      "required": false,
+      "pointerTo": 349.7,
+      "helpText": "This is the error code for the record that was not accepted by CCPC. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PRINCIPAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the principal amount recorded as the balance of the last statement. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "INTEREST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the interest amount recorded as the balance of the last statement. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ADMIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the administrative charges total as recorded with the last statement. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "MARSHAL FEES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the administrative fees total as recorded with the last statement. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "COURT COSTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total of marshal fees recorded as of the last statement. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "CCPC FILE BUILT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT BUILT;1:BUILT;",
+      "helpText": "This field will store a marker that the CCPC PATIENT STATEMENTS file (349.2) is a complete file for that statement day. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first address line for the patient. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second address line for the patient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ADDRESS 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address line 3 for the patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city name for the patient address. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the state name abbreviation for the patient address. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code for the patient address. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "FOREIGN COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the country code field for the patient address. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PD LINE",
+      "dataType": "SUBFILE",
+      "rawType": "349.21A",
+      "required": false,
+      "helpText": "This is the PD segment level of the individual patient statement. ",
+      "isMultiple": true,
+      "subFileNumber": 349.21,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SPECIAL NOTICES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the special notice information that prints on the patient statement. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PARAGRAPH CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the paragraph codes indicating what paragraphs will print on the patient statement. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ERROR CODE(S)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are the error codes sent back by CCPC when a statement cannot be printed. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CCPC PRINTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;0:N;",
+      "helpText": "This field indicates whether the patient statement for this patient printed at the CCPC or not. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "LARGE PRINT NEEDED ON STMT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will identify 1st party debtors requiring statements with large print.  This is the same field in file 340 field 111. ",
+      "fieldNumber_": 62
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AKEY1", "field": },
+    {"name": "AKEY2", "field": },
+    {"name": "349.2", "field": .02, "type": "regular"},
+    {"name": "349.2", "field": .03, "type": "regular"},
+    {"name": "349.2", "field": 51, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

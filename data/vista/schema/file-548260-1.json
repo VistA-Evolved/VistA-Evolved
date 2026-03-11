@@ -1,0 +1,35 @@
+{
+  "fileNumber": 548260.1,
+  "fileName": "PATCH STATUS",
+  "globalRoot": "548260.1",
+  "globalReference": "^AXA(548260.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "548260.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

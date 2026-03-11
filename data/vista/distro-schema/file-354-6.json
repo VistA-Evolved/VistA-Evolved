@@ -1,0 +1,115 @@
+{
+  "fileNumber": 354.6,
+  "fileName": "IB FORM LETTER",
+  "globalRoot": "354.6",
+  "globalReference": "^IBE(354.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the form letter.  Normally the names will begin with the IB namespace.  The entries in this file will normally be sent out with each release in the approved format from VACO. Local editing of the Header and of the signature line in the main body is permitted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LONG NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the full descriptive name of this letter. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INITIAL EXEMPTION;2:INCOME TEST REMINDER;",
+      "helpText": "This field tells what type of application the letter is for.  Currently  The only two letter type are defined:    1 - Currently exempt veterans  2 - Veterans whose exemption is based on income, and about to expire. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STARTING ADDRESS LINE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the line number that the patient address should start on.  The default if this is unanswered is line 15.     To account for slight differences in printers and automated letter folders the line that the address starts on is now a parameter.  Set this to the correct value for the printer and folder combination for your facility. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LETTER DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This new field, introduced with patch IB*2*34, is used to indicate which printer should be used to print the income test reminder letters.  Letters will not print if there is no value in this field.  This field may be populated through the option Edit Copay Exemption Letter. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "JOB SCHEDULE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store mornings (days) for which printed income test reminder letters may be picked up.  This is a coded field which uses the following codes:      0       SUNDAY    1       MONDAY    2       TUESDAY    3       WEDNESDAY    4       THURSDAY    5       FRIDAY    6       SATURDAY   You should use the option Edit Copay Exemption Letter to enter values into this field.  If there is no value in this field, your income test reminder letters will not print. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REPRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This new field was introduced with patch IB*2*34.  If the site wishes to reprint all of the letters which were printed on a certain date (due to printer jams, etc.) the date on which those letters were printed should be entered into this field.  The next time that the background job prints letters, it will also print letters for  exemptions which were marked as having had a reminder letter printed on this date.  The background job will then delete the value in this field.   This field may be ent",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXCLUDE DOM PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This new field was introduced with patch IB*2*34.  If the site does not want reminder letters to be printed for domiciliary patients, this field should be set to Yes.   This field may be entered through the option Edit Copay Exemption Letter. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIN BODY",
+      "dataType": "SUBFILE",
+      "rawType": "354.61",
+      "required": false,
+      "helpText": "This field contains the main body of the letter that will be printed after the salutation and includes the signature line. ",
+      "isMultiple": true,
+      "subFileNumber": 354.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HEADER",
+      "dataType": "SUBFILE",
+      "rawType": "354.62",
+      "required": false,
+      "helpText": "The first six lines in this field will be centered at the top of plain paper to form the header of the letter.  The data in this field should be edited to the correct station name and address of your facility. ",
+      "isMultiple": true,
+      "subFileNumber": 354.62,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "354.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

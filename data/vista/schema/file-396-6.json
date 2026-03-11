@@ -1,0 +1,89 @@
+{
+  "fileNumber": 396.6,
+  "fileName": "AMIE EXAM",
+  "globalRoot": "396.6",
+  "globalReference": "^DVB(396.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the 2507 Exam that a user may add to a 2507 Exam Request. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AMIE WORKSHEET #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the worksheet number.  It is used not only in AMIE but in the Physician's Guide as well. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "The status of the 2507 Exam.  May be 'I' for Inacactive or 'A' for Active. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BODY SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP396.7'",
+      "required": true,
+      "pointerTo": 396.7,
+      "helpText": "Indicates which Body System the exam pertains to.                    ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the name of the exam as it will appear on reports. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REPORTING PROGRAM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the name of the worksheet routine that is printed when a user prints worksheets after logging or adding exams to 2507 requests. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*RELATED DISABILITIES",
+      "dataType": "POINTER",
+      "rawType": "396.61P",
+      "required": false,
+      "helpText": "These are the specfic disabilities that belong to this AMIE worksheet ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "APE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "396.6", "field": .01, "type": "regular"},
+    {"name": "396.6", "field": .01, "type": "regular"},
+    {"name": "396.6", "field": .07, "type": "regular"},
+    {"name": "396.6", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .07, "value": "W \"   \",$P(^(0),U,7)"}
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "fileNumber": 361,
+  "fileName": "BILL STATUS MESSAGE",
+  "globalRoot": "361",
+  "globalReference": "^IBM(361,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP399'",
+      "required": true,
+      "pointerTo": 399,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date or date/time the status message was received for a bill. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE SEVERITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REJECTION;I:INFORMATION/WARNING;",
+      "helpText": "This is the level of severity that this message will convey to the biller. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MESSAGE GENERATION SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NON-PAYER;1:PAYER;",
+      "helpText": "This field determines whether or not the message was generated as a result of the payer (1) or before it got to the payer (0). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P364.1'",
+      "required": false,
+      "pointerTo": 364.1,
+      "helpText": "This is the batch number in which the bill was sent in when this status message was received. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RETURN MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID of the return message that this status was delivered in. It is used to ensure these status messages don't get added to this file more than once. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BILL'S COB SEQUENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;T:TERTIARY;",
+      "helpText": "This is the COB sequence of the bill when the message is received. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PAYER ID RETURNED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the payer ID from ENVOY for the insurance company that the bill was sent to. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT REVIEWED;1:REVIEW IN PROCESS;2:REVIEW COMPLETE;",
+      "helpText": "This field contains the current review state of this message. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "FINAL REVIEW ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:BILL CANCELLED - NO FURTHER ACTION;F:FILED - NO ACTION;R:BILL CORRECTED/RESUBMITTED;O:OTHER ACTION;",
+      "helpText": "This is the final action taken to review this status message.  If OTHER ACTION is chosen, the action taken should be noted in the REVIEW DATE's COMMENT field. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TRANSMIT BILL",
+      "dataType": "POINTER",
+      "rawType": "*P364'",
+      "required": false,
+      "pointerTo": 364,
+      "helpText": "This is the pointer to the transmit bill entry that generated this message. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE GENERATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the message was created at the source. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "FINAL REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the final review of the message.  It will be used to determine when the message should be automatically deleted from the file. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "AUTO FILED WITH NO REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to YES (1) when the return message text contains any of the text defined in file 361.3 that indicates no review is needed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "MESSAGE CHECKSUM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the calculated checksum value of the status message text.  It is a unique number which is mathematically generated based on the actual data in the 277STAT flat file data received from Austin.  This checksum value is used to eliminate duplicate status message transmissions into VistA. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DATE LAST PRINTED VIA MCS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the associated claim was most recently printed by  the MCS option - Resubmit by Print. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "361.01",
+      "required": false,
+      "helpText": "This is the message text and other pertinent data from a status message for the bill. ",
+      "isMultiple": true,
+      "subFileNumber": 361.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "361.02D",
+      "required": false,
+      "helpText": "This is the date and time a review was initiated by a user. ",
+      "isMultiple": true,
+      "subFileNumber": 361.02,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AERR", "field": },
+    {"name": "AFR", "field": },
+    {"name": "ANR", "field": },
+    {"name": "ARD", "field": },
+    {"name": "AREV", "field": },
+    {"name": "ASV", "field": },
+    {"name": "B", "field": },
+    {"name": "361", "field": .01, "type": "regular"},
+    {"name": "361", "field": .02, "type": "regular"},
+    {"name": "361", "field": .03, "type": "regular"},
+    {"name": "361", "field": .06, "type": "regular"},
+    {"name": "361", "field": .09, "type": "regular"},
+    {"name": "", "field": .1, "type": "regular"},
+    {"name": "361", "field": .11, "type": "regular"},
+    {"name": "361", "field": .13, "type": "regular"},
+    {"name": "361", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(361,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .07, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(361,.07,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

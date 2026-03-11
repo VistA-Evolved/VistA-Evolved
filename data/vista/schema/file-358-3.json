@@ -1,0 +1,174 @@
+{
+  "fileNumber": 358.3,
+  "fileName": "IMP/EXP SELECTION",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SELECTION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The ID passed by the package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PLACE HOLDER ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SELECTION LIST",
+      "dataType": "POINTER",
+      "rawType": "RP358.2'",
+      "required": true,
+      "pointerTo": 358.2,
+      "helpText": "  Identifies the selection list that this selection belongs on. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SELECTION GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP358.4",
+      "required": true,
+      "pointerTo": 358.4,
+      "helpText": "  The SELECTION GROUP that the selection belongs to.The selection will appear under the group header on the form. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PRINT ORDER WITHIN GROUP",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "Determines the order that this selection entry will appear in under the header for the selection group. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PLACE HOLDER TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "USE AS PLACE HOLDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the place holder is being used as a subheader its text should be included with the narrative. This field implements that. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "END USE AS SUBHEADER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used to end the use of any prior subheader that is in effect. Applies only to selections defined to be place holders. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of occurrences for a particular selection. A value placed in this field will be passed to PCE as the quantity. Presently, the quantity field will only be asked for CPT codes. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUBCOLUMN VALUE",
+      "dataType": "SUBFILE",
+      "rawType": "358.31IA",
+      "required": false,
+      "helpText": "  The selection can be composed of multiple fields. Each field occupies its own subcolumn on the form. ",
+      "isMultiple": true,
+      "subFileNumber": 358.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "NARRATIVE TO SEND TO PCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the narrative that should be sent to PCE when this selection is scanned.  This will be the provider narrative that is shown in PCE and Problem List.  If there is no entry in this field the text as it appears on the form will be sent as the narrative.  This field can only be entered for the type of interfaces that allow adding this narrative, and then send the narrative to PCE. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "CLINICAL LEXICON ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This is the clinical lexicon entry this term should be associated with. Generally this is only completed for selections based on diagnosis. The clinical lexicon entry will be passed to pce when this selection is scanned.  This allows maintaining the patient problem list associated  with clinical terms. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "SECOND CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used to send additional codes along when one entry is bubbled. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "THIRD CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Answer must be 1-10 characters in length. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "SUBFILE",
+      "rawType": "358.33",
+      "required": false,
+      "helpText": "CPT Modifier multiple - entries will be associated with selection. Only used when selection is a CPT Code. ",
+      "isMultiple": true,
+      "subFileNumber": 358.33,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "APO", "field": },
+    {"name": "APO1", "field": },
+    {"name": "APO2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "358.3", "field": .01, "type": "regular"},
+    {"name": "358.3", "field": .03, "type": "regular"},
+    {"name": "358.3", "field": .03, "type": "regular"},
+    {"name": "358.3", "field": .04, "type": "regular"},
+    {"name": "358.3", "field": .04, "type": "regular"},
+    {"name": "358.3", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(358.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(358.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(358.4,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(358.4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

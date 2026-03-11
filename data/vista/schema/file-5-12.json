@@ -1,0 +1,111 @@
+{
+  "fileNumber": 5.12,
+  "fileName": "POSTAL CODE",
+  "globalRoot": "5.12",
+  "globalReference": "^XIP(5.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAIL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This field holds recognized postal codes.  Although this file will only  start with US postal codes, it may be expanded in the future to also  contain postal codes from other countries. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the city represented by this Postal Code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COUNTY",
+      "dataType": "POINTER",
+      "rawType": "P5.13'",
+      "required": false,
+      "pointerTo": 5.13,
+      "helpText": "This field contains a pointer to the County that this Postal Code is  within. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field contains a pointer to the State File to represent the state  associated with this Postal Code. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the Postal Code became Inactive. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CITY KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the unique City State Key that has been assigned by the USPS. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PREFERRED CITY KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This key is assigned by USPS. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CITY ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the USPS's city abbreviation. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "UNIQUE KEY (VA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the value when the MAIL CODE(#.01) and the CITY KEY(#6) are  concatenated.  The purpose of this field is to create a unique lookup  value using the \"E\" cross-reference. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "5.12", "field": .01, "type": "regular"},
+    {"name": "5.12", "field": 1, "type": "regular"},
+    {"name": "5.12", "field": 2, "type": "regular"},
+    {"name": "5.12", "field": 5, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "5.12", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 8, "value": "W \"   \",$P(^(0),U,9)"},
+    {"field": W1, "value": "D EN^DDIOL($P(^(0),U,2)_\"  \"_$P(^(0),U,6)_\"  \"_$P(^(0),U,7),\"\",\"?0\")"}
+  ]
+}

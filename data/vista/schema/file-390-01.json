@@ -1,0 +1,78 @@
+{
+  "fileNumber": 390.01,
+  "fileName": "MHV SOCIALIZATION",
+  "globalRoot": "390.01",
+  "globalReference": "^DGMHV(390.01,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The NUMBER field contains the internal entry number of the MHV  SOCIALIZATION record. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is text representing a possible patient response to the clerk's  encouragement to register in My HealtheVet. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains an integer used to define where this entry will  display in a list, in relation to other entries. A value of 1 displays  before 2, a value of 2 displays before 3, etc. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text representing a possible patient response to the clerk's  encouragement to register in My HealtheVet that is displayed during the  registration process. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "390.12",
+      "required": false,
+      "helpText": "This word processing field contains text the clerk reads to the patient  to encourage the patient to register in My HealtheVet. ",
+      "isMultiple": true,
+      "subFileNumber": 390.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FOLLOWUP ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code to execute after an entry is selected. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "390.01", "field": .01, "type": "regular"},
+    {"name": "390.01", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

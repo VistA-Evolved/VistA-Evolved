@@ -1,0 +1,50 @@
+{
+  "fileNumber": 410.4,
+  "fileName": "SUB-CONTROL POINT",
+  "globalRoot": "410.4",
+  "globalReference": "^PRCS(410.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the sub-control point. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTROL POINT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of the Fund Control Point. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMITTED BALANCES",
+      "dataType": "SUBFILE",
+      "rawType": "410.42A",
+      "required": false,
+      "helpText": "These are the committed balances for the control point. ",
+      "isMultiple": true,
+      "subFileNumber": 410.42,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "410.4", "field": .01, "type": "regular"},
+    {"name": "410.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "fileNumber": 41.41,
+  "fileName": "PRE-REGISTRATION AUDIT",
+  "globalRoot": "41.41",
+  "globalReference": "^DGS(41.41,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Pointer to the patient entry in the PATIENT FILE, #2. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE CHANGED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time the patient file registration information was changed as a result of the pre-registration process.  After editing a patients demographic data, the user will be asked if they want to Date/Stamp the pre-registration.  If they answer 'Yes', this field will be completed.  If they answer 'No', no entry will be made in this file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "User making the change to the patients registration information through the pre-registration option.  This is a pointer to the NEW PERSON File, #200. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ADC", "field": },
+    {"name": "ADC1", "field": },
+    {"name": "B", "field": },
+    {"name": "41.41", "field": .01, "type": "regular"},
+    {"name": "41.41", "field": .01, "type": "regular"},
+    {"name": "41.41", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

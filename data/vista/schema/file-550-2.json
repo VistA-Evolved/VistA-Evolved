@@ -1,0 +1,216 @@
+{
+  "fileNumber": 550.2,
+  "fileName": "CMOP TRANSMISSION",
+  "globalRoot": "",
+  "globalReference": "^PSX(550.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0",
+      "length": 11,
+      "required": true,
+      "helpText": "This field contains the number of the data transmission. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CREATED;2:TRANSMITTED;3:ACKNOWLEDGED;4:CLOSED;5:RETRANSMITTED;",
+      "helpText": "This is the status of the message. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'I",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "Pointer to the Outpatient Site File. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CMOP SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "P550'I",
+      "required": false,
+      "pointerTo": 550,
+      "helpText": "Pointer to the CMOP SYSTEM file (#550). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SENDER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Pointer to the New Person file.  Indicates the user who initiated this transmission.    ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date and time the transmission was transmitted. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date and time the transmission was created.  This is the time that the user started the transmission process. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RECEIVED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the transmission was received by the host site.  It is returned from the host site in the acknowledgement message. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RETRANSMISSION #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "If present, this is the transmission number for the retransmission.  It will only be present on the original transmission. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ORIGINAL TRANSMISSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0I",
+      "length": 11,
+      "required": false,
+      "helpText": "The transmission number of the original data transfer for this  retransmission entry. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLOSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time that the remote site received confirmation that all the Rx's were released or processed by the vendor.  This entry is made only when all of the Rx's have been confirmed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "START SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0I",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the first message number in the transmission. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "END SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0I",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the last message number in the transmission. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TOTAL ORDERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0I",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the total number of orders in the transmission.  An order contains all of the Rx's for a single patient.  A patient should only have one order, but a transmission will have many orders. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TOTAL RXS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0I",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the number of Rx's in the transmission. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PRESCRIPTIONS",
+      "dataType": "POINTER",
+      "rawType": "550.215P",
+      "required": false,
+      "helpText": "Prescriptions to be transmitted. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "550.216",
+      "required": false,
+      "helpText": "This field can contain any comments the user/programmers feel necessary and that pertains to the transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 550.216,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NON-Controlled Subs;C:Controlled Subs;",
+      "helpText": "This identifies that the transmission contains either CS or NON-CS  prescriptions. ",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AC", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "ST", "field": },
+    {"name": "TYP", "field": },
+    {"name": "550.2", "field": .01, "type": "regular"},
+    {"name": "550.2", "field": 1, "type": "regular"},
+    {"name": "550.2", "field": 1, "type": "regular"},
+    {"name": "550.2", "field": 1, "type": "regular"},
+    {"name": "550.2", "field": 1, "type": "regular"},
+    {"name": "550.2", "field": 1, "type": "regular"},
+    {"name": "550.2", "field": 2, "type": "regular"},
+    {"name": "550.2", "field": 3, "type": "regular"},
+    {"name": "550.2", "field": 5, "type": "regular"},
+    {"name": "550.2", "field": 8, "type": "regular"},
+    {"name": "550.2", "field": 17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PS(59,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(59,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 4, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 5, "value": "W \"   \",$E($P(^(0),U,6),4,5)_\"-\"_$E($P(^(0),U,6),6,7)_\"-\"_$E($P(^(0),U,6),2,3)"}
+  ]
+}

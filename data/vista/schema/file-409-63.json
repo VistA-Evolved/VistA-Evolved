@@ -1,0 +1,106 @@
+{
+  "fileNumber": 409.63,
+  "fileName": "APPOINTMENT STATUS",
+  "globalRoot": "409.63",
+  "globalReference": "^SD(409.63,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This internal number identifies the appointment status.  Some application code uses this number during processing. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of an appointment status, such as CHECKED IN. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short acronym for the appointment status. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHECK IN ALLOWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to 'YES' than appointments with this status can be checked in. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CANCEL ALLOWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to 'YES' than appointments with this status can be cancelled. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NO-SHOW ALLOWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to 'YES' than appointments with this status can be no-showed. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CHECK OUT ALLOWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to 'YES' then appointments with this satus can be checked out. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ASSOCIATED STATUS GROUPS",
+      "dataType": "POINTER",
+      "rawType": "409.636P",
+      "required": false,
+      "helpText": "This multiple associates this status with one or more APPOINTMENT GROUP file entries.   This information is used by the 'Appointment Management' option to determine what appointments should be displayed to the user. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACAN", "field": },
+    {"name": "ACI", "field": },
+    {"name": "ACO", "field": },
+    {"name": "ANS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "409.63", "field": .01, "type": "regular"},
+    {"name": "409.63", "field": .01, "type": "regular"},
+    {"name": "409.63", "field": .03, "type": "regular"},
+    {"name": "409.63", "field": .04, "type": "regular"},
+    {"name": "409.63", "field": .05, "type": "regular"},
+    {"name": "409.63", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

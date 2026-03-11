@@ -1,0 +1,223 @@
+{
+  "fileNumber": 3.52,
+  "fileName": "PRINT QUEUE JOB",
+  "globalRoot": "3.52",
+  "globalReference": "^%ZIS(3.52,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "R*P3.5'I",
+      "required": true,
+      "pointerTo": 3.5,
+      "helpText": "Identifies the device that the user selected when the print request was made.     ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DT/TM HOST FILE CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that the host file was created.    ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DT/TM PASSED TO PRINT SERVER",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This is the date and time that the host file was passed to the print server. No value indicates that the file was not yet passed to the print server.   ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field indicates the user that made the print request.    ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OS PRINT QUEUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the print queue that the print job should be submitted to. The print queue is created within the host operating system.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "HOST FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The unique name of the host file. The name will have the following format:  PQ$JOB_<record IEN>.TXT   ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "O:FILE OPENED;OE:ERROR OPENING FILE;AE:APPLICATION ERROR BEFORE CLOSING FILE;Q:PRINT JOB QUEUED;QE:ERROR SUBMITTING JOB TO QUEUE;P:FILE PRINTED, DELETED;D:FILE DELETED, NOT PRINTED;",
+      "helpText": "The current status of the host file.    ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "OS JOB ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the identifier assigned by the OS to the print job.  The format is system dependent.   ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HFS DIRECTORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;",
+      "helpText": "This describes the system on which the print queue is located. This field is important in mixed OS environments.  The print queues and  host files are accessible only on the system that they were created on.   ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OLD DEVICE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "3.521A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 3.521,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOST SYSTEM?",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "MULTIPLE %ZIS GLOBALS?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will store the last answer to a question that was answered on the previous run of the device conversion routines. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "AUTO CHANGE NAMES?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains the last answer to a question that was answered on the previous run of the device conversion routines. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "AUTO CHANGE DOTS?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains the answer to a question answered on the last run of the device conversion routines. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "CONVERSION COMPLETED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If answered yes, conversion of device file(s) ran to completion. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEVICE CONVERSION ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST COMPLETED STAGE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ONE;2:TWO;3:THREE;4:FOUR;5:FIVE;6:SIX;",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST INTERNAL # COMPLETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is the internal # of the last device/micom entry completed by the device conversion routines at the stage specified in the LAST COMPLETED STAGE field. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IN PROCESS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STAGE IN PROCESS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ONE;2:TWO;3:THREE;4:FOUR;5:FIVE;6:SIX;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INTERNAL # IN PROCESS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AH", "field": },
+    {"name": "AIP", "field": },
+    {"name": "B", "field": },
+    {"name": "H", "field": },
+    {"name": "3.52", "field": .01, "type": "regular"},
+    {"name": "3.52", "field": .02, "type": "regular"},
+    {"name": "3.52", "field": 2, "type": "regular"},
+    {"name": "3.52", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D ID^ZISPQ"}
+  ]
+}

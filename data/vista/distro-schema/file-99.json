@@ -1,0 +1,94 @@
+{
+  "fileNumber": 99,
+  "fileName": "PT. TEXT",
+  "globalRoot": "99P",
+  "globalReference": "^PTX(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient's name ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "*PROGRESS NOTES",
+      "dataType": "DATE",
+      "rawType": "99.01DA",
+      "required": false,
+      "helpText": "This is the text of notes entered by clinicians.     ",
+      "isMultiple": true,
+      "subFileNumber": 99.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "HISTORY PART ONE",
+      "dataType": "DATE",
+      "rawType": "99.05DA",
+      "required": false,
+      "helpText": "This is the text of the patient's chief complaint, history of present illness, and current medications. ",
+      "isMultiple": true,
+      "subFileNumber": 99.05,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "*TXP DESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "99.13D",
+      "required": false,
+      "helpText": "This is the text of descriptive information about patient for treatment plans. ",
+      "isMultiple": true,
+      "subFileNumber": 99.13,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "*TXP ADDITIONAL PLANS",
+      "dataType": "DATE",
+      "rawType": "99.16D",
+      "required": false,
+      "helpText": "This is the text of additional treatment plans. ",
+      "isMultiple": true,
+      "subFileNumber": 99.16,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CRISIS NOTES",
+      "dataType": "DATE",
+      "rawType": "99.29D",
+      "required": false,
+      "helpText": "This is the text of crisis notes on patients. upon selection of the patient's name.  Only designated  DHCP-users will be shown the crisis note. ",
+      "isMultiple": true,
+      "subFileNumber": 99.29,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MESSAGES",
+      "dataType": "DATE",
+      "rawType": "99.39D",
+      "required": false,
+      "helpText": "This is the text of clinically useful patient information. A note will be broadcasted upon selection of the patient's name indicating a message is available for review at the discretion of the caretaker.  Only designated DHCP-users will have access to this function. ",
+      "isMultiple": true,
+      "subFileNumber": 99.39,
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

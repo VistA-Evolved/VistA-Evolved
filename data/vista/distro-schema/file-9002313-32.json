@@ -1,0 +1,509 @@
+{
+  "fileNumber": 9002313.32,
+  "fileName": "BPS PAYER RESPONSE OVERRIDES",
+  "globalRoot": "9002313.32",
+  "globalReference": "^BPS(9002313.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,5",
+      "length": 15,
+      "required": true,
+      "helpText": "The transaction number of the claim ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REVERSAL;RS:RESUBMIT WITH REVERSAL;S:SUBMIT;E:ELIGIBILITY;",
+      "helpText": "This is the type of request that is being overridden. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUBMISSION RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DUPLICATE;P:PAID;R:REJECTED;S:STRANDED;",
+      "helpText": "The payer response for claims submissions (B1 transactions) - 'P' for Payable or 'R' for Rejected.  This will be used for the 112 (Transaction Response Status) and 501 (Response Status) fields or BPS Responses. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PAID AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the override for the 509 (Total Amount Paid) field of BPS Responses  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "REVERSAL RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;D:DUPLICATE;R:REJECTED;S:STRANDED;",
+      "helpText": "The payer response for claims reversals (B2 transactions) - 'A' for Accepted or 'R' for Rejected.  This will be used for the 112 (Transaction Response Status) and 501 (Response Status) fields or BPS Responses. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COPAY AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is an override copay amount returned by a payer to be sent to  Integrated Billing for copay creation. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DELAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "Processing delay in minutes. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ELIGIBILITY RESPONSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCEPTED;R:REJECTED;S:STRANDED;",
+      "helpText": "This is the override value that will be used for the payer response for eligibility verification requests.  The value will be used to populate the 112 (Transaction Response Status) and 501 (Response Status) fields of BPS Responses. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NEXT AVAILABLE FILL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for billing requests.  The value will be used to populate the NEXT AVAILABLE FILL DATE (#2004) field of RESPONSES (#9002313.0301) subfile of the BPS RESPONSES (#9002313.03) file. Corresponds to NCPDP code B04-BT. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ADJUDICATED PAYMENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MEDICAID;2:MEDICARE;3:COMMERCIAL;4:WORKERS COMPENSATION;5:DISCOUNT PROGRAM;6:COUPON REIMBURSEMENT;7:VOUCHER;8:MILITARY/VA;9:UNKNOWN;99:OTHER;",
+      "helpText": "This is the override value that will be used for the payer response for billing requests.  The value will be used to populate the ADJUDICATED  PAYMENT TYPE (#1028) field of RESPONSES (#9002313.0301) subfile of the BPS RESPONSES (#9002313.03) file. Corresponds to NCPDP code A28-ZR. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "QUAN LIMIT PER SPC TIME PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,3",
+      "length": 11,
+      "required": false,
+      "helpText": "Maximum quantity allowed over the designated time period.   This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the QUAN LIMIT PER  SPC TIME PERIOD field (#2088) of the QUAN LIMIT TIME PERIOD MLTPL  multiple (#9002313.032087) of the RESPONSES subfile (#9002313.0301) of  the BPS RESPONSES file (#9002313.03).  This is NCPDP field B88-3R. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "QUANTITY LIMIT TIME PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Number of days to which the maximum quantity is allowed.   This is the override value that will be used for the payer response for billing requests. The value will be used to populate the QUANTITY LIMIT  TIME PERIOD field (#2089) of the QUAN LIMIT TIME PERIOD MLTPL multiple (#9002313.032087) of the RESPONSES subfile (#9002313.0301) of the BPS RESPONSES file (#9002313.03).  This is NCPDP field B89-3S. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DAYS SUP LIM PER SPC TM PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Maximum days supply allowed over the designated time period.   This is the override value that will be used for the payer response for billing requests. The value will be used to populate the DAYS SUP LIM PER SPC TM PERIOD field (#2091) of the DAYS SUPPLY LIM TM PD MULTIPLE  (9002313.032091) of the RESPONSES subfile (#9002313.0301) of the BPS RESPONSES file (#9002313.03).  This is NCPDP field B91-3W. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DAYS SUPPLY LIMIT TIME PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is an informational field to convey the maximum days supply over a  set number of days for this medication.   This is the override value that will be used for the payer response for billing requests. The value will be used to populate the DAYS SUPPLY LIMIT TIME PERIOD field (#2092) of the DAYS SUPPLY LIM TM PD MULTIPLE (9002313.032091) of the RESPONSES subfile (#9002313.0301) of the BPS RESPONSES file (#9002313.03).  This is NCPDP field B92-3X. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "INGREDIENT COST PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field overrides the value for NCPDP field 506-F6 Ingredient Cost Paid in the BPS Response. This is the drug ingredient cost paid which is  included in the Total Amount Paid field (509-F9). ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "DISPENSING FEE PAID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field overrides the value for NCPDP field 507-F7 Dispensing Fee  Paid in the BPS Response. This is the dispensing fee paid which is  included in the Total Amount Paid field (509-F9). ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "REMAINING DEDUCTIBLE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field overrides the value in NCPDP field 513-FD Remaining Deductible  Amount in the BPS Response. This is the amount not met by the patient/family in the deductible plan. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "AMT APPLIED TO PERIODIC DEDUCT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field overrides the value in NCPDP field 517-FH Amount Applied To  Periodic Deductible in the BPS Response. This is the amount to be collected from a patient that is included in the Patient Pay Amount (505-F5) that is applied to a periodic deductible. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REJECT CODES",
+      "dataType": "POINTER",
+      "rawType": "9002313.321P",
+      "required": false,
+      "helpText": "Multiple for reject code overrides, which will be stored in the 511 (Reject Code multiple) fields of BPS Responses ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PERCENTAGE SALES TAX BASIS PD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:GROSS AMOUNT DUE;02:INGREDIENT COST;03:INGREDIENT COST + DISPENSING FEE;04:PROFESSIONAL SERVICE FEE;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the PERCENTAGE SALES  TAX BASIS PD (#561) field of RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP field 561-AZ. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "OTHER AMOUNT PAID QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the OTHER AMOUNT  PAID QUALIFIER (#564) field of RESPONSES (#9002313.0301) subfile of the  BPS RESPONSES (#9002313.03) file. This corresponds to NCPDP field 564-J3. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "PAYER ID QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:STANDARD UNIQUE HEALTH PLAN ID;02:HIN;03:BIN;04:NAIC;99:OTHER;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the PAYER ID  QUALIFIER (#568) field of RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP field 561-AZ. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "HELP DESK TELEPHONE NUMBER EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the HELP DESK  TELEPHONE NUMBER EXTENSION (#2022) field of RESPONSES (#9002313.0301)  subfile of the BPS RESPONSES (#9002313.03) file. This corresponds to  NCPDP field B22-7P. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "PRO SERVICE FEE CONT/REIM AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the PRO SERVICE FEE  CONT/REIM AMT (#2033) field of RESPONSES (#9002313.0301) subfile of the  BPS RESPONSES (#9002313.03) file. This corresponds to NCPDP field B33-6G. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "OTHER PAYER HELPDESK PHONE EXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the OTHER PAYER  HELPDESK PHONE EXT (#2023) field of the OTHER PAYER ID MLTPL  (#9002313.035501) of the RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP field B23-7Q. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "RESPONSE INTERMED AUTH TYPE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the RESPONSE  INTERMEDIARY AUTH CNT (#2052) field of the INTERMEDIARY MULTIPLE  (#9002313.032052) of the RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP field B53-8S. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "RESPONSE INTERMEDIARY AUTH ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the RESPONSE  INTERMEDIARY AUTH ID (#2054) field of the INTERMEDIARY MULTIPLE  (#9002313.032052) of the RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP field B54-8T. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "RECONCILIATION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the RECONCILIATION  ID (#2098) field of RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP code B98-34. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "PATIENT PAY AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the PATIENT PAY  AMOUNT (#505) field of RESPONSES (#9002313.0301) subfile of the BPS  RESPONSES (#9002313.03) file. This corresponds to NCPDP code 505-F5. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "INTERMEDIARY MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. The value will be used to populate the INTERMEDIARY  MESSAGE (#2051) field of the INTERMEDIARY MULTIPLE (#9002313.032052) of  the RESPONSES (#9002313.0301) subfile of the BPS RESPONSES (#9002313.03)  file. This corresponds to NCPDP field B51-8Q. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "MAXIMUM AGE QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DAYS (24-hr periods);Y:YEARS (12-month periods);",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "MAXIMUM AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "MAXIMUM AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "MAXIMUM AMOUNT QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DL:DOLLAR AMOUNT;DS:DAYS SUPPLY;FL:FILLS;QY:QUANTITY;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "MAXIMUM AMOUNT TIME PERIOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CM:CALENDAR MONTH;CQ:CALENDAR QUARTER;CY:CALENDAR YEAR;DY:DAYS;LT:LIFETIME;PD:PER DISPENSING;SP:SPECIFIC DATE RANGE;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "MAX AMT TIME PERIOD START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "MAX AMT TIME PERIOD END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "MAX AMT TIME PERIOD UNITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "MINIMUM AGE QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DAYS;Y:YEARS;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests.  ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "MINIMUM AGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.11,
+      "fieldName": "OTHER PAYER PROGRAM TYPE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.38'",
+      "required": false,
+      "pointerTo": 9002313.38,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.11
+    },
+    {
+      "fieldNumber": 4.12,
+      "fieldName": "PATIENT PAY COMPONENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.12
+    },
+    {
+      "fieldNumber": 4.13,
+      "fieldName": "PATIENT PAY COMPONENT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.13
+    },
+    {
+      "fieldNumber": 4.14,
+      "fieldName": "PATIENT PAY COMPONENT QUAL",
+      "dataType": "POINTER",
+      "rawType": "P9002313.37'",
+      "required": false,
+      "pointerTo": 9002313.37,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.14
+    },
+    {
+      "fieldNumber": 4.15,
+      "fieldName": "MINIMUM AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.15
+    },
+    {
+      "fieldNumber": 4.16,
+      "fieldName": "MINIMUM AMOUNT QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MDL:MIN DOLLAR AMT;MDS:MIN DAY SUPPLY;MFL:MIN FILLS;MQY:MIN QTY;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.16
+    },
+    {
+      "fieldNumber": 4.17,
+      "fieldName": "OTHER PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.17
+    },
+    {
+      "fieldNumber": 4.18,
+      "fieldName": "REMAINING AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.18
+    },
+    {
+      "fieldNumber": 4.19,
+      "fieldName": "REMAINING AMOUNT QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RFL:REMAINING FILLS;RQY:REMAINING QTY;RDS:REMAINING DAYS SUPPLY;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.19
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "OTHER PAYER RELATIONSHIP TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CP:COB COVERAGE PRIOR TO RESPONDING PAYER;CS:COB COVERAGE SUBSEQUENT TO RESPONDING PAYER;MX:MUTUALLY EXCLUSIVE BENEFITS;CC:CHANGE IN COVERAGE;RP:RESPONDING PAYER;CE:CENTRALIZED ELIGIBILITY;",
+      "helpText": "This is the override value that will be used for the payer response for  billing requests. ",
+      "fieldNumber_": 4.2
+    }
+  ],
+  "fieldCount": 50,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.32", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

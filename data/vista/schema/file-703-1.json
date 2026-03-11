@@ -1,0 +1,106 @@
+{
+  "fileNumber": 703.1,
+  "fileName": "CP RESULT REPORT",
+  "globalRoot": "703.1",
+  "globalReference": "^MDD(703.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UPLOAD ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Unique identifier assigned for each upload. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "Pointer to the PATIENT file (#2) of the patient uploaded from the result of the instrument. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME PERFORMED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time the procedure was performed on the instrument. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "P702.09'",
+      "required": false,
+      "pointerTo": 702.09,
+      "helpText": "Pointer to the CP INSTRUMENT file (#702.9) of the instrument that produced these reports. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STUDY REFERENCE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P702",
+      "required": false,
+      "pointerTo": 702,
+      "helpText": "This field serves as a reference to the transaction. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "HL7 REFERENCE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to keep the IEN of the HL7 message.  It serves as a reference to the message that will be purged once the data has been  successfully moved to the VistA Imaging server. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "U:Unmatched;M:Matched;P:Pending Gateway Action;",
+      "helpText": "Status of the result.   U:Unmatched - Result not matched to a CP transaction. M:Matched   - Result matched to a CP transaction. P:Pending Gateway Action - Result is awaiting CP Gateway action. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "UPLOAD ITEM",
+      "dataType": "SET",
+      "rawType": "703.11S",
+      "required": false,
+      "helpText": "This multiple contains information on the upload item. ",
+      "isMultiple": true,
+      "subFileNumber": 703.11,
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "ADFN", "field": },
+    {"name": "ADTP", "field": },
+    {"name": "AINST", "field": },
+    {"name": "ASTATUS", "field": },
+    {"name": "ASTUDYID", "field": },
+    {"name": "B", "field": },
+    {"name": "703.1", "field": .01, "type": "regular"},
+    {"name": "703.1", "field": .02, "type": "regular"},
+    {"name": "703.1", "field": .03, "type": "regular"},
+    {"name": "703.1", "field": .04, "type": "regular"},
+    {"name": "703.1", "field": .05, "type": "regular"},
+    {"name": "703.1", "field": .09, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

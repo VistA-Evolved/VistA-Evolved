@@ -1,0 +1,63 @@
+{
+  "fileNumber": 2006.572,
+  "fileName": "EXAMINATION COMPLETE",
+  "globalRoot": "2006.572",
+  "globalReference": "^MAGDINPT(2006.572,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:DONE;",
+      "helpText": "The value of this field is a code that indicates whether or not the data in the current entry is completely entered.   When the value of this field is not present, or when it is present and equal to 0, the record is incomplete. When the value of this field is equal to 1, the record is complete. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACNUMB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the accession number for the study that is referenced in this entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is the value that is transmitted for DICOM element 0010,0020. Typically, the value of this field is equal to the Social Security Number of the patient for whom the study is scheduled. (Without the dashes between the number-groups.) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is equal to the name of the patient for whom the study in question is performed.   This value is copied from ^DPT so that the VistA DICOM Gateway will need to be able to access this value whether or not the network link with the VistA system (DDP) is available. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STUDY UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a code that identifies the study that is referenced in this entry.   This unique identifier is the DICOM UID for the Study SOP Instance. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

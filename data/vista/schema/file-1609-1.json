@@ -1,0 +1,38 @@
+{
+  "fileNumber": 1609.1,
+  "fileName": "EHRM HL7 Message Retention",
+  "globalRoot": "1609.1",
+  "globalReference": "^EHMHL7(1609.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "IFC:Inter-Facility Consult;PRF:Patient Record Flag;",
+      "helpText": "This field stores the type of HL7 message - IFC or PRF. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RETENTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field stores the number of days to retain HL7 messages for each type. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1609.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

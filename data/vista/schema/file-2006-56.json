@@ -1,0 +1,45 @@
+{
+  "fileNumber": 2006.56,
+  "fileName": "DICOM WORKLIST STUDY",
+  "globalRoot": "2006.56",
+  "globalReference": "^MAGDWLST(2006.56,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'XI",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer into the INSTITUTION file (#4). The pointed to location is the division where a study for a patient is scheduled to be performed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STUDY",
+      "dataType": "SUBFILE",
+      "rawType": "2006.562A",
+      "required": false,
+      "helpText": "This subfile holds the studies for the current division. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.562,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "S", "field": }
+  ],
+  "identifiers": [
+
+  ]
+}

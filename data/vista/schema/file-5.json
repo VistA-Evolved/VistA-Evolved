@@ -1,0 +1,98 @@
+{
+  "fileNumber": 5,
+  "fileName": "STATE",
+  "globalRoot": "5",
+  "globalReference": "^DIC(5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the state.  In most cases, this should also correspond to the VA STATE CODE field. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This field contains the name of the state (or outlying area) as issued by the Department of Veterans Affairs and issued in M-1, Part I Appendix B.  These entries should remain as distributed and should not be edited or updated unless done via a software upgrade or under direction of VA Central Office. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the recognized abbreviation for the state.  This abbreviation is transmitted to Austin from various DHCP packages and therefore should not be altered unless you are directed to do so. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VA STATE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a numeric code (2 characters in length) which many packages transmit as to Austin to represent the state a patient resides or receives treatment in.  This value should not be altered OR IT COULD SERVERELY AND ADVERSELY AFFECT OPERATIONS AT YOUR MEDICAL CENTER. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "AAC RECOGNIZED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field designates whether or not the Austin Automation Center(AAC)  recognizes this State. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "US STATE OR POSSESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field designates if this entry is a US State or United Sates  possession. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COUNTY",
+      "dataType": "SUBFILE",
+      "rawType": "5.01I",
+      "required": false,
+      "helpText": "This multiple contains the names and codes of all recognized counties for this state.  This information is distributed from VA Central Office and it should NOT be altered unless you are directed to do so from someone in that office. ",
+      "isMultiple": true,
+      "subFileNumber": 5.01,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CAPITAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the capital city for this state. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "5", "field": .01, "type": "regular"},
+    {"name": "5", "field": 1, "type": "regular"},
+    {"name": "5", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

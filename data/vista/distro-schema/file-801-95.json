@@ -1,0 +1,37 @@
+{
+  "fileNumber": 801.95,
+  "fileName": "HEALTH FACTOR RESOLUTION",
+  "globalRoot": "801.95",
+  "globalReference": "^PXRMD(801.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9999999.64X",
+      "required": true,
+      "pointerTo": 9999999.64,
+      "helpText": "A list of reminder resolution statuses by health factor is maintained for use in automatic generation of reminder dialog   Dialog defaults for health factors are held in the REMINDER FINDING TYPE PARAMETER file (#801.45) for every resolution status. The automatic generation process for a health factor reminder finding will only use the dialog defaults for the resolution statuses in the HEALTH FACTOR RESOLUTION file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RESOLUTION STATUS",
+      "dataType": "POINTER",
+      "rawType": "801.9501PA",
+      "required": false,
+      "helpText": "Default dialog from the REMINDER FINDING TYPE PARAMETER file will only be generated for resolution statuses in this field. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "801.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

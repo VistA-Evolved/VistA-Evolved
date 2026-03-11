@@ -1,0 +1,501 @@
+{
+  "fileNumber": 664.1,
+  "fileName": "PROSTHETIC 2529-3",
+  "globalRoot": "664.1ID",
+  "globalReference": "^RMPR(664.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date that the VAF 10-2529-3 was created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P665'",
+      "required": false,
+      "pointerTo": 665,
+      "helpText": "The name of the Prosthetics Patient requiring services. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Station that will receive the AMIS count. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REQUESTING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Station that has requested the item/services. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUSPENSE RECORD",
+      "dataType": "POINTER",
+      "rawType": "P668'",
+      "required": false,
+      "pointerTo": 668,
+      "helpText": "Pointer to the Prosthetics Suspense Record file #668 that is associated with this work order. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ELIGIBILITY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SC/OP;2:SC/IP;3:NSC/IP;4:NSC/OP;",
+      "helpText": "The eligibility status of the patient needing items/services. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SPECIAL CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL LEGISLATION;2:A&A;3:PHC;",
+      "helpText": "The Special Category of the Patient needing items/services. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .081,
+      "fieldName": "OTHER DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "664.11",
+      "required": false,
+      "helpText": "This is a remarks field. ",
+      "isMultiple": true,
+      "subFileNumber": 664.11,
+      "fieldNumber_": .081
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE REQUIRED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the Items/Services are required. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "RECEIVING STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'X",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Station that is responsible for furnishing the item. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INITIAL;X:REPAIR;S:SPARE;R:REPLACE;",
+      "helpText": "This field indicates whether the item being issued is the first of this  item for this patient, a spare item, or is replacing the last such item  the patient received, or if the item is being repaired. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SOURCE OF PROCUREMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ORTHOTICS/PROSTHETICS;R:RESTORATION LAB;S:SHOE LAST CLINIC;W:WHEELCHAIR REPAIR SHOP;N:NATIONAL FOOT CENTER;D:DDC;E:EYEGLASS;",
+      "helpText": "Known sources from which Prosthetics Items are acquired within the VA. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WORK ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the permanent number used to identify and track Lab Work Orders. It is built from both information the user enters and the sequence number assigned by the computer (e.g., 644-95-2-O-0016).     644 = Station Number     95  = Fiscal Year     2   = Quarter     O   = Type of Laboratory (Orthotic, Restoration, Shoe Last,           Wheelchair Repair, National Foot Center, or Denver Distribution           Center)     0016 = Sequence number assigned by the computer ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISABILITY CODE",
+      "dataType": "POINTER",
+      "rawType": "664.15PA",
+      "required": false,
+      "helpText": "This field points to the Disability code file.  It holds information on the patient's disability code that qualifies the Veteran for this service or item. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "664.16PA",
+      "required": false,
+      "helpText": "This field is a pointer to the master item list of possible appliances.   The master list is set up so that appliances all into groups which are  types of appliances. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CANCELLED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Contains a pointer to the entry in the New Person file for the person who  cancelled this VAF 10-2529-3. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CANCEL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the VAF 10-2529-3 was canceled. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RETURNED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Lab Supervisor that returned the 2529-3 to the Lab as incomplete. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RETURN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the VAF 10-2529-3 was returned to the LAB. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CANCELLATION REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "664.111",
+      "required": false,
+      "helpText": "These are the Cancellation remarks, if the VAF 10-2529-3 was canceled. ",
+      "isMultiple": true,
+      "subFileNumber": 664.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "RETURN TO LAB REASON",
+      "dataType": "SUBFILE",
+      "rawType": "664.12",
+      "required": false,
+      "helpText": "This contains the reason for returning the VAF 10-2529-3 to the LAB. ",
+      "isMultiple": true,
+      "subFileNumber": 664.12,
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "WARD LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P42'",
+      "required": false,
+      "pointerTo": 42,
+      "helpText": "This field will contain the ward the request was originated from if the Patient is an inpatient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Provider who prescribes the services/items for the Prosthetics inpatient. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 12.2,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Current patient diagnosis most related to receiving this item. ",
+      "fieldNumber_": 12.2
+    },
+    {
+      "fieldNumber": 12.3,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "This is the Inpatient treating specialty that will be associated with cost containment reporting. ",
+      "fieldNumber_": 12.3
+    },
+    {
+      "fieldNumber": 12.4,
+      "fieldName": "PHYSICIAN EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Phone Extension by which the Physician may be contacted. ",
+      "fieldNumber_": 12.4
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REQUESTING OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the official person who entered this VAF 10-2529-3. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "APPROVING OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the official who approved this VAF 10-2529-3. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TECHNICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Technician associated with this VAF 10-2529-3. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING ASSIGNMENT;A:ASSIGNED TO TECHNICIAN;C:COMPLETED;CA:CANCELLED;R:RETURNED TO TECHNICIAN;PC:PENDING COMPLETION;D:DELETED;I:INCOMPLETE;S:STOCK ISSUE;",
+      "helpText": "This is the current status of this VAF 10-2529-3. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "REQUESTOR DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date this VAF 10-25-29-3 was entered. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "APPROVING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date this VAF 10-2529-3 was approved. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the 2529-3 was assigned to the lab technician. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE DELIVERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the item/service was delivered to the patient or requesting VAMC institution. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INSPECTING OFFICIAL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Individual who is responsible for inspecting the work performed by the Prosthetics Lab. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Indiviual who completed the Job Section of the 2529-3. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CLOSE-OUT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the the VAF 10-2529-3 was closed out for AMIS Purposes. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DELIVERY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ISSUED TO VETERAN;2:DELIVERED TO VETERAN;3:AWAITING VETERAN PICKUP;",
+      "helpText": "Code indicates delivery status of this VAF 10-2529-3. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "TOTAL MATERIALS COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The total charges associated with the item/service requested on this  VAF 10-2529-3 minus the labor costs. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The total charges associated with the item/service(s) requested on this VAF 10-2529-3 including labor charges. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ASSIGNED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Indiviual who assigned the VAF 10-2529-3 Job to a Lab Technician. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "NO ADMIN COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO COUNT;",
+      "helpText": "Status is set to ensure that Work Load and Total Cost do not count on the Adminstrative AMIS if the VAF 10-2529-3 is considered work for another station. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "AUDIT DATE",
+      "dataType": "DATE",
+      "rawType": "664.129DA",
+      "required": false,
+      "helpText": "Contains the date/time that the item on Page one of the 2529-3 was changed or deleted. ",
+      "isMultiple": true,
+      "subFileNumber": 664.129,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "JOB # COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Set to the last job number on the 2529-3 to ensure that the Job count for the 2529-3 is accurate. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "AMIS GROUPER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is a number that is assigned to group the items on a request together  for AMIS reporting purposes. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "NO LAB COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO COUNT;",
+      "helpText": "If this field contains a '1' then this VAF 10-2529-3 is a request to another station to provide the item/service(s), and this station will take an  ADMINISTRATIVE count on this request, but no LAB count. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DATE ITEM RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the item was received to service the patient. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "NO COUNT WORK ORDER",
+      "dataType": "POINTER",
+      "rawType": "P664.2'",
+      "required": false,
+      "pointerTo": 664.2,
+      "helpText": "This is the work order that was used to create the No-Count VAF 10-2529-3. ",
+      "fieldNumber_": 34
+    }
+  ],
+  "fieldCount": 48,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "SUS", "field": },
+    {"name": "664.1", "field": .01, "type": "regular"},
+    {"name": "664.1", "field": .02, "type": "regular"},
+    {"name": "664.1", "field": .05, "type": "regular"},
+    {"name": "664.1", "field": 2, "type": "regular"},
+    {"name": "664.1", "field": 4, "type": "regular"},
+    {"name": "664.1", "field": 4, "type": "regular"},
+    {"name": "664.1", "field": 15, "type": "regular"},
+    {"name": "664.1", "field": 16, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

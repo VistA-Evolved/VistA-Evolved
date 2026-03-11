@@ -1,0 +1,70 @@
+{
+  "fileNumber": 165.2,
+  "fileName": "GEOCODES",
+  "globalRoot": "165.2I",
+  "globalReference": "^ONCO(165.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The SEER Geocode name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "GEOCODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The SEER Geocode 3-digit code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ISO COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the ISO (International Organization for Standardization) country code.  The code is an alphabetic code according to the ISO-3166-1 alpha-3 code listing. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "USPS STATE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the USPS State code, or for non-North American areas, it contains a special custom code. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "XREF",
+      "dataType": "SUBFILE",
+      "rawType": "165.21A",
+      "required": false,
+      "helpText": "CROSS REFERENCE. ",
+      "isMultiple": true,
+      "subFileNumber": 165.21,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "165.2", "field": .01, "type": "regular"},
+    {"name": "165.2", "field": .01, "type": "regular"},
+    {"name": "165.2", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W ?38,$P(^(0),U,2)"}
+  ]
+}

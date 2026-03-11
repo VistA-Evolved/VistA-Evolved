@@ -1,0 +1,88 @@
+{
+  "fileNumber": 345,
+  "fileName": "AR EDI CARC DATA",
+  "globalRoot": "345",
+  "globalReference": "^RC(345,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Claims Adjustment Reason Code ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Start Date is the date that the CODE was put into service. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STOP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date CODE was removed from service. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MODIFIED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the this entry was last updated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "345.04",
+      "required": false,
+      "helpText": "This is the long description of the code maintained by Washington  Publishing Company. ",
+      "isMultiple": true,
+      "subFileNumber": 345.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is any additional information provided by the Washington  Publishing Company. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECORD CHANGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field keeps track of the last time any of the fields within this  record has changed. A trigger should be set up on the other fields that  set this date time when the record was updated. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "345", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

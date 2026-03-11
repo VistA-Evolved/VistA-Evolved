@@ -1,0 +1,305 @@
+{
+  "fileNumber": 702.09,
+  "fileName": "CP INSTRUMENT",
+  "globalRoot": "702.09",
+  "globalReference": "^MDS(702.09,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name or mnemonic of instrument - used by vendor in HL7 message header. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NOTIFICATION MAILGROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field contains a pointer to a VA Mailman Mail Group that will  receive error messages and other notifications dealing with this device  from the interface routines. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a short informational description text for the instrument. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DELETE WHEN SUBMITTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Select 'Yes' if you want files created by this instrument deleted once they are successfully copied to the VistA Imaging Server.  Deletion will be performed by the VistA Imaging application. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PRINTABLE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of instrument that is printed on reports/etc. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT FILE EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Default file extension for vendor instrument reports (e.g. .doc .pdf). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Vendor serial number of the instrument (for reference only). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Whether or not the instrument is active on the network. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a Globally Unique IDentifier (GUID) for this instrument. This is  maintained nationally so it is the same throughout the enterprise.  A  sample ID could be \"{69DBD11E-9A8C-4ECE-AFA4-73947218807D}\". ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PROCESSING ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the MUMPS routine used to process interface information. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PROCESSING CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:Medicine;C:CP V1.0;O:CliO;",
+      "helpText": "This field indicates whether data from this instrument will upload  to the \"M\"edicine, \"C\"linical Procedures, or Clinical \"O\"bservations package for processing. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BI-DIRECTIONAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "'Yes' or 'No\" to indicate if this device can accept HL7 messages from VistA. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the IP address of this instrument. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the port number for this instrument. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "HL7 INSTRUMENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the actual device where the device name can be 'SMC St. Louis'.  This field is used to ID the device. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "HL7 UNIVERSAL SERVICE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field defines what type of procedure the device can perform if the device can perform more than one procedure. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "HL7 LOGICAL LINK",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "This field contains the HL7 Logical Link.  There is one unique link for each instrument.  Used to determine where the bi-directional messages are sent. (Reference IA #1496) ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "CP - DICOM INTEROPERABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No special action;1:Use VistA Imaging accession number sss-GMR-nnnnnnnn;2:Use VistA Imaging HL7 instead of CP's HL7;",
+      "helpText": "This option improves interoperability between Clinical Procedures and VistA Imaging CPRS Consult Request Tracking DICOM.  There are three capabilities:   First, the VistA Imaging consult accession number sss-GMR-nnnnnnnn can be used for the Clinical Procedures Instrument Order Number.    Second, the timing of the DICOM Modality Worklist creation is changed from order release to check-in, making it much more useful.   Third, the VistA Imaging HL7 message body can be used instead of the CP HL7 mes",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "SERVER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Network name of instrument server application that generates the attachments. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "SERVER SHARE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Share folder/drive on the instrument server where the report is stored. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "SERVER PATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Path on the network where the report is stored. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "SERVER EXECUTABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of server program that is ran to create the report for the interface. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .301,
+      "fieldName": "PROCESS UNC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces UNC type data. ",
+      "fieldNumber_": .301
+    },
+    {
+      "fieldNumber": .302,
+      "fieldName": "PROCESS TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces text type data. ",
+      "fieldNumber_": .302
+    },
+    {
+      "fieldNumber": .303,
+      "fieldName": "PROCESS URL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces URL type data. ",
+      "fieldNumber_": .303
+    },
+    {
+      "fieldNumber": .304,
+      "fieldName": "PROCESS DLL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces DLL type data. ",
+      "fieldNumber_": .304
+    },
+    {
+      "fieldNumber": .305,
+      "fieldName": "PROCESS UUENCODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes'  or 'No\" to indicate if this instrument produces UUENCODE type data. ",
+      "fieldNumber_": .305
+    },
+    {
+      "fieldNumber": .306,
+      "fieldName": "PROCESS XML",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces XML type data. ",
+      "fieldNumber_": .306
+    },
+    {
+      "fieldNumber": .307,
+      "fieldName": "PROCESS XMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "Enter 'Yes' or 'No' to indicate if this instrument produces XMS type data. ",
+      "fieldNumber_": .307
+    },
+    {
+      "fieldNumber": .401,
+      "fieldName": "CONSULT KEEP OPEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "fieldNumber_": .401
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "UC", "field": },
+    {"name": "702.09", "field": .01, "type": "regular"},
+    {"name": "702.09", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

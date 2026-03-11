@@ -1,0 +1,46 @@
+{
+  "fileNumber": 19620.61,
+  "fileName": "DSIR TYPE OF REQUEST",
+  "globalRoot": "19620.61",
+  "globalReference": "^DSIR(19620.61,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Caption for request types. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AVAILABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BOTH;F:FOIA ONLY;P:PRIVACY ACT ONLY;",
+      "helpText": "Set of values to determine when this type of request is available.  (FOIA request, Privacy Office request, or Both) ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "Detailed information about each type of request. ",
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.61", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

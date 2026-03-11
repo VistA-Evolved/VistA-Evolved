@@ -1,0 +1,626 @@
+{
+  "fileNumber": 120.85,
+  "fileName": "ADVERSE REACTION REPORTING",
+  "globalRoot": "120.85DIO",
+  "globalReference": "^GMR(120.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date/time that this observed reaction occurred. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "R*P2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is the patient to whom this observed reaction occurred. This field is a pointer to the Patient file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RELATED REACTION",
+      "dataType": "POINTER",
+      "rawType": "R*P120.8'O",
+      "required": true,
+      "pointerTo": 120.8,
+      "helpText": "This is the related reaction in the Patient Allergies (120.8) file for this event. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "OBSERVER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is the person who witnessed this reaction. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "DATE REPORTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is to track when a report is entered into this file. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "REPORTING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to track the user who entered the reaction.  It is a pointer to File 200. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REACTIONS",
+      "dataType": "POINTER",
+      "rawType": "120.8502P",
+      "required": false,
+      "helpText": "A list of signs/symptoms observed for this reaction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUSPECTED AGENT",
+      "dataType": "SUBFILE",
+      "rawType": "120.8503",
+      "required": false,
+      "helpText": "A list of suspected agents for this observed reaction. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8503,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RELEVANT TEST/LAB DATA",
+      "dataType": "SUBFILE",
+      "rawType": "120.8504",
+      "required": false,
+      "helpText": "A list of all the relevant test/lab data for this observed reaction. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8504,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUESTION #1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether or not a patient has died from this reaction. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QUESTION #2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether or not a patient was treated with a RX drug for this reaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "QUESTION #3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether or not the reaction caused a life threatening illness. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "QUESTION #4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether or not the patient had to visit a doctor or an ER because of this reaction. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "QUESTION #5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether this reaction required hospitalization. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "NO. DAY HOSPITALIZED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field shows the number of days the patient was hospitalized because of the reaction. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUESTION #6",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates if the patient had a prolonged hospitalization because of the reaction. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "QUESTION #7",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether or not the patient had some sort of permanent disability as a result of this reaction. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "QUESTION #8",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates whether the patient recovered from any illness that may have resulted from the reaction. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "QUESTION #9",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is to find out if the observed reaction was a Congenital Anomaly. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 12.2,
+      "fieldName": "QUESTION #10",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is to find out if this event required any intervention. ",
+      "fieldNumber_": 12.2
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CONCOMITANT DRUGS",
+      "dataType": "SUBFILE",
+      "rawType": "120.8513",
+      "required": false,
+      "helpText": "A list of all drugs that may have been taken at the time of the reaction. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8513,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "OTHER RELATED HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "120.8514",
+      "required": false,
+      "helpText": "This field contains any other related event history for this reaction. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8514,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "SEVERITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "This field indicates the severity of this reaction. ",
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE MD NOTIFIED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date the doctor was notified of this reaction. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FDA QUESTION #1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field determines if the reaction is considered serious. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "FDA QUESTION #2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This question determines whether this reaction is related to a new drug. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "FDA QUESTION #3",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This question determines whether this reaction was an unexpected reaction for this drug. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "FDA QUESTION #4",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This question determines whether this reaction is related to a therapeutic failure of the drug. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.1,
+      "fieldName": "FDA QUESTION #5",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is to track if the reaction was a dose related reaction. ",
+      "fieldNumber_": 26.1
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DATE REPORTED TO FDA",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field contains the date on which the FDA was sent the ADR report. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "DATE OF PATIENT CONSENT TO MFR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field is the date the patient had given his consent to have the reaction reported to the manufacturer. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DATE SENT TO MFR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": " This is the date when the report was sent to the manufacturer. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "*DATE SENT TO RCPM",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date when the report was sent to the regional offices. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DATE SENT TO VAERS",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field is the date when the report was sent to the VAERS. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "P&T ACTION FDA REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field indicates if the P&T committee determined whether to send the report to FDA. ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.2,
+      "fieldName": "P&T ACTION MFR REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field tells if the P&T committee determined whether to send the report to the manufacturer. ",
+      "fieldNumber_": 31.2
+    },
+    {
+      "fieldNumber": 31.3,
+      "fieldName": "*P&T ACTION RCPM REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field determines whether or not the P&T committee will send the report to the regional offices. ",
+      "fieldNumber_": 31.3
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "P&T ADDENDUM",
+      "dataType": "DATE",
+      "rawType": "120.85315D",
+      "required": false,
+      "helpText": "List of comments made by the P&T committee. ",
+      "isMultiple": true,
+      "subFileNumber": 120.85315,
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "REPORTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the name of the person filling out the reports. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "REPORTER ADDRESS1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line one of the address of the person filling out the report. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "REPORTER ADDRESS2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line two of the address of the person filling out the report. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "REPORTER ADDRESS3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Line three of the address of the person filling out the report. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "REPORTER CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The city where the person lives who is filling out the report. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "REPORTER STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state where the reporter resides. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "REPORTER ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code of the person filling out the report. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "REPORTER PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the person who is filling out the report. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "RPT QUESTION #1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field determines if the reporter is a health care provider. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "RPT QUESTION #2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field determines if the reporter wants to permit the FDA to inform the manufacturer of his identity. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 52.1,
+      "fieldName": "OCCUPATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the reporter's current occupation. ",
+      "fieldNumber_": 52.1
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "MANUFACTURER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the name of the manufacturer of the reactant. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "MFR ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is address line one for the manufacturer. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "MFR ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is address line two for the manufacturer. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "MFR ADDRESS #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is address line three for the manufacturer. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "MFR CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the city of the manufacturer. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "MFR STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is the state where the manufacturer is located. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "MFR ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Zip Code of the manufacturer. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "IND/NDA # FOR SUPPORT DRUG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IND/NDA # for support drug for the manufacturer. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "MFR CONTROL #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the control number used by the manufacturer. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DATE RECEIVED BY MFR",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the report was received by the manufacturer. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "REPORT SOURCE",
+      "dataType": "SET",
+      "rawType": "120.8563S",
+      "required": false,
+      "helpText": "This is the source of the report. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8563,
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "15 DAY REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is to determine if the 15 Day Report has been completed. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "REPORT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "i:INITIAL;f:FOLLOWUP;",
+      "helpText": "This is the type of report issued. ",
+      "fieldNumber_": 65
+    }
+  ],
+  "fieldCount": 62,
+  "crossReferences": [
+    {"name": "ARDT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "120.85", "field": .01, "type": "regular"},
+    {"name": "120.85", "field": .02, "type": "regular"},
+    {"name": "120.85", "field": .03, "type": "regular"},
+    {"name": "120.85", "field": 1.1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"\""},
+    {"field": WRITE, "value": "S GMRAHLPX=$P($G(^(0)),U,15),GMRAHLPX=\"   \"_$P($G(^GMR(120.8,+GMRAHLPX,0)),U,2) D EN^DDIOL(GMRAHLPX,\"\",\"?0\") S GMRAHLPX=$G(@(DIC_Y_\",0)\")) K GMRAHLPX"}
+  ]
+}

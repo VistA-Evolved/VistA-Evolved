@@ -1,0 +1,46 @@
+{
+  "fileNumber": 801.45,
+  "fileName": "REMINDER FINDING TYPE PARAMETER",
+  "globalRoot": "801.45",
+  "globalReference": "^PXRMD(801.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the type of finding. The options are:      CPT  Procedure     ED   Education    EX   Examination    HF   Health Factor    IM   Immunization    OI   Orderable Item    POV  Diagnosis     ST   Skin Test    VM   Vital Measurement ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATED GUI PROCESS",
+      "dataType": "POINTER",
+      "rawType": "P801.42'",
+      "required": false,
+      "pointerTo": 801.42,
+      "helpText": "This is the GUI process that supports processing of this type of finding. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESOLUTION STATUS DEFAULTS",
+      "dataType": "POINTER",
+      "rawType": "801.451P",
+      "required": false,
+      "helpText": "This multiple allows unique criteria to be set for default auto-generation of findings text to use to create a default reminder dialog. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "801.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "fileNumber": 704.1121,
+  "fileName": "OBS_FLOWSHEET_PAGE",
+  "globalRoot": "704.1121",
+  "globalReference": "^MDC(704.1121,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FLOWSHEET_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.112'",
+      "required": true,
+      "pointerTo": 704.112,
+      "helpText": "This field identifies the flowsheet that correlates to this file entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PAGE_ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field is the order of display for this view in the flowsheet (#.01). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VIEW_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.111'",
+      "required": true,
+      "pointerTo": 704.111,
+      "helpText": "This field identifies a page/view displayed via this flowsheet (#.01). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PAGE_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Mandatory;1:Optional;2:Supplemental;",
+      "helpText": "This field indicates how this view (#.03) will be utilized in this  flowsheet (#.01). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a name to override the default DISPLAY NAME (file #704.112,  field #.03).  This name will display when this page/view (#.03) is shown with this flowsheet (#.01).   A sample DISPLAY NAME could be \"NurseX ICU Monitoring\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SPECIAL_INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is free-text to provide a way to give additional instruction,  comment, or note about the use of this view (#.03) with this flowsheet  (#.01).  A sample SPECIAL INSTRUCTIONS value could be \"Pivot the page when  possible\". ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

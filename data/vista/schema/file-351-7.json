@@ -1,0 +1,58 @@
+{
+  "fileNumber": 351.7,
+  "fileName": "IB DM EXTRACT REPORTS",
+  "globalRoot": "351.7",
+  "globalReference": "^IBE(351.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REPORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the DM report from which data will be extracted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISABLE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' if you don't want this report's summary data extracted. The DM extraction background job will skip queueing this report. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INPUT VARIABLE",
+      "dataType": "SUBFILE",
+      "rawType": "351.702",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 351.702,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the entry point called by this report to extract the data that will be sent to the Extract Module. It is possible to enter a program (^ROUTINE), a specific label (TAG^ROUTINE) or leave it blank. When this field is left blank, no code will be invoked by this report to extract the data. This option should be used to allow the data for this report to be extracted by a program invoked by another report. This is intended to be used when there are two (or more) different reports that run",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "351.7", "field": .01, "type": "regular"},
+    {"name": "351.7", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

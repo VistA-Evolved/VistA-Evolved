@@ -1,0 +1,65 @@
+{
+  "fileNumber": 8984.1,
+  "fileName": "LOCAL KEYWORD",
+  "globalRoot": "8984.1I",
+  "globalReference": "^XT(8984.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A term or phrase that will be associated with a specific entry in a target file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENTRY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "  This field is a variable pointer to the file and entry with which the keyword is associated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This field holds the entry itself and is triggered by ENTRY field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ASSOCIATED FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "  This field contains the global root of the file associated with the keyword entry. It is TRIGGERED by the ENTRY field. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AIHS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "8984.1", "field": .01, "type": "regular"},
+    {"name": "8984.1", "field": .01, "type": "regular"},
+    {"name": "8984.1", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "8984.1", "field": .03, "type": "regular"},
+    {"name": "8984.1", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "fileNumber": 80.5,
+  "fileName": "DRG SURGICAL HIERARCHY",
+  "globalRoot": "80.5",
+  "globalReference": "^ICDRS(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Effective Date for these rules ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MDC",
+      "dataType": "POINTER",
+      "rawType": "80.51P",
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "80.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

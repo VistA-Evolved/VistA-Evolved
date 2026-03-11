@@ -1,0 +1,988 @@
+{
+  "fileNumber": 368,
+  "fileName": "HEALTH CARE CLAIM RFAI (277)",
+  "globalRoot": "368",
+  "globalReference": "^IBA(368,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Message Control ID field received from the FSC ASC X12N  health Care Claim Request For Additional Information (277) message.  The  value is received via the MSH-10 segment of the 277 HL message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Request Date/Time field received from the FSC ASC X12N health  Care Claim Request For Additional Information (277) message.  The value  is received via the RFI-1 segment of the 277 HL message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSACTION DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Transaction Date/Time field received from the FSC ASC X12N  health Care Claim Request For Additional Information (277) message.  The  value is received via the MSH-7 segment of the 277 HL message. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PAYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Name field received from the FSC ASC X12N health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-11.1 segment of the 277 HL message. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PAYER IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Identifier field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-11.3 segment of the 277 HL7 message. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PAYER CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Name field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-2.1 & CTD-2.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "PAYER CONTACT COMM TYPE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication Type 1 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "PAYER CONTACT COMM TYPE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication Type 2 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "PAYER CONTACT COMM TYPE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication Type 3 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "PAYER CONTACT COMMUNICATION 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 1 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.8 segment of the 277 HL7  message. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "PAYER CONTACT COMMUNICATION 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 2 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.8 segment of the 277 HL7  message. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "PAYER CONTACT COMMUNICATION 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 3 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.8 segments of the 277 HL7  message. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "INFORMATION RECEIVER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Information Receiver Name field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message. The value is received via the PYE-4.1, 5.1, 5.2, 5.3 & 5.4 segments of the 277 HL7 message. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "INFORMATION RECEIVER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Information Receiver ID field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the PYE-4 segment of the 277 HL7 message. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "SERVICE PROVIDER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider Name field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-10.1 segment of the 277 HL7 message. ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "SERVICE PROV FED TAXPAYER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider Federal Taxpayer Code field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-26 segment of the 277 HL7 message. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "SERVICE PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider ID field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-10.3 segment of the 277 HL7 message. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 9.01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient Name field received from the FSC ASC X12N Health Care  Claim Request For Additional Information (277) message.  The value is  received via the PID-5.1. 5.2, 5,3, 5,4 & 5.5 segments of the 277 HL7  message. ",
+      "fieldNumber_": 9.01
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "PATIENT PRIMARY IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient Primary Identifier field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the PID-3.1 segment of the 277 HL7 message. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "PATIENT CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient Control Number field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the PID-3.1 segment of the 277 HL7 message. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "PAYER CLAIM CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Claim Control Number field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "MEDICAL RECORD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Medical Record Number field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the PID-3.1 segment of the 277 HL7 message. ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "CLEARINGHOUSE TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Clearinghouse Trace Number field received from the FSC ASC  X12N health Care Claim Request For Additional Information (277)  message.  The value is received via the IVC-3.1 segment of the 277 HL  message. ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "RESPONSE DUE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Response Due Date field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the RFI-2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 12.02,
+      "fieldName": "REPORT TRANSMISSION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Report Transmission Code. ",
+      "fieldNumber_": 12.02
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "STC SEQ",
+      "dataType": "SUBFILE",
+      "rawType": "368.013",
+      "required": false,
+      "helpText": "This multiple will contain Claim Level Status Information from the STC  segment received from the FSC ASC X12N health Care Claim Request For  Additional Information (277) HL7 message. ",
+      "isMultiple": true,
+      "subFileNumber": 368.013,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14.03,
+      "fieldName": "CLAIM SERVICE START DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CLAIM SERVICE START DATE which is the first date from the  CLAIM SERVICE PERIOD. ",
+      "fieldNumber_": 14.03
+    },
+    {
+      "fieldNumber": 14.04,
+      "fieldName": "CLAIM SERVICE END DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the CLAIM SERVICE END DATE which is the last date from the  CLAIM SERVICE PERIOD. ",
+      "fieldNumber_": 14.04
+    },
+    {
+      "fieldNumber": 14.05,
+      "fieldName": "CLAIM SERVICE PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Claim Status Period field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the IVC-7 segment of the 277 HL7 message. ",
+      "fieldNumber_": 14.05
+    },
+    {
+      "fieldNumber": 15.01,
+      "fieldName": "PAYER RESPONSE CONTACT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Name field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-2.1 & 2.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 15.01
+    },
+    {
+      "fieldNumber": 16.01,
+      "fieldName": "PAYER RESP CONTACT COMM TYPE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication Type 1 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 16.01
+    },
+    {
+      "fieldNumber": 16.02,
+      "fieldName": "PAYER RESP CONTACT COMM TYPE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication Type 2 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 16.02
+    },
+    {
+      "fieldNumber": 16.03,
+      "fieldName": "PAYER RESP CONTACT COMM TYPE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication Type 3 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.1 & 5.2 segments of the 277 HL7 message. ",
+      "fieldNumber_": 16.03
+    },
+    {
+      "fieldNumber": 17.01,
+      "fieldName": "PAYER RESPONSE CONTACT COMM 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 1 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.8 segment of the 277 HL7 message. ",
+      "fieldNumber_": 17.01
+    },
+    {
+      "fieldNumber": 18.01,
+      "fieldName": "PAYER RESPONSE CONTACT COMM 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 2 field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the CTD-5.8 segment of  the 277 HL7 message. ",
+      "fieldNumber_": 18.01
+    },
+    {
+      "fieldNumber": 19.01,
+      "fieldName": "PAYER RESPONSE CONTACT COMM 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 3 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-5.8 segment of the 277 HL7 message. ",
+      "fieldNumber_": 19.01
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "PAYER RESP CONTACT ADDR LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Address Line 1 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-3.1 segment of the 277 HL7 message. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "PAYER RESP CONTACT ADDR LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Address Line 2 field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-3.2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "PAYER RESP CONTACT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact City field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-3.3 segment of the 277 HL7 message. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "PAYER RESP CONTACT STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact State field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-3.4 segment of the 277 HL7 message. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "PAYER RESP CONTACT ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Zip Code field received from the FSC  ASC X12N Health Care Claim Request For Additional Information (277)  message.  The value is received via the CTD-3.5 segment of the 277 HL7  message. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "PAYER RESP CONTACT COUNTRY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Country field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277) message.  The value is received via the CTD-3.6 segment of the 277 HL7 message. ",
+      "fieldNumber_": 20.06
+    },
+    {
+      "fieldNumber": 20.07,
+      "fieldName": "PAYER RESP CONT CNTRY SUBDIV",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Country Subdivision field received  from the FSC ASC X12N Health Care Claim Request For Additional  Information (277) message.  The value is received via the CTD-3.8 segment  of the 277 HL7 message. ",
+      "fieldNumber_": 20.07
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "STC-SVC LINE STAT INFO SEQ",
+      "dataType": "SUBFILE",
+      "rawType": "368.021",
+      "required": false,
+      "helpText": "This multiple field will contain Service Line Status Information  received from the FSC ASC X12N HEALTH Care Claim Request For Additional  Information (277) HL message. ",
+      "isMultiple": true,
+      "subFileNumber": 368.021,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22.03,
+      "fieldName": "PRIMARY LOINC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Primary LYNC field received from the FSC ASC X12N Health Care  Claim Request for Additional Information (277) message.  The value will  be populated with the LOINC code from the claim level if available,  otherwise the LOINC code from the line level. ",
+      "fieldNumber_": 22.03
+    },
+    {
+      "fieldNumber": 25.01,
+      "fieldName": "REFERENCE ID-INST TYPE OF BILL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Reference ID-Institutional Type of Bill field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the IVC-20.1 segment of the 277  HL7 message. ",
+      "fieldNumber_": 25.01
+    },
+    {
+      "fieldNumber": 26.01,
+      "fieldName": "PAYER CONTACT COMM 1 EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 1 Extension field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the CTD-5.7 segment of the 277  HL7 message. ",
+      "fieldNumber_": 26.01
+    },
+    {
+      "fieldNumber": 27.01,
+      "fieldName": "PAYER CONTACT COMM 2 EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 2 Extension field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the CTD-5.7 segment of the 277  HL7 message. ",
+      "fieldNumber_": 27.01
+    },
+    {
+      "fieldNumber": 28.01,
+      "fieldName": "PAYER CONTACT COMM 3 EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Communication 3 Extension field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the CTD-5.7 segment of the 277  HL7 message. ",
+      "fieldNumber_": 28.01
+    },
+    {
+      "fieldNumber": 29.01,
+      "fieldName": "PAYER RESP CONTACT COMM 1 EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 1 Extension field  received from the FSC ASC X12N Health Care Claim Request For Additional  Information (277) message.  The value is received via the CTD-5.8 segment  of the 277 HL7 message. ",
+      "fieldNumber_": 29.01
+    },
+    {
+      "fieldNumber": 30.01,
+      "fieldName": "PAYER RESP CONTACT COMM 2 EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 2 Extension field  received from the FSC ASC X12N Health Care Claim Request For Additional  Information (277) message.  The value is received via the CTD-5.8 segment  of the 277 HL7 message. ",
+      "fieldNumber_": 30.01
+    },
+    {
+      "fieldNumber": 31.01,
+      "fieldName": "PAYER RESP CONTACT COMM 3 EXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Communication 3 Extension field  received from the FSC ASC X12N Health Care Claim Request For Additional  Information (277) message.  The value is received via the CTD-5.8 segment  of the 277 HL7 message. ",
+      "fieldNumber_": 31.01
+    },
+    {
+      "fieldNumber": 80.01,
+      "fieldName": "PAYER ENTITY IDENTIFIER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Entity Identifier Code field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the IVC-11.10 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.01
+    },
+    {
+      "fieldNumber": 80.02,
+      "fieldName": "PAYER ENTITY TYPE QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Entity Type Qualifier field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the IVC-11.2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.02
+    },
+    {
+      "fieldNumber": 80.03,
+      "fieldName": "PAYER ID CODE QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer ID Code Qualifier field received from the FSC ASC X12N  Health Care Claim Request For Additional Information (277) message.  The  value is received via the IVC-11.7 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.03
+    },
+    {
+      "fieldNumber": 80.04,
+      "fieldName": "PAYER CONTACT FUNCTION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Function Code field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the CTD-2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.04
+    },
+    {
+      "fieldNumber": 80.05,
+      "fieldName": "INFORMATION RECEIVER ENTITY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Contact Function Code field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the PYE-2 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.05
+    },
+    {
+      "fieldNumber": 80.06,
+      "fieldName": "INFO RECEIVER ENTITY TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Information Receiver Entity Type field  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message ",
+      "fieldNumber_": 80.06
+    },
+    {
+      "fieldNumber": 80.07,
+      "fieldName": "INFO RECEIVER ID QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Information Receiver ID Qualifier field received from the FSC  ASC X12N Health Care Claim Request For Additional Information (277)  message.  The value is received via the PYE-4.7 segment of the 277 HL7  message. ",
+      "fieldNumber_": 80.07
+    },
+    {
+      "fieldNumber": 80.08,
+      "fieldName": "SERVICE PROV ENTITY ID CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Service Provider Entity ID Code received from  the FSC ASC X12N health Care Claim Request For Additional Information  (277) HL7 message. ",
+      "fieldNumber_": 80.08
+    },
+    {
+      "fieldNumber": 80.09,
+      "fieldName": "SERVICE PROV ENTITY TYPE QUAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider Entity Type Qualifier field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the IVC-10.2 segment of the 277  HL7 message. ",
+      "fieldNumber_": 80.09
+    },
+    {
+      "fieldNumber": 80.1,
+      "fieldName": "SERVICE PROVIDER ID QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Service Provider ID Qualifier field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the IVC-28 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.1
+    },
+    {
+      "fieldNumber": 80.11,
+      "fieldName": "PATIENT ENTITY IDENTIFIER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Patient Entity Identifier Code received from  the FSC ASC X12N health Care Claim Request For Additional Information  (277) HL7 message. ",
+      "fieldNumber_": 80.11
+    },
+    {
+      "fieldNumber": 80.12,
+      "fieldName": "PATIENT ENTITY TYPE QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Patient Entity Type Qualifier received from  the FSC ASC X12N health Care Claim Request For Additional Information  (277) HL7 message. ",
+      "fieldNumber_": 80.12
+    },
+    {
+      "fieldNumber": 80.13,
+      "fieldName": "PATIENT ID CODE QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Patient ID Code Qualifier received from the  FSC ASC X12N health Care Claim Request For Additional Information (277)  HL7 message. ",
+      "fieldNumber_": 80.13
+    },
+    {
+      "fieldNumber": 80.14,
+      "fieldName": "PAYER CLAIM TRACE TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Claim Trace Type Code field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the IVC-2.4 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.14
+    },
+    {
+      "fieldNumber": 80.18,
+      "fieldName": "REFERENCE ID QUALIFIER-PT CRTL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Reference ID Qualifier-Patient Control field received from  the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the IVC-1.4 segment of the 277  HL7 message. ",
+      "fieldNumber_": 80.18
+    },
+    {
+      "fieldNumber": 80.19,
+      "fieldName": "REFERENCE ID QUALIFIER-INST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Reference ID Qualifier-Institution field received from the FSC ASC X12N Health Care Claim Request For Additional Information (277)  message.  The value is received via the IVC-20.5 segment of the 277 HL7  message. ",
+      "fieldNumber_": 80.19
+    },
+    {
+      "fieldNumber": 80.2,
+      "fieldName": "REFERENCE ID QUALIFIER-MRN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Reference ID Qualifier - MRN received from  the FSC ASC X12N health Care Claim Request For Additional Information  (277) HL7 message. ",
+      "fieldNumber_": 80.2
+    },
+    {
+      "fieldNumber": 80.21,
+      "fieldName": "REFERENCE ID QUALIFIER-CTN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Reference ID Qualifier-CTN field received from the FSC ASC  X12N Health Care Claim Request For Additional Information (277) message.   The value is received via the IVC-3.4 segment of the 277 HL7 message. ",
+      "fieldNumber_": 80.21
+    },
+    {
+      "fieldNumber": 80.22,
+      "fieldName": "CLAIM SERVICE DT/TM QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Claim Service Date/Time Qualifier received  from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.22
+    },
+    {
+      "fieldNumber": 80.23,
+      "fieldName": "CLAIM SERV DT/TM PERIOD QUAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Claim Service Date/Time Period Qualifier  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.23
+    },
+    {
+      "fieldNumber": 80.24,
+      "fieldName": "RESPONSE DUE DT/TM QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Response Due Date/Time Qualifier received  from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.24
+    },
+    {
+      "fieldNumber": 80.25,
+      "fieldName": "RESPONSE DUE DT/TM PERIOD QUAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Response Due Date/Time Period Qualifier  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.25
+    },
+    {
+      "fieldNumber": 80.26,
+      "fieldName": "CLAIM SUPP INFO REPORT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Claim Supplemental Information Report Type field received from the FSC ASC X12N Health Care Claim Request For Additional Information  (277) message.  The value is received via the IVC-5 segment of the 277  HL7 message. ",
+      "fieldNumber_": 80.26
+    },
+    {
+      "fieldNumber": 80.27,
+      "fieldName": "PAYER RESP CONTACT FUNC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Payer Response Contact Function Code field received from the  FSC ASC X12N Health Care Claim Request For Additional Information (277)  message.  The value is received via the CTD-2 segment of the 277 HL7  message. ",
+      "fieldNumber_": 80.27
+    },
+    {
+      "fieldNumber": 80.29,
+      "fieldName": "SERVICE LINE DT/TM QUALIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Service Line Date/Time Qualifier field  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.29
+    },
+    {
+      "fieldNumber": 80.3,
+      "fieldName": "SERVICE LINE DT/TM PERIOD QUAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain the Service Line Date/Time Period Qualifier field  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "fieldNumber_": 80.3
+    },
+    {
+      "fieldNumber": 100.02,
+      "fieldName": "REQUEST DATE/TIME [D]",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is derived from the REQUEST DATE/TIME field (#.02). ",
+      "fieldNumber_": 100.02
+    },
+    {
+      "fieldNumber": 100.03,
+      "fieldName": "MESSAGE DATE/TIME [D]",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is derived from the MESSAGE DATE/TIME field (#.03). ",
+      "fieldNumber_": 100.03
+    },
+    {
+      "fieldNumber": 101.01,
+      "fieldName": "PAYER NAME [D]",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This field is derived from the PAYER NAME field (#1.01). ",
+      "fieldNumber_": 101.01
+    },
+    {
+      "fieldNumber": 102.01,
+      "fieldName": "PAYER CONTACT COMM TYPE 1 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER CONTACT COMMUNICATION TYPE 1 field  (#2.01). ",
+      "fieldNumber_": 102.01
+    },
+    {
+      "fieldNumber": 102.02,
+      "fieldName": "PAYER CONTACT COMM TYPE 2 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER CONTACT COMMUNICATION TYPE 2 field  (#2.02). ",
+      "fieldNumber_": 102.02
+    },
+    {
+      "fieldNumber": 102.03,
+      "fieldName": "PAYER CONTACT COMM TYPE 3 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER CONTACT COMMUNICATION TYPE 3 field  (#2.03).                                                          ",
+      "fieldNumber_": 102.03
+    },
+    {
+      "fieldNumber": 109.01,
+      "fieldName": "PATIENT NAME [D]",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is derived from the PATIENT NAME field (#9.01). ",
+      "fieldNumber_": 109.01
+    },
+    {
+      "fieldNumber": 111.01,
+      "fieldName": "PATIENT CONTROL NUMBER [D]",
+      "dataType": "POINTER",
+      "rawType": "P399'",
+      "required": false,
+      "pointerTo": 399,
+      "helpText": "This field is derived from the PATIENT CONTROL NUMBER field (#11.01). ",
+      "fieldNumber_": 111.01
+    },
+    {
+      "fieldNumber": 112.01,
+      "fieldName": "RESPONSE DUE DATE [D]",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is derived from the RESPONSE DUE DATE field (#12.01). ",
+      "fieldNumber_": 112.01
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "STC SEQ [D]",
+      "dataType": "SUBFILE",
+      "rawType": "368.0113A",
+      "required": false,
+      "helpText": "This field will contain the STC SEQ field received from the FSC ASC X12N  health Care Claim Request For Additional Information (277) HL7 message. ",
+      "isMultiple": true,
+      "subFileNumber": 368.0113,
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114.03,
+      "fieldName": "CLAIM SERVICE START DATE [D]",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CLAIM SERVICE START DATE which is the first date from the CLAIM SERVICE PERIOD. ",
+      "fieldNumber_": 114.03
+    },
+    {
+      "fieldNumber": 114.04,
+      "fieldName": "CLAIM SERVICE END DATE [D]",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the CLAIM SERVICE END DATE which is the last date from the CLAIM SERVICE PERIOD. ",
+      "fieldNumber_": 114.04
+    },
+    {
+      "fieldNumber": 116.01,
+      "fieldName": "PAYER RESP CONT COM TYPE 1 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER RESP CONTACT COMM TYPE 1 field  (#16.01). ",
+      "fieldNumber_": 116.01
+    },
+    {
+      "fieldNumber": 116.02,
+      "fieldName": "PAYER RESP CONT COM TYPE 2 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER RESP CONTACT COMM TYPE 2 field  (#16.02). ",
+      "fieldNumber_": 116.02
+    },
+    {
+      "fieldNumber": 116.03,
+      "fieldName": "PAYER RESP CONT COM TYPE 3 [D]",
+      "dataType": "POINTER",
+      "rawType": "P365.021'",
+      "required": false,
+      "pointerTo": 365.021,
+      "helpText": "This field is derived from the PAYER RESP CONTACT COMM TYPE 3 field  (#16.03). ",
+      "fieldNumber_": 116.03
+    },
+    {
+      "fieldNumber": 120.04,
+      "fieldName": "PAYER RESP CONTACT ADDR ST [D]",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is derived from the PAYER RESPONSE CONTACT ADDRESS STREET  field (#20.04). ",
+      "fieldNumber_": 120.04
+    },
+    {
+      "fieldNumber": 120.05,
+      "fieldName": "PAYER RESP CONT POSTAL/ZIP [D]",
+      "dataType": "POINTER",
+      "rawType": "P5.11'",
+      "required": false,
+      "pointerTo": 5.11,
+      "helpText": "This field is derived from the PAYER RESPONSE CONTACT POSTAL/ZIP field  (#20.05). ",
+      "fieldNumber_": 120.05
+    },
+    {
+      "fieldNumber": 120.06,
+      "fieldName": "PAYER RESP CONTACT COUNTRY [D]",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "This field is derived from the PAYER RESPONSE CONTACT COUNTRY field  (#20.06). ",
+      "fieldNumber_": 120.06
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "STC-SVC LINE STAT INFO SEQ [D]",
+      "dataType": "SUBFILE",
+      "rawType": "368.0121A",
+      "required": false,
+      "helpText": "This field will contain the STC-SVC Line Status Information Seq field  received from the FSC ASC X12N health Care Claim Request For Additional  Information (277) HL7 message. ",
+      "isMultiple": true,
+      "subFileNumber": 368.0121,
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 200.01,
+      "fieldName": "DELETED FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Not Deleted;1:Deleted;",
+      "helpText": "Used to flag the Message as being manually deleted (1) or still active  (0). ",
+      "fieldNumber_": 200.01
+    },
+    {
+      "fieldNumber": 200.02,
+      "fieldName": "DELETED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used to record the date/time the message was manually deleted. ",
+      "fieldNumber_": 200.02
+    },
+    {
+      "fieldNumber": 200.03,
+      "fieldName": "DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who manually deleted the message. ",
+      "fieldNumber_": 200.03
+    },
+    {
+      "fieldNumber": 200.04,
+      "fieldName": "REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT BEING REVIEWED;1:REVIEW IN PROCESS;",
+      "helpText": "Select code that indicates whether this claim is under review. ",
+      "fieldNumber_": 200.04
+    },
+    {
+      "fieldNumber": 200.05,
+      "fieldName": "REVIEW STATUS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used to indicate the date/time the message was marked in progress. ",
+      "fieldNumber_": 200.05
+    },
+    {
+      "fieldNumber": 200.06,
+      "fieldName": "REVIEW STATUS BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Used to indicated the user who marked the message as in progress. ",
+      "fieldNumber_": 200.06
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "RFAI WORKLIST COMMENTS",
+      "dataType": "DATE",
+      "rawType": "368.0201D",
+      "required": false,
+      "helpText": "This multiple is used to store notes by date entered that explain what work needs to done before the message can be manually deleted.  ",
+      "isMultiple": true,
+      "subFileNumber": 368.0201,
+      "fieldNumber_": 201
+    }
+  ],
+  "fieldCount": 104,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "368", "field": .01, "type": "regular"},
+    {"name": "368", "field": .03, "type": "regular"},
+    {"name": "368", "field": 111.01, "type": "regular"},
+    {"name": "368", "field": 200.01, "type": "regular"},
+    {"name": "", "field": 200.04, "type": "regular"},
+    {"name": "", "field": 200.04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

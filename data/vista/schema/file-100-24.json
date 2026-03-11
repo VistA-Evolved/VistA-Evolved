@@ -1,0 +1,39 @@
+{
+  "fileNumber": 100.24,
+  "fileName": "OE/RR PT SEL COMBO",
+  "globalRoot": "100.24",
+  "globalReference": "^OR(100.24,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field stores the IEN (from the NEW PERSON file) of the user of this Combination. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMBINATION ITEM",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "100.241V",
+      "required": false,
+      "helpText": "This is the sub-file multiple for the combination source entries. ",
+      "isMultiple": true,
+      "subFileNumber": 100.241,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "100.24", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

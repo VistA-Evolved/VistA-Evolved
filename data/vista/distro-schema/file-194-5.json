@@ -1,0 +1,97 @@
+{
+  "fileNumber": 194.5,
+  "fileName": "LABEL PRINT FIELD",
+  "globalRoot": "194.5I",
+  "globalReference": "^DIC(194.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRINT FIELD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This defines the data which may be printed on the label. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE OF LABEL",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "r:RECORD or REQUEST;a:ALL;q:REQUEST;b:BORROWER;",
+      "helpText": "This defines labels which are allowed to print the data. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows free text to be printed whenever this data is printed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TEST VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines data which is displayed when testing the label format. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INTERNAL VARIABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the variable which contains the data and is printed by the executable code in the Label format. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BARCODED FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Yes means this data will be printed as barcode in the label format. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "194.51P",
+      "required": false,
+      "helpText": "This defines where the data for the print field comes from. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MUMPS CODE TO SET VARIABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXI",
+      "required": false,
+      "helpText": "This is the logic used to set the internal variable for printing in the label format. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "194.5", "field": .01, "type": "regular"},
+    {"name": "194.5", "field": 2, "type": "regular"},
+    {"name": "194.5", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"\""}
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "fileNumber": 603.03,
+  "fileName": "CLOZAPINE PARAMETERS",
+  "globalRoot": "603.03",
+  "globalReference": "^YSCL(603.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "CLOZAPINE:CLOZAPINE;",
+      "helpText": "This file will hold the configuration parameters for the Clozapine reporting system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TRANSMISSION DAY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "SUNDAY:SUNDAY;MONDAY:MONDAY;TUESDAY:TUESDAY;WEDNESDAY:WEDNESDAY;THURSDAY:THURSDAY;FRIDAY:FRIDAY;SATURDAY:SATURDAY;",
+      "helpText": "This is the day of the week when the transmission should occur.  Normally this is set to TUESDAY, but may be changed to accommodate special circumstances. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEBUG MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSMISSION START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the start date and time of the most recent transmission. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TRANSMISSION END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time when the most recent transmission was completed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST DEMOGRAPHICS TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time when the most recent demographics transmission was completed. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LOCK DOWN",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RX LAB PROD LISTENER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the server address where the Clozapine order information and  patient blood test results get sent ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEMOGRAPHIC PROD LISTENER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the server address where the Clozapine Patient demographic  information get sent ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RX LAB TEST LISTENER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the test server address or MailMan group where the Clozapine  order information and Patient blood test results get sent ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DEMOGRAPHIC TEST LISTENER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the test server address or MailMan group where the Clozapine  Patient demographic information get sent ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LAB LOOKBACK DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the default number of days to look back for retrieving lab  results when sending Clozapine-related HL7 messages to the National  Clozapine Registry. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DISCONTINUE LOOKBACK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If a Clozapine patient has not received a Clozapine prescription after  this number of days, they will be automatically discontinued. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "HL7 TRANSMISSION START",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the Clozapine HL7 message transmission started.  This field will be updated by the options Clozapine HL7 Message Transmission [YSCL HL7 CLOZ TRANSMISSION] and Retransmit Clozapine HL7 Messages [YSCL HL7 CLOZ RETRANSMIT]. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "HL7 TRANSMISSION END",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the Clozapine HL7 message transmission finished.  This field will be updated by the options Clozapine HL7 Message Transmission [YSCL HL7 CLOZ TRANSMISSION] and Retransmit Clozapine HL7 Messages [YSCL HL7 CLOZ RETRANSMIT]. ",
+      "fieldNumber_": 20.02
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "603.03", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

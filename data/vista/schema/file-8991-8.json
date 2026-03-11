@@ -1,0 +1,67 @@
+{
+  "fileNumber": 8991.8,
+  "fileName": "DEA BUSINESS ACTIVITY CODES",
+  "globalRoot": "8991.8",
+  "globalReference": "^XTV(8991.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FULL BUSINESS ACTIVITY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ4",
+      "length": 4,
+      "required": true,
+      "helpText": "DEA uses an alpha character business activity code to identify various  categories of registrants. For example business activity code \"C\"  indicates a \"Practitioner\". DEA added a business activity sub-code field  to identify new sub-categories of registrants. For example business activity code \"C\" in combination with business activity sub-code \"1\" indicates a practitioner who has received a Drug Addiction Treatment Act (DATA) Waiver (DATA Waived or DW) to provide office based opioid treatment to",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BUSINESS ACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "This field holds the Business Activity value used for DEA numbers. This  value can currently be one of the following: A,B,C,D,E,F,G,H,J,K,L,M,N,P,R,S,T or U   This value, combined with a numeric business sub-type, categorizes a DEA  number. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BUSINESS ACTIVITY SUB-CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "DEA uses an alpha character business activity code to identify various  categories of registrants. For example business activity code \"C\"  indicates a \"Practitioner\". DEA added a business activity sub-code field to identify new sub-categories of registrants. For example business activity code \"C\" in combination with business activity sub-code \"1\" indicates a practitioner who has received a Drug Addiction Treatment Act (DATA) Waiver (DATA Waived or DW) to provide office based opioid treatment to ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BUSINESS ACTIVITY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "This is the description given for the Business Activity Code and Sub-code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MANUAL ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field should only be populated when a new Business Activity Code (BAC) is entered manually due to the failure of the PSO DOJ/DEA WEB  SERVICE to establish a connection to the DOJ web server. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8991.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

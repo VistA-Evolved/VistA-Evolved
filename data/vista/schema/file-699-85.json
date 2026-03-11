@@ -1,0 +1,41 @@
+{
+  "fileNumber": 699.85,
+  "fileName": "FOLLOWUP DEVICE/THERAPY",
+  "globalRoot": "699.85",
+  "globalReference": "^MCAR(699.85,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to store a list of follow-up devices and therapies applicable to Endoscopies. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PACKAGE USE",
+      "dataType": "SET",
+      "rawType": "699.851SA",
+      "required": false,
+      "helpText": "This field is used to determine whether the follow-up device/therapy is applicable to GI Endoscopies, Pulmonary Endoscopies or both. ",
+      "isMultiple": true,
+      "subFileNumber": 699.851,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "699.85", "field": .01, "type": "regular"},
+    {"name": "699.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

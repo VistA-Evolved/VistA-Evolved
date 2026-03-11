@@ -1,0 +1,173 @@
+{
+  "fileNumber": 9002313.99,
+  "fileName": "BPS SETUP",
+  "globalRoot": "9002313.99",
+  "globalReference": "^BPS(9002313.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE SITE LAST REGISTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is automatically populated every time the site is registered.  The  date/time in this field is the last time a registration message was  transmitted to Austin for this site. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INSURER ASLEEP INTERVAL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the number of minutes to retry claims for a payer sheet while the  payer is identified as being unavailable to process claims.   0 = do not implement asleep processes. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INSURER ASLEEP RETRIES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the number of times an asleep probe should be done on a payer  before the claims are marked as Rejected.   0 = Asleep process turned off ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE SITE LAST CONFIRMED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is populated every time the site is confirmed registered by  Austin.  This is automatically populated when the application ACK message is returned from Austin. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DEFAULT ELIGIBILITY PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P9002313.56'",
+      "required": false,
+      "pointerTo": 9002313.56,
+      "helpText": "This is the default BPS PHARMACY that will be used for eligibility verification submissions when the submission is not associated with an RX/Fill. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "ECME TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the maximum number of seconds used for the display of the claims processing status.  After this time, claims processing will continue but the user will not see messages indicating the progress of the claim. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "PAYER RESPONSE TEST MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "This field enables the testing of Payer Response Overrides - 1 for On, 0  (or \"\") for Off.  This should never be ON at a production site. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 2341.01,
+      "fieldName": "WINNOW TESTING FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag controls whether purging is really done or just in test mode.   YES sets test mode on and NO enables purging. ",
+      "fieldNumber_": 2341.01
+    },
+    {
+      "fieldNumber": 2341.03,
+      "fieldName": "WINNOW BPS LOG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Number of days of the BPS LOG to keep on the system. ",
+      "fieldNumber_": 2341.03
+    },
+    {
+      "fieldNumber": 2500,
+      "fieldName": "CERTIFIER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Contains the name of the person performing certification. ",
+      "fieldNumber_": 2500
+    },
+    {
+      "fieldNumber": 6000,
+      "fieldName": "SITE CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Site Contact for Vitria.  Usually an IT staff person. ",
+      "fieldNumber_": 6000
+    },
+    {
+      "fieldNumber": 6001,
+      "fieldName": "ALTERNATE SITE CONTACT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the Alternate Contact person for the site in relation  to Vitria. ",
+      "fieldNumber_": 6001
+    },
+    {
+      "fieldNumber": 6003,
+      "fieldName": "VITRIA INTERFACE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Vitria supplied interface version number. ",
+      "fieldNumber_": 6003
+    },
+    {
+      "fieldNumber": 9999,
+      "fieldName": "SITE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:VA;1:IHS;",
+      "helpText": "This field is used to determine whether the site is a Veterans Administration site or and Indian Health Services Site.  Based on this  answer, the ECME system will process in two different manners with respect to claims generation and data collection methods. ",
+      "fieldNumber_": 9999
+    },
+    {
+      "fieldNumber": 10000,
+      "fieldName": "LAST SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Used to sequence the transmission ID's to ensure they are unique for the  site. ",
+      "fieldNumber_": 10000
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

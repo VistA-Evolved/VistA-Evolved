@@ -1,0 +1,163 @@
+{
+  "fileNumber": 62,
+  "fileName": "COLLECTION SAMPLE",
+  "globalRoot": "62I",
+  "globalReference": "^LAB(62,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the collection sample. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEFAULT SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "P61'",
+      "required": false,
+      "pointerTo": 61,
+      "helpText": "This is the specimen that will appear as the default specimen for this collection sample.  This does not preclude other specimens from being used but, rather, if it is the most frequently used one, it will save time and keystrokes for the user.  collection sample.  This does not preclude other specimens from being used  but, rather, if it is the most frequently used one, it will save  time  and keystrokes for the user. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TUBE TOP COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The common color description of the tube used for this sample. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VOLUME LARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The volume required for this sample. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VOLUME SMALL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The volume required for this sample if an alternate small tube is used. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAB SECTION",
+      "dataType": "POINTER",
+      "rawType": "P62.2",
+      "required": false,
+      "pointerTo": 62.2,
+      "helpText": "The functional section of the lab that this sample is associated with. Points to FILE #62.2. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CAN LAB COLLECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If the Lab is allowed to collect this sample, this field must contain a YES entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "62.01A",
+      "required": false,
+      "helpText": "This is a multiple field.  Enter synonyms, abbreviations, or common misspellings of this sample. ",
+      "isMultiple": true,
+      "subFileNumber": 62.01,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SNOMED CT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the SNOMED CT concept identifier for this entry. If this entry is null then the entry is either unmapped or no valid SNOMED concept term exists to map this term.   This field is only editable by the Lab software. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SCT CODE STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "P:PREFERRED TERM;S:SYNONYM;L:LOCAL;R:REFERRED;X:NO APPLICABLE MAPPING;LN:NEW TERM PENDING LEXICON UPDATE;RN:STS REQUEST NEW CODE;E:ERROR;",
+      "helpText": "This field indicate the status or disposition of this entry.  P  = SNOMED Preferred term  S  = SNOMED Synonym term  L  = Local spelling of a SNOMED term (miss-spelled)  R  = Referred to national coders to determine if acceptable  X  = No applicable mapping  LN = New term pending LEXICON release/update.  RN = STS Request New Code  E  = Error encountered when applying STS disposition to file entry.  ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SCT TOP CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field Identifies the SNOMED CT top level concept for this SNOMED code. This is useful to determine the proper code when the spelling of the terms are identical but have different concept (meaning). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SCT STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "62.023DA",
+      "required": false,
+      "helpText": "This field track the status of terms referred to the STS team to determine if this code is a valid VHA SNOMED SCT term. ",
+      "isMultiple": true,
+      "subFileNumber": 62.023,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 64.9101,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on or after which the entry will no longer be active.  Inactive entries will not be available for selection in CPRS nor be able to be associated with a test in the LABORATORY TEST file (#60). ",
+      "fieldNumber_": 64.9101
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "COLLECTION WKLD CODE",
+      "dataType": "POINTER",
+      "rawType": "62.02PA",
+      "required": false,
+      "helpText": " This field is used for those unique situations when an accession WKLD code can not be used. For example Bacterial culture test. By using this field you don't have to enter collection samples in file 60 (LABORATORY TEST). ",
+      "fieldNumber_": 500
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "62", "field": .01, "type": "regular"},
+    {"name": "62", "field": 3, "type": "regular"},
+    {"name": "62", "field": 20, "type": "regular"},
+    {"name": "62", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$S($D(^LAB(61,+$P(^(\"0\"),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

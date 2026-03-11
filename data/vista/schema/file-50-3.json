@@ -1,0 +1,69 @@
+{
+  "fileNumber": 50.3,
+  "fileName": "PRIMARY DRUG",
+  "globalRoot": "50.3I",
+  "globalReference": "^PS(50.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RXF",
+      "required": true,
+      "helpText": "  This is the name of a drug used by this site.  Primary drug is used to allow order entry to be easier for non-pharmacy personnel and for display. THIS NAME MUST BE NAME ONLY, WITH NO DOSAGE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEA, SPECIAL HANDLING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is used to designate any special handling that may apply to this primary drug. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is any information that the pharmacy wants to convey to users who select this drug.  Common messages include restrictions that may have been placed on the drug. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICATION",
+      "dataType": "SUBFILE",
+      "rawType": "50.31O",
+      "required": false,
+      "helpText": "  This is the [DHCP] applications that may make use of this primary drug. This can be used by the applications as a screen, and allows the applications to edit information about the drug that is specific to the application. ",
+      "isMultiple": true,
+      "subFileNumber": 50.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "50.32",
+      "required": false,
+      "helpText": "  This allows alternate names, such as trade names, to be entered for primary drugs, allowing primary drugs to be selected by the alternate  names. ",
+      "isMultiple": true,
+      "subFileNumber": 50.32,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AIU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "50.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

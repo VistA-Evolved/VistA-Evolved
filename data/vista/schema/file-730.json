@@ -1,0 +1,88 @@
+{
+  "fileNumber": 730,
+  "fileName": "NATIONAL SERVICE",
+  "globalRoot": "730",
+  "globalReference": "^ECC(730,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "Free-text name of this national service. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROUTING SYMBOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Routing symbol for national service selected. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCAL SERVICE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Does this service exist at the local site?  If so, answer with a \"Y\" or \"1\", if not, answer with \"N\", \"0\", or press return. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DSS SERVICE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "DSS National Service Code for clinical services.  Data is provided by DSS Bedford Technical Service Office and is not editable by the  local site. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VA COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "VA Cost Center associated with the service.  Data is provided by DSS Bedford Technical Service Office and is not editable by the  local site. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "T&L UNIT",
+      "dataType": "POINTER",
+      "rawType": "730.01PA",
+      "required": false,
+      "helpText": "Identify the T&L units which are associated with this 'local' service. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 747,
+      "fieldName": "GENERAL PRIVILEGE",
+      "dataType": "SUBFILE",
+      "rawType": "730.0747",
+      "required": false,
+      "helpText": "General Privilege associated with this National Service.  Used by the Credentials Tracking module of the Quality Assurance package. ",
+      "isMultiple": true,
+      "subFileNumber": 730.0747,
+      "fieldNumber_": 747
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ALS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "730", "field": .01, "type": "regular"},
+    {"name": "730", "field": 2, "type": "regular"},
+    {"name": "730", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "fileNumber": 451.1,
+  "fileName": "NURSE ROLE",
+  "globalRoot": "451.1",
+  "globalReference": "^PRSN(451.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains a key containing values for cost center,  budget object code, occupation series and assignment code.  For entries  that contain the asterisk character, the employee can have any value for  these fields in file 450 and therefore match the entry in this file.   The following example shows how to interpret the codes: Example:  Code * 61 0610 88  The code is composed of 4 parts separated  by spaces.   Part 1=Cost Center. The \"*\" in this position indicates that any  cost center is",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ROLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Nurse Role describes nursing personnel who have patient care  responsibilities/assignments. Examples include direct care staff,  hospital support staff, advanced practice staff. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASSIGNMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Nursing personnel are assigned to particular job positions suitable for  their roles. The positions are identified by assignment codes which are  included as the fourth portion of the .01 field in this file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DC:DIRECT CARE;HS:HOSPITAL SUPPORT (CONSULTIVE);AP:ADVANCED PRACTICE;AN:ADMINISTRATIVE;AT:ACADEMIC/TRAINEE;",
+      "helpText": "Category is a high level designation for a health care employee skill mix. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "451.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

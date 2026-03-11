@@ -1,0 +1,97 @@
+{
+  "fileNumber": 19620.8,
+  "fileName": "DSIR BILLING TYPE",
+  "globalRoot": "19620.8",
+  "globalReference": "^DSIR(19620.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUESTOR_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP19620.7'",
+      "required": true,
+      "pointerTo": 19620.7,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NUM_FREE_REQUESTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the maximum number of free requests a requestor type may enter for a given patient per year ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FREE_PAGES_PER_REQ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the maximum number of pages this given requestor type may be given for free on each request. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COST_PER_PAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the cost this requestor type will be charged per page. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROCESSING_FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the processing fee charged per request. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLERK_COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount this requestor will be charged for the clerk's time. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "MINIMUM_CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the minimum amount this requestor type will be charged for a request. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ALWAYS_CHARGE_MINIMUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If this is set to \"Yes\", the requestor will always be charged at least the minimum amount, whether the actual cost of the request is smaller than the minimum amount or not. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

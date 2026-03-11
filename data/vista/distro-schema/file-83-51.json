@@ -1,0 +1,55 @@
+{
+  "fileNumber": 83.51,
+  "fileName": "DRG PDX EXCLUSION GROUPS",
+  "globalRoot": "83.51",
+  "globalReference": "^ICDD(83.51,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PDX EXCLUSION ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Principal Diagnosis Exclusion Group Identifier.  This is the link with the  Secondary Diagnosis Attribute PDX Exclusion. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINCIPAL DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "The Diagnosis assigned to the PDX Exclusion Group.  If assigned as the  patient records Principal Diagnosis then any Secondary Diagnosis with this  Exclusion Group Attribute does not impart either MCC or CC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The first date this diagnosis is active in the PDX Exclusion Group. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last this diagnosis is active in the PDX Exclusion Group. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "83.51", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ICD9(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(80,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

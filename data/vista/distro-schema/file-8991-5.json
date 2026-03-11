@@ -1,0 +1,67 @@
+{
+  "fileNumber": 8991.5,
+  "fileName": "XQAB ERRORS LOGGED",
+  "globalRoot": "8991.5",
+  "globalReference": "^XTV(8991.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Routine were the error occurred. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "OPTION IN USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF ERROR",
+      "dataType": "DATE",
+      "rawType": "8991.51DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8991.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "ERR", "field": },
+    {"name": "OPTS", "field": },
+    {"name": "ROU", "field": },
+    {"name": "8991.5", "field": .01, "type": "regular"},
+    {"name": "8991.5", "field": .02, "type": "regular"},
+    {"name": "8991.5", "field": .03, "type": "regular"},
+    {"name": "8991.5", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

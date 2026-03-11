@@ -1,0 +1,87 @@
+{
+  "fileNumber": 704.105,
+  "fileName": "TERM_UNIT_PAIR",
+  "globalRoot": "704.105",
+  "globalReference": "^MDC(704.105,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies the Observation in this \"observation/unit\" pair. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "UNIT_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies the Unit in this \"observation/unit\" pair.       ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MIN_VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,7",
+      "length": 17,
+      "required": false,
+      "helpText": "This field contains the minimum value that can be entered for this  observation/unit pair. A sample could be \"-1\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAX_VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,7",
+      "length": 17,
+      "required": false,
+      "helpText": "This field contains the maximum value that can be entered for this  observation/unit pair. A sample could be \"31\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEC_PRECISION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the maximum decimal precision that can be entered for this  observation/unit pair. A sample could be \"0\".  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REFERENCE_LOW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This is the value for this observation/unit pair that will cause  Clinical Flowsheets to interpret the observed value as \"low\". A sample REFERENCE LOW could be \"0\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REFERENCE_HIGH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,9",
+      "length": 19,
+      "required": false,
+      "helpText": "This is the value for this observation/unit pair that will cause  Clinical Flowsheets to interpret the observed value as \"high\". A sample REFERENCE HIGH could be \"30\". ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

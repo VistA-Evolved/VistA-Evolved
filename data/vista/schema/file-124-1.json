@@ -1,0 +1,48 @@
+{
+  "fileNumber": 124.1,
+  "fileName": "GMRG PARAMETERS",
+  "globalRoot": "124.1",
+  "globalReference": "^GMRD(124.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The entry in this field can only be 'HOSPITAL', and there can only be one entry in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PACKAGE PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "124.11",
+      "required": false,
+      "helpText": "Package configurable parts of the GMRG package. ",
+      "isMultiple": true,
+      "subFileNumber": 124.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GMR TEXT FILE PURGE TASK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "If there is data in this field, it contains the task number of the job currently running the GMR Text file purge. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "124.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

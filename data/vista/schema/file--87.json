@@ -1,0 +1,56 @@
+{
+  "fileNumber": .87,
+  "fileName": "DATA TYPE METHOD",
+  "globalRoot": ".87",
+  "globalReference": "^DI(.87,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,2",
+      "length": 16,
+      "required": false,
+      "helpText": "This NUMBER should be number-spaced to your institution, if you create a new one. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This NAME will appear in a list of METHODs  (e.g., \"INPUT TRANSFORM\") ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This should tell briefly what the METHOD is used for. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".871",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .871,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".87", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

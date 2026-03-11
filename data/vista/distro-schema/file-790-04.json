@@ -1,0 +1,49 @@
+{
+  "fileNumber": 790.04,
+  "fileName": "WV PAP REGIMEN LOG",
+  "globalRoot": "790.04",
+  "globalReference": "^WV(790.04,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date this PAP regimen was started. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P790'",
+      "required": false,
+      "pointerTo": 790,
+      "helpText": "This field stores the name of the patient associated with the PAP regimen. Pointer to WV Patient (#790) file.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PAP REGIMEN",
+      "dataType": "POINTER",
+      "rawType": "P790.03'",
+      "required": false,
+      "pointerTo": 790.03,
+      "helpText": "This field contains the patient's PAP regimen. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "790.04", "field": .01, "type": "regular"},
+    {"name": "790.04", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

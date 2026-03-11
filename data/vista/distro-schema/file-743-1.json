@@ -1,0 +1,94 @@
+{
+  "fileNumber": 743.1,
+  "fileName": "FALL OUT",
+  "globalRoot": "743.1PI",
+  "globalReference": "^QA(743.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is a pointer to the patient file.  This field holds an actual patient from the patient file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MONITOR",
+      "dataType": "POINTER",
+      "rawType": "P743'",
+      "required": false,
+      "pointerTo": 743,
+      "helpText": "This field contains the name of the monitor that the patient fell out under. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EVENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the event date for this patient and this monitor. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE RECORD CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "For auto enrolled fall outs this is the date auto enroll ran for. For manually entered fall outs this is the date the fall out was entered. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA",
+      "dataType": "POINTER",
+      "rawType": "743.11PA",
+      "required": false,
+      "helpText": "This is a pointer to the DATA ELEMENT file.  Enter a valid data element. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "AUDIT",
+      "dataType": "POINTER",
+      "rawType": "P740.5'",
+      "required": false,
+      "pointerTo": 740.5,
+      "helpText": "This is a pointer to the audit file entry for this fall out record. The audit file contains data on what was done to this record and when it was done. ",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AA3", "field": },
+    {"name": "AB1", "field": },
+    {"name": "AB2", "field": },
+    {"name": "AB3", "field": },
+    {"name": "ADRC", "field": },
+    {"name": "AUDIT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "743.1", "field": .01, "type": "regular"},
+    {"name": "743.1", "field": .01, "type": "regular"},
+    {"name": "743.1", "field": .01, "type": "regular"},
+    {"name": "743.1", "field": .02, "type": "regular"},
+    {"name": "743.1", "field": .02, "type": "regular"},
+    {"name": "743.1", "field": .02, "type": "regular"},
+    {"name": "743.1", "field": .03, "type": "regular"},
+    {"name": "743.1", "field": .03, "type": "regular"},
+    {"name": "743.1", "field": .04, "type": "regular"},
+    {"name": "743.1", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^QA(743,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(743,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)_$E($P(\"@\"_$P($P(^(0),\"^\",3),\".\",2)_\"000000\",\"^\",$P(^(0),\"^\",3)[\".\"),1,7)"}
+  ]
+}

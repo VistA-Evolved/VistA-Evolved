@@ -1,0 +1,177 @@
+{
+  "fileNumber": 3.8,
+  "fileName": "MAIL GROUP",
+  "globalRoot": "3.8I",
+  "globalReference": "^XMB(3.8,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of a mail group, i.e. a list of recipients who can all be addressed at once by reference to this name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MEMBER",
+      "dataType": "POINTER",
+      "rawType": "3.81P",
+      "required": false,
+      "helpText": "A member of a Mail Group is a user to whom messages will be sent when the message is addressed to this mail group. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "3.801",
+      "required": false,
+      "helpText": "The definition and/or purpose of this mail group. ",
+      "isMultiple": true,
+      "subFileNumber": 3.801,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "PU:public;PR:private;",
+      "helpText": "The type of mail group determines who can send mail to it. Provided there are no AUTHORIZED SENDERS specified, anyone can send mail to a public group and only its members can send mail to a private group. If there are AUTHORIZED SENDERS specified, only those users can address the group. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORGANIZER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who has the privileges of an \"Organizer\" for the mail group. For example, an organizer can add new members to a \"Private\" mail group. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used as a screen when a user tries to edit a mail group that he is a coordinator of.  If the screen fails and the user does not hold the XMMGR key, he cannot edit the mail group.   Even if the coordinator is REMOVED from the Mail System, this field will remain to indicate who created the Mail Group if others can use it.  If it is a Personal Group, it will be deleted. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "AUTHORIZED SENDER",
+      "dataType": "POINTER",
+      "rawType": "3.802P",
+      "required": false,
+      "helpText": "If you wish to restrict this mail group to only a limited set of senders, name them in this field.  If no names are entered here, then it is assumed that anyone may send mail to this group (if public), or only members may send to it (if private).     If a user attempts to send mail to a group which has one or more authorized senders, but is not an authorized sender, then he is shown a list of authorized senders.  He may send the message to them, and they may forward it, if desired.  NOTE:  Remot",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ALLOW SELF ENROLLMENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If this field is set to \"YES\", then users may use the JOIN option to  make themselves members of the group, or to drop their names from the group.  This option is only operative with public groups. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REFERENCE COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is a count of the number of times this mailgroup has been used as a recipient of a message.  This will help site managers monitor the activity of mail groups. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST REFERENCED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on which this mail group was last referenced. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RESTRICTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNRESTRICTED;1:ORGANIZER ONLY;",
+      "helpText": "This field is only applicable for PRIVATE mail groups. It is ignored for PUBLIC mail groups.   This field controls who may address (send messages to) this PRIVATE mail group.   If 0 (zero) or null, then the group is unrestricted, and all members may address the group.   If 1, then only the organizer may address the group. The group is a personal group.  Note that non-members cannot address private mail groups. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MEMBER GROUPS",
+      "dataType": "POINTER",
+      "rawType": "3.811P",
+      "required": false,
+      "helpText": "Member Groups are mail groups that are members of this mail group.  When a Mail Group is made a member of another in this fashion, the individuals of it are added to the mailing list at delivery time. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MEMBERS - REMOTE",
+      "dataType": "SUBFILE",
+      "rawType": "3.812",
+      "required": false,
+      "helpText": "This multiple contains remote addresses or local devices or local servers. The input to the field is checked for validity at the time it is entered. If the address BECOMES INCORRECT MailMan will try to inform a responsible person of the non-delivery of a message. ",
+      "isMultiple": true,
+      "subFileNumber": 3.812,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DISTRIBUTION LIST",
+      "dataType": "POINTER",
+      "rawType": "3.813P",
+      "required": false,
+      "helpText": "This field will allow distribution lists to be included in Mail Groups. In this way a message that must be sent to the same name at many domains may easily be included in the recipient chain of a message. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FAX RECIPIENT",
+      "dataType": "POINTER",
+      "rawType": "3.814P",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "FAX GROUP",
+      "dataType": "POINTER",
+      "rawType": "3.815P",
+      "required": false,
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "3.8", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "3.8", "field": 5.1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,1418 @@
+{
+  "fileNumber": 52,
+  "fileName": "PRESCRIPTION",
+  "globalRoot": "52Is",
+  "globalReference": "^PSRX(",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the prescription number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ISSUE DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Date when doctor wrote prescription. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient receiving treatment. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP53'X",
+      "required": true,
+      "pointerTo": 53,
+      "helpText": "This field is used to show the status of the patient at the time the  medication was filled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "R'*P200XI",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Doctor who wrote the prescription. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Clinic where treatment was given and prescription was written. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "R*P50'X",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "The actual medication. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "TRADE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free Text that, if it exists, will replace the DRUG name on the RX label. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2X",
+      "length": 12,
+      "required": true,
+      "helpText": "This field is used to show the amount of medication that was dispensed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "Enter a whole number between 1 and 365. The maximum upper limit is 365, but may be lower based on the maximum specified for the drug in this prescription. The maximum value for the  drug can be found in the DRUG file (#50) or the VA PRODUCT file (#50.68) for drugs matched to NDF.  ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "# OF REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "RNX",
+      "required": true,
+      "helpText": "The number of refills allowed per prescription. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SIG",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "Enter the medication instruction for this prescription. Entries should be  no longer than 200 total characters, including spaces, with no one set of  characters longer than 32 characters in length. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "OERR SIG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determined if the original medication instructions was accepted.  This field for all Rxs entered prior v7 will be null or no.  This field is uneditable. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "SIG1",
+      "dataType": "SUBFILE",
+      "rawType": "52.04A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.04,
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "ORDER CONVERTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ORDER CONVERTED;2:EXPIRATION TO CPRS;",
+      "helpText": "This field is used to indicate V7 order conversion complete to OERR. It's also used to indicate the updating of CPRS on expiration of the order. ",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 10.6,
+      "fieldName": "COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The number of copies made of the label for the prescription. ",
+      "fieldNumber_": 10.6
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MAIL/WINDOW/PARK",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:MAIL;W:WINDOW;P:PARK;",
+      "helpText": "This field contains 'M' if the fill is to be mailed to the patient and 'W' if the fill is to be picked up at the pharmacy window and 'P' if the fill is on hold until requested.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Any additional comments. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ADMINISTERED IN CLINIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This indicates if the medication was administered in a clinic instead of being dispensed to the patient. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field will show who requested the rx. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "UNIT PRICE OF DRUG",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,4X",
+      "length": 9,
+      "required": true,
+      "helpText": "Price per dispense unit. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "Tells which Outpatient Pharmacy Division filled the prescription. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LOGIN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date the prescription was entered. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "FILL DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date the prescription was filled. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is used to identify the pharmacist that filled the medication request. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "LOT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The vendor code for this product.  It is required to be on the label if the medication is sent to a nursing home. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "DISPENSED DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will be used to show the actual date the medication was dispensed. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the medication expires.  This is required to be put on the labels of medication sent to a nursing home. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.1,
+      "fieldName": "CANCEL DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This date is used to indicate when the medication was cancelled.  ",
+      "fieldNumber_": 26.1
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the National Drug Code. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the manufacturer of the drug issued. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "DRUG EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date is used to show the expiration date of the medication.  The date reflects the manufacturer's expiration date, not the date the Rx can no longer be filled. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "GENERIC PROVIDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to to show a generic provider.  A generic provider is a provider of care to the patient outside of the VA. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "RELEASED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to show the actual date and time the medication was released for inventory purposes and copay billing if applicable.     ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LABEL DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "52.032DA",
+      "required": false,
+      "helpText": "This sub-file is used to indicate when labels are printed for this prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.032,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "RETURNED TO STOCK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to show when and if the medication was returned to stock because the patient did not pick up the meds or it was not mailed. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "REPRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REPRINTED;",
+      "helpText": "This field is used to determined if the original fill was reprinted after being returned to stock.  If fill was returned to stock and reprinted this fill will be re-released. ",
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 32.3,
+      "fieldName": "BINGO WAIT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field reflects, in minutes, the total wait time for bingo board purposes. ",
+      "fieldNumber_": 32.3
+    },
+    {
+      "fieldNumber": 32.4,
+      "fieldName": "ACTIVE DUTY OVERRIDE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The field is used to store Active Duty Override if it exists for the Rx  original fill. ",
+      "fieldNumber_": 32.4
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SEVERITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to store the significant drug interactions encountered by technicians during new/renew order entry.  The data will be stored in the form of a string, i.e., 23,43,201.  Each number will represent the  drug/drug interaction found in file #56.  Data is not added directly by FileMan. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "AFFECTED MEDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to store the active medication pointer values that is considered to be drug interactions. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.1,
+      "fieldName": "DRUG ALLERGY INDICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if a drug allergy event occured. ",
+      "fieldNumber_": 34.1
+    },
+    {
+      "fieldNumber": 34.11,
+      "fieldName": "DRUG ALLERGY INGREDIENTS",
+      "dataType": "SUBFILE",
+      "rawType": "52.03A",
+      "required": false,
+      "helpText": "This sub-file is used to store drug ingredients of a possible drug allergy and/or an adverse reaction to the medication dispensed in a Rx. ",
+      "isMultiple": true,
+      "subFileNumber": 52.03,
+      "fieldNumber_": 34.11
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "METHOD OF PICK-UP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any special instructions that should appear on mailing address portion of the label, specifing where, or when the RX(s) should be  picked up. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ARCHIVED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ARCHIVED;",
+      "helpText": "This field is used to indicate if the Rx has been archived.  Once the Rx is marked to be archived and then actually saved to the archived device should this field be populated.  This will later be used to determine if the Rx can be purged. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "MEDICATION ROUTES",
+      "dataType": "POINTER",
+      "rawType": "52.037PA",
+      "required": false,
+      "helpText": "This subfile contains possible medication routes from OERR, from the Medication Instructions (SIG) or both. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 37.1,
+      "fieldName": "SCHEDULES",
+      "dataType": "SUBFILE",
+      "rawType": "52.038A",
+      "required": false,
+      "helpText": "This sub-file contains possible schedules from OERR, Medication Instructions or both. ",
+      "isMultiple": true,
+      "subFileNumber": 52.038,
+      "fieldNumber_": 37.1
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "FINISHING PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to indicate the person who finished the order in Pharmacy. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 38.1,
+      "fieldName": "FILLING PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the pharmacist who scanned the barcode before filling the medication request. ",
+      "fieldNumber_": 38.1
+    },
+    {
+      "fieldNumber": 38.2,
+      "fieldName": "CHECKING PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the pharmacist that checked the medication request. ",
+      "fieldNumber_": 38.2
+    },
+    {
+      "fieldNumber": 38.3,
+      "fieldName": "FINISH DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time prescription is finished. ",
+      "fieldNumber_": 38.3
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PROVIDER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "52.039",
+      "required": false,
+      "helpText": "This field stores any provider comments that are passed to Pharmacy from CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.039,
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 39.1,
+      "fieldName": "PHARMACY INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.02",
+      "required": false,
+      "helpText": "This field contains Pharmacy Instructions passed to Pharmacy from CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.02,
+      "fieldNumber_": 39.1
+    },
+    {
+      "fieldNumber": 39.2,
+      "fieldName": "PHARMACY ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P50.7'",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This is the Pharmacy Orderable Item associated with the drug. This data should not be entered by using File Manager.  If the Rx does not have a Pharmacy Orderable Item entered check the drug for the RX.  If the drug is missing an orderable item match the drug not the Rx.  Only matching the Rx will cause problems when renewing the Rx. ",
+      "fieldNumber_": 39.2
+    },
+    {
+      "fieldNumber": 39.3,
+      "fieldName": "PLACER ORDER #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the CPRS entry number for this order. ",
+      "fieldNumber_": 39.3
+    },
+    {
+      "fieldNumber": 39.4,
+      "fieldName": "PREVIOUS ORDER #",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This field is used to indicate rx number renewed from ",
+      "fieldNumber_": 39.4
+    },
+    {
+      "fieldNumber": 39.5,
+      "fieldName": "FORWARD ORDER #",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This field is used to stored the pointer to the rx that was renewed. ",
+      "fieldNumber_": 39.5
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "52.3DA",
+      "required": false,
+      "helpText": "Activity Log. ",
+      "isMultiple": true,
+      "subFileNumber": 52.3,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "WAS THE PATIENT COUNSELED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not the patient received counseling about the prescription. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "WAS COUNSELING UNDERSTOOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not the patient understood the counseling on the prescription, if the patient was counseled. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 45.1,
+      "fieldName": "TITRATION DOSE RX",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the Titration Dose Rx from which the corresponding  Maintenance Dose Rx originated. ",
+      "fieldNumber_": 45.1
+    },
+    {
+      "fieldNumber": 45.2,
+      "fieldName": "MAINTENANCE DOSE RX",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the Maintenance Dose Rx that was created from the corresponding  Titration Dose Rx. ",
+      "fieldNumber_": 45.2
+    },
+    {
+      "fieldNumber": 45.3,
+      "fieldName": "TITRATION RX FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag indicates whether the prescription is being dispensed as a  Titration Dose. It is intended to identify a Titration Dose Rx without  a corresponding Maintenance Dose Rx. ",
+      "fieldNumber_": 45.3
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "REFILL",
+      "dataType": "DATE",
+      "rawType": "52.1D",
+      "required": false,
+      "helpText": "This is the date the prescription is refilled. ",
+      "isMultiple": true,
+      "subFileNumber": 52.1,
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 52.25,
+      "fieldName": "REJECT INFO",
+      "dataType": "SUBFILE",
+      "rawType": "52.25A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.25,
+      "fieldNumber_": 52.25
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PARTIAL DATE",
+      "dataType": "DATE",
+      "rawType": "52.2D",
+      "required": false,
+      "helpText": "This sub-file is used to store data on partial prescriptions filled. ",
+      "isMultiple": true,
+      "subFileNumber": 52.2,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "RETURN TO STOCK LOG",
+      "dataType": "DATE",
+      "rawType": "52.07D",
+      "required": false,
+      "helpText": "This sub-file contains a record for each fill returned to stock for the prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 52.07,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "DAW CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Dispensed As Written code. This information is used for electronic claim transmission to third party payers (insurance companies). ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "RE-TRANSMIT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate that a claim should be electronically re-transmitted to the 3rd party insurance. It will be primarily used by CMOP and local mail prescriptions. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "DATE NDC VALIDATED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date and time that the NDC was validated prior to  release of the prescription fill. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "NDC VALIDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will contain the user ID of the person who validated the NDC prior to release of the prescription fill. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "BILLING ELIGIBILITY INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TRICARE;V:VETERAN;C:CHAMPVA;",
+      "helpText": "This field is set when a prescription is third party insurance billable and will contain T for TRICARE, V for VETERAN or C for CHAMPVA. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "EPHARMACY SUSPENSE HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is defined when a host reject error is received as a result of  an ePharmacy claims submission.  The prescription fill will be held on  suspense until the next day. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "REMOTE FILL SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This is the name of the site that filled this prescription remotely. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "REMOTE PHARMACIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ45",
+      "length": 45,
+      "required": false,
+      "helpText": "This is the name of the pharmacist that remotely completed an original  fill for a prescription via a refill request. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "REMOTE PHARMACIST PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the contact telephone number for the remote pharmacist requesting  a refill, from which an original fill was done. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "BYPASS 3/4 DAY SUPPLY LOGIC",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "The setting of this field allows the user to indicate that the normal 3/4  day supply logic should be bypassed when this prescription is sent to  CMOP. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "REMOTE FILLING PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ45",
+      "length": 45,
+      "required": false,
+      "helpText": "This is the name of the filling person from the remote site when sending  the OneVA Pharmacy original fill through the Outpatient Pharmacy Automated Interface (OPAI) to an automated dispensing device. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "REMOTE CHECKING PHARMACIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ45",
+      "length": 45,
+      "required": false,
+      "helpText": "This is the name of the checking pharmacist from the remote site when  sending the OneVA Pharmacy original fill through the Outpatient Pharmacy Automated Interface (OPAI) to an automated dispensing device. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "HOLD REASON",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:INSUFFICIENT QTY IN STOCK;2:DRUG-DRUG INTERACTION;4:PROVIDER TO BE CONTACTED;6:ADVERSE DRUG REACTION;7:BAD ADDRESS;8:PER PATIENT REQUEST;9:CONSULT/PRIOR APPROVAL NEEDED;98:OTHER/TECH (NON-CLINICAL);99:OTHER/RPH (CLINICAL);",
+      "helpText": "This field tells why the prescription was put on hold. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 99.1,
+      "fieldName": "HOLD COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to enter brief comments on why the medication was placed on 'Hold' status. ",
+      "fieldNumber_": 99.1
+    },
+    {
+      "fieldNumber": 99.2,
+      "fieldName": "HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to indicate the date that a prescription was placed on hold. ",
+      "fieldNumber_": 99.2
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:ACTIVE;1:NON-VERIFIED;2:REFILL;3:HOLD;4:DRUG INTERACTIONS;5:SUSPENDED;10:DONE;11:EXPIRED;12:DISCONTINUED;13:DELETED;14:DISCONTINUED BY PROVIDER;15:DISCONTINUED (EDIT);16:PROVIDER HOLD;",
+      "helpText": "This field represents the current status of the prescription. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 100.1,
+      "fieldName": "DISCONTINUE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HOSPITAL ADMISSION;2:EDITED BY PROVIDER;",
+      "helpText": "This field is used to distinguish what type of external discontinue action occurred. ",
+      "fieldNumber_": 100.1
+    },
+    {
+      "fieldNumber": 100.2,
+      "fieldName": "MAIL EXEMPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR MAIL;1:CERTIFIED MAIL;2:DO NOT MAIL;3:LOCAL - REGULAR;4:LOCAL - CERTIFIED;",
+      "helpText": "This field is used to: A) Determine whether this patient's Rx is to be sent to the CMOP, or  retained for local distribution. If 2-4 are selected, this Rx will not be  transmitted to the CMOP. B) Select what the mail priority is. The CMOP choices are limited to (0)  REGULAR and (1) CERTIFIED. Local mail may be designated (3) LOCAL -  REGULAR or (4) LOCAL - CERTIFIED. The 'DO NOT MAIL' code (2) may be used  to ensure that the patient's Rx is not mailed. ",
+      "fieldNumber_": 100.2
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "LAST DISPENSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the last fill date. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "NEXT POSSIBLE FILL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the next possible fill date. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 102.1,
+      "fieldName": "PRIOR FILL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to indicate the last date the prescription was filled. The dates in this field will be the date of the last renew from a previous rx, and any subsequent fills. ",
+      "fieldNumber_": 102.1
+    },
+    {
+      "fieldNumber": 102.2,
+      "fieldName": "PENDING NEXT POSSIBLE FILLDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is to contain the next possible filldate if the Rx was  discontinued prior to the original label printing.  If the Rx is reinstated this date will be restored to field 102 (next possbile filldate). ",
+      "fieldNumber_": 102.2
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "NEW DRUG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter a new drug. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "VERIFYING PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to show the pharmacist that verified the prescription ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "COPAY TRANSACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P350.1'I",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This field contains the internal entry number of the pointer to the IB Action Type file (#350.1). ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "IB NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P350'I",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This field contains the internal entry number of the pointer to the  Integrated Billing Action file (#350). ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 106.5,
+      "fieldName": "COPAY TYPE AUDIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field serves as an audit of the original copay status. It is not changed or reset if the orignal status is changed. ",
+      "fieldNumber_": 106.5
+    },
+    {
+      "fieldNumber": 106.6,
+      "fieldName": "COPAY EXCEEDING CAP",
+      "dataType": "POINTER",
+      "rawType": "P354.71'",
+      "required": false,
+      "pointerTo": 354.71,
+      "helpText": "This field contains the internal entry number of the pointer to the IB COPAY TRANSACTIONS file (#354.71).  There will only be data in this field if this Rx's copay exceeded the annual copay cap. ",
+      "fieldNumber_": 106.6
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "COPAY ACTIVITY LOG",
+      "dataType": "DATE",
+      "rawType": "52.0107DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.0107,
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "DELETION COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to enter comments on why a prescription was marked as deleted. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "COSIGNING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the cosigning physician for prescriptions written by a provider for whom a counter signature is required, for example a nurse practitioner. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "TYPE OF RX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used to indicate if the rx dispensed is a partial or normal process rx.  If partial medication was dispensed this will be equal to the  entry number else the field will be equal to zero. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "POE RX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field shall be set whenever a new/renew prescription is entered after the Pharmacy Ordering Enhancements software for Outpatient Pharmacy has been installed. This field will set to 1 for all pre-POE Rxs during the install of PSO*7*46. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "ORIGINAL QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will hold the quantity that was filled for the original fill of the Rx. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "MEDICATION INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.0113",
+      "required": false,
+      "helpText": "This sub-file will contain the dispense units per dosage ordered, dosage ordered, units, noun, duration and conjunction fields. ",
+      "isMultiple": true,
+      "subFileNumber": 52.0113,
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "PATIENT INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text in this field shall be used for the Patient Instructions in the Outpatient Pharmacy package when entering orders, if the Dispense Drug selected is matched to a Pharmacy Orderable Item with patient instructions. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 114.1,
+      "fieldName": "OTHER PATIENT INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to store the Other Language Patient Instructions when added. ",
+      "fieldNumber_": 114.1
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "EXPANDED PATIENT INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.0115",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.0115,
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, a pharmacist may be asked if the medication being prescribed is for a service connected condition. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default should this question be raised again during the life of the prescription when a prescription fill is being released, or as the default for the",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, if a veteran has been identified as having been treated for Military Sexual Trauma, the pharmacist may be asked to identify whether or not the medication prescribed is being used to treat a condition related to Military Sexual Trauma. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default should",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, if a veteran has been identified as having been exposed to Agent Orange during Vietnam service, the pharmacist may be asked to identify whether or not the medication prescribed is being used to treat a condition due to this exposure. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default should ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, if a veteran has been identified as having been exposed to ionizing radiation during military service, the pharmacist may be asked to identify whether or not the medication prescribed is being used to treat a condition due to this exposure. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "SOUTHWEST ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, if a veteran has been identified as having been exposed to Southwest Asia Conditions (formerly referred to as Environmental Contaminants), the pharmacist may be asked to identify whether or not the medication prescribed is being used to treat a condition due to this exposure. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This v",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 120.01,
+      "fieldName": "DDSTATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will hold the status of the prescription at the time a date of death was entered. ",
+      "fieldNumber_": 120.01
+    },
+    {
+      "fieldNumber": 120.02,
+      "fieldName": "DATE OF DEATH HISTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to take a snapshot of the Rx at the time it was discontinued due to a date of death being entered for the patient. This data will be used to restore the Rx to the state before the date of death was entered. ",
+      "fieldNumber_": 120.02
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, if a veteran has been identified as having been treated for Head and/or Neck Cancer due to nose or throat radium treatments while in the military, the pharmacist may be asked to identify whether or not the medication prescribed is being used to treat this condition. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, a pharmacist may be asked if the  medication being prescribed is for a condition related to Combat Services  while in the military. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default should this question be raised again during the life of the prescription. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 122.01,
+      "fieldName": "PROJ 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During Outpatient Pharmacy order entry, a pharmacist may be asked if the medication being prescribed is for a condition related to PROJ 112/SHAD while in the military. This field will store the pharmacist's response to this question. The value in this field will be used to evaluate whether or not a copay should be applied to the prescription. This value will also be used as a default should this question be raised again during the life of the prescription. ",
+      "fieldNumber_": 122.01
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "EXTERNAL PLACER ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field represents the external system order number of this order. This field will only be populated if this order was originally received from an external system into Vista. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "EXTERNAL APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field represents the name of the external system from where the  external order was received. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P375'IX",
+      "required": false,
+      "pointerTo": 375,
+      "helpText": "This is a reference number to an external medical billing system Account  Number for the purposes of uniquely identifying prescription charges for  1st or 3rd party billing. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "PFSS CHARGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is another unique identifier required when prescription charge  messages are passed to the external billing system. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "LAST DISPENSED DATE HOLDER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is a holder for the last dispensed date. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "INDICATION FOR USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field contains the Indication For Use that is chosen when the medication is ordered.  ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "INDICATION FOR USE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will indicate whether to include the Indication For Use in the SIG or not. 1 - to include in the SIG, 0 - not to include. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "OTHER INDICATION FOR USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field contains the Other Language Indication For Use that is chosen  when the medication is ordered. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "TPB RX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is set to 'Yes', that indicates that this prescription has  been created as part of the Transitional Pharmacy Benefit project. This  field is controlled by the software. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "CLOZAPINE DOSAGE (MG/DAY)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the total daily dosage of clozapine if this prescription is for the drug clozapine.  This is used only for clozapine. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "WBC RESULTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the results of the WBC test which was used to authorize the clozapine prescription. This will exist only for clozapine prescriptions. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "DATE OF WBC TEST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the WBC test which authorized the clozapine prescription.  It is used only for clozapine prescriptions. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "ANC RESULTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the results of the ANC test that was used to authorize the clozapine prescription. This will exist only for clozapine prescriptions. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "SIGNATURE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Digital Signature status indicator. ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "BACKDOOR SIGNATURE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether a controlled substance order, schedule (I-V), was not digitally signed but entered via backdoor. ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "ERX SIGNATURE STATUS",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "eRx Digital Signature status indicator. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "CMOP EVENT",
+      "dataType": "POINTER",
+      "rawType": "52.01PA",
+      "required": false,
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "LOT/EXP",
+      "dataType": "SUBFILE",
+      "rawType": "52.0401A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.0401,
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 725,
+      "fieldName": "NATIONAL DATA UTILITY CLEANUP",
+      "dataType": "DATE",
+      "rawType": "52.0725DA",
+      "required": false,
+      "helpText": "This NATIONAL DATA UTILITY CLEANUP multiple is defined to store  modifications to a prescription for Dosage and SIG as a result of a background clean-up utility.  It can be used by other projects in the future.   For its first use, Outpatient Pharmacy patch PSO*7*433 and Computerized Patient Record System (CPRS) Patch OR*3*378 addresses reported problems where the Drug Name and/or the date in VA FileMan format can mistakenly appear in the Dosage and Sig fields of an entry in PRESCRIPTION file (#",
+      "isMultiple": true,
+      "subFileNumber": 52.0725,
+      "fieldNumber_": 725
+    },
+    {
+      "fieldNumber": 52311,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "52.052311P",
+      "required": false,
+      "fieldNumber_": 52311
+    },
+    {
+      "fieldNumber": 521011,
+      "fieldName": "HOSPITAL COVERAGE",
+      "dataType": "COMPUTED",
+      "rawType": "BCJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is used to compute hospital coverage from MAS. ",
+      "fieldNumber_": 521011
+    },
+    {
+      "fieldNumber": 521012,
+      "fieldName": "PARK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the prescription is to be parked until requested. ",
+      "fieldNumber_": 521012
+    }
+  ],
+  "fieldCount": 137,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACP", "field": },
+    {"name": "ACP1", "field": },
+    {"name": "ACP2", "field": },
+    {"name": "ACP3", "field": },
+    {"name": "ACP4", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "ADL", "field": },
+    {"name": "ADL1", "field": },
+    {"name": "ADP", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AFDT", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AJ1", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AL1", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "ANCO", "field": },
+    {"name": "AO", "field": },
+    {"name": "AP", "field": },
+    {"name": "APARK", "field": },
+    {"name": "APL", "field": },
+    {"name": "APSOD", "field": },
+    {"name": "AQ", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "OFIL", "field": },
+    {"name": "PFIL", "field": },
+    {"name": "RFIL", "field": },
+    {"name": "52", "field": .01, "type": "regular"},
+    {"name": "52", "field": 1, "type": "regular"},
+    {"name": "52", "field": 2, "type": "regular"},
+    {"name": "52", "field": 2, "type": "regular"},
+    {"name": "52", "field": 2, "type": "regular"},
+    {"name": "52", "field": 6, "type": "regular"},
+    {"name": "52", "field": 6, "type": "regular"},
+    {"name": "52", "field": 11, "type": "regular"},
+    {"name": "52", "field": 20, "type": "regular"},
+    {"name": "52", "field": 22, "type": "regular"},
+    {"name": "52", "field": 22, "type": "regular"},
+    {"name": "52", "field": 22, "type": "regular"},
+    {"name": "52", "field": 22, "type": "regular"},
+    {"name": "52", "field": 22, "type": "regular"},
+    {"name": "52", "field": 26, "type": "regular"},
+    {"name": "52", "field": 26, "type": "regular"},
+    {"name": "52", "field": 26.1, "type": "regular"},
+    {"name": "52", "field": 31, "type": "regular"},
+    {"name": "52", "field": 31, "type": "regular"},
+    {"name": "52", "field": 32.1, "type": "regular"},
+    {"name": "52", "field": 38.3, "type": "regular"},
+    {"name": "52", "field": 39.3, "type": "regular"},
+    {"name": "52", "field": 39.4, "type": "regular"},
+    {"name": "52", "field": 39.5, "type": "regular"},
+    {"name": "52", "field": 91, "type": "regular"},
+    {"name": "52", "field": 99, "type": "regular"},
+    {"name": "52", "field": 109, "type": "regular"},
+    {"name": "52", "field": 521012, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""},
+    {"field": 2, "value": "W \"\""},
+    {"field": 6, "value": "W:$D(^(0)) \"   \"_$S($D(^PSDRUG(+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\")_$E(^PSRX(+Y,0),0)_$S($P($G(^PSRX(+Y,\"STA\")),U)=13:\"  ***MARKED FOR DELETION***\",1:\"\")"},
+    {"field": 108, "value": "W:$D(^(\"D\")) \"   \",$P(^(\"D\"),U,3)"}
+  ]
+}

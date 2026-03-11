@@ -1,0 +1,48 @@
+{
+  "fileNumber": 355.12,
+  "fileName": "SOURCE OF INFORMATION",
+  "globalRoot": "355.12",
+  "globalReference": "^IBE(355.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0O",
+      "length": 3,
+      "required": true,
+      "helpText": "Source of Information code represents the origination of the patients  insurance information. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the description of the Source of Information code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IB BUFFER ACRONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This acronym is used for display purposes in the Insurance Buffer screen. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.12", "field": .01, "type": "regular"},
+    {"name": "355.12", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

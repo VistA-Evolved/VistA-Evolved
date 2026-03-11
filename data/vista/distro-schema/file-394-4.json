@@ -1,0 +1,91 @@
+{
+  "fileNumber": 394.4,
+  "fileName": "*PDX STATISTICS",
+  "globalRoot": "394.4D",
+  "globalReference": "^VAT(394.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCESSING DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP394.3'",
+      "required": true,
+      "pointerTo": 394.3,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCAL DUZ",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,1",
+      "length": 12,
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "REMOTE DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PATIENT SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PATIENT POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAME_SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "394.4", "field": .01, "type": "regular"},
+    {"name": "394.4", "field": 1, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "394.4", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

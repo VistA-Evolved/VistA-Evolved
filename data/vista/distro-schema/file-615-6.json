@@ -1,0 +1,37 @@
+{
+  "fileNumber": 615.6,
+  "fileName": "S/R CATEGORY",
+  "globalRoot": "615.6",
+  "globalReference": "^YSR(615.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Internal entry number of the record in the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Brief descriptive narrative describing category of seclusion/restraint. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "615.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

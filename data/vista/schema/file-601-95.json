@@ -1,0 +1,89 @@
+{
+  "fileNumber": 601.95,
+  "fileName": "MH INSTRUMENT EXCHANGE",
+  "globalRoot": "601.95",
+  "globalReference": "^YTT(601.95,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a name for an exchange entry.  It is combined with the creation  date to form a unique key. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the creation date/time.  A unique key is formed by combining the  creation date with the name. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains descriptive information about the source of the entry.  By  default, the account name is used. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPECIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "601.951",
+      "required": false,
+      "helpText": "This is the JSON description of the instrument. ",
+      "isMultiple": true,
+      "subFileNumber": 601.951,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "601.952",
+      "required": false,
+      "helpText": "Optional descriptive text for this exchange entry may be placed here. ",
+      "isMultiple": true,
+      "subFileNumber": 601.952,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTALL HISTORY",
+      "dataType": "DATE",
+      "rawType": "601.953D",
+      "required": false,
+      "helpText": "This lists the dates when the exchange entry was installed into the local  account. ",
+      "isMultiple": true,
+      "subFileNumber": 601.953,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADDENDUM",
+      "dataType": "SUBFILE",
+      "rawType": "601.954",
+      "required": false,
+      "helpText": "This contains JSON that is to be included with the exchange entry.  It  allows special handling information to be added to the exchange entry  after it is built. ",
+      "isMultiple": true,
+      "subFileNumber": 601.954,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "601.95", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 9002313.89,
+  "fileName": "BPS ERROR CODES",
+  "globalRoot": "9002313.89",
+  "globalReference": "^BPSF(9002313.89,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Code",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "helpText": "Numeric code associated with this particular error. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Description",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Textual description of the error. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.89", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

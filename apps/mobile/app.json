@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "VistA Evolved",
+    "slug": "vista-evolved-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vista-evolved.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0f172a"
+      },
+      "package": "com.vistaevolved.mobile"
+    }
+  }
+}

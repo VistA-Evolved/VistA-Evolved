@@ -1,0 +1,38 @@
+{
+  "fileNumber": 164.6,
+  "fileName": "TYPE OF STAGING SYSTEM (PEDIATRIC)",
+  "globalRoot": "164.6",
+  "globalReference": "^ONCO(164.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the TYPE OF STAGING SYSTEM (PEDIATRIC) code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the TYPE OF STAGING SYSTEM (PEDIATRIC) code description. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.6", "field": .01, "type": "regular"},
+    {"name": "164.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "fileNumber": 53,
+  "fileName": "RX PATIENT STATUS",
+  "globalRoot": "53",
+  "globalReference": "^PS(53,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field refers to the internal number within the file.  ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the PATIENT STATUS category associated with this Rx. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Respond with an abbreviation for the patient's status. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Respond with the maximum number of days a prescription  can be written for. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Respond with the maximum number of refills allowed for  a particular prescription. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RENEWABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field refers to whether or not a prescription is  renewable. Answer \"1\" to indicate \"Yes\", or \"0\" to indicate \"No\". ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SC/A&A/OTHER/INPATIENT/NVA",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SERVICE CONNECTED;2:A&A;3:OTHER;4:INPATIENT;5:NON-VA;",
+      "helpText": "Respond by entering the AMIS workload category for which this prescription will count. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EXEMPT FROM COPAYMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is meant to allow the site to screen RX copayments by RX Patient Status, (e.g., Inpatient).  If this field is answered 'YES', any RX with this Status will not be charged a copayment. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "EXEMPT FROM CHAMPUS BILLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field can be used to exempt an Rx Patient status from Champus billing. ",
+      "fieldNumber_": 16
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "53", "field": .01, "type": "regular"},
+    {"name": "53", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

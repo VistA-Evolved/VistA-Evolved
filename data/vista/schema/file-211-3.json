@@ -1,0 +1,100 @@
+{
+  "fileNumber": 211.3,
+  "fileName": "NURS SERVICE POSITION",
+  "globalRoot": "211.3I",
+  "globalReference": "^NURSF(211.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviation of the 'service position' name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the service position/title. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIORITY SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This number will determine the order in which a service position will print out on a report.   A service position with a priority sequence of 200 will sort and print before a service position with a priority sequence of 900. There are some restrictions on this numbering system: 1.  Service positions with priority sequences     of less than 100 will not print on reports.     This is to enable the user to add a service     position that is not desired in the prints.   2.  No two service positions ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AMIS POSITION",
+      "dataType": "POINTER",
+      "rawType": "P211.7'",
+      "required": false,
+      "pointerTo": 211.7,
+      "helpText": "Indicates an appropriate AMIS staffing position for the above 'service position'.  This data is used in generating all AMIS FTEE reports. Pointer to NURS AMIS POSITION FILE (#211.7). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SERVICE CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RN  REGISTERED NURSE;L:LPN LIC. PRACTICAL NURSE;N:NA  NURSING ASSISTANT;C:CK  CLERICAL;S:SE  SUMMER EMPLOYEE;A:AO  ADMIN. OFFICER;O:OT  OTHER;",
+      "helpText": "Name of appropriate 'service category' (i.e., Registered Nurse, Licensed Practical Nurse, Nursing Assistant, Clerical, Summer Employee,  Administrative Officer, or Other) related to 'service position'. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OTHER SERVICE CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Name of 'other service category' (i.e., RD (Registered Dietetian), RPhD (Registered Pharmacist), food handler, Service Chief, Inhalation Therapist, volunteer, etc.). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PRODUCT LINE",
+      "dataType": "POINTER",
+      "rawType": "P212.7'",
+      "required": false,
+      "pointerTo": 212.7,
+      "helpText": "This field associates a service/program/product line to this Service Position. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "P", "field": },
+    {"name": "211.3", "field": .01, "type": "regular"},
+    {"name": "211.3", "field": 1, "type": "regular"},
+    {"name": "211.3", "field": 2, "type": "regular"},
+    {"name": "211.3", "field": 4, "type": "regular"},
+    {"name": "211.3", "field": 5, "type": "regular"},
+    {"name": "211.3", "field": 5, "type": "regular"},
+    {"name": "211.3", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"},
+    {"field": 2, "value": "W \"\""},
+    {"field": 4, "value": "W \"\""},
+    {"field": 6, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^NURSF(212.7,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(212.7,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

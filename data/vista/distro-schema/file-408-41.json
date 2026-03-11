@@ -1,0 +1,134 @@
+{
+  "fileNumber": 408.41,
+  "fileName": "MEANS TEST CHANGES",
+  "globalRoot": "408.41ID",
+  "globalReference": "^DGMT(408.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF CHANGE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date change was made to a means test in file 408.31. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .019,
+      "fieldName": "TYPE OF TEST",
+      "dataType": "POINTER",
+      "rawType": "RP408.33'",
+      "required": true,
+      "pointerTo": 408.33,
+      "helpText": "This field is a pointer to the type of test file, 408.33. ",
+      "fieldNumber_": .019
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF CHANGE",
+      "dataType": "POINTER",
+      "rawType": "R*P408.42'",
+      "required": true,
+      "pointerTo": 408.42,
+      "helpText": "The Type of Change field identifies the reason why an entry was made into this file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MEANS TEST",
+      "dataType": "POINTER",
+      "rawType": "R*P408.31'",
+      "required": true,
+      "pointerTo": 408.31,
+      "helpText": "This field contains the means test which was acted upon. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient associated with the means test. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OLD VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the value of the means test category, prior to its change in the ANNUAL MEANS TEST file (# 408.31). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "NEW VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the value of the means test category, after its change in the ANNUAL MEANS TEST file (# 408.31). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the person who entered/updated the means test. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "OLD SOURCE OF INCOME TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the source of income test prior to its change in the ANNUAL MEANS TEST file (# 408.31). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NEW SOURCE OF INCOME TEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the source of income test after its change in the ANNUAL MEANS TEST file (# 408.31). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INCOME PERSON",
+      "dataType": "POINTER",
+      "rawType": "P408.13'",
+      "required": false,
+      "pointerTo": 408.13,
+      "helpText": "This field will hold the pointer value of the dependent when a name, DOB, SSN or SEX change is audited. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "AM2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "408.41", "field": .01, "type": "regular"},
+    {"name": "408.41", "field": .019, "type": "regular"},
+    {"name": "408.41", "field": .03, "type": "regular"},
+    {"name": "408.41", "field": .03, "type": "regular"},
+    {"name": "408.41", "field": .04, "type": "regular"},
+    {"name": "408.41", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGMT(408.31,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(408.31,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

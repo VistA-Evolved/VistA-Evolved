@@ -1,0 +1,27 @@
+{
+  "fileNumber": 126.72,
+  "fileName": "GMRY IV SITE DESCRIPTION",
+  "globalRoot": "126.72",
+  "globalReference": "^GMRD(126.72,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the descriptions of the IV infusion site.  The user is allowed to select a number or a combination of numbers from this file to  describe the site condition.  The software then transforms the number(s) into text. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "126.72", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

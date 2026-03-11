@@ -1,0 +1,218 @@
+{
+  "fileNumber": 421.2,
+  "fileName": "CALM/LOG TRANSMISSION RECORD",
+  "globalRoot": "421.2",
+  "globalReference": "^PRCF(421.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATCH/TRANSMISSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the batch/transaction number.  CALM/LOG Transmission Records are those records that have been transmitted to Austin.  Information is stored by batch number and transaction number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SYSTEM IDENTIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CLM:CALM;LOG:LOG;FEE:FEE;",
+      "helpText": "This is the system identifier. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BATCH;T:TRANSMISSION;R:RECEIVING REPORT;",
+      "helpText": "This is the type of transmission. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "RELEASE VALIDATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the transmission was initially validated and released. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person creating the transmission. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TRANSMISSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the transmission number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "D/T LAST GIVEN TO MAILMAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the transaction was last given to MailMan. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "MESSAGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of the message. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.6,
+      "fieldName": "MSC CONFIRMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the message switching center confirmation. ",
+      "fieldNumber_": 4.6
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RELEASE BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person releasing the transmission. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIO",
+      "required": false,
+      "helpText": "This is the validation code created for the transmission record at the time a valid electronic signature is entered authorizing the release of the batch. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0O",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used to encode and decode the validation code which was created for the transmission record at the time it was initially released. ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.9,
+      "fieldName": "ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 5.9
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "421.21",
+      "required": false,
+      "helpText": "This is the number of the batch transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 421.21,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RERELEASE VALIDATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the batch transmission was validated for the last rerelease. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "RE-RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person releasing the batch transmission. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "RE-RELEASE VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0O",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the version number of the algorithms used to encode and decode the validation code created for the record at the time that an electronic signature is entered authorizing retransmission. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 8.9,
+      "fieldName": "RE-RELEASE ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Encoded value used by IFCAP security utilities when confirming the integrity of this record. ",
+      "fieldNumber_": 8.9
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RE-RELEASE VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIO",
+      "required": false,
+      "helpText": "This is the electronic signature of the person releasing the batch  transmission. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TRANSMISSION KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to hold the transmission key.  This cross-referenced key allows the system to find all code sheets assigned to a specific batch or transmission number. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "421.2", "field": .01, "type": "regular"},
+    {"name": "421.2", "field": .01, "type": "regular"},
+    {"name": "421.2", "field": .01, "type": "regular"},
+    {"name": "421.2", "field": 1, "type": "regular"},
+    {"name": "421.2", "field": 4.5, "type": "regular"},
+    {"name": "421.2", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

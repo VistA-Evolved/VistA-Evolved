@@ -1,0 +1,375 @@
+{
+  "fileNumber": 633.2,
+  "fileName": "HBHC MEDICAL FOSTER HOME",
+  "globalRoot": "633.2",
+  "globalReference": "^HBHC(633.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents the HBHC Medical Foster Home (MFH) Name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OPENED DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field represents the Date the Medical Foster Home was Opened. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIMARY CAREGIVER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field represents the Primary Caregiver Name for the Medical Foster  Home (MFH). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAXIMUM PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This field represents the Maximum Patients for the Medical Foster Home  (MFH). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "BEDBOUND PATIENT MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "This field represents the Bedbound Patient Maximum for the Medical Foster  Home (MFH). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CLOSURE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents Date of Medical Foster Home (MFH) Closure. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VOLUNTARY CLOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field represents whether Medical Foster Home (MFH) Closure was  Voluntary. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents the Medical Foster Home (MFH) street Address. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents the Medical Foster Home (MFH) City. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATE CODE",
+      "dataType": "POINTER",
+      "rawType": "RP631.8'",
+      "required": true,
+      "pointerTo": 631.8,
+      "helpText": "This field represents the 2 digit numeric State Code where Medical Foster Home (MFH) is located.  All State Codes must exist in State file (#5).   State Code must exist in HBHC VALID STATE CODE file (#631.8). ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents either the 5 digit or 9 digit ZIP Code of Medical Foster Home (MFH). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LICENSE REQUIRED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field represents the 1 digit alphanumeric code indicating whether Medical Foster Home (MFH) Requires a License. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LICENSE EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field represents the Medical Foster Home (MFH) License Expiration Date. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NURSE INSPECTION",
+      "dataType": "DATE",
+      "rawType": "633.213D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Nurse Inspection  multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.213,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SOCIAL WORK INSPECTION",
+      "dataType": "DATE",
+      "rawType": "633.214D",
+      "required": false,
+      "helpText": "This subfile represents Medical Foster Home (MFH) Social Work Inspection  multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.214,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DIETITIAN INSPECTION",
+      "dataType": "DATE",
+      "rawType": "633.215D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Dietitian Inspection multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.215,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "FIRE/SAFETY INSPECTION",
+      "dataType": "DATE",
+      "rawType": "633.216D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Fire/Safety  Inspection multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.216,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field represents the Phone Number of the Medical Foster Home (MFH).  ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "HOME OPERATION TRAINING DATE",
+      "dataType": "DATE",
+      "rawType": "633.218D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Home Operation Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.218,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "FIRE/SAFETY TRAINING DATE",
+      "dataType": "DATE",
+      "rawType": "633.219D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Fire/Safety Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.219,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MEDICATION MANAGEMENT TRN DATE",
+      "dataType": "DATE",
+      "rawType": "633.21D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Medication Management Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.21,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PERSONAL CARE TRAINING DATE",
+      "dataType": "DATE",
+      "rawType": "633.221D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Personal Care Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.221,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "INFECTION CONTROL TRAIN DATE",
+      "dataType": "DATE",
+      "rawType": "633.222D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Infection Control  Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.222,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "END OF LIFE ISSUES TRAIN DATE",
+      "dataType": "DATE",
+      "rawType": "633.223D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) End of Life Issues  Training Date multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.223,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "OTHER TRAINING DATE",
+      "dataType": "DATE",
+      "rawType": "633.224D",
+      "required": false,
+      "helpText": "This subfile represents the Medical Foster Home (MFH) Other Training Date  multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 633.224,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COUNTY CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0XO",
+      "length": 3,
+      "required": true,
+      "helpText": "This field represents 3 digit numeric code of County, in State file (#5), of Medical Foster Home (MFH) location. County codes are checked for validity of State Code entered.  Input transform also validates State for existence in HBHC VALID STATE CODE file (#631.8).   Output transform displays both County Name & County Code in (nnn).  ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CAREGIVER DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field represents the Caregiver Date of Birth.  Caregiver must be  over 21 years of age or older. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "FORM 7 TRANSMIT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Record in Transmit File;N:Record Needs Transmitting;T:Record Transmitted;",
+      "helpText": "This field represents Form 7 (Medical Foster Home (MFH)) Transmit Status.  Field will contain either 'F' (Record in Transmit File), 'N' (Record Needs Transmitting), or 'T' (Record Transmitted).  Field updated by package only, no user input. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "FORM 7 FILED IN HBHC(634)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date & time Form 7 (Medical Foster Home (MFH)) record was filed in Transmit (634) file.  Field transmitted to  Austin for unique record identification purposes.  Field updated by package only, no user input. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "FORM 7 BATCH INITIAL MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message in Austin transmission batch.  Record 'may' be transmitted in different message, if multiple messages are transmitted in one transmission batch. Field updated by package only, no user input. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FORM 7 MAIL MESSAGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 7 (Medical Foster Home (MFH)) record transmission via MailMan to Austin.  Field updated by package only, no user input. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "FORM 7 TRANSMIT FLAG EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date Form 7 (Medical Foster Home (MFH)) Transmit  Status Flag was requested by user to be reset (allowing editing of  previously transmitted record).  Field updated by package only, no user  input. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "FORM 7 TRANSMIT FLAG EDIT DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field represents the user requesting Form 7 (Medical Foster Home (MFH)) Transmit Status Flag be reset (allowing editing of previously  transmitted record).  Field updated by package only, no user input. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "FORM 7 RE-TRANS BATCH MM MSG #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents MailMan message number of 'First' MailMan message  in re-transmission batch to Austin.  Record 'may' be transmitted in  different message, if multiple messages are transmitted in one  re-transmission batch.  Field updated by package only, no user input. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "FORM 7 RE-TRANSMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of Form 7 (Medical Foster Home (MFH)) record  re-transmission via MailMan to Austin.  Field updated by package only, no  user input. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PARENT SITE",
+      "dataType": "POINTER",
+      "rawType": "R*P40.8'Xa",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "The Parent Site prompt provides selection of the HBPC Program Facility  which has been defined in the local HBHC SITE PARAMETERS (#631.9) file.  If only one site has been defined as a parent site, that site will  default into this prompt for selection. Otherwise, users will be required  to select the HBPC Program Facility associated to the Medical Foster Home.   The selected site's code will be used for AITC record transmissions for  this Medical Foster Home and for patients in this Medical Fost",
+      "fieldNumber_": 35
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "633.2", "field": .01, "type": "regular"},
+    {"name": "633.2", "field": 27, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

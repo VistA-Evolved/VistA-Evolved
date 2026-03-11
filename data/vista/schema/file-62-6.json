@@ -1,0 +1,86 @@
+{
+  "fileNumber": 62.6,
+  "fileName": "ACCESSION TEST GROUP",
+  "globalRoot": "62.6I",
+  "globalReference": "^LAB(62.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The internal number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESSION TEST GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the accession test group. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LAB SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP62.2'",
+      "required": true,
+      "pointerTo": 62.2,
+      "helpText": "The name of the lab section that this group belongs to. Points to the LAB SECTION file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAB ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the wards are to be allowed to use this Accession test group, leave this blank.  If YES, the user must have the LRLAB key to see the entries. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LAB COLLECT ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this accession test group is to be used for routine lab collects, enter YES in this field, otherwise leave blank. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CONTINUOUS;1:INTERNAL NUMBER;",
+      "helpText": "This field determines if test numbers on list are numbered \"CONTINUOUS\", starting at 1,2,3,... or by \"INTERNAL NUMBER\" when the test list is displayed.   \"INTERNAL NUMBER\" will assign the test number on list based on the internal entry number (field #.001 NUMBER) of test in the \"TEST\" multiple. This will print the list with gaps if tests have been removed. It allows removal of tests without subsequent tests being renumbered on the list and tests being added at designated positions. This may assi",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST",
+      "dataType": "POINTER",
+      "rawType": "62.61P",
+      "required": false,
+      "helpText": "This is a multiple field.  It specifies all of the tests in this accession group. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"\""}
+  ]
+}

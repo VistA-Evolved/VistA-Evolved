@@ -1,0 +1,49 @@
+{
+  "fileNumber": 347.3,
+  "fileName": "REVENUE SOURCE CODE",
+  "globalRoot": "",
+  "globalReference": "^RC(347.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is used to identify the revenue source code to be sent to FMS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the program name for the source code. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will inactivate a revenue source code so it can no longer be selected and attached to a bill. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "347.3", "field": .01, "type": "regular"},
+    {"name": "347.3", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W ?67,$S($P($G(^RC(347.3,Y,0)),U,3):\"INACTIVE\",1:\"\")"}
+  ]
+}

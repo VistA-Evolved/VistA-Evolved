@@ -1,0 +1,122 @@
+{
+  "fileNumber": 120.82,
+  "fileName": "GMR ALLERGIES",
+  "globalRoot": "120.82I",
+  "globalReference": "^GMRD(120.82,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the allergy/adverse reaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALLERGY TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This field contains the type(s) for this allergy/adverse reaction .  The user can enter the type(s) separated by commas, or the following codes: D=Drug, F=Food, O=Other.  If codes are used, do not use commas to separate multiple codes.  Examples of valid entries are:  DRUG or DRUG, FOOD or D or DF or OTHER. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NATIONAL ALLERGY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:NATIONAL ALLERGY;",
+      "helpText": "Indicates whether this allergy was distributed with the national release or is a locally added allergy. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "120.823",
+      "required": false,
+      "helpText": "A list of synonyms that can also be used to look up this allergy. ",
+      "isMultiple": true,
+      "subFileNumber": 120.823,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DRUG INGREDIENTS",
+      "dataType": "POINTER",
+      "rawType": "120.824P",
+      "required": false,
+      "helpText": "List of drug ingredients that comprise this particular allergy. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VA DRUG CLASSES",
+      "dataType": "POINTER",
+      "rawType": "120.8205P",
+      "required": false,
+      "helpText": "List of VA Drug classes that comprise this reactant. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "120.822A",
+      "required": false,
+      "helpText": "This multiple field holds the coding system (i.e., LOINC, SNOMED, RXNORM) that the CODE for this items pertains to. ",
+      "isMultiple": true,
+      "subFileNumber": 120.822,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID).  A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "120.8299D",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 120.8299,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "120.82", "field": .01, "type": "regular"},
+    {"name": "120.82", "field": 1, "type": "regular"},
+    {"name": "120.82", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""},
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(120.82,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

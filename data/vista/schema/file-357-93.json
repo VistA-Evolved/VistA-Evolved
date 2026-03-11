@@ -1,0 +1,107 @@
+{
+  "fileNumber": 357.93,
+  "fileName": "MULTIPLE CHOICE FIELD",
+  "globalRoot": "357.93",
+  "globalReference": "^IBE(357.93,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name given to the field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUESTION OR EXPLANATION ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Text that precedes the list of choices. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STARTING COLUMN FOR TEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "The starting column for the text located in the .03 field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STARTING ROW FOR TEXT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0XO",
+      "length": 3,
+      "required": false,
+      "helpText": "The row for the text in the .03 field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TYPE OF DATA",
+      "dataType": "POINTER",
+      "rawType": "R*P357.6'X",
+      "required": true,
+      "pointerTo": 357.6,
+      "helpText": "Points to the package interface used to input the data. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TEXT APPEARANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The display appearance of the text in the .03 field can be selected via this field. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BLOCK",
+      "dataType": "POINTER",
+      "rawType": "RP357.1'",
+      "required": true,
+      "pointerTo": 357.1,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SELECTION RULE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ANY NUMBER;1:EXACTLY ONE;2:AT MOST ONE (0 or 1);3:AT LEAST ONE (1 or more);",
+      "helpText": "A selection rule for the multiple choice question can be specified. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHOICE",
+      "dataType": "SUBFILE",
+      "rawType": "357.931I",
+      "required": false,
+      "helpText": "The list of choices that make up the multiple choice field.  ",
+      "isMultiple": true,
+      "subFileNumber": 357.931,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "357.93", "field": .01, "type": "regular"},
+    {"name": "357.93", "field": .08, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

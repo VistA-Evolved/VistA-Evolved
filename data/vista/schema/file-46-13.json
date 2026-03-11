@@ -1,0 +1,37 @@
+{
+  "fileNumber": 46.13,
+  "fileName": "RAI MDS ROOM-BED TRANSLATION",
+  "globalRoot": "46.13",
+  "globalReference": "^DGRU(46.13,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VISTA ROOM-BED NAME",
+      "dataType": "POINTER",
+      "rawType": "RP405.4'",
+      "required": true,
+      "pointerTo": 405.4,
+      "helpText": "Enter the name of the Vista Room-bed which requires translation.   Translation may be necessary if Room-Bed does not meet the Accu-Max criteria.  Room limited from 1-5 characters, Bed limited to 1-2 characters.  For example, Vista Room-Bed name \"WYC200-100\" would require translation because the Room is 6 characters and the Bed is 3 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "COTS ROOM-BED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the Room-Bed which will be on the Accu-Max system representing this Vista Room-Bed.  For example, \"YC200-10\".  Must be in the format RRRRR-BB where R = Room and B = Bed. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "46.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

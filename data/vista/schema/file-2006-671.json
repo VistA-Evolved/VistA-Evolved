@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2006.671,
+  "fileName": "MAG RAD BODY PART",
+  "globalRoot": "2006.671",
+  "globalReference": "^MAG(2006.671,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Body part file for use in assigning body part designations to the MAG RAD CPT MATCHING file entries. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.671", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

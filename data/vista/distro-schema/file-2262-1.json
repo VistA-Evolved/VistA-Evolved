@@ -1,0 +1,37 @@
+{
+  "fileNumber": 2262.1,
+  "fileName": "ASISTS DOL DISTRICT OFFICE",
+  "globalRoot": "2262.1",
+  "globalReference": "^OOPS(2262.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2262.1", "field": .01, "type": "regular"},
+    {"name": "2262.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "fileNumber": 409.76,
+  "fileName": "TRANSMITTED OUTPATIENT ENCOUNTER ERROR CODE",
+  "globalRoot": "409.76",
+  "globalReference": "^SD(409.76,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Error code denoting why an entry in the Transmitted Outpatient Encounter file could not be transmitted or successfully processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE OF ERROR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NPCD;V:VISTA;T:HL7 TRANSMISSION;",
+      "helpText": "This set of codes indicates the source of the error. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ERROR CODE DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free text description of the error code. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CORRECTIVE ACTION DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "409.7621",
+      "required": false,
+      "helpText": "This field describes the actions necessary to correct the error. This is the text which would be viewed by a user when using the Incomplete Encounter Management Tools. ",
+      "isMultiple": true,
+      "subFileNumber": 409.7621,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "VALIDATION LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field should not be modifed except as directed.   This contains the logic that needs to be executed in order to validate the data.  If the data does not validate correctly the error code from this entry will be used.  The function call contained within this field uses the following variables:     Input        Data - The value being validated.       Returns        RES - Result of the function call               1 if entry passed validation               0 if entry does not pass validation ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CORRECTION LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field should not be modifed except as directed.   This contains the logic that needs to be executed in order to allow the user to correct the error.  The function call contained within this field uses the following variables:     Returns        RES - Result of the function call              0 - if the corrective action was not successful              1 - if the corrective action succeeded   This function call makes the assumption that the ^TMP(\"SCENI XMT\",$J,0) global from the Incomplete En",
+      "fieldNumber_": 41
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "409.76", "field": .01, "type": "regular"},
+    {"name": "409.76", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 11, "value": "D EN^DDIOL($P(^(1),U,1))"}
+  ]
+}

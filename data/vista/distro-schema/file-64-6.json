@@ -1,0 +1,97 @@
+{
+  "fileNumber": 64.6,
+  "fileName": "INTERIM REPORTS",
+  "globalRoot": "64.6IP",
+  "globalReference": "^LAB(64.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the ward or clinic that will be receiving interim reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IMMEDIATELY TRANSMIT RESULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is yes, all new data when verified will be transmitted to the device identified for the given location. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INTERIM REPORTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is yes, the interim reports tasked  by TaskMan, will transmit all verified data for the current day appropriate for the location. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "R*P3.5'X",
+      "required": true,
+      "pointerTo": 3.5,
+      "helpText": "The default device to print the interim report on. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "URGENCY CUTOFF",
+      "dataType": "POINTER",
+      "rawType": "*P62.05'",
+      "required": false,
+      "pointerTo": 62.05,
+      "helpText": "This field is used when lab results are verified and immediately reported/printed on a ward.  If this field is left blank, all tests of all urgencies will be reported.  If an urgency is entered in this field, that urgency along with all higher urgencies will be reported to the ward leaving all lower urgencies not immediately reported. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LOCATION ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " This field contains the printable short name for the location. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This field is used to identify the Referring Site. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AI", "field": },
+    {"name": "AS", "field": },
+    {"name": "AS1", "field": },
+    {"name": "B", "field": },
+    {"name": "64.6", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "64.6", "field": .01, "type": "regular"},
+    {"name": "64.6", "field": .01, "type": "regular"},
+    {"name": "64.6", "field": 1, "type": "regular"},
+    {"name": "64.6", "field": 2, "type": "regular"},
+    {"name": "64.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"\""}
+  ]
+}

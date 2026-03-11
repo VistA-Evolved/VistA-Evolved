@@ -1,0 +1,89 @@
+{
+  "fileNumber": 31,
+  "fileName": "DISABILITY CONDITION",
+  "globalRoot": "31I",
+  "globalReference": "^DIC(31,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the internal entry number for this disability condition.  This number may be used by various software packages. This must not be edited and entries must not be added or deleted unless done through a software upgrade of the MAS package. | ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "VBA DISABILITY CODES MP-6,PART IV Supp 4.1  401.02f ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter an abbreviation, 4-30 characters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DX CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains a numeric 0-9999.  It is the diagnosis code number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SENSITIVE CONDITION PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "In order to maintain sensitivity for certain diagnosis this field has been added.  If it is filled in, the .01 field for the diagnosis is not printed, but the SENSITIVE CONDITION PRINT NAME is, instead. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the long description per the VBA Rating Schedule. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RELATED ICD CODES",
+      "dataType": "POINTER",
+      "rawType": "31.01PA",
+      "required": false,
+      "helpText": "The Veterans Health Administration (VHA) has mapped the Veteran Benefits Administration (VBA) 4 digit RATED DISABILITIES (VA) code terminology to the ICD codes used for billing and reporting purposes within VistA. This mapping will help automate the Service Connected (SC) decision for outpatient encounters. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADVB", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "31", "field": .01, "type": "regular"},
+    {"name": "31", "field": 2, "type": "regular"},
+    {"name": "31", "field": 10, "type": "regular"},
+    {"name": "31", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,3)"}
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "fileNumber": 420.14,
+  "fileName": "PRCD FUND",
+  "globalRoot": "420.14I",
+  "globalReference": "^PRCD(420.14,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is fund in this file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a description of the fund. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BUDGET FISCAL YEAR BEGIN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This is used to store BUDGET FISCAL YEAR BEGIN data. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BUDGET FISCAL YEAR END",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This is used to store BUDGET FISCAL YEAR END data. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "FUND PROGRAM TRANSFER ALLOWED",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This will allow program/subprogram transfers within a fund if it is 'yes'. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "GROSS/NET",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "G:GROSS;N:NET;",
+      "helpText": "This is used to store GROSS/NET data. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP420.1999'X",
+      "required": true,
+      "pointerTo": 420.1999,
+      "helpText": "This is used to store STATUS data. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "420.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

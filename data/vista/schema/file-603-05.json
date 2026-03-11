@@ -1,0 +1,54 @@
+{
+  "fileNumber": 603.05,
+  "fileName": "CLOZAPINE HL7 TRANSMISSION",
+  "globalRoot": "603.05",
+  "globalReference": "^YSCL(603.05,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLOZAPINE PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the Clozapine patient that had data transmitted. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRESCRIPTION TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "603.51DA",
+      "required": false,
+      "helpText": "This sub-file contains a log of HL7 messages that were sent for Clozapine prescriptions. The messages are stored in the HLO MESSAGES file (#778). ",
+      "isMultiple": true,
+      "subFileNumber": 603.51,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "603.52D",
+      "required": false,
+      "helpText": "This sub-file contains a log of HL7 messages that were sent for Clozapine  inpatient orders. The messages are stored in the HLO MESSAGES file (#778). ",
+      "isMultiple": true,
+      "subFileNumber": 603.52,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CDATE", "field": },
+    {"name": "DDATE", "field": },
+    {"name": "ON", "field": },
+    {"name": "RX", "field": },
+    {"name": "603.05", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

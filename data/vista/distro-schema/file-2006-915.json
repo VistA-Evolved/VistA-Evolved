@@ -1,0 +1,65 @@
+{
+  "fileNumber": 2006.915,
+  "fileName": "ARTIFACT DESCRIPTOR",
+  "globalRoot": "2006.915",
+  "globalReference": "^MAGV(2006.915,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RETENTION POLICY",
+      "dataType": "POINTER",
+      "rawType": "RP2006.914",
+      "required": true,
+      "pointerTo": 2006.914,
+      "helpText": "This is Artifact Retention Policy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARTIFACT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The category that the artifact belongs to.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ARTIFACT FORMAT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field, in combination with ArtifactType  define an artifact descriptor, and are used for looking up appropriate file extension, retention policy, etc. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILE EXTENSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The file extension to use for filesystem-based storage providers when storing an artifact. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates whether the Artifact Descriptor is active or not: \"0\" means inactive, \"1\" means active.  ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.915", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

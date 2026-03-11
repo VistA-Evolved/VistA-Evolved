@@ -1,0 +1,4278 @@
+{
+  "id": "pharmacy",
+  "name": "Pharmacy",
+  "description": "Outpatient prescriptions, inpatient meds, drug file, formulary",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.866Z",
+  "files": {
+    "count": 6,
+    "items": [
+      {
+        "fileNumber": 50,
+        "fileName": "File #50",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 52,
+        "fileName": "File #52",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 52.6,
+        "fileName": "File #52.6",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 52.7,
+        "fileName": "File #52.7",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 55,
+        "fileName": "File #55",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 59.7,
+        "fileName": "File #59.7",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 86,
+    "items": [
+      {
+        "name": "PSOERXA0 DRGMTCH",
+        "tag": "DRGMTCH",
+        "routine": "PSOERXA0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "NDCUPN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGDESC",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to match incoming eRx drugs/supply items to the VistA  equivalent drug/supply items.   Input:     Both parameters are 'optional', but to receive any legitimate    results, at least one of the two must be passed in.     NDCUPN - NDC or UPN value to be match to the NDC/UPN file (#50.6"
+      },
+      {
+        "name": "PSOERXA0 PRVMTCH",
+        "tag": "PRVMTCH",
+        "routine": "PSOERXA0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "NPI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DEA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CSUB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Provides logic for matching a provider identified for an incoming eRx  prescription. "
+      },
+      {
+        "name": "PSOERXA1 INCERX",
+        "tag": "INCERX",
+        "routine": "PSOERXA1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 10,
+        "params": [
+          {
+            "name": "XML",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PRCHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PACHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "DACHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "STATION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ERXHID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ERXVALS",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "XML2",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SOURCE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC receives and processes an incoming ERX XML message, provider  check information, and patient check information. "
+      },
+      {
+        "name": "PSOERXI1 INCERX",
+        "tag": "INCERX",
+        "routine": "PSOERXI1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 10,
+        "params": [
+          {
+            "name": "XML",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PRCHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PACHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "DACHK",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "STATION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ERXHID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ERXVALS",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "XML2",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "XML3",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC receives incoming eRx messages that are in the 2017 script  format. This RPC replaces PSOERXA1 INCERX, which was the RPC used for the  10.6 script format. "
+      },
+      {
+        "name": "PSO VCC REFILL",
+        "tag": "AP1",
+        "routine": "PSOVCCA",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RXN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "USER",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "REFILL SOURCE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "RETURN FLAG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The RPC performs a refill on an outpatient pharmacy order request.   In addition, the RPC will provide the ability in Outpatient Pharmacy  to store the source of a refill request (eg. VCC, Computerized Patient  Record System (CPRS), Outpatient Pharmacy) as well as the person  making the request - if"
+      },
+      {
+        "name": "PSORPC",
+        "tag": "RPC",
+        "routine": "PSORPC01",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "PSO EPCS EDIT",
+        "tag": "ENTRY",
+        "routine": "PSOEPED",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure stores information on editing changes in file 200 related to the electronic prescribing of controlled substances. "
+      },
+      {
+        "name": "PSO EPCS ADD DEA",
+        "tag": "FILEFM",
+        "routine": "PSOEPUT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "INPUT:  DATA - DEA DATA LINE \"^\" DELIMITED.         NPIEN - IEN OF PROVIDER TO BE LINKED TO THIS DEA NUMBER OUTPUT: RET - DEA IEN for SUCCESS, 0 for UNSUCCESSFUL "
+      },
+      {
+        "name": "PSO EPCS DEADOJ",
+        "tag": "DEADOJ",
+        "routine": "PSOEPUT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "Provider DEA#",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC call accepts a DEA Number as input. It calls the DOJ/DEA Web Service to get the most recent information for the provider which is  returned to the calling program in a single string with \"^\" delimited data. The values in the string are:     1 - PROVIDER NAME   2 - ADDRESS 1   3 - ADDRESS 2 "
+      },
+      {
+        "name": "PSO EPCS MBM",
+        "tag": "MBM",
+        "routine": "PSOEPUT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC is provided to ePCS GUI to check if the site is setup for Meds by Mail service. "
+      },
+      {
+        "name": "PSO EPCS REMOVE DEA",
+        "tag": "DEAREM",
+        "routine": "PSOEPUT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DEATXT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Functionality to remove a DEA multiple from file #200, Field 53.21   INPUT:  NPIEN - NEW PERSON FILE #200 INTERNAL ENTRY NUMBER           DEATXT - PROPERLY FORMATTED DEA NUMBER   OUTPUT: RET - 1 for SUCCESS, 0 for UNSUCCESSFUL "
+      },
+      {
+        "name": "PSO EPCS DEA DUP CHECK",
+        "tag": "DUPCHK",
+        "routine": "PSOEPUT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DEATXT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "SUFFIX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will accept a DEA in text format, and an institutional suffix if  available.  It will perform checking to determine if the DEA is being  used by another user. "
+      },
+      {
+        "name": "PSO EPCS DEALIST",
+        "tag": "DEALIST",
+        "routine": "PSOEPUT",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call will provide a list of active DEA #s for a  given provider.   INPUT:  NPIEN - NEW PERSON FILE #200 INTERNAL ENTRY NUMBER   OUTPUT: RET - A STRING OF DEA INFORMATION DELIMITED BY THE \"^\"           1 - DEA NUMBER           2 - INDIVIDUAL DEA SUFFIX           3 - STATE       "
+      },
+      {
+        "name": "PSO EPCS VERSION",
+        "tag": "GUICHK",
+        "routine": "PSOEPVR",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to check the version of the ePCS GUI that should be  running. "
+      },
+      {
+        "name": "PSO EPCS DETOX CHECK",
+        "tag": "DTXCHK",
+        "routine": "PSOEPU1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DEA NUMBER",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DETOX NUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will accept a DEA number in text format, and a DETOX number in  text format.  It will perform checking to see if the DETOX number is a  valid format, and will checking if the DETOX number is being used by  another DEA number. "
+      },
+      {
+        "name": "PSO EPCS VA# DUP CHECK",
+        "tag": "VANUMCHK",
+        "routine": "PSOEPU1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "VANUM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will accept a VA# in text format, and a provider's NEW PERSON File #200 IEN (Internal Entry number).  It will perform checking  to determine if the VA# is being used by another provider. "
+      },
+      {
+        "name": "PSO EPCS FILER",
+        "tag": "FILEFMA",
+        "routine": "PSOEPU1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "FIELD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will accept a Field Number in the New Person, File #200, a single data item in text format, and Provider Internal Entry Number (IEN) in  File #200. "
+      },
+      {
+        "name": "PSO EPCS REPORTS",
+        "tag": "RPTEN",
+        "routine": "PSOEPREP",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This call is used by all ePrescribing Controlled Substances (ePCS) GUI  reports. It produces a report based on the criteria selected through the  ePCS GUI application. "
+      },
+      {
+        "name": "PSO EPCS SYSTEM DATE TIME",
+        "tag": "EPCSDATE",
+        "routine": "PSOEPUT2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Broker call returns the server date as a FileMan internal and external  date format. "
+      },
+      {
+        "name": "PSO EPCS FIELD HELP",
+        "tag": "EPCSHELP",
+        "routine": "PSOEPUT2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get the field help from the data dictionary based on the field number. "
+      },
+      {
+        "name": "PSO EPCS GET LIST",
+        "tag": "SRCLST",
+        "routine": "PSOEPUT2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This call is used to perform a search on a file based on a search string. "
+      },
+      {
+        "name": "PSO EPCS LIST NP SCHED",
+        "tag": "NPSCHDL",
+        "routine": "PSOEPU1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Functionality to list the New Person file #200 Schedules for a provider. Schedule fields are 55.1,55.2,55.3,55.4,55.5,55.6 "
+      },
+      {
+        "name": "PSO EPCS FILE NP SCHED",
+        "tag": "NPSCHDF",
+        "routine": "PSOEPU1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "NPIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Functionality to file the New Person file #200 Schedules for a provider. Schedule fields are 55.1,55.2,55.3,55.4,55.5,55.6 "
+      },
+      {
+        "name": "PSO EPCS LIST OPTN DESC",
+        "tag": "OPTNDESC",
+        "routine": "PSOEPU1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "OPTNM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RPC to return Option file #19 description word processing text. "
+      },
+      {
+        "name": "PSO EPCS TOPIC HELP",
+        "tag": "EPCSHELP",
+        "routine": "PSOEPUT2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "EPCSARY",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the text from the HELP FRAME file (#9.2) based on a help frame. "
+      },
+      {
+        "name": "PSO ACTIVITY LOG",
+        "tag": "ACT",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows retrieval of the Activity Log for a specific prescription  number (External) in the PRESCRIPTION (#52) file.   Return list of ACTIVITY transactions for a particular PRESCRIPTION  (#52)  file entry.  Each transaction will have the following fields (if populated in VistA):      activit"
+      },
+      {
+        "name": "PSO CMOP LOG",
+        "tag": "CMOP",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC allows retrieval of the CMOP Log for a specific prescription  number   Each transaction will have the following fields:            dateShipped         #52.01    9          ndcReceived         #52.01    4          rxReference         #52.01    2          sequenceNumber      #52.01    1      "
+      },
+      {
+        "name": "PSO COPAY LOG",
+        "tag": "COPAY",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSOIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return values from Copay Transaction log in PRESCRIPTION (#52) file.   Possible Return Values:   RESULTS(0) = -n^Error message   RESULTS(0) = 0^No Data   RESULTS(1) = Array of return values in JSON format:     copayActivityLog          #52.0107, .01   reason                    #52.0107, 1   initiato"
+      },
+      {
+        "name": "PSO ECME LOG",
+        "tag": "ECME",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return list of ECME transactions for a particular PRESCRIPTION (#52) file entry. Each transaction will have the following fields:   ecmeLogDate          #52.3, .01   reason               #52.3, .02    initiatorOfActivity  #52.3, .03   rxReference          #52.3, .04   comment              #52.3, .05"
+      },
+      {
+        "name": "PSO ERX LOG",
+        "tag": "ERX",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return list of ERX transactions for a particular PRESCRIPTION (#52) file entry. Each transaction will have the following fields:   eRxLogDate           #52.3, .01   reason               #52.3, .02    initiatorOfActivity  #52.3, .03   rxReference          #52.3, .04   comment              #52.3, .05 "
+      },
+      {
+        "name": "PSO LABEL LOG",
+        "tag": "LABEL",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Allow listing of Label Log (#52.032) subfile in the PRESCRIPTION (#52) file, given an external prescription number.   RETURN VARIABLES:           0^No data - there are no LABEL entries for this prescription\"           -1^ Prescription Number is Required\"         -2^ Prescription Number is not recogn"
+      },
+      {
+        "name": "PSO LOT EXPIRATION",
+        "tag": "LELF",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return list of LOT/EXP transactions for a particular PRESCRIPTION (#52)) file entry. Each Transaction will have the following fields:   expirationDate   #52.0401, 1   lotExp           #52.0401, .01   rxIndicator      #52.0401, 2 "
+      },
+      {
+        "name": "PSO PARTIALS LOG",
+        "tag": "PART",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows retrieval of the Partials Log for a specific prescription. Each transaction will have the following fields (if populated in VistA):                                                 loginDateTime                  #52.2, .08    partialDate                    #52.2, .01     qty          "
+      },
+      {
+        "name": "PSO REFILL LOG",
+        "tag": "RFIL",
+        "routine": "PSOVCC1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows retrieval of the Refill Log for a specific prescription  number.   Return list of REFILL transactions for a particular PRESCRIPTION  (#52) file entry.   Each transaction will have the following fields (if populated in VistA):      loginDate                            #52.1, 7    refi"
+      },
+      {
+        "name": "PSO EPCS CRED",
+        "tag": "LASTCRED",
+        "routine": "PSOEPED",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DUZ",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return the last CREDENTIAL TYPE from SIGN-ON LOG file (#3.081) for user DUZ passed in. "
+      },
+      {
+        "name": "PSO EPCS PSDRPH FILER",
+        "tag": "PSDKEY",
+        "routine": "PSOEPUT2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PSOSUBJ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOACTOR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOACTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Allocates and deallocates the PSDRPH key to the specified user and logs  the event in the XUEPCS PSDRPH AUDIT (#8991.7) file. "
+      },
+      {
+        "name": "PSO ADDRESS UPDATE",
+        "tag": "PSOVPADDR",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PSOVICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVADDR",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PSOVTYP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVATYP",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows the address fields in the PATIENT (#2) file to be updated. It takes two parameters: the patient ICN and the temporary address fields that are to be updated.    "
+      },
+      {
+        "name": "PSO GET ADDRESS",
+        "tag": "PSOVRETADDR",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSOVATYP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "get a patient address "
+      },
+      {
+        "name": "PSO TEMP ADDRESS ACTIVE FLAG",
+        "tag": "PSOVTAAF",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PSOVICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVSTA",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVSTRT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSOVEND",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows the setting of the TEMPORARY ADDRESS ACTIVE? field in  the patient file (field .12105 in file #2) "
+      },
+      {
+        "name": "PSO DEL TEMPORARY ADDRESS",
+        "tag": "PSOVDELAD",
+        "routine": "PSOVCC0",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSOVICN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC deletes the patient's temporary address from the patient file "
+      },
+      {
+        "name": "PSB SCANPT",
+        "tag": "SCANPT",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is used to validate the data scanned in at the scan patient  wristband prompt of the mnOpenPatient component.  The value passed in  is either the full SSN scanned in from the patient wristband -or- the  1U4N syntax of the patient lookup.  In either case the call must  return only one patien"
+      },
+      {
+        "name": "PSB INSTRUCTOR",
+        "tag": "INST",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBACC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBVER",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "Used by frmInstructor to validate that an instructor is at the client  with a student.  Validation is acheived via the instructor entering  their SSN and electronic signature code.  This is then validated  against the NEW PERSON file (#200).  If a valid user is obtained,  that user must posses the P"
+      },
+      {
+        "name": "PSB USERLOAD",
+        "tag": "USRLOAD",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC is called at application startup to populate the BCMA_User  object with the users defaults.  No parameters are passed, the current  DUZ is assumed. "
+      },
+      {
+        "name": "PSB USERSAVE",
+        "tag": "USRSAVE",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 13,
+        "params": [
+          {
+            "name": "PSBWIN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBVDL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBUDCW ",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBPBCW",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBIVCW",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDEV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCSRT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCV1",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCV2",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCV3",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCV4",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORMODE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLSRCH",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Save the users current window settings for the next session. "
+      },
+      {
+        "name": "PSB FMDATE",
+        "tag": "FMDATE",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBVAL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Used to validate Fileman dates. "
+      },
+      {
+        "name": "PSB SCANMED",
+        "tag": "SCANMED",
+        "routine": "PSBRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "SCANVAL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBTAB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Takes the scanned valued from the medication and does a lookup on file  50 for an exact match.  If more than one or less than one entry are  found for the lookup an error is returned to the client. "
+      },
+      {
+        "name": "PSB PARAMETER",
+        "tag": "RPC",
+        "routine": "PSBPAR",
+        "returnType": "ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "PSBCMD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBENT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBPAR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBINS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBVAL",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Called by client to return or set parameters "
+      },
+      {
+        "name": "PSB TRANSACTION",
+        "tag": "RPC",
+        "routine": "PSBML",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBHDR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBREC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This is the filing RPC for all data returning from the client regarding the medication log.  Filing is handled by business rules on the server and this RPC will return either '1^Data Filed' or '-1^reason for not filing data' to the client.  Results of the  processed transaction is communicated via t"
+      },
+      {
+        "name": "PSB VALIDATE ORDER",
+        "tag": "EN",
+        "routine": "PSBVDLVL",
+        "returnType": "ARRAY",
+        "paramCount": 11,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBIEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBTYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBADMIN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBTAB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBUID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBASTS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORSTS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBRMV",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "psbdien",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "PSBRMVTM",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": ""
+      },
+      {
+        "name": "PSB SERVER CLOCK VARIANCE",
+        "tag": "CLOCK",
+        "routine": "PSBUTL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Client date/time in external FileMan format. Returns the variance from the server to the client in minutes. "
+      },
+      {
+        "name": "PSB MEDICATION HISTORY",
+        "tag": "HISTORY",
+        "routine": "PSBMLHS",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBOI",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the history of a medication for a patient from the orderable item. "
+      },
+      {
+        "name": "PSB GETPRNS",
+        "tag": "GETPRNS",
+        "routine": "PSBPRN",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSIOPI",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns all administrations of a PRN order that have NOT had the PRN Effectiveness documented in the current admission or within the hours  defined in PRN documentation site parameter whichever is greater of the  two.  When the PRN medication is administered a flag is set based on the  given PRN Rea"
+      },
+      {
+        "name": "PSB REPORT",
+        "tag": "RPC",
+        "routine": "PSBO",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 26,
+        "params": [
+          {
+            "name": "PSBTYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSTRT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSTOP",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBINCL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDEV",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSORT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBOI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBWLOC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBWSORT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBFUT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORDNUM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBLIST",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PSBRCRI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORDNM",
+            "type": "UNKNOWN()",
+            "required": false
+          },
+          {
+            "name": "PSBPST",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBTR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSIFIL",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLINORD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSB20",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSB21",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSB22",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSB23",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSB24",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLLIST",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PSBDIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Return the text for the specified report and the user has the option to  print the reports. "
+      },
+      {
+        "name": "PSB SUBMIT MISSING DOSE",
+        "tag": "RPC",
+        "routine": "PSBMD",
+        "returnType": "ARRAY",
+        "paramCount": 11,
+        "params": [
+          {
+            "name": "PSBDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDRUG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDOSE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBRSN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBADMIN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBNEED",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBUID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBON",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSCHD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLIN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLNIEN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Allows the client to submit a missing dose interactively. "
+      },
+      {
+        "name": "PSB VALIDATE ESIG",
+        "tag": "ESIG",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBESIG",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Validate the data in PSBESIG against the user currently signed on (DUZ) "
+      },
+      {
+        "name": "PSB LOCK",
+        "tag": "LOCK",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "LOCKING NO LONGER USED AS OF PATCH 7.  INCLUDED FOR BACKWARD COMPATABILITY WITH GUI.  CALL WILL BE REMOVED IN PATCH 8. "
+      },
+      {
+        "name": "PSB CHECK SERVER",
+        "tag": "CHECK",
+        "routine": "PSBUTL",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBWHAT",
+            "type": "REFERENCE",
+            "required": false
+          },
+          {
+            "name": "PSBDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Returns -1 or 1 when checking for patches and build on the server. "
+      },
+      {
+        "name": "PSB MAIL",
+        "tag": "RPC",
+        "routine": "PSBRPCXM",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBCMD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDATA",
+            "type": "WORD-PROCESSING",
+            "required": false
+          }
+        ],
+        "description": "A call is made that allows the GUI to send its' own formatted mail message. "
+      },
+      {
+        "name": "PSB GETORDERTAB",
+        "tag": "RPC",
+        "routine": "PSBVDLTB",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 5,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VDL TAB",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "VDL DATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSIOPI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLINORD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Gives the client VDL information for the specified patient and time frame. "
+      },
+      {
+        "name": "PSB WARDLIST",
+        "tag": "WLIST",
+        "routine": "PSBPARIV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBEDIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of active wards that are available for the definition of IV parameters in the BCMA IV PARAMETERS file 53.66. Wards already in file 53.66 are returned with the type of IV PARAMETERS defined. "
+      },
+      {
+        "name": "PSB GETIVPAR",
+        "tag": "GETPAR",
+        "routine": "PSBPARIV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PSBWARD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBIVPT",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns the IV parameters by IV type, as defined for a ward in file 53.66. "
+      },
+      {
+        "name": "PSB DEVICE",
+        "tag": "DEVICE",
+        "routine": "PSBRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "FROM",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DIR",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Allows user to select a Printer from the GUI. "
+      },
+      {
+        "name": "PSB PUTIVPAR",
+        "tag": "PUTPAR",
+        "routine": "PSBPARIV",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "PSBWARD",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBPARS",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDIV",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Sets 53.66 or parameters file w/input from 53.66 if ward is not \"ALL\" "
+      },
+      {
+        "name": "PSB IV ORDER HISTORY",
+        "tag": "GETOHIST",
+        "routine": "PSBRPC2",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns individual detailed bag history. "
+      },
+      {
+        "name": "PSB BAG DETAIL",
+        "tag": "BAGDTL",
+        "routine": "PSBRPC2",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBUID",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBORD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a chronological detailed history on each specific IV bag that is selected.     [0] = -1^No History On File                [0] = Number of Nodes [1] = Action Date/Time^User ID^Action Status^Comments "
+      },
+      {
+        "name": "PSB ALLERGY",
+        "tag": "ALLR",
+        "routine": "PSBALL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": " PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergies for a patient. "
+      },
+      {
+        "name": "PSB GETPROVIDER",
+        "tag": "PROVLST",
+        "routine": "PSBRPCMO",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBIN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Used to get a list of active providers. "
+      },
+      {
+        "name": "PSB MOB DRUG LIST",
+        "tag": "OILST",
+        "routine": "PSBRPCMO",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBSCAN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBOTYP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Used by the BCMA/CPRS Med Order Button to return an array of drug. "
+      },
+      {
+        "name": "PSB CPRS ORDER",
+        "tag": "ORDER",
+        "routine": "PSBRPCMO",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBHDR",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBREC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC sets results of a Med Order Button transaction in a global for  Inpatient Pharmacy to pick up. "
+      },
+      {
+        "name": "PSB NURS WARDLIST",
+        "tag": "NWLIST",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "none",
+            "type": "UNKNOWN()",
+            "required": false
+          }
+        ],
+        "description": "This will return a list of active ward from the NURS LOCATION, file 211.4. "
+      },
+      {
+        "name": "PSB MAXDAYS",
+        "tag": "MAX",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC returns the maximum number of days a user can view or print the  MAH report. This parameter is set using CPRS and is call ORRP BCMA MAH. "
+      },
+      {
+        "name": "PSB VERSION CHECK",
+        "tag": "GUICHK",
+        "routine": "PSBRPC3",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "This RPC is called at startup. No parameters are passed. "
+      },
+      {
+        "name": "PSB CHECK IV",
+        "tag": "RPC",
+        "routine": "PSBCHKIV",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "ORDIV",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "RPC PSB CHECK IV - When given a patient's data file number(DFN), this  process will return infusing IV information pertaining to the given  DFN.  The information will be returned at the location presented by the \"RESULTS\" parameter. "
+      },
+      {
+        "name": "PSB VITALS",
+        "tag": "VITALS",
+        "routine": "PSBRPC",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Passes array of Vital entries - Temp,Pulse,Resp,BP,Pain in the last 7 days "
+      },
+      {
+        "name": "PSB VITAL MEAS FILE",
+        "tag": "RPC",
+        "routine": "PSBVITFL",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "PSBDFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBRATE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBVTYPE",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBDTTKN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC has been built specifically to process the filing of BCMA  Pain Score data. The processing of other VITAL type may be incorporated  with some adjustments.       This routine is to service BCMA 3.0 functionality and store VITALs'   data into the VITAL MEASUREMENT FILE - ^GMR(120.5  using the"
+      },
+      {
+        "name": "PSB MED LOG LOOKUP",
+        "tag": "RPC",
+        "routine": "PSBMLLKU",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBREC",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "BCMA Medication Log Look Up Remote Procedures.   This routine is a conglomerate of  Medication Log lookup functionality per the BCMA Graphical User Interface software.   Input:  PSBREC (array)         PSBREC (0)     determine  \"lookup\" function                        \"PTLKUP\" (patient file (#2) look"
+      },
+      {
+        "name": "PSB COVERSHEET1",
+        "tag": "RPC",
+        "routine": "PSBCSUTL",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "HRSBACK",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBSIOPI",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBCLINORD",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "(modified 05/08/2007)   PSB COVERSHEET1 is to return order data per patient and construction of  BCMA Coversheet view as presented by the BCMA-HSC Coversheet Phase II SRS and SDD documentation.   INPUT:  communications area -  \"\"          patient's DFN       -  DFN     (patient ptr.)                "
+      },
+      {
+        "name": "PSB UTL XSTATUS SRCH",
+        "tag": "FNDACTV",
+        "routine": "PSBVDLU3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "RESULTS(0)=returned line count RESULTS(1)=patients location during activity RESULTS(2)=medication^ordernumber RESULTS(3)= action fileman date&time RESULTS(4)= scheduled administration fileman date&time "
+      },
+      {
+        "name": "PSB MAN SCAN FAILURE",
+        "tag": "SCANFAIL",
+        "routine": "PSBVDLU3",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PSBPARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "SCANFAIL(RESULTS,PSBPARAM)      ;  TEJ 05/12/2006  BCMA-Managing Scanning Failures (MSF)         ;       Process Scanning Failures         ;               Parameters:         ;               Input (via GUI):         ;        Per Wristband  (0)      -       Pat IEN ^ ^ Failure Reason ^ User's Comment"
+      },
+      {
+        "name": "PSB GETINJECTIONSITE",
+        "tag": "RPC",
+        "routine": "PSBINJEC",
+        "returnType": "ARRAY",
+        "paramCount": 4,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "TIME",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "MAX",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBOI",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Get the last nn injections site info from the BCMA MEDICATION LOG file  #53.9.   Get only of specific Orderable Items per patient in reverse chronology date/time order or All Orderable Items per patient in  reverse chronology date/time order. "
+      },
+      {
+        "name": "PSB WITNESS",
+        "tag": "WITNESS",
+        "routine": "PSBRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PSBACC",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "PSBVER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Used by frmWintess to validate if a Witness at the client is authorized  to be a witness for a BCMA action, i.e. High Risk Drug administration.   Validation is achieved via not allowing the logged in person to witness  for themselves, also persons that hold certain keys can't be a valid  witness. "
+      },
+      {
+        "name": "PSB CLINICLIST",
+        "tag": "GETLIST",
+        "routine": "PSBRPC",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PREFIX",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CONTAINS",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns Active Clinic names based on Search criteria. "
+      },
+      {
+        "name": "PSB MEDS ON PATIENT",
+        "tag": "MEDSONPT",
+        "routine": "PSBRPC1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC returns indicators if medications are still on a patient.  The  patient's DFN will be passed in and a RESULTS array returned with three  flags set.  Flags set to 1 for meds are on patient or 0 none per this category. "
+      },
+      {
+        "name": "PSB GETSETWP",
+        "tag": "MDRPC",
+        "routine": "PSBPAR",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "OPTION",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC allows the GUI to add and update body site locations graphically  by sending the coordinates of the loction on the body and storing these using word processing free form text type field. "
+      },
+      {
+        "name": "PSN FDA MED GUIDE PRINT QUEUE",
+        "tag": "RETRIEVE",
+        "routine": "PSNFDAMG",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "AIP",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Proceedure Call is used by a Java Client to print FDA Medication Guides for the National Drug File (NDF) application. "
+      },
+      {
+        "name": "PSA UPLOAD",
+        "tag": "PSAUPLD",
+        "routine": "PSABRKU1",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "TMP",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This is the primary entry point for the Drug Accountability Upload GUI. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 90,
+    "items": [
+      {
+        "name": "PSO P",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PND",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDRX",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDRPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDCHG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDLBL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDEL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDCNT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PNDLOG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO RXDL",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO ALPHA",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO SYNONYM",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO COMMON",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO INACTIVE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO NONFORM",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO NARC",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO CST",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO RXRPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO PAT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO MANAGER",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO RX",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO VIEW",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO C",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO OUTPUTS",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO AMIS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO USER1",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO USER2",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO RPH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO COST STATISTICS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSO DRUG COSTS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PR",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ OE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ OR PAT MENU",
+        "type": "query",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ UEUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ SEUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ IWP EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ AC SET-UP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ SYS EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PARAM EDIT MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ EXP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ OAOPT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ UD ALIGN LABEL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ EXTP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ MDWS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PDV",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ CD",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ CHECK DRUG INTERACTION",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ CLINIC ORDERS MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ ECO",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE SETUP",
+        "type": "action",
+        "securityKey": "PSJ PADE MGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE INVENTORY SYSTEM",
+        "type": "action",
+        "securityKey": "PSJ PADE MGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE SEND AREA SETUP",
+        "type": "action",
+        "securityKey": "PSJ PADE MGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE MAIN MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE SURGERY TASK",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE SEND SURGERY CASES",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE INVENTORY MENU",
+        "type": "menu",
+        "securityKey": "PSJ PADE MGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE DEVICE SETUP",
+        "type": "action",
+        "securityKey": "PSJ PADE MGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE SEND ORDERS",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE INVENTORY REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSJ PADE DIVISION SETUP",
+        "type": "action",
+        "securityKey": "PSJ PADE ADV",
+        "displayText": ""
+      },
+      {
+        "name": "PSB GUI CONTEXT - USER",
+        "type": "broker",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB USER",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB MISSING DOSE FOLLOWUP",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB MGR",
+        "type": "menu",
+        "securityKey": "PSB MANAGER",
+        "displayText": ""
+      },
+      {
+        "name": "PSB DRUG INQUIRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB MED LOG PRN EFFECT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB MED LOG NEW ENTRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB USER PARAM RESET",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB NURSE",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB PHARMACY",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB MED LOG TROUBLE SHOOTER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB SAGG MONTHLY REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB PRN DOCUMENTING",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU LINK ASSOCIATIONS",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU WARD LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU WRKSTN MAIN",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU PRINT MAR ALL",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU PRINT MAR WARD",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU PRINT MAR PATIENT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU SHOW PATIENT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU SHOW WARD",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU MANAGEMENT MENU",
+        "type": "menu",
+        "securityKey": "PSB BUMGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU ERROR LOG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU USER INIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU INIT WRKSTN DFT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU INIT WRKSTN DIV",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU VISTA MAIN",
+        "type": "menu",
+        "securityKey": "PSB BUMGR",
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU INIT SINGLE PT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU PMU MESSAGE BUILDER",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "PSB BCBU PRINT BLK MAR",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 217,
+    "items": [
+      {
+        "prompt": "NDCUPN:",
+        "rpcName": "PSOERXA0 DRGMTCH",
+        "paramName": "NDCUPN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGDESC:",
+        "rpcName": "PSOERXA0 DRGMTCH",
+        "paramName": "DGDESC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPI:",
+        "rpcName": "PSOERXA0 PRVMTCH",
+        "paramName": "NPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEA:",
+        "rpcName": "PSOERXA0 PRVMTCH",
+        "paramName": "DEA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CSUB:",
+        "rpcName": "PSOERXA0 PRVMTCH",
+        "paramName": "CSUB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XML:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "XML",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PRCHK:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "PRCHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PACHK:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "PACHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DACHK:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "DACHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATION:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "STATION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIV:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "DIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ERXHID:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "ERXHID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ERXVALS:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "ERXVALS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XML2:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "XML2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SOURCE:",
+        "rpcName": "PSOERXA1 INCERX",
+        "paramName": "SOURCE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XML:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "XML",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PRCHK:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "PRCHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PACHK:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "PACHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DACHK:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "DACHK",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "STATION:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "STATION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIV:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "DIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ERXHID:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "ERXHID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ERXVALS:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "ERXVALS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XML2:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "XML2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "XML3:",
+        "rpcName": "PSOERXI1 INCERX",
+        "paramName": "XML3",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSO VCC REFILL",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RXN:",
+        "rpcName": "PSO VCC REFILL",
+        "paramName": "RXN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "USER:",
+        "rpcName": "PSO VCC REFILL",
+        "paramName": "USER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "REFILL SOURCE:",
+        "rpcName": "PSO VCC REFILL",
+        "paramName": "REFILL SOURCE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "RETURN FLAG:",
+        "rpcName": "PSO VCC REFILL",
+        "paramName": "RETURN FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "PSORPC",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "PSO EPCS EDIT",
+        "paramName": "DATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "PSO EPCS ADD DEA",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS ADD DEA",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "Provider DEA#:",
+        "rpcName": "PSO EPCS DEADOJ",
+        "paramName": "Provider DEA#",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS REMOVE DEA",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEATXT:",
+        "rpcName": "PSO EPCS REMOVE DEA",
+        "paramName": "DEATXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEATXT:",
+        "rpcName": "PSO EPCS DEA DUP CHECK",
+        "paramName": "DEATXT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SUFFIX:",
+        "rpcName": "PSO EPCS DEA DUP CHECK",
+        "paramName": "SUFFIX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS DEALIST",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS VERSION",
+        "paramName": "EPCSARY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DEA NUMBER:",
+        "rpcName": "PSO EPCS DETOX CHECK",
+        "paramName": "DEA NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DETOX NUMBER:",
+        "rpcName": "PSO EPCS DETOX CHECK",
+        "paramName": "DETOX NUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VANUM:",
+        "rpcName": "PSO EPCS VA# DUP CHECK",
+        "paramName": "VANUM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS VA# DUP CHECK",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FIELD:",
+        "rpcName": "PSO EPCS FILER",
+        "paramName": "FIELD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "PSO EPCS FILER",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS FILER",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS REPORTS",
+        "paramName": "EPCSARY",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS SYSTEM DATE TIME",
+        "paramName": "EPCSARY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS FIELD HELP",
+        "paramName": "EPCSARY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS GET LIST",
+        "paramName": "EPCSARY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS LIST NP SCHED",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NPIEN:",
+        "rpcName": "PSO EPCS FILE NP SCHED",
+        "paramName": "NPIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DATA:",
+        "rpcName": "PSO EPCS FILE NP SCHED",
+        "paramName": "DATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTNM:",
+        "rpcName": "PSO EPCS LIST OPTN DESC",
+        "paramName": "OPTNM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "EPCSARY:",
+        "rpcName": "PSO EPCS TOPIC HELP",
+        "paramName": "EPCSARY",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "PSO ACTIVITY LOG",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOIEN:",
+        "rpcName": "PSO COPAY LOG",
+        "paramName": "PSOIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO ECME LOG",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO ERX LOG",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO LABEL LOG",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO LOT EXPIRATION",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO PARTIALS LOG",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PIEN:",
+        "rpcName": "PSO REFILL LOG",
+        "paramName": "PIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ:",
+        "rpcName": "PSO EPCS CRED",
+        "paramName": "DUZ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOSUBJ:",
+        "rpcName": "PSO EPCS PSDRPH FILER",
+        "paramName": "PSOSUBJ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOACTOR:",
+        "rpcName": "PSO EPCS PSDRPH FILER",
+        "paramName": "PSOACTOR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOACTION:",
+        "rpcName": "PSO EPCS PSDRPH FILER",
+        "paramName": "PSOACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVICN:",
+        "rpcName": "PSO ADDRESS UPDATE",
+        "paramName": "PSOVICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVADDR:",
+        "rpcName": "PSO ADDRESS UPDATE",
+        "paramName": "PSOVADDR",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVTYP:",
+        "rpcName": "PSO ADDRESS UPDATE",
+        "paramName": "PSOVTYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVATYP:",
+        "rpcName": "PSO ADDRESS UPDATE",
+        "paramName": "PSOVATYP",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVATYP:",
+        "rpcName": "PSO GET ADDRESS",
+        "paramName": "PSOVATYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVICN:",
+        "rpcName": "PSO GET ADDRESS",
+        "paramName": "PSOVICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVICN:",
+        "rpcName": "PSO TEMP ADDRESS ACTIVE FLAG",
+        "paramName": "PSOVICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVSTA:",
+        "rpcName": "PSO TEMP ADDRESS ACTIVE FLAG",
+        "paramName": "PSOVSTA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVSTRT:",
+        "rpcName": "PSO TEMP ADDRESS ACTIVE FLAG",
+        "paramName": "PSOVSTRT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVEND:",
+        "rpcName": "PSO TEMP ADDRESS ACTIVE FLAG",
+        "paramName": "PSOVEND",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSOVICN:",
+        "rpcName": "PSO DEL TEMPORARY ADDRESS",
+        "paramName": "PSOVICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDATA:",
+        "rpcName": "PSB SCANPT",
+        "paramName": "PSBDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBACC:",
+        "rpcName": "PSB INSTRUCTOR",
+        "paramName": "PSBACC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVER:",
+        "rpcName": "PSB INSTRUCTOR",
+        "paramName": "PSBVER",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWIN:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBWIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVDL:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBVDL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBUDCW :",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBUDCW ",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBPBCW:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBPBCW",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBIVCW:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBIVCW",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDEV:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBDEV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCSRT:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCSRT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCV1:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCV1",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCV2:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCV2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCV3:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCV3",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCV4:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCV4",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORMODE:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBORMODE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLSRCH:",
+        "rpcName": "PSB USERSAVE",
+        "paramName": "PSBCLSRCH",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVAL:",
+        "rpcName": "PSB FMDATE",
+        "paramName": "PSBVAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "SCANVAL:",
+        "rpcName": "PSB SCANMED",
+        "paramName": "SCANVAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDIEN:",
+        "rpcName": "PSB SCANMED",
+        "paramName": "PSBDIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBTAB:",
+        "rpcName": "PSB SCANMED",
+        "paramName": "PSBTAB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCMD:",
+        "rpcName": "PSB PARAMETER",
+        "paramName": "PSBCMD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBENT:",
+        "rpcName": "PSB PARAMETER",
+        "paramName": "PSBENT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBPAR:",
+        "rpcName": "PSB PARAMETER",
+        "paramName": "PSBPAR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBINS:",
+        "rpcName": "PSB PARAMETER",
+        "paramName": "PSBINS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVAL:",
+        "rpcName": "PSB PARAMETER",
+        "paramName": "PSBVAL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBHDR:",
+        "rpcName": "PSB TRANSACTION",
+        "paramName": "PSBHDR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBREC:",
+        "rpcName": "PSB TRANSACTION",
+        "paramName": "PSBREC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBIEN:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBTYPE:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBADMIN:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBADMIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBTAB:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBTAB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBUID:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBUID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBASTS:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBASTS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORSTS:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBORSTS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBRMV:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBRMV",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "psbdien:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "psbdien",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBRMVTM:",
+        "rpcName": "PSB VALIDATE ORDER",
+        "paramName": "PSBRMVTM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBX:",
+        "rpcName": "PSB SERVER CLOCK VARIANCE",
+        "paramName": "PSBX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB MEDICATION HISTORY",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBOI:",
+        "rpcName": "PSB MEDICATION HISTORY",
+        "paramName": "PSBOI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB GETPRNS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORD:",
+        "rpcName": "PSB GETPRNS",
+        "paramName": "PSBORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSIOPI:",
+        "rpcName": "PSB GETPRNS",
+        "paramName": "PSBSIOPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBTYPE:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDFN:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSTRT:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBSTRT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSTOP:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBSTOP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBINCL:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBINCL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDEV:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBDEV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSORT:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBSORT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBOI:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBOI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWLOC:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBWLOC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWSORT:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBWSORT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBFUT:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBFUT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORDNUM:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBORDNUM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBLIST:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBLIST",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBRCRI:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBRCRI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORDNM:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBORDNM",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBPST:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBPST",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBTR:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBTR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSIFIL:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBSIFIL",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLINORD:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBCLINORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSB20:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSB20",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSB21:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSB21",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSB22:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSB22",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSB23:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSB23",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSB24:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSB24",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLLIST:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBCLLIST",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDIV:",
+        "rpcName": "PSB REPORT",
+        "paramName": "PSBDIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDFN:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDRUG:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBDRUG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDOSE:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBDOSE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBRSN:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBRSN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBADMIN:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBADMIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBNEED:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBNEED",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBUID:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBUID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBON:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBON",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSCHD:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBSCHD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLIN:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBCLIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLNIEN:",
+        "rpcName": "PSB SUBMIT MISSING DOSE",
+        "paramName": "PSBCLNIEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBESIG:",
+        "rpcName": "PSB VALIDATE ESIG",
+        "paramName": "PSBESIG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWHAT:",
+        "rpcName": "PSB CHECK SERVER",
+        "paramName": "PSBWHAT",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDATA:",
+        "rpcName": "PSB CHECK SERVER",
+        "paramName": "PSBDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCMD:",
+        "rpcName": "PSB MAIL",
+        "paramName": "PSBCMD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDATA:",
+        "rpcName": "PSB MAIL",
+        "paramName": "PSBDATA",
+        "paramType": "WORD-PROCESSING",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB GETORDERTAB",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VDL TAB:",
+        "rpcName": "PSB GETORDERTAB",
+        "paramName": "VDL TAB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "VDL DATE:",
+        "rpcName": "PSB GETORDERTAB",
+        "paramName": "VDL DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSIOPI:",
+        "rpcName": "PSB GETORDERTAB",
+        "paramName": "PSBSIOPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLINORD:",
+        "rpcName": "PSB GETORDERTAB",
+        "paramName": "PSBCLINORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBEDIV:",
+        "rpcName": "PSB WARDLIST",
+        "paramName": "PSBEDIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWARD:",
+        "rpcName": "PSB GETIVPAR",
+        "paramName": "PSBWARD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBIVPT:",
+        "rpcName": "PSB GETIVPAR",
+        "paramName": "PSBIVPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDIV:",
+        "rpcName": "PSB GETIVPAR",
+        "paramName": "PSBDIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FROM:",
+        "rpcName": "PSB DEVICE",
+        "paramName": "FROM",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DIR:",
+        "rpcName": "PSB DEVICE",
+        "paramName": "DIR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBWARD:",
+        "rpcName": "PSB PUTIVPAR",
+        "paramName": "PSBWARD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBPARS:",
+        "rpcName": "PSB PUTIVPAR",
+        "paramName": "PSBPARS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDIV:",
+        "rpcName": "PSB PUTIVPAR",
+        "paramName": "PSBDIV",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB IV ORDER HISTORY",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORD:",
+        "rpcName": "PSB IV ORDER HISTORY",
+        "paramName": "PSBORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBUID:",
+        "rpcName": "PSB BAG DETAIL",
+        "paramName": "PSBUID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBORD:",
+        "rpcName": "PSB BAG DETAIL",
+        "paramName": "PSBORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": " PATIENT ID:",
+        "rpcName": "PSB ALLERGY",
+        "paramName": " PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBIN:",
+        "rpcName": "PSB GETPROVIDER",
+        "paramName": "PSBIN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSCAN:",
+        "rpcName": "PSB MOB DRUG LIST",
+        "paramName": "PSBSCAN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBOTYP:",
+        "rpcName": "PSB MOB DRUG LIST",
+        "paramName": "PSBOTYP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBHDR:",
+        "rpcName": "PSB CPRS ORDER",
+        "paramName": "PSBHDR",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBREC:",
+        "rpcName": "PSB CPRS ORDER",
+        "paramName": "PSBREC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "none:",
+        "rpcName": "PSB NURS WARDLIST",
+        "paramName": "none",
+        "paramType": "UNKNOWN()",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB CHECK IV",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ORDIV:",
+        "rpcName": "PSB CHECK IV",
+        "paramName": "ORDIV",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB VITALS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDFN:",
+        "rpcName": "PSB VITAL MEAS FILE",
+        "paramName": "PSBDFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBRATE:",
+        "rpcName": "PSB VITAL MEAS FILE",
+        "paramName": "PSBRATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVTYPE:",
+        "rpcName": "PSB VITAL MEAS FILE",
+        "paramName": "PSBVTYPE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBDTTKN:",
+        "rpcName": "PSB VITAL MEAS FILE",
+        "paramName": "PSBDTTKN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBREC:",
+        "rpcName": "PSB MED LOG LOOKUP",
+        "paramName": "PSBREC",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB COVERSHEET1",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "HRSBACK:",
+        "rpcName": "PSB COVERSHEET1",
+        "paramName": "HRSBACK",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBSIOPI:",
+        "rpcName": "PSB COVERSHEET1",
+        "paramName": "PSBSIOPI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBCLINORD:",
+        "rpcName": "PSB COVERSHEET1",
+        "paramName": "PSBCLINORD",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMS:",
+        "rpcName": "PSB UTL XSTATUS SRCH",
+        "paramName": "PARAMS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBPARAM:",
+        "rpcName": "PSB MAN SCAN FAILURE",
+        "paramName": "PSBPARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB GETINJECTIONSITE",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TIME:",
+        "rpcName": "PSB GETINJECTIONSITE",
+        "paramName": "TIME",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "MAX:",
+        "rpcName": "PSB GETINJECTIONSITE",
+        "paramName": "MAX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBOI:",
+        "rpcName": "PSB GETINJECTIONSITE",
+        "paramName": "PSBOI",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBACC:",
+        "rpcName": "PSB WITNESS",
+        "paramName": "PSBACC",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PSBVER:",
+        "rpcName": "PSB WITNESS",
+        "paramName": "PSBVER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PREFIX:",
+        "rpcName": "PSB CLINICLIST",
+        "paramName": "PREFIX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CONTAINS:",
+        "rpcName": "PSB CLINICLIST",
+        "paramName": "CONTAINS",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "PSB MEDS ON PATIENT",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "OPTION:",
+        "rpcName": "PSB GETSETWP",
+        "paramName": "OPTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "AIP:",
+        "rpcName": "PSN FDA MED GUIDE PRINT QUEUE",
+        "paramName": "AIP",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "TMP:",
+        "rpcName": "PSA UPLOAD",
+        "paramName": "TMP",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

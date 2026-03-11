@@ -1,0 +1,129 @@
+{
+  "fileNumber": 790.404,
+  "fileName": "WV NOTIFICATION PURPOSE",
+  "globalRoot": "790.404",
+  "globalReference": "^WV(790.404,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NOTIFICATION PURPOSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the reason for the notification.  The reason should include information that distinguishes it (the letter/notification) from similar procedure/test results or future treatment needs. For example, pregnancy test positive vs. pregnancy test negative; PAP (Annual Due) vs.PAP (Follow-up Due). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:URGENT;2:ASAP;3:ROUTINE;",
+      "helpText": "This field associates a priority with the notification.  The priority choices are (1) urgent, (2) ASAP, and (3) routine. These priorities are used within the Browse Notifications options to print a list of notifications by priority. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation or short synonym that is used to select a type of notification.  For example, \"P6\" for \"PAP 6 weeks post PAP\" or \"C1\" for \"Colp follow-up, PAP next month.\" ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field contains a set of codes (1 = Yes, 0 = No) used to display or hide an entry in a selection list.  If the field is active and contains a '1' or yes, users of this package can select the entry.  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ASSOCIATE WITH BR/CX TX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BR:BREAST TX;CX:CERVICAL TX;",
+      "helpText": "This field has a 2-fold purpose. It identifies that the notification letter is associated with cervical or breast treatment needs and also determines a default print date based on the treatment need type. The value of this field is a set of codes (BR for breast Tx need; CX for cervical Tx need).  If a clinician does not want to automatically print a letter, the field may be left blank. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RESULT OR REMINDER LETTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RESULT;0:REMINDER;",
+      "helpText": "This field contains a code (1 = Result; 2 = Reminder) used to determine a print date for the letter.  A notification identified as a result is printed immediately and a reminder is printed on a future date (e.g., Annual PAP). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BR TX NEED",
+      "dataType": "POINTER",
+      "rawType": "P790.51'",
+      "required": false,
+      "pointerTo": 790.51,
+      "helpText": "Use this field to assign a breast treament need from the WV BREAST TX  NEED file (#790.51) to this particular purpose of notification.   When a Clinical Reminder uses this purpose of notification to result a  patient's breast procedure, the breast treatment need linked to this  purpose of notification will be automatically assigned to the patient in the WV PATIENT file (#790). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BR TX DUE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the amount of time to add to the procedure date or current date to calculate a new breast treatment due date. The value should be a number followed by \"D\", \"M\" or \"Y\" (without the quotes). D indicates days. M indicates months. Y indicates years.   For example, \"90D\" means add 90 days to the procedure date or current date to calculate the new breast treatment due date. This new treatment date will be automatically assigned to the patient in the WV PATIENT file (#790). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CX TX NEED",
+      "dataType": "POINTER",
+      "rawType": "P790.5'",
+      "required": false,
+      "pointerTo": 790.5,
+      "helpText": "Use this field to assign a cervical treament need from the WV CERVICAL TX  NEED file (#790.5) to this particular purpose of notification.   When a Clinical Reminder uses this purpose of notification to result a  patient's cervical procedure, the cervical treatment need linked to this  purpose of notification will be automatically assigned to the patient in the WV PATIENT file (#790). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "CX TX DUE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is the amount of time to add to the procedure date or current date to calculate a new cervical treatment due date. The value should be a number followed by \"D\", \"M\" or \"Y\" (without the quotes). D indicates days. M indicates months. Y indicates years.   For example, \"90D\" means add 90 days to the procedure date or current date to calculate the new cervical treatment due date. This new treatment date will be automatically assigned to the patient in the WV PATIENT file (#790). ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LETTER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "790.414",
+      "required": false,
+      "helpText": "This field stores the text of the notification letter. ",
+      "isMultiple": true,
+      "subFileNumber": 790.414,
+      "fieldNumber_": 1.01
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "U", "field": },
+    {"name": "790.404", "field": .01, "type": "regular"},
+    {"name": "790.404", "field": .01, "type": "regular"},
+    {"name": "790.404", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \" \",$P(^(0),U,3),\"   \",@(\"$P($P($C(59)_$S($D(^DD(790.404,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

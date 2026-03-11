@@ -1,0 +1,48 @@
+{
+  "fileNumber": 3.075,
+  "fileName": "ERROR LOG",
+  "globalRoot": "3.075",
+  "globalReference": "^%ZTER(1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "$H DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the first level separator for different errors, grouping those errors which occured on a given date (as indicated by the day number part of the system variable $H). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NUMBER OF ERRORS RECORDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a count of the errors logged on the date indicated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ERROR NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "3.0751A",
+      "required": false,
+      "helpText": "This multiple field contains the sequential error numbers for the order in which the errors were logged on the date specified. ",
+      "isMultiple": true,
+      "subFileNumber": 3.0751,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "3.075", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

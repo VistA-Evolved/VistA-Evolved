@@ -1,0 +1,36 @@
+{
+  "fileNumber": 791811.4,
+  "fileName": "REMOTE PROSTHETIC ITEM BRANDS",
+  "globalRoot": "791811.4",
+  "globalReference": "^RMPF(791811.4,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "791811.4", "field": .01, "type": "regular"},
+    {"name": "791811.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

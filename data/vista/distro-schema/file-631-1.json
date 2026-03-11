@@ -1,0 +1,36 @@
+{
+  "fileNumber": 631.1,
+  "fileName": "HBHC REJECT/WITHDRAW REASON",
+  "globalRoot": "631.1I",
+  "globalReference": "^HBHC(631.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field represents 2 digit numeric code for HBHC Reject/Withdraw Reason.  Valid entries are 01-08, 10, or 11. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REJECT/WITHDRAW REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field represents HBHC Reject/Withdraw Reason text.  Field allows 1-60 characters of free text. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

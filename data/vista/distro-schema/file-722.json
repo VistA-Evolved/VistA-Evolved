@@ -1,0 +1,30 @@
+{
+  "fileNumber": 722,
+  "fileName": "EVENT CAPTURE PROVIDER",
+  "globalRoot": "722",
+  "globalReference": "^EC(722,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Name of the user that can provide services as a non-licensed provider. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "722", "field": .01, "type": "regular"},
+    {"name": "722", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": .83,
+  "fileName": "COMPILED ROUTINE",
+  "globalRoot": ".83",
+  "globalReference": "^DI(.83,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROUTINE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a number that can be used to generate the name of a compiled SORT routine.  The literal 'DIZS' is concatenated with the number to form a compiled sort routine name.  The routine will be in use only during the running of a sort/print.  After the print completes, the number is again made available for use. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IN USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES, NUMBER IS IN USE;n:NOT IN USE;",
+      "helpText": "During the running of the FileMan sort/print, if the sort is compiled, a cross-reference on this flag is checked to find the first available number that is not in use.  The number is then marked in use and is concatenated on the end of literal 'DIZS' to create the routine name of the compiled routine.  After the sort/print completes, the flag is then reset to 'NOT IN USE'. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": ".83", "field": .01, "type": "regular"},
+    {"name": ".83", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

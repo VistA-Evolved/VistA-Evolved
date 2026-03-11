@@ -1,0 +1,36 @@
+{
+  "fileNumber": 1927.23,
+  "fileName": "NUPA PLAN DESCRIPTION TABS",
+  "globalRoot": "1927.23",
+  "globalReference": "^NUPA(1927.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TAB",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "List of tabs in the assessment GUI. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the tab. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

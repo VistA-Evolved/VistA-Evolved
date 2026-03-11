@@ -1,0 +1,220 @@
+{
+  "fileNumber": .11,
+  "fileName": "INDEX",
+  "globalRoot": ".11",
+  "globalReference": "^DD(\"IX\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,7",
+      "length": 20,
+      "required": true,
+      "helpText": "Answer should be the number of the file cross-referenced by this index. For whole file cross-references on subfiles, answer with the number of the file where the index physically resides, not the subfile number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer must be the name of the index. For example, the name of the default lookup index on a file's .01 field is B, the name of the uniqueness index of a compound key is BB, and the name of an index not used for lookup must start with A. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".1101",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .1101,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Answer should be text briefly explaining the function of this cross-reference. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "R:REGULAR;MU:MUMPS;",
+      "helpText": "REGULAR - One or more field values are stored in an index on the file. The index can be used for sorting, or optionally, looking up entries.   MUMPS - Customizable M code executes whenever a field that makes up the cross-references changes. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "EXECUTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "F:FIELD;R:RECORD;",
+      "helpText": "Answer with the code that indicates whether the cross reference logic should be executed after a field in the index changes, or only after all fields in a record are updated. The logic for most simple (single-field) indexes should be executed immediately after the field changes, and so should get the code 'F'. The logic for most compound indexes should be executed only once after a transaction on the entire record is complete, and so should get the code 'R'. Exceptions to this rule are rare. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .41,
+      "fieldName": "ACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Answer with the flags that control whether FileMan fires this cross-reference during an installation and a re-cross-referencing operation. The possible flags are:     I = Installing an entry at a site   R = Re-cross-referencing this index   FileMan automatically fires cross-references during an edit, regardless of Activity, though you can control whether a cross-reference is fired by entering Set and Kill Conditions.   Also, if you explicity select a cross-reference in an EN^DIK, EN1^DIK, or ENA",
+      "fieldNumber_": .41
+    },
+    {
+      "fieldNumber": .42,
+      "fieldName": "USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "LS:LOOKUP & SORTING;S:SORTING ONLY;A:ACTION;",
+      "helpText": "LOOKUP & SORTING - The index name starts with \"B\" or a letter that alphabetically follows \"B\".  Calls to Classic FileMan lookup (^DIC) or the Finder (FIND^DIC or $$FIND1^DIC) where the index is not specified will include this index in the search. The index will be available for use by the FileMan Sort and Print (EN1^DIP).   SORTING ONLY - The index name starts with \"A\". Calls to Classic FileMan lookup (^DIC) or the Finder (FIND^DIC or $$FIND1^DIC) will not use this index unless it is specified i",
+      "fieldNumber_": .42
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "ROOT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INDEX FILE;W:WHOLE FILE;",
+      "helpText": "Answer 'I' if the fields that make up the file are defined at the same level at which the index is located.   Answer 'W' if this is a whole file cross-reference in which the fields that make up the index are defined in a subfile, but the index is physically located at a parent file level. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "ROOT FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,7",
+      "length": 20,
+      "required": true,
+      "helpText": "Answer with the number of the file or subfile where this index is defined. For whole file indexes, answer with the subfile number, not the number of the file where the index physically resides. ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SET LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "Answer with the M code that FileMan should execute when the values of fields that make up the cross-reference are set or changed. When field values are changed, FileMan executes first the KILL LOGIC, then the SET LOGIC.   Assume the DA array describes the record to be cross-referenced, and that the X(order#) array contains values after the transform for storage is applied, but before the truncation to the maximum length.  The variable X also equals X(order#) of the lowest order number.   When fi",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "OVERFLOW SET LOGIC",
+      "dataType": "SUBFILE",
+      "rawType": ".111",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .111,
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "SET CONDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Answer with a FileMan computed expression that will evaluate to Boolean true (according to the M rules for Boolean interpretation). FileMan will evaluate this expression whenever it would normally execute the cross-reference's Set Logic, and will not execute the Set Logic unless this condition evaluates to true. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "SET CONDITION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that sets the variable X. The SET LOGIC is executed only if the SET CONDTION, if present, sets X to Boolean true (according to M rules for Boolean interpretation).   Assume the DA array describes the record to be cross-referenced, and that the X(order#) array contains values after the transform for storage is applied, but before the truncation to the maximum length.  The variable X also equals X(order#) of the lowest order number.   When fields that make up a cross-reference a",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "KILL LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "Answer with the M code that FileMan should execute when the values of fields that make up the cross-reference are changed or deleted. When field values are changed, FileMan executes first the KILL LOGIC, then the SET LOGIC.  Assume the DA array describes the record to be cross-referenced, and that the X(order#) array contains values after the transform for storage is applied, but before the truncation to the maximum length.  The variable X also equals X(order#) of the lowest order number.  When ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "OVERFLOW KILL LOGIC",
+      "dataType": "SUBFILE",
+      "rawType": ".112",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .112,
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "KILL CONDITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Answer with a FileMan computed expression that will evaluate to Boolean true (according to the M rules for Boolean interpretation). FileMan will evaluate this expression whenever it would normally execute the cross-reference's Kill Logic, and will not execute the Kill Logic unless this condition evaluates to true. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "KILL CONDITION CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code, that sets the variable X. The KILL LOGIC is executed only if the KILL CONDITION, if present, sets X such the X evaluates to true,  (according to M rules for Boolean interpretation)   Assume the DA array describes the record to be cross-referenced, and that the X(order#) array contains values after the transform for storage is applied, but before the truncation to the maximum length.  The variable X also equals X(order#) of the lowest order number.  When fields that make up a ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "KILL ENTIRE INDEX CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is a kill statement that can be executed to remove an entire index for all records in a file. When an entire file is reindexed, FileMan executes this code instead of looping through all the entries in a file and executing the kill logic once for each entry. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "CROSS-REFERENCE VALUES",
+      "dataType": "SUBFILE",
+      "rawType": ".114IA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .114,
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 666,
+      "fieldName": "RE-INDEXING",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:NO RE-INDEXING ALLOWED;0:ALLOW REINDEXING",
+      "helpText": "If you answer '1', this cross reference will not be re-indexed during a general re-indexing of this file, whether it's done via API or interactively. If you answer '0', which is the default, it will. A 'NO RE-INDEXING' cross-reference will ONLY be re-indexed if it is specifically named in an API call ",
+      "fieldNumber_": 666
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": ".11", "field": .01, "type": "regular"},
+    {"name": ".11", "field": .51, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": DI SHORT DESCRIPTION 50, "value": "D EN^DDIOL($E($P(^(0),U,3),1,50),\"\",\"?0\")"}
+  ]
+}

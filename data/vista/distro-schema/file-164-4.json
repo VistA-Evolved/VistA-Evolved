@@ -1,0 +1,39 @@
+{
+  "fileNumber": 164.4,
+  "fileName": "COMMON CANCERS",
+  "globalRoot": "164.4",
+  "globalReference": "^ONCO(164.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "FREE TEXT FIELD FOR RECORDING THE NAMES. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "X-REF",
+      "dataType": "SUBFILE",
+      "rawType": "164.41",
+      "required": false,
+      "helpText": "FREE TEXT CROSS REFERENCE. ",
+      "isMultiple": true,
+      "subFileNumber": 164.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "NM", "field": },
+    {"name": "164.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

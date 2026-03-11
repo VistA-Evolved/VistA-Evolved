@@ -1,0 +1,300 @@
+{
+  "id": "allergies",
+  "name": "Allergy/Adverse Reactions",
+  "description": "Patient allergies, reactions, causative agents",
+  "vdlManual": null,
+  "generatedAt": "2026-03-11T04:21:11.876Z",
+  "files": {
+    "count": 4,
+    "items": [
+      {
+        "fileNumber": 120.8,
+        "fileName": "File #120.8",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 120.82,
+        "fileName": "File #120.82",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 120.83,
+        "fileName": "File #120.83",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 120.84,
+        "fileName": "File #120.84",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 3,
+    "items": [
+      {
+        "name": "ORQQAL LIST",
+        "tag": "LIST",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergies for a patient. "
+      },
+      {
+        "name": "ORQQAL DETAIL",
+        "tag": "DETAIL",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "ALLERGY ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This function returns a string of information for a specific allergy/ adverse reaction.  Returned data is delimited by \"^\" and includes: allergen/reactant, originator, originator title, verified/not verified,  observed/historical,<blank>,type, observation date, severity, drug class,  symptoms/reacti"
+      },
+      {
+        "name": "ORQQAL LIST REPORT",
+        "tag": "LRPT",
+        "routine": "ORQQAL",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PATIENT ID",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "Returns a list of allergens, severity and signs/symptoms in a report format which can be used in a \"detailed\" display.  This RPC was set up to support the listing of allergies when selected from the Patient Postings list. "
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "GMRA SITE FILE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA ALLERGY FILE EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA REACTION FILE EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PATIENT A/AR EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA SITE FILE MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-COMPLETE LISTING",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA MARK CHART",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PATIENT A/AR VERIFY",
+        "type": "run-routine",
+        "securityKey": "GMRA-ALLERGY VERIFY",
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-ACTIVE LISTING",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-NOT SIGNED OFF",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA USER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA VERIFIER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-ID BAND/CHART",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-PATIENTS NOT ASKED",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA FDA EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-FDA REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA P&T EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA P&T MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-FDA EXCEPT BY PT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-EXCEPT BY DATE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT-FDA REPORT BY DT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT VERIFIER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT P&T MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA CLINICIAN MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT CLINICIAN MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA FDA ENTER/EDIT MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT A/AR NV",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA TASK A/AR NV",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT SIGN BY LOC/DATE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "GMRA PRINT ART TRACKING REPORT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 3,
+    "items": [
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ALLERGY ID:",
+        "rpcName": "ORQQAL DETAIL",
+        "paramName": "ALLERGY ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ID:",
+        "rpcName": "ORQQAL LIST REPORT",
+        "paramName": "PATIENT ID",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "fileNumber": 2276.1,
+  "fileName": "HEALTH EVET DOWNLOAD SUMMARY",
+  "globalRoot": "2276.1",
+  "globalReference": "^EVET(2276.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQ_NO",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ,",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOWNLOAD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ,",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMIT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "JOB ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REQUEST NO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "EXTRACT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOWNLOAD LIST",
+      "dataType": "SUBFILE",
+      "rawType": "2276.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2276.11,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "C", "field": },
+    {"name": "2276.1", "field": .02, "type": "regular"},
+    {"name": "2276.1", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 232.73,
+  "fileName": "EDP WORKSHEET COMPONENT TYPE",
+  "globalRoot": "232.73",
+  "globalReference": "^EDPB(232.73,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the component type. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "232.73", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

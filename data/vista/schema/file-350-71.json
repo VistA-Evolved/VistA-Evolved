@@ -1,0 +1,105 @@
+{
+  "fileNumber": 350.71,
+  "fileName": "AMBULATORY SURG. CHECK-OFF SHEET PRINT FIELDS",
+  "globalRoot": "350.71OI",
+  "globalReference": "^IBE(350.71,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Text printed on the check-off sheet for this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0X",
+      "length": 4,
+      "required": true,
+      "helpText": "The order that the members of the check-off sheet/sub-header are printed. A print order must be entered or the procedure is deleted from the sheet. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "S:SUB-HEADER;P:PROCEDURE;",
+      "helpText": "The type definition for this entry.  There are only two types:   \"P\"rocedures which should always have valid CPT codes, and \"S\"ub-headers which may have multiple procedures. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHECK-OFF SHEET",
+      "dataType": "POINTER",
+      "rawType": "P350.7'",
+      "required": false,
+      "pointerTo": 350.7,
+      "helpText": "The check-off sheet this entry belongs to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUB-HEADER",
+      "dataType": "POINTER",
+      "rawType": "*P350.71'",
+      "required": false,
+      "pointerTo": 350.71,
+      "helpText": "The sub-header that this entry is a member of. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "R*P81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "The CPT code for this PROCEDURE.  Should only be defined for TYPE=\"P\". ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CHARGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Displays the charge for a CPT code. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AG", "field": },
+    {"name": "AG1", "field": },
+    {"name": "AP", "field": },
+    {"name": "AP1", "field": },
+    {"name": "AS", "field": },
+    {"name": "AS1", "field": },
+    {"name": "B", "field": },
+    {"name": "G", "field": },
+    {"name": "P", "field": },
+    {"name": "S", "field": },
+    {"name": "350.71", "field": .01, "type": "regular"},
+    {"name": "350.71", "field": .02, "type": "regular"},
+    {"name": "350.71", "field": .02, "type": "regular"},
+    {"name": "350.71", "field": .04, "type": "regular"},
+    {"name": "350.71", "field": .04, "type": "regular"},
+    {"name": "350.71", "field": .05, "type": "regular"},
+    {"name": "350.71", "field": .05, "type": "regular"},
+    {"name": "350.71", "field": .05, "type": "regular"},
+    {"name": "350.71", "field": .06, "type": "regular"},
+    {"name": "350.71", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

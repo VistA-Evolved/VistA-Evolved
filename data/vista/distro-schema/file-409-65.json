@@ -1,0 +1,69 @@
+{
+  "fileNumber": 409.65,
+  "fileName": "APPOINTMENT STATUS UPDATE LOG",
+  "globalRoot": "409.65D",
+  "globalReference": "^SDD(409.65,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPOINTMENT DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the date of the appointments that were processed by the status update functionality. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE LAST UPDATE STARTED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date and time the appointment status update process began execution. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "UPDATE METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DAILY BACKGROUND JOB;2:MANUALLY QUEUED;",
+      "helpText": "This field indicates whether this log entry was entered as a result of the SDAM BACKGROUND JOB or SDAM APPT UPDATE option. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the user who requested the update process to be performed.   ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE LAST UPDATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time the appointment status update process finished execution. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AUPD", "field": },
+    {"name": "AUPD01", "field": },
+    {"name": "B", "field": },
+    {"name": "409.65", "field": .01, "type": "regular"},
+    {"name": "409.65", "field": .01, "type": "regular"},
+    {"name": "409.65", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

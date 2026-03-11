@@ -1,0 +1,82 @@
+{
+  "fileNumber": 409.32,
+  "fileName": "SD WL CLINIC LOCATION",
+  "globalRoot": "409.32",
+  "globalReference": "^SDWL(409.32,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44I",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "Enter clinics that are approved to be used by the Wait List(Sch/PCMM) application. Only active clinics in the Hospital Location file can be added. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Institution of the clinic in the .01 field ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE ACTIVATED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "Date the clinic is available to Wait List(Sch/PCMM). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVATION DATE ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User entering activation date for clinic to Wait List(Sch/PCMM). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE INACTIVATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date clinic can no longer be used by the Wait List(Sch/PCMM). It cannot be earlier than the activation date. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVATION DATE ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Date the clinic is no longer to be used by Wait List(Sch/PCMM). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "ACT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "INA", "field": },
+    {"name": "409.32", "field": .01, "type": "regular"},
+    {"name": "409.32", "field": .02, "type": "regular"},
+    {"name": "409.32", "field": 1, "type": "regular"},
+    {"name": "409.32", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

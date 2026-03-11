@@ -1,0 +1,59 @@
+{
+  "fileNumber": 119.4,
+  "fileName": "ISOLATION/PRECAUTION TYPE",
+  "globalRoot": "119.4sI",
+  "globalReference": "^FH(119.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of isolation/precaution type as it would normally be known to ward/medical personnel. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PAPER OR CHINA",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PAPER;C:CHINA;",
+      "helpText": "This field indicates whether food is served on paper products or china for this isolation type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DELIVERED BY NURSE OR FSW",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NURSE;F:FSW;",
+      "helpText": "This field indicates whether food tray delivery is done by food service workers (FSW) or by ward personnel (NURSE). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will inactivate an isolation type and prohibit further selection by ward personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "119.4", "field": .01, "type": "regular"},
+    {"name": "119.4", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "fileNumber": 757.5,
+  "fileName": "UCUM CODES",
+  "globalRoot": "757.5",
+  "globalReference": "^LEX(757.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION OF THE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Description of the Unit (using UCUM descriptions where they exist).  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "UCUM CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is the UCUM code.  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROW NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This number has no significance beyond identifying a unique row in the spreadsheet from which the UCUM codes in this file were obtained. In particular, it does not officially denote a UCUM code. Please use this number when suggesting changes or identifying problems with a given term.  ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Comment field contains additional information about the unit.  ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(1)) $TR($P(^(1),U,1),\"10*\",\"10^\")"}
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "fileNumber": 59.74,
+  "fileName": "VENDOR INTERFACE DATA",
+  "globalRoot": "59.74",
+  "globalReference": "^PS(59.74,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME VENDOR UNAVAILABLE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date and time of when the Vendor  interface was discovered to be unavailable by the monitoring background  process. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME VENDOR AVAILABLE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date and time when the Vendor interface was  discovered by monitoring background process to be available again after being unavailable. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOTAL TIME NOT AVAILABLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0O",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the total time in minutes that the Vendor  interface was unavailable as determined by the monitoring background  process. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MESSAGE SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MESSAGE SENT;",
+      "helpText": "This flag is set when a Mailman bulletin is transmitted to the  appropriate mail group informing the users that the Vendor  interface is unavailable. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.74", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

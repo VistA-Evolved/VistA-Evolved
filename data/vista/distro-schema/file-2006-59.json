@@ -1,0 +1,66 @@
+{
+  "fileNumber": 2006.59,
+  "fileName": "ROUTING RULE",
+  "globalRoot": "2006.59",
+  "globalReference": "^MAGDICOM(2006.59,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RULE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is an integer number that uniquely identifies a routing rule. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RAW TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5901A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5901,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTION",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5902A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5902,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONDITION",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5904A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5904,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "HIGH:High;NORMAL:Normal;LOW:Low;",
+      "helpText": "The value of this field is a priority to be assigned to this action. The priority will be observed by the queue manager that takes actions off a queue. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

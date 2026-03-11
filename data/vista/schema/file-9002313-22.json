@@ -1,0 +1,46 @@
+{
+  "fileNumber": 9002313.22,
+  "fileName": "BPS NCPDP RESULT OF SERVICE CODE",
+  "globalRoot": "9002313.22",
+  "globalReference": "^BPS(9002313.22,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Action taken by a pharmacist in response to a conflict or the result of a pharmacist's professional service. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the NCPDP RESULT OF SERVICE CODE used to override DUR rejects (e.g., FILLED, WITH DIFFERENT DOSAGE FORM,THERAPY CHANGED) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field indicates whether a code is inactive and should no longer be  used. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "fileNumber": 365.025,
+  "fileName": "X12 271 DELIVERY FREQUENCY CODE",
+  "globalRoot": "365.025",
+  "globalReference": "^IBE(365.025,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This field is controlled by the Financial Service Center (FSC) and is associated with their table: X12_SHIP_DELIVERY_CALENDAR. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ90",
+      "length": 90,
+      "required": false,
+      "helpText": "This field is controlled by the Financial Service Center (FSC) and is associated with their table: X12_SHIP_DELIVERY_CALENDAR. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be marked inactive if a code is determined to no longer  be used by X.12. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time that the DESCRIPTION for this entry was last edited. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FSC CONTROLLED",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field identifies whether or not this file is controlled by FSC. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "365.025", "field": .01, "type": "regular"},
+    {"name": "365.025", "field": .02, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

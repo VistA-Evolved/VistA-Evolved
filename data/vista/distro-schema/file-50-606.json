@@ -1,0 +1,145 @@
+{
+  "fileNumber": 50.606,
+  "fileName": "DOSAGE FORM",
+  "globalRoot": "50.606",
+  "globalReference": "^PS(50.606,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the dosage form. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MED ROUTE FOR DOSAGE FORM",
+      "dataType": "POINTER",
+      "rawType": "50.6061P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VERB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The verb is used by both the Outpatient Pharmacy package and CPRS. CPRS uses the verb as the first word when building the order text of an Outpatient order entered through CPRS. Outpatient Pharmacy uses the verb as the first word when building the Sig for orders entered through CPRS and through the Outpatient Pharmacy package. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "OTHER LANGUAGE VERB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the verb in another language. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PREPOSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The preposition is used by both the Outpatient Pharmacy package and CPRS. CPRS uses the preposition to precede the Outpatient expansion of the Medication Route when building the order text of an Outpatient order entered through CPRS. Outpatient Pharmacy uses the preposition to precede the Outpatient expansion of the Medication Route when building the Sig for orders entered through CPRS and through the Outpatient Pharmacy package. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "OTHER LANGUAGE PREPOSITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the preposition in another language. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NOUN",
+      "dataType": "SUBFILE",
+      "rawType": "50.6066",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 50.6066,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the dosage form was inactivated. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "UNITS",
+      "dataType": "POINTER",
+      "rawType": "50.6068P",
+      "required": false,
+      "helpText": "This multiple contains the units and package fields. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DISPENSE UNITS PER DOSE",
+      "dataType": "SUBFILE",
+      "rawType": "50.6069",
+      "required": false,
+      "helpText": "This multiple contains the dispense units per dose and package fields. ",
+      "isMultiple": true,
+      "subFileNumber": 50.6069,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CONJUNCTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If there is data in this field, it will become part of the Dosage selection display in CPRS for Local Possible Dosages, for Dispense Drugs matched to a Pharmacy Orderable Item with this Dose Form. It will connect the Local Possible Dosage with the Strength and Units. For example, a Local Possible Dosage of '2 drop(s) 0.5%' becomes '2 drop(s) of 0.5%' by adding the word 'of' as the conjunction for the Dosage Form. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EXCLUDE FROM DOSAGE CHECKS",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to '1' or 'YES', then any medication orders  containing a drug with this Dosage Form will be excluded from dosage checks. However, if the VA PRODUCT (#50.68) File entry that the DRUG (#50) File entry is matched to has a '1' or 'Yes' in the OVERRIDE DF DOSE CHK EXCLUSION (#31) Field, the Dosage Form exclusion designation would be overridden, and dosage checks would be performed for Drug (#50) File entries matched to that VA product. If this field is set to '0' or 'No', or nul",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "MASTER DOSAGE FORM",
+      "dataType": "POINTER",
+      "rawType": "*P50.60699'a",
+      "required": false,
+      "pointerTo": 50.60699,
+      "helpText": "This field contains the RxNorm dosage form associated with this VA dosage  form. ",
+      "fieldNumber_": 90
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "ACMF", "field": },
+    {"name": "ACON", "field": },
+    {"name": "ACON1", "field": },
+    {"name": "ADUP", "field": },
+    {"name": "ADUP1", "field": },
+    {"name": "B", "field": },
+    {"name": "50.606", "field": .01, "type": "regular"},
+    {"name": "50.606", "field": 90, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "S %I=Y,Y=$S('$D(^(\"MASTER\")):\"\",$D(^PSMDF(50.60699,+$P(^(\"MASTER\"),U,1),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50.60699,.01,0),U,2) D Y^DIQ:Y]\"\" W:$L($G(Y)) \" RxNorm: \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

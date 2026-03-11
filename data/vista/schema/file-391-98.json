@@ -1,0 +1,98 @@
+{
+  "fileNumber": 391.98,
+  "fileName": "PATIENT DATA EXCEPTION",
+  "globalRoot": "391.98",
+  "globalReference": "^DGCN(391.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "An exception has been logged for this patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the exception was received at the facility. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time the event occurred that caused the information  to be sent to this facility. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP391.984'",
+      "required": true,
+      "pointerTo": 391.984,
+      "helpText": "This is the status of the exception.  Every entry should have a status. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "WHEN COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time the exception event was completed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "WHO COMPLETED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who marked the exception as being completed  using the comparison screens. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "FROM WHOM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the sender of the information that needs to be reviewed by the exception handler.  This is a free text field so  that a non-DHCP sender can be documented. ",
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AKY", "field": },
+    {"name": "AKY1", "field": },
+    {"name": "AKY2", "field": },
+    {"name": "AST", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "EVT", "field": },
+    {"name": "FRM", "field": },
+    {"name": "391.98", "field": .01, "type": "regular"},
+    {"name": "391.98", "field": .01, "type": "regular"},
+    {"name": "391.98", "field": .01, "type": "regular"},
+    {"name": "391.98", "field": .03, "type": "regular"},
+    {"name": "391.98", "field": .03, "type": "regular"},
+    {"name": "391.98", "field": .04, "type": "regular"},
+    {"name": "391.98", "field": 50, "type": "regular"},
+    {"name": "391.98", "field": 50, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

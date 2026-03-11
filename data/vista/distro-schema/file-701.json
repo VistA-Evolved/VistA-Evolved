@@ -1,0 +1,2331 @@
+{
+  "fileNumber": 701,
+  "fileName": "RHEUMATOLOGY",
+  "globalRoot": "701ID",
+  "globalReference": "^MCAR(701,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "  This field identifies the date and time that the data is first entered into the database or when the data was collected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the patient in the medicine file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field identifies the SSN, which is computed. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BLURRED VISION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced blurring of vision in the past 6 months. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIZZINESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced dizziness in the past 6 months. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DRY EYES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced dry eyes in the past 6 months. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DRY MOUTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced dry mouth in the past 6 months. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FEVER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced fever in the past 6 months. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HEADACHE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced headache in the past 6 months. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HEARING DIFFICULTIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced  hearing difficulties in the past 6 months. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "INCREASED SWEATING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced increased sweating in the past 6 months. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "NIGHT SWEATS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the condition of NIGHT Sweats exists. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LOSS,CHANGE IN TASTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced loss, change in taste in the past 6 months. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LOSS OF HAIR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced loss of hair in the past 6 months. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MOUTH SORES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced mouth sores in the past 6 months. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RED,IRRITATED EYES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced red, irritated eyes over the past 6 months. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RINGING IN EARS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced ringing in ears during the past 6 months. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SORE THROAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced sore throat during the past 6 months. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "CHEST PAIN/TAKING DEEP BREATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced chest pain/ taking deep breath during the past 6 months. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SHORTNESS OF BREATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced shortness of breath during the past 6 months. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "WHEEZING(ASTHMA)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced wheezing during the past 6 months. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "BLK/TARRY STOOL(NOT FROM IRON)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced black/tarry stool (not caused by iron ingestion) during the last 6 months. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "LIVER PROBLEMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a brief description of liver disease. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CONSTIPATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced constipation during the last 6 months. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DIARRHEA(FREQUENT,WATERY)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced diarrhea in the last 6 months. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DIFFICULTY SWALLOWING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced difficulty in swallowing in the last 6 months. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "GAS(FLATULENCE)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced gas in the last 6 months. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "HEARTBURN,INDIGESTION,BELCHING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced heartburn, indigestion, or belching in the last 6 months. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "JAUNDICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced jaundice in the last 6 months. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "LOOSE/FREQUENT BOWEL(MILD)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced loose/ frequent bowel in the last 6 months. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "LOSS OF APPETITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced loss of appetite in the last 6 months. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "PAIN/CRAMPS LOWER ABDOMEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced pain/ cramps in the lower abdomen in the last 6 months. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PAIN/DISCOMFORT UPPER ABDOMEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced pain/ discomfort in the upper abdomen in the last 6 months. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "VOMITING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced vomiting in the last 6 months. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "BLOOD IN URINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced blood in the urine in the last 6 months. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "URINE PROTEIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient has had a history of urine protein. ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "KIDNEY PROBLEMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Describes forms of kidney problems in the patient's history. ",
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 31.8,
+      "fieldName": "OTHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A brief description of a relevant condition which cannot be otherwise noted. ",
+      "fieldNumber_": 31.8
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "BURNING ON URINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced burning on urination in the last 6 months. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PREGNANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient is pregnant. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "IRREGULAR PERIODS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced irregular periods in the last 6 months. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "STIFF IN THE MORNING HOW LONG",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates whether the patient experienced stiffness in the morning and how long in the last 6 months. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "JOINT PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced joint pain in the last 6 months. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "JOINT SWELLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced joint swelling in the last 6 months. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "LOW BACK PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced low back pain in the last 6 months. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "MUSCLE PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced muscle pain in the last 6 months. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "NECK PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced neck pain in the last 6 months. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "NIGHT PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced night pain in the last 6 months. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "NUMBNESS OR TINGLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced numbness or tingling in the last 6 months. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "SWELLING OF LEGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced swelling of legs in the last 6 months. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "WEAKNESS OF MUSCLES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced weakness of muscles experienced in the last 6 months. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DEPRESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced depression in the last 6 months. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "INSOMNIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced insomnia in the last 6 months. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "NERVOUSNESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced nervousness in the last 6 months. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "SEIZURES OR CONVULSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced seizures or convulsions in the last 6 months. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "TIREDNESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced tiredness in the last 6 months. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "TROUBLE REMEMBERING/THINKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced trouble remembering or thinking in the last 6 months. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "EASY BRUISING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced easy bruising in the last 6 months. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "FACIAL SKIN TIGHTENING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced facial skin tightening in the last 6 months. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "HIVES OR WELTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced hives or welts in the last 6 months. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "ITCHING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced itching in the last 6 months. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "RASH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced a rash in the last 6 months. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "RASH OVER CHEEKS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced rash over cheeks in the last 6 months. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "SKIN COLOR CHANGE IN FINGER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced skin color change in finger in the last 6 months. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "SUN SENSITIVITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced sun sensitivity in the last 6 months. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "DISCHARGE FROM PENIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced discharge from the penis in the last 6 months. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "IMPOTENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced impotence in the last 6 months. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "RASH/ULCERS ON PENIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates whether the patient experienced rash/ ulcers on the penis in the last 6 months. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the patient's height in centimeters. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Indicates the patient's weight in kilograms. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "SYSTOLIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates systolic blood pressure in millimeters of mercury. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "DIASTOLIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates diastolic pressure in millimeters of mercury. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "PULSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates pulse rate per minute. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "UVEITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the presence of uveitis. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 67.5,
+      "fieldName": "UVEITIS/IRITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of uveitis/iritis present. ",
+      "fieldNumber_": 67.5
+    },
+    {
+      "fieldNumber": 67.7,
+      "fieldName": "CONJUNCTIVITIS/EPISCLERITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of conjunctivitis/episcleritis present. ",
+      "fieldNumber_": 67.7
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "CATARACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the presence of a cataract. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "IRITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the presence of iritis. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "ORAL ULCERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the patient has oral ulcers. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "RALES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicate the degree of rales. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "PLEURAL RUB/CLINICAL PLEURISY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of pleural rub. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "PLEURAL EFFUSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of pleural effusion. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "PERICARDIAL RUB/PERICARDITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of pericardial rub. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "SYSTOLIC MURMUR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of systolic murmur. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "DIASTOLIC MURMUR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of diastolic murmur. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "LYMPH NODE ENLARGEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of lymph node enlargement. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "MUSCLE TENDERNESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of  muscle tenderness. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "MUSCLE WEAKNESS-DISTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of distal muscle weakness. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "HEPATOMEGALY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of hepatomegaly. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "SPLENOMEGALY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of splenomegaly. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "MUSCLE WEAKNESS-PROXIMAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of proximal muscle weakness. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "MUSCLE ATROPHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of muscle atrophy. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "PSYCHOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of psychosis. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "ORGANIC BRAIN SYNDROME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of organic brain syndrome. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "MOTOR NEUROPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of motor neuropathy. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "SENSORY NEUROPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of sensory neuropathy. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "HELIOTROPE EYELIDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of heliotrope eyelids. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "RASH-MALAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of Rash-Malar. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 89.1,
+      "fieldName": "RASH-SLE,NON-MALAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of rash-sle, non-maler present. ",
+      "fieldNumber_": 89.1
+    },
+    {
+      "fieldNumber": 89.2,
+      "fieldName": "RASH-OTHER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of rash-other present. ",
+      "fieldNumber_": 89.2
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PSORIASIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of psoriasis. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "RASH-DISCOID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of Rash-Discoid. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "RASH-JRA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of Rash-JRA. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "PALPABLE PURPURA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of palpable purpura. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "SCLERODACTYLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of sclerodactyly. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "SCLERODERMA-EXTREMITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of scleroderma of the extremity. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "SCLERODERMA-GENERALIZED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of scleroderma, generalized. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "MORPHEA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of morphea. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "TELANGIECTASIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of telangiectasis. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CUTANEOUS VASCULTITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of cutaneous vasculitis. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PERIUNGAL ERYTHEMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of periungual erythema. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "KERATODERMIA BLENNORRHAGICA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of keratodermia blennorrhagia. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "KNUCKLE ERYTHEMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of Knuckle erythema. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "DIGITAL ULCERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of digital ulcers. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "NAIL PITTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of nail pitting. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "SKIN ULCERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree skin ulcers. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "ERYTHEMA NODOSUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of erythema nodosum. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "CURRENT MEDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the current medication. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "PRESCRIBED MEDICATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "701.0108",
+      "required": false,
+      "helpText": "This field identifies the prescribed medications. ",
+      "isMultiple": true,
+      "subFileNumber": 701.0108,
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "SYMMETRICAL ARTHRITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies No indicates if the patient has symmetrical arthritis. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "DACTYLITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of dactylitis. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "TOPHI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies No indicates if the patient has tophi. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "SUB-CUTANEOUS NODULES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies No indicates if the patient has sub-cutaneous nodules. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 112.5,
+      "fieldName": "SUBCUTANEOUS CALCIFICATIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of subcutaneous calcifications presently found. ",
+      "fieldNumber_": 112.5
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "SYNOVIAL (BAKER'S) CYST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies No indicates if the patient has synovial (Baker's) cyst. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "HEEL PAIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of heel pain. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "TENOSYNOVITIS(TENDON RUBS)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of tenosynovitis (tendon rubs) ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "TEMPORAL ARTERY TENDERNESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of temporal artery tenderness. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "COSTOCHONDRITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of costochondritis. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "GRIP STRENGTH-LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates left grip strength in millimeters of mercury. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "GRIP STRENGTH-RIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates right grip strength in millimeters of mercury. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "SCHOBER TEST (10 cm BASE)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates the results of the Schober test (with a 10 cm base). ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "CHEST EXPANSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates expansion of chest between 0 and 12 cm. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "OCCIPUT-WALL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates occiput - wall between 0 and 20 cm. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "FINGER-TO-PALM CREASE-LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Indicates left finger-to-palm crease. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "FINGER-TO-PALM CREASE-RIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Indicates right finger-to-palm crease. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "INTERINCISOR DISTANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates interincisor distance, between 0 and 60 mm. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "SCHIRMER TEST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicates results of Schirmer test, between 0 and 25 mm. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "WALK TIME (50 FEET)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the walk time of 50 feet between 6 and 50 seconds. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "FUNCTIONAL CLASS (ACR)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NORMAL;2:ADEQUATE;3:LIMITED;4:INCAPACITATED;",
+      "helpText": "This field identifies the ACR functional class to indicate degree of impairment.  ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "DISEASE SEVERITY-PAT. ESTIMATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MB (MUCH BETTER);2:B (BETTER);3:S (SAME);4:W (WORSE);5:MW (MUCH WORSE);",
+      "helpText": "This field identifies the Pat. estimate of disease severity. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "FINGERS-DIP LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of fingers - dip left ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "FINGERS-DIP RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of fingers - dip right. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "FINGERS-PIP LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of fingers - pip left. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "FINGERS-PIP RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of fingers - pip right. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "MCPS LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of MCPS LEFT. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "MCPS RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of MCPS RIGHT. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "1ST CARPOMETACARPAL L",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of first carpometacarpal left. ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "1ST CARPOMETACARPAL R",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of first carpometacarpal right. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "WRIST LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of wrist left. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "WRIST RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of wrist right. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "ELBOW LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of elbow left. ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "ELBOW RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of elbow right. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "SHOULDER LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of shoulder left. ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "SHOULDER RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of shoulder right. ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "STERNOCLAVICULAR LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of sternoclavicular left. ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "STERNOCLAVICULAR RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of sternoclavicular right. ",
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "TMJ LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of TMJ left. ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "TMJ RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of TMJ right. ",
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 148,
+      "fieldName": "HIP LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of hip left. ",
+      "fieldNumber_": 148
+    },
+    {
+      "fieldNumber": 149,
+      "fieldName": "HIP RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of hip right. ",
+      "fieldNumber_": 149
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "KNEE LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of knee left. ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "KNEE RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of knee right. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "ANKLE LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of ankle left. ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "ANKLE RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of ankle right. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "MTP LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of MTP left. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "MTP RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of MTP right. ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "TOES-PIP LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of toes - PIP left. ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "TOES-PIP RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of toes - PIP right. ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "CERVICAL SPINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of cervical spine. ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "LUMBAR SPINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of impairment of lumbar spine. ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "COSTOCHONDRAL-LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of costochondral disease(left). ",
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "COSTOCHONDRAL-RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of costochondral disease(right). ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "SACROILIAC-LEFT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of sacroiliac disease(left). ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "SACROILIAC-RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NORMAL;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of sacroiliac disease(right). ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "THORACIC SPINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:MILD;2:MODERATE;3:SEVERE;",
+      "helpText": "Indicates the degree of Thoracic spine disease. ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "MEDICATION",
+      "dataType": "POINTER",
+      "rawType": "701.0201P",
+      "required": false,
+      "helpText": "These are the patient's current medications. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 295,
+      "fieldName": "BP-SYSTOLIC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the patient's systolic blood pressure. ",
+      "fieldNumber_": 295
+    },
+    {
+      "fieldNumber": 296,
+      "fieldName": "BP-DIASTOLIC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the patient's diastolic blood pressure. ",
+      "fieldNumber_": 296
+    },
+    {
+      "fieldNumber": 297,
+      "fieldName": "DISEASE ACTIVITY COMPOSITE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the patients disease activity composite. ",
+      "fieldNumber_": 297
+    },
+    {
+      "fieldNumber": 298,
+      "fieldName": "DISEASE SEVERITY-PT. ESTIMATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the patient's estimate of the disease severity. ",
+      "fieldNumber_": 298
+    },
+    {
+      "fieldNumber": 299,
+      "fieldName": "DISEASE SEVERITY-MD ESTIMATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the clinician's estimate of the disease severity. ",
+      "fieldNumber_": 299
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "PAINSCAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the pain scale. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "DISABILITY INDEX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicates the disability index. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "DRESSING AND GROOMING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicates the level of functionality for dressing and grooming. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "ARISING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicates the level of functionality for arising. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "EATING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the level of functionality for eating. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "WALK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the level of functionality for walking. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "HYGIENE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicates the level of functionality for hygiene. ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "REACH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the level of functionality for reaching. ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "GRIP-ARA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicates the level of functionality for ARA grip. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "ACTIVITIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicates the level of functionality for activities. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "OCCUPATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:PROFESSIONAL-TECH;2:FARMERS;3:MANAGERS;4:CLERICAL;5:SALES;7:OPERATIVES;8:SERVICE;9:FARM LABORERS;10:OTHER LABORERS;",
+      "helpText": "This allows the user to enter occupation from a list of choices. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 313,
+      "fieldName": "CHART TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:HAQ;1:UNMARKED, RDC VI, OR R;2:RDC VIII;3:RDC IX;4:RDC X;5:RDC XI (1985);6:DEATH INFORMATION;7:DISCHARGE SUMMARY;",
+      "helpText": "This allows the user to select chart type for the patient. ",
+      "fieldNumber_": 313
+    },
+    {
+      "fieldNumber": 314,
+      "fieldName": "OBSERVER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The provider who saw the patient. ",
+      "fieldNumber_": 314
+    },
+    {
+      "fieldNumber": 315,
+      "fieldName": "VISIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLINIC (PRIOR RDC X;1:HOSPITAL;2:PHONE;3:MAIL;4:INITIAL-COMP;5:RETURN;6:COMP PT ASSESSOR;7:MAIL-OUTSIDE PHY RECO;8:MAIL-OTHER;9:TLI-RENAL VISIT;",
+      "fieldNumber_": 315
+    },
+    {
+      "fieldNumber": 316,
+      "fieldName": "DEC NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Data entry clerk number. ",
+      "fieldNumber_": 316
+    },
+    {
+      "fieldNumber": 317,
+      "fieldName": "VISIT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies sequentially numbered. ",
+      "fieldNumber_": 317
+    },
+    {
+      "fieldNumber": 318,
+      "fieldName": "LOST OR DEATH STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLINIC ALIVE;1:CLINIC LOST;2:CLINIC DEAD;",
+      "helpText": "Is patient dead or lost from the VA files. ",
+      "fieldNumber_": 318
+    },
+    {
+      "fieldNumber": 319,
+      "fieldName": "DEATH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows the user to enter the death date of patient. ",
+      "fieldNumber_": 319
+    },
+    {
+      "fieldNumber": 321,
+      "fieldName": "AUTOPSY AVAILABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies enter yes or no if autopsy is available. ",
+      "fieldNumber_": 321
+    },
+    {
+      "fieldNumber": 322,
+      "fieldName": "CAUSE OF DEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NOT RHEUM DIS;2:RHEUM DIS;3:RHEUM DIS SURGERY;4:RHEUM DIS DRUG TOXICITY;",
+      "helpText": "This allows user to choose cause of death from list. ",
+      "fieldNumber_": 322
+    },
+    {
+      "fieldNumber": 326,
+      "fieldName": "NOTIFIED BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PHONE;2:LETTER;3:OBITUARY;4:OTHER;",
+      "helpText": "This allows user to choose notification method by list. ",
+      "fieldNumber_": 326
+    },
+    {
+      "fieldNumber": 327,
+      "fieldName": "PERSON PROVIDING NOTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows user to enter the person's name who provided the notification, last name first. ",
+      "fieldNumber_": 327
+    },
+    {
+      "fieldNumber": 328,
+      "fieldName": "DEATH NOTIFIED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows user to enter the date when notified. ",
+      "fieldNumber_": 328
+    },
+    {
+      "fieldNumber": 329,
+      "fieldName": "DISEASE SEVERITY-PHY. ESTIMATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MB (MUCH BETTER);2:B (BETTER);3:S (SAME);4:W (WORSE);5:MW (MUCH WORSE);",
+      "helpText": "This allows the user to choose estimate from list. ",
+      "fieldNumber_": 329
+    },
+    {
+      "fieldNumber": 350,
+      "fieldName": "LOW WHITE BLOOD COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the condition of low white blood count. ",
+      "fieldNumber_": 350
+    },
+    {
+      "fieldNumber": 351,
+      "fieldName": "LOW PLATELETS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the condition of low platelet count. ",
+      "fieldNumber_": 351
+    },
+    {
+      "fieldNumber": 352,
+      "fieldName": "LOW RED BLOOD COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Indicates the condition of low red blood count. ",
+      "fieldNumber_": 352
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This allows user to enter a summary of the procedure. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;MI:MILD ABNL;MO:MOD ABNL;S:SEV ABNL;",
+      "helpText": "This allows user to choose summary code. ",
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 602,
+      "fieldName": "QUESTDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field identifies the date of the HAQ. ",
+      "fieldNumber_": 602
+    },
+    {
+      "fieldNumber": 603,
+      "fieldName": "HAQADMIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLINIC INTERVIEW;1:HOSPITAL INTERVIEW;2:TELEPHONE;3:MAIL;",
+      "fieldNumber_": 603
+    },
+    {
+      "fieldNumber": 604,
+      "fieldName": "QUESTYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EVERY YEAR;2:EVERY 6 MONTHS;",
+      "fieldNumber_": 604
+    },
+    {
+      "fieldNumber": 605,
+      "fieldName": "STUDY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ONGOING;1:LOSS OF FUNDS;2:DEAD;3:WITHDRAWN FROM STUDY;4:DX CHANGED;5:NON-PART REFUSED;6:NON-PART NO RESPONSE;7:TEMP OUT OF STUDY;8:STEY RE-ENTRY;",
+      "helpText": "This allows user to choose code of study status. ",
+      "fieldNumber_": 605
+    },
+    {
+      "fieldNumber": 606,
+      "fieldName": "DRUGSTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COHORT I;2:COHORT II;3:COHORT III;4:COHORT IV;5:COHORT V;6:COHORT VI;7:COHORT VII;8:COHORT VIII;",
+      "helpText": "This field identifies a special field to identify patients who are participating in a drug research study. ",
+      "fieldNumber_": 606
+    },
+    {
+      "fieldNumber": 607,
+      "fieldName": "QUESTNUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 607
+    },
+    {
+      "fieldNumber": 608,
+      "fieldName": "PMSVIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 608
+    },
+    {
+      "fieldNumber": 609,
+      "fieldName": "RISE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Summary score of HAQ questions about arising. ",
+      "fieldNumber_": 609
+    },
+    {
+      "fieldNumber": 610,
+      "fieldName": "NAUSEA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This allows user to enter yes or no for presence of nausea. ",
+      "fieldNumber_": 610
+    },
+    {
+      "fieldNumber": 611,
+      "fieldName": "HISTORY NARRATIVE",
+      "dataType": "SUBFILE",
+      "rawType": "701.0611",
+      "required": false,
+      "helpText": "This allows user to enter a history narrative. ",
+      "isMultiple": true,
+      "subFileNumber": 701.0611,
+      "fieldNumber_": 611
+    },
+    {
+      "fieldNumber": 612,
+      "fieldName": "END SESSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows user to hit the RETURN key to end session. ",
+      "fieldNumber_": 612
+    },
+    {
+      "fieldNumber": 613,
+      "fieldName": "LABORATORY INFO",
+      "dataType": "POINTER",
+      "rawType": "P63'",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "This allows user to enter laboratory information. ",
+      "fieldNumber_": 613
+    },
+    {
+      "fieldNumber": 614,
+      "fieldName": "LAB CHEM",
+      "dataType": "POINTER",
+      "rawType": "P60'",
+      "required": false,
+      "pointerTo": 60,
+      "helpText": "This allows user to enter information to the laboratory test file. ",
+      "fieldNumber_": 614
+    },
+    {
+      "fieldNumber": 615,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "701.0615IP",
+      "required": false,
+      "helpText": "This allows user to enter Diagnosis. ",
+      "fieldNumber_": 615
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "701.01P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "701.02005P",
+      "required": false,
+      "helpText": "This field points to an entry in the image file. ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 232,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "701", "field": .01, "type": "regular"},
+    {"name": "701", "field": .01, "type": "regular"},
+    {"name": "701", "field": 1, "type": "regular"},
+    {"name": "701", "field": 1, "type": "regular"},
+    {"name": "701", "field": 1, "type": "regular"},
+    {"name": "701", "field": 1.1, "type": "regular"},
+    {"name": "701", "field": 900, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": Z0, "value": "I $D(^(7)),$P(^(7),U,1) S Z=Y,Y=$P(^(7),U,1) W \" \",Y S Y=Z K Z"}
+  ]
+}

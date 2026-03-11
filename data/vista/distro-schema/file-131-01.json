@@ -1,0 +1,48 @@
+{
+  "fileNumber": 131.01,
+  "fileName": "SURGERY TRANSPORTATION DEVICES",
+  "globalRoot": "131.01",
+  "globalReference": "^SRO(131.01,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the device used to transport the patient to and from the Operating Room.  Although this field is optional, it may be helpful in documentation of the case.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code corresponding to the device used to transport the patient to and from the Operating Room.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter 'YES' to inactivate this entry to prevent its selection by Surgery users. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "131.01", "field": .01, "type": "regular"},
+    {"name": "131.01", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

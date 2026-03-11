@@ -1,0 +1,261 @@
+{
+  "fileNumber": 58.41,
+  "fileName": "SPMP STATE PARAMETERS",
+  "globalRoot": "58.41",
+  "globalReference": "^PS(58.41,",
+  "ddAccess": "Y",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state for which the parameters apply. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ASAP VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the American Society for Automation in Pharmacy (ASAP) format  version required for the State Prescription Monitoring Program (SPMP)  data transmission. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INCLUDE NON-VETERAN PATIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether controlled substances prescriptions dispensed to non-veteran patients should be included in the export file transmitted to the state. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REPORTING FREQUENCY IN DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the frequency the state requires pharmacies to report data. The value represents the number of days between transmissions of data to the state. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPEN VMS LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is name of the local Open VMS secure directory where the State Prescription Monitoring Program (SPMP) export file will be created before it can be transmitted to the state (e.g., USER$:[SPMP]). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FILE NAME PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the prefix that will be appended to the name of the export file transmitted to the state. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILE EXTENSION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": ".TXT:.TXT;.DAT:.DAT;",
+      "helpText": "This is the extension of the export file transmitted to the state. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATE SFTP SERVER IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the secure FTP IP address of the State Prescription Monitoring  Program (SPMP) server where the export file will be transmitted to. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATE SFTP SERVER USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the secure FTP username at the State Prescription Monitoring  Program (SPMP) server where the export file will be transmitted to. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATE SFTP SERVER PORT #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the secure FTP port number used by the State Prescription Monitoring Program (SPMP) server to receive the export file.   If left blank, the default secure FTP port 22 will be used. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "STATE SFTP SERVER DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the directory name at the State Prescription Monitoring Program (SPMP) server where the export file will be saved to.   If left blank, the default directory will be used. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LAST EXPORT DATE RUN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last prescription release date/time exported to the state. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSMIT RETURN TO STOCK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether Return To Stock fills should automatically be transmitted to the state (in a separate file) or if reporting of such records will be handled manually. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SFTP TRANSMISSION MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AUTOMATIC [SSH KEYS];M:MANUAL [PASSWORD];",
+      "helpText": "This field indicates whether the sFTP transmissions will happen automatically by a scheduled background job using SSH (Secure SHell) encryption keys or if it will be performed manually by a user. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LAST RET TO STOCK RX EXPORTED",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the prescription that contains the last returned to stock fill transmitted to the state. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "UNIX/LINUX LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is name of the local Unix/Linux secure directory where the State Prescription Monitoring Program (SPMP) export file will be created before it can be transmitted to the state (e.g., /usr/spmp/).   ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WINDOWS/NT LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is name of the local Windows/NT secure directory where the State Prescription Monitoring Program (SPMP) export file will be created before it can be transmitted to the state (e.g., D:\\SPMP\\).   ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "RENAME FILE AFTER UPLOAD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the data export file should be created and uploaded with a .DAT (or .TXT) directly or if the file should be created and uploaded with a .UP extension and once the upload completes the file would be renamed to .DAT (or .TXT).     NO  - File will be uploaded as .DAT/.TXT directly (no renaming)    YES - File will be uploaded as .UP and then renamed to .DAT/.TXT ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SFTP SSH KEY FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "OSSH:OpenSSH Format (Used by Linux);SSH2:SSH2 Format (Used by OpenVMS);",
+      "helpText": "This is the format of the SSH (Secure Shell) public and private keys used  to transmit data to the state via Secure File Transfer Protocol (sFTP). ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SFTP SSH KEY ENCRYPTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DSA:Digital Signature Algorithm (NOT SUPPORTED);RSA:Rivest, Shamir & Adleman (Names);ECDSA:Elliptic Curve Digital Signature Algorithm (ECDSA);EDDSA:Edward-curve Digital Signature Algorithm (EDDSA);",
+      "helpText": "This is the type of the encryption algorithm of the SSH (Secure Shell)  public and private keys used to transmit data to the state via Secure  File Transfer Protocol (sFTP). ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ZERO REPORT ASAP VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "American Society for Automation in Pharmacy (ASAP) Version for Zero  Reporting to the State (no prescription fills to report). Leave blank if  the state does not require Zero Reporting. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SEND EXPORT STATE PARAMETER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SEND TO STATE OF GEOGRAPHIC PHARMACY;1:BOTH GEO PHARMACY STATE AND STATE OF DELIVERY;2:SEND TO STATE OF PATIENT DELIVERY;",
+      "helpText": "The Send Export State Parameter field determines how states will be identified for receiving the SPMP batch exports.   Null or 0 - Use the geographic pharmacy state. 1         - Use both geographic state and state of patient delivery.             NOTE:  Only states that are set up in SPMP State Parameters                    will receive data based on patient delivery                     address.  Enter a help desk ticket if you have                     questions or need assistance. 2         - U",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ZERO REPORT DEFAULT DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "This field is used to specify the Default Division from file 59  OUTPATIENT SITE that provides the Pharmacy DEA # that will be populated  into the Zero Report.  When the SEND EXPORT STATE PARAMETER field is set  to 2 (SEND TO STATE OF PATIENT DELIVERY) for the state, this field must  be populated in addition to parameter ZERO REPORT ASAP VERSION in order  to generate a Zero Report.  Zero Reports are created when there are no  controlled substances to report to the state for the reporting period.",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SFTP SSH PRIVATE KEY TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "58.411",
+      "required": false,
+      "helpText": "This is the Secure File Transfer Protocol (sFTP) private key text content. ",
+      "isMultiple": true,
+      "subFileNumber": 58.411,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "SFTP SSH PUBLIC KEY TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "58.412",
+      "required": false,
+      "helpText": "This is the Secure File Transfer Protocol (sFTP) public key text content. ",
+      "isMultiple": true,
+      "subFileNumber": 58.412,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

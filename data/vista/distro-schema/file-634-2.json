@@ -1,0 +1,86 @@
+{
+  "fileNumber": 634.2,
+  "fileName": "HBHC VISIT ERROR(S)",
+  "globalRoot": "634.2P",
+  "globalReference": "^HBHC(634.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field represents patient name in Patient (2) file.  The visit record in HBHC Visit (632) file is missing data.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HBHC VISIT",
+      "dataType": "POINTER",
+      "rawType": "P632'",
+      "required": false,
+      "pointerTo": 632,
+      "helpText": "This field represents visit record in HBHC Visit (632) file.  Field updated by package only, no user input. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FIELDS TO UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string supplied for DIE call) of visit data in HBHC Visit (632) file.  Field allows for 1-245 characters of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P633.1'",
+      "required": false,
+      "pointerTo": 633.1,
+      "helpText": "This field represents error message in HBHC Error Messages for Visits (633.1) file, of why records did not pass validity check for inclusion in HBHC Transmit file (634).  Outpatient Encounter Pointer Missing & Visit File Pointer Missing messages may need to be handled by IRM.  All other errors should be resolvable by the user via data entry corrections based on error message text.  Field updated by package only, no user input.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "P409.68'",
+      "required": false,
+      "pointerTo": 409.68,
+      "helpText": "This field represents outpatient encounter record in SDD(409.68 file.  Field updated by package only, no user input.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents date of HBHC visit.  Date range allowed is 1/1/1977 or later.  Field updated by package only, no user input.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CLINIC NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field represents HBPC Clinic number in Hospital Location (44) file.  Clinic must exist in Hospital Location file, since LAYGO is not allowed.  Field updated by package only, no user input.  ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

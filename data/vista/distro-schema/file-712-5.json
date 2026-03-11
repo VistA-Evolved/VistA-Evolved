@@ -1,0 +1,146 @@
+{
+  "fileNumber": 712.5,
+  "fileName": "GMT THRESHOLDS",
+  "globalRoot": "712.5",
+  "globalReference": "^EAS(712.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GMT EFFECTIVE YEAR",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field contains the effective year of the GMT thresholds. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FIPS CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0I",
+      "length": 5,
+      "required": true,
+      "helpText": "This field contains the FIPS code associated with the GMT Threshold.  The  FIPS code is a combination of the STATE and COUNTY codes. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'I",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This field contains the State Code associated with the GMT Threshold. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COUNTY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field contains the County Name associated with the GMT Threshold. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MSA CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0I",
+      "length": 4,
+      "required": true,
+      "helpText": "MSA Code associated with FIPS code for specific metropolitan area. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "GMT THRESHOLD 1",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with no dependants.  The threshold is set yearly by the U.S. Department  of Housing and Urban Development. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "GMT THRESHOLD 2",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 1 dependant.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "GMT THRESHOLD 3",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 2 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "GMT THRESHOLD 4",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 3 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "GMT THRESHOLD 5",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 4 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "GMT THRESHOLD 6",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 5 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "GMT THRESHOLD 7",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 6 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "GMT THRESHOLD 8",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2I",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains the geographical income level threshold associated  with 7 dependants.  The threshold is set yearly by the U.S. Department of  Housing and Urban Development. ",
+      "fieldNumber_": .18
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "712.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

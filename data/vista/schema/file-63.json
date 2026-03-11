@@ -1,0 +1,1007 @@
+{
+  "fileNumber": 63,
+  "fileName": "LAB DATA",
+  "globalRoot": "63",
+  "globalReference": "^LR(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LRDFN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0X",
+      "length": 11,
+      "required": true,
+      "helpText": "The internal file number of the \"patient\" (or other entity) ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT FILE",
+      "dataType": "POINTER",
+      "rawType": "R*P1'XI",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "The file where the name of this entry may be found. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0XO",
+      "length": 9,
+      "required": true,
+      "helpText": "The internal file number in the parent file for this entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DO NOT TRANSFUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DO NOT TRANSFUSE;0:OK TO TRANSFUSE;",
+      "helpText": "If DO NOT TRANSFUSE is entered then the patient cannot be transfused until the reason for not transfusing a blood component is resolved.  The reason can be entered in the BLOOD BANK COMMENTS field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ABO GROUP",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:A;B:B;AB:AB;O:O;",
+      "helpText": "ABO blood group of patient ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RH TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "POS:POS;NEG:NEG;",
+      "helpText": "This is the patient's RH blood type. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RBC ANTIGENS PRESENT(other)",
+      "dataType": "POINTER",
+      "rawType": "63.13PA",
+      "required": false,
+      "helpText": "Red blood cell antigens present other than ABO and Rho(D). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .075,
+      "fieldName": "ANTIBODIES IDENTIFIED",
+      "dataType": "POINTER",
+      "rawType": "63.075PA",
+      "required": false,
+      "helpText": "These are the patient's identified antibodies. ",
+      "fieldNumber_": .075
+    },
+    {
+      "fieldNumber": .076,
+      "fieldName": "BLOOD BANK COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "63.076",
+      "required": false,
+      "helpText": "These are blood bank comments for this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 63.076,
+      "fieldNumber_": .076
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "RBC ANTIGENS ABSENT(other)",
+      "dataType": "POINTER",
+      "rawType": "63.016PA",
+      "required": false,
+      "helpText": "Red blood cell antigens absent other than ABO & Rho(D). ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .084,
+      "fieldName": "BLOOD COMPONENT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "63.084IPA",
+      "required": false,
+      "helpText": "These are blood component requests. ",
+      "fieldNumber_": .084
+    },
+    {
+      "fieldNumber": .085,
+      "fieldName": "TRANSFUSION RECORD",
+      "dataType": "DATE",
+      "rawType": "63.017DAI",
+      "required": false,
+      "helpText": "This is data concerning the patient's transfusion. ",
+      "isMultiple": true,
+      "subFileNumber": 63.017,
+      "fieldNumber_": .085
+    },
+    {
+      "fieldNumber": .086,
+      "fieldName": "TRANSFUSION REACTION DATE",
+      "dataType": "DATE",
+      "rawType": "63.0171IDA",
+      "required": false,
+      "helpText": "Transfusion reactions that cannot be assigned to a specific  unit are entered here. ",
+      "isMultiple": true,
+      "subFileNumber": 63.0171,
+      "fieldNumber_": .086
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "HOSPITAL ID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "Computed field to present the hospital ID from the parent file. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .091,
+      "fieldName": "PAT. INFO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient information ",
+      "fieldNumber_": .091
+    },
+    {
+      "fieldNumber": .092,
+      "fieldName": "LOCATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLINIC;M:MODULE;W:WARD;Z:OTHER LOCATION;N:NON-CLINIC STOP;F:FILE AREA;I:IMAGING;OR:OPERATING ROOM;",
+      "helpText": "  This field is used for Workload Classification. Other location type is the default answer. ",
+      "fieldNumber_": .092
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "REPORT ROUTING (LOCATION)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The most current location where a lab procedure was requested. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .101,
+      "fieldName": "REPORT ROUTING (PROVIDER)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The most current requesting person who requested a lab procedure. ",
+      "fieldNumber_": .101
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CUMULATIVE REPORT PAGES",
+      "dataType": "POINTER",
+      "rawType": "63.03PA",
+      "required": false,
+      "helpText": "Current temporary (active) page numbers for the cumulative report. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PRODUCING LABORATORY",
+      "dataType": "SUBFILE",
+      "rawType": "63.00012A",
+      "required": false,
+      "helpText": "Contains information related to laboratory results which document legal and accreditation required information. It documents the laboratory that produces the lab result value (performing laboratory) in  addition to other supporting information such as address of the performing laboratory and the name/title/identifier of the laboratory director of the performing laboratory when required. ",
+      "isMultiple": true,
+      "subFileNumber": 63.00012,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EXTERNAL PACKAGE REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "63.00013A",
+      "required": false,
+      "helpText": "Stores information related to various external packages which are related to a laboratory specimen. ",
+      "isMultiple": true,
+      "subFileNumber": 63.00013,
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CODE SYSTEM REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "63.00014A",
+      "required": false,
+      "helpText": "Contains codes from various code systems used to encode this data element. ",
+      "isMultiple": true,
+      "subFileNumber": 63.00014,
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "HLA ANTIGENS PRESENT",
+      "dataType": "POINTER",
+      "rawType": "63.14PA",
+      "required": false,
+      "helpText": "These are HLA antigens associated with this patient. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "HLA ANTIGENS ABSENT",
+      "dataType": "POINTER",
+      "rawType": "63.141PA",
+      "required": false,
+      "helpText": "These are HLA antigens NOT associated with this patient. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BLOOD BANK",
+      "dataType": "DATE",
+      "rawType": "63.01DA",
+      "required": false,
+      "helpText": "This is blood bank data on this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 63.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EM",
+      "dataType": "DATE",
+      "rawType": "63.02DA",
+      "required": false,
+      "helpText": "This is patient data from electron microscopy (EM). ",
+      "isMultiple": true,
+      "subFileNumber": 63.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHEM, HEM, TOX, RIA, SER, etc.",
+      "dataType": "DATE",
+      "rawType": "63.04D",
+      "required": false,
+      "helpText": "Multiple field for Chem., Hem., Tox., RIA, Ser., etc. results ",
+      "isMultiple": true,
+      "subFileNumber": 63.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MICROBIOLOGY",
+      "dataType": "DATE",
+      "rawType": "63.05DA",
+      "required": false,
+      "helpText": "This is microbiology data associated with this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 63.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SURGICAL PATHOLOGY",
+      "dataType": "DATE",
+      "rawType": "63.08IDA",
+      "required": false,
+      "helpText": "This is the surgical pathology for this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 63.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CYTOPATHOLOGY",
+      "dataType": "DATE",
+      "rawType": "63.09DA",
+      "required": false,
+      "helpText": " QCytopathology data associated with this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 63.09,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "AUTOPSY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date/time of the autopsy. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DATE/TIME OF DEATH",
+      "dataType": "COMPUTED",
+      "rawType": "CJ19",
+      "length": 19,
+      "required": false,
+      "helpText": "This is the date/time of death. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.1,
+      "fieldName": "PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the requesting provider. ",
+      "fieldNumber_": 12.1
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "AGE AT DEATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the age of the patient at the time of death. ",
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE AUTOPSY REPORT COMPLETED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the autopsy report was completed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.01,
+      "fieldName": "AUTOPSY TYPIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the Autopsy typist ",
+      "fieldNumber_": 13.01
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "DATE FINAL AUTOPSY DIAGNOSES",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the final autopsy diagnoses are completed. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.5,
+      "fieldName": "RESIDENT PATHOLOGIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the resident pathologist. ",
+      "fieldNumber_": 13.5
+    },
+    {
+      "fieldNumber": 13.6,
+      "fieldName": "SENIOR PATHOLOGIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the senior pathologist. ",
+      "fieldNumber_": 13.6
+    },
+    {
+      "fieldNumber": 13.7,
+      "fieldName": "AUTOPSY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FULL AUTOPSY;H:HEAD ONLY;T:TRUNK ONLY;A:ABDOMEN ONLY;C:CHEST ONLY;O:OTHER LIMITATION;",
+      "helpText": "This is the autopsy type. ",
+      "fieldNumber_": 13.7
+    },
+    {
+      "fieldNumber": 13.8,
+      "fieldName": "AUTOPSY ASSISTANT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If prosector has an assistant enter name of assistant. ",
+      "fieldNumber_": 13.8
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AUTOPSY  ACC #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This is the number of this autopsy. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.1,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the requesting location. ",
+      "fieldNumber_": 14.1
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;P:PSYCHIATRY;NH:NHCU;NE:NEUROLOGY;I:INTERMEDIATE MED;R:REHAB MEDICINE;SCI:SPINAL CORD INJURY;D:DOMICILLARY;B:BLIND REHAB;",
+      "helpText": "This is the service to which this patient was assigned. ",
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 14.6,
+      "fieldName": "TREATING SPECIALITY AT DEATH",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "Name of treating specialty at time of patient's death. ",
+      "fieldNumber_": 14.6
+    },
+    {
+      "fieldNumber": 14.7,
+      "fieldName": "AUTOPSY RELEASE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date and time autopsy verified. ",
+      "fieldNumber_": 14.7
+    },
+    {
+      "fieldNumber": 14.8,
+      "fieldName": "AUTOPSY RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of person releasing verified autopsy report. ",
+      "fieldNumber_": 14.8
+    },
+    {
+      "fieldNumber": 14.9,
+      "fieldName": "PROVISIONAL ANAT DX DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Date provisional anatomic diagnoses reported ",
+      "fieldNumber_": 14.9
+    },
+    {
+      "fieldNumber": 14.91,
+      "fieldName": "RELEASING SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field indicates the site that released the clinical report. This  field can be used to determine the information required to correctly indicate the address/location of the laboratory responsible for releasing the report. ",
+      "fieldNumber_": 14.91
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BODY HEIGHT (in)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "Height of body in inches ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "BODY WT (lb)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "Weight of body in pounds ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LUNG,RT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Right lung ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "LUNG,LT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Left lung ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LIVER (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SPLEEN (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "KIDNEY,RT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Right kidney ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "KIDNEY,LT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Left kidney ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "HEART (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "BRAIN (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.1,
+      "fieldName": "PITUITARY GLAND (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 25.1
+    },
+    {
+      "fieldNumber": 25.2,
+      "fieldName": "THYROID GLAND (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 25.2
+    },
+    {
+      "fieldNumber": 25.3,
+      "fieldName": "PARATHYROID, LEFT  UPPER (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Left upper parathyroid ",
+      "fieldNumber_": 25.3
+    },
+    {
+      "fieldNumber": 25.4,
+      "fieldName": "PARATHYROID, LEFT  LOWER (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Left lower parathyroid ",
+      "fieldNumber_": 25.4
+    },
+    {
+      "fieldNumber": 25.5,
+      "fieldName": "PARATHYROID, RIGHT UPPER (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Right upper parathyroid ",
+      "fieldNumber_": 25.5
+    },
+    {
+      "fieldNumber": 25.6,
+      "fieldName": "PARATHYROID, RIGHT LOWER (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Right lower parathyroid ",
+      "fieldNumber_": 25.6
+    },
+    {
+      "fieldNumber": 25.7,
+      "fieldName": "ADRENAL, LEFT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Left adrenal ",
+      "fieldNumber_": 25.7
+    },
+    {
+      "fieldNumber": 25.8,
+      "fieldName": "ADRENAL, RIGHT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,3X",
+      "length": 6,
+      "required": false,
+      "helpText": "Right adrenal ",
+      "fieldNumber_": 25.8
+    },
+    {
+      "fieldNumber": 25.9,
+      "fieldName": "PANCREAS (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 25.9
+    },
+    {
+      "fieldNumber": 25.91,
+      "fieldName": "TESTIS, LEFT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1X",
+      "length": 5,
+      "required": false,
+      "helpText": "Left testis ",
+      "fieldNumber_": 25.91
+    },
+    {
+      "fieldNumber": 25.92,
+      "fieldName": "TESTIS, RIGHT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1X",
+      "length": 5,
+      "required": false,
+      "helpText": "Right testis ",
+      "fieldNumber_": 25.92
+    },
+    {
+      "fieldNumber": 25.93,
+      "fieldName": "OVARY, LEFT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1X",
+      "length": 5,
+      "required": false,
+      "helpText": "Left ovary ",
+      "fieldNumber_": 25.93
+    },
+    {
+      "fieldNumber": 25.94,
+      "fieldName": "OVARY, RIGHT (gm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1X",
+      "length": 5,
+      "required": false,
+      "helpText": "Right ovary ",
+      "fieldNumber_": 25.94
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TRICUSPID VALVE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PULMONIC VALVE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MITRAL VALVE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "AORTIC VALVE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RIGHT VENTRICLE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LEFT VENTRICLE (cm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2X",
+      "length": 4,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "PLEURAL CAVITY, LEFT (ml)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Left pleural cavity ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 31.2,
+      "fieldName": "PLEURAL CAVITY, RIGHT (ml)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Right pleural cavity ",
+      "fieldNumber_": 31.2
+    },
+    {
+      "fieldNumber": 31.3,
+      "fieldName": "PERICARDIAL CAVITY (ml)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 31.3
+    },
+    {
+      "fieldNumber": 31.4,
+      "fieldName": "PERITONEAL CAVITY (ml)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Body organ ",
+      "fieldNumber_": 31.4
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "AUTOPSY ORGAN/TISSUE",
+      "dataType": "POINTER",
+      "rawType": "63.2PA",
+      "required": false,
+      "helpText": "These are the organ/tissue(s) examined. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "AUTOPSY COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "63.97A",
+      "required": false,
+      "helpText": "These are comments on the autopsy. ",
+      "isMultiple": true,
+      "subFileNumber": 63.97,
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "CLINICAL DIAGNOSES",
+      "dataType": "SUBFILE",
+      "rawType": "63.322",
+      "required": false,
+      "helpText": "These are the clinical diagnoses. ",
+      "isMultiple": true,
+      "subFileNumber": 63.322,
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 32.3,
+      "fieldName": "PATHOLOGICAL DIAGNOSES",
+      "dataType": "SUBFILE",
+      "rawType": "63.323",
+      "required": false,
+      "helpText": "These are the pathological diagnoses. ",
+      "isMultiple": true,
+      "subFileNumber": 63.323,
+      "fieldNumber_": 32.3
+    },
+    {
+      "fieldNumber": 32.4,
+      "fieldName": "AUTOPSY SUPPLEMENTARY REPORT",
+      "dataType": "DATE",
+      "rawType": "63.324DA",
+      "required": false,
+      "helpText": "Multiple for autopsy supplementary report ",
+      "isMultiple": true,
+      "subFileNumber": 63.324,
+      "fieldNumber_": 32.4
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "AUTOPSY SPECIMEN",
+      "dataType": "SUBFILE",
+      "rawType": "63.033A",
+      "required": false,
+      "helpText": "Autopsy organs and tissues are entered here for block and slide  preparation, label printing and workload. ",
+      "isMultiple": true,
+      "subFileNumber": 63.033,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "AUTOPSY ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "63.808PA",
+      "required": false,
+      "helpText": "These are the ICD codes on this autopsy. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 83.1,
+      "fieldName": "MAJOR DIAGNOSTIC DISAGREEMENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If major diagnostic disagreements between autopsy and clinical findings  enter 'YES' else enter 'NO'. ",
+      "fieldNumber_": 83.1
+    },
+    {
+      "fieldNumber": 83.2,
+      "fieldName": "CLINICAL DIAGNOSIS CLARIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;2:CONFIRMED;",
+      "helpText": "If clinical dx insufficient (ex. intracranial hemorrhage) did autopsy  clarify the dx (ex. ruptured aneurysm) ? ",
+      "fieldNumber_": 83.2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "AUTOPSY QA CODE",
+      "dataType": "POINTER",
+      "rawType": "63.999PA",
+      "required": false,
+      "helpText": "Multiple for autopsy quality assurance code ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "ARCHIVE REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "63.99A",
+      "required": false,
+      "helpText": "These are references to archiving information. ",
+      "isMultiple": true,
+      "subFileNumber": 63.99,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "TIU REFERENCE DATE/TIME - AU",
+      "dataType": "DATE",
+      "rawType": "63.101DA",
+      "required": false,
+      "helpText": "This multiple stores TIU information for corresponding SF515 autopsy reports that have been electronically signed and stored in TIU.  This information is used to access the reports in TIU. ",
+      "isMultiple": true,
+      "subFileNumber": 63.101,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DATE REPORT MODIFIED - AU",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the report was modified if it was modified after it was electronically signed/released. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 102.1,
+      "fieldName": "PERSON MODIFYING TEXT",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Stores the DUZ of the person who modified the report AFTER it was electronically signed/released. ",
+      "fieldNumber_": 102.1
+    },
+    {
+      "fieldNumber": 102.2,
+      "fieldName": "DIAGNOSIS MODIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "1 = Diagnosis modified AFTER report was electronically signed/released. ",
+      "fieldNumber_": 102.2
+    }
+  ],
+  "fieldCount": 97,
+  "crossReferences": [
+    {"name": "AAU", "field": },
+    {"name": "AAUA", "field": },
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACY", "field": },
+    {"name": "ACYA", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AEM", "field": },
+    {"name": "AEMA", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AR", "field": },
+    {"name": "ASP", "field": },
+    {"name": "ASPA", "field": },
+    {"name": "AZZ", "field": },
+    {"name": "B", "field": },
+    {"name": "CZZ", "field": },
+    {"name": "63", "field": .01, "type": "regular"},
+    {"name": "63", "field": .02, "type": "regular"},
+    {"name": "63", "field": .03, "type": "regular"},
+    {"name": "63", "field": 11, "type": "regular"},
+    {"name": "63", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$D(^(\"0\")) \"   \",$S($D(^DIC(+$P(^(\"0\"),U,2),0))#2:$P(^(0),U,1),1:\"\"),$E(^LR(Y,0),0)"},
+    {"field": .03, "value": "W:$D(^(\"0\")) \"   \" S DA=Y,PDY=Y X ^DD(63,.03,2) W Y S Y=PDY K PDY,DA"}
+  ]
+}

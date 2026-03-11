@@ -1,0 +1,82 @@
+{
+  "fileNumber": 45.7,
+  "fileName": "FACILITY TREATING SPECIALTY",
+  "globalRoot": "45.7I",
+  "globalReference": "^DIC(45.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "Contains the name of the facility treating specialty.  Types of treating specialties may vary between facilities. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P42.4'",
+      "required": true,
+      "pointerTo": 42.4,
+      "helpText": "This field contains the treating specialty name as entered by facility or distributed with software.  Pointer to  Specialty File ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This field contains the associated Service of the treating specialty. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PROVIDERS",
+      "dataType": "POINTER",
+      "rawType": "45.701P",
+      "required": false,
+      "helpText": "Primary care physicians associated with treating specialty. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Formerly honeywell code may now assume other uses. Enter an abbreviation (1-5 characters) to be used when  Patients Treating Specialty is to be displayed on the G&L. If there is nothing entered here the first five characters  of the name for this facility treating specialty will appear  on the G&L. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "45.702D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 45.702,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AHN", "field": },
+    {"name": "ASPEC", "field": },
+    {"name": "ATR", "field": },
+    {"name": "B", "field": },
+    {"name": "45.7", "field": .01, "type": "regular"},
+    {"name": "45.7", "field": 1, "type": "regular"},
+    {"name": "45.7", "field": 2, "type": "regular"},
+    {"name": "45.7", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W:$D(^(\"0\")) \"   \",$S($D(^DIC(42.4,+$P(^(\"0\"),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": 99, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

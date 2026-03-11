@@ -1,0 +1,124 @@
+{
+  "fileNumber": 811.4,
+  "fileName": "REMINDER COMPUTED FINDINGS",
+  "globalRoot": "811.4",
+  "globalReference": "^PXRMD(811.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the computed finding and is the name the User will use when adding a computed finding to a reminder definition or a term. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of an M routine that contains the code for the computed finding. The entry point to use is specified in the ENTRY POINT field. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the entry point in the routine specified in the ROUTINE field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The PRINT NAME will be displayed in the Clinical Maintenance output for computed findings. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.41",
+      "required": false,
+      "helpText": "This is the description of the computed finding. It should explain its purpose and how it is to be used including what data is returned for use in a Condition. ",
+      "isMultiple": true,
+      "subFileNumber": 811.41,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MULTIPLE;L:LIST;S:SINGLE;",
+      "helpText": "This is the type of computed finding; the possible values are \"S\" for single, \"M\" for multiple, and \"L\" for list. The default value is \"S\". For a detailed explanation of the computed finding types see the Clinical Reminder Manager manual. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CF PARAMETER REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be set to \"YES\" if the computed finding requires a value in the COMPUTED FINDING PARAMETER (#6) field of the definition or term in order to function properly. It is used by the integrity checker to determine whether or not to issue an error if the COMPUTED FINDING PARAMETER is not defined.  The default is \"NO\".   ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the class of computed finding. Possible values are \"N\" for national, \"V\" for VISN, and \"L\" for local. National computed findings will be  prefixed with VA- and cannot be edited. Local or VISN entry names cannot  start with VA-. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this computed finding. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the computed finding should be reviewed to verify that it is current with the latest standards and guidelines. You can find all computed findings whose review date has passed using the Reminder Review Date report. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "811.42D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the computed finding. ",
+      "isMultiple": true,
+      "subFileNumber": 811.42,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 100, "value": "W:$D(^(100)) \"   \",@(\"$P($P($C(59)_$S($D(^DD(811.4,100,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(100),U,1)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

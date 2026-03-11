@@ -1,0 +1,39 @@
+{
+  "fileNumber": 6918,
+  "fileName": "Y2K CATEGORY LOG",
+  "globalRoot": "6918",
+  "globalReference": "^ENG(6918,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EQUIPMENT ENTRY",
+      "dataType": "POINTER",
+      "rawType": "RP6914'",
+      "required": true,
+      "pointerTo": 6914,
+      "helpText": "Pointer to the VistA Equipment file (#6914), which is DINUMED. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHANGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "6918.01DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 6918.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6918", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

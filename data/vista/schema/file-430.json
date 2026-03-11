@@ -1,0 +1,2246 @@
+{
+  "fileNumber": 430,
+  "fileName": "ACCOUNTS RECEIVABLE",
+  "globalRoot": "430I",
+  "globalReference": "^PRCA(430,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXI",
+      "required": false,
+      "helpText": "This is the unique bill number assigned to this billing episode.  New bill numbers consist of no less than 6 characters, preceded by station number if multi-divisional (Example: 662-K000001).  Bill numbers for bills that have been cancelled in Integrated Billing (IB) during the process of correcting errors in the original bill add an additional 3 characters, a hyphen and an incremental number (Example: 662-K000001-01). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LAST INTEREST CHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date interest was charged to this bill. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LAST ADMIN CHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date an administrative charge was applied to this bill. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "LAST PENALTY CHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date penalty charges were added to this bill. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FISCAL YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "430.01IA",
+      "required": false,
+      "helpText": "A single bill can have activity that spreads over more than one fiscal year.  This multiple field holds a record of each year's appropriation symbol, PAT reference number, original amount, etc. ",
+      "isMultiple": true,
+      "subFileNumber": 430.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "R*P430.2'X",
+      "required": true,
+      "pointerTo": 430.2,
+      "helpText": "This is the bill's Category - a pointer to the Category File (Means Test, Vendor, Employee, Tort, etc.). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORIGINAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the original dollar amount of the bill. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GL NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the General Ledger Number for the ALD CODE assigned to this bill. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "BILL RESULTING FROM",
+      "dataType": "POINTER",
+      "rawType": "R*P430.6'OX",
+      "required": true,
+      "pointerTo": 430.6,
+      "helpText": "The cause of the debt.  This field points to the AR Debt List File which contains brief statements describing the source of the bills that are used on the debt collection letters.    The type of entry selected must be compatible with the bill's category type. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the Patient File. Adding new patients is NOT ALLOWED through this option. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CURRENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P430.3'X",
+      "required": true,
+      "pointerTo": 430.3,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEBTOR",
+      "dataType": "POINTER",
+      "rawType": "R*P340X",
+      "required": true,
+      "pointerTo": 340,
+      "helpText": "This field points to the Debtor File, which in turn is a variable pointer to other files. This allows automatic look-up of debtors based on the category of the bill.  Adding new entries to the other files may not be allowed. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE BILL PREPARED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date the bill was prepared. Time is not allowed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CURRENT BALANCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field computes the current balance of the account. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is a pointer to the Admin. Activity Site Parameter File. Adding new entries is allowed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "AGENT CASHIER",
+      "dataType": "POINTER",
+      "rawType": "P342.1'",
+      "required": false,
+      "pointerTo": 342.1,
+      "helpText": "This field is an inactive field and used to point to the AR SITE PARAMETER file (430.5) in AR v3.7. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "ACCOUNT RECEIVABLE SECTION",
+      "dataType": "POINTER",
+      "rawType": "*P342.1'",
+      "required": false,
+      "pointerTo": 342.1,
+      "helpText": "This field is inactive and use to point to the AR SITE PARAMETER  file (430.5) in AR v3.7. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DATE STATUS UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STATUS REMARK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An optional field that holds a brief remark regarding the status, reason for change in status, etc. 3-45 characters.  ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.1,
+      "fieldName": "TYPE OF CARE",
+      "dataType": "POINTER",
+      "rawType": "R*P430.2'",
+      "required": true,
+      "pointerTo": 430.2,
+      "helpText": "This is a pointer to the AR category file. This entry should be  'NURSING HOME CARE', 'OUTPATIENT CARE' or 'HOSPITAL CARE'.  Adding new entries is not allowed. ",
+      "fieldNumber_": 15.1
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE CALM DONE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the PAT reference number was assigned and the CALM code sheet was done. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STATUS UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the New Person File. It extracts the name of the person making a change to the bill's status. Adding new entries is not allowed. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "APPROPRIATION SYMBOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free-text field holding the appropriation symbol. 7-10 characters. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SECONDARY INSURANCE CARRIER",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is a pointer to the Insurance Company File. Adding new entries is not allowed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "TERTIARY INSURANCE CARRIER",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is a pointer to the Insurance Company File. Adding new entries is not allowed. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "SEGMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of the billing category's AMIS reporting segment. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "HOLD LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a hold is/was placed on follow-up letters for this account. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "HOLD LETTER REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:PERSONAL LETTER;P:PHONE CALL;V:PERSONAL VISIT;O:OTHERS;",
+      "helpText": "This is the reason a hold was placed on sending follow-up letters. Select from the list of choices. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "HOLD LETTER COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows the user to enter expanded comments on the reason for holding follow-up letters. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DATE RETURNED TO SERVICE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a bill was returned to the originating service. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "RETURNED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user from the New Person File who returned the bill to the originating service. Adding a new Person is not allowed. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "AMENDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this bill was amended. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "AMENDED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user from the New Person File who amended this bill. Adding a new Person is not allowed. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "AMENDED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the dollar value of the amendment. It can be a positive or negative figure. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "FISCAL COMMENTS (RETURN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This text field holds Fiscal service comments regarding the return of a bill. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "SERVICE COMMENTS (AMEND)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This text field holds the Service's comments regarding the amendment of a bill. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "REPAYMENT PLAN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a repayment plan was established. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "*DAY OF MON. PAYMENT DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "As of VistA Patch PRCA*4.5*378, this field is no longer updated. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "*REPAYMENT AMOUNT DUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "As of VistA Patch PRCA*4.5*378, this field is no longer updated. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "*NUMBER OF PAYMENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "As of VistA Patch PRCA*4.5*378, this field is no longer updated. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "AR REPAYMENT PLAN",
+      "dataType": "POINTER",
+      "rawType": "P340.5'",
+      "required": false,
+      "pointerTo": 340.5,
+      "helpText": "This field contains a link to the Repayment Plan (file #430) the bill is included in. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "*REPAYMENT DUE DATES",
+      "dataType": "DATE",
+      "rawType": "430.051DA",
+      "required": false,
+      "helpText": "As of VistA Patch PRCA*4.5*378, this sub-file is no longer updated. ",
+      "isMultiple": true,
+      "subFileNumber": 430.051,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DATE ACCOUNT ACTIVATED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "LETTER1",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the first debt collection letter was sent to the debtor. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "LETTER2",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the second debt collection letter was sent to the debtor. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LETTER3",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the third debt collection letter was sent to the debtor. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "REFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the account was referred to the Regional Counsel or the Department of Justice for collection. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "REFERRAL CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RC:REGIONAL COUNSEL;DOJ:DEPT.OF JUSTICE;DC:REGIONAL COUNSEL;",
+      "helpText": "This field indicates where an account was referred to. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "REFERRAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the account balance that was referred. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "LAST INT/ADM CHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the most recent date that Interest/Administrative costs were charged to the account. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "LETTER4",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the fourth debt collection letter was sent to the debtor. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 68.1,
+      "fieldName": "LAST LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the most recent debt collection letter. ",
+      "fieldNumber_": 68.1
+    },
+    {
+      "fieldNumber": 68.2,
+      "fieldName": "RE-REFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the account was re-referred to the Regional Counsel or Department of Justice. ",
+      "fieldNumber_": 68.2
+    },
+    {
+      "fieldNumber": 68.3,
+      "fieldName": "RETURNED DATE BY RC/DOJ",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a referred account was returned by the Regional Counsel or Department of Justice. ",
+      "fieldNumber_": 68.3
+    },
+    {
+      "fieldNumber": 68.4,
+      "fieldName": "REFERRAL DATE TO COWC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the account was referred to the DVB Committee on Waivers and Compromise. ",
+      "fieldNumber_": 68.4
+    },
+    {
+      "fieldNumber": 68.5,
+      "fieldName": "REFERRED AMOUNT TO COWC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the balance of an account referred to the DVB Committee on Waivers and Compromise. ",
+      "fieldNumber_": 68.5
+    },
+    {
+      "fieldNumber": 68.6,
+      "fieldName": "IRS OFFSET LETTER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the last date an IRS Offset letter was printed that contained the amount due from the bill. ",
+      "fieldNumber_": 68.6
+    },
+    {
+      "fieldNumber": 68.7,
+      "fieldName": "DATE FORWARDED TO IRS",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the receivable was forwarded to the IRS. ",
+      "fieldNumber_": 68.7
+    },
+    {
+      "fieldNumber": 68.8,
+      "fieldName": "IRS PRINCIPAL BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the principal balance of the receivable forwarded to  the IRS. ",
+      "fieldNumber_": 68.8
+    },
+    {
+      "fieldNumber": 68.9,
+      "fieldName": "IRS INTEREST BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the Interest Balance forwarded to the IRS. ",
+      "fieldNumber_": 68.9
+    },
+    {
+      "fieldNumber": 68.91,
+      "fieldName": "IRS ADMIN. BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the Administrative Balance forwarded to the IRS. ",
+      "fieldNumber_": 68.91
+    },
+    {
+      "fieldNumber": 68.92,
+      "fieldName": "ORIGINAL IRS LETTER AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the Original Amount of the bill forwarded to the IRS. ",
+      "fieldNumber_": 68.92
+    },
+    {
+      "fieldNumber": 68.93,
+      "fieldName": "ORIGINAL IRS OFFSET AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the Original IRS Offset Amount. ",
+      "fieldNumber_": 68.93
+    },
+    {
+      "fieldNumber": 68.94,
+      "fieldName": "REFERRAL REASON CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:LITIGATION ISSUES;2:VET NOT RESP FOR COST OF CARE;3:REFUSAL TO PAY GOV HOSPITAL;4:VETERAN PAID DIRECTLY;5:MCCR REF WITH RC CONSENT;",
+      "helpText": "This is a code for the transmission to Regional Counsel to let them know the reason for the referral.  This is required for the transmission. ",
+      "fieldNumber_": 68.94
+    },
+    {
+      "fieldNumber": 68.95,
+      "fieldName": "REFERRAL COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter specific information on the account pertaining to the reason for  referral; date, time of call and contact person the staff spoke with at  the Regional Counsel. ",
+      "fieldNumber_": 68.95
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "OVER LETTER3",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field computes the length of time since the third debt collection letter was mailed. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "DELINQUENT DAYS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field computes the number of days an account is delinquent by subtracting the date of the first debt collection letter from the current date. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "PRINCIPAL BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This field is set to the original amount when a new bill is established. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "INTEREST BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the balance due for interest charges on this bill. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "ADMINISTRATIVE COST BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the balance due for administrative costs on this bill. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "MARSHAL FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount of the Marshal Fee included in this bill. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "COURT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount of court costs included in this bill. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "TOTAL PAID PRINCIPAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total amount received toward this bill's principal balance. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "TOTAL PAID INTEREST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total amount received toward this bill's interest charges. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "TOTAL PAID ADMINISTRATIVE COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total amount received toward this bill's administrative cost charges. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 79.1,
+      "fieldName": "TOTAL PAID MARSHAL FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total amount received toward this bill's Marshal Fee. ",
+      "fieldNumber_": 79.1
+    },
+    {
+      "fieldNumber": 79.12,
+      "fieldName": "OUTSTANDING PB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the total outstanding principal balance for this debtor's account. ",
+      "fieldNumber_": 79.12
+    },
+    {
+      "fieldNumber": 79.13,
+      "fieldName": "OUTSTANDING IB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total outstanding principal interest balance for this debtor's account. ",
+      "fieldNumber_": 79.13
+    },
+    {
+      "fieldNumber": 79.14,
+      "fieldName": "OUTSTANDING AB",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total outstanding administrative cost charges for this debtor's account. ",
+      "fieldNumber_": 79.14
+    },
+    {
+      "fieldNumber": 79.15,
+      "fieldName": "OUTSTANDING MF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total outstanding marshal's fee for this debtor's account. ",
+      "fieldNumber_": 79.15
+    },
+    {
+      "fieldNumber": 79.16,
+      "fieldName": "OUTSTANDING CC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total outstanding court cost for this debtor's account. ",
+      "fieldNumber_": 79.16
+    },
+    {
+      "fieldNumber": 79.17,
+      "fieldName": "EXCESS PAYMENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the amount of a patient's excess payment. ",
+      "fieldNumber_": 79.17
+    },
+    {
+      "fieldNumber": 79.18,
+      "fieldName": "REFUNDED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the dollar amount that has been refunded to the patient. ",
+      "fieldNumber_": 79.18
+    },
+    {
+      "fieldNumber": 79.19,
+      "fieldName": "REFUNDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date the refund was made. ",
+      "fieldNumber_": 79.19
+    },
+    {
+      "fieldNumber": 79.2,
+      "fieldName": "TOTAL PAID COURT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total amount received toward this bill's court costs. ",
+      "fieldNumber_": 79.2
+    },
+    {
+      "fieldNumber": 79.21,
+      "fieldName": "REFUNDED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the name of the person who approved the refund. It is a pointer to the New Person File. ",
+      "fieldNumber_": 79.21
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "IRS LOCATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount charged to the bill for an IRS locator search. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "CREDIT REP. COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount charged to the bill for a credit report locator check. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "DMV LOCATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount charged to the bill for a state agency/department of motor vehicles locator search. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 83.1,
+      "fieldName": "DMV LOCATION CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not a state agency/department of motor vehicles locator check was done. ",
+      "fieldNumber_": 83.1
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "CONSUMER REP. AGENCY COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount charged to the bill for a consumer rep. agency locator search. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "POSTAL LOCATION COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount charged to the bill for a US Postal Service locator search. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "ABLE TO PAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not the debtor is able to pay this bill. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "ABLE TO LOCATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not the debtor could be located. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "POSTAL LOC.DATE SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a request to locate the debtor was sent to the US Postal Service. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "POSTAL LOC.DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a reply was received to the Postal locator request. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 89.1,
+      "fieldName": "IRS ABLE TO LOCATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not the IRS was able to locate the debtor. ",
+      "fieldNumber_": 89.1
+    },
+    {
+      "fieldNumber": 89.2,
+      "fieldName": "IRS LOC. DATE SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a request to locate the debtor was sent to the IRS. ",
+      "fieldNumber_": 89.2
+    },
+    {
+      "fieldNumber": 89.3,
+      "fieldName": "IRS LOC. DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a reply was received to the IRS locator request. ",
+      "fieldNumber_": 89.3
+    },
+    {
+      "fieldNumber": 89.4,
+      "fieldName": "CREDIT REP. ABLE TO PAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not the credit report says the debtor is able to pay the bill. ",
+      "fieldNumber_": 89.4
+    },
+    {
+      "fieldNumber": 89.5,
+      "fieldName": "CREDIT REPT. DATE SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date a request for a credit report was sent. ",
+      "fieldNumber_": 89.5
+    },
+    {
+      "fieldNumber": 89.6,
+      "fieldName": "CREDIT REP. DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the requested credit report was received. ",
+      "fieldNumber_": 89.6
+    },
+    {
+      "fieldNumber": 89.7,
+      "fieldName": "PATIENT FOLDER REVIEWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not the debtor's Patient Folder was reviewed for locator information. ",
+      "fieldNumber_": 89.7
+    },
+    {
+      "fieldNumber": 89.8,
+      "fieldName": "DATE FOLDER REVIEWED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the debtor's Patient Folder was reviewed. ",
+      "fieldNumber_": 89.8
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "APPROVED BY (FISCAL)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "AR ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "AR DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "AR APPR.OFFICIAL'S TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the approving official's title. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "APPROVED BY (BILLING)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who approved the bill in the Service or Section. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "PREVIOUS STATUS",
+      "dataType": "POINTER",
+      "rawType": "P430.3'",
+      "required": false,
+      "pointerTo": 430.3,
+      "helpText": "This is the former status of the bill if it has been changed. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "APPROVED DATE (SERVICE)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the bill was approved in the Service or Section. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "PROCESSED BY (SERVICE)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person in the Service or Section who processed the bill. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "430.098",
+      "required": false,
+      "helpText": "This word processing field allows the AR Clerk or Supervisor to add optional comments at the time the bill is audited. ",
+      "isMultiple": true,
+      "subFileNumber": 430.098,
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "FORM TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:1081;2:1080;3:1114;",
+      "helpText": "This response indicates the type of form for the bill. (1080, 1081 or 1114). ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "This is the Service or Section that originated the bill. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "VOUCHER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing Service/Section's voucher number. It is used on the 1080, 1081 and 1114 bill forms. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "430.02IDA",
+      "required": false,
+      "helpText": "This is a description of the bill. ",
+      "isMultiple": true,
+      "subFileNumber": 430.02,
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "BILLING AGENCY",
+      "dataType": "POINTER",
+      "rawType": "*P342.1'",
+      "required": false,
+      "pointerTo": 342.1,
+      "helpText": "This is the billing agency from the AR Site Parameter file. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "AGENCY LOCATION CODE (ALC)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Agency Location Code. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "DOCUMENT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the Document Number used on the 1081 bill form. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "APPROVING OFFICIAL (SERVICE)",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person in the Service or Section who approved the bill. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "ELECTRONIC SIGNATURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "DATE SIGNED (APPROVED)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the bill was approved in the Service or Section. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "APPR. OFFICIAL'S TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the title of the person who approved the bill in the Service or Section. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "DATE SENT TO DMC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the bill was first sent to the Debt Management Center. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "DMC PRINCIPAL BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current principal balance for the bill that is at the Debt Management Center. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "DMC INTEREST BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the current interest balance for the bill that is at the Debt Management Center. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DMC ADMIN BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the current administrative cost balance for the bill that is at the Debt Management Center. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "DMC Debt Valid",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;P:PENDING;",
+      "helpText": "If the field value is NULL the nightly DMC job will prevent the debt from being referred to DMC when the debtor is SC 50% to 100% or in Receipt of a VA Pension. It will then set this field value to PENDING so the users  will know this is what occurred.   If a user sets this field value to YES and the debt meets all criteria to be sent to DMC it will be referred to DMC even if the debtor is SC 50% to 100% or in Receipt of a VA Pension.   If a user sets this value to NO the debt will not be referr",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "DMC Debt Valid Edited By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the New Person File. It extracts the name of the last person making a change to the DMC Debt Valid field. Adding new entries to the New Person File is not allowed. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "DMC Debt Valid Edited Date",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date and Time a user last edited the DMC Debt Valid Field. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "MEDICARE CONT. ADJUSTMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will reflect the Medicare contractual adjustment for a bill. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "MEDICARE UNREIMBURSABLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will reflect the Medicare Unreimbursable Expense for a bill. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "DATE BILL REFERRED TO TOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the bill was originally referred to TOP. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "TOP REFUND STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REFUND;2:REFUND TRANSMITTED;3:REVERSAL;4:REVERSAL TRANSMITTED;",
+      "helpText": "This field contains the current status of a TOP refund. ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "TOP TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the trace number attached to the refund. ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "TOP REFUND YEAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the calendar year for which the refund is granted. ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "DATE BILL REFERRED TO TCSP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the debt was referred to Cross Servicing. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "TCSP RECALL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CROSS-SERVICING RECALL SET;",
+      "helpText": "The flag that marks this debt for recall record creation from Cross-Servicing when the AR nightly background job is run. ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "TCSP RECALL EFF. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the recall flag is set for the debt. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "TCSP RECALL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:DEBT REFERRED IN ERROR;07:AGENCY IS FORGIVING DEBT;08:AGENCY CAN COLLECT THROUGH INTERNAL OFFSET;15:DEBTOR WAS INCORRECTLY ASSOCIATED WITH THE DEBT;03:BANKRUPTCY;05:DEBTOR DISABLED;06:DEBTOR DECEASED;",
+      "helpText": "The reason that the debt is being recalled from Cross-Servicing. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "RECALL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The amount of the debt being recalled from Cross-Servicing. ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "ORIGINAL DATE REFERRED TO TCSP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The original date that the debt was referred to Cross-Servicing. This  field is only set once, when the debt is first referred to  Cross-Servicing. Since this field was added after Cross-Servicing  originated, it may not be accurate. It is not deleted or reset with subsequent actions on the debt. The purpose of this field is to act as a flag to determine whether the account has ever been sent to Cross-Servicing, regardless of its current status. It should not be used for aging or other computati",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "STOP TCSP REFERRAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STOP TCSP REFERRAL SET;",
+      "helpText": "The flag that stops further Cross-Servicing activity for this debt. ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "STOP TCSP REFERRAL EFF. DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date that the stop flag was set for the debt. ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "STOP TCSP REFERRAL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BANKRUPTCY;W:WAIVER;O:OTHER;R:REJECTED BY CROSS-SERVICING;",
+      "helpText": "The reason that the debt is being stopped for further Cross-Servicing activity. Select from 'B' for bankruptcy, 'W' for waiver, 'O' for other, and 'R' for rejected by Cross-Servicing. ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 159.1,
+      "fieldName": "STOP TCSP REFERRAL COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Type a comment to support the reason that a stop flag has been set for this debt.  A comment is required in the case of 'Other' as a reason code. ",
+      "fieldNumber_": 159.1
+    },
+    {
+      "fieldNumber": 159.2,
+      "fieldName": "TCSP CASE RECALL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CROSS-SERVICING CASE RECALL SET;",
+      "helpText": "The flag that marks this case for recall record creation from Cross-Servicing when the AR nightly background job is run. ",
+      "fieldNumber_": 159.2
+    },
+    {
+      "fieldNumber": 159.3,
+      "fieldName": "TCSP CASE RECALL EFF. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the recall flag is set for the case. ",
+      "fieldNumber_": 159.3
+    },
+    {
+      "fieldNumber": 159.4,
+      "fieldName": "TCSP CASE RECALL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "15:DEBTOR WAS INCORRECTLY ASSOCIATED WITH THE DEBT;",
+      "helpText": "The reason that the case is being recalled from Cross-Servicing. ",
+      "fieldNumber_": 159.4
+    },
+    {
+      "fieldNumber": 159.5,
+      "fieldName": "TCSP GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "The Debtor's gender, 'M' for Male or 'F' for Female. ",
+      "fieldNumber_": 159.5
+    },
+    {
+      "fieldNumber": 159.9,
+      "fieldName": "TCSP RE-REFERRAL",
+      "dataType": "SET",
+      "rawType": "430.03S",
+      "required": false,
+      "helpText": "Subfile containing Re-Referral status, including requests (and details of those requests) and completed Re-Referrals performed during weekly batch job run. ",
+      "isMultiple": true,
+      "subFileNumber": 430.03,
+      "fieldNumber_": 159.9
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "TCSP TIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The SSN sent on the Cross-Servicing debtor record. ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "TCSP DEBTOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The debtor name sent on the Cross-Servicing record. ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "TCSP DELINQUENCY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the bill became active.  The debt is referred to Cross-Servicing when the debt is 120 days old counted from the delinquency date. ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "TCSP DEBTOR ADDRESS, LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The street address line 1 from the Patient file (#2) ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "TCSP DEBTOR ADDRESS, LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The street address line 2 from the Patient file (#2). ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "TCSP DEBTOR ADDRESS, CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The city from the Patient file (#2). ",
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 167,
+      "fieldName": "TCSP DEBTOR ADDRESS, STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The state from the Patient file (#2). ",
+      "fieldNumber_": 167
+    },
+    {
+      "fieldNumber": 168,
+      "fieldName": "TCSP DEBTOR ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The zip code from the Patient file (#2). ",
+      "fieldNumber_": 168
+    },
+    {
+      "fieldNumber": 169,
+      "fieldName": "ORIGINAL TCSP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The original amount referred to Cross-Servicing. ",
+      "fieldNumber_": 169
+    },
+    {
+      "fieldNumber": 169.1,
+      "fieldName": "CURRENT TCSP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The current debt amount at Cross-Servicing. ",
+      "fieldNumber_": 169.1
+    },
+    {
+      "fieldNumber": 169.2,
+      "fieldName": "TCSP DEBTOR PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The residence phone number from the Patient file (#2). ",
+      "fieldNumber_": 169.2
+    },
+    {
+      "fieldNumber": 169.3,
+      "fieldName": "TCSP COUNTRY CODE",
+      "dataType": "POINTER",
+      "rawType": "P779.004'",
+      "required": false,
+      "pointerTo": 779.004,
+      "helpText": "The country code from the Patient file (#2). ",
+      "fieldNumber_": 169.3
+    },
+    {
+      "fieldNumber": 169.4,
+      "fieldName": "TCSP DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The patient date of birth. ",
+      "fieldNumber_": 169.4
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "CS ADJ TRANS NUMBER",
+      "dataType": "POINTER",
+      "rawType": "430.0171PA",
+      "required": false,
+      "helpText": "The transaction numbers in the AR Transaction file (#433) for transactions to be included in a 5B record to be sent to Cross-Servicing. ",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "REJECT DATE",
+      "dataType": "DATE",
+      "rawType": "430.0172DA",
+      "required": false,
+      "helpText": "The dates that the Cross-Servicing record was received and processed. ",
+      "isMultiple": true,
+      "subFileNumber": 430.0172,
+      "fieldNumber_": 172
+    },
+    {
+      "fieldNumber": 173,
+      "fieldName": "DUE PROCESS NOTIFICATION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, CHECK FOR DPN;",
+      "helpText": "This flag is set during the install post initialization to identify this bill as requiring a Due Process notification when and if the current balance equals or exceeds $25.00. ",
+      "fieldNumber_": 173
+    },
+    {
+      "fieldNumber": 174,
+      "fieldName": "DUE PROCESS REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the request was made to AITC to send a Due Process Notification letter to the patient. ",
+      "fieldNumber_": 174
+    },
+    {
+      "fieldNumber": 175,
+      "fieldName": "DUE PROCESS LETTER PRINT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the Due Process Notification letter was printed by AITC. ",
+      "fieldNumber_": 175
+    },
+    {
+      "fieldNumber": 176,
+      "fieldName": "DUE PROCESS REFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the bill was referred to Cross-Servicing. ",
+      "fieldNumber_": 176
+    },
+    {
+      "fieldNumber": 177,
+      "fieldName": "DUE PROCESS ERROR DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the error codes were returned for the Due Process Notification letter request to AITC. ",
+      "fieldNumber_": 177
+    },
+    {
+      "fieldNumber": 178,
+      "fieldName": "DUE PROCESS ERROR CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The error codes returned by AITC for the Due Process Notification file sent to AITC requesting that a Due Process Notification letter be sent to the patient. ",
+      "fieldNumber_": 178
+    },
+    {
+      "fieldNumber": 191,
+      "fieldName": "SEND TCSP RECORD 1",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SEND 1 ACTION U;",
+      "helpText": "The flag set by the unprocessable file to request that a record 1 be sent for this debt. ",
+      "fieldNumber_": 191
+    },
+    {
+      "fieldNumber": 192,
+      "fieldName": "SEND TCSP RECORD 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SEND 2 ACTION U;",
+      "helpText": "The flag set by the unprocessable file to request that a record 2 be sent for this debt. ",
+      "fieldNumber_": 192
+    },
+    {
+      "fieldNumber": 193,
+      "fieldName": "SEND TCSP RECORD 2A",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SEND 2A ACTION U;",
+      "helpText": "The flag set by the unprocessable file to request that a record 2A be sent for this debt. ",
+      "fieldNumber_": 193
+    },
+    {
+      "fieldNumber": 194,
+      "fieldName": "SEND TCSP RECORD 2C",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SEND 2C ACTION A;",
+      "helpText": "The flag set by the unprocessable file to request that a record 2C be sent for this debt. ",
+      "fieldNumber_": 194
+    },
+    {
+      "fieldNumber": 199.2,
+      "fieldName": "STOP INTEREST ADMIN CALC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "The flag to stop interest and admin calculation for debts referred to Cross-Servicing. ",
+      "fieldNumber_": 199.2
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "RECEIVABLE CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "Identifies bill as Federal/Non-federal. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 200.2,
+      "fieldName": "TYPE OF BILL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the type of bill code from the UB-82 bill form. ",
+      "fieldNumber_": 200.2
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "BEGINNING BUDGET FY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Beginning Fiscal Year of accounting FUND. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "ENDING BUDGET FY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Ending Fiscal Year of accounting FUND. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "FMS Accounting FUND. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "ADMIN OFFICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "10:VHA;20:VBA;30:NCS;",
+      "helpText": "Administrative Office code used by FMS. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "ORGANIZATIONAL CTRL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting field. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "FCP/PROJ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting field. ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 239,
+      "fieldName": "INSURED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the individual in whose name the insurance is carried. ",
+      "fieldNumber_": 239
+    },
+    {
+      "fieldNumber": 240,
+      "fieldName": "INSURED SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;U:UNKNOWN;",
+      "helpText": "This is the insured individual's sex. ",
+      "fieldNumber_": 240
+    },
+    {
+      "fieldNumber": 241,
+      "fieldName": "PT RELATIONSHIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the two-digit code for the relationship between the insured individual and the patient.  It comes from the UB-82 bill form. ",
+      "fieldNumber_": 241
+    },
+    {
+      "fieldNumber": 242,
+      "fieldName": "CERT SSN HIC ID NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Certificate/Social Security Number/Health Insurance Claim/Identification Number from the UB-82 bill form. ",
+      "fieldNumber_": 242
+    },
+    {
+      "fieldNumber": 243,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the group through which the insurance is provided. ",
+      "fieldNumber_": 243
+    },
+    {
+      "fieldNumber": 244,
+      "fieldName": "GROUP NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the identification number of the group providing insurance. ",
+      "fieldNumber_": 244
+    },
+    {
+      "fieldNumber": 245,
+      "fieldName": "EMPLOYEE INFORMATION DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee information data code from the UB-82 bill form. ",
+      "fieldNumber_": 245
+    },
+    {
+      "fieldNumber": 246,
+      "fieldName": "EMPLOYMENT STATUS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employment status code from the UB-82 bill form. ",
+      "fieldNumber_": 246
+    },
+    {
+      "fieldNumber": 247,
+      "fieldName": "EMPLOYER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employer's name from the UB-82 bill form. ",
+      "fieldNumber_": 247
+    },
+    {
+      "fieldNumber": 248,
+      "fieldName": "EMPLOYEE ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employee's identification number from the UB-82 bill form. ",
+      "fieldNumber_": 248
+    },
+    {
+      "fieldNumber": 249,
+      "fieldName": "EMPLOYER LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the employer's location from the UB-82 bill form. ",
+      "fieldNumber_": 249
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "IFCAP control point. ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 251,
+      "fieldName": "COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is required for spending transactions and is used to record expenditure of funds by various organizations within DVA. ",
+      "fieldNumber_": 251
+    },
+    {
+      "fieldNumber": 252,
+      "fieldName": "SUB COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This code is a further breakdown of the Cost Center. ",
+      "fieldNumber_": 252
+    },
+    {
+      "fieldNumber": 253,
+      "fieldName": "BOC (SUB ACCOUNT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This code is equivalent to the CALM subaccount.  Required for spending transactions and is used to determine the budget operating expense account to effect. ",
+      "fieldNumber_": 253
+    },
+    {
+      "fieldNumber": 254,
+      "fieldName": "SUB BOC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This code is a further breakdown of the Budget Object Code. ",
+      "fieldNumber_": 254
+    },
+    {
+      "fieldNumber": 255,
+      "fieldName": "REVENUE SOURCE",
+      "dataType": "POINTER",
+      "rawType": "RP347.3'X",
+      "required": true,
+      "pointerTo": 347.3,
+      "helpText": "This code is required for revenue transactions.  It is used to group collected revenue and to determine whether the revenue will credit actual reimbursement receivables for the associated fund. ",
+      "fieldNumber_": 255
+    },
+    {
+      "fieldNumber": 255.1,
+      "fieldName": "RSC (CALC FOR ACCRUED BILLS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field was added with patch PRCA*4.5*90.   This field is used to store the calculated revenue source code for bills which are accrued.  It is calculated and set in the field by the routine RCXFMSUR. ",
+      "fieldNumber_": 255.1
+    },
+    {
+      "fieldNumber": 256,
+      "fieldName": "SUB-REV SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This code is a further breakdown of the Revenue Source Code. ",
+      "fieldNumber_": 256
+    },
+    {
+      "fieldNumber": 257,
+      "fieldName": "STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting station number. ",
+      "fieldNumber_": 257
+    },
+    {
+      "fieldNumber": 258,
+      "fieldName": "FEDERAL/NON-FEDERAL/EMPLOYEE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FEDERAL;1:NON-FEDERAL;2:EMPLOYEE;",
+      "helpText": "FMS accounting field to identify type of bill. ",
+      "fieldNumber_": 258
+    },
+    {
+      "fieldNumber": 259,
+      "fieldName": "REFUND/REIBURSMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:REFUND;02:REIMBURSEMENT;3:SF REIBURSMENT;4:SF REFUND;24:INELIG. HEALTH;09:GENERAL FUND;20:EMPLOYEE;50:TORT FEASOR;",
+      "helpText": "Identifies bill category for FMS ",
+      "fieldNumber_": 259
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "SAT STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the Satellite station number ",
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 261,
+      "fieldName": "JOB NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting element. ",
+      "fieldNumber_": 261
+    },
+    {
+      "fieldNumber": 262,
+      "fieldName": "XPROGAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting element. ",
+      "fieldNumber_": 262
+    },
+    {
+      "fieldNumber": 263,
+      "fieldName": "REPORTING CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  FMS accounting element. ",
+      "fieldNumber_": 263
+    },
+    {
+      "fieldNumber": 264,
+      "fieldName": "FMS LINE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the line number assigned to an FMS billing document. This field will only be populated if the line number is different than 001.  Line number 001 is the default line number (for null entries). ",
+      "fieldNumber_": 264
+    },
+    {
+      "fieldNumber": 265,
+      "fieldName": "VENDOR ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the vendor ID that was sent on the billing document. ",
+      "fieldNumber_": 265
+    },
+    {
+      "fieldNumber": 266,
+      "fieldName": "FMS TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date this document was transmitted to FMS. ",
+      "fieldNumber_": 266
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "RETURNED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The returned date field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "RETURN REASON CODE",
+      "dataType": "POINTER",
+      "rawType": "P430.5'",
+      "required": false,
+      "pointerTo": 430.5,
+      "helpText": "The returned reason code field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "COMPROMISE INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The compromise indicator field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "COMPROMISE AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The compromise amount field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "CLOSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The closed date field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "BANKRUPTCY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The bankruptcy date field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date of death field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "DATE OF DISSOLUTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date of dissolution field on the reconciliation file for records returned by Treasury from Cross-Servicing. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "REMOVED FROM RECONCILATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:no, not removed;1:yes, removed;",
+      "helpText": "This field determines whether this bill will display on the Cross-Servicing Reconciliation Worklist. A null value or a zero will display this bill on the worklist. A 1 in this field means the bill has been processed and removed from the Cross-Servicing Reconciliation Worklist, and it will not display on the worklist again. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "REC ORIGINAL TCSP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The original amount referred to Cross-Servicing. ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "REC CURRENT TCSP AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The current debt amount at Cross-Servicing. ",
+      "fieldNumber_": 311
+    },
+    {
+      "fieldNumber": 312,
+      "fieldName": "REC TCSP RECALL EFF. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the recall flag is set for the debt. ",
+      "fieldNumber_": 312
+    },
+    {
+      "fieldNumber": 313,
+      "fieldName": "TCSP AGENCY DEBT ID LAST 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Last two characters for Agency Debt ID field in IAI records for  referral.  Must be alphabetic or blank. ",
+      "fieldNumber_": 313
+    }
+  ],
+  "fieldCount": 228,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACTDT", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AJK1", "field": },
+    {"name": "AJK1A", "field": },
+    {"name": "AK", "field": },
+    {"name": "AL", "field": },
+    {"name": "AM", "field": },
+    {"name": "AN", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "ASDT1", "field": },
+    {"name": "ASDT2", "field": },
+    {"name": "ATD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "FMS", "field": },
+    {"name": "TCSP", "field": },
+    {"name": "TREF", "field": },
+    {"name": "430", "field": .01, "type": "regular"},
+    {"name": "430", "field": .01, "type": "regular"},
+    {"name": "", "field": 3, "type": "regular"},
+    {"name": "430", "field": 7, "type": "regular"},
+    {"name": "430", "field": 8, "type": "regular"},
+    {"name": "430", "field": 8, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "430", "field": 8, "type": "regular"},
+    {"name": "430", "field": 8, "type": "regular"},
+    {"name": "430", "field": 9, "type": "regular"},
+    {"name": "430", "field": 9, "type": "regular"},
+    {"name": "430", "field": 9, "type": "regular"},
+    {"name": "430", "field": 10, "type": "regular"},
+    {"name": "430", "field": 10, "type": "regular"},
+    {"name": "430", "field": 14, "type": "regular"},
+    {"name": "430", "field": 14, "type": "regular"},
+    {"name": "430", "field": 60, "type": "regular"},
+    {"name": "430", "field": 60, "type": "regular"},
+    {"name": "430", "field": 60, "type": "regular"},
+    {"name": "430", "field": 64, "type": "regular"},
+    {"name": "430", "field": 64, "type": "regular"},
+    {"name": "430", "field": 68.2, "type": "regular"},
+    {"name": "430", "field": 68.3, "type": "regular"},
+    {"name": "430", "field": 68.4, "type": "regular"},
+    {"name": "", "field": 125, "type": "regular"},
+    {"name": "", "field": 125, "type": "regular"},
+    {"name": "430", "field": 142, "type": "regular"},
+    {"name": "430", "field": 151, "type": "regular"},
+    {"name": "430", "field": 266, "type": "regular"},
+    {"name": "430", "field": 301, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCA(430.2,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(430.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WR2, "value": "W \"   \",$E($P(^(0),U,10),4,5)_\"-\"_$E($P(^(0),U,10),6,7)_\"-\"_$E($P(^(0),U,10),2,3)"},
+    {"field": WR3, "value": "S %=$P(^(0),U,9) W:%=\"\" \"NO DEBTOR NAME !  \" I %]\"\",$D(^RCD(340,%,0)) S %=U_$P($P(^RCD(340,%,0),\"^\"),\";\",2)_+^(0)_\",0)\",%=$S($D(@%):$P(@%,U,1),1:\"\") W \"  \",% K %"},
+    {"field": WR4, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCA(430.3,+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(430.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WR5, "value": "Q:'$D(^(7))  S %=$P(^(7),U,1)+$P(^(7),U,2)+$P(^(7),U,3)+$P(^(7),U,4)+$P(^(7),U,5) W \"$\",$J(%,0,2) K %"}
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "fileNumber": 661.1,
+  "fileName": "PROSTHETIC HCPCS",
+  "globalRoot": "661.1",
+  "globalReference": "^RMPR(661.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIO",
+      "required": true,
+      "helpText": "This is a unique Prosthetics HCPCS code that corresponds to the CPT code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short description for the Prosthetics HCPCS code as in CPT file #81. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CPT MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "List of CPT modifier authorized, consistent with the HCFA standard to be used under this HCPCS. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NON-BILLABLE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags a HCPCS to be non-billable. This will be used in the future for billing purposes. Currently this field is not used. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NEW HCPC CODE",
+      "dataType": "POINTER",
+      "rawType": "P661.1'X",
+      "required": false,
+      "pointerTo": 661.1,
+      "helpText": "A new HCPCS code to be used once a HCPCS has been deactivated by Prosthetics Data Validation Group. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "DATE/TIME LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the record was last updated. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "LAST UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the identifier associated with the last update.  ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "VERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date represents the most recent update to a HCPCS code in the PCM gold copy. Version date is controlled by PCM and is used to synchronize VistA HCPCS updates with the enterprise asset management system. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CPT",
+      "dataType": "POINTER",
+      "rawType": "P81'",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "A pointer to cpt file (#81). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "Set an entry active or inactive. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "661.14",
+      "required": false,
+      "helpText": "Allows local sites to set synonyms or local name widely used by local users. ",
+      "isMultiple": true,
+      "subFileNumber": 661.14,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NPPD REPAIR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Repair code for NPPD. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NPPD NEW CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "New code for NPPD. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "661.18",
+      "required": false,
+      "helpText": "A long description for the Prosthetics HCPCS code. ",
+      "isMultiple": true,
+      "subFileNumber": 661.18,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CALCULATION FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "To be used to associate like items on one HCPCS. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INVENTORY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Signifies if it's an inventory item. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRE-DETERMINED LAB TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of minutes to fit an item to a veteran. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "661.12",
+      "required": false,
+      "helpText": "This is an Item multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 661.12,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RENTAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is a flag use by sites to designate an item issued under a particular HCPCS to have a possible Rental (RR modifier).  If this field is set to 'YES', user will be asked if the item issued is a RENTAL. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "661.1", "field": .01, "type": "regular"},
+    {"name": "661.1", "field": .02, "type": "regular"},
+    {"name": "661.1", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \" \",$P(^(0),U,2) I '$P(^(0),U,5) W $C(7),\"  ** inactive HCPCS ** \" W:$P(^(0),U,3)'=\"\" \", use HCPCS: \"_$P(^RMPR(661.1,$P($G(^(0)),U,3),0),U,1)"}
+  ]
+}

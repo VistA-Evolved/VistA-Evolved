@@ -1,0 +1,73 @@
+{
+  "fileNumber": 125.1,
+  "fileName": "PROBLEM SELECTION LIST CONTENTS",
+  "globalRoot": "125.1IP",
+  "globalReference": "^GMPL(125.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LIST",
+      "dataType": "POINTER",
+      "rawType": "RP125'",
+      "required": true,
+      "pointerTo": 125,
+      "helpText": "This is the Problem Selection List which is to contain the problem group entered in field #1; this group may be assigned a sequence number for ordering and a subheader as well here. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is a number which will determine the order this group will appear in the current list; up to two decimal places may be used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P125.11",
+      "required": false,
+      "pointerTo": 125.11,
+      "helpText": "This is the category whose problem items are to be included in the current list; it may have a subheader in this list, and a designated order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBHEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is text which will appear in the list as a subheader or title to this group of problems.  It will have a single blank row between it and the previous problem group, and it will be underlined. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SHOW PROBLEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field controls the initial display of this category in this selection list.  If set to YES, the problems will automatically be displayed as part of the list when it is initially built and displayed; if null or NO, the category must be selected in order to expand the list and show the problems. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "C1", "field": },
+    {"name": "G", "field": },
+    {"name": "125.1", "field": .01, "type": "regular"},
+    {"name": "125.1", "field": .01, "type": "regular"},
+    {"name": "125.1", "field": 1, "type": "regular"},
+    {"name": "125.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 696.7,
+  "fileName": "MITRAL REGURG ON LV GRAM",
+  "globalRoot": "696.7",
+  "globalReference": "^MCAR(696.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This file holds the list of allowable Mitral Regurgitations for use by the Cardiac Catheterization file. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "696.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

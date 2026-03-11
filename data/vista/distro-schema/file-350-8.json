@@ -1,0 +1,88 @@
+{
+  "fileNumber": 350.8,
+  "fileName": "IB ERROR",
+  "globalRoot": "350.8",
+  "globalReference": "^IBE(350.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a free text name of the entry.  It should be namespaced with the namespace of the package reporting the error. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the message as it will be displayed to a user or posted in a bulletin.  It should be as meaningful as possible to the person seeing the message. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ERROR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the error code that will be passed to or determined by Integrated Billing.  The format for the Error Code should be nnxxx, where nn is the reporting package namespace and xxx are numeric values.   This is the error code that will be passed as the second piece of the variable Y to IB when +Y=-1.  More than one error code can be placed in the second ^ piece of Y delimited by semi-colons.  Applications may call ^IBAERR to display the error message(s). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PACKAGE REPORTING ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INTEGRATED BILLING;2:ACCOUNTS RECEIVABLE;3:PHARMACY;",
+      "helpText": "This is the package that requested this entry in this file and will report it to IB as an error if the conditions are detected. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ERROR ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DISPLAY MESSAGE;2:SEND BULLETIN;3:EDIT FILE;",
+      "helpText": "This is the type of action that should be taken when this error is reported to IB.  If action other than displaying a message is indicated then the MUMPS code in the ERROR ACTION field will be executed.   Currently only display actions are implemented.  Please contact the  developing ISC if other action types are desired. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CORRESPONDING ALERT",
+      "dataType": "POINTER",
+      "rawType": "P354.5'",
+      "required": false,
+      "pointerTo": 354.5,
+      "helpText": "This is the type of alert that should be sent when this error occurs. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXECUTABLE LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the MUMPS code that will be executed if an error is reported with an ERROR ACTION of other than to display a message. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "350.8", "field": .01, "type": "regular"},
+    {"name": "350.8", "field": .03, "type": "regular"},
+    {"name": "350.8", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

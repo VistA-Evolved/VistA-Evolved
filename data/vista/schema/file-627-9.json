@@ -1,0 +1,79 @@
+{
+  "fileNumber": 627.9,
+  "fileName": "DSM MODIFIERS",
+  "globalRoot": "627.9I",
+  "globalReference": "^DIC(627.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal entry number of the record.  Defined so that the Modifier may be selected by number or by ENTRY NAME. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This a sequentual number naming the specific modifier, such as modifier number 1.  Gives modifier description uniqueness. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is a prompt which is displayed for the different modifiers.   Usually, the prompt specifies the various selection (modifier) choices. At times, prompts are displayed for informational purposes, and no user response is possible. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPLIES",
+      "dataType": "SUBFILE",
+      "rawType": "627.92A",
+      "required": false,
+      "helpText": "After the prompt is displayed, and the user has selected the desired modifier or modifiers (see field description under ASK MORE THAN ONCE field), the value of the selected prompt is not stored; the value of the STANDS FOR field is stored.  (Usually, the selection prompt (contained in the PROMPT field) and the value of the STANDS FOR field are identical.) ",
+      "isMultiple": true,
+      "subFileNumber": 627.92,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ASK MORE THAN ONCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if the modifier prompt should be presented  (asked) more than once.  This would allow for more than one choice. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DSM VERSIONS",
+      "dataType": "SUBFILE",
+      "rawType": "627.904A",
+      "required": false,
+      "helpText": "This multiple records every DSM version under which the DSM Modifier file entry has been used.   ",
+      "isMultiple": true,
+      "subFileNumber": 627.904,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "627.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

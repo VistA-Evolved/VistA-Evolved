@@ -1,0 +1,129 @@
+{
+  "fileNumber": 33,
+  "fileName": "OTH ELIGIBILITY PATIENT",
+  "globalRoot": "33",
+  "globalReference": "^DGOTH(33,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OTH PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Patient with OTH 90 DAYS ELIGIBILITY that receives mental health care in  the VA facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OTH STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "The current status of the OTH patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PENDING AUTH REQ DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of pending authorization request submission. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PENDING REQUEST ENTERED BY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "The user who entered pending request for this patient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PENDING AUTH SYS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time when pending request was entered or edited. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PENDING AUTH REQUEST FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Facility where this pending request was entered. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PENDING AUTH REQUEST (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Setting this field to 'YES' indicates that there's an existing pending  authorization request for this patient. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PEND AUTH CREATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date / time when pending request was created. Used as unique identifier  by Enrollment System. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OTH 365 DAY CLOCK",
+      "dataType": "SUBFILE",
+      "rawType": "33.01",
+      "required": false,
+      "helpText": "This multiple contains data for tracking 365 days clock status. ",
+      "isMultiple": true,
+      "subFileNumber": 33.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ELIGIBILITY CHANGES",
+      "dataType": "DATE",
+      "rawType": "33.02DA",
+      "required": false,
+      "helpText": "This multiple contains history of OTH eligibility changes. ",
+      "isMultiple": true,
+      "subFileNumber": 33.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DENIED REQUEST",
+      "dataType": "SUBFILE",
+      "rawType": "33.03A",
+      "required": false,
+      "helpText": "This multiple contains authorization requests that have been disapproved. ",
+      "isMultiple": true,
+      "subFileNumber": 33.03,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "33", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

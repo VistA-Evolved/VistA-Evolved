@@ -1,0 +1,99 @@
+{
+  "fileNumber": 920.77,
+  "fileName": "PX ICE MESSAGE",
+  "globalRoot": "920.77",
+  "globalReference": "^PXV(920.77,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ELEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This represents a template element. When adding an element to the message, the element's components will be added to the message in the following order: 1) pre-content; 2) content; 3) children of this element  (recursively); 4) post-content. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT ELEMENT",
+      "dataType": "POINTER",
+      "rawType": "P920.77'",
+      "required": false,
+      "pointerTo": 920.77,
+      "helpText": "This is the parent element of this element. If this is a root element,  this should be null. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SORT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "If there are multiple sibling elements, this defines the order they will  be added to the message. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MODIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:OPTIONAL;M:MULTIPLE;A:ABSTRACT;",
+      "helpText": "This controls how this element behaves.   ABSTRACT - Used for inheritance. If multiple sibling elements have the same content, but have different build logic, then an abstract element can be used, so that the content does not need to be repeated for each element. An abstract element should be created as the parent of the sibling elements, and the direct children of the abstract element will inherit the pre-content, content, and post-content (unless they override  it). The abstract element itself",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BUILD LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is standard M[UMPS] code that is executed. If there are word-processing windows defined in the pre-content, content, or post-content, the Build Logic M code should set the PXVARS() array with the values needed. For example, if |AGE| is defined in the content, then the build logic should define PXVARS(\"AGE\")=X, and when adding this element to the message, |AGE| will be replaced with X.   1. The variable DFN will be defined before executing the Build Logic, and     the M code in the build log",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRE-CONTENT",
+      "dataType": "SUBFILE",
+      "rawType": "920.772",
+      "required": false,
+      "helpText": "This is the template text that will be added to the message before adding  the content. It can contain word-processing windows (e.g., |AGE|) which  will be replaced with the values from the PXVARS() array (defined by the  Build Logic).    Example:   Pre-Content: <gender code=\"|SEX|\"/>   Array value: PXVARS(\"SEX\")=\"F\"   Text added to message: <gender code=\"F\"/> ",
+      "isMultiple": true,
+      "subFileNumber": 920.772,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CONTENT",
+      "dataType": "SUBFILE",
+      "rawType": "920.773",
+      "required": false,
+      "helpText": "This is the template text that will be added to the message before adding the descendant elements. It can contain word-processing windows (e.g., |AGE|) which will be replaced with the values from the PXVARS() array (defined by the Build Logic).   Example:   Content: <gender code=\"|SEX|\"/>   Array value: PXVARS(\"SEX\")=\"F\"   Text added to message: <gender code=\"F\"/> ",
+      "isMultiple": true,
+      "subFileNumber": 920.773,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "POST-CONTENT",
+      "dataType": "SUBFILE",
+      "rawType": "920.774",
+      "required": false,
+      "helpText": "This is the template text that will be added to the message after adding  the descendant elements. It can contain word-processing windows (e.g., |AGE|) which will be replaced with the values from the PXVARS() array (defined by the Build Logic).   Example:   Post-Content: <gender code=\"|SEX|\"/>   Array value: PXVARS(\"SEX\")=\"F\"   Text added to message: <gender code=\"F\"/> ",
+      "isMultiple": true,
+      "subFileNumber": 920.774,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "920.77", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

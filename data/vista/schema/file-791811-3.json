@@ -1,0 +1,37 @@
+{
+  "fileNumber": 791811.3,
+  "fileName": "BATTERY",
+  "globalRoot": "791811.3",
+  "globalReference": "^RMPF(791811.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATTERY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a specific type of battery.  Batteries may be associated with line items from the Remote Inventory Product File. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field indicates whether a battery is active or inactive. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "791811.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

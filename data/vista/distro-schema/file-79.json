@@ -1,0 +1,392 @@
+{
+  "fileNumber": 79,
+  "fileName": "RAD/NUC MED DIVISION",
+  "globalRoot": "79P",
+  "globalReference": "^RA(79,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'XI",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field contains the name of this division. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TRACK EXAM STATUS CHANGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to collect the date and the time of exam status changes.  If the data is collected, it is stored with the case in the Activity Log subfile of the Rad/Nuc Med Patient file. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "ASK EXAM STATUS TIME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter is used if the 'Track Exam Status Changes' parameter is set to 'Yes'.  This parameter may be set to 'Yes' to indicate that the user should be asked the time of the status change. If this parameter is set to 'No', then the system automatically uses the current date and time.   (If exam data is entered significantly later than the patient is actually processed, then this parameter could be set to 'Yes' so that the user can put in the actual time the work was done.) ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "ALLOW STANDARD REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if the transcriptionist should be given the opportunity to select a standard report during the report entry/edit process. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "ALLOW BATCHING OF REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if the transcriptionist should be given the opportunity to place reports in a batch during report entry.       Batching of reports has the following advantages:     1)  Reports can be re-printed easily     2)  Two or more users are allowed to use the same         report printer without interweaving of reports     3)  Allows for batch verifying of reports     4)  Provides a mechanism for logical grouping of reports ",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "ALLOW COPYING OF REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if the transcriptionist should be given the opportunity to copy the contents of one report into another.  The report text and impression will be copied. ",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .115,
+      "fieldName": "ALLOW 'RELEASED/UNVERIFIED'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to allow reports to have the status 'RELEASED/UNVERIFIED' which permits the displaying of the report to users outside of the Imaging service even if it is unverified. ",
+      "fieldNumber_": .115
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "IMPRESSION REQUIRED ON REPORTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to indicate that an impression is required to be given on a report before:  1) the report can be verified and  2) the exam can be considered 'complete'. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .117,
+      "fieldName": "ASK 'REQUESTED DATE'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if the transcriptionist should be prompted for the Desired Date for the exam. ",
+      "fieldNumber_": .117
+    },
+    {
+      "fieldNumber": .118,
+      "fieldName": "ALLOW VERIFYING BY RESIDENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to allow interpreting residents to verify other interpreting physicians' reports while using the 'On-line Verifying of Reports' option.   If the parameter is set to 'Yes' then only those residents whose individual parameter (ALLOW VERIFYING OF OTHERS) in the 'New Person' file is also set to 'Yes' will be allowed to verify other interpreting physicians' reports.   If this division parameter is set to 'No' then no residents will be allowed to verify ot",
+      "fieldNumber_": .118
+    },
+    {
+      "fieldNumber": .119,
+      "fieldName": "TRACK REQUEST STATUS CHANGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This 'division' parameter can be set 'Yes' to collect the date and the time of request status changes.  If data is collected the new status, computer user, and, sometimes, the reason for the status change, are stored with the order in the Request Status Times subfile of the Rad/Nuc Med Orders file. ",
+      "fieldNumber_": .119
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PRINT FLASH CARD FOR EACH EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if one flash card should be printed for each exam (i.e. case). If this parameter is set to 'Yes', then the 'location' parameter, 'How Many Flashcards Per Visit' is ignored. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .121,
+      "fieldName": "ASK 'IMAGING LOCATION'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This division 'parameter' can be set to 'Yes' to indicate that the user should be asked when requesting an exam, which 'Imaging Location' the request should be forwarded to.  It is recommended that this field be set to 'Yes' to facilitate sorting of requests by imaging location for various reports.  Answering 'Yes' to this questions causes the 'SUBMIT REQUEST TO:' prompt to appear after a request is created. ",
+      "fieldNumber_": .121
+    },
+    {
+      "fieldNumber": .122,
+      "fieldName": "ALLOW RPTS ON CANCELLED CASES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This field will determine if a user who does not have the RA MGR key may enter a report for an exam that has a status of CANCELLED. ",
+      "fieldNumber_": .122
+    },
+    {
+      "fieldNumber": .124,
+      "fieldName": "TIME LIMIT FOR FUTURE EXAMS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the maximum number of hours in the future that a user may register a patient for an exam.  If this prompt is bypassed, the user may not register a patient at a future date. ",
+      "fieldNumber_": .124
+    },
+    {
+      "fieldNumber": .125,
+      "fieldName": "WARNING ON RPTS NOT YET VERIF?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "If this field is set to 'Yes' results reports in any status except 'Verified' will print the status surrounded by asterisks under the body of the report.  If this field is set to 'No' or left unanswered, the status box will not print on reports not yet verified.  This can be used to make sure that hardcopies of unverified results reports are not accidentally placed in patient charts or interpreted as the final results. ",
+      "fieldNumber_": .125
+    },
+    {
+      "fieldNumber": .126,
+      "fieldName": "AUTO E-MAIL TO REQ. PHYS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:yes;",
+      "helpText": "Entering 'Y'es will turn on a feature that automatically sends the  Radiology/Nuclear Medicine findings report to the Requesting Physician,  Primary Care Physician, and Associated Provider (if one exists), via  e-mail at the time it is verified.  If this field is left blank, verified reports will not be e-mailed to the Requesting Physician, Primary Care Physician, or Associated Provider. ",
+      "fieldNumber_": .126
+    },
+    {
+      "fieldNumber": .127,
+      "fieldName": "ALLOW E-SIG ON COTS HL7 RPTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "Entering 'Y' will turn on a feature that automatically adds the Electronic Signature Block printed name of the Verifying Physician that signed the report being transmitted to Rad/Nuc Med via an HL7 interface to a COTS voice reporting system.  This parameter is only checked for COTS HL7 interfaces that use the Generate/Process Routine 'RAHLTCPB' in the  subscriber protocol. ",
+      "fieldNumber_": .127
+    },
+    {
+      "fieldNumber": .128,
+      "fieldName": "INTERPRETING STAFF REQ'D?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field should be set to YES if you require entry of 'PRIMARY INTERPRETING STAFF' (file 70, field #15) to be mandatory for this division when entering Diagnostic data or Reports. ",
+      "fieldNumber_": .128
+    },
+    {
+      "fieldNumber": .129,
+      "fieldName": "HL7 RECEIVING APPLICATIONS",
+      "dataType": "POINTER",
+      "rawType": "79.02PA",
+      "required": false,
+      "helpText": "This field holds a list of pointers to the HL7 APPLICATIONS file (#771). ",
+      "fieldNumber_": .129
+    },
+    {
+      "fieldNumber": .131,
+      "fieldName": "USE SITE ACCESSION NUMBER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This parameter will function as a switch to turn on the use of the Site Specific Accession Number.  Until this field is set to YES the system will NOT use the Site Specific Accession Number during  registration of a new case.  Only when all devices are able to handle  the Site Specific Accession Number should this field be set to YES,  at which point the system will use the Site Specific Accession Number. ",
+      "fieldNumber_": .131
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "AUTO USER CODE FILING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to indicate that the user should be asked for their access code during the processing of exams and reports of  which various activity logs are kept.  If this parameter is set to 'Yes', then the system automatically uses the user code associated with the initial logon.  If this parameter is set to 'No', then the system asks the access code during each process.  ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "DETAILED PROCEDURE REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' if the entry of a 'detailed', 'series' or 'parent' procedure type should be required during the initial exam registration or request.   If this parameter is set to 'No', then the user can enter 'broad' procedure type, but this must be changed to 'detailed' or 'series' before the exam status can be changed to 'complete'. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "PRINT JACKET LBLS W/EACH VISIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to indicate that a jacket label should be printed automatically during each visit.   If this field is set to YES and the field 'HOW MANY JACKET LABELS PER VISIT' in the IMAGING LOCATIONS (79.1) file is set to zero, then the default will become two (i.e., two jacket labels will print out). ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "ASK 'CAMERA/EQUIP/RM'",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This 'division' parameter can be set to 'Yes' to indicate that the 'camera/equip/rm' should be asked during exam editing. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CONTRAST REACTION MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional field that may contain a site-defined message to be displayed with the warning message for patients who have had a reaction to the contrast medium.  For example, it may contain a reminder to use a yellow sticker for this patient's films.   This field is only used for exams which may involve the use of contrast  medium.  The message must be 5-70 characters in length. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "IMAGING LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "79.01P",
+      "required": false,
+      "helpText": "This field points to file #79.1 to indicate the name of the Imaging location associated with this division. A location may be associated with only one division. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "CLINICAL HISTORY MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional field that may contain a site-defined message to be displayed with a warning message which will be displayed in order entry, immediately proceeding the clinical history prompt. The message must be 5-70 characters in length. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "RESOURCE DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "A Resource device may be entered here if the facility wishes to control the rate at which tasked exam status updates are released to be processed. This is advised if the facility is experiencing drastic system slowdowns due to periodic heavy use of the online report verification and batch verification of reports options, which can queue a large number of tasks at once.  However, if the facility chooses to enter a Resource Device in this field, IRM should be careful to completely follow all direc",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "RPHARM DOSE WARNING MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "79.0125",
+      "required": false,
+      "helpText": "This field contains the message displayed to the user when the dose falls outside the range of the 'Low Adult Dose' and the 'High Adult Dose' fields.  These fields reside in the Default Radiopharmaceuticals multiple in the Rad/Nuc Med Procedures file.  Use the 'Procedure Enter/Edit' option to adjust these values. ",
+      "isMultiple": true,
+      "subFileNumber": 79.0125,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "USER PREFERS LONG DISPLAY",
+      "dataType": "POINTER",
+      "rawType": "79.03P",
+      "required": false,
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 175,
+      "fieldName": "PERF INDIC SMTP E-MAIL ADDRESS",
+      "dataType": "SUBFILE",
+      "rawType": "79.0175",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 79.0175,
+      "fieldNumber_": 175
+    },
+    {
+      "fieldNumber": 2300.1,
+      "fieldName": "LAST DFN CONVERTED (75.1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). The value should be a number or the word 'DONE'. If the value is a number, then the data conversion routine did not complete successfully. ",
+      "fieldNumber_": 2300.1
+    },
+    {
+      "fieldNumber": 2300.2,
+      "fieldName": "CONVERSION START TIME (75.1)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). It contains the date and time the data conversion for File 75.1 began. ",
+      "fieldNumber_": 2300.2
+    },
+    {
+      "fieldNumber": 2300.3,
+      "fieldName": "CONVERSION STOP TIME (75.1)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). It contains the date and time the data conversion for File 75.1 finished. ",
+      "fieldNumber_": 2300.3
+    },
+    {
+      "fieldNumber": 2300.4,
+      "fieldName": "LAST DFN CONVERTED (70)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). The value should be a series of numbers separated by slashes (e.g., 123/456/789) or the word 'DONE'. If the value is a group of numbers, then the data conversion routine did not complete successfully. ",
+      "fieldNumber_": 2300.4
+    },
+    {
+      "fieldNumber": 2300.5,
+      "fieldName": "CONVERSION START TIME (70)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). It contains the date and time the data conversion for File 70 began. ",
+      "fieldNumber_": 2300.5
+    },
+    {
+      "fieldNumber": 2300.6,
+      "fieldName": "CONVERSION STOP TIME (70)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field was added with Patch 23 (RA*4*23). It contains the date and time the data conversion for File 70 finished. ",
+      "fieldNumber_": 2300.6
+    }
+  ],
+  "fieldCount": 38,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AL", "field": },
+    {"name": "B", "field": },
+    {"name": "79", "field": .01, "type": "regular"},
+    {"name": "79", "field": .121, "type": "regular"},
+    {"name": "79", "field": .17, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

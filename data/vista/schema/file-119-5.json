@@ -1,0 +1,88 @@
+{
+  "fileNumber": 119.5,
+  "fileName": "DIETETIC CONSULTS",
+  "globalRoot": "119.5sI",
+  "globalReference": "^FH(119.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the consultation as it would normally be known by ward/medical personnel. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BRIEF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a short abbreviation of the dietetic consult type. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ASK INITIAL/FOLLOW-UP?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prompt the clinician completing the consult to indicate whether it was an initial consultation or a follow-up to prior consultations. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TU FOR INITIAL CONSULT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the number of 'time-units' associated with an initial consultation. The values of these 'time-units' are left to local discretion. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TU FOR FOLLOW-UP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of 'time-units' associated with a follow-up consultation and need be present only when the follow-up prompt has been selected. The values of these 'time-units' is left to local discretion. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER TO BULLETIN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If a bulletin to a designated clinician is desired whenever this consult is ordered, the clinician should be selected. An example might be a renal dialysis consult or a nutrition support consult. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, will prohibit further selection of this consult type by ward or dietetic personnel. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "119.5", "field": .01, "type": "regular"},
+    {"name": "119.5", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

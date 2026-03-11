@@ -1,0 +1,59 @@
+{
+  "fileNumber": 363.34,
+  "fileName": "BILLING PROVIDER DISCOUNT",
+  "globalRoot": "363.34",
+  "globalReference": "^IBE(363.34,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROVIDER TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a descriptive name of a type of provider that has an associated discount and one or more person class.  A Provider of one of the assigned person classes will have the discount applied to the care they provide. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "GROUP",
+      "dataType": "POINTER",
+      "rawType": "R*P363.32'",
+      "required": true,
+      "pointerTo": 363.32,
+      "helpText": "This group defines which Billing Rates this provider discount should be applied to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PERCENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the percentage of the total charge for a physician that should be billed for this provider type. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PERSON CLASS",
+      "dataType": "POINTER",
+      "rawType": "363.3411PA",
+      "required": false,
+      "helpText": "The Person Classes associated with this Provider Type. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "363.34", "field": .01, "type": "regular"},
+    {"name": "363.34", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

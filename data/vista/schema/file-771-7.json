@@ -1,0 +1,45 @@
+{
+  "fileNumber": 771.7,
+  "fileName": "HL7 ERROR MESSAGE",
+  "globalRoot": "771.7",
+  "globalReference": "^HL(771.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "SHORT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "771.72",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 771.72,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "771.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "fileNumber": 742.1,
+  "fileName": "QA INCIDENTS",
+  "globalRoot": "742.1",
+  "globalReference": "^QA(742.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "INCIDENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Incident Number links a unique number with a particular incident.  All local incidents must have numbers of 200 or greater.  This number may or may not have two decimal places. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "INCIDENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the types of incidents found within a hospital. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VA FORM 10-2633",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:POSSIBLE;",
+      "helpText": "Indicates whether form VA 10-2633 is required for this incident. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INVESTIGATION OF THE INCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:POSSIBLE;",
+      "helpText": "Indicates whether the incident requires an investigation. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OTHER QA REPORT FORMS",
+      "dataType": "SUBFILE",
+      "rawType": "742.16A",
+      "required": false,
+      "helpText": "Contains the applicable QA Report Form(s) for this incident. ",
+      "isMultiple": true,
+      "subFileNumber": 742.16,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SCREEN STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;N:NATIONAL;L:LOCAL;",
+      "helpText": "Contains the status for the incident. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BUPPER", "field": },
+    {"name": "742.1", "field": .01, "type": "regular"},
+    {"name": "742.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

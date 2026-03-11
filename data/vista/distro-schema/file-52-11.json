@@ -1,0 +1,171 @@
+{
+  "fileNumber": 52.11,
+  "fileName": "PATIENT NOTIFICATION (Rx READY)",
+  "globalRoot": "52.11PI",
+  "globalReference": "^PS(52.11,",
+  "ddAccess": "Y",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient's name whose prescription is to be displayed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TICKET #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "If the pharmacy is using receipt type tickets to identify patients whose prescriptions are ready, this field holds the ticket number. Otherwise, it is blank. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP59.3'",
+      "required": true,
+      "pointerTo": 59.3,
+      "helpText": "The group of terminals which will display the information that prescriptions for this patient are ready ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP59'",
+      "required": true,
+      "pointerTo": 59,
+      "helpText": "This field, pointing to file 59, allows accumulation of statistical data based on Divisional prescription input. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOGIN DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "File Manager date and time at which prescriptions were entered ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TIME IN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "Second piece of $H at the time the prescription is entered ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIME READY (HHMM)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "Second piece of $H at the time the Rx is ready. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PICKED UP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT PICKED UP;1:PICKED UP;",
+      "helpText": "This field is a set of codes that logs whether or not the order has been picked up. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the name of the patient. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SSAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the SSN of the patient. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HIERARCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is engaged if there are more than one patients with the same name entered in the system ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MULTIRX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the total separate Rx orders the patient has requested, ie; An order at 10AM and a separate one at 12PM.  To distinguish statistically they must be computed separately. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PRESCRIPTION(S)",
+      "dataType": "POINTER",
+      "rawType": "52.1112PA",
+      "required": false,
+      "helpText": "This multiple holds the prescription information. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SUSPENSE DIVISION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Non-Suspense entry;1:Suspense entry;",
+      "helpText": "This Set of Codes field serves as a flag where '0' means a Non-Suspense entry and '1' means Suspense entry. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "ANAM", "field": },
+    {"name": "ANAMK", "field": },
+    {"name": "ATIC", "field": },
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "BI", "field": },
+    {"name": "C", "field": },
+    {"name": "52.11", "field": .01, "type": "regular"},
+    {"name": "52.11", "field": 1, "type": "regular"},
+    {"name": "52.11", "field": 2, "type": "regular"},
+    {"name": "52.11", "field": 6, "type": "regular"},
+    {"name": "52.11", "field": 6, "type": "regular"},
+    {"name": "52.11", "field": 7, "type": "regular"},
+    {"name": "52.11", "field": 8, "type": "regular"},
+    {"name": "52.11", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 9, "value": "W:$D(^(1)) \"   \",$P(^(1),U,2)"},
+    {"field": 10, "value": "W:$D(^(1)) \"   \",$P(^(1),U,3)"},
+    {"field": 11, "value": "W:$D(^(1)) \"   \",$P(^(1),U,4)"}
+  ]
+}

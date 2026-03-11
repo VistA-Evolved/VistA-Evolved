@@ -1,0 +1,39 @@
+{
+  "fileNumber": 403.35,
+  "fileName": "SCHEDULING USER PREFERENCE",
+  "globalRoot": "403.35P",
+  "globalReference": "^SCRS(403.35,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCHEDULING USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user for whom preferences in the Scheduling Package will be used. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "DEFAULT PCMM REPORT QUERY",
+      "dataType": "POINTER",
+      "rawType": "P404.95'",
+      "required": false,
+      "pointerTo": 404.95,
+      "fieldNumber_": 1.15
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "403.35", "field": .01, "type": "regular"},
+    {"name": "403.35", "field": 1.15, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

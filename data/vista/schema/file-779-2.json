@@ -1,0 +1,149 @@
+{
+  "fileNumber": 779.2,
+  "fileName": "HLO APPLICATION REGISTRY",
+  "globalRoot": "779.2",
+  "globalReference": "^HLD(779.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPLICATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RESPONSE LINK (OPTIONAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field applies only if: 1) The receiving application is expected to  return application acknowledgments.  2) The initial message is  received  indirectly through the IE, and the  receiving application in turn does  not want to send the application acknowledgment directly back to the  sending facility identified in the message header.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT PRIVATE IN-QUEUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BATCH ACTION TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BATCH ACTION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEFAULT ACTION TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT ACTION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "BATCH PRIVATE IN-QUEUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "APPLICATION SPECIFIC LISTENER",
+      "dataType": "POINTER",
+      "rawType": "*P870'X",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "Applications are highly discouraged from establishing their own listeners.  The use of the multi-listeners provide concurrent processing of many connections over the same port, so a dedicated listener will not provide an application with a performance boost, while it will cause the site additional work to maintain. So before establishing a dedicated listener, the application developer should verify the need. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "SEQUENCE EXCEPTION TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SEQUENCE EXCEPTION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SEQUENCING TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "MINIMUM RETENTION TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field may be used by the application to set the minimum number of days that its messages should be retained after being processed.   This value applies to the application's messages as a whole, but may be overridden if the application specifies a value for specific message types.  The site parameter, if set to a longer time, will override the application parameter, whereas a shorter value will be ignored.      ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE TYPE ACTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "779.21I",
+      "required": false,
+      "helpText": "  ",
+      "isMultiple": true,
+      "subFileNumber": 779.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Package File Link",
+      "dataType": "POINTER",
+      "rawType": "RP9.4'",
+      "required": true,
+      "pointerTo": 9.4,
+      "helpText": "This field holds a pointer to the Package File for the Package  responsible for these messages.  ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

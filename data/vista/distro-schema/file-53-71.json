@@ -1,0 +1,98 @@
+{
+  "fileNumber": 53.71,
+  "fileName": "BCMA BACKUP PARAMETERS",
+  "globalRoot": "53.71",
+  "globalReference": "^ALPB(53.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PARAMETERS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "The BCMA Backup System package is distributed with this field pre-defined with the value of \"ONE\".  Further, this field is set to UNEDITABLE.  Only the values inside this PARAMETERS file record should be edited.  DO NOT  DELETE THIS PRE-DEFINED RECORD OR ADD NEW RECORDS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFAULT DAYS FOR MAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The number in this field indicates the default number of days for which medication administration initial boxes are printed on the output forms.   For example, if the number of days is 3, then the printed outputs will contain initial boxes beside each printed order that will look like this:                                         Admin DEC        Times 01   02  03        0400 |___|___|___|        0800 |___|___|___|                                         (These \"initial boxes\" are printed so tha",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEFAULT MAR PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field will be used to designate a default printer for the printing of Medication Administration Records (MAR).                                   If this field contains a device entry, it will be presented as the default print location for the MARs in the Device handler calls in the BCMA MAR print options. The user can either accept this default device, or select another valid device from the Device file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ERROR LOG",
+      "dataType": "DATE",
+      "rawType": "53.713DA",
+      "required": false,
+      "helpText": "This multiple field contains individual entries describing errors encountered by the processing of HL7 messages and the filing of data in the BCMA BACKUP DATA FILE (#53.7).  This field should not be edited using File Manager. Display and deletion of individual errors in this field is handled with the option ALPB ERROR LOG. ",
+      "isMultiple": true,
+      "subFileNumber": 53.713,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATA FILE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the BCMA BACKUP DATA file (53.7) was last updated by the processing of any HL7 message. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PURGE ORDER DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The Purge utility defaults at 7 days of orders. You can change that by  entering a number here. The purge is based off the order stop date. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PURGE PATIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Enter the number of days to retain a patient record without activity or  orders. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MED-LOG NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The Med-Log number field determines the number of previous Med Log  entries that will be displayed on the BCMA Contingency Medical Administration Report MAR. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "53.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

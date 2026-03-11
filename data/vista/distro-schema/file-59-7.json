@@ -1,0 +1,1463 @@
+{
+  "fileNumber": 59.7,
+  "fileName": "PHARMACY SYSTEM",
+  "globalRoot": "59.7",
+  "globalReference": "^PS(59.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "  This is the name of the site using the pharmacy packages. a medical center, and not to any one site or division.  The number ranges for the nodes and field numbers are as follows:    0 -  9.99  RESERVED   10 - 19.99  National Drug File   20 - 20.99  Inpatient   30 - 30.99  IV's   40 - 40.99  Outpatient   50 - 50.99  Ward Stock/AR   60 - 60.99  Unit Dose   THERE SHOULD ONLY BE ONE ENTRY IN THIS FILE. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NDF VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the version of National Drug File installed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "LAST DRUG CONVERTED",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This field holds the IEN of the last entry in file 50 which has been converted to the new version 4 value.  It can be used for restart. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "V4 CONVERSION COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is set to 1 when the third piece of the ND node in file 50 has been converted to the new version 4 value for all drugs. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RESTART NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "In the event that the Post-Init does not run to completion, the number in the local drug file that was last converted is saved in this field. This number is used to restart the Post-Init conversion process. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CONVERSION REMATCH OPTION DONE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to check to see if the Conversion Rematch option has done if there are entries to be converted. If there are no entries to be converted, it is set to \"1\". ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PMIS PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field will be used to designate a default printer for the printing of Patient Medication Instruction Sheets (PMIS). This default can be changed during the actually printing of the PMIS. If no value is found, the user will be prompted with a printer device. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PMIS LANGUAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:English;2:Spanish;",
+      "helpText": "This field will be used to designate a default language for the printing of Patient Medication Instruction Sheets (PMIS). This default can be changed during the printing of the PMIS. If no value is found, the user will be prompted to select a language. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PMIS SECTION DELETE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The purpose of this field is to define the section(s) of the Patient  Medication Information (PMI) to be excluded when printing Outpatient  labels. If more than one section is to be deleted, the label(s) should be  separated by commas. For example: R,Z to exclude the STORAGE and  DISCLAIMER sections. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WARNING LABEL SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;",
+      "helpText": "An \"N\" in this field indicates that the new commercial source for warning  labels will be used. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.1,
+      "fieldName": "CMOP WARNING LABEL SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;",
+      "helpText": "An \"N\" for \"New\" in this field indicates that the new commercial source  for warning labels will be used for CMOP. ",
+      "fieldNumber_": 16.1
+    },
+    {
+      "fieldNumber": 16.2,
+      "fieldName": "OPAI WARNING LABEL SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;",
+      "helpText": "An \"N\" for \"New\" in this field indicates that the new commercial source  for warning labels will be used for OPAI. ",
+      "fieldNumber_": 16.2
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PPS-N ACCOUNT TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PRODUCTION;Q:NATIONAL TEST SQA;S:PRODUCT SUPPORT;T:TEST ACCOUNT;N:QA NDFMS;",
+      "helpText": "This field defines the type of Pharmacy Product System -  National (PPS-N) account.  The account type can be one of the following: \"Q\" for National Test SQA system, \"T\" for Test/Mirror Account, \"S\" for Product Support, \"N\" for QA NDFMS account, or \"P\" for Production account.   Local VA sites will use \"P\" for their production accounts and \"T\" for their test/mirror accounts. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "IV STATS/200 CONVERSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT YET STARTED;1:MOVING CONVERTED DATA TO UTILITY;2:MOVING CONVERTED DATA BACK TO 50.8;3:COMPLETED;",
+      "helpText": "  This is the status of the process that converts the providers in the IV  STATS file (50.8) from the PROVIDER file (6) to the NEW PERSON file (200). ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "VERSION NUMBER LAST INITS RUN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "  This is the version number of the last inits run for the Inpatient  Medications package. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 20.11,
+      "fieldName": "NEW PERSON CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time that the Inpatient post-init process completed the conversion of it's data for the Provider file (6) to the New Person file (200). ",
+      "fieldNumber_": 20.11
+    },
+    {
+      "fieldNumber": 20.12,
+      "fieldName": "PRIMARY DRUG CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the Primary Drug manual create process was completed. This should not be set through VA FileMan. ",
+      "fieldNumber_": 20.12
+    },
+    {
+      "fieldNumber": 20.13,
+      "fieldName": "DATE V4 PRE-PACKET INSTALLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time the Inpatient Medications version 4 pre-release packet was installed at this site. ",
+      "fieldNumber_": 20.13
+    },
+    {
+      "fieldNumber": 20.14,
+      "fieldName": "LAST N-V ORDER CONVERTED TO V4",
+      "dataType": "POINTER",
+      "rawType": "P53.1'",
+      "required": false,
+      "pointerTo": 53.1,
+      "helpText": "  This is the last Non-Verified order converted for use with version 4 of the Inpatient Medications package. THIS SHOULD NOT BE EDITED.  Editing this could cause corrupted data and possibly cause medication administration errors. ",
+      "fieldNumber_": 20.14
+    },
+    {
+      "fieldNumber": 20.15,
+      "fieldName": "DATE NON-VERIFIED CONVERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time that the Inpatient Medication conversion process completed converting the Non-Verified Orders file to the New Person file and Primary Drug.  It should not be set by a user. ",
+      "fieldNumber_": 20.15
+    },
+    {
+      "fieldNumber": 20.16,
+      "fieldName": "ORDERABLE ITEM CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 20.16
+    },
+    {
+      "fieldNumber": 20.2,
+      "fieldName": "DATE INITS LAST RUN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time the inits were last run for the Inpatient Medications package. ",
+      "fieldNumber_": 20.2
+    },
+    {
+      "fieldNumber": 20.3,
+      "fieldName": "USER TO LAST RUN INITS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who last ran the inits for the Inpatient Medications package. ",
+      "fieldNumber_": 20.3
+    },
+    {
+      "fieldNumber": 20.4,
+      "fieldName": "SITE FOR BACKGROUND JOB",
+      "dataType": "POINTER",
+      "rawType": "P59.4'",
+      "required": false,
+      "pointerTo": 59.4,
+      "helpText": "  The Inpatient Medications package has background jobs that run everyday. If an Inpatient site is entered here, the background jobs site's parameters to determine such things as if labels should be created whenever a patient's orders are discontinued due to discharge.  PLEASE NOTE that if a site has not been entered here, the background jobs will search through ALL of the Inpatient sites, and if one has labels turned on, will create labels.   ",
+      "fieldNumber_": 20.4
+    },
+    {
+      "fieldNumber": 20.401,
+      "fieldName": "UD STATS/200 CONVERSION MARKER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the last date in the Unit Dose Pick List Stats file that was converted from the Provider file to the New Person file. PERSON file (200). ",
+      "fieldNumber_": 20.401
+    },
+    {
+      "fieldNumber": 20.402,
+      "fieldName": "IV STATS/200 CONVERSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT YET STARTED;1:MOVING CONVERTED DATA TO UTILITY;2:MOVING CONVERTED DATA BACK TO 50.8;3:COMPLETED;",
+      "helpText": "  This is the status of the process that converts the providers in the IV  STATS file (50.8) from the PROVIDER file (6) to the NEW PERSON file (200). ",
+      "fieldNumber_": 20.402
+    },
+    {
+      "fieldNumber": 20.403,
+      "fieldName": "NEW PERSON CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time that the Inpatient post-init process completed the conversion of it's data for the Provider file (6) to the New Person file (200). ",
+      "fieldNumber_": 20.403
+    },
+    {
+      "fieldNumber": 20.404,
+      "fieldName": "LAST N-V ORDER CONVERTED TO V4",
+      "dataType": "POINTER",
+      "rawType": "P53.1'",
+      "required": false,
+      "pointerTo": 53.1,
+      "helpText": "  This is the last Non-Verified order converted for use with version 4 of the Inpatient Medications package. THIS SHOULD NOT BE EDITED.  Editing this could cause corrupted data and possibly cause medication administration errors. ",
+      "fieldNumber_": 20.404
+    },
+    {
+      "fieldNumber": 20.405,
+      "fieldName": "DATE NON-VERIFIED CONVERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time that the Inpatient Medication conversion process completed converting the Non-Verified Orders file to the New Person file and Primary Drug.  It should not be set by a user. ",
+      "fieldNumber_": 20.405
+    },
+    {
+      "fieldNumber": 20.406,
+      "fieldName": "LAST PAT CONVERTED FOR VER 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  This is used by the version 4 post-inits of the Inpatient Medications package to keep track of the patients whose orders have been converted to the New Person file and Primary Drug.    THIS IS FOR USE ONLY BY THE POST-INITS, AND SHOULD NOT BE EDITED THROUGH VA FILEMAN. ",
+      "fieldNumber_": 20.406
+    },
+    {
+      "fieldNumber": 20.407,
+      "fieldName": "LAST PICK LIST TO PD MARKER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "  This is the last pick list converted by the Inpatient Medications version 4 init process. ",
+      "fieldNumber_": 20.407
+    },
+    {
+      "fieldNumber": 20.408,
+      "fieldName": "DATE PICK LISTS CONVERT TO PD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time that a conversion process started by the Inpatient Medications version 4 inits completed converting the Unit Dose pick lists to use Primary Drug. ",
+      "fieldNumber_": 20.408
+    },
+    {
+      "fieldNumber": 20.409,
+      "fieldName": "ORDER SET CONVERSION MARKER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  This is the last entry in the Order Set file (53.2) to be converted to primary drug along with the last order within that entry to be converted. ",
+      "fieldNumber_": 20.409
+    },
+    {
+      "fieldNumber": 20.41,
+      "fieldName": "ORDER SET CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time the post-init process completed the conversion of the Unit Dose Order Sets for use with Primary Drug.  If the inits are rerun and the post-inits find a date here, the conversion will not be attempted.  This should only be set by the post-inits, and not edited through VA FileMan. ",
+      "fieldNumber_": 20.41
+    },
+    {
+      "fieldNumber": 20.411,
+      "fieldName": "DATE UD STATS FILE CONVERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the Unit Dose Pick List Stats file was converted from the Provider file to the New person file. ",
+      "fieldNumber_": 20.411
+    },
+    {
+      "fieldNumber": 20.5,
+      "fieldName": "DATE ATC DATA CONVERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the site's ATC 212 data was converted for use with multiple machines. ",
+      "fieldNumber_": 20.5
+    },
+    {
+      "fieldNumber": 20.6,
+      "fieldName": "DEFAULT WARD",
+      "dataType": "POINTER",
+      "rawType": "P59.6'",
+      "required": false,
+      "pointerTo": 59.6,
+      "helpText": "  This is the entry in the Inpatient Ward Parameter file that is used by the Inpatient Medications package whenever a patient is accessed who is not an inpatient at that time. ",
+      "fieldNumber_": 20.6
+    },
+    {
+      "fieldNumber": 20.8,
+      "fieldName": "LAST PATIENT CONVERTED TO V4",
+      "dataType": "POINTER",
+      "rawType": "P55'",
+      "required": false,
+      "pointerTo": 55,
+      "helpText": "  This the last pharmacy patient whose verified Unit Dose orders were converted for use with version 4 of the Inpatient Medications package. THIS FIELD SHOULD NOT BE EDITED!  Editing this field could result in corrupted data which could cause medication administration errors. ",
+      "fieldNumber_": 20.8
+    },
+    {
+      "fieldNumber": 20.9,
+      "fieldName": "UD STATS/200 CONVERSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT YET STARTED;1:MOVING CONVERTED DATA TO UTILITY;2:MOVING CONVERTED DATA BACK TO 57.6;3:COMPLETED;",
+      "helpText": "  This is the status of the process that converts the providers in the UNIT DOSE PICK LIST STATS (57.6) from the PROVIDER file (6) to the NEW PERSON file (200). ",
+      "fieldNumber_": 20.9
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "NON-FORMULARY MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "59.721",
+      "required": false,
+      "helpText": "  This is a message that will be shown to non-pharmacists when they order drugs for a patient that are not currently stocked by the pharmacy.  This is typically a warning and/or a procedure the non-pharmacist must follow before pharmacy will dispense the non-formulary drug.  This message will show exactly as entered here. ",
+      "isMultiple": true,
+      "subFileNumber": 59.721,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "WARD ACTIONS",
+      "dataType": "POINTER",
+      "rawType": "59.722P",
+      "required": false,
+      "helpText": "  These are the actions that the Inpatient Medications will take on a patient's order whenever the patient is transferred between wards. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "D/C ON SERVICE TRANSFER",
+      "dataType": "SET",
+      "rawType": "59.723S",
+      "required": false,
+      "helpText": "  A patient's Inpatient Medications orders will be cancelled whenever the patient is transferred between services entered here. ",
+      "isMultiple": true,
+      "subFileNumber": 59.723,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "INPATIENT ORDER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "  This is used to keep track of the internal order number of Inpatient Medications and IV Fluid orders placed in the NON-VERIFIED ORDERS file (53.1).  This is used to provide each order with a unique internal number. This should not be edited through the VA FileMan. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 25.1,
+      "fieldName": "DATE 5.0 UD VER CONV FINISHED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field tracks the date the version 5.0 Unit Dose Verification conversion finished. ",
+      "fieldNumber_": 25.1
+    },
+    {
+      "fieldNumber": 25.2,
+      "fieldName": "DATE 5.0 CONVERSION COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the 5.0 postinit process completed the conversion for version 5.0. ",
+      "fieldNumber_": 25.2
+    },
+    {
+      "fieldNumber": 25.3,
+      "fieldName": "DATE 5.0 PICK LIST CONV FINISH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will track when the version 5.0 Pick List Conversion finished. ",
+      "fieldNumber_": 25.3
+    },
+    {
+      "fieldNumber": 25.4,
+      "fieldName": "DATE 5.0 ORDER SET CONV FINISH",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the S. Order set conversion finished for version 5.0. ",
+      "fieldNumber_": 25.4
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "PRINT 6 BLOCKS FOR THE PRN MAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if 4 or 6 blocks are to be used for  ONE-TIME/PRN orders on the 7/14 DAY MAR ONE-TIME/PRN SHEET. The 7/14 DAY MAR ONE-TIME/PRN SHEET will print 4 blocks if this field is not  set to \"YES\". ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.2,
+      "fieldName": "ATC SORT PARAMETER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ATC MNEMONIC;1:ADMIN TIME;",
+      "helpText": "This parameter allows sending of the Pick List to the ATC machine by ATC Mnemonic within Patient (as in versions of Inpatient Medications thru 4.0), or else by admin time within patient. ",
+      "fieldNumber_": 26.2
+    },
+    {
+      "fieldNumber": 26.3,
+      "fieldName": "PRINT DIET ABBR LABEL ON MAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If this field contains a 1 or Yes, the Dietetics Abbreviated Label will be printed on the MAR ",
+      "fieldNumber_": 26.3
+    },
+    {
+      "fieldNumber": 26.4,
+      "fieldName": "MAR SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Sort by order's Schedule Type and then Medication Names.;1:Sort by order's Medication Names.;",
+      "helpText": " If enter 0, the MAR will sort by the order's Schedule Type* and then              medication names.  If enter 1, the MAR will sort by the order's medication names.    * Schedule Type is sort based on the following orders:      Continuous MAR                      One-Time/PRN MAR    --------------                      ----------------    Unit dose order:                    Unit dose orders:        Continuous                         One-time        Fill in Request                    PRN    IV Ord",
+      "fieldNumber_": 26.4
+    },
+    {
+      "fieldNumber": 26.5,
+      "fieldName": "CALC UNITS NEEDED PRN ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field controls whether or not UNITS NEEDED will be calculated for orders with PRN in the schedule field.  This information will show on the Pick List if this field is set to 1. ",
+      "fieldNumber_": 26.5
+    },
+    {
+      "fieldNumber": 26.6,
+      "fieldName": "DAYS UNTIL STOP FOR ONE-TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 26.6
+    },
+    {
+      "fieldNumber": 26.7,
+      "fieldName": "ROUND ATC PICK LIST UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The purpose of this field is to allow rounding of fractional doses to be  sent by the pick list to the ATC. ",
+      "fieldNumber_": 26.7
+    },
+    {
+      "fieldNumber": 26.8,
+      "fieldName": "HOURS OF RECENTLY DC/EXPIRED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The Inpatient Meds profiles will display the recently  discontinued/expired orders that fall within the hours specified in this  field. ",
+      "fieldNumber_": 26.8
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PRIORITIES FOR PENDING NOTIFY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT;SA:STAT/ASAP;SAN:STAT/ASAP/NOW;A:ASAP;AN:ASAP/NOW;N:NOW;SN:STAT/NOW;",
+      "helpText": "Enter the priorities of STAT, ASAP, or the schedule of NOW, or any combination of the three to be used to send a notification of orders with these priorities to the PSJ STAT NOW PENDING ORDER mail group.   This field is also used as the default control for field 27.1 in file 59.7, PRIORITIES FOR ACTIVE NOTIFY and for field 6 in file 59.6 PRIORITIES FOR NOTIFICATION.  If these two fields are blank, then they will use the setting defined here. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 27.1,
+      "fieldName": "PRIORITIES FOR ACTIVE NOTIFY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT;SA:STAT/ASAP;SAN:STAT/ASAP/NOW;A:ASAP;AN:ASAP/NOW;N:NOW;SN:STAT/NOW;",
+      "helpText": "Enter the priorities of STAT, ASAP, or the schedule of NOW, or any combination the three to be used to send a notification of orders with these priorities to the PSJ STAT NOW ACTIVE ORDER mail group. ",
+      "fieldNumber_": 27.1
+    },
+    {
+      "fieldNumber": 30.1,
+      "fieldName": "DATE IV ORDERS CONVERTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date existing IV orders were converted to look at the new person file, and linked to the appropriate protocols for use in Inpatient Medications version 4.0. ",
+      "fieldNumber_": 30.1
+    },
+    {
+      "fieldNumber": 30.2,
+      "fieldName": "LAST PATIENT CONVERTED (IV)",
+      "dataType": "POINTER",
+      "rawType": "P55'",
+      "required": false,
+      "pointerTo": 55,
+      "helpText": "  This is the last pharmacy patient whose orders were converted to the new person file, and to the new format required by version 4.0. If this field is edited, data within inpatient medication orders may be corrupted. ",
+      "fieldNumber_": 30.2
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DAYS TO RETAIN IV STATISTICS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "  This is used to allow the site to specify the number of days to keep data in the IV STATS file (50.8). Information may be retained in the  IV STATS file for 100 to 2000 days. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "IV IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "EXPIRED IV TIME LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The maximum number of hours after a continuous IV order expires that it  may still be renewed ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DEFAULT OUTPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "The outpatient site (and parameters) which will be used for ward order entry.  An entry in this field will bypass the site selection prompt when entering outpatient from OE/RR. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 40.1,
+      "fieldName": "ADMISSION CANCEL OF RXS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if outpatient medication will be cancelled after 72 hours of an admission to the medical center. ",
+      "fieldNumber_": 40.1
+    },
+    {
+      "fieldNumber": 40.11,
+      "fieldName": "INTERDIVISIONAL PROCESSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if interdivisional processing is to occur. ",
+      "fieldNumber_": 40.11
+    },
+    {
+      "fieldNumber": 40.12,
+      "fieldName": "DIVISION PROMPT ASKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to indicate if the 'Division' prompt is to be asked. ",
+      "fieldNumber_": 40.12
+    },
+    {
+      "fieldNumber": 40.13,
+      "fieldName": "REFILL/RENEW DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'I",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This field is used to indicate the refill/renew division for multi divisional sites. ",
+      "fieldNumber_": 40.13
+    },
+    {
+      "fieldNumber": 40.14,
+      "fieldName": "DAYS PRINTED RX STAYS IN 52.5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the number of days printed prescriptions are to remain in the RX SUSPENSE file when running the Delete From Suspense File option.  The number of days to remain may be from 7 to 90. ",
+      "fieldNumber_": 40.14
+    },
+    {
+      "fieldNumber": 40.15,
+      "fieldName": "POLYPHARMACY W/ACTION PROFILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to determine if a polypharmacy report prints with action profile across all divisions. ",
+      "fieldNumber_": 40.15
+    },
+    {
+      "fieldNumber": 40.16,
+      "fieldName": "AUTOMATE CPRS REFILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Answer YES if refill requests from CPRS are to be processed automatically and filed in the PRESCRIPTION file (#52) and placed on Suspense.                                                    Answer NO if refill requests from CPRS are to be filed in the PENDING OUTPATIENT ORDERS file (#52.41) for manual processing.                                                                      NOTE: This functionality is partnered with the PSOAUTRF security key. When this field is set to YES and the PSOAUTRF",
+      "fieldNumber_": 40.16
+    },
+    {
+      "fieldNumber": 40.19,
+      "fieldName": "EXEMPT WARD FROM AUTOCANCEL",
+      "dataType": "POINTER",
+      "rawType": "59.701P",
+      "required": false,
+      "helpText": "For WARD LOCATIONS entered here, prescriptions for patients on these wards will not be canceled by the Autocancel RX's on Admission Outpatient Pharmacy system job. ",
+      "fieldNumber_": 40.19
+    },
+    {
+      "fieldNumber": 40.2,
+      "fieldName": "USE OF ANOTHER LANGUAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if another language translations are used. ",
+      "fieldNumber_": 40.2
+    },
+    {
+      "fieldNumber": 40.21,
+      "fieldName": "SECONDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'SECOND'. ",
+      "fieldNumber_": 40.21
+    },
+    {
+      "fieldNumber": 40.22,
+      "fieldName": "MINUTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'MINUTES'. ",
+      "fieldNumber_": 40.22
+    },
+    {
+      "fieldNumber": 40.23,
+      "fieldName": "DAYS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'DAYS'. ",
+      "fieldNumber_": 40.23
+    },
+    {
+      "fieldNumber": 40.24,
+      "fieldName": "WEEKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'WEEKS'. ",
+      "fieldNumber_": 40.24
+    },
+    {
+      "fieldNumber": 40.25,
+      "fieldName": "HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'HOURS'. ",
+      "fieldNumber_": 40.25
+    },
+    {
+      "fieldNumber": 40.26,
+      "fieldName": "MONTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'MONTHS'. ",
+      "fieldNumber_": 40.26
+    },
+    {
+      "fieldNumber": 40.27,
+      "fieldName": "AND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'AND'. ",
+      "fieldNumber_": 40.27
+    },
+    {
+      "fieldNumber": 40.28,
+      "fieldName": "THEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'THEN'. ",
+      "fieldNumber_": 40.28
+    },
+    {
+      "fieldNumber": 40.29,
+      "fieldName": "EXCEPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'EXCEPT'. ",
+      "fieldNumber_": 40.29
+    },
+    {
+      "fieldNumber": 40.3,
+      "fieldName": "ONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'ONE'. ",
+      "fieldNumber_": 40.3
+    },
+    {
+      "fieldNumber": 40.31,
+      "fieldName": "TWO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'TWO'. ",
+      "fieldNumber_": 40.31
+    },
+    {
+      "fieldNumber": 40.32,
+      "fieldName": "THREE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'THREE'. ",
+      "fieldNumber_": 40.32
+    },
+    {
+      "fieldNumber": 40.33,
+      "fieldName": "FOUR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'FOUR'. ",
+      "fieldNumber_": 40.33
+    },
+    {
+      "fieldNumber": 40.34,
+      "fieldName": "FIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'FIVE'. ",
+      "fieldNumber_": 40.34
+    },
+    {
+      "fieldNumber": 40.35,
+      "fieldName": "SIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'SIX'. ",
+      "fieldNumber_": 40.35
+    },
+    {
+      "fieldNumber": 40.36,
+      "fieldName": "SEVEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'SEVEN'. ",
+      "fieldNumber_": 40.36
+    },
+    {
+      "fieldNumber": 40.37,
+      "fieldName": "EIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'EIGHT'. ",
+      "fieldNumber_": 40.37
+    },
+    {
+      "fieldNumber": 40.38,
+      "fieldName": "NINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'NINE'. ",
+      "fieldNumber_": 40.38
+    },
+    {
+      "fieldNumber": 40.39,
+      "fieldName": "TEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'TEN'. ",
+      "fieldNumber_": 40.39
+    },
+    {
+      "fieldNumber": 40.4,
+      "fieldName": "ONE-HALF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'ONE-HALF'. ",
+      "fieldNumber_": 40.4
+    },
+    {
+      "fieldNumber": 40.41,
+      "fieldName": "ONE-FOURTH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'ONE-FOURTH'. ",
+      "fieldNumber_": 40.41
+    },
+    {
+      "fieldNumber": 40.42,
+      "fieldName": "ONE-THIRD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'ONE-THIRD'. ",
+      "fieldNumber_": 40.42
+    },
+    {
+      "fieldNumber": 40.43,
+      "fieldName": "TWO-THIRDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'TWO-THIRDS'. ",
+      "fieldNumber_": 40.43
+    },
+    {
+      "fieldNumber": 40.44,
+      "fieldName": "THREE-FOURTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'THREE-FOURTHS'. ",
+      "fieldNumber_": 40.44
+    },
+    {
+      "fieldNumber": 40.45,
+      "fieldName": "FOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the other language translation of the word 'FOR. ",
+      "fieldNumber_": 40.45
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LAST RX PRE V6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0I",
+      "length": 10,
+      "required": false,
+      "helpText": "  NOT IN USE FOR VERSION 7.0   This field will be used during the installation of version 6.0.  This field will hold the last prescription number file #52.  This number will be used to indicated the last prescription to be converted if a restart is needed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TOTAL RX'S PURGED TO DATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is currently not in use. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 46.1,
+      "fieldName": "TRANSMISSION START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the start date of the most recent HL7 extract of patients in the  TPB ELIGIBILITY file (#52.91). ",
+      "fieldNumber_": 46.1
+    },
+    {
+      "fieldNumber": 46.2,
+      "fieldName": "TRANSMISSION END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the end date of the most recent HL7 extract of patients in the  TPB ELIGIBILITY file (#52.91). ",
+      "fieldNumber_": 46.2
+    },
+    {
+      "fieldNumber": 46.3,
+      "fieldName": "BATCH CONTROL ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Batch Control ID of the most recent HL7 extract of patients in the TPB ELIGIBILITY file (#52.91). ",
+      "fieldNumber_": 46.3
+    },
+    {
+      "fieldNumber": 46.4,
+      "fieldName": "NUMBER OF MSH COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total count of MSH headers of the most recent HL7 extract of patients in the TPB ELIGIBILITY file (#52.91). ",
+      "fieldNumber_": 46.4
+    },
+    {
+      "fieldNumber": 46.5,
+      "fieldName": "NUMBER OF LINES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the total count of the number of lines from the most recent HL7 extract of patients in the TPB ELIGIBILITY file (#52.91). ",
+      "fieldNumber_": 46.5
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "SCRIPTALK PRINT DEVICE MAPPING",
+      "dataType": "POINTER",
+      "rawType": "59.747PA",
+      "required": false,
+      "helpText": "This multiple adds the capability to tie a ScripTalk printer to regular  Pharmacy label printer(s) to control where the ScripTalk labels print for  multi-divisions. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "RX# UPPER BOUND WARNING LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field represents the Outpatient Pharmacy RX# UPPER BOUND WARNING  LIMIT.  A MailMan notification to a mail group of the impending end of  prescription number range is generated when this limit value is reached.   The default value used by the software is 1000.  Sites may edit this limit number as appropriate for their site, or left blank if 1000 is sufficient. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49.95,
+      "fieldName": "DATE AUTO-EXPIRE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date that the nightly auto-expire processed. Processing  will continue from this date the next time the job runs. ",
+      "fieldNumber_": 49.95
+    },
+    {
+      "fieldNumber": 49.96,
+      "fieldName": "DATE V7 INSTALLED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "  This filed is used to indicate the date version 7.0 of OP was installed.       ",
+      "fieldNumber_": 49.96
+    },
+    {
+      "fieldNumber": 49.97,
+      "fieldName": "LAST RX CONVERTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0I",
+      "length": 10,
+      "required": false,
+      "helpText": "THIS FIELD IS NOT IN US FOR VERSION 7.0.   This is simply a scratch area which holds the internal entry number of the last entry in 52 for which the post init conversion for V6 has been completed. ",
+      "fieldNumber_": 49.97
+    },
+    {
+      "fieldNumber": 49.98,
+      "fieldName": "DATE OP 6 INSTALLED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field is used to indicate the date OP v6 was installed. This field will also be used to deteminewhat Rxs are eligible for release. ",
+      "fieldNumber_": 49.98
+    },
+    {
+      "fieldNumber": 49.981,
+      "fieldName": "V7 POST BACKGROUND START",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field is used to indicate date/time background job  started.         ",
+      "fieldNumber_": 49.981
+    },
+    {
+      "fieldNumber": 49.982,
+      "fieldName": "V7 POST BACKGROUND STOP",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "  This field is used to indicate the date/time the v7 post background ran to completion.     ",
+      "fieldNumber_": 49.982
+    },
+    {
+      "fieldNumber": 49.99,
+      "fieldName": "OUTPATIENT VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2I",
+      "length": 5,
+      "required": true,
+      "helpText": "This field is used to indicate the current version of the Outpatient Pharmacy package installed. ",
+      "fieldNumber_": 49.99
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AR/WS AMIS UPDATE",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "This field contains the Date/Time that the nightly job to update the AR/WS Stats File (#58.5) was last run to completion.  This field is set automatically when the nightly job is run. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 59.01,
+      "fieldName": "AR/WS VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,3",
+      "length": 7,
+      "required": false,
+      "helpText": "This field will contain the current version of the AR/WS package. ",
+      "fieldNumber_": 59.01
+    },
+    {
+      "fieldNumber": 59.02,
+      "fieldName": "DATE INSTALLED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date the current version of AR/WS was installed. ",
+      "fieldNumber_": 59.02
+    },
+    {
+      "fieldNumber": 59.1,
+      "fieldName": "BACKORDER CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date the BACKORDER CONVERSION for AR/WS V2.04 was completed. ",
+      "fieldNumber_": 59.1
+    },
+    {
+      "fieldNumber": 59.2,
+      "fieldName": "MULTI-DIVISION CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date the MULTI-DIVISION CONVERSION for AR/WS V2.04 was completed. ",
+      "fieldNumber_": 59.2
+    },
+    {
+      "fieldNumber": 59.3,
+      "fieldName": "WARD (for %) CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the WARD (for %) pointer conversion for AR/WS V2.04 was completed. ",
+      "fieldNumber_": 59.3
+    },
+    {
+      "fieldNumber": 59.4,
+      "fieldName": "RETURN REASON CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date the RETURN REASON CONVERSION for AR/WS V2.2 was completed. ",
+      "fieldNumber_": 59.4
+    },
+    {
+      "fieldNumber": 60.02,
+      "fieldName": "LAST PAT CONVERTED FOR VER 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  This is used by the version 4 post-inits of the Inpatient Medications package to keep track of the patients whose orders have been converted to the New Person file and Primary Drug.    THIS IS FOR USE ONLY BY THE POST-INITS, AND SHOULD NOT BE EDITED THROUGH VA FILEMAN. ",
+      "fieldNumber_": 60.02
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "*BAXTER ATC 212 DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "  This is the name of the device from the DEVICE file used for the Baxter ATC dispensing machine. ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 61.2,
+      "fieldName": "DAYS NEW LABELS LAST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This is number of days that new labels created by the Unit Dose Medications package are to last. ",
+      "fieldNumber_": 61.2
+    },
+    {
+      "fieldNumber": 63.51,
+      "fieldName": "PICK LIST AUTO-PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This is the number of days that the computer will hold Unit Dose Pick Lists that have been filed away.  If an entry is found here by the daily  background job, the job will delete those pick lists that have been filed  away and have existed longer than the number of days specified here.  Enter  a number here to start the auto-purge the next time daily background job  runs.  Delete any entry made here to stop the auto-purge. made here to stop the auto-purge. ",
+      "fieldNumber_": 63.51
+    },
+    {
+      "fieldNumber": 63.52,
+      "fieldName": "DATE/TIME AUTO-PURGE EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date and time the PICK LIST AUTO-PURGE was edited. ",
+      "fieldNumber_": 63.52
+    },
+    {
+      "fieldNumber": 63.53,
+      "fieldName": "USER LAST EDITING AUTO-PURGE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This is the user who last edited the PICK LIST AUTO-PURGE field. ",
+      "fieldNumber_": 63.53
+    },
+    {
+      "fieldNumber": 63.54,
+      "fieldName": "DATE PICK LIST LAST FILED AWAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This is the date the job to file away pick lists was last run. ",
+      "fieldNumber_": 63.54
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "PARAM FILE CONVERSION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT YET STARTED;1:MOVING DATA TO TMP;2:MOVING DATA BACK TO 53.45.;3:COMPLETED;",
+      "helpText": "  This is the status of the conversion of the 53.45 file to DINUM format. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PICK LIST CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the Inpatient Meds V4.5 conversion of existing pick list data to the new VA FileMan compatible format completed. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "V4.5 PICK LIST CONVERT MARKER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the IEN of the last pick list to be converted to the VA FileMan  compatible file structure exported with version 4.5 of Inpatient  Medications. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "V4.5 PICK LIST CONVERT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MOVING DATA TO XTMP;2:MOVING DATA FROM XTMP TO PS(53.5;",
+      "helpText": "This is used to allow the pick list conversion to be restarted at the correct conversion phase if the process must be restarted. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "LAST DRUG LINKED",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "When using the PSAUNL option to link the Drug/Item file, the last drug linked will be stored here and offered as a point at which to resume the loop upon re-entry. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 70.1,
+      "fieldName": "LAST DRUG LINKER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person using the PSAUNL option when the LAST DRUG LINKED value is stored. ",
+      "fieldNumber_": 70.1
+    },
+    {
+      "fieldNumber": 70.2,
+      "fieldName": "LAST DRUG LINK DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time that the PSAUNL option was last used and the LAST DRUG LINKED value was entered. ",
+      "fieldNumber_": 70.2
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "DATE V2 CS/DA CONVERSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date that the post-inits were completed for Version 2.0 of Controlled Substances or Drug Accountability. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "INPATIENT DISPENSING UPDATE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is checked before attempting to update a Drug Accountability Location with AR/WS dispensing. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "PSS VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "ORDERABLE ITEM STATUS TRACKER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AUTO CREATE STARTED;2:AUTO CREATE FINISHED;3:MANUAL CREATE DONE;0:AUTO CREATE NEVER STARTED;4:SEND MASTER FILE UPDATE TO OERR;",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "DOSING ACTIVITY DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "59.782D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 59.782,
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PSU PBM JOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used by PBM to monitor that the monthly extract program ran to completion. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 90.01,
+      "fieldName": "PBM AR/WS AOU MAPPINGS",
+      "dataType": "POINTER",
+      "rawType": "59.79001P",
+      "required": false,
+      "helpText": "The mapping between an Automatic Replenishment/Ward Stock (AR/WS) Area of  Use (AOU) and either a Medical Center Division or Outpatient Site is  stored in this multiple. This mapping shall be used by the Pharmacy  Benefit Management (PBM) application when extracting dispensing  information from the AR/WS application to assign workload to the  appropriate division or outpatient site. If an AOU is not mapped to a  Medical Center Division or Outpatient site, the dispensing data will be  extracted u",
+      "fieldNumber_": 90.01
+    },
+    {
+      "fieldNumber": 90.02,
+      "fieldName": "PBM CS NAOU MAPPINGS",
+      "dataType": "POINTER",
+      "rawType": "59.79002P",
+      "required": false,
+      "helpText": "The mapping between a Controlled Substance (CS) Narcotic Area of Use  (NAOU) and either a Medical Center division or Outpatient site is stored  in this multiple. This mapping shall be used by the Pharmacy Benefit  Management (PBM) application when extracting dispensing information from  the CS application to assign workload to the appropriate division or  outpatient site. If a CS NAOU is not mapped to a Medical Center division or Outpatient site, the dispensing data will be extracted under the f",
+      "fieldNumber_": 90.02
+    },
+    {
+      "fieldNumber": 90.03,
+      "fieldName": "PBM DA PHARM LOC MAPPINGS",
+      "dataType": "POINTER",
+      "rawType": "59.79003P",
+      "required": false,
+      "helpText": "The mapping between a Drug Accountability (DA) Pharmacy location and either a Medical Center division or Outpatient site is stored in this multiple. This mapping shall be used by the Pharmacy Benefit Management (PBM) application when extracting purchasing information from the DA application to assign procurement data to the appropriate division or Outpatient site. If a DA Pharmacy location is not mapped to a Medical Center division or Outpatient site, the procurement data will be extracted under",
+      "fieldNumber_": 90.03
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "DOSE CONVERSION STATUS TRACKER",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:CONVERSION NEVER RUN;1:CONVERSION QUEUED;2:CONVERSION STARTED;3:CONVERSION COMPLETE;",
+      "helpText": "This field tracks the status of the dosage conversion. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "DOSE CONVERSION START",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time when the dosage conversion started. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "DOSE CONVERSION STOP",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date/time when the dosage conversion ended. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "DOSE CONVERSION RUN BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who ran the dosage conversion. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "DOSING ON/OFF",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field determines whether Dosing order checks will be part of the  medication ordering process in Inpatient Medications, Outpatient Pharmacy  and Computerized Patient Record System (CPRS). A '1' indicates Dosing  order checks will occur, a '0' indicates Dosing order checks will not occur. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "FDA MED GUIDE SERVER URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicate the Uniform Resource Locator (URL) for the Web Server  repository where the Food and Drug Administration (FDA) Medication Guides are currently being stored. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "ONEVA PHARMACY FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "This flag controls the functionality of the OneVA Pharmacy remote  prescription logic. If the flag is turned on, this facility will be able  to query prescriptions from other facilities, and will accept incoming  refill and partial fills from other VA medical facilities. If the flag is  turned 'off', no queries will be made, and external refill/partial fill  requests will be declined. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 150,
+  "crossReferences": [
+    {"name": "AOTH", "field": },
+    {"name": "B", "field": },
+    {"name": "59.7", "field": .01, "type": "regular"},
+    {"name": "59.7", "field": 40.21, "type": "regular"},
+    {"name": "59.7", "field": 40.22, "type": "regular"},
+    {"name": "59.7", "field": 40.23, "type": "regular"},
+    {"name": "59.7", "field": 40.24, "type": "regular"},
+    {"name": "59.7", "field": 40.25, "type": "regular"},
+    {"name": "59.7", "field": 40.26, "type": "regular"},
+    {"name": "59.7", "field": 40.27, "type": "regular"},
+    {"name": "59.7", "field": 40.28, "type": "regular"},
+    {"name": "59.7", "field": 40.29, "type": "regular"},
+    {"name": "59.7", "field": 40.3, "type": "regular"},
+    {"name": "59.7", "field": 40.31, "type": "regular"},
+    {"name": "59.7", "field": 40.32, "type": "regular"},
+    {"name": "59.7", "field": 40.33, "type": "regular"},
+    {"name": "59.7", "field": 40.34, "type": "regular"},
+    {"name": "59.7", "field": 40.35, "type": "regular"},
+    {"name": "59.7", "field": 40.36, "type": "regular"},
+    {"name": "59.7", "field": 40.37, "type": "regular"},
+    {"name": "59.7", "field": 40.38, "type": "regular"},
+    {"name": "59.7", "field": 40.39, "type": "regular"},
+    {"name": "59.7", "field": 40.4, "type": "regular"},
+    {"name": "59.7", "field": 40.41, "type": "regular"},
+    {"name": "59.7", "field": 40.42, "type": "regular"},
+    {"name": "59.7", "field": 40.43, "type": "regular"},
+    {"name": "59.7", "field": 40.44, "type": "regular"},
+    {"name": "59.7", "field": 40.45, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

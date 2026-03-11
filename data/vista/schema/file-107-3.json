@@ -1,0 +1,56 @@
+{
+  "fileNumber": 107.3,
+  "fileName": "MICOM PORT ASSIGNMENTS",
+  "globalRoot": "107.3",
+  "globalReference": "^%ZISL(107.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Micom port or shelf/channel",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Micom port number used for printer contention. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Device",
+      "dataType": "POINTER",
+      "rawType": "P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Device number that connects to the Micom port. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "System",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "System the device is on. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "In Use",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "Tells whether the device is already in use. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "107.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

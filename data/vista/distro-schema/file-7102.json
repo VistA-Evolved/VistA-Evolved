@@ -1,0 +1,54 @@
+{
+  "fileNumber": 7102,
+  "fileName": "NOIS LIST",
+  "globalRoot": "7102P",
+  "globalReference": "^FSCD(\"LISTS\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the internal file number of the call in the list. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "RP7100'",
+      "required": true,
+      "pointerTo": 7100,
+      "helpText": "This is the call on the list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIST",
+      "dataType": "POINTER",
+      "rawType": "RP7107.1'",
+      "required": true,
+      "pointerTo": 7107.1,
+      "helpText": "This is the list for the NOIS calls. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "ALC", "field": },
+    {"name": "ALC1", "field": },
+    {"name": "B", "field": },
+    {"name": "L", "field": },
+    {"name": "7102", "field": .01, "type": "regular"},
+    {"name": "7102", "field": .01, "type": "regular"},
+    {"name": "7102", "field": 1, "type": "regular"},
+    {"name": "7102", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

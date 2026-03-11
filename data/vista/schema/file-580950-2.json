@@ -1,0 +1,137 @@
+{
+  "fileNumber": 580950.2,
+  "fileName": "*AJK1UB TRANSMITAL",
+  "globalRoot": "580950.2",
+  "globalReference": "^AJK1UB(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP430'X",
+      "required": true,
+      "pointerTo": 430,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MESSAGE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The message number in which the initial transmission was included. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;",
+      "helpText": "Set to NO if no action (transmissions) are to be initiated to the collection agency.  This flag is set to YES when a bill is initially transmitted.  The flag will automatically be deleted when a bill is cancelled, written off or paid off. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FINAL NOTICE",
+      "dataType": "POINTER",
+      "rawType": "P580950.3'",
+      "required": false,
+      "pointerTo": 580950.3,
+      "helpText": "This field is a pointer to the AJK1 STATUS CHANGE file.  When the collection agency is sent a notice to cease collection efforts this field will be populated with the pointer to the final status change entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REVIEWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the number of 14-day reviews which have been stored in the file. The collections process will automatically insert comments into the record every 14-days indicating that the collection agency has performed the 14-day review, for so long as applicable, up to a maximum of five (5). This field is essentially a counter keeping track of how many have been done so the program knows when to stop. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FINAL STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP580950.8'",
+      "required": true,
+      "pointerTo": 580950.8,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "V1 RECORD",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag is defined only for those facilities which were running v1.0 who converted to v2.0.  This would include Houston and, potentially, Dallas, but no others.  The field cannot be edited by the user, nor should it be. It is populated during the conversion process contained in v2.0 of the collections module. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ERRONEOUS ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag indicates those records which were transmitted due to an error in my coding process.  When computing the last date to consider the routine AJK1UBTN was incorrectly coded to add the selected number of days, versus subtract them.  As a consequence, all bills, not just those at least x number of days old, where transmitted. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*ORIGINAL XMIT RECORD",
+      "dataType": "SUBFILE",
+      "rawType": "580950.21",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 580950.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "XMIT RECORD (LINE 1)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the original record which was transmitted to the collection agency.  If the record exceeds 240 characters, field 5.2 contains the remainder of the record. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "XMIT RECORD (LINE 2)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the second line of the original transmission record (overflow). ",
+      "fieldNumber_": 5.2
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "AO", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "580950.2", "field": .01, "type": "regular"},
+    {"name": "580950.2", "field": .02, "type": "regular"},
+    {"name": "580950.2", "field": .03, "type": "regular"},
+    {"name": "580950.2", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

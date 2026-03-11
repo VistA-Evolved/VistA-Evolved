@@ -1,0 +1,189 @@
+{
+  "fileNumber": 660.2,
+  "fileName": "PROSTHETICS RE-ISSUE ITEM",
+  "globalRoot": "660.2D",
+  "globalReference": "^RMPR(660.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field stores the date of the loaner transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE OF LOAN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the loan to the veteran. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP665'",
+      "required": true,
+      "pointerTo": 665,
+      "helpText": "This is the name of the patient for this loan transaction. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "P661'",
+      "required": false,
+      "pointerTo": 661,
+      "helpText": "This is a pointer field to the Prosthetic Item file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the cost of the item on loan. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field stores the serial number of the item on loan. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DATE OF RETURN",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This file holds the date the loaned item was returned to prosthetics. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "INVENTORY POINT",
+      "dataType": "POINTER",
+      "rawType": "P445'",
+      "required": false,
+      "pointerTo": 445,
+      "helpText": "If the item was loaned from inventory with GIP running, the inventory point is stored in this field. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "APPLIANCE REPAIR",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "This field stores the internal number of an entry in file 660. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LOAN CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BED;2:VAN LIFT;3:DIALYSIS SUPPLIES;4:INVALID LIFTS;5:RESPIRATORS;6:WHEELCHAIR;7:ALL OTHER;",
+      "helpText": "Set of codes for type of loan category for a returned item if the item is to be placed on the Loan Program. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RETURNED STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:RETURNED;2:CONDEMNED;3:TURNED-IN;4:LOST;5:BROKEN;",
+      "helpText": "This field stores the returned status code for items turned-in by the patient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field stores the station number of the loan transaction. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ITEM STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NEW ITEM;R:RECOVERED ITEM;",
+      "helpText": "Indicates if item a new item or a recovered item. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "OBLIGATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Obligation number of item that has been purchased on a 1358 and loaned to the veteran. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "RE-ISSUE STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:AVAILABEL FOR RE-ISSUE;N:NOT AVAILABLE FOR RE-ISSUE;",
+      "helpText": "Indicates if item is available for re-issue or not- available for re-issue when it has been returned. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "AUTO-ADAPTIVE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P667.1'",
+      "required": false,
+      "pointerTo": 667.1,
+      "helpText": "Pointer to the Auto-Adaptive Equipment file #667.1 ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "AUTO-ADAPTIVE TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "P667.3'",
+      "required": false,
+      "pointerTo": 667.3,
+      "helpText": "Pointer to Auto-Adaptive transaction file for loaned items. ",
+      "fieldNumber_": 24
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "660.2", "field": .01, "type": "regular"},
+    {"name": "660.2", "field": 5, "type": "regular"},
+    {"name": "660.2", "field": 11.5, "type": "regular"},
+    {"name": "660.2", "field": 24, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

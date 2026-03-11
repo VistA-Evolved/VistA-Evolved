@@ -1,0 +1,40 @@
+{
+  "fileNumber": 42.6,
+  "fileName": "AMIS 334-341",
+  "globalRoot": "42.6D",
+  "globalReference": "^DGAM(334,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AMIS MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "AMIS Month/Year indicates the month and year that the AMIS report is being generated for.  Inpatient AMIS reports cannot be generated prior to the End Of Month, and therefore will always have a set Month/Year indicator. | ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEGMENT",
+      "dataType": "SET",
+      "rawType": "42.6001SA",
+      "required": false,
+      "helpText": "The 'Segment' is the AMIS Segment number assigned to a particular report based on VA Manual MP6, Part VI, Supp. 1.2.  In the case of this file, the AMIS Segment numbers are 334 through 341 series, and are for inpatient data collection activities. ",
+      "isMultiple": true,
+      "subFileNumber": 42.6001,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ALST", "field": },
+    {"name": "B", "field": },
+    {"name": "42.6", "field": .01, "type": "regular"},
+    {"name": "42.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

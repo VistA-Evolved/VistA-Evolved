@@ -1,0 +1,38 @@
+{
+  "fileNumber": 452.51,
+  "fileName": "PRSE EMPLOYEE PURPOSE OF TRAINING",
+  "globalRoot": "452.51I",
+  "globalReference": "^PRSE(452.51,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PURPOSE OF TRAINING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains a reason for attending a program or class.  Refer to VA Form 5-4691, field 9. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PAID CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a code associated with this reason for training to be used by the PAID system. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "CODE", "field": },
+    {"name": "452.51", "field": .01, "type": "regular"},
+    {"name": "452.51", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "fileNumber": 408.33,
+  "fileName": "TYPE OF TEST",
+  "globalRoot": "408.33",
+  "globalReference": "^DG(408.33,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter in this field the internal entry number associated with this type of test. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter in this field the name of the type of test. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "408.33", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,1700 @@
+{
+  "fileNumber": 442,
+  "fileName": "PROCUREMENT & ACCOUNTING TRANSACTIONS",
+  "globalRoot": "442I",
+  "globalReference": "^PRC(442,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PURCHASE ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the purchase order number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "METHOD OF PROCESSING",
+      "dataType": "POINTER",
+      "rawType": "R*P442.5'X",
+      "required": true,
+      "pointerTo": 442.5,
+      "helpText": "This is the method of payment. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SPECIAL FUND CONTROL POINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:GENERAL POST FUNDS;2:SUPPLY FUND;3:CASCA;4:CANTEEN;",
+      "helpText": "This is the special fund control point. It controls the way in which a procurement document is routed through IFCAP, as well as whether Cost Centers and BOC(s) are required. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INVOICE ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the invoice address. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "2237 REFERENCE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "442.14PA",
+      "required": false,
+      "helpText": "This is the reference number for this request for this station. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PRIORITY OF 2237",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EM:EMERGENCY;SP:SPECIAL;ST:STANDARD;",
+      "helpText": "This is the priority of this purchase order. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PRIMARY 2237",
+      "dataType": "POINTER",
+      "rawType": "*P410'I",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "This is the primary purchase order. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ESTIMATED ORDER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter YES if this is an estimated order. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DEPOT VOUCHER NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the depot voucher number. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "P.O. DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the purchase order date. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "EMERGENCY ORDER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter YES if this is an emergency order. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "LOCAL PROCUREMENT REASON CODE",
+      "dataType": "POINTER",
+      "rawType": "RP443.8'",
+      "required": true,
+      "pointerTo": 443.8,
+      "helpText": "This is a pointer to the Local Procurement Reason Code File (#443.8).  This code describes why the items are being purchased \"open market\". ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "EXPENDABLE/NONEXPENDABLE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "E:EXPENDABLE;N:NON-EXPENDABLE;",
+      "helpText": "This is the indicator for procurement of expendable or nonexpendable items. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "SUPPLY STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P442.3'X",
+      "required": false,
+      "pointerTo": 442.3,
+      "helpText": "This is the Supply status. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "PARTIAL",
+      "dataType": "DATE",
+      "rawType": "442.11ID",
+      "required": false,
+      "helpText": "This is the information used for a partial order. ",
+      "isMultiple": true,
+      "subFileNumber": 442.11,
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "SUPPLY STATUS ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is automatically updated when supply status changes. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .8,
+      "fieldName": "FISCAL STATUS ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is automatically updated when supply status changes. ",
+      "fieldNumber_": .8
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FCP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the valid Fund Control Point. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "APPROPRIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  P.O. Appropriation ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COST CENTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the cost center for this purchase order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "OBLIGATION DATA",
+      "dataType": "SUBFILE",
+      "rawType": "442.09A",
+      "required": false,
+      "helpText": "This is the funds obligation data. ",
+      "isMultiple": true,
+      "subFileNumber": 442.09,
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBACCOUNT1",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the first subaccount of the transaction, if applicable. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "SUBAMOUNT1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount charged to the first subaccount. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SUBACCOUNT2",
+      "dataType": "POINTER",
+      "rawType": "P420.2'",
+      "required": false,
+      "pointerTo": 420.2,
+      "helpText": "This is the second subaccount on this transaction, if applicable. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "SUBAMOUNT2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount charged to the second subaccount. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "R*P440X",
+      "required": true,
+      "pointerTo": 440,
+      "helpText": "This is the name of the vendor. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "DEBTOR",
+      "dataType": "POINTER",
+      "rawType": "P412'",
+      "required": false,
+      "pointerTo": 412,
+      "helpText": "This is the name of the debtor. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "REQUESTING SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "This is the requesting Service. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "DIRECT DELIVERY PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P440.2",
+      "required": false,
+      "pointerTo": 440.2,
+      "helpText": "This indicates if this is a direct delivery to a patient. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.4,
+      "fieldName": "SHIP TO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0XO",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the address for the delivery. ",
+      "fieldNumber_": 5.4
+    },
+    {
+      "fieldNumber": 5.6,
+      "fieldName": "DELIVERY LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the delivery location. ",
+      "fieldNumber_": 5.6
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "DELIVERY LOCATIONS/DATES",
+      "dataType": "SUBFILE",
+      "rawType": "442.02",
+      "required": false,
+      "helpText": "These are the dates for delivery for delivery locations. ",
+      "isMultiple": true,
+      "subFileNumber": 442.02,
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VERBAL PURCHASE ORDER (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "YES indicates that this is a verbal purchase order. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "CONFIRMATION COPY (Y/N)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "YES indicates that this is a confirmation copy. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "F.O.B. POINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DESTINATION;O:ORIGIN;",
+      "helpText": "This is the F.O.B. point. ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.9,
+      "fieldName": "ORIGINAL DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the original delivery date. ",
+      "fieldNumber_": 6.9
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the delivery date for this purchase order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "ESTIMATED COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the estimated cost. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SOURCE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P420.8'X",
+      "required": true,
+      "pointerTo": 420.8,
+      "helpText": "This is the source code for this order. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "ASTR. FOR SOURCE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains internal program code that controls  printed output. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.2,
+      "fieldName": "PROPOSAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the proposal information that prints on the purchase order, if applicable. ",
+      "fieldNumber_": 8.2
+    },
+    {
+      "fieldNumber": 8.3,
+      "fieldName": "PURCHASE METHOD",
+      "dataType": "POINTER",
+      "rawType": "442.12PA",
+      "required": false,
+      "helpText": "This is the purchase method. ",
+      "fieldNumber_": 8.3
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "PROMPT PAYMENT TERMS",
+      "dataType": "SUBFILE",
+      "rawType": "442.06AI",
+      "required": false,
+      "helpText": "Theses are the prompt payment terms. ",
+      "isMultiple": true,
+      "subFileNumber": 442.06,
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "EST. SHIPPING AND/OR HANDLING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2XO",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the estimate of shipping and handling costs. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.05,
+      "fieldName": "EST. SHIPPING BOC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The shipping charges are accounted in this field. ",
+      "fieldNumber_": 13.05
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "EST. SHIPPING LINE ITEM NO.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the line item number for shipping and handling costs. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.2,
+      "fieldName": "GOV'T B/L NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Government Bill of Lading number. ",
+      "fieldNumber_": 13.2
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "SHIP VIA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the shipping method if this is a Government Bill of Lading. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 13.4,
+      "fieldName": "GBL P.O.NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Government Bill of Lading purchase order number. ",
+      "fieldNumber_": 13.4
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DISCOUNT",
+      "dataType": "SUBFILE",
+      "rawType": "442.03A",
+      "required": false,
+      "helpText": "This is the discount for this order. ",
+      "isMultiple": true,
+      "subFileNumber": 442.03,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LINE ITEM COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the line item count. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PA/PPM/AUTHORIZED BUYER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the purchasing agent responsible for this request. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIO",
+      "required": true,
+      "helpText": "This is the electronic signature for this purchasing agent. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 16.7,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  This is the version of the validation. ",
+      "fieldNumber_": 16.7
+    },
+    {
+      "fieldNumber": 16.8,
+      "fieldName": "ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The signature block name. ",
+      "fieldNumber_": 16.8
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "VALIDATION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the electronic signature code for the date/time. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PO PRINTED TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the printed time for this purchase order. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "EDI MESSAGE NO.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  The EDI message number that is returned from Austin. ",
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 18.6,
+      "fieldName": "NEED SPECIAL HANDLING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "   This field is just a question to see if the special handling instructions are needed for the purchase order. ",
+      "fieldNumber_": 18.6
+    },
+    {
+      "fieldNumber": 18.7,
+      "fieldName": "TYPE OF SPECIAL HANDLING",
+      "dataType": "POINTER",
+      "rawType": "P443.4'",
+      "required": false,
+      "pointerTo": 443.4,
+      "helpText": "    This is a pointer field to file 443.4. The file contains special handling instructions which are displayed/printed on purchase orders. The special handling instructions are also sent in the CO segment of the  PHA transaction. ",
+      "fieldNumber_": 18.7
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "AGENT ASSIGNED P.O.",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the agent assigned to this purchase order. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "DATE P.O. ASSIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this purchase order was assigned to this purchasing agent. ",
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "442.04",
+      "required": false,
+      "helpText": "These are comments about this purchase order. ",
+      "isMultiple": true,
+      "subFileNumber": 442.04,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MONTH",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the month for this purchase order. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "QUARTER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the quarter for this purchase order. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LAST DIGIT OF FISCAL YEAR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the last digit of the current fiscal year. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ADMINISTRATIVE CERTIFICATIONS",
+      "dataType": "POINTER",
+      "rawType": "442.15IP",
+      "required": false,
+      "helpText": "Theses are the administrative certifications for this purchase order. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "442.025",
+      "required": false,
+      "helpText": "This is the remarks field. ",
+      "isMultiple": true,
+      "subFileNumber": 442.025,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "BBFY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the FMS 'BEGINING BUGDET FISCAL YEAR'.  This is set from 'PRC(\"BBFY\")' variable.  This variable is created through the 'FCP', 'FUND CONTROL POINT' field. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "OLD PO RECORD",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "It is a pointer to an old purchase order record number. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "NEW PO RECORD",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "It is a pointer to a new purchase order record number. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "END DATE FOR SERVICE ORDER",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the ending date for the Purchase Order or 1358 for a service order, used when the length of the service contract extends  over a period greater than one month.  It is used by Fiscal service at the time of obligation.  When used in conjunction with the Auto Accrue flag, the ending date will determine the monthly accrual. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "AUTO ACCRUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used by Fiscal service to indicate whether a Purchase Order or 1358 for a service order should be accrued in FMS. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SUBSTATION",
+      "dataType": "POINTER",
+      "rawType": "*P411'X",
+      "required": false,
+      "pointerTo": 411,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "AMOUNT",
+      "dataType": "SUBFILE",
+      "rawType": "442.1A",
+      "required": false,
+      "helpText": "This is the amount of the purchase order/partial. ",
+      "isMultiple": true,
+      "subFileNumber": 442.1,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "442.01IA",
+      "required": false,
+      "helpText": "This is the name of the item on this purchase request. ",
+      "isMultiple": true,
+      "subFileNumber": 442.01,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "BOC",
+      "dataType": "SUBFILE",
+      "rawType": "442.041IA",
+      "required": false,
+      "helpText": "This multiple will hold the  dollar amount for each BOC within this file 442 record.     Longer explanation.  The BOC field in this multiple allows the selection of one of the ITEM multiple BOC.  Only the BOC listed in the \"D\" x-ref found within the ITEM multiple in this record, are allowable choices for the BOC multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 442.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "RFQ NBR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a unique reference number for the Request for Quotation.  It is  derived from the following:     3 digit station number, i.e. 688     hyphen     2 digit FISCAL year, i.e. 96     hyphen     string constant 'RFQ'     hyphen     5 digit sequence counter padded on the left with zeros          For example 688-96-RFQ-00001. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "DISPUTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is to indicate whether a purchase card charge is being disputed. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "PURCHASE CARD NUMBER",
+      "dataType": "POINTER",
+      "rawType": "R*P440.5'XO",
+      "required": true,
+      "pointerTo": 440.5,
+      "helpText": "This is the purchase card number assigned to the purchase card order. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DELIVERY ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field indicates whether this order is a delivery order. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "TYPE OF ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DELIVERY ORDER;P:DETAILED PURCHASE CARD ORDER;S:SIMPLIFED PURCHASE CARD ORDER;",
+      "helpText": "This field determines if a purchase order is a 'Detailed Purchase Card Order','Simplified Purchase Card Order' or a 'Delivery Order'. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "AMENDMENT",
+      "dataType": "SUBFILE",
+      "rawType": "442.07AI",
+      "required": false,
+      "helpText": "This is an amendment to the purchase order. ",
+      "isMultiple": true,
+      "subFileNumber": 442.07,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "SORT GROUP",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the sort group for the IFCAP 410.7 SORT GROUP file or the Engineering 6920 WORK ORDER file. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "CLASSIFICATION OF REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P410.2",
+      "required": false,
+      "pointerTo": 410.2,
+      "helpText": "This is the Classification of Request for this order. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "PCDO VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'X",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This vendor is for purchase card and delivery order. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "RECEIVING REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field indicates if a purchase card purchase requires receiving. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "PURCHASE CARD EXT. NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FO",
+      "required": false,
+      "helpText": "This is the purchase card number assigned to the purchase card order. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "PURCHASE CARD USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who entered the purchase card order. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "APPROVE RECONCILIATION USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who approves the reconciliation of a purchase card order. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "DATE RECONCILED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the reconcilliation date for this purchase order. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "PURCHASE COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,2",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the total dollar amount for a Simplified Purchase Card Order. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PURCHASE CARD HOLDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Purchase Card Holder for the Purchase Card Order. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "PCDO 2237",
+      "dataType": "POINTER",
+      "rawType": "P410'",
+      "required": false,
+      "pointerTo": 410,
+      "helpText": "This is the 2237 attached to the purchase card/delivery order. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "PROCESSING REQUIRED IN FISCAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;",
+      "helpText": "This field indicates if fiscal needs to process receiving report. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "FREE TEXT VENDOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is free text vendor for the Simplified Purchase Card Orders. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "INTERFACE PACKAGE PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The is the interface package prefix indicator. It is set up by the package interface routine. The prefix free text should match the prefix of package file. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "DEPARTMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the three character LOG Department number. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "DOCUMENT IDENTIFIER CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the three digit code for GSA/DLA code sheets. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "ROUTING INDENTIFIER CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is the routing identifier code. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 72.4,
+      "fieldName": "ACTIVITY ADDRESS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the six character Activity Address Code from the Site Parameters File. ",
+      "fieldNumber_": 72.4
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "DEPT.DESIGNATION (DEMAND CODE)",
+      "dataType": "POINTER",
+      "rawType": "*P441.4'",
+      "required": false,
+      "pointerTo": 441.4,
+      "helpText": "This is the Demand Code for Troop Issue or Dietetic Sale. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 73.4,
+      "fieldName": "SPECIAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Special Code. ",
+      "fieldNumber_": 73.4
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "SIGNAL CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A = Ship to Requisitioner, Bill to Requisitioner B = Ship to Requisitioner, Bill to Supplementary Address (cc 30-35) C = Ship to Requisitioner, Bill to Address designated by Fund Code (cc 52-53) D = Ship to Requisitioner, NO Billing Required J = Ship to Supplementary Address, Bill to Requisitioner (cc 30-35) K = Ship to Supplementary Address, Bill to Supplementary Address (cc 45-50) L = Ship to Supplementary Address, Bill to address designated by Fund Code (cc 52-53) M = Ship to Supplementary Ad",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "FUND CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the facility defined for DLA code sheets. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "DISTRIBUTION CODE (OPTIONAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional, user defined, three character code which is used to make the DLA report more readable. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "PROJECT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the three digit department number, the 060 code for canteen service, or the 110 code for dietetic service. This field may be left blank. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "PRIORITY CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is the priority code. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "ADVICE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is the advice code. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "MEDIA & STATUS CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P441.4'",
+      "required": true,
+      "pointerTo": 441.4,
+      "helpText": "This is the media & status code. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "*SUPPLEMENTARY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the six character supplementary address or the requisition number for GSA/DLA code sheets. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "*SOURCE DEVIATION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NOT AVAILABLE FROM MANDATORY SOURCE;2:OUT OF STOCK-GSA/DEPOT;3:EMERGENCY ORDER;4:CANNOT MEET MINIMUM QTY;5:QIR PENDING;6:SHARED PROCUREMENT;7:NONCONTRACT SOURCE,LOWER PRICE;",
+      "helpText": "This is the source deviation code, used when another vendor other than the designated item vendor is used to procure an item. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "REASON CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:REGULAR;2:RESUBMISSION OF REJECTS;3:CALM BYPASS;",
+      "helpText": "This is the reason code. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "*PAYABLE CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:REGULAR POSTED;B:IMPREST FUND;J:DONATED;",
+      "helpText": "This is the payable code. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "TOTAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the total amount of the purchase order. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "NET AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the net amount of the purchase order. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "LIQUIDATED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the liquidated amount. ",
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "ACTUAL 1358 BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the actual 1358 balance. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "FISCAL 1358 BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the fiscal 1358 balance. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "ESTIMATED 1358 BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the estimated 1358 balance. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 96.5,
+      "fieldName": "CONVERTED 1358",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field flags all entries in file 442 which corresponds to a new format entry in file 424. ",
+      "fieldNumber_": 96.5
+    },
+    {
+      "fieldNumber": 96.6,
+      "fieldName": "AUTH. AMOUNT REMAINING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the total amount of monies left on this obligation for authorizations. ",
+      "fieldNumber_": 96.6
+    },
+    {
+      "fieldNumber": 96.7,
+      "fieldName": "BULLETIN SENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SENT;0:CLEAR SENT;",
+      "helpText": "It is a bulletin sent to an Inventory user. ",
+      "fieldNumber_": 96.7
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "PROMPT PAY TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:NORMAL;C:CONTRACT;D:DAIRY;E:EXEMPT;F:PROGRESS;M:MEAT;P:PRODUCE;V:PRIME VENDOR;X:MONEY MANAGEMENT EXEMPT - NORMAL;",
+      "helpText": "It is a type for Prompt Payment Term. ",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PAYABLE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:REGULAR POSTED;B:IMPREST FUNDS;J:DONATED;",
+      "helpText": "This is the payable code. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "DOCUMENT IDENTIFIER/COMMON NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the document identifier/common number. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 102.4,
+      "fieldName": "REQUISITION NO.(SUPPLY)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the station number, dash, sequential Requisition Number, dash, Fiscal Year, as in 661-123-90. ",
+      "fieldNumber_": 102.4
+    },
+    {
+      "fieldNumber": 102.5,
+      "fieldName": "ISSUE VOUCHER NO.(SUPPLY)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the issue voucher number for supply. ",
+      "fieldNumber_": 102.5
+    },
+    {
+      "fieldNumber": 102.6,
+      "fieldName": "ISSUE VOUCHER NO.(FISCAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Fiscal Issue Voucher Number (#). ",
+      "fieldNumber_": 102.6
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "LOG BATCH NO.(ACQUISITIONS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Station Number, dash (-), and Purchase Order Number (e.g., 688-A61234) which is generated automatically when LOG acquisitions code sheets are created. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 103.5,
+      "fieldName": "LOG ACQ.CODE SHEETS DONE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This code indicates whether the LOG Aquisition Code Sheets are completed.  It is automatically generated when Orders for Posted Stock or from Government Sources are signed by the Purchasing/PPM Agent. ",
+      "fieldNumber_": 103.5
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "LOG CODE SHEETS SENT BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the PPM Clerk who created and signed the LOG Acquisitions code sheets. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "LOG CODE SH. VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "This is the Electronic Signature of the PPM Clerk who created and signed  the LOG Acquisitions code sheets. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 105.5,
+      "fieldName": "LOG CS VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  The version of the validation. ",
+      "fieldNumber_": 105.5
+    },
+    {
+      "fieldNumber": 105.7,
+      "fieldName": "LOG CS ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The LOG code sheet Signature Block name. ",
+      "fieldNumber_": 105.7
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time LOG Acquisitions Code sheets were signed by PPM clerk. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 106.4,
+      "fieldName": "SUPPLY FUND ORDER OBLIGATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is automatically set when PPM processes Supply Fund  Orders to update the Control Point Balance. ",
+      "fieldNumber_": 106.4
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "RELEASING FACILITY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is entered only if another facility is involved.  Enter the 3 digit facility number. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "CASCA PROJECT NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The number of the CASCA Project. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "CASCA TRANS TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The type of CASCA Transaction. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "ISMS ORDER NO.",
+      "dataType": "SUBFILE",
+      "rawType": "442.17I",
+      "required": false,
+      "helpText": "  The number of the ISMS order. ",
+      "isMultiple": true,
+      "subFileNumber": 442.17,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "ISMS BATCH NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The batch number for the ISMS order. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "ISMS CODE SHEETS DONE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "  Is the ISMS code sheet done question. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "ISMS CODE SHEETS SENT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  The user number of the person who sent the ISMS code sheet. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "ISMS CODE SH. VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOI",
+      "required": false,
+      "helpText": "  The code that validates the ISMS code sheet. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 114.5,
+      "fieldName": "ISMS VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  The version of the validation code. ",
+      "fieldNumber_": 114.5
+    },
+    {
+      "fieldNumber": 114.7,
+      "fieldName": "ISMS ESIG CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The signature block name of the ISMS code sheet. ",
+      "fieldNumber_": 114.7
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "ISMS DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  The date the ISMS code sheet was signed. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "DO YOU WANT TO SEND THIS EDI?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field enables the user to prevent an EDI Order being generated, as would be appropriate if the order has already been verbally placed with an EDI vendor. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "REASON NOT COMPETED",
+      "dataType": "POINTER",
+      "rawType": "P420.51'",
+      "required": false,
+      "pointerTo": 420.51,
+      "helpText": "This is the reason why the order was not competed. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "NUMBER OF OFFERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of vendors submitting a bid. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "PRE AWARD SYNOPSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:ORDER SUBMITTED TO FED. BUS. OPS.;N:ORDER NOT SUBMITTED TO FED. BUS. OPS.;",
+      "helpText": "This relates to the Federal Business Opportunities program. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "ALTERNATIVE ADVERTISING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:ALTERNATIVE ADVERTISING USED;N:NO ATERNATIVE ADVERTISING USED;",
+      "helpText": "Enter YES if the contracting officer used methods in addition to or in place of those required by FAR 5.201 (FED BIZ OPS) to advertise the requirement. Otherwise, enter NO. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "SOLICITATION PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "P420.52'",
+      "required": false,
+      "pointerTo": 420.52,
+      "helpText": "Solicitation procedures to be used for under and over $25K orders. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "EVALUATED PREFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P420.54'",
+      "required": false,
+      "pointerTo": 420.54,
+      "helpText": "This is the short name for the evaluated preference. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "FUNDING AGENCY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A 4-character code from FIPS Pub. 95 to indicate the funding agency. Leave blank if funding was not provided by another agency. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "FUNDING AGENCY OFFICE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Agency that provided funding for the transaction, if different from VHA; otherwise leave blank. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "MULTIYEAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter Y for a multiyear contract, otherwise enter N. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "EPA DESIGNATED PRODUCT",
+      "dataType": "POINTER",
+      "rawType": "P420.55'",
+      "required": false,
+      "pointerTo": 420.55,
+      "helpText": "This is the short name used to indicate EPA Designated Products. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "CONTRACT BUNDLING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:BUNDLING WAS MISSION CRITICAL;B:BUNDLING BASED ON A-76;C:REQS. BUNDLED BY OTHER REASONS;D:NOT BUNDLED;",
+      "helpText": "This indicates the type bundling used for the procurement action. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "EXTENT COMPETED",
+      "dataType": "POINTER",
+      "rawType": "P420.53'",
+      "required": false,
+      "pointerTo": 420.53,
+      "helpText": "This is the description of the acquisition method, if any. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "PERF. BASED SERVICE CONTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NA:THIS IS NOT A SERVICE CONTRACT;Y:FOR THIS CONTRACT 50% OR MORE IS PERF. BASED;N:FOR THIS CONTRACT 50% OR LESS IS PERF. BASED;",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "CLINGER COHEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Available only when the funding agency is the Dept. of Defense. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "PLACE OF PERF. THIS STATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field allows he user to indicate whether or not the station is the  place where an acquisition has been performed. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "PLACE OF PERFORMANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will not be filled in by the user. It will be populated based  on the answer to field #131 (Place of perf. this station?): if 'Yes', use  the station's state and zip code. If 'No', use the vendor's ordering state and the zip code, for example: MD20910. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "SEND TO FPDS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be triggered by the population of one of the following  fields: TOTAL AMOUNT or CONTRACT/BOA #. If the total amount of the  is over $2500.00, or if the PO is against a contract, then the field  will be populated without direct user intervention.   The value stored in this field will be used to determine if an order  is to be sent to the Austin Automation Center after it has been  created or amended. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 500.01,
+      "fieldName": "BILL #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the bill number. ",
+      "fieldNumber_": 500.01
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "CERTIFIED P.O.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If the IFCAP Common Numbering System for this purchase order is a Certified entry answer YES. ",
+      "fieldNumber_": 501
+    }
+  ],
+  "fieldCount": 168,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "APC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "J", "field": },
+    {"name": "K", "field": },
+    {"name": "L", "field": },
+    {"name": "M", "field": },
+    {"name": "MAPP", "field": },
+    {"name": "MCH", "field": },
+    {"name": "ST", "field": },
+    {"name": "442", "field": .01, "type": "regular"},
+    {"name": "442", "field": .01, "type": "regular"},
+    {"name": "442", "field": .02, "type": "regular"},
+    {"name": "442", "field": .09, "type": "regular"},
+    {"name": "442", "field": .1, "type": "regular"},
+    {"name": "", "field": .25, "type": "regular"},
+    {"name": "442", "field": .5, "type": "regular"},
+    {"name": "442", "field": .5, "type": "regular"},
+    {"name": "442", "field": .5, "type": "regular"},
+    {"name": "442", "field": .7, "type": "regular"},
+    {"name": "442", "field": .7, "type": "regular"},
+    {"name": "442", "field": .8, "type": "regular"},
+    {"name": "442", "field": 1, "type": "regular"},
+    {"name": "442", "field": 1, "type": "regular"},
+    {"name": "442", "field": 5, "type": "regular"},
+    {"name": "", "field": 13, "type": "regular"},
+    {"name": "", "field": 16.5, "type": "regular"},
+    {"name": "442", "field": 46, "type": "regular"},
+    {"name": "442", "field": 48, "type": "regular"},
+    {"name": "442", "field": 61, "type": "regular"},
+    {"name": "442", "field": 102.4, "type": "regular"},
+    {"name": "442", "field": 102.5, "type": "regular"},
+    {"name": "442", "field": 102.5, "type": "regular"},
+    {"name": "442", "field": 102.6, "type": "regular"},
+    {"name": "442", "field": 103.5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Z.01, "value": "W:$D(^(1)) $E($P(^(1),U,15),4,5)_\"-\"_$E($P(^(1),U,15),6,7)_\"-\"_$E($P(^(1),U,15),2,3)"},
+    {"field": Z.02, "value": "W $S($D(^PRCD(442.5,+$P(^(0),U,2),0))#2:$P(^(0),U,2),1:\"\") I @(\"$D(\"_DIC_\"Y,7))\"),$D(^PRCD(442.3,+^(7),0)) W \"   \",$E($P(^(0),U,1),1,34)"},
+    {"field": Z.03, "value": "W:$D(^(0)) !,?13,\"FCP: \",$P($P(^(0),U,3),\" \",1),\"     $ \",$J($P(^(0),U,15),0,2)"}
+  ]
+}

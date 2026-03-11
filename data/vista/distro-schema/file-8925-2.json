@@ -1,0 +1,75 @@
+{
+  "fileNumber": 8925.2,
+  "fileName": "TIU UPLOAD BUFFER",
+  "globalRoot": "8925.2",
+  "globalReference": "^TIU(8925.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCESS ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the ID number of the upload process ($J). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who invoked the ASCII upload procedure. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROCESS BEGIN TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time at which the upload process began. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROCESS END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time at which the upload process ended. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REPORT TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8925.21",
+      "required": false,
+      "helpText": "This is a word processing field that contains the contents of the upload. There may be multiple reports in a file uploaded. When the contents of a report are filed into the appropriate DHCP file, its contents in this word processing field are removed. Corrections can be made to any report ",
+      "isMultiple": true,
+      "subFileNumber": 8925.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR LOG ENTRIES",
+      "dataType": "POINTER",
+      "rawType": "8925.22PA",
+      "required": false,
+      "helpText": "This multiple points to any entries in the TIU UPLOAD EVENT LOG FILE (#8925.4) which result from failure to file one or more of the records in the current buffer file entry. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

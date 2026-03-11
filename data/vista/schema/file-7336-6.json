@@ -1,0 +1,67 @@
+{
+  "fileNumber": 7336.6,
+  "fileName": "OFM H089 CHAPTERS",
+  "globalRoot": "7336.6I",
+  "globalReference": "^OFM(7336.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a Planning Criteria for VA Facilities (H-08-9) Chapter title. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the three digit Planning Criteria for VA Facilities (H-08-9) code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GROUP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "BU:BED UNITS;OP:OUTPATIENT TREATMENT;CS:CLINICAL SUPPORT SERVICES;NC:NATIONAL CEMETERY SYSTEM;VB:VETERANS BENEFITS ADMINISTRATION;",
+      "helpText": "This field is a set of codes based on the Planning Criteria for VA Facilities (H-08-9) groupings. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "This field is a set of codes (1 for inactive, 0 for active) to indicate whether or not an H-08-9 has been made obsolete. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FACILITY TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a comma delimited list of facility types. (Examples: VHA,VBA,NCS  or VBA,NCS etc) ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7336.6", "field": .01, "type": "regular"},
+    {"name": "7336.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 354.7,
+  "fileName": "IB PATIENT COPAY ACCOUNT",
+  "globalRoot": "354.7",
+  "globalReference": "^IBAM(354.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the patient file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "354.701D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 354.701,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "354.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

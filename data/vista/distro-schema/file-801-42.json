@@ -1,0 +1,64 @@
+{
+  "fileNumber": 801.42,
+  "fileName": "REMINDER GUI PROCESS",
+  "globalRoot": "801.42",
+  "globalReference": "^PXRMD(801.42,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the name of a special process within the CPRS GUI. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RELATED OUTPUT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the PCE DATA2PCE identifier, or an Order identifier, or other ID  to pass data on to an output process. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RELATED SOURCE FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is usually a PCE V-file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.421",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 801.421,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RELATED REMINDER DIALOG",
+      "dataType": "POINTER",
+      "rawType": "801.422P",
+      "required": false,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "801.42", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "fileNumber": 8.2,
+  "fileName": "IDENTIFICATION FORMAT",
+  "globalRoot": "8.2",
+  "globalReference": "^DIC(8.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the name of the id format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROMPT USER FOR ID?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the user is prompted for the patient's long identification.  If set to 'NO' then user is not prompted and the id value will remain the value obtained from executing the 'DEFAULT LONG ID VALUE LOGIC'(field #300). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CROSS REFERENCE SET LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the 'set' logic in the 'AC' cross reference on the 'LONG ID(#.03)' field of the 'PATIENT ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file.   The code will only be executed when the patient's eligibility has this 'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the 'ELIGIBILITY CODE(#8)' file.   The purpose of this field is to allow for the setting of 'IDENTIFICATION FORMAT' specific cross references.  Naturally, all",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CROSS REFERENCE KILL LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the 'kill' logic in the 'AC' cross reference on the 'LONG ID(#.03)' field of the 'PATIENT ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file.   The code will only be executed when the patient's eligibility has this 'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the 'ELIGIBILITY CODE(#8)' file.   The purpose of this field is to allow for the killing of 'IDENTIFICATION FORMAT' specific cross references.  Naturally, al",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "XECUTABLE 'HELP'",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the XECUTABLE 'HELP' on the 'LONG ID(#.03)' field of the 'PATIENT ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file.   The code will only be executed when the patient eligibility has this 'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the 'ELIGIBILITY CODE(#8)' file.   The purpose of this field is to allow for id format specific help to be performed whenever the user requests help or when they enter invalid data.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8.21",
+      "required": false,
+      "helpText": "This field is used to document the use of this identification format. It is only for documentation purposes. ",
+      "isMultiple": true,
+      "subFileNumber": 8.21,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INPUT TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the 'input transform' on the 'LONG ID(#.03)' field of the 'PATIENT ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file.   The code will only be executed when the patient eligibility has this 'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the 'ELIGIBILITY CODE(#8)' file.   The purpose of this field is to allow for id format specific input transform to be performed on the id entered by a user.   The following variables",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "DEFAULT LONG ID VALUE LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the trigger cross  reference(#3) on the 'ELIGIBILITY(#.01)' field of the 'PATIENT  ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file. The code is the  'CREATE VALUE' for this trigger. This trigger is used to automatically stuff a  value in the 'LONG ID(#.03) field.   The code will only be executed when the 'ELIGIBILIITY(#.01)' field has this  'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the  'ELIGIBILITY CODE(#8)",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "SHORT ID TRANSFORM",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that will be executed by the trigger cross reference(#3) on the 'LONG ID(#.03)' field of the 'PATIENT ELIGIBILITIES(#361)' sub-field of the 'PATIENT(#2)' file. The code is the 'CREATE VALUE' for this trigger. This trigger is used to automatically stuff a value in the 'SHORT ID(#.04) field.   The code will only be executed when the 'ELIGIBILIITY(#.01)' field has this 'IDENTIFICATION FORMAT' entry as its 'ID FORMAT(#9)' indicated in the 'ELIGIBILITY CODE(#8)' file.  ",
+      "fieldNumber_": 400
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

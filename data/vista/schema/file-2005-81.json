@@ -1,0 +1,134 @@
+{
+  "fileNumber": 2005.81,
+  "fileName": "MAG DESCRIPTIVE CATEGORIES",
+  "globalRoot": "2005.81",
+  "globalReference": "^MAG(2005.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name of the category or document type.   The list of categories is presented to the VistA Imaging Capture user when they select 'User defined Specialty/Category' or 'ADMIN'.  can be entered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ADMIN:ADMIN;CLIN:CLIN;OLD:OLD;",
+      "helpText": "This field indicates the class of document/image being captured.  Defined  classes include Adminstrative (A) for scanned documents, Clinical (C) for  images not associated with a VistA package report, or Old (O) for  categories that are no longer used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ACTION IS ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The action associated with this type of Document is performed when the image is first successfully saved.  This flag can turn On/Off the processing of the Action. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ACTION DESC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field indicates whether some software action will be taken when this  type of image is captured.  For example, scanned MEANS TESTS will be  automatically copied to a subdirectory at the HEC. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACTION TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The TAG of the Routine that will be called to perform the action. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ACTION ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The routine to call to perform the action. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PACKAGE INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:RAD;LAB:LAB;MED:MED;NOTE:NOTE;CP:CP;SUR:SUR;CONS:CONS;PHOTOID:PHOTOID;NONE:NONE;",
+      "helpText": "This is an abbreviation of the package that the image is attached to. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CLASS INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.82'",
+      "required": false,
+      "pointerTo": 2005.82,
+      "helpText": "The Classification of the images.  CLASS is an index field used for  sorting and searching. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TYPE INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.83'",
+      "required": false,
+      "pointerTo": 2005.83,
+      "helpText": "The TYPE of image.  TYPE is an index field used for sorting and searching. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PROC/EVENT INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.85'",
+      "required": false,
+      "pointerTo": 2005.85,
+      "helpText": "The PROCEDURE/EVENT of the image.  PROCEDURE/EVENT is an index field used for sorting and searching. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "SPEC/SUBSPEC INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.84'",
+      "required": false,
+      "pointerTo": 2005.84,
+      "helpText": "The SPECIALTY/SUBSPECIALTY of the image.  SPECIALTY/SUBSPECIALTY is an index field used for sorting and searching. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ORIGIN INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;N:NON-VA;",
+      "helpText": "This field is used to indicate whether the image or document originated  inside or outside VA. ",
+      "fieldNumber_": 45
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.81", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

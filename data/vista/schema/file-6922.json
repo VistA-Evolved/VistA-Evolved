@@ -1,0 +1,89 @@
+{
+  "fileNumber": 6922,
+  "fileName": "ENGINEERING SECTION LIST",
+  "globalRoot": "6922",
+  "globalReference": "^DIC(6922,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "SECTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Engineering shop number. Must be in the range of 1 thru 999. Numbers 90 thru 99 are reserved for use as receiving areas. service requests. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENGINEERING SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Engineering Shop or Receiving Area for electronic work orders. Receiving Areas should be numbered so that they end with 90 thru 99, inclusive (ex: 90,91,190,295, etc.). Working shops should not be given numbers within the range reserved for Receiving Areas. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "One, two, or three characters that identify the shop. Included in computer generated work order numbers. Must be unique for each shop. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "The device to be used for automatic printing of new work orders, if that ENGINEERING SOFTWARE OPTION has been selected. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PM MONTH",
+      "dataType": "DATE",
+      "rawType": "6922.03DA",
+      "required": false,
+      "helpText": "Keeps track of man-hours spent on preventive maintenance.  Data is uploaded automatically via the PM Closeout software. ",
+      "isMultiple": true,
+      "subFileNumber": 6922.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASK CONDITION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEVER;1:WHEN VALUE > $4999.99;2:ALWAYS;",
+      "helpText": "This field will be checked during close out of the shop's equipment work orders to determine if the equipment's CONDITION CODE should be asked.   (0) NEVER - Condition code will not be asked.   (1) WHEN VALUE > $4999.99 - Condition code will be asked if the equipment's acquisition value is greater than $4999.99.   (2) ALWAYS - Condition code will be asked. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EXPANDED WORK ORDER CLOSEOUT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines the input template that will be used during close out of the shop's work orders. If this field is set to YES then template ENWOBIOCLSE (or ENZWOBIOCLSE) will be used. Otherwise template ENWOCLOSE (or ENZWOCLOSE) will be used. The ENWOBIOCLSE template is traditionally used by Biomed shops. It contains several additional prompts for equipment related data fields. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "6922", "field": .01, "type": "regular"},
+    {"name": "6922", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

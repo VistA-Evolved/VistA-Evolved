@@ -1,0 +1,125 @@
+{
+  "fileNumber": 356.26,
+  "fileName": "CLAIMS TRACKING ROI CONSENT",
+  "globalRoot": "356.26",
+  "globalReference": "^IBT(356.26,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROI ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the ROI Special Consent unique identifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient that gave consent to release information related a  sensitive condition. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SENSITIVE CONDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:DRUG ABUSE;2:ALCOHOLISM/ALCOHOL ABUSE;3:TESTING FOR OR INFECTION WITH HIV;4:SICKLE CELL ANEMIA;",
+      "helpText": "This is the sensitive condition the patient has given consent for  release of information. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the effective or begin date of this ROI consent. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the expiration or end date of this ROI consent. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REVOKED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This indicates if the patient has revoked the release of information  consent for this sensitive condition.  This field does not override  the effective and expiration dates.  When a consent is revoked the  expiration date should be updated to the date the revocation takes  effect. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this ROI consent record was created. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that created this ROI consent record. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this ROI record was last updated or edited. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that last updated or edited this ROI record. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a comment related to this ROI consent record, including the  Insurance Companies the ROI covers. ",
+      "fieldNumber_": 2.01
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "356.26", "field": .01, "type": "regular"},
+    {"name": "356.26", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

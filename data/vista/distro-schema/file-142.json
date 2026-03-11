@@ -1,0 +1,141 @@
+{
+  "fileNumber": 142,
+  "fileName": "HEALTH SUMMARY TYPE",
+  "globalRoot": "142",
+  "globalReference": "^GMT(142,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the NAME of the Health Summary Type.  This name will appear in the health summary header.  The word \"CONFIDENTIAL\" will appear in front of this name and the word \"SUMMARY\" will appear at the end to complete the header.  For example:       Name entered: ICU Generated header: CONFIDENTIAL ICU SUMMARY ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the TITLE only if you wish to replace NAME with title in the health summary header.  For Example:       Name entered: ICU    Title entered: INTENSIVE CARE UNIT Generated header: CONFIDENTIAL INTENSIVE CARE UNIT SUMMARY   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "When a Health Summary Type contains a Lock, edit access is normally restricted to persons who hold a security key in the SECURITY KEY file which is the same as the Lock value. If a Health Summary Type contains a Lock, users who hold that security key are NOT restricted by Ownership. A holder of the GMTSMGR security key is NOT restricted by Locks or Ownership.   NOTE: Generic Health Summary Types issued with the Health Summary package contain the Lock GMTSMGR. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "OWNER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Edit access to each health summary type is normally restricted to its Owner.   Exception 1: Holders of the GMTSMGR security key are NOT restricted              by Ownership.   Exception 2: If a health summary type contains a lock, users who hold              that lock key are NOT restricted by Ownership.   NOTE: When a new health summary type is created, the creator's entry number in the new Person File is AUTOMATICALLY entered as Owner unless the creator holds the GMTSMGR security key.  A creat",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RESTRICT DELETION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field is referred to by the Create/Modify and Delete Health Summary Type options for the screening of certain summary types (esp., GMTS HS ADHOC OPTION) from deletion. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SUPPRESS COMP WITHOUT DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "This field allows health summary types to be set up to suppress printing of components that contain no data when health summaries are printed from a device. When health summary types are displayed on the screen, components that contain no data will still be displayed with a \"No data available\" message. This is done to eliminate any confusion that may occur when jumping between components. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONALLY EXPORTED TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Nationally Exported, Site Editable;2:Nationally Exported, Uneditable;",
+      "helpText": "This field is used to distinguish between nationally exported Health Summary  Types and Health Summary Types created at the site.  It serves to protect  nationally exported Health Summary Types from being deleted at the site. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STRUCTURE",
+      "dataType": "SUBFILE",
+      "rawType": "142.01IA",
+      "required": false,
+      "helpText": "This multiple contains the components to be included in any given health summary type, along with the time and occurrence limits, selection items to be used, hospital location displayed, ICD text displayed, and provider narrative displayed. ",
+      "isMultiple": true,
+      "subFileNumber": 142.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LOCATION(S) USING THE SUMMARY",
+      "dataType": "POINTER",
+      "rawType": "142.2P",
+      "required": false,
+      "helpText": "Allows the entry of the hospital location (ward or clinic) which has requested automatic nightly queueing of one or more health summary types to a specified device. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the $H formatted time associated with the most recent modification to this health summary type. It is compared with the timestamp in the ^XUTL( multiple associated with this summary type, when ^XQORM is called to generate help menus for interactive navigation. If a difference exists, then the menus are \"recompiled.\" This field is NOT to be edited interactively under any circumstances! ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SUPPRESS SENSITIVE PRINT DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:9 DIGIT SSN;1:4 DIGIT SSN;2:NO SSN;",
+      "helpText": "This field allows control over the display of patient SSN and DOB in the report header of a given health summary type. Hard copy prints from the Reports tab of CPRS, List Manager, and the GMTS print options are  affected. The DOB can be removed and the SSN restricted based on the  value of this field.   A value of '0' or null allows the full 9-digit SSN to display along with the DOB; flag value of '1' removes the DOB and only displays  the last four of the SSN; and '2' will remove both the SSN a",
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AE", "field": },
+    {"name": "AM", "field": },
+    {"name": "AW", "field": },
+    {"name": "AW2", "field": },
+    {"name": "AW3", "field": },
+    {"name": "AWO", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "142", "field": .01, "type": "regular"},
+    {"name": "142", "field": .01, "type": "regular"},
+    {"name": "142", "field": .01, "type": "regular"},
+    {"name": "142", "field": .02, "type": "regular"},
+    {"name": "142", "field": .02, "type": "regular"},
+    {"name": "142", "field": .06, "type": "regular"},
+    {"name": "142", "field": .06, "type": "regular"},
+    {"name": "142", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

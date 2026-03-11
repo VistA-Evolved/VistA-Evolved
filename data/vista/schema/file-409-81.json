@@ -1,0 +1,45 @@
+{
+  "fileNumber": 409.81,
+  "fileName": "SDEC APPLICATION",
+  "globalRoot": "409.81",
+  "globalReference": "^SDEC(409.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MAJOR VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Major part of a version number. i.e. for version 1.0, 1 is the Major Version; 0 is the Minor version  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MINOR VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Major part of a version number. i.e. for version 1.0, 1 is the Major Version; 0 is the Minor version ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BUILD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Build date is the date of the current build of this Major.Minor version. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.81", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

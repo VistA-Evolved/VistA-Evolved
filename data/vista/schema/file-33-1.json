@@ -1,0 +1,40 @@
+{
+  "fileNumber": 33.1,
+  "fileName": "PRESUMPTIVE PSYCHOSIS CATEGORY CHANGES",
+  "globalRoot": "33.1",
+  "globalReference": "^DGPP(33.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains a patient name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CATEGORY CHANGES",
+      "dataType": "DATE",
+      "rawType": "33.12DA",
+      "required": false,
+      "helpText": "This multiple contains history relating to changes of the PRESUMPTIVE  PSYCHOSIS CATEGORY field (#.5601) in the PATIENT file (#2). ",
+      "isMultiple": true,
+      "subFileNumber": 33.12,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "33.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

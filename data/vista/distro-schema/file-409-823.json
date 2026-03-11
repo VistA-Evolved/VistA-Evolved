@@ -1,0 +1,96 @@
+{
+  "fileNumber": 409.823,
+  "fileName": "SDEC ACCESS TYPE",
+  "globalRoot": "409.823",
+  "globalReference": "^SDEC(409.823,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESS TYPE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of this access type. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Yes/No field indicating that this access type has been inactivated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEPARTMENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P409.832'",
+      "required": false,
+      "pointerTo": 409.832,
+      "helpText": "A Resource Group can also be referred to as a department. This is the Resource Group that this access type belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Free-Text name of the color used to display the block for this access  type. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the numeric color code for the degree of the RED rgb  attribute used in displaying a block for this access type. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "GREEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the numeric color code for the degree of the GREEN rgb attribute used in displaying a block for this access type. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BLUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the numeric color code for the degree of the BLUE rgb attribute used in displaying a block for this access type. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PREVENT ACCESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used by the client to show this access type as a read-only  block. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.823", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

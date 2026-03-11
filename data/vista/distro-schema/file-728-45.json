@@ -1,0 +1,38 @@
+{
+  "fileNumber": 728.45,
+  "fileName": "DSS NUTRITION PRODUCT WORKSHEET",
+  "globalRoot": "728.45",
+  "globalReference": "^ECX(728.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "PD:PRODUCTION DIET;SF:SUPPLEMENTAL FEEDING;TF:TUBE FEEDING;SO:STANDING ORDER;",
+      "helpText": "This value identifies the nutrition diet and it can be one of the  following four diets.   Production Diet Supplemental Feeding Tube Feeding Standing Order ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIET",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "728.451V",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 728.451,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "728.45", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

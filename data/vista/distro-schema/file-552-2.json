@@ -1,0 +1,86 @@
+{
+  "fileNumber": 552.2,
+  "fileName": "CMOP DATABASE",
+  "globalRoot": "552.2",
+  "globalReference": "^PSX(552.2,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The unique number that identifies the order for this facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MESSAGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:QUEUED TO SEND;2:ACKNOWLEDGED;3:PROCESSED;4:IN TRANSITION;5:PRINTED;99:REJECTED;",
+      "helpText": "The current status of this message. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUEUED DT/TM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date/time the message is 'Queued to Send' in $H format. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCESSED DT/TM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The date/time the message was 'Processed'. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ACKNOWLEDGEMENT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  The general acknowledgement message for this order. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSMISSION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "552.27A",
+      "required": false,
+      "helpText": "  Patient order information for transmission to the non-DHCP dispensing system. ",
+      "isMultiple": true,
+      "subFileNumber": 552.27,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AP", "field": },
+    {"name": "AR", "field": },
+    {"name": "B", "field": },
+    {"name": "552.2", "field": .01, "type": "regular"},
+    {"name": "552.2", "field": 1, "type": "regular"},
+    {"name": "552.2", "field": 1, "type": "regular"},
+    {"name": "552.2", "field": 1, "type": "regular"},
+    {"name": "552.2", "field": 1, "type": "regular"},
+    {"name": "552.2", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

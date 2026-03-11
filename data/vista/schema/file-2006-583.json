@@ -1,0 +1,75 @@
+{
+  "fileNumber": 2006.583,
+  "fileName": "MODALITY WORKLIST DICTIONARY",
+  "globalRoot": "2006.583",
+  "globalReference": "^MAGDICOM(2006.583,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is a string that specifies the Application Entity Title for the equipment being described in the current entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer that identifies the site where the equipment is located that is described in this entry.   The value of this field is a pointer to the Institution File (number 4, stored in ^DIC(4,...) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SERVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a string that identifies the 'Imaging Service' that is performed by the instrument that is described in this entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "P79.2'",
+      "required": false,
+      "pointerTo": 79.2,
+      "helpText": "The value of this field is a pointer that identifies the 'imaging type' that is performed by the instrument that is described in this entry.   The imaging types are itemized in file 79.2 (stored in ^RA(79.2,...)   The most often used value for this field is 'RAD', (general Radiology). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACCESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Long Accession Number;S:Short Accession Number;",
+      "helpText": "The value of this field is a code that specifies whether the equipment described in the current entry uses 'short' or 'long' accession numbers.   A complete accession number consists of two groups of digits separated by a dash. The first group is 6 digits, and is derived from the date. The second group is an integer number that uniquely identifies the study for that date.   When the value of this field stars with an 'L', 'long' accession numbers are assumed (both parts are to be provided). When ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a description that identifies the equipment that is specified by this entry. Such a description typically includes the name of a building or the number of a room. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.583", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

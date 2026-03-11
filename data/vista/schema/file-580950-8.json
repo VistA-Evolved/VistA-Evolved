@@ -1,0 +1,75 @@
+{
+  "fileNumber": 580950.8,
+  "fileName": "*AJK1UB STATUS CODE",
+  "globalRoot": "580950.8",
+  "globalReference": "^DIZ(580950.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the code which get transmitted to the collection agency when this status is updated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IGNORE BALANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO, SEND IT;",
+      "helpText": "When a status change is sent the balance isn't always transmitted.  For instance, when cancelling a bill, notifying the collection agency that a bill is paid, etc., they normally don't care about the remaining balance. Enter a zero here if the balance should be sent or a 1 (YES) if the balance should be eliminated from the transmission string. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLOSE RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this code is sent to the collection agency, does the collection effort cease?  If YES then respond YES, close the record.  If NO, respond NO, leave the record open, or leave blank. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the comment to appear in the comments field whenever this type of transaction occurs. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "580950.8", "field": .01, "type": "regular"},
+    {"name": "580950.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

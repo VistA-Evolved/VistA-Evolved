@@ -1,0 +1,56 @@
+{
+  "fileNumber": 853.85,
+  "fileName": "VPS QUESTIONNAIRE IDENTIFIERS",
+  "globalRoot": "853.85",
+  "globalReference": "^VPS(853.85,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEMPLATE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the unique questionnaire template identification string. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SURVEY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This Questionnaire Name represents the questionnaire built by and stored  in VetLink. This value must be 3-240 characters in length. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the questionnaire version number which tracks questionnaire revisions. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUESTIONNAIRE INTERNAL NAME",
+      "dataType": "SUBFILE",
+      "rawType": "853.853",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 853.853,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "853.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

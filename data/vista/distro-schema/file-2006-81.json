@@ -1,0 +1,238 @@
+{
+  "fileNumber": 2006.81,
+  "fileName": "IMAGING WINDOWS WORKSTATIONS",
+  "globalRoot": "2006.81",
+  "globalReference": "^MAG(2006.81,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The network computer name as defined through MS Windows. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "P2006.1'",
+      "required": false,
+      "pointerTo": 2006.1,
+      "helpText": "This field references the site parameter file. The Site parameter entry  defines all of the attributes of Vista Imaging local area network. This  includes facility user preferences, network write locations, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LAST USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The last user to logon to VistA using VistA Imaging GUI Applications from this workstation. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST LOGON DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date and time that a user logged on to VistA using the VistA Imaging GUI Applications from this workstation. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST LOGOFF DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The last date and time that a user logged off of VistA using the VistA Imaging GUI Applications from this workstation.  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPLAY APP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the Clinical Display  client application, which is installed on this workstation, was built. This data is reported by the application when it connects to the server from the workstation. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.3,
+      "fieldName": "TELEREADER APP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the TeleReader client application, which is installed on this workstation, was built. This data is reported by the application when it connects to the server from the workstation. ",
+      "fieldNumber_": 5.3
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "CAPTURE APP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the Clinical Capture  client application, which is installed on this workstation, was built. This data is reported by the application when it connects to the server from the workstation. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 5.7,
+      "fieldName": "VISTARAD APP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the VistA RAD client application, which is installed on this workstation, was built. This data is reported by the application when it connects to the server from the workstation. ",
+      "fieldNumber_": 5.7
+    },
+    {
+      "fieldNumber": 5.9,
+      "fieldName": "CLINICAL UTILITIES APP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates when the Clinical Utilities client application, which is installed on this workstation, was built. This data is reported by the application when it connects to the server from the workstation. ",
+      "fieldNumber_": 5.9
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LOCATION OF WRKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The location of the workstation as defined in the MAG.INI file,  Section: [SYS_SiteParam]   entry:   Location= When a Site Manager is setting up the Imaging workstation for the  first time, they should enter a brief description of the location of  the workstation.  i.e. Exam Room 232A ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAGSETUP DTTM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time of the MAGSETUP.EXE File that was last run on this workstation ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON-Line;0:not;",
+      "helpText": "This field tells whether an Imaging session (Display or Capture) is currently active on the workstation.  1 = Session is active It is modified each time a user logs on via the Imaging application, and set to 0 when the user logs off. (If the Imaging application crashes, it'll still be set and will give false impression that the Imaging application is still active) It is set to 0 when the application quits (if it quits correctly). The value of this field is checked and fixed when the Imaging Syst",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DISPLAY VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the version number reported by the Clinical Display client during its latest execution from the workstation. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "TELEREADER VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the version number reported by the TeleReader client during its latest execution from the workstation. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "CAPTURE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the version number reported by the Clinical Capture client during its latest execution from the workstation. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 9.7,
+      "fieldName": "VISTARAD VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the version number reported by the VistA RAD software during its latest execution from the workstation. ",
+      "fieldNumber_": 9.7
+    },
+    {
+      "fieldNumber": 9.9,
+      "fieldName": "CLINICAL UTILITIES VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the version number reported by the Clinical Utilities client during its latest execution from the workstation. ",
+      "fieldNumber_": 9.9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SESSION",
+      "dataType": "POINTER",
+      "rawType": "P2006.82'",
+      "required": false,
+      "pointerTo": 2006.82,
+      "helpText": "This is a pointer to the Imaging Windows Session file, which holds  statistical information about each Imaging session. It points to the last Imaging Session run on this workstation. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SESSION ERROR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This holds a count of Errors trapped during the current session. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SESSION COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is incremented by 1, each time an Imaging session is connected to VistA from this workstation.  It is a total count of Imaging sessions  run on this workstaion.  (Total count of sessions since version 2.5 was  installed) ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "IMPORT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is a count of the number of times the Import API was called with This Workstation as the Acquisiton Device. ",
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "OS VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Operation System installed on this workstation. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.81", "field": .01, "type": "regular"},
+    {"name": "2006.81", "field": .04, "type": "regular"},
+    {"name": "2006.81", "field": 2, "type": "regular"},
+    {"name": "2006.81", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

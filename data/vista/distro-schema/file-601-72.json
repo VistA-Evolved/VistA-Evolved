@@ -1,0 +1,109 @@
+{
+  "fileNumber": 601.72,
+  "fileName": "MH QUESTIONS",
+  "globalRoot": "601.72",
+  "globalReference": "^YTT(601.72,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUESTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0X",
+      "length": 1,
+      "required": true,
+      "helpText": "Unique internal identifier of Questions. This is the IEN. All entries  below 100,000 are national database entries and should not be edited at  the local level. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUESTION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "601.721",
+      "required": false,
+      "helpText": "Word processing text of the Question. ",
+      "isMultiple": true,
+      "subFileNumber": 601.721,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INTRODUCTION",
+      "dataType": "POINTER",
+      "rawType": "P601.73",
+      "required": false,
+      "pointerTo": 601.73,
+      "helpText": "Pointer to the MH Introduction file (#601.73), to associate the question with  an introduction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RESPONSE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P601.74",
+      "required": false,
+      "pointerTo": 601.74,
+      "helpText": "Specifies which response type is expected. This is a pointer to the RESPONSE  TYPE NUMNER field (#.01) of the MH RESPONSE TYPES file (#601.74). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CHOICETYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Specifies a set of choices available as answers to this question. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "A minimum number that is accepted as an answer to a numeric question. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "A maximum number that is accepted as an answer to a numeric question. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IS REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "Can the question be skipped. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Short text that shows on the display when answering a question. This is  often a prompt or explanation. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "ACT", "field": },
+    {"name": "B", "field": },
+    {"name": "601.72", "field": .01, "type": "regular"},
+    {"name": "601.72", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

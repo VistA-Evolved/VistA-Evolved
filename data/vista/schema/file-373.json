@@ -1,0 +1,435 @@
+{
+  "fileNumber": 373,
+  "fileName": "PFSS CHARGE CACHE",
+  "globalRoot": "373",
+  "globalReference": "^IBBAD(373,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHARGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0X",
+      "length": 10,
+      "required": true,
+      "helpText": "A sequential integer used for both the internal entry number and #.01  field for each record created in the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PFSS ACCOUNT REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "RP375'",
+      "required": true,
+      "pointerTo": 375,
+      "helpText": "The PFSS Account Reference (i.e., internal entry number to PFSS ACCOUNT file #375) associated with the charge (debit or credit) contained in this  record. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The Patient identifier associated with the billing account identified  in field #.02. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UNIQUE CHARGE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "A numeric identifier of not more than 8 digits that uniquely identifies the charge item in the external medical billing system.    This data item is referred to as the \"PFSS Charge Identifier\" within the PFSS project documentation. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CG:CHARGE;CD:CREDIT;",
+      "helpText": "Identifies the charge item as either account debit or account credit. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DEPARTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The Department code associated by the sending-application with the charge.    Department Codes are defined as follows for the various service areas:    108 - Laboratory;  160 - Pharmacy;  419 - Anesthesiology;  423 - Prosthetics;    Surgery (based on Surgical Specialty): 180 - Oral Surgery;  401 - General Surgery;  402 - Cardiac Surgery;  403 - Otorhinolaryngology (ENT);  404 - Gynecology;  406 - Neurosurgery;  407 - Ophthalmology;  409 - Orthopedics;  410 - Plastic Surgery (inc. H&N);  411 - Po",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SERVICE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value for SERVICE CODE is taken from the PFSS SERVICE MASTER file (#374), SERVICE CODE field (#.01).   Selection of a SERVICE CODE from file #374 is based upon the CPT or HCPCS Code and Date of Service provided by the application sending data to the PFSS CHARGE CACHE file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ORDER IEN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "The ORDER file (#100) internal entry number for the service order which resulted in this charge in PFSS.    All data provided to the PFSS CHARGE CACHE file by PCE will include the ORDER file IEN, if known by PCE.  If the charge is the result of a Radiology exam, then IBB will query OERR to obtain the PFSS Account Reference associated with the order IEN.  IBB will then convert that PFSS Account Reference to its external medical billing system equivalent using $$EXTNUM^IBBAACCT.  This external bil",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "CLINICAL EVENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Clinical Event Identifier is passed to CHARGE^IBBAPI in IBBFT1(2). The free text data item is used by certain applications, such as PCE, as a way of linking billable items to a specific event (e.g., visit).    The format of the identifier is    <package_namespace>_<package_file_ien>    ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date/time at which the charge cache record was created. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "HL7 MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "he batch message identifier (from CREATE^HLTF) followed by a hyphen and the sequence number for the individual charge message.  Identifies the exact batch location in which data from this charge record is transmitted to the external medical billing system. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "TEST PATIENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the DFN for this patient indicates a test patient as a result of a call to $$TESTPAT^VADPT, then this field is set to \"YES\". ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PROCEDURE CODE",
+      "dataType": "POINTER",
+      "rawType": "RP81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    Charges passed to IBB via PCE are ultimately based on CPT Codes,  while those from Prosthetics are based on HCPCS Codes, both of which are found in the CPT file (#81).  This field holds the file #81 pointer related to the charge from PCE or Prosthetics.    Outpatient Pharmacy charges are not associated with file #81. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "PROCEDURE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    For charges passed to IBB via PCE this field contains the EVENT DATE AND TIME (field #1201) from the V CPT file (#900010.18).    Outpatient Pharmacy and Prosthetics charges do not use this field. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "FUNCTIONAL TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    For charges passed to IBB by Prosthetics, this field contains a coded-value as follows:    O = Home Oxygen    P = Purchasing    I = Stock Issue    Outpatient Pharmacy and PCE charges do not use this field. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.11,
+      "fieldName": "SURGEON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    If PCE passes to IBB charge data that originated in Surgery, then this field provides the identity of the Principal Surgeon as a pointer to the NEW PERSON file (#200).    Outpatient Pharmacy and Prosthetics charges do not use this field. ",
+      "fieldNumber_": 3.11
+    },
+    {
+      "fieldNumber": 3.12,
+      "fieldName": "ATTENDING SURGEON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    If PCE passes to IBB charge data that originated in Surgery, then this field provides the identity of the Attending Surgeon as a pointer to the NEW PERSON file (#200).    Outpatient Pharmacy and Prosthetics charges do not use this field. ",
+      "fieldNumber_": 3.12
+    },
+    {
+      "fieldNumber": 3.16,
+      "fieldName": "PROCEDURE CODE MODIFIER(S)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Charge data being filed into the PFSS CHARGE CACHE comes from one of three sources - Outpatient Pharmacy, Prosthetics, or PCE.    Charges passed to IBB via PCE or from Prosthetics are based on codes contained the CPT file (#81).  These CPT or HCPCS codes may be \"modified\" by the sending application using codes found in the CPT MODIFIER file (#81.3).    This field may contain one or more modifiers as a string of numbers delimited by semi-colons; each number is a pointer to the CPT MODIFIER file (",
+      "fieldNumber_": 3.16
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "373.04A",
+      "required": false,
+      "helpText": "Multiple DG1 Segments are allowed within a DFT-PO3 message.  Each subrecord in subfile #373.04 contains data for an individual DG1 Segment. ",
+      "isMultiple": true,
+      "subFileNumber": 373.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SC/EI CLASSIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "373.05A",
+      "required": false,
+      "helpText": "Multiple ZCL Segments are allowed within a DFT-PO3 message.  Each subrecord in subfile #373.05 contains data for an individual ZCL Segment. ",
+      "isMultiple": true,
+      "subFileNumber": 373.05,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The definition of this data item depends upon the application that is the originating source of the data. PCE - Event Date and Time OP PHARMACY - Fill Date or Refill Date PROSTHETICS - Delivery Date ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CG:CHARGE;CD:CREDIT;",
+      "helpText": "An indicator to the external medical billing system that tells whether the data in this charge transaction should be handled as a debit (\"CG\") or a credit (\"CD\") to the account. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "CHARGE CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value in this field descibes the charge and is formed by concatenating the 6-digit SERVICE CODE (field #.07) to the 3-digit DEPARTMENT CODE (field #.06). ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "TRANSACTION QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field will hold an integer value that describes the quantity being charged. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.13,
+      "fieldName": "DEPARTMENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The 3-digit Department Code provided by the sending application. The data value in this field is the same as in field #.06, DEPARTMENT. It is placed here to simplify the message build. ",
+      "fieldNumber_": 6.13
+    },
+    {
+      "fieldNumber": 6.16,
+      "fieldName": "ASSIGNED PATIENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "fieldNumber_": 6.16
+    },
+    {
+      "fieldNumber": 6.18,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT RX COPAY EXEMPT;1:RX COPAY EXEMPT;",
+      "helpText": "Used by Ooutpatient Pharmacy only; holds an indicator to show whether the patient being charged for the prescription is \"Rx Copay Exempt\" or \"Not Exempt\". ",
+      "fieldNumber_": 6.18
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "PERFORMED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Used for charge data from PCE only; a pointer to the NEW PERSON file (#200) which supplies the identity of the Rendering Provider for the procedure. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.21,
+      "fieldName": "ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the NEW PERSON file (#200) which supplies the identity of the  Odering Provider for the CPT procedure, HCPCS item, or Prescription  Fill/Refill. ",
+      "fieldNumber_": 6.21
+    },
+    {
+      "fieldNumber": 6.22,
+      "fieldName": "UNIT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy and Prosthetics to indicate the cost per unit of the HCPCS item or pharmacy item being charged. ",
+      "fieldNumber_": 6.22
+    },
+    {
+      "fieldNumber": 6.29,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy only to provide the National Drug Code and Generic Drug Name for the prescription being charged.   1st \";  piece is NDC Code and 2nd \";  piece is Generic Drug Name. Example: 0258-3581-05;THEOPHYLLINE (THEOCHRON) 300MG SA TAB ",
+      "fieldNumber_": 6.29
+    },
+    {
+      "fieldNumber": 6.31,
+      "fieldName": "TRANSACTION REF. KEY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PSO NSC RX COPAY;2:PSO SC RX COPAY;3:PSO NSC RX COPAY CANCEL;4:PSO NSC RX COPAY UPDATE;5:PSO SC RX COPAY CANCEL;6:PSO SC RX COPAY UPDATE;",
+      "helpText": "Used by Outpatient Pharmacy only; indicates the type of copay transaction that has been associated with the pharmacy item. The following types are available: PSO NSC RX COPAY;  FOR PSO SC RX COPAY;  FOR PSO NSC RX COPAY CANCEL;  FOR PSO NSC RX COPAY UPDATE;  FOR PSO SC RX COPAY CANCEL;  FOR PSO SC RX COPAY UPDATE. ",
+      "fieldNumber_": 6.31
+    },
+    {
+      "fieldNumber": 7.01,
+      "fieldName": "QUANTITY/TIMING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy only to specify the Quantity and Days Supply for the pharmacy item being charged.   1st \";\" piece is Quantity and 3rd \";\" piece is Days Supply. Example:  180;;90 ",
+      "fieldNumber_": 7.01
+    },
+    {
+      "fieldNumber": 7.15,
+      "fieldName": "RX NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Rx number for the presciption fill/refill being charged. Data is taken from field #1.5 of the PFSS ACCOUNT file (#375) record pointed to by field #.02 of this record. ",
+      "fieldNumber_": 7.15
+    },
+    {
+      "fieldNumber": 7.17,
+      "fieldName": "REFILLS DISPENSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy only to indicate the number of refills dispensed for the prescription being charged.  The charge data for the original fill will show 0 in this field. ",
+      "fieldNumber_": 7.17
+    },
+    {
+      "fieldNumber": 7.18,
+      "fieldName": "DATE OF MOST RECENT FILL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy only to indicate the date/time of the most recent fill for the prescription being charged. ",
+      "fieldNumber_": 7.18
+    },
+    {
+      "fieldNumber": 7.31,
+      "fieldName": "SUPPLEMENTARY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used by Outpatient Pharmacy only to send all DEA and Special Handling codes associated with the prescription being charged. ",
+      "fieldNumber_": 7.31
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROCEDURE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The calling application may provide data for this field that is used to enhance or add detail to the CPT or HCPCS code provided in field #3.03. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 23.01,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "Used for charges related to Prosthetics only; the Vendor associated with the Prosthetics item.  Provided by Prosthetics as a pointer to  the VENDOR file (#440). ",
+      "fieldNumber_": 23.01
+    },
+    {
+      "fieldNumber": 23.02,
+      "fieldName": "OBL#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Used for charges related to Prosthetics only; the OBL# associated with the Prosthetics item. ",
+      "fieldNumber_": 23.02
+    },
+    {
+      "fieldNumber": 99.01,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:ERROR;",
+      "helpText": "The status of the charge record.  A status of \"Error  indicates that a fatal HL7 error condition was encountered during batch charge processing. ",
+      "fieldNumber_": 99.01
+    },
+    {
+      "fieldNumber": 99.02,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If a fatal HL7 error condition was encountered during batch charge processing on this record, the HL7 error text will be placed in this field. ",
+      "fieldNumber_": 99.02
+    },
+    {
+      "fieldNumber": 99.03,
+      "fieldName": "ERROR DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If a fatal HL7 error condition was encountered during batch charge processing on this record, the error date/time will be placed in this field. ",
+      "fieldNumber_": 99.03
+    }
+  ],
+  "fieldCount": 43,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AOX", "field": },
+    {"name": "C", "field": },
+    {"name": "373", "field": .03, "type": "regular"},
+    {"name": "373", "field": .04, "type": "regular"},
+    {"name": "373", "field": .06, "type": "regular"},
+    {"name": "373", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

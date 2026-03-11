@@ -1,0 +1,42 @@
+{
+  "fileNumber": 2042.5,
+  "fileName": "VIST REFERRAL ROSTER",
+  "globalRoot": "2042.5",
+  "globalReference": "^ANRV(2042.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2040'",
+      "required": true,
+      "pointerTo": 2040,
+      "helpText": "This allows a listing of veteran name, date of referral, the place of referral, status of the application, notification date, admit and discharge dates. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "2042.51D",
+      "required": false,
+      "helpText": "Allows entry of date VIST Coordinator referred application for training. ",
+      "isMultiple": true,
+      "subFileNumber": 2042.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2042.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

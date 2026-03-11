@@ -1,0 +1,440 @@
+{
+  "fileNumber": 790.1,
+  "fileName": "WV PROCEDURE",
+  "globalRoot": "790.1",
+  "globalReference": "^WV(790.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESSION#",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the record number assigned by the Women's Health package.  It is composed of the procedure's abbreviated code, a four digit year and a sequential number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP790'",
+      "required": true,
+      "pointerTo": 790,
+      "helpText": "This field contains the name of the patient associated with the procedure. Pointer to the WV Patient (#790) file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "RP790.2'",
+      "required": true,
+      "pointerTo": 790.2,
+      "helpText": "This field stores the name of the procedure performed on the patient. Pointer to the WV Procedure (#790.1) file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RESULTS/DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "This field stores the main result or diagnosis of the patient's procedure. Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SEC RESULT/DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "This field stores a secondary outcome/diagnosis associated with the procedure.  Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the name of the clinician who ordered and/or performed this procedure. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "HPV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to document the presence or absence of the Human Papilloma Virus (HPV) in the cytology reports. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MAM UNILATERAL: LEFT OR RIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "l:LEFT;r:RIGHT;",
+      "helpText": "Select left or right for this unilateral mammogram. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HEALTH CARE FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the name of the health care facility where this procedure was performed. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "WARD/CLINIC/LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field contains the name of the ward, clinic, or location where the procedure was performed. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE OF PROCEDURE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field identifies the date on which the procedure was performed. Dates in the future may not be entered. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "COMPLETE BY (DATE)",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date used to determine that this procedure record is delinquent when a close status has not been entered in the record. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "o:OPEN;c:CLOSED;",
+      "helpText": "This field contains the status (set of codes: O = Open, C = Closed).  The value of this field is used in the Program Snapshot reports and the Browse Patients with Needs Past Due report. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "RADIOLOGY MAM CASE#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the VISTA Radiology/Nuclear Medicine case# for this mammogram procedure when the Women's Health package automatically imports radiology procedures. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "PROCESSED Y/N?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates if the procedure result was entered via a Clinical  Reminder.    Answer YES to indicate the procedure result was entered by a Clinical  Reminder. Answer NO if the procedure result was not entered by a Clinical  Reminder. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "ENTERING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores the name of the person initially creating this record. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "DATE FIRST ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date on which this procedure record was first entered. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "SATISFACTORY EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field documents that the procedure or gynecologic exam was satisfactorily performed without any impediments.  Set of codes (1 = Yes, 0 = No). ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "T-ZONE SEEN ENTIRELY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field documents (set of codes: 1 = Yes, 0 = No) that the T-Zone in the colposcopy/biopsy procedure was adequately visualized. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "LESION OUTSIDE CANAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field documents (set of codes: 1 = Yes, 0 = No) that the lesion seen during the procedure was outside the canal. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "MULTIFOCAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field documents (set of codes: 1 = Yes, 0 = No) that the lesion seen during the procedure was multifocal (as opposed to unifocal). ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "NUMBER OF QUADRANTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains a number (0-4) that identifies the number of quadrants occupied by the lesion. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .245,
+      "fieldName": "QUADRANT LOCATIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "      The location of the affected quadrants.  Any of the following abbreviations may be selected: UL,LL,UR,LR.    UL - Upper Left quadrant LL - Lower Left quadrant UR - Upper Right quadrant LR - Lower Right quadrant     If more than one quadrant is included separate them with a comma, ie: LL, UL,UR will represent the inclusion of 3 of the 4 quadrants. ",
+      "fieldNumber_": .245
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "ECC DYSPLASIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;nd:Not Done;i:Insufficient Tissue;",
+      "helpText": "This field indicates if ectocervical dysplasia was present, if an insufficient tissue sample was provided, or the sample was not examined for dysplasia. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "ECTOCERVICAL BIOPSY",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "This field contains the diagnosis or impression resulting from the cytology examination.  Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "MARGINS CLEAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates tissue sample showed no pathology at the margins of the tissue sample. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "STD EVALUATION",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "This field documents the findings after testing for sexually transmitted diseases.  Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "IMPRESSION",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "This field contains the impression of the clinician performing the exam.   Pointer to the WV Results/Diagnosis (#790.31) file. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "SCREENING PAP",
+      "dataType": "POINTER",
+      "rawType": "*P790.1'",
+      "required": false,
+      "pointerTo": 790.1,
+      "helpText": "This field stores the PAP procedure associated with the follow-up procedure (e.g., colposcopy).  Pointer to the WV Procedure (#790.1) file. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "STAGE AT FINAL DX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:I;2:II;3:III;4:IV;5:S-Local;6:S-Regional;7:S-Distant;8:Unknown;",
+      "helpText": "This field is used to document the clinical stage for invasive carcinoma of the cervix.  If clinical stage is unknown, enter the summary ('S-') stage. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "DATE RESULTS RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that the results were received/uploaded from the lab. ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "FINAL DX PAP/COLP",
+      "dataType": "POINTER",
+      "rawType": "*P790.31'",
+      "required": false,
+      "pointerTo": 790.31,
+      "helpText": "Enter the Final Diagnosis for this PAP/Colp case. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": .34,
+      "fieldName": "FACILITY WHERE ACCESSIONED",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Select the facility where this procedure was accessioned. ",
+      "fieldNumber_": .34
+    },
+    {
+      "fieldNumber": .35,
+      "fieldName": "RADIOLOGY CREDIT METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Regular Credit;1:Interpretation Only;2:No credit;3:Technical Component Only;",
+      "helpText": "This field is a set of codes that identify if the radiology exam was performed at the facility or elsewhere. This value is automatically entered by the Radiology/NM package when a radiology report is verified and the WH site parameter is set to accept data from the Radiology/NM package.   This piece of information will be used for WH reporting requirements to determine how many radiology procedures were performed at the facility and elsewhere. ",
+      "fieldNumber_": .35
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "NOTES",
+      "dataType": "SUBFILE",
+      "rawType": "790.11",
+      "required": false,
+      "helpText": "This field allows you to enter word-processing text in which to elaborate further on the results of this patients various tests. ",
+      "isMultiple": true,
+      "subFileNumber": 790.11,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2.17,
+      "fieldName": "LAB ACCESSION#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the lab accession number from the LAB DATA file (#63) for the patient, if this procedure entry is a lab test. ",
+      "fieldNumber_": 2.17
+    },
+    {
+      "fieldNumber": 2.18,
+      "fieldName": "LAB DATA FILE IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the internal entry number of the LAB DATA file (#63) for the patient, if this procedure entry is a lab test. ",
+      "fieldNumber_": 2.18
+    },
+    {
+      "fieldNumber": 2.19,
+      "fieldName": "LAB INVERSE DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the inverse date/time of a lab test from the LAB DATA file (#63) for the patient, if this procedure entry is a lab test. ",
+      "fieldNumber_": 2.19
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "LAB SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a character string that distinguishes the type of lab test performed. The letters \"CY\" will represent a cytology test and the letters \"SP\" will represent a surgical pathology test. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "You may enter a one-line clinical history note (limited to 78 characters). ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REPORTS",
+      "dataType": "SUBFILE",
+      "rawType": "790.19",
+      "required": false,
+      "helpText": "This field is not editable through WH options.  The lab or radiology exams related to this procedure are presented here. ",
+      "isMultiple": true,
+      "subFileNumber": 790.19,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 41,
+  "crossReferences": [
+    {"name": "ABNML", "field": },
+    {"name": "ABNML1", "field": },
+    {"name": "ACOLP", "field": },
+    {"name": "ADE", "field": },
+    {"name": "APCD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "S", "field": },
+    {"name": "790.1", "field": .01, "type": "regular"},
+    {"name": "790.1", "field": .02, "type": "regular"},
+    {"name": "790.1", "field": .04, "type": "regular"},
+    {"name": "790.1", "field": .05, "type": "regular"},
+    {"name": "790.1", "field": .12, "type": "regular"},
+    {"name": "790.1", "field": .12, "type": "regular"},
+    {"name": "790.1", "field": .14, "type": "regular"},
+    {"name": "790.1", "field": .15, "type": "regular"},
+    {"name": "790.1", "field": .19, "type": "regular"},
+    {"name": "790.1", "field": .3, "type": "regular"},
+    {"name": "790.1", "field": 2.17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^WV(790,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(790,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .12, "value": "W \"   \",$E($P(^(0),U,12),4,5)_\"-\"_$E($P(^(0),U,12),6,7)_\"-\"_$E($P(^(0),U,12),2,3)"}
+  ]
+}

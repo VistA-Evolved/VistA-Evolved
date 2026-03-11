@@ -1,0 +1,38 @@
+{
+  "fileNumber": 78.6,
+  "fileName": "CAMERA/EQUIP/RM",
+  "globalRoot": "78.6I",
+  "globalReference": "^RA(78.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CAMERA/EQUIP/RM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of this camera/equipment/room.  Names must be between 1 and 30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to describe this camera/equipment/room and define what types of procedures may be performed there.  'Triple Head Spec Scanner' is an example of a description.  Descriptions may be between 3 and 40 characters in length. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "78.6", "field": .01, "type": "regular"},
+    {"name": "78.6", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(0)) \"   \",$P(^(0),U,2)"}
+  ]
+}

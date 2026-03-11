@@ -1,0 +1,37 @@
+{
+  "fileNumber": 634.7,
+  "fileName": "HBHC MEDICAL FOSTER HOME ERROR(S)",
+  "globalRoot": "634.7",
+  "globalReference": "^HBHC(634.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MEDICAL FOSTER HOME NAME",
+      "dataType": "POINTER",
+      "rawType": "RP633.2'",
+      "required": true,
+      "pointerTo": 633.2,
+      "helpText": "This field represents Medical Foster Home Name in HBHC Medical Foster Home file (#633.2).  The medical foster home record is missing data.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELDS TO UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents fields to update (actually DR string supplied for  DIE call) of Medical Foster Home data in HBHC Medical Foster Home file  (#633.2).  Field allows for 1-245 characters of free text.  Field updated  by package only, no user input. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

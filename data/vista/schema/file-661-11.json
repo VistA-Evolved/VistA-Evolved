@@ -1,0 +1,117 @@
+{
+  "fileNumber": 661.11,
+  "fileName": "PROSTHETICS HCPCS ITEM MASTER FILE",
+  "globalRoot": "661.11",
+  "globalReference": "^RMPR(661.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the HCPCS name as it shows in file #661.1. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This is the item number for a HCPCS item. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the description of an item. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;C:COMMERCIAL;",
+      "helpText": "This is the source of an item: 'V' stands for VA or USED items and 'C' for COMMERCIAL or NEW items. NEW and USED items are tracked seperately so that seperate inventory records should be maintained for each source.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P420.5'",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "This field is a pointer to Unit of Issue file (#420.5). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PSAS ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "PSAS Items are items used by PROSTHETICS SENSORY and AIDS SERVICE (PSAS) and are based from the HCPCS concatenated with the HCPCS ITEM NUMBER. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ITEM MASTER",
+      "dataType": "POINTER",
+      "rawType": "P661'",
+      "required": false,
+      "pointerTo": 661,
+      "helpText": "POINTER TO 661 ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field represent if an ITEM is ACTIVE OR INACTIVE.  If the STATUS is  INACTIVE, an Item will not be printed in PROSTHETICS INVENTORY BALANCE BY  HCPCS and PROSTHETICS INVENTORY BALANCE BY LOCATION reports for the station selected. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date the item is put INACTIVE status. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "661.11", "field": .01, "type": "regular"},
+    {"name": "661.11", "field": 2, "type": "regular"},
+    {"name": "661.11", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

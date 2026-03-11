@@ -1,0 +1,27 @@
+{
+  "fileNumber": 2262.3,
+  "fileName": "ASISTS NEEDLESTICK BRANDS",
+  "globalRoot": "2262.3",
+  "globalReference": "^OOPS(2262.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BRAND NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the brand name of the device involved in a needlestick or sharps incident. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2262.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "fileNumber": 164.2,
+  "fileName": "SITE-GROUP FOR ONCOLOGY",
+  "globalRoot": "164.2",
+  "globalReference": "^ONCO(164.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FREE TEXT FIELD FOR RECORDING NAME. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AJCC STAGING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;Y:YES;",
+      "helpText": "RECORDS THE AJCC STAGE. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "KEY WORD",
+      "dataType": "SUBFILE",
+      "rawType": "164.21A",
+      "required": false,
+      "helpText": "This field is a free-text KWIC cross-reference. ",
+      "isMultiple": true,
+      "subFileNumber": 164.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TOPOGRAPHY",
+      "dataType": "POINTER",
+      "rawType": "164.22P",
+      "required": false,
+      "helpText": "POINTS TO THE FILE CONTAINING TOPOGRAPHY CODES. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MORPHOLOGY",
+      "dataType": "POINTER",
+      "rawType": "164.23PA",
+      "required": false,
+      "helpText": "Morphologies associated with this SITE-GP. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "EXTENSION CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for this site group in the first edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 43.01,
+      "fieldName": "EXTENSION CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for this site group in the second edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 43.01
+    },
+    {
+      "fieldNumber": 43.02,
+      "fieldName": "EXTENSION CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize extension for this site group in the third edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 43.02
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LYMPH NODE CODE SET-1ST ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node  involvement for this site group in the first edition of SEER Extent of  Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 53.01,
+      "fieldName": "LYMPH NODE CODE SET-2ND ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node involvement for this site group in the second edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 53.01
+    },
+    {
+      "fieldNumber": 53.02,
+      "fieldName": "LYMPH NODE CODE SET-3RD ED",
+      "dataType": "POINTER",
+      "rawType": "*P164.5'",
+      "required": false,
+      "pointerTo": 164.5,
+      "helpText": "This field identifies the set of codes used to characterize lymph node involvement for this site group in the third edition of SEER Extent of Disease Codes and Coding Instructions. ",
+      "fieldNumber_": 53.02
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "GRADE",
+      "dataType": "SUBFILE",
+      "rawType": "164.25",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR RECORDING ADDITIONAL GRADE INFORMATION. ",
+      "isMultiple": true,
+      "subFileNumber": 164.25,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "HISTOLOGIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field is referenced by the Screen for the SITE/GP Field (#.01) in the ONCOLOGY PRIMARY File (#165.5).  Histologic site groups (lymphomas, melanoma, leukemia, mycosis fungoides) should not be chosen as primary site groups. ",
+      "fieldNumber_": 71
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "164.2", "field": .01, "type": "regular"},
+    {"name": "164.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

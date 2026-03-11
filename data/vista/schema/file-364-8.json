@@ -1,0 +1,157 @@
+{
+  "fileNumber": 364.8,
+  "fileName": "PAYER ID - COB SWITCH",
+  "globalRoot": "364.8",
+  "globalReference": "^IBA(364.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRIMARY ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ5a",
+      "length": 5a,
+      "required": true,
+      "helpText": "This is the Payer ID that is enabled for COB EDI submission on a Medicare  Supplemental claim. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TPA ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ5a",
+      "length": 5a,
+      "required": false,
+      "helpText": "This is the Third Party Administrator Payer ID for the Primary Payer ID. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CLAIM OFFICE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ4a",
+      "length": 4a,
+      "required": false,
+      "helpText": "This is the Claim Office ID to be used for this Primary Payer ID. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLAIM TYPE",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:ALL CLAIM TYPES;2:PROFESSIONAL CLAIMS;3:INSTITUTIONAL CLAIMS;",
+      "helpText": "This is the Claim Type for which this Payer ID map applies to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE/TIME LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time this entry was last modified. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date/time this Payer ID Switch map was used for 837  processing. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMBER OF TIMES USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is a count of the number of times the 837 process has used this  Payer ID switch map. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TEST or PRODUCTION",
+      "dataType": "SET",
+      "rawType": "St11a",
+      "required": false,
+      "helpText": "This value identifies if this Payer ID switch map is in 'test' mode or is  live for production.  A value of 0 indicates 'live for production' and a  value of 1 indicates this entry is in 'test' status. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DELETED / INACTIVE",
+      "dataType": "SET",
+      "rawType": "St11a",
+      "required": false,
+      "helpText": "A value of 1 found in this field indicates that this Payer ID switch map  has been inactivated or deleted. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "EXCLUDED SERVICE CLAIM TYPE",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:ALL CLAIM TYPES;2:PROFESSIONAL CLAIMS;3:INSTITUTIONAL CLAIMS;",
+      "helpText": "This value indicates what claim form types are to be allowed for Excluded  Service processing. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "EXCLUDED SERVICE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field represents the last date/time the Excluded Service info  (fields .10 and .11) were modified. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "EXCLUDED SERVICE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date/time represents the last time this Payer ID was checked for  this Excluded Service exception. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "EXCLUDED SERVICE # TIMES USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field represents the number of times this Payer ID has been used for  Excluded Service processing. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "LAST CLAIM NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the last Claim number that used this Payer ID switch map. ",
+      "fieldNumber_": .15
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "364.8", "field": .01, "type": "regular"},
+    {"name": "364.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(364.8,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .11, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(364.8,.11,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,11)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

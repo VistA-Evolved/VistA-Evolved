@@ -1,0 +1,56 @@
+{
+  "fileNumber": 860.8,
+  "fileName": "ORDER CHECK COMPILER FUNCTIONS",
+  "globalRoot": "860.8",
+  "globalReference": "^OCXS(860.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LINE LABEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "860.81",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 860.81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CODE",
+      "dataType": "SUBFILE",
+      "rawType": "860.801",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 860.801,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "860.8", "field": .01, "type": "regular"},
+    {"name": "860.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

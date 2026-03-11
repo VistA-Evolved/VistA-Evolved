@@ -1,0 +1,36 @@
+{
+  "fileNumber": 631.7,
+  "fileName": "HBHC PERIOD OF SERVICE",
+  "globalRoot": "631.7I",
+  "globalReference": "^HBHC(631.7,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field represents 2 character code for HBHC Period of Service.  Valid entries are '00' thru '05', '07' thru '10', and 'X '.  (Note 'X' is followed by space character.)  All one digit numeric entries must have leading zero. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PERIOD OF SERVICE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field represents HBHC Period of Service text.  Field allows for 3-30 characters of free text. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

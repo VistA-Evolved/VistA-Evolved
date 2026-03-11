@@ -1,0 +1,36 @@
+{
+  "fileNumber": 342.3,
+  "fileName": "AR USER CUSTOMIZE",
+  "globalRoot": "342.3",
+  "globalReference": "^RC(342.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCREEN/OPTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the screen/options used as the routine entry point for customizing and printing. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER PARAMETERS",
+      "dataType": "POINTER",
+      "rawType": "342.31PA",
+      "required": false,
+      "helpText": "This multiple stores user's set up to customize the screen and the  printer options. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "342.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

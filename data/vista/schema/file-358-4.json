@@ -1,0 +1,63 @@
+{
+  "fileNumber": 358.4,
+  "fileName": "IMP/EXP SELECTION GROUP",
+  "globalRoot": "",
+  "globalReference": "^IBE(358.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  The name given to a group of selections appearing on a selection list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "  This will define the order that a group of selections will appear in as compared to the other groups of selections. A group header \"BLANK\" will be created by default with order number 0. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SELECTION LIST",
+      "dataType": "POINTER",
+      "rawType": "RP358.2'",
+      "required": true,
+      "pointerTo": 358.2,
+      "helpText": "  The Selection List this group belongs to. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INVISIBLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INVISIBLE;",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "APO", "field": },
+    {"name": "APO1", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "358.4", "field": .01, "type": "regular"},
+    {"name": "358.4", "field": .02, "type": "regular"},
+    {"name": "358.4", "field": .03, "type": "regular"},
+    {"name": "358.4", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(358.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(358.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "fileNumber": 126.6,
+  "fileName": "GMRY OUTPUT SUBTYPE",
+  "globalRoot": "126.6I",
+  "globalReference": "^GMRD(126.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OUTPUT SUBTYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the names of subtypes under each major output category.  VOID, FOLEY, STRAIGHT CATHETER, SUPRAPUBIC, and NEPHROSTOMY are subtypes of  URINE.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OUTPUT TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP126.58'",
+      "required": true,
+      "pointerTo": 126.58,
+      "helpText": "This field associates the major categories of patient output with an output subtype in the .01 field in the file.  Pointer to the OUTPUT TYPE file (#126.58). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "126.6", "field": .01, "type": "regular"},
+    {"name": "126.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^GMRD(126.58,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(126.58,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

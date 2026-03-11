@@ -1,0 +1,27 @@
+{
+  "fileNumber": 35.2,
+  "fileName": "SHARING AGREEMENT SUB-CATEGORY",
+  "globalRoot": "35.2",
+  "globalReference": "^DG(35.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains sub-categories associated with Sharing Agreement. The entries contained in this file can be utilized by multiple entries in the Sharing Agreement Category file (#35.1).  This file contains local Sharing Agreement sub-categories. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "35.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

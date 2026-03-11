@@ -1,0 +1,629 @@
+{
+  "fileNumber": 72,
+  "fileName": "EXAMINATION STATUS",
+  "globalRoot": "72",
+  "globalReference": "^RA(72,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name given to the current exam status being defined. The exam status denotes what stage of the exam process the exam is currently in.   Exam status names are assigned by each site and must be between 3 and 30 non-numeric characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TECHNOLOGIST REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the name of the technologist must be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .111,
+      "fieldName": "REPORT ENTERED REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that a report be entered in order for an exam to be moved into the current status being defined.  This refers to report record, not the report text field within the record. ",
+      "fieldNumber_": .111
+    },
+    {
+      "fieldNumber": .112,
+      "fieldName": "VERIFIED REPORT REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the report be verified in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .112
+    },
+    {
+      "fieldNumber": .113,
+      "fieldName": "PROCEDURE MODIFIERS REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": .113
+    },
+    {
+      "fieldNumber": .114,
+      "fieldName": "CPT MODIFIERS REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": .114
+    },
+    {
+      "fieldNumber": .116,
+      "fieldName": "IMPRESSION REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that a report impression be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .116
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RESIDENT OR STAFF REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that an interpreting resident or staff physician be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DETAILED PROCEDURE REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that a 'Detailed' procedure type be entered in order for an exam to be moved into the current status being defined.  If the 'division' parameter requiring that a 'Detailed' procedure type be entered during initial exam registration is set to 'Yes', then the 'division' requirement takes precedence over this requirement. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "FILM ENTRY REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to denote that film entry is required in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DIAGNOSTIC CODE REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the diagnostic code be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "CAMERA/EQUIP/RM REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the camera/equip/rm be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "ASK FOR TECHNOLOGIST?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system.  If this field is set to 'Yes', then the user will be prompted for the technologist in order to update an exam to this status. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .211,
+      "fieldName": "ASK FOR USER CODE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system.  If this field is set to 'Yes', then the user will be prompted for their user code in order to update an exam to this status. ",
+      "fieldNumber_": .211
+    },
+    {
+      "fieldNumber": .213,
+      "fieldName": "ASK PROCEDURE MODIFIERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": .213
+    },
+    {
+      "fieldNumber": .214,
+      "fieldName": "ASK CPT MODIFIERS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "fieldNumber_": .214
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "ASK FOR INTERPRETING PHYS?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for both the 'resident' and 'staff' interpreting physicians in order to update an exam to this status. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "ASK FOR PROCEDURE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system. If this field is set to 'Yes', then the user will be prompted for the procedure in order to update an exam to this status. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "ASK FOR FILM DATA?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system. If this field is set to 'Yes', then the user will be prompted for the film data in order to update an exam to this status. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "ASK FOR DIAGNOSTIC CODE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system. If this field is set to 'Yes', then the user will be prompted for the diagnostic code in order to update an exam to this status. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "ASK FOR CAMERA/EQUIP/RM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the rad/nuc med system. If this field is set to 'Yes', then the user will be prompted for the camera/equip/rm in order to update an exam to this status. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "ASK MEDICATIONS & DOSAGES?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This parameter works in conjunction with a parameter on the Rad/Nuc Med Procedure file #71. Depending on how this field is answered, the user may or may not be prompted for medications during exam status tracking.  If this field is set to 'Yes', AND the 'Prompt for Meds' field of the procedure (in the Rad/Nuc Med Procedure file #71) is set to 'Yes', then the user will be prompted for the 'Medication' and 'Dose' in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "ASK MED ADM DT/TIME/PERSON?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for medication administration date/time and administering person while using the exam status tracking function of the Rad/Nuc Med system. If this field is set to 'Yes', then the user will be prompted for the date and time the medication was administered and the person who administered the dose in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .31,
+      "fieldName": "CLINIC REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Clinic Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .31
+    },
+    {
+      "fieldNumber": .311,
+      "fieldName": "CAMERA/EQUIP/RM REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES',  to indicate that exams with the exam status currently being defined should be included in the 'Camera/Equip/Rm Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .311
+    },
+    {
+      "fieldNumber": .312,
+      "fieldName": "PHYSICIAN REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Physician Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to  determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .312
+    },
+    {
+      "fieldNumber": .313,
+      "fieldName": "RESIDENT REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Resident Workload Report'.   When the workload report routine is processing an exam that is in the status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .313
+    },
+    {
+      "fieldNumber": .314,
+      "fieldName": "STAFF REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Staff Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .314
+    },
+    {
+      "fieldNumber": .315,
+      "fieldName": "DELINQUENT STATUS REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Delinquent Status Report'.   When the report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .315
+    },
+    {
+      "fieldNumber": .32,
+      "fieldName": "PTF BEDSECTION REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'PTF Bedsection Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .32
+    },
+    {
+      "fieldNumber": .33,
+      "fieldName": "SERVICE REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Service Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .33
+    },
+    {
+      "fieldNumber": .34,
+      "fieldName": "SHARING/CONTRACT REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Sharing/ Contract Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .34
+    },
+    {
+      "fieldNumber": .35,
+      "fieldName": "WARD REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Ward Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .35
+    },
+    {
+      "fieldNumber": .36,
+      "fieldName": "FILM USAGE REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Film Usage Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .36
+    },
+    {
+      "fieldNumber": .37,
+      "fieldName": "TECHNOLOGIST REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES' to indicate that exams with the exam status currently being defined should be included in the 'Technologist Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .37
+    },
+    {
+      "fieldNumber": .38,
+      "fieldName": "AMIS REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'AMIS Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .38
+    },
+    {
+      "fieldNumber": .39,
+      "fieldName": "DETAILED PROCEDURE REPORT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Set this parameter to 'YES', to indicate that exams with the exam status currently being defined should be included in the 'Detailed Procedure Workload Report'.   When the workload report routine is processing an exam that is in the exam status currently being defined, it will check this parameter to determine whether to include the exam in the report compilation. ",
+      "fieldNumber_": .39
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "RADIOPHARMS/DOSAGES REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Radiopharmaceuticals' and 'Dose' be entered in order for an exam of this imaging type to be moved into the current status being defined.   Note:  To override the requirement for radiopharmaceutical on an individual procedure, set the 'Ask Radiopharmaceutical' field of the Rad/Nuc Med Procedure file to 'Never' for that procedure. ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .53,
+      "fieldName": "ACTIVITY DRAWN REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Activity Drawn' be required in order for an exam of this imaging type to be moved into the current status being defined. ",
+      "fieldNumber_": .53
+    },
+    {
+      "fieldNumber": .54,
+      "fieldName": "DRAWN DT/TIME/PERSON REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Date/time of measure' and 'Person who measured dose' be entered in order for an exam of this imaging type to be moved into the current status being defined. ",
+      "fieldNumber_": .54
+    },
+    {
+      "fieldNumber": .55,
+      "fieldName": "ADM DT/TIME/PERSON REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the  'Date/Time of dose administration' and 'Person who administered dose' be entered in order for an exam to be moved into the current status being defined. ",
+      "fieldNumber_": .55
+    },
+    {
+      "fieldNumber": .57,
+      "fieldName": "ROUTE/SITE REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Route of Administration' and 'Site of Administration' be entered in order for an exam of this imaging type to be moved into the current status being defined. ",
+      "fieldNumber_": .57
+    },
+    {
+      "fieldNumber": .58,
+      "fieldName": "LOT NO. REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Lot No.' be entered in order for an exam of this imaging type to be moved into the current status being defined. ",
+      "fieldNumber_": .58
+    },
+    {
+      "fieldNumber": .59,
+      "fieldName": "VOLUME/FORM REQUIRED?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This site-specific field may be set to 'Yes' to require that the 'Volume', 'Form', and 'Other form' be entered in order for an exam of this imaging type to reach the current status being defined. ",
+      "fieldNumber_": .59
+    },
+    {
+      "fieldNumber": .61,
+      "fieldName": "ASK RADIOPHARMS AND DOSAGES?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for radiopharmaceuticals and doses while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for the 'Radiopharmaceutical' and 'Dose' in order to update an exam of this imaging type to this status.   Note:  To override this parameter, and turn OFF the prompt for radiopharmaceuticals on an individual procedure, set the 'Ask Radiopharmaceu",
+      "fieldNumber_": .61
+    },
+    {
+      "fieldNumber": .611,
+      "fieldName": "PRINT DOSAGE TICKET?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If an exam of this imaging type that uses radiopharmaceuticals reaches this status, a Dosage Ticket will be printed if the following are also true:   1. A valid print device has been assigned to the Imaging Location.   2. \"Yes\" has been answered for the following prompts at this (or lower) status for this imaging type:            Radiopharms/dosages required          Amount Drawn required          Drawn dt/time/person required          Lot No. Required ",
+      "fieldNumber_": .611
+    },
+    {
+      "fieldNumber": .63,
+      "fieldName": "ASK ACTIVITY DRAWN?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for activity of radiopharmaceutical drawn while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for the Activity Drawn in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .63
+    },
+    {
+      "fieldNumber": .64,
+      "fieldName": "ASK DRAWN DT/TIME/PERSON?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for data related to radiopharmaceutical drawn while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for 'Date/time of measure' and 'Person who measured dose' when updating an exam of this imaging type to this status. ",
+      "fieldNumber_": .64
+    },
+    {
+      "fieldNumber": .65,
+      "fieldName": "ASK ADM DT/TIME/PERSON?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted with this field while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for the 'Date/time of dose administration' and 'Person who administered dose' in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .65
+    },
+    {
+      "fieldNumber": .67,
+      "fieldName": "ASK ROUTE/SITE OF ADM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for radiopharm route and site while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for the 'Route of administration' and 'Site of administration' in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .67
+    },
+    {
+      "fieldNumber": .68,
+      "fieldName": "ASK LOT NO.?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for radiopharmaceutical lot while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for 'Lot No.' in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .68
+    },
+    {
+      "fieldNumber": .69,
+      "fieldName": "ASK VOLUME/FORM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Depending on how each site sets up this field, the user may or may not be prompted for radiopharmaceutical lot and form while using the exam status tracking function of the Rad/Nuc Med system.  If this field is set to 'Yes', then the user will be prompted for 'Volume', 'Form', and, if necessary, 'Other form' in order to update an exam of this imaging type to this status. ",
+      "fieldNumber_": .69
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GENERATE EXAM ALERT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field contains a YES if the exam status should generate an alert to the requesting physician that the patient has been examined. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEFAULT NEXT STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P72'",
+      "required": false,
+      "pointerTo": 72,
+      "helpText": "During the Exam Status Tracking function, if an exam is in the status you are currently editing, the system will present the 'default next status' you enter here as the status to be reached next.  The status tracking function will use the default next status to determine which prompts to ask.  If the parameters of the default next status are met, the exam will be placed in that status. Only active statuses with an order number can be entered. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0X",
+      "length": 1,
+      "required": false,
+      "helpText": "This field contains the logical order that this exam status falls into. The order of the stages is set up by each site and must be a number between 1 and 8.   If this order field is left blank, then the 'Exam Status Tracking' function will not use this exam status.  Exam status 'CANCELLED' is reserved and has an order of '0'. Exam status 'COMPLETE' is reserved and has an order of '9'.  The status that has the order of '1' should represent the first status an exam attains as soon as it is registe",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USER KEY NEEDED",
+      "dataType": "POINTER",
+      "rawType": "*P19.1'",
+      "required": false,
+      "pointerTo": 19.1,
+      "helpText": "When extra protection is desired on an exam status, use this field to define the security key.  If this field is set to a valid security key, then the user will need that key in order to move an exam into this status.   If a key is desired, IRM will have to create it and allocate it to the appropriate users.  It is the coordinator's responsibility to enter this key into this field. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "APPEAR ON STATUS TRACKING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If the value of this field is 'YES', then the 'status tracking' function will display this status in it's appropriate order.  Otherwise, this status will not appear.   An example of when this field would be set to 'NO' is for a status called 'TRANSCRIBED'.   Many times after a report is transcribed it may not be verified for a day or two and the number of 'TRANSCRIBED' exams may get very large.  If 'TRANSCRIBED' was displayed in the status tracking function, then the system performance would suf",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ALLOW CANCELLING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "While an exam is in the current status, should the user be allowed to cancel an exam ?  Answer with 'YES', to allow cancelling and 'NO', to disallow cancelling.   If no entry is made in this field for the current status, then the user will NOT be allowed to cancel the exam. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TYPE OF IMAGING",
+      "dataType": "POINTER",
+      "rawType": "RP79.2'",
+      "required": true,
+      "pointerTo": 79.2,
+      "helpText": "     This field identifies each Examination Status with a specific Imaging Type. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "GENERATE EXAMINED HL7 MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field indicates if an HL7 message should be generated when a patient is examined. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VISTARAD CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:Waiting for Exam;E:Examined;D:Dictated/Interpreted;T:Transcribed;",
+      "helpText": " W -- Waiting for Exam  E -- assigned when tech has completed image acquisition  D -- assigned when the radiologist has completed the diagnostic reading  T -- assigned when the report has been transcribed ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 61,
+  "crossReferences": [
+    {"name": "AA1", "field": },
+    {"name": "AA2", "field": },
+    {"name": "AVC", "field": },
+    {"name": "B", "field": },
+    {"name": "72", "field": .01, "type": "regular"},
+    {"name": "72", "field": 3, "type": "regular"},
+    {"name": "72", "field": 7, "type": "regular"},
+    {"name": "72", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 7, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RA(79.2,+$P(^(0),U,7),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(79.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

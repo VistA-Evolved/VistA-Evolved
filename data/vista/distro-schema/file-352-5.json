@@ -1,0 +1,65 @@
+{
+  "fileNumber": 352.5,
+  "fileName": "IB CLINIC STOP CODE BILLABLE TYPES",
+  "globalRoot": "352.5",
+  "globalReference": "^IBE(352.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC STOP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores the three or six digit stop code used for determining the billable rate as either billable for primary care, billable for specialty care, or non-billable based on effective date.  This field is not DINUMed to allow duplicate stop code entries with different billable rates depending on the visit date (effective date of the rate).   Data in this file is static and should not be added, deleted, or changed.  This file will be maintained and populated with the release of future IB p",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date on which billing for this clinic stop code should be activated or ignored. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BILLABLE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NON-BILLABLE;1:BASIC CARE;2:SPECIALTY CARE;",
+      "helpText": "This specifies if the clinic stop is billable under basic care or specialty care, or if the clinic stop code is non-billable. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the description of the stop code for display on lookup and reports. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "OVERRIDE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:OVERRIDE;",
+      "helpText": "OVERRIDE FLAG is 1 if the code belongs to override table ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "352.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N %,IB S IB=$G(^(0)) W ?12,\" \",$P(IB,U,4) S %=$P(IB,U,2) S:'% %=\"???????\" W ?46,\" EffDate:\",$E(%,4,5),\"/\",$E(%,6,7),\"/\",$E(%,2,3) S %=$P(IB,U,3) W ?64,\" \",$S(%=1:\"Basic\",%=2:\"Specialty\",1:\"Non-Billable\")"}
+  ]
+}

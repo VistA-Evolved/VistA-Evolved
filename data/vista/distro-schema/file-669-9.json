@@ -1,0 +1,497 @@
+{
+  "fileNumber": 669.9,
+  "fileName": "PROSTHETICS SITE PARAMETERS",
+  "globalRoot": "669.9",
+  "globalReference": "^RMPR(669.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The site name can be either uppercase, or a combination of upper and lower. This is the name of your Medical Center, and should be entered the way you would like to have it print on your forms.  For example: Carl T. Hayden VAMC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is your station number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "IFCAP SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field should contain the current IFCAP site location. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTOMATED INVENTORY (GIP)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When you first install Prosthetics, this should be set to no.  When you are ready to start using the inventory package, you should change this to yes. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the phone number of Prosthetics. This phone number will print on all 2421 forms. 24 spaces are allotted for phone number which should allow for entry of both area code and a four digit extension, if desired. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STREET ADD1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This should be the street address of your Prosthetics Service, or the address you would like printed on your forms. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city to go with the STREET ADD1 field.  This is the city of your Prosthetics Service. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "Pointer to the State file #5. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the zip code to go with the street address and city. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "MANAGER COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This comment will display on GUI Purchasing Page. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CHIEF SIG BLOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the Fund Control Point Official that signs. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "PURCHASING AGENT",
+      "dataType": "POINTER",
+      "rawType": "669.9003PA",
+      "required": false,
+      "helpText": "This is a list of persons who are allowed to serve as purchasing agents for prosthetics. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "SIGNATURE BLOCK TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Signature Block Title is used to describe the Prosthetics Service as a P&SAS or PTC. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PURCHASING DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the device all VAF 10-2421s and 10-55's will be printed on. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMMON NUMBERING SERIES",
+      "dataType": "POINTER",
+      "rawType": "P442.6'",
+      "required": false,
+      "pointerTo": 442.6,
+      "helpText": "This is the Numbering Series given by Fiscal so each PO # will be unique. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "GROUPER COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0I",
+      "length": 8,
+      "required": false,
+      "helpText": "GROUPER COUNTER is used in the calculation of AMIS reports both in Purchasing and Issue from Stock Modules.  This field should NEVER BE CHANGED! ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DVN IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IP address for the Delivery Verification Notice DVN for the  Patient Notification Cards. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DVN FILE DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the System File Directory name that is given by the local IRM. The instructions for the file directory set up are in the Installation Guide for RMPR*3.0*125 ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DVN SFTP USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the sftp User name that will be given to the sites and entered into the first site in the list when using the SS  Enter/Edit Station Site Parameters option. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ART LIMBS PSC AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "When a 10-2520 is issued, certain dollar limits are set for artifical limbs. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "WHEELCHAIR PSC AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "When a 10-2520 is issued, certain dollar limits are set for wheelchairs. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "BRACES PSC AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "When a 10-2520 is issued, certain dollar limits are set for braces. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "BLIND AIDS PSC AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "When a 10-2520 is issued, certain dollar limits are set for blind aids. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "SUSPENSE PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of days for the suspense records to remain in the file once they have been completed. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CLOSE-OUT PURCHASING PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of days to keep old transactions in the file. It is recommended that this be set to 120 days. days. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CANCELLATION PURCHASING PURGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the number of days to keep transactions that have been cancelled. It is recommended that this be set to 120 days. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PROSTHETICS CLINIC",
+      "dataType": "POINTER",
+      "rawType": "669.922PA",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ORTHOTIC LAB DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is an optional entry.  If a device name is entered, it will be the device the 2529-3s will print on for the Orthostics Lab. If the field is left null the user will be prompted to enter a device. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RESTORATION CLINIC DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "Entry of a DEVICE is optional.  If a device name is entered, the device will print 2529-3s for the Restoration Clinic.  If the field is null, the users will be prompted to enter a device. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "SHOE LAST CLINIC DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is th e device that will print the 2529-3 for the Shoe Last Clinic. If the field is null, the user will be prompted to enter the device. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "WHEELCHAIR REPAIR SHOP DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the device that will print the 2529-3s for the Wheelchair Repair Shop.  If this field is null, the user will be asked to enter the device. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field turns on the lab module.  The Labs are on if ths field is set to 'yes'. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ORTHOTICS LAB ACTIVATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will contain a 1 if the Orthotics Lab has been activated at this station. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "RESTORATION LAB ACTIVATED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "A '1' in this field indicates that Restoration Clinic has been activated at this station. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ROUTING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the mail routing symbol, which is printed on purchasing forms.  The mail routing symbol '121' is being replaced by the value entered in this field. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "INVENTORY DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is a device that will print a Notification letter for Items below the re-order level. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "NOTIFICATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that a taskman job runs for the Notification letter. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "HQ MAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an exchange address for HQ personnel who will receive the PIP reports. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "HQ REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date when PIP report was ran for HQ. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "VISN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the VISN where this station belong to. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "PCE START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "PCE START DATE is the starting date and time the background job runs. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "PCE END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "PCE END DATE  is the date and time the PCE background job finish to completion. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "PCE HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is a pointer to Hopital Location file (#44), a clinic, where  prosthetics outpatient encounter is scheduled. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "HOME OXYGEN PRESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "669.9001",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 669.9001,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "HOME OXYGEN FUND CONTROL POINT",
+      "dataType": "SUBFILE",
+      "rawType": "669.961",
+      "required": false,
+      "helpText": "This field contains the fund control points used by home oxygen. ",
+      "isMultiple": true,
+      "subFileNumber": 669.961,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "HOME OXYGEN VENDOR",
+      "dataType": "POINTER",
+      "rawType": "669.962P",
+      "required": false,
+      "helpText": "This field contains the vendors that supply devices and services for home oxygen. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "HOME OXYGEN LETTER",
+      "dataType": "POINTER",
+      "rawType": "669.965P",
+      "required": false,
+      "helpText": "This field contains the letter types that are sent to patient receiving home oxygen. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "HO LETTER 1 LIST",
+      "dataType": "POINTER",
+      "rawType": "669.9002P",
+      "required": false,
+      "helpText": "List of all patients who get Home Oxygen letter 1. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "HO LETTER 2 LIST",
+      "dataType": "POINTER",
+      "rawType": "669.972P",
+      "required": false,
+      "helpText": "List of all patients who get Home Oxygen letter 2. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "HO LETTER 3 LIST",
+      "dataType": "POINTER",
+      "rawType": "669.974P",
+      "required": false,
+      "helpText": "List of all patient who get Home Oxygen letter 3. ",
+      "fieldNumber_": 74
+    }
+  ],
+  "fieldCount": 50,
+  "crossReferences": [
+    {"name": "ALTDY", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "PA", "field": },
+    {"name": "669.9", "field": .01, "type": "regular"},
+    {"name": "669.9", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "fileNumber": 399.5,
+  "fileName": "BILLING RATES",
+  "globalRoot": "399.5DI",
+  "globalReference": "^DGCR(399.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date in which changes in billing rates will take effect. A new entry, with a new effective date is necessary to change a previous entry.  The most recent effective date's entry data will be used (even if its null) in calculating current charges. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BILLING BEDSECTION",
+      "dataType": "POINTER",
+      "rawType": "R*P399.1'",
+      "required": true,
+      "pointerTo": 399.1,
+      "helpText": "This is the Specialty for which we have approved billing rates. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REVENUE CODE",
+      "dataType": "POINTER",
+      "rawType": "R*P399.2'",
+      "required": true,
+      "pointerTo": 399.2,
+      "helpText": "This is the revenue code that will automatically be used with this rate. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,2O",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the unit charge dollar amount for this rate. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ACTIVE;1:YES, ACTIVE;",
+      "helpText": "If a rate is no longer to be used it should be inactivated.  This may be necessary if you are building rates for the same care using different Revenue Codes and would like to keep the old entries in the file for reference purposes. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PAYORS TO USE WITH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "i:INSURANCE CO.;p:PATIENTS;o:OTHER (INSTITUTIONS);op:PATIENTS & INSTITUTIONS;iop:ALL BUT CAT C'S;iopc:ALL;c:CAT C. BILLS ONLY;opc:ALL BUT INSURANCE CO.'S;",
+      "helpText": "Enter the payors that this Billing Rate is to be used with.  For the purposes of this field, the choices for payer are:    i - Insurance companies    o - Other (Institutions    p - Patients    c - Means Test/Cat C bills   All bills to patients will be considered patient bills except for Means test Co-payment bills, which may have a different amount or  maximum associated with it. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NON-STANDARD RATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field should be answered 'YES' if this billing rate should not be automatically set up for all payers identified in the field 'PAYORS TO USE WITH.\"  This billing rate will only be used with insurance  companies where this revenue code has been listed in the   DIFFERENT REVENUE CODES TO USE field of the Insurance Company File.   If this field is left blank or answered 'NO' then this Revenue Code and amount will be set up automatically for this bedsection when a bill is created. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT2", "field": },
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "399.5", "field": .01, "type": "regular"},
+    {"name": "399.5", "field": .01, "type": "regular"},
+    {"name": "399.5", "field": .02, "type": "regular"},
+    {"name": "399.5", "field": .03, "type": "regular"},
+    {"name": "399.5", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGCR(399.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(399.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGCR(399.2,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(399.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S DGZX=X,X=$P(^(0),U,4),X2=\"2$\" D COMMA^%DTC W \"   \",X S X=DGZX K DGZX,X2"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(399.5,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

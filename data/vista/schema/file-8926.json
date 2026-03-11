@@ -1,0 +1,171 @@
+{
+  "fileNumber": 8926,
+  "fileName": "TIU PERSONAL PREFERENCES",
+  "globalRoot": "8926",
+  "globalReference": "^TIU(8926,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person whose preferences are represented by the record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DEFAULT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This hospital location is presented to the user as the default location when the user enters outpatient TIU documents.  The location must be an active clinic and may not be an Occasion of Service location or a Disposition location. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REVIEW SCREEN SORT FIELD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:patient;D:document type;R:reference date;S:status;C:completion date;A:author;E:expected cosigner;",
+      "helpText": "This is the attribute by which the multiple patient documents review screen lists will be sorted for the current user.  In the absence of a specific entry, the list will be sorted by reference date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REVIEW SCREEN SORT ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ascending;D:descending;",
+      "helpText": "This is the order in which the following review screen list(s) should be sorted according to the specified sort field (i.e., Ascending or Descending):    - multiple patient documents (several options)    - option Review Progress Notes [TIU OE/RR REVIEW PROG NOTES]  The default will be ascending, with unsigned stat documents at the top of the list. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY MENUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field determines whether the menus for document type, search category, etc. should be automatically displayed (at least until you get to know them better). ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PATIENT SELECTION PREFERENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:single;M:multiple;",
+      "helpText": "This determines whether the user will be prompted to select one patient at a time, or with the OE/RR patient look-up, which allows selection of a list of patients for iterative processing. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ASK 'Save changes?' AFTER EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This parameter enables or disables the prompt (Save changes? YES//) on exit  from your editor.  Enabling the prompt allows you to \"abandon mistakes\", and  helps some users avoid the accidental storage (or potential loss) of data  following editing of documents. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ASK SUBJECT FOR PROGRESS NOTES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if you want to be prompted for a SUBJECT when entering or editing a Progress Note.  Subject is a freetext, indexed field which may help you to find notes about a given topic, etc. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DEFAULT COSIGNER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person whose name will appear as the default when you are  prompted to name an expected cosigner for the Progress Notes which you author. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "NUMBER OF NOTES ON REV SCREEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This determines the number of notes that will be included in your initial list when reviewing progress notes by patient. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SUPPRESS REVIEW NOTES PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Allows user to specify whether to suppress the prompt to Review Existing Notes on entry of a Progress Note.  YES will SUPPRESS the prompt, while NO, or no entry will allow the site's default setting to take precedence. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "USE TEMPLATE REQD FLD HLITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is used to turn on template required field highlighting. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "TEMPLATE REQD FLD HLITE COLOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the number representing the highlight color to be used in CPRS GUI to highlight required fields on the note template form. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "TEMPLATE REQD FLD NAV LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TOP;1:LEFT;2:RIGHT;3:BOTTOM;",
+      "helpText": "This is the location the navigation tool will display on the template entry form in CPRS. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCATION BY DAY OF WEEK",
+      "dataType": "SET",
+      "rawType": "8926.01S",
+      "required": false,
+      "helpText": "This multiple provides a means of specifying the user's preferred location by day of week. ",
+      "isMultiple": true,
+      "subFileNumber": 8926.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AMENU", "field": },
+    {"name": "B", "field": },
+    {"name": "8926", "field": .01, "type": "regular"},
+    {"name": "8926", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

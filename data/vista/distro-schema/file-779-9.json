@@ -1,0 +1,67 @@
+{
+  "fileNumber": 779.9,
+  "fileName": "HLO PRIORITY QUEUES",
+  "globalRoot": "779.9",
+  "globalReference": "^HLD(779.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of either an outgoing or incoming queue.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DIRECTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "IN:INCOMING;OUT:OUTGOING;",
+      "helpText": "HLO includes queues that contain incoming messages and other queues that contain outgoing messages.  For example, there may be two queues named 'MPI ADT~A08', with one for messages being transmitted to another system, and the other queue of the same name for messages that were received from other systems.  At present this field will automatically default to OUTGOING.  A future enhancment may support the assignment of priorties for incomming queues.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "APPLIES TO ALL LINKS (YES/NO)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if the priority should be applied to all queues of the given name,  regardless of the link the queue is for.  It is allowed that even if set to YES, a different priority can be assigned to that queue for specific links, and that priority for the queue/link will override the more general one.  If this field is set to NO, that means that the PRIORITY field (#.04) is  ignored.  A priority can still be assigned to a specific queue by specifying the specific link, along with the priority fo",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "A priority is an integer between 20 and 100, with a default value of 50. The lower the priority, the less frequently the queue will be serviced. Conversely, the higher a queue's priority the more frequently it will be serviced.  The recommended use of the priority functionality is to reserve its use to the operations staff. A queue's priority should be increased if experience shows that it tends to get backed up.   ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LINKS",
+      "dataType": "POINTER",
+      "rawType": "779.91P",
+      "required": false,
+      "helpText": "A link is an entry in the HL Logical Link file (#870).  It defines a a destination point for HL7 messages, and the lower level communication protocol that should be used to transmit messages to that destination.    ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "779.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(779.9,.02,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

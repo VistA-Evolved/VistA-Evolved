@@ -1,0 +1,375 @@
+{
+  "fileNumber": 356.1,
+  "fileName": "HOSPITAL REVIEW",
+  "globalRoot": "356.1ID",
+  "globalReference": "^IBT(356.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of the Review.  Normally, reviews are done for UR purposes on days 3, 6, 9, 14, 21, 28 and every 7 days thereafter.  This field contains the date of these reviews.   There are 2 related fields,  DAY FOR REVIEW, and DATE ENTERED.  The field DAY FOR REVIEW will generally be computed for you based on the REVIEW DATE. The DATE ENTERED is the date the review was entered into the computer and is automatically generated for you.   Normally the REVIEW DATEs are done in order. The pre-ce",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRACKING ID",
+      "dataType": "POINTER",
+      "rawType": "P356'",
+      "required": false,
+      "pointerTo": 356,
+      "helpText": "This is the Claims Tracking entry that is being reviewed.  Generally only inpatient admissions will have reviews performed.   ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DAY FOR REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the number of the day of a continued stay review.  Continued stay reviews for UR purposes are generally done on days 3, 6, 9, 14, 21, 28, and every 7 days thereafter.  This field is normally computed from the Review date field.  However, it may be changed for reviews that are not solely for UR purposes.   Pre-certification reviews, Urgent Admission reviews, and Discharge  reviews will not have any data in this field. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SEVERITY OF ILLNESS",
+      "dataType": "POINTER",
+      "rawType": "P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Severity of Illness (SI) category that best describes the criteria met for continued stay days of care.  Select the PRIMARY category for this review. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INTENSITY OF SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Intensity of Service (IS) category that best describes the criteria met for continued stay days of care.  Select the PRIMARY category for this review. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CRITERIA MET IN 24 HOURS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "For Pre-certification Reviews and Urgent Admission reviews enter if the patient met IS or SI criteria for acute admissions within 24 hours of admission.  If the criteria was not met, then selection of a REASON  FOR NON-ACUTE ADMISSIONS will be required. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SPECIALTY FOR REVIEW",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "helpText": "Enter the specialty that is treating the patient for this review.   Normally this will automatically be retrieved from the admission/transfer  records and you will only need to confirm. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SPECIALIZED UNIT SI",
+      "dataType": "POINTER",
+      "rawType": "*P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Severity of Illness (SI) category that best describes the criteria met for continued stay days of care.  Select the PRIMARY category for this review.   For patients in specialized units the SI categories are different than for non-specialized units.  The definition of specialized units for interqual is different than what we normally consider intensive care units. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SPECIALIZED UNIT IS",
+      "dataType": "POINTER",
+      "rawType": "*P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Intensity of Service (IS) category that best describes the criteria met for continued stay days of care.  Select the PRIMARY category for this review.   For patient in specialized units the IS categories are different than for non-specialized units.  The definition of specialized units for interqual is different than what we normally consider intensive care units. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PROVIDER INTERVIEWED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "For Pre-certification reviews and Urgent Admission reviews enter whether or not UR interviewed the provider regarding the appropriateness of the admission. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "ADMISSION DECISION INFLUENCED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the provider was interviewed about the appropriateness of admission then answer whether or not the decision to admit the patient was influenced. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "D/C SCREENS MET",
+      "dataType": "POINTER",
+      "rawType": "P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Intensity of Service category whose discharge screens were met. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "SPECIAL CARE D/C SCREENS MET",
+      "dataType": "POINTER",
+      "rawType": "*P356.3'",
+      "required": false,
+      "pointerTo": 356.3,
+      "helpText": "Enter the Intesity of Service Category whose discharge screens were met. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "SI/IS APPLY ALL DAYS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer whether or not the Severity of Illness (SI) or Intensity of Service (IS) criteria apply to all days.  If not, then the number of non-acute days and the reason for non-acute days should be answered.   The dates of non-acute care should be entered in the comments field. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter if this review is active or not.  If a review is not active it will not be used or displayed on input screens or reports.     Inactivating an entry has the same effect as deleting the entry, with the added benefit of leaving the data for later review if necessary. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "NEXT REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this review should be reviewed next.  If the review status is entered then this field will contain the date it was entered.  If the review status is complete then the data in this field is automatically deleted.   This field is used to create your pending work lists.  Enter the date that you want to be reminded to follow-up on this review. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "REVIEW STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ENTERED;2:PENDING;10:COMPLETE;",
+      "helpText": "This is the status of this review.  Reviews that are entered or pending should contain a next review date.  Once a review is completed, the next review date is automatically deleted.  If a review status is changed from complete to any other status then the next review date is automatically set to today, but may be edited. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "TYPE OF REVIEW",
+      "dataType": "POINTER",
+      "rawType": "R*P356.11'",
+      "required": true,
+      "pointerTo": 356.11,
+      "helpText": "Enter whether or not this is an admission review or a continued stay review. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "REVIEW METHODOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INTERQUAL;2:MILLIMAN & ROBERTSON;999:OTHER;",
+      "helpText": "Enter the Review Methodology being used for this review.  Generally the INTERQUAL method is being used as the methodology for UR required review.  Insurance carriers may require other review methodologies.   Currently, if the type of review methodology is INTERQUAL then the categories for severity of illness and intensity of service will be prompted.  This data will be used for national roll-up purposes for UR. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "REVIEW COPIED FROM",
+      "dataType": "POINTER",
+      "rawType": "*P356.1'",
+      "required": false,
+      "pointerTo": 356.1,
+      "helpText": "If this review was automatically copied during the editing of a review then this is the review it was copied from. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this review was entered into the computer.  It is generated when the review is entered and not editable by the user. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who was signed on to the computer system when this review was created.  If this review was created automatically by the computer from an admission or outpatient visit, then this might be a user for MAS, IRM or other service. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "LAST EDIT ON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this review was last edited by a user using  the input options.  Every time any field other than the UR COMMENT field is edited this field is updated to the current date. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the signed on user who last edited this entry using the input screens.  Every time a review is edited with the input screens, this field is updated.  (If only the UR COMMENTS field is updated then this field is not changed.) ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE COMPLETED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this review was completed.  It is triggered by  the REVIEW STATUS field every time the review is completed. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "COMPLETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who completed this review.  It is triggered by the REVIEW STATUS field when the status chages to complete. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "ADD NEXT REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If you wish to add the next day reviewed at this time answer YEand you may procede directly into the next review.  Answer NO and you will be returned to the Hospital Review Screen.  You may add another day for review at any time. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "NEXT REVIEW EXACTLY THE SAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the Next Day for Review is exactly the same as the day you just finished entering answer YES and the computer will copy this days review into the next days review so you don't have to do all the data entry.  Answer No and you will be asked each prompt as appropriate.   A review that was copied may be edited at any time if necessary. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "ADDITIONAL REVIEWS REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this visit does not require any additional reviews then answer NO and the computer will not create any more reviews automatically unless there is a change is service.  Answer YES or leave blank if additional reviews are required. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "ACUTE CARE DISCHARGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the patient no longer requires acute care, then this is the date that the patient left an acute status.   ",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "UTILIZATION REVIEW COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "356.111",
+      "required": false,
+      "helpText": "This field is used to store comments about the UR Review.  It can be used to document reasons for non-acute admissions, non-acute days, or other items that require a greater explanation. ",
+      "isMultiple": true,
+      "subFileNumber": 356.111,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REASON FOR NON-ACUTE ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "356.112PA",
+      "required": false,
+      "helpText": "If this patient did not meet criteria for an acute admission within 24 hours enter the reasons that best describe why the admission didn't meet criteria.  If no reason can be determined enter 8.02 other.   This reason will be transmitted to the national database when it becomes available. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REASON FOR NON-ACUTE DAYS",
+      "dataType": "POINTER",
+      "rawType": "356.113PA",
+      "required": false,
+      "helpText": "If this patient had non-acute days of care during this review, enter reasons that best describe the reason for the non-acute days.  If no reason can be deteremined select the reason 8.01, Other. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PATIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the patient whose tracking entry this review is for. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APEND", "field": },
+    {"name": "ASPC", "field": },
+    {"name": "ATIDT", "field": },
+    {"name": "ATIDT1", "field": },
+    {"name": "ATRTP", "field": },
+    {"name": "ATRTP1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "356.1", "field": .01, "type": "regular"},
+    {"name": "356.1", "field": .01, "type": "regular"},
+    {"name": "356.1", "field": .02, "type": "regular"},
+    {"name": "356.1", "field": .02, "type": "regular"},
+    {"name": "356.1", "field": .02, "type": "regular"},
+    {"name": "356.1", "field": .07, "type": "regular"},
+    {"name": "356.1", "field": .2, "type": "regular"},
+    {"name": "356.1", "field": .21, "type": "regular"},
+    {"name": "", "field": .21, "type": "regular"},
+    {"name": "", "field": .21, "type": "regular"},
+    {"name": "", "field": .21, "type": "regular"},
+    {"name": "356.1", "field": .22, "type": "regular"},
+    {"name": "356.1", "field": .22, "type": "regular"},
+    {"name": "", "field": 1.17, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBT(356,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(356,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .21, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(356.1,.21,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,21)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .22, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(356.11,+$P(^(0),U,22),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(356.11,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,869 @@
+{
+  "fileNumber": 699,
+  "fileName": "ENDOSCOPY/CONSULT",
+  "globalRoot": "699ID",
+  "globalReference": "^MCAR(699,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "APPOINTMENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field contains the date/time of the Endoscopy procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the name of the patient under-going the procedure. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "R*P697.2'",
+      "required": true,
+      "pointerTo": 697.2,
+      "helpText": "This field identifies the specific procedure performed, such as colonoscopy. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INDICATION FOR PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "699.16PA",
+      "required": false,
+      "helpText": "This field identifies field stores the reason (s) why the Endoscopic procedure was performed.  This field has been broken out for GI Endoscopies into it's individual elements and is no longer asked by the GI edit templates, but continues to be asked for Pulmonary Endoscopies. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "INDICATED THERAPY",
+      "dataType": "POINTER",
+      "rawType": "699.17PA",
+      "required": false,
+      "helpText": "This field identifies field records the therapeutic manipulations which you believe you may perform at the time of the examination.  This does not record the findings of the procedure, but rather the reason for which the procedure is performed.  Used as an indication for procedure. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "SIGNS AND SYMPTOMS",
+      "dataType": "POINTER",
+      "rawType": "699.18PA",
+      "required": false,
+      "helpText": "This field identifies an indication for procedure that records the specific sign or symptom for performing the procedure.  The purpose of this field is to record specific correlation between common symptoms and the Endoscopic Findings. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "LOCATION OF PAIN",
+      "dataType": "POINTER",
+      "rawType": "699.19PA",
+      "required": false,
+      "helpText": "This field stores the specific location of pain if pain is entered as a sign or symptom.  This field has been removed from the input templates for version 2. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "ABNORMAL BOWEL CONSISTENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALTERNATING;2:BLOODY;3:FORMED;4:HARD;5:SOFT;6:WATERY;",
+      "helpText": "This field stores the consistency (alternating, bloody,formed,hard,soft,or watery) for a patient who has the symptom of abnormal bowel habits.  This field has been removed from the input templates for version 2. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 2.45,
+      "fieldName": "ABNORMAL BOWEL DURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the length of time the patient has had the abnormal bowel habits.  This field has been removed from the input templates for version 2. ",
+      "fieldNumber_": 2.45
+    },
+    {
+      "fieldNumber": 2.46,
+      "fieldName": "ABNORMAL BOWEL FREQUENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the frequency for abnormal bowel habits.  This field has been removed from the input templates for version 2. ",
+      "fieldNumber_": 2.46
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "DISEASE FOLLOWUP",
+      "dataType": "POINTER",
+      "rawType": "699.35PA",
+      "required": false,
+      "helpText": "This field refers to the patient who is undergoing repeat procedure for the same (active) disease, such as follow-up on gastric ulcer healing. Used as an indication for procedure. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "FOLLOWUP DEVICE OR THERAPY",
+      "dataType": "POINTER",
+      "rawType": "699.36PA",
+      "required": false,
+      "helpText": "This field records the type of device or therapy, previously performed, which needs follow-up.  Used as an indication for procedure. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 2.7,
+      "fieldName": "SURVEILLANCE",
+      "dataType": "POINTER",
+      "rawType": "699.37PA",
+      "required": false,
+      "helpText": "This field identifies to the asymptomatic patient who is being re-examined because of old disease, such as prior colonic polyps. Used as an indication for procedure for GI Endoscopies. ",
+      "fieldNumber_": 2.7
+    },
+    {
+      "fieldNumber": 2.8,
+      "fieldName": "PROTOCOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a mandated endoscopy according to a pre-approved schedule. The name or number of the protocol should be entered here.  Used as a GI Endoscopy indication for procedure. ",
+      "fieldNumber_": 2.8
+    },
+    {
+      "fieldNumber": 2.85,
+      "fieldName": "EGD SIMPLE PRIMARY EXAM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies that a PDGE (Primary Diagnostic Gastrointestinal Endoscopy) was performed in place of an initial screening X-ray, for diagnostic purposes in an outpatient setting. ",
+      "fieldNumber_": 2.85
+    },
+    {
+      "fieldNumber": 2.86,
+      "fieldName": "LAB OR XRAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field indicates that there is an abnormal X-ray of lab test suggesting the Endoscopy.  Used as an indication for procedure for GI Endoscopies. ",
+      "fieldNumber_": 2.86
+    },
+    {
+      "fieldNumber": 2.87,
+      "fieldName": "OCCULT BLOOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a specific indication for procedure.  It indicates that Occult Blood in the stool is present.  Used for GI Endoscopies. ",
+      "fieldNumber_": 2.87
+    },
+    {
+      "fieldNumber": 2.88,
+      "fieldName": "SPECIMEN COLLECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field indicates that the procedure is performed to collect tissue or body fluid to perform other tests.  Used as an indication for procedure for GI Endoscopies. ",
+      "fieldNumber_": 2.88
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INDICATION COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free text field is used to enhance or add to the specific indications for procedure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "699.05P",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MEDICATION USED",
+      "dataType": "POINTER",
+      "rawType": "699.38P",
+      "required": false,
+      "helpText": "This field identifies field records the type of medication administered for the procedure.  It also records the dosage of the medication and the route of administration. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ENDOSCOPIST",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of the provider who performed the procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SECOND ENDOSCOPIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the name of a second doctor performing the procedure. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "WHERE PERFORMED",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the hospital location where the procedure was performed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This field identifies the in-house location of the patient. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TIME STARTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field identifies the time the procedure was begun in 24 hour time, without punctuation.  (EX: 0800, 1630, etc.) ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TIME COMPLETED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field identifies the time the procedure was completed in 24 hour time, without punctuation (Ex: 0800,1630, etc.) ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "URGENCY OF PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ELECTIVE;2:URGENT;3:EMERGENCY;",
+      "helpText": "This field identifies whether the procedure was elective, urgent, or emergency. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PNEUMOPERITONEUM GAS",
+      "dataType": "SET",
+      "rawType": "699.39SA",
+      "required": false,
+      "helpText": "This field identifies field contains the type of Pneumoperitoneum Gas used and the method of pressure control for Laparoscopy procedures. ",
+      "isMultiple": true,
+      "subFileNumber": 699.39,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PREPARATION DIET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO CHANGE;2:CLEAR LIQUIDS;3:SUPPLEMENTS;4:OTHER;",
+      "helpText": "This field identifies to the oral intake for preparation of the colon for a  colonoscopy. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DIET COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a comment on the oral intake given for the preparation for a colonscopy. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "BOWEL PREPARATION",
+      "dataType": "SET",
+      "rawType": "699.4SA",
+      "required": false,
+      "helpText": "This field identifies a multiple field which records commonly used laxative preparations given for a colonoscopy and the route by which it was given. ",
+      "isMultiple": true,
+      "subFileNumber": 699.4,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ENEMAS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WATER;2:PHOSPHASODA;3:OTHER;",
+      "helpText": "This field records the type of enemas given in preparation for a colonoscopy. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "COMMON BILE DUCT SIZE (mm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field identifies the size in millimeters of the Common Bile Duct.  Used for the ERCP Procedure. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PANCREATIC DUCT SIZE (mm)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the size in millimeters of the pancreatic duct.  Used for ERCP procedures. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DEPTH OF INSERTION",
+      "dataType": "POINTER",
+      "rawType": "*P697'",
+      "required": false,
+      "pointerTo": 697,
+      "helpText": "This field indicates the extent of examination irrespective of the findings reported.  This is a pointer to the Anatomy file. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "RESULTS",
+      "dataType": "POINTER",
+      "rawType": "699.56PA",
+      "required": false,
+      "helpText": "This field is used to record results of the overall procedure. This field is labeled 'Findings' for Pulmonary Endoscopies. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "POST-PROC INSTRUMENT CLEANSING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:WASH;2:IMMERSION;3:GAS;4:UNKNOWN;5:OTHER;",
+      "helpText": "This field describes how the instruments were cleaned following the procedure.  This is used for epidemiologic purposes. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COMPLICATIONS",
+      "dataType": "POINTER",
+      "rawType": "699.58PA",
+      "required": false,
+      "helpText": "This field identifies field indicates any complications encountered during the procedure or resulting from the procedure and the result of the complication. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "NON-ENDOSCOPIC PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "699.59PA",
+      "required": false,
+      "helpText": "This field stores the procedure type for a non-endoscopic GI procedure. It is accessed by entering 'NON-ENDO' at the procedure prompt in the GI Endoscopy Enter/Edit. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.5,
+      "fieldName": "CONSULTATION TYPE",
+      "dataType": "POINTER",
+      "rawType": "P699.82'",
+      "required": false,
+      "pointerTo": 699.82,
+      "helpText": "This field indicates the type of consultation requested.  Used in the Consult options. ",
+      "fieldNumber_": 31.5
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SUBJECTIVE",
+      "dataType": "SUBFILE",
+      "rawType": "699.66",
+      "required": false,
+      "helpText": "This field identifies field is used to enter information in the Consult options and the Non-Endoscopic GI Procedure entry. Both these entries use the SOAP (Subjective, Objective, Assessment, Planned) format. ",
+      "isMultiple": true,
+      "subFileNumber": 699.66,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "OBJECTIVE",
+      "dataType": "SUBFILE",
+      "rawType": "699.67",
+      "required": false,
+      "helpText": "This field identifies field is used to enter information in the Consult options and the Non-Endoscopic GI Procedure entry.  Both these entries use the SOAP (Subjective, Objective, Assessment, Planned) format. ",
+      "isMultiple": true,
+      "subFileNumber": 699.67,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "699.68",
+      "required": false,
+      "helpText": "This field identifies field is used to enter information in the Consult options and the Non-Endoscopic GI Procedure entry.  Both these entries use the SOAP (Subjective, Objective, Assessment, Planned) format. ",
+      "isMultiple": true,
+      "subFileNumber": 699.68,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "PLANNED",
+      "dataType": "SUBFILE",
+      "rawType": "699.69",
+      "required": false,
+      "helpText": "This field identifies field is used to enter information in the Consult options and the Non-Endoscopic GI Procedure entry.  Both these entries use the SOAP (Subjective, Objective, Assessment, Planned) format. ",
+      "isMultiple": true,
+      "subFileNumber": 699.69,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 35.9,
+      "fieldName": "DISC ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is not being used at the present time. ",
+      "fieldNumber_": 35.9
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "VIDEO FRAME NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "699.64A",
+      "required": false,
+      "helpText": "This field is not being used at the present time. ",
+      "isMultiple": true,
+      "subFileNumber": 699.64,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 36.5,
+      "fieldName": "VIDEO/AUDIO FILE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "699.71A",
+      "required": false,
+      "helpText": "This field is not being used at the present time. ",
+      "isMultiple": true,
+      "subFileNumber": 699.71,
+      "fieldNumber_": 36.5
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This free-text field has been superseded by word-processing Field #37.1, DIAGNOSIS/DIAGNOSIS SUPPLEMENT. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 37.1,
+      "fieldName": "DIAGNOSIS/DIAGNOSIS SUPPLEMENT",
+      "dataType": "SUBFILE",
+      "rawType": "699.04",
+      "required": false,
+      "helpText": "This field is used in addition to or instead of the diagnosis list generated from the impressions. ",
+      "isMultiple": true,
+      "subFileNumber": 699.04,
+      "fieldNumber_": 37.1
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "REVISED DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a free text field used to modify or enhance the primary diagnosis.  This field is generally used when there is an unexpected Pathology report. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "DISPOSITION",
+      "dataType": "SET",
+      "rawType": "699.73SA",
+      "required": false,
+      "helpText": "This field identifies field stores post-encounter dispositions modified by a date and a free text reason. ",
+      "isMultiple": true,
+      "subFileNumber": 699.73,
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PRESCRIPTION GIVEN",
+      "dataType": "POINTER",
+      "rawType": "699.74PA",
+      "required": false,
+      "helpText": "This field identifies field stores the drug(s) and dosage(s) given as a post- encounter prescription. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "SECONDARY DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "699.75PA",
+      "required": false,
+      "helpText": "This field identifies one or more diagnoses chosen from the list of impressions minus the diagnosis chosen as the primary diagnosis. Each diagnosis also has a free text impression field linked with it. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LOCATION EVALUATED",
+      "dataType": "POINTER",
+      "rawType": "699.01P",
+      "required": false,
+      "helpText": "This field identifies field records the anatomical location evaluated and records findings for the location evaluated. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "FELLOW",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of a fellow who assisted on the procedure. ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "SECOND FELLOW",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of a second fellow who assisted on the procedure.  ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;I:INCOMPLETE EXAMINATION;",
+      "helpText": "This field indicates whether the Endoscopy was Normal,Abnormal or  Incomplete.  This required field appears on the Summary of Patient Procedures. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "INSTRUCTIONS TO PATIENT",
+      "dataType": "SUBFILE",
+      "rawType": "699.0203",
+      "required": false,
+      "helpText": "This field identifies a word processing field which indicates post-procedural instructions given to the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 699.0203,
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "PRIMARY DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "P697.5'I",
+      "required": false,
+      "pointerTo": 697.5,
+      "helpText": "This field contains a primary diagnosis chosen by the user from the list of impressions entered in the location evaluated field.  Once this diagnosis is entered it can not be changed or deleted. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 204.5,
+      "fieldName": "PRIMARY DIAGNOSIS ANATOMY",
+      "dataType": "POINTER",
+      "rawType": "P697'I",
+      "required": false,
+      "pointerTo": 697,
+      "helpText": "This allows the user to enter the Primary Diagnosis Anatomy. Once this is entered it can not be changed or deleted. ",
+      "fieldNumber_": 204.5
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "PRIMARY DIAGNOSIS IMPRESSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains a free text comment regarding the primary diagnosis. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "COUGH",
+      "dataType": "POINTER",
+      "rawType": "699.0206PA",
+      "required": false,
+      "helpText": "This field stores the type of cough the patient has and the duration of the cough.  Used for Pulmonary Endoscopies. ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "PNEUMONIA",
+      "dataType": "POINTER",
+      "rawType": "699.0207PA",
+      "required": false,
+      "helpText": "This field identifies field stores the location of pneumonia and the dates during which the pneumonia occurred.  This is used as an indication for Pulmonary Endoscopies. ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "OTHER FOLLOWUP DEVICE/THERAPY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies a free text field which records the type of device or therapy, previously performed, which needs therapy.  This can be used instead of or in addition to the pointed to list. ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a free text summary of the Endoscopy (up to 79 characters).  This required field appears on the Summary of Patient Procedures. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "699.03P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provide a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARKED FOR DELETION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARKED FOR DELETION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "RECORD CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "699.02005P",
+      "required": false,
+      "helpText": "This field points to an object in the Image File. ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 88,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACE", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "ES", "field": },
+    {"name": "699", "field": .01, "type": "regular"},
+    {"name": "699", "field": .01, "type": "regular"},
+    {"name": "699", "field": .02, "type": "regular"},
+    {"name": "699", "field": .02, "type": "regular"},
+    {"name": "699", "field": 1, "type": "regular"},
+    {"name": "699", "field": 6, "type": "regular"},
+    {"name": "699", "field": 6, "type": "regular"},
+    {"name": "", "field": 6, "type": "regular"},
+    {"name": "699", "field": 8, "type": "regular"},
+    {"name": "699", "field": 202, "type": "regular"},
+    {"name": "699", "field": 900, "type": "regular"},
+    {"name": "699", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(697.2,+$P(^(0),U,12),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(697.2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(699,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "fileNumber": 66.3,
+  "fileName": "MASTER LABORATORY TEST",
+  "globalRoot": "66.3",
+  "globalReference": "^LRMLTF(",
+  "ddAccess": "Y",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LAB TEST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the National Master Laboratory Test file (MLTF)  for associating lab tests with LOINC Codes and should not be edited. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ALTERNATE TEST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ230a",
+      "length": 230a,
+      "required": false,
+      "helpText": "This is the 'short name' for the Master Laboratory Test file. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOINC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ20a",
+      "length": 20a,
+      "required": true,
+      "helpText": "This is the LOINC code that will be associated to the lab test name and VUID. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "COMPONENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the Lab COMPONENT value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROPERTY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the Lab PROPERTY value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TIME ASPECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the Lab TIME ASPECT value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SPECIMEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the Lab SPECIMEN (site/specimen) value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SCALE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ230a",
+      "length": 230a,
+      "required": true,
+      "helpText": "This is the Lab SCALE value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "METHOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ230a",
+      "length": 230a,
+      "required": false,
+      "helpText": "This is the Lab METHOD value used in matching a Lab test to a LOINC Code. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P66.3'Ia",
+      "required": false,
+      "pointerTo": 66.3,
+      "helpText": "This field is populated when one Term/Concept replaces another Term/Concept. This field is controlled by standardization and should only be changed by standardization processes. This field contains a pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique arbitrary integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "66.399DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 66.399,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "C", "field": },
+    {"name": "66.3", "field": .04, "type": "regular"},
+    {"name": "66.3", "field": 99.97, "type": "regular"},
+    {"name": "66.3", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W:$D(^(2)) \"   \",$P(^(2),U,2)"},
+    {"field": .08, "value": "W:$D(^(3)) \"   \",$P(^(3),U,2)"},
+    {"field": 1, "value": "W:$D(^(3)) \"   \",$P(^(3),U,4)"}
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "fileNumber": 71.6,
+  "fileName": "ROUTE OF ADMINISTRATION",
+  "globalRoot": "71.6",
+  "globalReference": "^RAMIS(71.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the route of administration for pharmaceuticals or radiopharmaceuticals administered during an imaging procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VALID SITES OF ADMINISTRATION",
+      "dataType": "POINTER",
+      "rawType": "71.62PA",
+      "required": false,
+      "helpText": "Bodily sites of drug administration appropriate for this route of administration should be entered here.  During case edit, users will be restricted to selecting only the sites entered here. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROMPT FOR FREE TEXT SITE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;",
+      "helpText": "This field should be answered 'Yes' only if selection of this route of administration should trigger a prompt asking for a \"free text\" site of administration rather than restricting users to selecting a site entered as a valid site of administration for this route.  An example might be a route of administration where there are so many possible sites of administration that it is impractical to associate them all with the route. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "71.61A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 71.61,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "LOW", "field": },
+    {"name": "71.6", "field": .01, "type": "regular"},
+    {"name": "71.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

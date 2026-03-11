@@ -1,0 +1,27 @@
+{
+  "fileNumber": 7106.8,
+  "fileName": "NOIS ENTRY PERSON TYPE",
+  "globalRoot": "7106.8",
+  "globalReference": "^FSC(\"EPTYPE\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the entry person type. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7106.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

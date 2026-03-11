@@ -1,0 +1,75 @@
+{
+  "fileNumber": 663.2,
+  "fileName": "ACTIVITIES NEW/REPAIR WORKSHEET TOTALS",
+  "globalRoot": "663.2D",
+  "globalReference": "^RMPRA(663.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DAY OF AMIS RUN",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the day of the week AMIS was run. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DISABLED;",
+      "helpText": "This field will disable the transmission of AMIS. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NEW AMIS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "663.21P",
+      "required": false,
+      "helpText": "This field holds the new AMIS count for the current report. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REPAIR AMIS CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "663.22P",
+      "required": false,
+      "helpText": "This field holds all repair AMIS category information for the current report This field indicates which Amis category the repair should be counted under  for reporting purposes. 2 ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Holds the starting date of the current AMIS report. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STOP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Holds the stop date of the current AMIS report. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "663.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

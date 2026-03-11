@@ -1,0 +1,37 @@
+{
+  "fileNumber": 356.85,
+  "fileName": "CLAIMS TRACKING BILLABLE FINDINGS",
+  "globalRoot": "356.85",
+  "globalReference": "^IBT(356.85,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal values of the entries in this file to assist in user selection. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILLABLE FINDING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Claims Tracking Billable Finding(s) code.  These codes are selected and sorted within each CT event for coding adjustments. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "356.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

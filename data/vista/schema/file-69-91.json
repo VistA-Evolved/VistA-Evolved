@@ -1,0 +1,92 @@
+{
+  "fileNumber": 69.91,
+  "fileName": "LR ROUTINE INTEGRITY CHECKER",
+  "globalRoot": "69.91I",
+  "globalReference": "^LAB(69.91,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Version #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "    The version number for this set of exported routines ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Routine",
+      "dataType": "SUBFILE",
+      "rawType": "69.911",
+      "required": false,
+      "helpText": "   Enter the name of the routine to be exported ",
+      "isMultiple": true,
+      "subFileNumber": 69.911,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Distribution Date",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": " This field contains the distrubution date of this version. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DELETED OPTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "69.913",
+      "required": false,
+      "helpText": " This field contains a list of options which are being deleted or being moved from one menu to another during version installation. ",
+      "isMultiple": true,
+      "subFileNumber": 69.913,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DELETE PRINT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "69.914A",
+      "required": false,
+      "helpText": " A list of print templates which are obsolete or being replaced by another template using new file structure. ",
+      "isMultiple": true,
+      "subFileNumber": 69.914,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DELETE SORT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "69.915A",
+      "required": false,
+      "helpText": " This field contains a list of obsolete or replaced sort templates using the new file structure. ",
+      "isMultiple": true,
+      "subFileNumber": 69.915,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DELETE EDIT TEMPLATE",
+      "dataType": "SUBFILE",
+      "rawType": "69.916A",
+      "required": false,
+      "helpText": " This field contains a list of edit/input templates which are obsolete or being replaced by templates based on the new file structure. ",
+      "isMultiple": true,
+      "subFileNumber": 69.916,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "69.91", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$$FMTE^XLFDT($P(^(\"0\"),U,3),\"5Z\")"}
+  ]
+}

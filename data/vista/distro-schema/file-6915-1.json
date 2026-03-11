@@ -1,0 +1,77 @@
+{
+  "fileNumber": 6915.1,
+  "fileName": "FAP DOCUMENT COUNTERS",
+  "globalRoot": "6915.1",
+  "globalReference": "^ENG(6915.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUBMITTING STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This should be the station number of each site running this package. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FA COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a counter of how many FA documents have been sent. The next FA document sent will increment this counter and use that number as a transaction number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FB COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a counter of how many FB documents have been sent. The next FB document sent will increment this counter and use that number as a transaction number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FC COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a counter of how many FC documents have been sent.  The next FC document sent will increment this counter and use that number as a transaction number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FD COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a counter of how many FD documents have been sent. The next FD document sent will increment this counter and use that number as a transaction number. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FR COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is a counter of how many FR documents have been sent. The next FR document sent will increment this counter and use that number as a transaction number. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6915.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

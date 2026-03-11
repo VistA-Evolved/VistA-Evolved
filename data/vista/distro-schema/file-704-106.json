@@ -1,0 +1,106 @@
+{
+  "fileNumber": 704.106,
+  "fileName": "TERM_CHILD_PAIR",
+  "globalRoot": "704.106",
+  "globalReference": "^MDC(704.106,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101'",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the primary observation/term for complex term pairs.  A sample TERM_ID could identify \"blood pressure\" as a primary term. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CHILD_ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This represents the order of the child pair in association with a  complex term. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CHILD_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.101",
+      "required": true,
+      "pointerTo": 704.101,
+      "helpText": "This identifies the child term for a complex term pair. A sample CHILD_ID could identify \"systolic\" as a child term of \"blood  pressure\". ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CHILD_UNIT_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This is the unit(s) to present this child term. A sample CHILD_UNIT_ID could identify \"MILLIMETERS OF MERCURY\".  ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "VALUE_TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:Extract;1:Delimited;",
+      "helpText": "This field will indicate whether the observation values are  delimited or not. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VALUE_DELIMITER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number between 32 and 126 (0 Decimal Digits) of the ascii  value for the character to be used as the delimiter per delimited values. A sample VALUE_DELIMITER could be \"47\" to signify the use of the character \"/\" as delimiter. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "VALUE_START_POSITION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The \"child values\" may be presented in a string of data. This field is either the position or the delimited piece, of the data to begin  extracting child values. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "VALUE_STOP_POSITION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The \"child values\" may be presented in a string of data. This field is either the last position or the last delimited piece of the data. This  is where extracting of child values is to stop. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a DESCRIPTION of this observation/child term pair. A sample DESCRIPTION could be \"Systolic pressure\". ",
+      "fieldNumber_": .09
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

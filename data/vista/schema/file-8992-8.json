@@ -1,0 +1,46 @@
+{
+  "fileNumber": 8992.8,
+  "fileName": "MUNIT TEST GROUP",
+  "globalRoot": "8992.8",
+  "globalReference": "^XTV(8992.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEST ROUTINE",
+      "dataType": "SUBFILE",
+      "rawType": "8992.81",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8992.81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "8992.82",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 8992.82,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8992.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

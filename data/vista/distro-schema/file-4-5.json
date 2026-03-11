@@ -1,0 +1,86 @@
+{
+  "fileNumber": 4.5,
+  "fileName": "NETWORK TRANSACTION",
+  "globalRoot": "4.5",
+  "globalReference": "^XMB(4.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "This file is obsolete. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This file is obsolete. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREPROCESSING LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This file is obsolete. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "POSTPROCESSING LOGIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This file is obsolete. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECIPIENT",
+      "dataType": "SUBFILE",
+      "rawType": "4.51",
+      "required": false,
+      "helpText": "This file is obsolete. ",
+      "isMultiple": true,
+      "subFileNumber": 4.51,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECORD TYPE SELECTOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECORD",
+      "dataType": "SUBFILE",
+      "rawType": "4.52",
+      "required": false,
+      "helpText": "This file is obsolete. ",
+      "isMultiple": true,
+      "subFileNumber": 4.52,
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "4.5", "field": .01, "type": "regular"},
+    {"name": "4.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "fileNumber": 2006.542,
+  "fileName": "DICOM RETRIEVE REQUEST QUEUE",
+  "globalRoot": "2006.542",
+  "globalReference": "^MAGDSTT(2006.542,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:CREATED;2:BEING PROCESSED;3:SUCCESS;4:ERROR;",
+      "helpText": "Status of retrieve request. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ERROR",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ70",
+      "length": 70,
+      "required": false,
+      "helpText": "If an error is encountered in processing a retrieve request, the error message is placed in this field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Timestamp of the last activity of the request. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "RETRIEVE KEYS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5421",
+      "required": false,
+      "helpText": "These are the search keys that are used in a Retrieve request. Each Retrieve search key consists of a name/value pair. The search keys are used to identify the patient, study, series or image.  They also specify the destination storage provider for the DICOM objects that are retrieved. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5421,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "STUDY UID",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5422",
+      "required": false,
+      "helpText": "In a STUDY-level retrieve, the Study Instance UID (0020,000D) multiple is used to retrieve one or  more studies from the PACS. In a SERIES-level or IMAGE-level retrieve, the Study Instance UID is single-valued and must be specified. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5422,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "SERIES UID",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5423",
+      "required": false,
+      "helpText": "In a SERIES-level retrieve, the Series Instance UID (0020,000E) multiple is used to retrieve one or more series from the PACS. In an IMAGE-level retrieve, the Series Instance UID is single-valued and must be specified. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5423,
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "SOP UID",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5424",
+      "required": false,
+      "helpText": "In an IMAGE-level retrieve, the SOP Instance UID (0008,0018) multiple is used to retrieve one or more composite SOP instances (images) from the PACS. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5424,
+      "fieldNumber_": 401
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.542", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

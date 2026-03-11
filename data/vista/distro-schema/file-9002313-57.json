@@ -1,0 +1,2374 @@
+{
+  "fileNumber": 9002313.57,
+  "fileName": "BPS LOG OF TRANSACTIONS",
+  "globalRoot": "9002313.57",
+  "globalReference": "^BPSTL(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Sequential entry number ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The status of the transaction as a percentage of completion.  The text  value can be obtained by running $$STATI^BPSOSU(<Status Number>).  Note  that 99 indicates complete.  Since records are only copied to BPS Log of  Transactions when transactions are complete, all records in this file  should be 99. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "POLICY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the policy number that is being processed for this eligibility verification request. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "P9002313.56'",
+      "required": false,
+      "pointerTo": 9002313.56,
+      "helpText": "Textual description of the Pharmacy involved with this transaction. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "PINS PIECE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Pointer to which of the PINS pieces in ^(6) is in use for this claim.  Use this to keep track of where you are in billing down the line to various insurers.   (Probably won't automatically roll over to next insurer, but maybe we will have an option to edit insurance info, try next insurance, etc.) ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "PRIOR AUTHORIZATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Number assigned by the processor to identify a prior authorized transaction. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "PRESCRIPTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "Prescription number for this BPS Transactions. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.1199,
+      "fieldName": "RXI INTERNAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Internal ID to the claims file. ",
+      "fieldNumber_": 1.1199
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "RESUBMIT AFTER REVERSAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DONE;1:RESUBMIT AFTER REVERSAL;2:RESUBMITTING;",
+      "helpText": "Indicator that a transaction has been resubmitted after being backed out. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "NCPDP OVERRIDES",
+      "dataType": "POINTER",
+      "rawType": "P9002313.511'",
+      "required": false,
+      "pointerTo": 9002313.511,
+      "helpText": "Pointer to the overrides file for any fields that are not straight  forward, but are required by the payer. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "PRIOR AUTHORIZATION TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the type of authorization made before transaction was submitted. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HL7 MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique HL7 message ID used for the NCPDP message created for  this transaction. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CLAIM",
+      "dataType": "POINTER",
+      "rawType": "P9002313.02'",
+      "required": false,
+      "pointerTo": 9002313.02,
+      "helpText": "Claim number  ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "CLAIM IEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Pointer to the BPS claims file - 9002313.02 ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.03'",
+      "required": false,
+      "pointerTo": 9002313.03,
+      "helpText": "Pointer to the corresponding response in the response file, 9002313.03 ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.0098,
+      "fieldName": "RESULT WITH REVERSAL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Result if the claim had to be reversed for whatever reason. ",
+      "fieldNumber_": 4.0098
+    },
+    {
+      "fieldNumber": 4.0099,
+      "fieldName": "RESULT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Result from the payer - maybe be Paid, rejected, captured or accepted. ",
+      "fieldNumber_": 4.0099
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "RESPONSE IEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Response file record number of any reversals. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The patient this transaction refers to. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SUBMIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the claim was submitted to ECME. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LAST UPDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time the POS transaction completed processing, as copied from 9002313.59 at the time the .57 record was created. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FILL NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Prescription fill/refill number. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NDC number referenced in this transaction. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.0099,
+      "fieldName": "USER NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "IEN of the user generating the transaction ",
+      "fieldNumber_": 10.0099
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PHARMACY DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "Division this transaction is for. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Who created the ECME claim ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "POSITION IN CLAIM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This is the D1 subscript into 9002313.02 and .03 ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "START TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Time, including the seconds that the transaction was initiated. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SUBMIT REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P9002313.77'",
+      "required": false,
+      "pointerTo": 9002313.77,
+      "helpText": "IEN of the BPS REQUEST file (#9002313.77) ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SUBMIT REQUEST DATE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Submit Request Date/Time ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "COB INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "COB indicator. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLAIM;E:ELIGIBILITY;U:UNCLAIM;N:NON-BILLABLE;",
+      "helpText": "This is the type of transaction that is being processed:    CLAIM - An NCPDP billing request.    UNCLAIM - An NCPDP reversal request.    ELIGIBILITY - An eligibility verification request.    NON-BILLABLE - A TRICARE/CHAMPVA non-billable prescription. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "COMMENT MULTIPLE",
+      "dataType": "DATE",
+      "rawType": "9002313.57111DA",
+      "required": false,
+      "helpText": "User's comment ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.57111,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "RESULT CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,7",
+      "length": 11,
+      "required": false,
+      "helpText": "Code indicating whether the claim was successfully billed or rejected. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "RESULT TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Textual description of the reason for rejection, if the claim was  rejected. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "NON-BILLABLE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reason why this prescription is Non-Billable.  It is the free text value as returned by the IB Billing Determination process. This is only for TRICARE or CHAMPVA prescriptions. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "NON-BILLABLE CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter Yes if this Non-Billable entry has been Closed. Enter No if this Non-Billable entry is still Open. When Non-Billable entries are initially created in the BPS Transaction file, they are automatically defaulted to Open. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "NON-BILLABLE DATE CLOSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time when this Non-Billable entry was closed.  It is set by the system when a user performs this action on the ECME User Screen. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "NON-BILLABLE CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who closed this non-billable entry. It is automatically populated when this close action happens. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "NON-BILLABLE CLOSED COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text comment explaining why this non-billable entry is being closed. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "NON-BILLABLE DATE RE-OPENED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time when the user re-opened the non-billable entry. ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "NON-BILLABLE RE-OPENED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who re-opened this non-billable entry. It is set automatically by the system when this action is performed. ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "NON-BILLABLE RE-OPENED COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the free-text comments entered by the user for the reason that this non-billable entry was re-opened. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "REVERSAL CLAIM",
+      "dataType": "POINTER",
+      "rawType": "P9002313.02'",
+      "required": false,
+      "pointerTo": 9002313.02,
+      "helpText": "Pointer to file 9002313.02 BPS CLAIMS file for the reversal transaction. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 402,
+      "fieldName": "REVERSAL RESPONSE",
+      "dataType": "POINTER",
+      "rawType": "P9002313.03'",
+      "required": false,
+      "pointerTo": 9002313.03,
+      "helpText": "Pointer to the BPS responses file 9002313.03 for the  reversal response. ",
+      "fieldNumber_": 402
+    },
+    {
+      "fieldNumber": 404,
+      "fieldName": "REVERSAL REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Reason for the reversal ",
+      "fieldNumber_": 404
+    },
+    {
+      "fieldNumber": 405,
+      "fieldName": "REVERSAL REQUEST",
+      "dataType": "POINTER",
+      "rawType": "P9002313.77'",
+      "required": false,
+      "pointerTo": 9002313.77,
+      "helpText": "Reversal Request IEN ",
+      "fieldNumber_": 405
+    },
+    {
+      "fieldNumber": 406,
+      "fieldName": "REVERSAL REQUEST DATE TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Reversal Request Date/Time ",
+      "fieldNumber_": 406
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,3",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the quantity that will be used for the NCPDP field 442-E7  (QUANTITY DISPENSED) of the NCPDP submission. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "UNIT PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ18,8",
+      "length": 18,
+      "required": false,
+      "helpText": "Price per unit of prescription. ",
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "SUBTOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ18,8",
+      "length": 18,
+      "required": false,
+      "helpText": "= QUANTITY * UNIT PRICE This is what we want to send as the INGREDIENT COST  field in the NCPDP message. ",
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "DISPENSING FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "Service fee the pharmacy charges for dispensing the drug. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "TOTAL PRICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "=SUBTOTAL + DISPENSING FEE ",
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 507,
+      "fieldName": "ADMINISTRATIVE FEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any fee charged for handling of the paperwork. ",
+      "fieldNumber_": 507
+    },
+    {
+      "fieldNumber": 508,
+      "fieldName": "UNIT OF MEASURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Unit of Measure for the drug.  This is usually GR (grams), ML  (milliliters), or EA (Each). ",
+      "fieldNumber_": 508
+    },
+    {
+      "fieldNumber": 509,
+      "fieldName": "BILLING QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,3",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the quantity from the prescription and is used to calculate the  ingredient cost.  It may be different than the quantity used in the  actual NCPDP submission. ",
+      "fieldNumber_": 509
+    },
+    {
+      "fieldNumber": 510,
+      "fieldName": "BILLING UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the billing units associated with the billing quantity. ",
+      "fieldNumber_": 510
+    },
+    {
+      "fieldNumber": 801,
+      "fieldName": "ASLEEP PAYER",
+      "dataType": "POINTER",
+      "rawType": "P9002313.15'",
+      "required": false,
+      "pointerTo": 9002313.15,
+      "helpText": "This field identifies an asleep payer for this transaction. ",
+      "fieldNumber_": 801
+    },
+    {
+      "fieldNumber": 901,
+      "fieldName": "CURRENT VA INSURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used for the 1st patient insurance for a VA prescription and it points to the payer sheet to use. ",
+      "fieldNumber_": 901
+    },
+    {
+      "fieldNumber": 901.04,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VETERAN;T:TRICARE;C:CHAMPVA;",
+      "helpText": "The insurance eligibility type of the claim. ",
+      "fieldNumber_": 901.04
+    },
+    {
+      "fieldNumber": 902,
+      "fieldName": "PATIENT INSURANCE MULTIPLE",
+      "dataType": "POINTER",
+      "rawType": "9002313.57902PA",
+      "required": false,
+      "helpText": "List of VA insurers. ",
+      "fieldNumber_": 902
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "RX ACTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the action that is being performed on this request. It is either  the BWHERE parameter passed into BPSNCPDP or 'ELIG' for an eligibility  verification request.  The list of BWHERE values are documented at the  top of routine BPSNCPD3. ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date used for the 401-D1 (DATE OF SERVICE) in the NCPDP transaction ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1203,
+      "fieldName": "SUBMISSION CLARIFICATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Submission Clarification Code ",
+      "fieldNumber_": 1203
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "COB OTHER PAYMENTS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "NCPDP field 337-4C - Coordination of Benefits/Other Payments Count   This value corresponds to the number of multiple entries in the #1400 multiple field - COB OTHER PAYERS. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 1205,
+      "fieldName": "OTHER COVERAGE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "00:NOT SPECIFIED;01:NO OTH COVERAGE;02:PYMT COLLECT/OTH PAYER;03:CLAIM NOT COVER/OTH PAYER;04:PYMT NOT COLLECT/OTH PAYER;05:PLAN DENIAL;06:NONPARTICIPAT PROV/OTH PAYER;07:OTH COVER NOT EFFECT ON DOS;08:COPAY BILLING;",
+      "helpText": "NCPDP field 308-C8 - code indicating whether or not the patient has other insurance coverage. ",
+      "fieldNumber_": 1205
+    },
+    {
+      "fieldNumber": 1300,
+      "fieldName": "DUR DATA",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.5713",
+      "required": false,
+      "helpText": "This multiple will track the Drug Utilization Review (DUR) information passed by Outpatient Pharmacy to ECME and that will eventually be put in the DUR segment of the NCPDP claim. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.5713,
+      "fieldNumber_": 1300
+    },
+    {
+      "fieldNumber": 1400,
+      "fieldName": "COB OTHER PAYERS",
+      "dataType": "SUBFILE",
+      "rawType": "9002313.5714A",
+      "required": false,
+      "helpText": "This multiple structure stores information about each of the other payers involved in the payment or rejection of the claim.   NCPDP has a maximum of 9 occurrences here with a recommendation of less than or equal to 3 occurrences.  However, VA only stores data for at most 3 insurance policies for any given claim.  So at most there will only be 2 occurrences of this other payer multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 9002313.5714,
+      "fieldNumber_": 1400
+    },
+    {
+      "fieldNumber": 9999.92,
+      "fieldName": "HRN FAC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "Health record number and facility ID - this is set to the pointer to the patient file and the division. ",
+      "fieldNumber_": 9999.92
+    },
+    {
+      "fieldNumber": 9999.93,
+      "fieldName": "DRUG NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Drug name from file 50 ",
+      "fieldNumber_": 9999.93
+    },
+    {
+      "fieldNumber": 9999.94,
+      "fieldName": "DRUG IEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "The IEN of the drug from file 50. ",
+      "fieldNumber_": 9999.94
+    },
+    {
+      "fieldNumber": 9999.95,
+      "fieldName": "RELEASED DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ14",
+      "length": 14,
+      "required": false,
+      "helpText": "Release date and time from the prescription file, 52. ",
+      "fieldNumber_": 9999.95
+    },
+    {
+      "fieldNumber": 9999.96,
+      "fieldName": "NET PAID BY INSURER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount paid after the discounts and deductible have been subtracted. ",
+      "fieldNumber_": 9999.96
+    },
+    {
+      "fieldNumber": 9999.97,
+      "fieldName": "ELAPSED TIME PRINTABLE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Elapsed time between submission and response in external format. ",
+      "fieldNumber_": 9999.97
+    },
+    {
+      "fieldNumber": 9999.98,
+      "fieldName": "ELAPSED TIME SECONDS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Elapsed time between submission and response expressed as a number of  seconds. ",
+      "fieldNumber_": 9999.98
+    },
+    {
+      "fieldNumber": 9999.99,
+      "fieldName": "RESULT CATEGORY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "The category of the transmission - accepted, payable, rejected, etc. ",
+      "fieldNumber_": 9999.99
+    },
+    {
+      "fieldNumber": 10101,
+      "fieldName": "BIN NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "BIN number from the response file. ",
+      "fieldNumber_": 10101
+    },
+    {
+      "fieldNumber": 10102,
+      "fieldName": "VERSION RELEASE NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Version/release number from the BPS claims file. ",
+      "fieldNumber_": 10102
+    },
+    {
+      "fieldNumber": 10103,
+      "fieldName": "TRANSACTION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Type of transaction from the claim file. ",
+      "fieldNumber_": 10103
+    },
+    {
+      "fieldNumber": 10104,
+      "fieldName": "PROCESSOR CONTROL NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "PCN number from the claims file. ",
+      "fieldNumber_": 10104
+    },
+    {
+      "fieldNumber": 10201,
+      "fieldName": "PHARMACY NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "The Pharmacy's NABP number from the claims file. ",
+      "fieldNumber_": 10201
+    },
+    {
+      "fieldNumber": 10301,
+      "fieldName": "GROUP NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "The group number of the insurance used from the BPS claims file. ",
+      "fieldNumber_": 10301
+    },
+    {
+      "fieldNumber": 10302,
+      "fieldName": "CARDHOLDER ID NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ18",
+      "length": 18,
+      "required": false,
+      "helpText": "The insured person's cardholder identification number from the claims  file. ",
+      "fieldNumber_": 10302
+    },
+    {
+      "fieldNumber": 10303,
+      "fieldName": "PERSON CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The person code from the BPS claims file. ",
+      "fieldNumber_": 10303
+    },
+    {
+      "fieldNumber": 10304,
+      "fieldName": "DATE OF BIRTH",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Date of birth of the patient from the BPS claims file. ",
+      "fieldNumber_": 10304
+    },
+    {
+      "fieldNumber": 10305,
+      "fieldName": "SEX CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Sex of the patient, \"M\" or \"F\" ",
+      "fieldNumber_": 10305
+    },
+    {
+      "fieldNumber": 10306,
+      "fieldName": "RELATIONSHIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Relationship of the patient to the insured - from the BPS claims file. ",
+      "fieldNumber_": 10306
+    },
+    {
+      "fieldNumber": 10307,
+      "fieldName": "CUSTOMER LOCATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Code identifying the location of the patient when receiving pharmacy services.  и=Not Specified 1=Home 2=Inter-Care 3=Nursing Home 4=Long Term/Extended Care 5=Rest Home 6=Boarding Home 7=Skilled Care Facility 8=Sub-Acute Care Facility 9=Acute Care Facility 1и=Outpatient 11=Hospice   from the BPS claims file ",
+      "fieldNumber_": 10307
+    },
+    {
+      "fieldNumber": 10308,
+      "fieldName": "OTHER COVERAGE CODE CALCULATED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code indicating whether or not the patient has other insurance coverage.  It returns OTHER COVERAGE CODE (#308) field of the MEDICATIONS  (#9002313.0201) sub-file of the BPS CLAIMS (#900213.02) file.   If the patient has no other insurance coverage an empty string is returned. ",
+      "fieldNumber_": 10308
+    },
+    {
+      "fieldNumber": 10309,
+      "fieldName": "ELIGIBILITY CLARIFICATION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code indicating that the pharmacy is clarifying eligibility based on receiving a denial. Comes from the BPS claims file.   ",
+      "fieldNumber_": 10309
+    },
+    {
+      "fieldNumber": 10310,
+      "fieldName": "PATIENT FIRST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "First name of patient receiving the prescription, from the BPS claims  file. ",
+      "fieldNumber_": 10310
+    },
+    {
+      "fieldNumber": 10311,
+      "fieldName": "PATIENT LAST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Last Name of patient receiving the prescription from the BPS claims file. ",
+      "fieldNumber_": 10311
+    },
+    {
+      "fieldNumber": 10312,
+      "fieldName": "CARDHOLDER FIRST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ12",
+      "length": 12,
+      "required": false,
+      "helpText": "First name of the Cardholder/Subscriber from the BPS claims file. ",
+      "fieldNumber_": 10312
+    },
+    {
+      "fieldNumber": 10313,
+      "fieldName": "CARDHOLDER LAST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Last name of the Cardholder/Subscriber from the BPS claims file.  ",
+      "fieldNumber_": 10313
+    },
+    {
+      "fieldNumber": 10314,
+      "fieldName": "HOME PLAN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Code identifying the Blue Cross or Blue Shield plan ID which indicates where the member's coverage has been designated. Usually where the member lives or purchased their coverage from the BPS claims file. ",
+      "fieldNumber_": 10314
+    },
+    {
+      "fieldNumber": 10315,
+      "fieldName": "EMPLOYER NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Complete name of employer.  ",
+      "fieldNumber_": 10315
+    },
+    {
+      "fieldNumber": 10316,
+      "fieldName": "EMPLOYER STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Free-form text for address information from the claims file. ",
+      "fieldNumber_": 10316
+    },
+    {
+      "fieldNumber": 10317,
+      "fieldName": "EMPLOYER CITY ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Free-form text for city name. ",
+      "fieldNumber_": 10317
+    },
+    {
+      "fieldNumber": 10318,
+      "fieldName": "EMPLOYER STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Standard State/Province Code as defined by appropriate government agency. ",
+      "fieldNumber_": 10318
+    },
+    {
+      "fieldNumber": 10319,
+      "fieldName": "EMPLOYER ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "Code defining international postal zone excluding punctuation and blanks (zip code for US). ",
+      "fieldNumber_": 10319
+    },
+    {
+      "fieldNumber": 10320,
+      "fieldName": "EMPLOYER PHONE NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Ten digit phone number of employer. ",
+      "fieldNumber_": 10320
+    },
+    {
+      "fieldNumber": 10321,
+      "fieldName": "EMPLOYER CONTACT NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Contact person's name of the cardholder's employer. ",
+      "fieldNumber_": 10321
+    },
+    {
+      "fieldNumber": 10322,
+      "fieldName": "PATIENT STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Free-form text for Patient address information. ",
+      "fieldNumber_": 10322
+    },
+    {
+      "fieldNumber": 10323,
+      "fieldName": "PATIENT CITY ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "Free-form text for city name. ",
+      "fieldNumber_": 10323
+    },
+    {
+      "fieldNumber": 10324,
+      "fieldName": "PATIENT STATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Standard State/Province Code as defined by appropriate government agency. Comes from the BPS claims file. ",
+      "fieldNumber_": 10324
+    },
+    {
+      "fieldNumber": 10325,
+      "fieldName": "PATIENT ZIP CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "Code defining international postal zone excluding punctuation and blanks (zip code for US). From the BPS claims file. ",
+      "fieldNumber_": 10325
+    },
+    {
+      "fieldNumber": 10326,
+      "fieldName": "PATIENT PHONE NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Ten digit  phone number of patient. From the BPS claims file. ",
+      "fieldNumber_": 10326
+    },
+    {
+      "fieldNumber": 10327,
+      "fieldName": "CARRIER ID NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "The ID number of the insurance carrier. ",
+      "fieldNumber_": 10327
+    },
+    {
+      "fieldNumber": 10328,
+      "fieldName": "PATIENT WEIGHT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "Patient's weight from the patient file. ",
+      "fieldNumber_": 10328
+    },
+    {
+      "fieldNumber": 10329,
+      "fieldName": "PATIENT SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "Patient SSN from the claims file. ",
+      "fieldNumber_": 10329
+    },
+    {
+      "fieldNumber": 10401,
+      "fieldName": "DATE FILLED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "The fill/refill date  ",
+      "fieldNumber_": 10401
+    },
+    {
+      "fieldNumber": 10402,
+      "fieldName": "PRESCRIPTION NUMBER SEVEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ7",
+      "length": 7,
+      "required": false,
+      "helpText": "  The first seven digits of the prescription IEN  ",
+      "fieldNumber_": 10402
+    },
+    {
+      "fieldNumber": 10403,
+      "fieldName": "NEW REFILL CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "The fill/refill number, starting at 0 for the original fill. ",
+      "fieldNumber_": 10403
+    },
+    {
+      "fieldNumber": 10404,
+      "fieldName": "METRIC QUANTITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Metric quantity of the drug. ",
+      "fieldNumber_": 10404
+    },
+    {
+      "fieldNumber": 10405,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "helpText": "The actual days supply dispensed. ",
+      "fieldNumber_": 10405
+    },
+    {
+      "fieldNumber": 10406,
+      "fieldName": "COMPOUND CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Field indicating whether this prescription was a compound (1) or not a compound (0).  ",
+      "fieldNumber_": 10406
+    },
+    {
+      "fieldNumber": 10407,
+      "fieldName": "NDC NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ11",
+      "length": 11,
+      "required": false,
+      "helpText": "NDC code in our case. ",
+      "fieldNumber_": 10407
+    },
+    {
+      "fieldNumber": 10408,
+      "fieldName": "DISPENSE AS WRITTEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Indicator for whether the prescription was to be dispensed only as written.  ",
+      "fieldNumber_": 10408
+    },
+    {
+      "fieldNumber": 10409,
+      "fieldName": "INGREDIENT COST",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Cost amount for the ingredients of compounds.  ",
+      "fieldNumber_": 10409
+    },
+    {
+      "fieldNumber": 10410,
+      "fieldName": "SALES TAX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": " Sales Tax charged (not applicable for VA) ",
+      "fieldNumber_": 10410
+    },
+    {
+      "fieldNumber": 10411,
+      "fieldName": "PRESCRIBER ID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Prescriber identification number.   ",
+      "fieldNumber_": 10411
+    },
+    {
+      "fieldNumber": 10412,
+      "fieldName": "DISPENSING FEE SUBMITTED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Add-on fee charged in a retail setting.  This field will probably be used when the Tricare functionality is added. ",
+      "fieldNumber_": 10412
+    },
+    {
+      "fieldNumber": 10414,
+      "fieldName": "DATE PRESCRIPTION WRITTEN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This will be the fill/refill date for local fills, the released date for CMOP. ",
+      "fieldNumber_": 10414
+    },
+    {
+      "fieldNumber": 10415,
+      "fieldName": "NUMBER OF REFILLS AUTHORIZED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of refills allowed that was entered during order entry. ",
+      "fieldNumber_": 10415
+    },
+    {
+      "fieldNumber": 10416,
+      "fieldName": "PRIOR AUTH/MC CODE AND NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": " Not used for VA - left in for IHS  ",
+      "fieldNumber_": 10416
+    },
+    {
+      "fieldNumber": 10418,
+      "fieldName": "LEVEL OF SERVICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Not used for VA - left in for IHS ",
+      "fieldNumber_": 10418
+    },
+    {
+      "fieldNumber": 10419,
+      "fieldName": "PRESCRIPTION ORIGIN CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Not used for VA - left in for IHS ",
+      "fieldNumber_": 10419
+    },
+    {
+      "fieldNumber": 10420,
+      "fieldName": "PRESCRIPTION CLARIFICATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Not used for VA - left in for IHS ",
+      "fieldNumber_": 10420
+    },
+    {
+      "fieldNumber": 10421,
+      "fieldName": "PRIMARY PRESCRIBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Provider ID number ",
+      "fieldNumber_": 10421
+    },
+    {
+      "fieldNumber": 10422,
+      "fieldName": "CLINIC ID NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Clinic ID where the prescription was entered. ",
+      "fieldNumber_": 10422
+    },
+    {
+      "fieldNumber": 10423,
+      "fieldName": "BASIS OF COST DETERMINATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "How the amount charged was arrived at. ",
+      "fieldNumber_": 10423
+    },
+    {
+      "fieldNumber": 10424,
+      "fieldName": "DIAGNOSIS CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "Diagnosis code that applies to this prescription.  Not used for third party billing as of this date - so it is not used, but may be used in the future.   ",
+      "fieldNumber_": 10424
+    },
+    {
+      "fieldNumber": 10425,
+      "fieldName": "DRUG TYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code to indicate the type of drug dispensed.  и=Not specified 1=Single source brand 2=Branded generic 3=Generic 4=O.T.C. (over the counter) ",
+      "fieldNumber_": 10425
+    },
+    {
+      "fieldNumber": 10426,
+      "fieldName": "USUAL AND CUSTOMARY CHARGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount charged cash customers for the prescription exclusive of sales tax or other amounts claimed. ",
+      "fieldNumber_": 10426
+    },
+    {
+      "fieldNumber": 10427,
+      "fieldName": "PRESCRIBER LAST NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ15",
+      "length": 15,
+      "required": false,
+      "helpText": "Last Name of the Prescriber ",
+      "fieldNumber_": 10427
+    },
+    {
+      "fieldNumber": 10428,
+      "fieldName": "POSTAGE AMOUNT CLAIMED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Dollar amount of postage claimed. ",
+      "fieldNumber_": 10428
+    },
+    {
+      "fieldNumber": 10429,
+      "fieldName": "UNIT DOSE INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code indicating the type of unit dose dispensing. и=Not Specified 1=Not Unit Dose 2=Manufacturer Unit Dose 3=Pharmacy Unit Dose ",
+      "fieldNumber_": 10429
+    },
+    {
+      "fieldNumber": 10430,
+      "fieldName": "GROSS AMOUNT DUE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Total amount submitted to the payer.  ",
+      "fieldNumber_": 10430
+    },
+    {
+      "fieldNumber": 10431,
+      "fieldName": "OTHER PAYOR AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount of any payment known by the pharmacy from other sources (including coupons). ",
+      "fieldNumber_": 10431
+    },
+    {
+      "fieldNumber": 10432,
+      "fieldName": "BASIS OF DAYS SUPPLY DET",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code indicating the method by which the days supply was determined. и=Not specified 1=Explicit directions 2=PRN directions (take as needed pharmacist estimate) 3=As directed by physician ",
+      "fieldNumber_": 10432
+    },
+    {
+      "fieldNumber": 10433,
+      "fieldName": "PATIENT PAID AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount the pharmacy received from the patient for the prescription dispensed. ",
+      "fieldNumber_": 10433
+    },
+    {
+      "fieldNumber": 10434,
+      "fieldName": "DATE OF INJURY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Date on which the injury occurred.  ",
+      "fieldNumber_": 10434
+    },
+    {
+      "fieldNumber": 10435,
+      "fieldName": "CLAIM REF ID NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ14",
+      "length": 14,
+      "required": false,
+      "helpText": "Identifies the claim number assigned by Workers Compensation Program. ",
+      "fieldNumber_": 10435
+    },
+    {
+      "fieldNumber": 10436,
+      "fieldName": "ALT PRODUCT TYPE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code qualifying the value in 'Product/Service ID' (4и7-D7) Not Specified Blank Not Specified ии Universal Product Code (UPC) и1 Health Related Item (HRI) и2 National Drug Code (NDC) и3 Universal Product Number (UPN) и4 Department of Defense (DOD) и5 Drug Use Review/ Professional Pharmacy Service (DUR/PPS) и6 Common Procedure Terminology (CPT4) и7 Common Procedure Terminology (CPT5) и8 Health Care Financing Administration Common Procedural Coding System (HCPCS) и9 Pharmacy Practice Activity Class",
+      "fieldNumber_": 10436
+    },
+    {
+      "fieldNumber": 10437,
+      "fieldName": "ALT PRODUCT CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ13",
+      "length": 13,
+      "required": false,
+      "helpText": "This field identifies the actual product code for the item that was dispensed.  The type of product is defined by field 436-E1. This field should only be used if the National Drug Code number is not available. The code number here is the UPC number or the HRI number ",
+      "fieldNumber_": 10437
+    },
+    {
+      "fieldNumber": 10438,
+      "fieldName": "INCENTIVE AMOUNT SUBMITTED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount represents a fee that is submitted by the pharmacy for contractually agreed upon services. This amount is included in the 'Gross Amount Due' (43и-DU).   ",
+      "fieldNumber_": 10438
+    },
+    {
+      "fieldNumber": 10439,
+      "fieldName": "DUR CONFLICT CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Code identifying the type of utilization conflict detected or the reason for the pharmacist's professional service. ",
+      "fieldNumber_": 10439
+    },
+    {
+      "fieldNumber": 10440,
+      "fieldName": "DUR INTERVENTION CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Code to indicate whether an intervention was entered. ",
+      "fieldNumber_": 10440
+    },
+    {
+      "fieldNumber": 10441,
+      "fieldName": "DUR OUTCOME CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "The outcome of the DUR - whether the prescription had to be modified. ",
+      "fieldNumber_": 10441
+    },
+    {
+      "fieldNumber": 10442,
+      "fieldName": "METRIC DECIMAL QUANTITY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "Quantity dispensed expressed in metric decimal units. ",
+      "fieldNumber_": 10442
+    },
+    {
+      "fieldNumber": 10443,
+      "fieldName": "OTHER PAYOR DATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Payment or denial date of the claim submitted to the other payer. Used for coordination of benefits. ",
+      "fieldNumber_": 10443
+    },
+    {
+      "fieldNumber": 10444,
+      "fieldName": "PHARMACIST ID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "Unique ID assigned to the person responsible for the dispensing of the prescription or provision of the service. ",
+      "fieldNumber_": 10444
+    },
+    {
+      "fieldNumber": 10501,
+      "fieldName": "RESPONSE STATUS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Status flag indicating whether the transaction was \"P\"aid, \"R\"ejected, \"A\"ccepted, or \"C\"aptured. ",
+      "fieldNumber_": 10501
+    },
+    {
+      "fieldNumber": 10503,
+      "fieldName": "AUTHORIZATION NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ14",
+      "length": 14,
+      "required": false,
+      "helpText": "Authorization number for pre-authorization requests. ",
+      "fieldNumber_": 10503
+    },
+    {
+      "fieldNumber": 10504,
+      "fieldName": "MESSAGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ200",
+      "length": 200,
+      "required": false,
+      "helpText": "Free form Message. ",
+      "fieldNumber_": 10504
+    },
+    {
+      "fieldNumber": 10505,
+      "fieldName": "PATIENT PAY AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount the patient pays (copay). ",
+      "fieldNumber_": 10505
+    },
+    {
+      "fieldNumber": 10506,
+      "fieldName": "INGREDIENT COST PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Drug ingredient cost paid included in the 'Total Amount Paid' (5и9). ",
+      "fieldNumber_": 10506
+    },
+    {
+      "fieldNumber": 10507,
+      "fieldName": "CONTRACT FEE PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Dispensing fee paid included in the 'Total Amount Paid' (5и9). ",
+      "fieldNumber_": 10507
+    },
+    {
+      "fieldNumber": 10508,
+      "fieldName": "SALES TAX PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The amount of sales tax paid for the prescription dispensed. ",
+      "fieldNumber_": 10508
+    },
+    {
+      "fieldNumber": 10509,
+      "fieldName": "TOTAL AMOUNT PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Total amount to be paid by the claims processor (i.e. pharmacy receivable). Represents a sum of 'Ingredient Cost Paid' (5и6), 'Dispensing Fee Paid' (5и7), 'Flat Sales Tax Amount Paid' (558), 'Percentage Sales Tax Amount Paid' (559), 'Incentive Amount Paid' (521), 'Professional Service Fee Paid' (562), 'Other Amount Paid' (565), less 'Patient Pay Amount' (5и5) and 'Other Payer Amount Recognized' (566). ",
+      "fieldNumber_": 10509
+    },
+    {
+      "fieldNumber": 10510,
+      "fieldName": "REJECT COUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Count of 'Reject Code' (511) occurrences. ",
+      "fieldNumber_": 10510
+    },
+    {
+      "fieldNumber": 10511,
+      "fieldName": "REJECT CODES",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Multiple rejection codes.  ",
+      "fieldNumber_": 10511
+    },
+    {
+      "fieldNumber": 10511.01,
+      "fieldName": "REJECT CODE 1",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #1 returned in the response by the payer. ",
+      "fieldNumber_": 10511.01
+    },
+    {
+      "fieldNumber": 10511.02,
+      "fieldName": "REJECT CODE 2",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #2 returned in the response by the payer. ",
+      "fieldNumber_": 10511.02
+    },
+    {
+      "fieldNumber": 10511.03,
+      "fieldName": "REJECT CODE 3",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #3 returned in the response by the payer. ",
+      "fieldNumber_": 10511.03
+    },
+    {
+      "fieldNumber": 10511.04,
+      "fieldName": "REJECT CODE 4",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #4 returned in the response by the payer. ",
+      "fieldNumber_": 10511.04
+    },
+    {
+      "fieldNumber": 10511.05,
+      "fieldName": "REJECT CODE 5",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #5 returned in the response by the payer. ",
+      "fieldNumber_": 10511.05
+    },
+    {
+      "fieldNumber": 10511.06,
+      "fieldName": "REJECT CODE 6",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #6 returned in the response by the payer. ",
+      "fieldNumber_": 10511.06
+    },
+    {
+      "fieldNumber": 10511.07,
+      "fieldName": "REJECT CODE 7",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #7 returned in the response by the payer. ",
+      "fieldNumber_": 10511.07
+    },
+    {
+      "fieldNumber": 10511.08,
+      "fieldName": "REJECT CODE 8",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #8 returned in the response by the payer. ",
+      "fieldNumber_": 10511.08
+    },
+    {
+      "fieldNumber": 10511.09,
+      "fieldName": "REJECT CODE 9",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #9 returned in the response by the payer. ",
+      "fieldNumber_": 10511.09
+    },
+    {
+      "fieldNumber": 10511.1,
+      "fieldName": "REJECT CODE 10",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #10 returned in the response by the payer. ",
+      "fieldNumber_": 10511.1
+    },
+    {
+      "fieldNumber": 10511.11,
+      "fieldName": "REJECT CODE 11",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #11 returned in the response by the payer. ",
+      "fieldNumber_": 10511.11
+    },
+    {
+      "fieldNumber": 10511.12,
+      "fieldName": "REJECT CODE 12",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #12 returned in the response by the payer. ",
+      "fieldNumber_": 10511.12
+    },
+    {
+      "fieldNumber": 10511.13,
+      "fieldName": "REJECT CODE 13",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #13 returned in the response by the payer. ",
+      "fieldNumber_": 10511.13
+    },
+    {
+      "fieldNumber": 10511.14,
+      "fieldName": "REJECT CODE 14",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #14 returned in the response by the payer. ",
+      "fieldNumber_": 10511.14
+    },
+    {
+      "fieldNumber": 10511.15,
+      "fieldName": "REJECT CODE 15",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #15 returned in the response by the payer. ",
+      "fieldNumber_": 10511.15
+    },
+    {
+      "fieldNumber": 10511.16,
+      "fieldName": "REJECT CODE 16",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #16 returned in the response by the payer. ",
+      "fieldNumber_": 10511.16
+    },
+    {
+      "fieldNumber": 10511.17,
+      "fieldName": "REJECT CODE 17",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #17 returned in the response by the payer. ",
+      "fieldNumber_": 10511.17
+    },
+    {
+      "fieldNumber": 10511.18,
+      "fieldName": "REJECT CODE 18",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #18 returned in the response by the payer. ",
+      "fieldNumber_": 10511.18
+    },
+    {
+      "fieldNumber": 10511.19,
+      "fieldName": "REJECT CODE 19",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #19 returned in the response by the payer. ",
+      "fieldNumber_": 10511.19
+    },
+    {
+      "fieldNumber": 10511.2,
+      "fieldName": "REJECT CODE 20",
+      "dataType": "COMPUTED",
+      "rawType": "CJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "Reject code #20 returned in the response by the payer. ",
+      "fieldNumber_": 10511.2
+    },
+    {
+      "fieldNumber": 10512,
+      "fieldName": "ACCUMULATED DEDUCTIBLE AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount in dollars met by the patient/family in a deductible plan. ",
+      "fieldNumber_": 10512
+    },
+    {
+      "fieldNumber": 10513,
+      "fieldName": "REMAINING DEDUCTIBLE AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount not met by the patient/family in the deductible plan. ",
+      "fieldNumber_": 10513
+    },
+    {
+      "fieldNumber": 10514,
+      "fieldName": "REMAINING BENEFIT AMOUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount remaining in a patient/family plan with a periodic maximum benefit. ",
+      "fieldNumber_": 10514
+    },
+    {
+      "fieldNumber": 10515,
+      "fieldName": "POSTAGE AMOUNT PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Not applicable to the VA. ",
+      "fieldNumber_": 10515
+    },
+    {
+      "fieldNumber": 10516,
+      "fieldName": "DRUG DESCRIPTION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Text description for the drug from the drug file 50. ",
+      "fieldNumber_": 10516
+    },
+    {
+      "fieldNumber": 10517,
+      "fieldName": "AMOUNT APP TO PER DEDUCTIBLE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount to be collected from a patient that is included in 'Patient Pay Amount' (5и5) that is applied to a periodic deductible. ",
+      "fieldNumber_": 10517
+    },
+    {
+      "fieldNumber": 10518,
+      "fieldName": "AMOUNT OF COPAY COINSURANCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount to be collected from the patient that is included in 'Patient Pay Amount' (5и5) that is due to a per prescription copay/coinsurance. ",
+      "fieldNumber_": 10518
+    },
+    {
+      "fieldNumber": 10519,
+      "fieldName": "AMOUNT ATTR TO PRODUCT SELECT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount to be collected from the patient that is included in 'Patient Pay Amount' (5и5) that is due to the patient's selection of drug product. ",
+      "fieldNumber_": 10519
+    },
+    {
+      "fieldNumber": 10520,
+      "fieldName": "AMOUNT EXCEED PER BENEFIT MAX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount to be collected from the patient that is included in 'Patient Pay Amount' (5и5) that is due to the patient exceeding a periodic benefit maximum. ",
+      "fieldNumber_": 10520
+    },
+    {
+      "fieldNumber": 10521,
+      "fieldName": "INCENTIVE FEE PAID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount represents the contractually agreed upon incentive fee paid for specific services rendered. Amount is included in the 'Total Amount Paid' (5и9). ",
+      "fieldNumber_": 10521
+    },
+    {
+      "fieldNumber": 10522,
+      "fieldName": "BASIS OF REIMBURSEMENT DET",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Code identifying how the reimbursement amount was calculated for 'Ingredient Cost Paid' (5и6). ",
+      "fieldNumber_": 10522
+    },
+    {
+      "fieldNumber": 10523,
+      "fieldName": "AMOUNT ATTRIBUTED TO SALES TAX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Amount to be collected from the patient that is included in 'Patient Pay Amount' (5и5) that is due to sales tax paid. ",
+      "fieldNumber_": 10523
+    },
+    {
+      "fieldNumber": 10524,
+      "fieldName": "PLAN ID",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Plan Identification Number. ",
+      "fieldNumber_": 10524
+    },
+    {
+      "fieldNumber": 10525,
+      "fieldName": "DUR RESPONSE DATA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ160",
+      "length": 160,
+      "required": false,
+      "helpText": "Text that provides additional detail regarding a DUR conflict. ",
+      "fieldNumber_": 10525
+    },
+    {
+      "fieldNumber": 10525.01,
+      "fieldName": "DUR COUNT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Number of DUR messages to be displayed. ",
+      "fieldNumber_": 10525.01
+    },
+    {
+      "fieldNumber": 10525.1,
+      "fieldName": "DUR 1 RAW DATA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ53",
+      "length": 53,
+      "required": false,
+      "helpText": "Raw Data DUR message sent from the payer and stored in the response file. ",
+      "fieldNumber_": 10525.1
+    },
+    {
+      "fieldNumber": 10525.1439,
+      "fieldName": "DUR 1 DRUG CONFLICT CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "Severity level code for the first DUR. ",
+      "fieldNumber_": 10525.1439
+    },
+    {
+      "fieldNumber": 10525.1528,
+      "fieldName": "DUR 1 SEVERITY INDEX CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=Major 2=Moderate 3=Minor ",
+      "fieldNumber_": 10525.1528
+    },
+    {
+      "fieldNumber": 10525.1529,
+      "fieldName": "DUR 1 OTHER PHARMACY INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10525.1529
+    },
+    {
+      "fieldNumber": 10525.153,
+      "fieldName": "DUR 1 PREVIOUS DATE OF FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Previous fill date ",
+      "fieldNumber_": 10525.153
+    },
+    {
+      "fieldNumber": 10525.1531,
+      "fieldName": "DUR 1 QTY OF PREVIOUS FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "The quantity of the previous fill that caused the DUR to be triggered. ",
+      "fieldNumber_": 10525.1531
+    },
+    {
+      "fieldNumber": 10525.1532,
+      "fieldName": "DUR 1 DATABASE INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=First Databank 2=Medi-Span 3=Redbook 4=Processor Developed 5=Other ",
+      "fieldNumber_": 10525.1532
+    },
+    {
+      "fieldNumber": 10525.1533,
+      "fieldName": "DUR 1 OTHER PRESCRIBER INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code that indicates the prescriber of the current fill relationship to the prescriber of the conflicting prescription.   и=Not Specified 1=Same Prescriber 2=Other Prescriber ",
+      "fieldNumber_": 10525.1533
+    },
+    {
+      "fieldNumber": 10525.1544,
+      "fieldName": "DUR 1 FREE TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Actual DUR text ",
+      "fieldNumber_": 10525.1544
+    },
+    {
+      "fieldNumber": 10525.1999,
+      "fieldName": "DUR 1 RESERVE SPACE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "Reserved space for additional information. ",
+      "fieldNumber_": 10525.1999
+    },
+    {
+      "fieldNumber": 10525.2,
+      "fieldName": "DUR 2 RAW DATA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ53",
+      "length": 53,
+      "required": false,
+      "helpText": "DUR information returned by the payer that has not been formatted yet. ",
+      "fieldNumber_": 10525.2
+    },
+    {
+      "fieldNumber": 10525.2439,
+      "fieldName": "DUR 2 DRUG CONFLICT CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10525.2439
+    },
+    {
+      "fieldNumber": 10525.2528,
+      "fieldName": "DUR 2 SEVERITY INDEX CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=Major 2=Moderate 3=Minor ",
+      "fieldNumber_": 10525.2528
+    },
+    {
+      "fieldNumber": 10525.2529,
+      "fieldName": "DUR 2 OTHER PHARMACY INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10525.2529
+    },
+    {
+      "fieldNumber": 10525.253,
+      "fieldName": "DUR 2 PREVIOUS DATE OF FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Fill date of the previous fill that is causing the DUR conflict. ",
+      "fieldNumber_": 10525.253
+    },
+    {
+      "fieldNumber": 10525.2531,
+      "fieldName": "DUR 2 QTY OF PREVIOUS FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Quantity of the fill that is causing the conflict. ",
+      "fieldNumber_": 10525.2531
+    },
+    {
+      "fieldNumber": 10525.2532,
+      "fieldName": "DUR 2 DATABASE INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=First Databank 2=Medi-Span 3=Redbook 4=Processor Developed 5=Other ",
+      "fieldNumber_": 10525.2532
+    },
+    {
+      "fieldNumber": 10525.2533,
+      "fieldName": "DUR 2 OTHER PRESCRIBER INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code that indicates the prescriber of the current fill relationship to the prescriber of the conflicting prescription.   и=Not Specified 1=Same Prescriber 2=Other Prescriber ",
+      "fieldNumber_": 10525.2533
+    },
+    {
+      "fieldNumber": 10525.2544,
+      "fieldName": "DUR 2 FREE TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Actual DUR text ",
+      "fieldNumber_": 10525.2544
+    },
+    {
+      "fieldNumber": 10525.2999,
+      "fieldName": "DUR 2 RESERVE SPACE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "Reserved space for additional information. ",
+      "fieldNumber_": 10525.2999
+    },
+    {
+      "fieldNumber": 10525.3,
+      "fieldName": "DUR 3 RAW DATA",
+      "dataType": "COMPUTED",
+      "rawType": "CJ53",
+      "length": 53,
+      "required": false,
+      "helpText": "DUR information returned by the payer that has not been formatted yet. ",
+      "fieldNumber_": 10525.3
+    },
+    {
+      "fieldNumber": 10525.3439,
+      "fieldName": "DUR 3 DRUG CONFLICT CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10525.3439
+    },
+    {
+      "fieldNumber": 10525.3528,
+      "fieldName": "DUR 3 SEVERITY INDEX CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=Major 2=Moderate 3=Minor ",
+      "fieldNumber_": 10525.3528
+    },
+    {
+      "fieldNumber": 10525.3529,
+      "fieldName": "DUR 3 OTHER PHARMACY INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10525.3529
+    },
+    {
+      "fieldNumber": 10525.353,
+      "fieldName": "DUR 3 PREVIOUS DATE OF FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Fill date of the previous fill that is causing the DUR conflict. ",
+      "fieldNumber_": 10525.353
+    },
+    {
+      "fieldNumber": 10525.3531,
+      "fieldName": "DUR 3 QTY OF PREVIOUS FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Quantity of the fill that is causing the conflict. ",
+      "fieldNumber_": 10525.3531
+    },
+    {
+      "fieldNumber": 10525.3532,
+      "fieldName": "DUR 3 DATABASE INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=First Databank 2=Medi-Span 3=Redbook 4=Processor Developed 5=Other ",
+      "fieldNumber_": 10525.3532
+    },
+    {
+      "fieldNumber": 10525.3533,
+      "fieldName": "DUR 3 OTHER PRESCRIBER INDIC",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Code that indicates the prescriber of the current fill relationship to the prescriber of the conflicting prescription.   и=Not Specified 1=Same Prescriber 2=Other Prescriber ",
+      "fieldNumber_": 10525.3533
+    },
+    {
+      "fieldNumber": 10525.3544,
+      "fieldName": "DUR 3 FREE TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Actual DUR text ",
+      "fieldNumber_": 10525.3544
+    },
+    {
+      "fieldNumber": 10525.3999,
+      "fieldName": "DUR 3 RESERVE SPACE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ4",
+      "length": 4,
+      "required": false,
+      "helpText": "Reserved space for additional information. ",
+      "fieldNumber_": 10525.3999
+    },
+    {
+      "fieldNumber": 10526,
+      "fieldName": "ADDITIONAL MESSAGE INFORMATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ200",
+      "length": 200,
+      "required": false,
+      "helpText": "Free text, additional information from the payer. ",
+      "fieldNumber_": 10526
+    },
+    {
+      "fieldNumber": 10528,
+      "fieldName": "CLINICAL SIGNIFICANCE CODE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=Major 2=Moderate 3=Minor ",
+      "fieldNumber_": 10528
+    },
+    {
+      "fieldNumber": 10529,
+      "fieldName": "OTHER PHARMACY INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "и=Not Specified 1=Your Pharmacy 2=Other Pharmacy in Same Chain 3=Other Pharmacy ",
+      "fieldNumber_": 10529
+    },
+    {
+      "fieldNumber": 10530,
+      "fieldName": "PREVIOUS DATE OF FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "Fill date of the prescription causing the DUR conflict. ",
+      "fieldNumber_": 10530
+    },
+    {
+      "fieldNumber": 10531,
+      "fieldName": "QUANTITY OF PREVIOUS FILL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5",
+      "length": 5,
+      "required": false,
+      "helpText": "Quantity of the prescription causing the conflict. ",
+      "fieldNumber_": 10531
+    },
+    {
+      "fieldNumber": 10532,
+      "fieldName": "DATABASE INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Blank=Not Specified 1=First Databank 2=Medi-Span 3=Redbook 4=Processor Developed 5=Other ",
+      "fieldNumber_": 10532
+    },
+    {
+      "fieldNumber": 10533,
+      "fieldName": "OTHER PRESCRIBER INDICATOR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "и=Not Specified 1=Same Prescriber 2=Other Prescriber ",
+      "fieldNumber_": 10533
+    },
+    {
+      "fieldNumber": 10535,
+      "fieldName": "DUR OVERFLOW",
+      "dataType": "COMPUTED",
+      "rawType": "CJ1",
+      "length": 1,
+      "required": false,
+      "helpText": "Additional DUR information that did not fit in the other  fields provided. ",
+      "fieldNumber_": 10535
+    },
+    {
+      "fieldNumber": 10544,
+      "fieldName": "FREE TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Even more room for additional free text DUR information. ",
+      "fieldNumber_": 10544
+    }
+  ],
+  "fieldCount": 236,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AE", "field": },
+    {"name": "AEC", "field": },
+    {"name": "AER", "field": },
+    {"name": "AF", "field": },
+    {"name": "AFR", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "9002313.57", "field": .01, "type": "regular"},
+    {"name": "9002313.57", "field": 1.11, "type": "regular"},
+    {"name": "9002313.57", "field": 3, "type": "regular"},
+    {"name": "9002313.57", "field": 4, "type": "regular"},
+    {"name": "9002313.57", "field": 5, "type": "regular"},
+    {"name": "9002313.57", "field": 7, "type": "regular"},
+    {"name": "9002313.57", "field": 13, "type": "regular"},
+    {"name": "9002313.57", "field": 17, "type": "regular"},
+    {"name": "9002313.57", "field": 401, "type": "regular"},
+    {"name": "9002313.57", "field": 402, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

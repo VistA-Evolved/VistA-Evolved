@@ -1,0 +1,131 @@
+{
+  "fileNumber": 366,
+  "fileName": "IB SSVI PIN/HL7 PIVOT",
+  "globalRoot": "366",
+  "globalReference": "^IBCN(366,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This will contain the date time (Timestamp) of the event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PIVOT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This will contain a unique pivot number that is created by the system. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the pointer to the patient file (#2) to which this event belongs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INPATIENT EVENTS;2:OUTPATIENT EVENTS;3:REGISTRATIONS EVENTS;4:UPDATES TO DATA;5:TREATING FACILITY UPDATES;6:COTS UPDATE EVENTS;",
+      "helpText": "This indicates the type of event that has occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EVENT POINTER",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is a pointer to the patient file.  Currently it is not defined  as a variable pointer, but may be modified in the future to allow entries  from other sources to be used. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COMPLETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:COMPLETED;",
+      "helpText": "Completed can mean \"TRANSMITTED\" on originating site or \"RECEIVED\" on  receiving facility treatment site. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DELETED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DELETED;",
+      "helpText": "This field is used to mark the given entry for the event as being  deleted. It indicates that the ADT event was deleted, but an ancillary  system may still hold the PIVOT number. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REQUIRES TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field denotes whether or not the entry requires transmission. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created this event. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "FIELD(S) EDITED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used to store the fields edited, delimited by ';' for  the event. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSURANCE",
+      "dataType": "SUBFILE",
+      "rawType": "366.04A",
+      "required": false,
+      "helpText": "Patient file insurance type subfile to send to a patient's treating  facility sites. ",
+      "isMultiple": true,
+      "subFileNumber": 366.04,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "366", "field": .01, "type": "regular"},
+    {"name": "366", "field": .02, "type": "regular"},
+    {"name": "366", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

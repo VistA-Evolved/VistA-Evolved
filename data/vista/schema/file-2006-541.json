@@ -1,0 +1,98 @@
+{
+  "fileNumber": 2006.541,
+  "fileName": "DICOM VISTA Q/R REQUEST QUEUE",
+  "globalRoot": "2006.541",
+  "globalReference": "^MAGDSTT(2006.541,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Fileman date/time of the request.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUERY/RETRIEVE FLAG",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Q:QUERY;R:RETRIEVE;",
+      "helpText": "This field indicates whether this is a Query or a Retrieve request. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FIRST XTMP SUBSCRIPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30",
+      "length": 30,
+      "required": true,
+      "helpText": "This is the first subscript of the ^XTMP global created to temporarily hold the results of a DICOM Query. It needs to be ^XTMP rather than ^TMP because ^XTMP is translated whereas ^TMP is not. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HOSTNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ15",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the name of the computer generating the query/retrieve request. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOB NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "This is the VistA Job Number ($J). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QRSTACK",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the number of the entry in the query/retrieve push down stack. The first number is one, then two, then three, and then four. When the user goes forward, the stack is built.  When the user goes backwards, the stack is cleared. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DUZ",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "User in New Person File (#200) who created the Q/R request entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "Q/R KEYS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5411A",
+      "required": false,
+      "helpText": "These are the search and return keys that are used in a Query/Retrieve request.  Each Q/R key consists of a name/value pair. The search keys are used to identify the patient, study, series, or image.  In the query message, the return keys are null in the request message and are filled with information on the response message. In the retrieve message, the destination storage provider is specified in the query keys. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.5411,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.541", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

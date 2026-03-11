@@ -1,0 +1,649 @@
+{
+  "fileNumber": 740,
+  "fileName": "QUALITY ASSURANCE SITE PARAMETERS",
+  "globalRoot": "740P",
+  "globalReference": "^QA(740,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This file has DINUM set to one (1).  The only valid entry for this field is 1. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "P4'X",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the name of this institution. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 740.01,
+      "fieldName": "EWS MAIL GROUP/SERVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the mail group or server name that the Early Warning System bulletin should be sent to.  For mail groups you should enter G.(MAILGROUP).  For mail servers you should enter S.(MAILSERVER). ",
+      "fieldNumber_": 740.01
+    },
+    {
+      "fieldNumber": 740.02,
+      "fieldName": "EWS DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the domain name that the Early Warning System bulletins should be sent to. ",
+      "fieldNumber_": 740.02
+    },
+    {
+      "fieldNumber": 740.03,
+      "fieldName": "NQADB MAIL GROUP/SERVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the mail group or server name that the NQADB bulletin should be sent  to.  For mail groups you should enter, G.MAILGROUP.  For mail servers you should enter, S.MAILSERVER. ",
+      "fieldNumber_": 740.03
+    },
+    {
+      "fieldNumber": 740.04,
+      "fieldName": "NQADB DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the domain name that the NQADB bulletins should be sent to. ",
+      "fieldNumber_": 740.04
+    },
+    {
+      "fieldNumber": 740.05,
+      "fieldName": "EWS LOCAL MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field contains the local mail group that the EWS bulletins should be sent to.  This will allow the member(s) of the mail group to save the EWS bulletins in their own mail baskets and to check the status of those bulletins. ",
+      "fieldNumber_": 740.05
+    },
+    {
+      "fieldNumber": 740.06,
+      "fieldName": "MAIL GROUP (IRM)",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This field contains a mail group in which IRM will receive diagnostic messages pertaining to the QM module. ",
+      "fieldNumber_": 740.06
+    },
+    {
+      "fieldNumber": 740.07,
+      "fieldName": "IRM MAIL GROUP SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  Indicates if diagnostic mail is to be delivered to IRM. ",
+      "fieldNumber_": 740.07
+    },
+    {
+      "fieldNumber": 740.99,
+      "fieldName": "VERSION (QAQ)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the QM Integration Module package. ",
+      "fieldNumber_": 740.99
+    },
+    {
+      "fieldNumber": 741.01,
+      "fieldName": "PEER REVIEW DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the allowable number of days between the completion of the Clinical Review and the completion of the Peer Review. ",
+      "fieldNumber_": 741.01
+    },
+    {
+      "fieldNumber": 741.02,
+      "fieldName": "MANAGEMENT REVIEW DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of allowable days between the completion of the Clinical Review and the completion of the Management Review. ",
+      "fieldNumber_": 741.02
+    },
+    {
+      "fieldNumber": 741.03,
+      "fieldName": "CLINICAL WORKSHEET PART 1",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls the printing of PART 1 of the CLINICAL WORKSHEET.         0- 'NO', do not print part 1.         1- 'YES', print part 1. ",
+      "fieldNumber_": 741.03
+    },
+    {
+      "fieldNumber": 741.04,
+      "fieldName": "AUTO-PRINT CLINICAL WORKSHEET",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field controls whether or not Clinical Worksheets are automatically printed as part of the Auto Enrollment process.        0- 'NO', do not print Clinical Worksheets.        1- 'YES', print Clinical Worksheets. ",
+      "fieldNumber_": 741.04
+    },
+    {
+      "fieldNumber": 741.05,
+      "fieldName": "DEFAULT OS DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This field contains the default printer device for OCCURRENCE SCREEN. Auto-Print Clinical Worksheets will be routed to this device. ",
+      "fieldNumber_": 741.05
+    },
+    {
+      "fieldNumber": 741.06,
+      "fieldName": "MIN TIME BETWEEN LOGOUT & ADM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the minimum time, in hours, between a disposition log out and an admission.  This time is used when auto enrolling admissions within 3 days following unscheduled ambulatory care visits.  If the time between the log out and the admission is less than this time, the event will not be captured.  If the time is greater than or equal to this time, it will be captured. ",
+      "fieldNumber_": 741.06
+    },
+    {
+      "fieldNumber": 741.07,
+      "fieldName": "SCHEDULED ADMISSION CLINIC",
+      "dataType": "POINTER",
+      "rawType": "740.01PA",
+      "required": false,
+      "helpText": "This field contains the clinic(s) that are used to schedule patient admissions.  The data entered in this field is used by the auto enroll to determine which admissions are scheduled. ",
+      "fieldNumber_": 741.07
+    },
+    {
+      "fieldNumber": 741.08,
+      "fieldName": "SURGERY PACKAGE INSTALLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is answered Y(es) the auto enroll will scan the Surgery package for screen 107, Return to the O.R. in the same admission. ",
+      "fieldNumber_": 741.08
+    },
+    {
+      "fieldNumber": 741.09,
+      "fieldName": "ALLOW MULT PATIENT SELECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Entering Y(es) at this prompt will allow you to select several patients at once for editing.  Patients may be selected in the normal manner, i.e., by name, SSN, etc., or by an occurrence date range.  The selected patients will then be brought up sequentially for editing.  Entering N(o) will allow you to select only one patient at a time. Multiple patient selection will work in the following options:  1) Quick Exception Edit  2) Validation/Confirmation  3) Delete Occurrence Screen Record  4) Reop",
+      "fieldNumber_": 741.09
+    },
+    {
+      "fieldNumber": 741.1,
+      "fieldName": "MULTI-DIVISIONAL OS FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "  This field is used in conjunction with the DIVISION field to determine which output device the auto enroll reports will be sent to.  Answering Y(es) to this field will allow you to select a different auto enroll output device for each division. ",
+      "fieldNumber_": 741.1
+    },
+    {
+      "fieldNumber": 741.11,
+      "fieldName": "OS HOSPITAL DIVISION",
+      "dataType": "POINTER",
+      "rawType": "740.02IPA",
+      "required": false,
+      "fieldNumber_": 741.11
+    },
+    {
+      "fieldNumber": 741.97,
+      "fieldName": "*SCREEN FILE CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the entries in the screen file #741.1 were DINUMed.  This field is used to prevent the conversion from being run twice.  Running this conversion twice would not corrupt the data, but it could potentially waste a lot of time. ",
+      "fieldNumber_": 741.97
+    },
+    {
+      "fieldNumber": 741.98,
+      "fieldName": "*SEVERITY CONVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the severity levels in file #741.8 were converted from a seven point scale to a four point scale.  This field is used to prevent the conversion from being run twice. ",
+      "fieldNumber_": 741.98
+    },
+    {
+      "fieldNumber": 741.99,
+      "fieldName": "VERSION (QAO)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Occurrence Screen package. installed with QAO. ",
+      "fieldNumber_": 741.99
+    },
+    {
+      "fieldNumber": 742.01,
+      "fieldName": "MAIL GROUP (QAN)",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "Indicates the MAILGROUP where the mail message should be sent. A proper recipient should be specified at this time. ",
+      "fieldNumber_": 742.01
+    },
+    {
+      "fieldNumber": 742.02,
+      "fieldName": "BULLETIN SENT (QAN)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Indicates whether a bulletin will be sent off to the specified mailgroup. ",
+      "fieldNumber_": 742.02
+    },
+    {
+      "fieldNumber": 742.03,
+      "fieldName": "RESPONSIBLE PERSON SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "Indicates whether or not the 'Responsible Person' field should be asked. ",
+      "fieldNumber_": 742.03
+    },
+    {
+      "fieldNumber": 742.04,
+      "fieldName": "QM TIME FRAME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "     This field hold the number of days the user wishes to wait before the system warns the user of potential negligence in filing a 'VA 10-2633 Report Of Special Incident Involving A Beneficiary' form.  This is only for incident events that do not require immediate notification to the region. ",
+      "fieldNumber_": 742.04
+    },
+    {
+      "fieldNumber": 742.99,
+      "fieldName": "VERSION (QAN)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Incident Reporting package. ",
+      "fieldNumber_": 742.99
+    },
+    {
+      "fieldNumber": 743.01,
+      "fieldName": "DAY WEEKLY TIME FRAME BEGINS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Sunday;1:Monday;2:Tuesday;3:Wednesday;4:Thursday;5:Friday;6:Saturday;",
+      "helpText": "This field contains the day of the week that the weekly time frame begins.  This data is used by auto enroll for the update of the history file. ",
+      "fieldNumber_": 743.01
+    },
+    {
+      "fieldNumber": 743.02,
+      "fieldName": "MONITORING SYSTEM DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This field contains the default printer device for the Monitoring System.  Auto-Print Fall Out Reports will be routed to this device.  ",
+      "fieldNumber_": 743.02
+    },
+    {
+      "fieldNumber": 743.03,
+      "fieldName": "MAX DAYS PER MANUAL AUTO RUN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field gives the maximum number of auto enroll runs that may be run consecutively. ",
+      "fieldNumber_": 743.03
+    },
+    {
+      "fieldNumber": 743.04,
+      "fieldName": "TIME BETWEEN MANUAL AUTO RUNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of minutes between queued runs of auto enroll. ",
+      "fieldNumber_": 743.04
+    },
+    {
+      "fieldNumber": 743.05,
+      "fieldName": "MANUAL AUTO RUN ALLOWED TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the range of time during which auto enroll may be manually queued to run.  The format is HHMM-HHMM, where HH = Hours (00-23), and MM = Minutes (00-59).  The second time must be greater than the first. ",
+      "fieldNumber_": 743.05
+    },
+    {
+      "fieldNumber": 743.06,
+      "fieldName": "ALLOW USE OF `[' IN GROUP EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field is set to YES the user may enter [GROUP MEMBER at the Select GROUP MEMBER prompt to select all entries that contain the text GROUP MEMBER as part of their name. ",
+      "fieldNumber_": 743.06
+    },
+    {
+      "fieldNumber": 743.99,
+      "fieldName": "VERSION (QAM)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Monitoring System package. ",
+      "fieldNumber_": 743.99
+    },
+    {
+      "fieldNumber": 745.01,
+      "fieldName": "DISPLAY ISSUE CODES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "While editing a contact record, if you want to display all the Issue Codes and Services you previously selected prior to the prompt Issue Codes, enter YES at this prompt. ",
+      "fieldNumber_": 745.01
+    },
+    {
+      "fieldNumber": 745.02,
+      "fieldName": "AUTOMATIC ROC ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this field contains a 'YES', an alert for a Patient Rep Report of Contact will be sent automatically to the entries in the Refer Contact To field.  Responses from each alert will be automatically laid into the Resolution field for review/edit by the Patient Representative. ",
+      "fieldNumber_": 745.02
+    },
+    {
+      "fieldNumber": 745.99,
+      "fieldName": "VERSION (QAC)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Patient Representative package. ",
+      "fieldNumber_": 745.99
+    },
+    {
+      "fieldNumber": 747.01,
+      "fieldName": "1ST ADDRESS LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the 1st address line for the Facility. ",
+      "fieldNumber_": 747.01
+    },
+    {
+      "fieldNumber": 747.02,
+      "fieldName": "2ND ADDRESS LINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the 2nd address line for the Facility. ",
+      "fieldNumber_": 747.02
+    },
+    {
+      "fieldNumber": 747.03,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the city of the Facility. ",
+      "fieldNumber_": 747.03
+    },
+    {
+      "fieldNumber": 747.04,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is a pointer to the State File and contains the State of the Facility. ",
+      "fieldNumber_": 747.04
+    },
+    {
+      "fieldNumber": 747.05,
+      "fieldName": "ZIP ",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the zip code of the Facility. ",
+      "fieldNumber_": 747.05
+    },
+    {
+      "fieldNumber": 747.06,
+      "fieldName": "MAIN TELE. NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Please use the format:(XXX)111-1111 ",
+      "fieldNumber_": 747.06
+    },
+    {
+      "fieldNumber": 747.07,
+      "fieldName": "COORD. SEC. NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the Credentialing Coordinator's Secretary. ",
+      "fieldNumber_": 747.07
+    },
+    {
+      "fieldNumber": 747.08,
+      "fieldName": "COORDINATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of Coordinator for the Credentialing process. ",
+      "fieldNumber_": 747.08
+    },
+    {
+      "fieldNumber": 747.09,
+      "fieldName": "COORD. TELE.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the Coordinator's telephone number. ",
+      "fieldNumber_": 747.09
+    },
+    {
+      "fieldNumber": 747.1,
+      "fieldName": "PERSONNEL CHIEF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the Personnel Chief for the Facility. ",
+      "fieldNumber_": 747.1
+    },
+    {
+      "fieldNumber": 747.11,
+      "fieldName": "DIRECTOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the Director for the Facility. ",
+      "fieldNumber_": 747.11
+    },
+    {
+      "fieldNumber": 747.12,
+      "fieldName": "APPLICANT NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field is a computed field and requires no input. date.  The user will not have to input data to this field. ",
+      "fieldNumber_": 747.12
+    },
+    {
+      "fieldNumber": 747.13,
+      "fieldName": "PERSONNEL ROUTING SYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the mail routing symbol for the Personnel Service. ",
+      "fieldNumber_": 747.13
+    },
+    {
+      "fieldNumber": 747.14,
+      "fieldName": "COORD. ROUTING SYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the mail routing symbol for the Credentialing Coordinator. ",
+      "fieldNumber_": 747.14
+    },
+    {
+      "fieldNumber": 747.15,
+      "fieldName": "COORD. TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the official title of the Credentialing Coordinator. ",
+      "fieldNumber_": 747.15
+    },
+    {
+      "fieldNumber": 747.16,
+      "fieldName": "FSMB DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to input the server name and Domain if your region decides to use the FSMB portion of this package.  ie S.QARFSMB@ISC-CHICAGO. ",
+      "fieldNumber_": 747.16
+    },
+    {
+      "fieldNumber": 747.2,
+      "fieldName": "CHIEF OF STAFF",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of Chief of Staff for this facility. ",
+      "fieldNumber_": 747.2
+    },
+    {
+      "fieldNumber": 747.21,
+      "fieldName": "C.O.S TELE.#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the telephone number of the Chief of Staff. ",
+      "fieldNumber_": 747.21
+    },
+    {
+      "fieldNumber": 747.23,
+      "fieldName": "C.O.S. ROUTING SYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the mail routing symbol for the Chief of Staff. ",
+      "fieldNumber_": 747.23
+    },
+    {
+      "fieldNumber": 747.99,
+      "fieldName": "VERSION (QAR)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Credentials Tracking package. installed with QAR. ",
+      "fieldNumber_": 747.99
+    },
+    {
+      "fieldNumber": 748.99,
+      "fieldName": "VERSION (QAP)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Indicates the version of the Survey Generator package. ",
+      "fieldNumber_": 748.99
+    },
+    {
+      "fieldNumber": 749,
+      "fieldName": "MULTI-DIVISIONAL PAT REP FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to YES if the facility has been integrated via the DBIA process, and has one computer system and database for more than one station. ",
+      "fieldNumber_": 749
+    },
+    {
+      "fieldNumber": 750,
+      "fieldName": "PAT REP HOSPITAL DIVISION",
+      "dataType": "POINTER",
+      "rawType": "740.03PA",
+      "required": false,
+      "fieldNumber_": 750
+    },
+    {
+      "fieldNumber": 751,
+      "fieldName": "MULTI-DIVISIONAL INCID REP FACILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field holds a '1' or 'YES' if the station is an NDBI integrated  Facility, with more than one Medical Center using one database. ",
+      "fieldNumber_": 751
+    },
+    {
+      "fieldNumber": 752,
+      "fieldName": "IR HOSPITAL DIVISION",
+      "dataType": "POINTER",
+      "rawType": "740.0752PA",
+      "required": false,
+      "helpText": "This field is a pointer to the INSTITUTION file (#4).  It is used by  integrated sites to store the names of the Medical Centers in the integrated group. ",
+      "fieldNumber_": 752
+    },
+    {
+      "fieldNumber": 753,
+      "fieldName": "QAC LAST RECORD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field holds the IEN from file #745.1 of the last record that has been rolled up to the national database.  The records are rolled up by a daily tasked job run by routines QACMAIL0 and ^QACMAIL1. ",
+      "fieldNumber_": 753
+    },
+    {
+      "fieldNumber": 754,
+      "fieldName": "QAC ROLLUP TASK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This field will hold the task number of the latest data rollup for the Patient Representative package.  This task number will be checked before tasking the daily rollup to see if there is already a copy of the job on the task list.  This will prevent multiple copies of the job from being tasked. ",
+      "fieldNumber_": 754
+    },
+    {
+      "fieldNumber": 755,
+      "fieldName": "QAN TIME REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Field set to '1' or 'Yes' if site requires Date of Incident to include time of day. ",
+      "fieldNumber_": 755
+    }
+  ],
+  "fieldCount": 67,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "740", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

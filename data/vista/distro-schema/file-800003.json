@@ -1,0 +1,61 @@
+{
+  "fileNumber": 800003,
+  "fileName": "HMP EVENT",
+  "globalRoot": "800003",
+  "globalReference": "^HMPLOG(800003,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is an integer that corresponds to the internal entry number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is a precise date with required time (with seconds). This field is required for each entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:corruption;I:informational;M:missing entry;O:other;",
+      "helpText": "A set of codes that will be used to classify the type of event logged.    C - Corrupt entry was found.  For example, the value in a field would not pass      the Input Transform.    I - Informational. An event of note that would not cause an error.      For example, an entry was missing a field that was expected, but not required.    M - Missing entry. An internal entry number (IEN) was found without a corresponding      entry.  Also called a \"broken pointer\" or \"dangling pointer\".    O - Other ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTIVE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "800003.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 800003.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ATYP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "800003", "field": .01, "type": "regular"},
+    {"name": "800003", "field": .02, "type": "regular"},
+    {"name": "800003", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,2),5)"}
+  ]
+}

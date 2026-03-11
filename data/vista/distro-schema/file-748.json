@@ -1,0 +1,154 @@
+{
+  "fileNumber": 748,
+  "fileName": "SURVEY",
+  "globalRoot": "748I",
+  "globalReference": "^QA(748,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the survey, as the survey author will refer to it. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is title for the survey, which will be displayed on all outputs such as printouts and screens.   ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STATION OF SURVEY DEVELOPER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the station of the person who developed the survey.  It is a free text field to allow for survey exportation and importation. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST DATE FOR USAGE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the last date a survey may be participated in by anyone. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "A password attached to a survey will limit the participation to those who know it.  It is used to segregate participation to a group of people. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "r:READY FOR USE;d:UNDER MAINTENANCE/DEVELOPMENT;e:ACTIVE LIFE EXPIRED;",
+      "helpText": "This is the current state of the survey:      r - Ready for use    d - Under development/maintenance    e - Active life expired (the date for last usage has passed) ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .055,
+      "fieldName": "DEVELOPER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who developed the survey.  It is a pointer to file 200 and is not exportable. ",
+      "fieldNumber_": .055
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "INSTRUCTIONS FOR USE",
+      "dataType": "SUBFILE",
+      "rawType": "748.12",
+      "required": false,
+      "helpText": "The instructions for use field should contain anything that the  survey participants need to know in order to take the survey.  It is  up to the survey creator to assure that the instructions are adequate, and that the essential things are present. ",
+      "isMultiple": true,
+      "subFileNumber": 748.12,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ARE ALL DEMOGRAPHICS REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "This field is used as a \"master switch\" to indicate that the participants must always complete all demographics.  This field  is overridden by the individual demographic field which indicates whether or not a demographic is required.  For example this field may be set to NO but an individual demographic field may be set to YES to force an answer perhaps just for one item. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "748.01",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 748.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTHORIZED EDITORS",
+      "dataType": "POINTER",
+      "rawType": "748.02P",
+      "required": false,
+      "helpText": "This field will allow any person whose name is entered to perform any actions on a survey that would normally be done by the survey creator. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEMOGRAPHIC DATA ITEM",
+      "dataType": "SUBFILE",
+      "rawType": "748.03A",
+      "required": false,
+      "helpText": "This field will contain any items which the survey creator will want to know about for demographical purposes.  Examples would be race, age, date of birth, job type, etc.  For consistency purposes any item entered here which will be used for reporting must be marked as a required answer. ",
+      "isMultiple": true,
+      "subFileNumber": 748.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MULTI-ENTRY PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The participant must know this password to enter more than one survey response.  This field is used to allow certain groups to use surveys frequently as in Nursing patient care surveys, yet keep others from accessing them. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATISTICS VIEW STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "c:CREATOR/EDITORS ONLY;n:NO RESTRICTIONS;",
+      "helpText": "This field is used to limit who may see the statistics which may be produced for a given survey.  Normally only the creator or an authorized editor would have access but there may be instances where the creator wishes the public to view the statistics as well. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "748", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .055, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W ?37,\"By: \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

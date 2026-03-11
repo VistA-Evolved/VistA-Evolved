@@ -1,0 +1,502 @@
+{
+  "fileNumber": 791810,
+  "fileName": "STATION ORDER",
+  "globalRoot": "791810DI",
+  "globalReference": "^RMPF(791810,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The Order Date/Time field contains the date and time that a user initiated an individual order.  This date is automatically recorded and cannot be edited through the ROES software.  The date/time is unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF ORDER",
+      "dataType": "POINTER",
+      "rawType": "P791810.1'",
+      "required": false,
+      "pointerTo": 791810.1,
+      "helpText": "This field indicates the type of order that a user chose to create. The type of order determines which enter/edit sequences and display screens are used by the software.  Once entered, the type of order cannot be changed by a user. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS OF ORDER",
+      "dataType": "POINTER",
+      "rawType": "P791810.2'",
+      "required": false,
+      "pointerTo": 791810.2,
+      "helpText": "This field indicates the current status of the chosen order.  Certain functions in the ROES can only be accomplished for orders of a particular status.  The setting of this field is controlled by the software. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field contains a pointer to the Patient File for identification of the patient in \"Patient Type\" orders. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ENTERING USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the New Person file for the user who initially created the order.  This field is set by the software and is not editable. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the transaction's current status was assigned. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PURCHASE ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the purchase order number that was assigned to an order by the DDC.  The value of this field is assigned by the order update process and cannot be edited at the field station. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ORDERED/REQUESTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the New Person File for the user who requested the order.  This person is not necessairly the Entering User. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ORDER/REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the order or request was actually made.  It may not be the same as the date the order was entered. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "APPROVED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the New Person File for the user who approved the order. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "APPROVAL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the order was actually approved. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TRANSMISSION BATCH",
+      "dataType": "POINTER",
+      "rawType": "P791812'",
+      "required": false,
+      "pointerTo": 791812,
+      "helpText": "This is a pointer to the transmission batch where the order was placed upon approval. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CONTRACTOR'S INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the invoice number from the vendor who shipped the order. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DATE RETURNED TO CONTRACTOR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that bad merchandise was returned to the contractor or vendor. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ENTERED FROM THIS MENU",
+      "dataType": "POINTER",
+      "rawType": "P791810.5",
+      "required": false,
+      "pointerTo": 791810.5,
+      "helpText": "This field contains the name of the menu from which the order was entered. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first free text line of a patient's address. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second free text address line of a patient's address. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "ADDRESS LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the third free text line of a patient's address. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the free text city name for a patient's address. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This is a pointer to the State File for the patient's address. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the zip code for the patient's address. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the beginning date for the patient's address if the address is a temporary address. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the ending date for a patient's address if the address is a temporary address. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DISABILITY CODE",
+      "dataType": "POINTER",
+      "rawType": "*P662'",
+      "required": false,
+      "pointerTo": 662,
+      "helpText": "This field holds the disability code that makes a veteran entitled for a ROES order. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "P791810.4'",
+      "required": false,
+      "pointerTo": 791810.4,
+      "helpText": "This field holds the eligibility used by each ROES order. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "ELIGIBILITY ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "  This field contains the name of the user entering the patient's eligibility. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "ELIGIBILITY ENTERED BY USER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ENTERED BY USER;1:ENTERED BY USER;",
+      "helpText": "  This field indicates whether the user entered the eligibility or whether the eligibility was determined from the DHCP Patient File. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "DATE ELIGIBILITY ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "  This field contains the date that a user entered an eligibility into a ROES order. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "PROPOSED ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "P791810.4'",
+      "required": false,
+      "pointerTo": 791810.4,
+      "helpText": "This field holds that eligibility the ASPS submits to PSAS when requesting an eligibility determination. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "PE ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who entered the proposed eligibility. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "PE ENTRY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date and time that the proposed eligibility was entered. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "ELIGIBILITY COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field that PSAS may use to enter a comment when determining the eligibility for a patient. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "SENSITIVE PATIENT RECORD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is set to yes  if this record is designated as a sensitive record. ",
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text field for the entry of remarks to be sent to the DDC. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "DISAPPROVAL REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text reason that must be entered when an order is disapproved. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "CANCEL REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text reason that must be entered when certain types of orders are canceled. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "DATE PATIENT REQUESTED CARE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the patient first requested care for the product or service referenced in the order. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "DELIVERY CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:routine (Shipped within 6 days);P:priority (Shipped within 24 hours);E:emergency (Received by patient within 24 hours);",
+      "helpText": "  This field contains the order delivery category.  'ROUTINE' means the product will be shipped within 6 days of receipt of the order, 'PRIORITY' means the product will be shipped within 24 hours of receipt of the order and 'EMERGENCY' means the product will be delivered within 24 hours of receipt of the order.  The majority of orders will be 'ROUTINE'.  Extra shipping costs are incurred with 'PRIORITY' and 'EMERGENCY' orders. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "RELEASED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the user who released an order for transmission to the DDC.  This field is only used for orders that require updates after initial submission (e.g., Custom Hearing Aid Orders). ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "RELEASE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that an order was released to the DDC. This field is only used for order types that require updates after initial submission. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "AUDIOLOGICAL ASSESSMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the patient received an audiological assessment for the condition connected with this order. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 11.01,
+      "fieldName": "TYPE OF HEARING AID FITTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:monaural;B:binaural;C:cros;BC:bi-cros;",
+      "helpText": "This field holds the type of fitting for hearing aid orders.  If the fitting is binaural, when the first aid is ordered, users are asked if they wish to order the second aid the same as the first. ",
+      "fieldNumber_": 11.01
+    },
+    {
+      "fieldNumber": 11.02,
+      "fieldName": "AUTHORIZED USAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:monaural wearer;B:binaural wearer;",
+      "helpText": "The authorized hearing aid usage must be entered in this field for hearing aid orders. ",
+      "fieldNumber_": 11.02
+    },
+    {
+      "fieldNumber": 11.03,
+      "fieldName": "ITEM TO BE REPLACED BY DDC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;1:yes;0:no;",
+      "helpText": "Users must enter 'YES' at the prompt for this data field in order to receive replacements for line items they issue from their station stock. ",
+      "fieldNumber_": 11.03
+    },
+    {
+      "fieldNumber": 11.04,
+      "fieldName": "PROSTHETICS ORDER",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "This field holds a pointer to a Prosthetics Transaction for those orders entered through the interface to the DHCP Prosthetics Package. ",
+      "fieldNumber_": 11.04
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "LINE ITEM",
+      "dataType": "POINTER",
+      "rawType": "791810.0101P",
+      "required": false,
+      "helpText": "This multiple field contains the line items that are part of an order. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "MESSAGE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "791810.0201DA",
+      "required": false,
+      "helpText": "This field contains all messages received from the DDC. ",
+      "isMultiple": true,
+      "subFileNumber": 791810.0201,
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "AUTHORIZED HEARING AIDS",
+      "dataType": "SUBFILE",
+      "rawType": "791810.0301A",
+      "required": false,
+      "helpText": "This node contains information about the authorized hearing aids for a veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 791810.0301,
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 901,
+      "fieldName": "STATION NUMBER-NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the station number and name for the facility initiating an order. ",
+      "fieldNumber_": 901
+    }
+  ],
+  "fieldCount": 49,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AEE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "791810", "field": .01, "type": "regular"},
+    {"name": "791810", "field": .01, "type": "regular"},
+    {"name": "791810", "field": .03, "type": "regular"},
+    {"name": "791810", "field": .04, "type": "regular"},
+    {"name": "791810", "field": .04, "type": "regular"},
+    {"name": "791810", "field": .06, "type": "regular"},
+    {"name": "791810", "field": .07, "type": "regular"},
+    {"name": "791810", "field": 2.08, "type": "regular"},
+    {"name": "791810", "field": 11.04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RMPF(791810.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(791810.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

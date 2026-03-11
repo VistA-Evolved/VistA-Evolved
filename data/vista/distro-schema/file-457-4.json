@@ -1,0 +1,60 @@
+{
+  "fileNumber": 457.4,
+  "fileName": "TIME REMARKS",
+  "globalRoot": "457.4I",
+  "globalReference": "^PRST(457.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A description of the time remark. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0X",
+      "length": 2,
+      "required": true,
+      "helpText": "A numeric code that identifies the time remark. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "UPPERCASE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The DESCRIPTION field of the time remark displayed in uppercase letters. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "APPLICABLE TYPES OF TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A character string containing the two letter codes, separated by a space, for the type of time associated with this time remark. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "457.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "457.4", "field": 1, "type": "regular"},
+    {"name": "457.4", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "fileNumber": 661.7,
+  "fileName": "PROSTHETIC CURRENT STOCK",
+  "globalRoot": "661.7",
+  "globalReference": "^RMPR(661.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HCPCS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is a pointer to the Prosthetic HCPCs file (661.1). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE&TIME STAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the same SEQUENCE as in the PROSTHETIC TRANSACTION file (661.6) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "This field is a pointer to the 661.12 sub-file of the PROSTHETIC HCPCS file (661.1). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the INSTITUTION file (4). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P661.5'",
+      "required": false,
+      "pointerTo": 661.5,
+      "helpText": "This field points to the PROSTHETIC STOCK LOCATION file (661.5). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "QUANTITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is the quantity of stock. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "This field is the total dollar value of the stock item held on this record. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "POINTER",
+      "rawType": "P420.5",
+      "required": false,
+      "pointerTo": 420.5,
+      "helpText": "This field is a pointer to Unit of Issue file (#420.5). ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "661.7", "field": .01, "type": "regular"},
+    {"name": "661.7", "field": 3, "type": "regular"},
+    {"name": "661.7", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

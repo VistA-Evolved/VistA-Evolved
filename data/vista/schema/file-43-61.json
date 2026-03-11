@@ -1,0 +1,27 @@
+{
+  "fileNumber": 43.61,
+  "fileName": "G&L TYPE OF CHANGE",
+  "globalRoot": "43.61",
+  "globalReference": "^DG(43.61,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This contains the type of change made to the patient movement. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "43.61", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "fileNumber": 233.1,
+  "fileName": "TRACKING CODE",
+  "globalRoot": "233.1",
+  "globalReference": "^EDPB(233.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique name for a value in a selection list used by the patient  tracking system.  Each name is made unique by a prefix.  This prefix is  \"edp.\" for nationally exported names.  Names that are added by the site  are prefixed with the station number and a period -- \"500.\", for example. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the selection that should appear on the display board. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an abbreviation of the display name that is used in some reports. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NATIONAL CODE",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This will allow a mapping from a site defined code to a national code when such a code exists. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FLAGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The flags are used to further classify a specific code.   The possible flags are:      M: Missed Opportunity    A: Admission   VA: VA Admission    O: Observation   Multiple flags are allowed.  No delimiters are required, as each  character has a specific meaning.  In the case of \"VA\", the \"A\" indicates  an admission and the \"V\" indicates that the admission was to the VA.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "233.12",
+      "required": false,
+      "helpText": "This allows the code to be further described. ",
+      "isMultiple": true,
+      "subFileNumber": 233.12,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "233.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

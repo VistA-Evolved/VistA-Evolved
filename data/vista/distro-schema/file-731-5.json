@@ -1,0 +1,135 @@
+{
+  "fileNumber": 731.5,
+  "fileName": "VAMC PLANNED EQUIPMENT",
+  "globalRoot": "731.5I",
+  "globalReference": "^ECT(731.5,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of an item which VAMC plans to purchase. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP730'",
+      "required": true,
+      "pointerTo": 730,
+      "helpText": "Service is a pointer to the National Service file.  Choose the service that wishes to procure the item. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HIGH TECH EQT ITEM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Is the planned equipment item from the regional unfunded high technology equipment list?  If yes, answer with a \"1\" or \"Y\". If not, answer with a \"0\" or \"N\". ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADP EQT ITEM?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Is the planned equipment item for IRM/ADP?  If so, answer with a \"1\" or \"Y\".  If not, answer with a \"0\" or \"N\". ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ADDITIONAL/REPLACEMENT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ADDITIONAL;R:REPLACEMENT;",
+      "helpText": "If the item is 'additional' equipment, enter 'A'; if 'replacement', enter 'R'. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the level of importance for purchasing purposes. Number 1 indicates highest level of importance.  Number 999 indicates lowest possible level of importance. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "Enter the estimated cost of the planned purchase item. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REQUEST DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Enter the date the item was requested.  Date may be exact, i.e. JAN 21,1991 or imprecise, i.e. JAN 1991. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE APPROVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date the item was approved for purchase. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DATE PROCURED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date the item was purchased. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:APPROVED TO BE PURCHASED;P:APPROVED AND PURCHASED;N:NOT YET APPROVED OR PURCHASED;",
+      "helpText": "Enter the status of the item: 'A' for Approved to be purchased, 'P' for approved and Purchased, and 'N' for Not yet approved or purchased. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "SUBFILE",
+      "rawType": "731.51",
+      "required": false,
+      "helpText": "Enter the justification for the planned equipment item. ",
+      "isMultiple": true,
+      "subFileNumber": 731.51,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "731.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^ECC(730,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(730,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

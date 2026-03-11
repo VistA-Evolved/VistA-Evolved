@@ -1,0 +1,65 @@
+{
+  "fileNumber": 131.06,
+  "fileName": "PHARMACY ITEMS",
+  "globalRoot": "131.06",
+  "globalReference": "^SRO(131.06,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DRUG NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P50'X",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "This is the name of the pharmacy item(s) for this operative procedure. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOSE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the dose of the medication, including units (mg, ml, etc.),  given at this time. Although optional, this information may be useful  in documentation of this case. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates the entry inactive and will prevent its selection and use by users of the Surgery Package. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "These are comments pertaining to the administration of the medication  at this time. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SURGICAL SPECIALTIES",
+      "dataType": "POINTER",
+      "rawType": "131.64PA",
+      "required": false,
+      "helpText": "This field documents the assigned local specialty(ies). ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "131.06", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

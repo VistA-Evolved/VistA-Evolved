@@ -1,0 +1,60 @@
+{
+  "fileNumber": 11,
+  "fileName": "MARITAL STATUS",
+  "globalRoot": "11",
+  "globalReference": "^DIC(11,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the acceptable marital status as distributed by the MAS package.  These entries should not be altered in any way nor should entries be added or removed.  Editing of this data can have negative affects on the performance of the MAS module as well as other DHCP modules. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an abbreviation for this marital status.  Outputs throughout DHCP may use this abbreviation if there is insufficient room to display the entire marital status name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MARITAL STATUS CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DIVORCED;M:MARRIED;N:NEVER MARRIED;S:SEPARATED;W:WIDOWED;U:UNKNOWN;",
+      "helpText": "This field contains the code for the marital status.  It must NOT be edited unless through a software upgrade!  This field is used widely throughout DHCP to determine programming flow.  It will be displayed on the patient's data card as well as many other places throughout DHCP. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "MASTER MARITAL STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P11.99'a",
+      "required": false,
+      "pointerTo": 11.99,
+      "helpText": "This is the external Standards Development Organization (SDO) Marital Status associated with this VHA Marital Status. ",
+      "fieldNumber_": 90
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ACMF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "11", "field": .01, "type": "regular"},
+    {"name": "11", "field": 1, "type": "regular"},
+    {"name": "11", "field": 90, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

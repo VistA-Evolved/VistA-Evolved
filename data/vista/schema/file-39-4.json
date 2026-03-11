@@ -1,0 +1,97 @@
+{
+  "fileNumber": 39.4,
+  "fileName": "ADT/HL7 TRANSMISSION",
+  "globalRoot": "39.4",
+  "globalReference": "^VAT(39.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The unique ID for the HL7 message ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date/time that the message was generated ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The name of the patient for which this transmission occurred ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSMITTED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is used to indicate which person caused the transmission to be sent. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DHCP OPTION",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This field will contain the option from which the transaction was invoked. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "SENDING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P771'",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "This field contain the application which generated the transmission. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TRANSMITTED;1:REJECT ACK;",
+      "helpText": "This field will contain a 0 if the record has been transmitted but not yet acknowledged.  It will contain a 1 if a negative acknowledgement is returned ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REJECT REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will contain a message explaining why the transmission was rejected. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "39.4", "field": .01, "type": "regular"},
+    {"name": "39.4", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

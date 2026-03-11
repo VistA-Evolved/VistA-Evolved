@@ -1,0 +1,246 @@
+{
+  "fileNumber": 57.23,
+  "fileName": "PPS-N UPDATE CONTROL",
+  "globalRoot": "57.23",
+  "globalReference": "^PS(57.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This field will be used to store the system name for example Pharmacy  Product System uses PPSN. There should be one entry in file (#57.23). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OPEN VMS LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This field contains the full path directory structure where the PPS-N  update file will be located (e.g., USER$:[SFTP.PPSN]). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INSTALL VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0a",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the current version number of the last successful Pharmacy Product System - National (PPS-N) Update file that was installed.  For example if the last PPS-N Update file installed was PPS_25PRV_26NEW.DAT, this field would contain 26. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIX/NT LOCAL DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "This field contains the name of the local Unix/NT secure  directory where the Pharmacy Product System - National (PPS-N) Update  file will be stored on the local system after download from the PPS-N server (e.g. /usr/PPSN/ or d:\\hfs\\ppsn\\). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRIMARY PPS-N MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This field is used to store the MS Outlook email group that will receive a copy of the PPS-N update messages.  These  messages include download and install information, Data Update for NDF report message, Updated Interactions and FDA Med Guide, Drugs Unmatched from National Drug file, Local Drugs Rematched to NDF, Interactions and Allergies Updated, and error messages. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SECONDARY MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This field is used to store the secondary MS Outlook email group that  will receive a copy of the PPS-N update messages.  These messages  include download and install information, Data Update for NDF report message, Updated Interactions and FDA Med Guide, Drugs Unmatched from National Drug file, Local Drugs Rematched to NDF, Interactions and Allergies Updated, and error messages. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DOWNLOAD VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0a",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the version number for the last Pharmacy  Product System - National (PPS-N) Update file downloaded.   For example if the last PPS-N Update file downloaded was PPS_25PRV_26NEW.DAT, this field would contain 26. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DOWNLOAD STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NOT IN PROGRESS;Y:IN PROGRESS;",
+      "helpText": "This field is used to track the status of a PPS-N/NDF Update file  download from the PPS-N sftp server. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INSTALL STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NOT IN PROGRESS;Y:IN PROGRESS;",
+      "helpText": "This field is used to track the status of a PPS-N/NDF Update file  install into the National Drug file package. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ECDSA",
+      "dataType": "SET",
+      "rawType": "St11a",
+      "required": false,
+      "helpText": "This field is used to allow the creation of Elliptic Curve Digital  Signature Algorithm (ECDSA). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REMOTE SERVER ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This is the secure FTP IP address of the Pharmacy Product System- National(PPS-N) server where the PPS-N NDF Update file will be  retrieved. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REMOTE DIRECTORY ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FaX",
+      "required": false,
+      "helpText": "This is the directory name at the Pharmacy Product System-National (PPS-N) server where the PPS-N NDF Update file will be retrieved. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "REMOTE SFTP USER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIa",
+      "required": false,
+      "helpText": "This field contains the secure FTP username at the Pharmacy Product System - National(PPS-N) server where the PPS-N NDF  Update file will be retrieved. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SCHEDULED OPTION",
+      "dataType": "POINTER",
+      "rawType": "57.24P",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "MENU OPTIONS",
+      "dataType": "POINTER",
+      "rawType": "57.2331P",
+      "required": false,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PROTOCOLS",
+      "dataType": "POINTER",
+      "rawType": "57.2332P",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SFTP PRIVATE KEY TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "57.2333",
+      "required": false,
+      "helpText": "This is the Secure File Transfer Protocol (sFTP) private key text content. ",
+      "isMultiple": true,
+      "subFileNumber": 57.2333,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SFTP PUBLIC KEY TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "57.2334",
+      "required": false,
+      "helpText": "This is the Secure File Transfer Protocol (sFTP) public key text content. ",
+      "isMultiple": true,
+      "subFileNumber": 57.2334,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "SFTP SSH KEY FORMAT",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "OSSH:OpenSSH Format (Used by Linux);SSH2:SSH2 Format (Used by OpenVMS);",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "SFTP SSH KEY ENCRYPTION",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "RSA:Rivest, Shamir & Adleman (Names);ECDSA:Elliptic Curve Digital Signature Algorithm (ECDSA);",
+      "helpText": "This is the type of the encryption algorithm of the SSH (Secure  Shell) public and private keys used to transmit data from PPS-N  server via Secure File Transfer Protocol (sFTP). ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "LEGACY UPDATE PROCESSING",
+      "dataType": "SET",
+      "rawType": "R*Sa",
+      "required": true,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field denotes YES or NO if the National Drug File  will be updated by the legacy FORUM patch release process or the Pharmacy Product System - National 3.0 Update  file process. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DOWNLOAD HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "57.234",
+      "required": false,
+      "helpText": "This multiple field contains the status and download history  for the Pharmacy Product System - National (PPS-N)/NDF Update  file download process. ",
+      "isMultiple": true,
+      "subFileNumber": 57.234,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "REJECT HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "57.236",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 57.236,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INSTALL HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "57.231",
+      "required": false,
+      "helpText": "This multiple contains historical information for each PPS-N Update file installed for National Drug File (NDF) package. ",
+      "isMultiple": true,
+      "subFileNumber": 57.231,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 24,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "57.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

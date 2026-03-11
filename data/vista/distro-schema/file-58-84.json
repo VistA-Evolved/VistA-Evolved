@@ -1,0 +1,27 @@
+{
+  "fileNumber": 58.84,
+  "fileName": "DRUG ACCOUNTABILITY TRANSACTION TYPE",
+  "globalRoot": "58.84",
+  "globalReference": "^PSD(58.84,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the transaction type name. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.84", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

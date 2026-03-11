@@ -1,0 +1,646 @@
+{
+  "fileNumber": 101,
+  "fileName": "PROTOCOL",
+  "globalRoot": "101I",
+  "globalReference": "^ORD(101,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "A unique name, which is preceded by the package namespace. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The protocol's text as it appears to the user on the menu or subheader. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "101.02A",
+      "required": false,
+      "helpText": "This is another name for the protocol that may be used on lookup. ",
+      "isMultiple": true,
+      "subFileNumber": 101.02,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a shortened version of the item text to be used on print-outs where the name must be abbreviated. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field disables use of the protocol when there is text in it.  The text should be a short message explaining why use of the protocol has been disabled, as it will be displayed if the protocol is selected. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCK",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to deny access to users who have this option as part of their menu. If an option has a lock, then only users who hold the matching key can access it. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "101.06",
+      "required": false,
+      "helpText": "This field contains a brief explanation of the protocol. ",
+      "isMultiple": true,
+      "subFileNumber": 101.06,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.9,
+      "fieldName": "PROHIBITED TIMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This specifies a time range during which this option cannot be accessed. The time should be entered in military format. For example, to prohibit an option from running between 9 AM and 2 PM, enter 0900-1400. ",
+      "fieldNumber_": 3.9
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:action;M:menu;O:protocol;Q:protocol menu;L:limited protocol;X:extended action;D:dialog;T:term;E:event driver;S:subscriber;",
+      "helpText": "This field defines the type of protocol to be executed.  Types Q, O, and L are strictly related to the 'Add orders' function.   Q = Protocol menu - used for displaying and selecting orderable items during the add sequence. When this type of protocol is encountered OE/RR will ask the 'Select PATIENT:,' 'LOCATION:,' 'Provider:' prompts and execute the transaction logic for the new orders screen.  This is also true for type O and L. O = Protocol - same as Q but the protocol is the item selected. Pr",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field identifies who created the protocol. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILE LINK",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is a variable pointer which may point to the entry in a file to which a protocol is linked.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the cost of filling the order associated with this protocol. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "101.01PA",
+      "required": false,
+      "helpText": "This is the item multiple for a protocol ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "Pointer to Package File (#9.4). ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "EXIT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code which will be executed on leaving this option.  It is only applicable to Menu types. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ENTRY ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code which will be executed on entering this option.  It is applicable to Menu and Action types. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REQUIRED VARIABLES",
+      "dataType": "SUBFILE",
+      "rawType": "101.021A",
+      "required": false,
+      "helpText": "This lists the variables that must be defined for the proper execution of this protocol.  This aids in documenting the protocol.  Also, in the case of ';' jumping, the variables defined as required may be newed before jumping, thus preserving the context when returning from the jump. ",
+      "isMultiple": true,
+      "subFileNumber": 101.021,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field contains MUMPS code that screens out menu items or the execution of particular items in a protocol.  Before each item is displayed or executed, the screen is executed and the item is only processed if $T is true. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "HEADER",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "In the case of menus (type M or Q), this contains MUMPS code that is  executed to display a header for the menu. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "MENU HELP",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This contains MUMPS code that displays additional help to that already given with the menu. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MENU PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains text to replace the standard \"Select Item: \" prompt normally given with a menu. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "MENU DEFAULT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a default response (i.e., default selection from the menu), if desired. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DIC {DIC}",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as the global reference passed to ^DIC for a file look-up.  The entry should be in the regular format for a call to ^DIC i.e. ^GL(41, ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "COLUMN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the width, in characters, for each column on a menu.  For example, to have 3 columns on an 80 character device, enter a column width of 26. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "MNEMONIC WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field allows the width allowed for mnemonics to be varied.  The default width is 5. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PATH SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This allows the user, when traversing back UP the tree of protocols, to select a new path back down the tree.  In other words, the menu is redisplayed when returning to that menu's level in the tree, and processing back down the tree is possible from that point.  If nothing is selected from the menu, the path continues back up the tree. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Entries into this file can be given identifiers to show context, function and/or relationships.  For example, Digoxin may exist in the file as three different entries with identifiers of SERUM, PLASMA and Drug. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "TIMESTAMP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the $H time that fields which are necessary to menu display were last changed. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "*ORDER PRINT ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "***NOTICE- THIS FIELD WILL BE REMOVED IN A FUTURE VERSION*** Package action when a detailed listing of an order is requested. Included in this file for backward compatability with earlier versions of OE/RR. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 100.1,
+      "fieldName": "*ORDER CANCEL ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "***NOTICE- THIS FIELD WILL BE REMOVED IN A FUTURE VERSION*** Package action when an order is cancelled or discontinued.  Included in this file for backward compatability with earlier versions of OE/RR. ",
+      "fieldNumber_": 100.1
+    },
+    {
+      "fieldNumber": 100.2,
+      "fieldName": "*ORDER PURGE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "***NOTICE- THIS FIELD WILL BE REMOVED IN A FUTURE VERSION*** Package action when an order is to be purged from file 100.  Included in this file for backward compatability with earlier versions of OE/RR. ",
+      "fieldNumber_": 100.2
+    },
+    {
+      "fieldNumber": 100.3,
+      "fieldName": "ACCESS",
+      "dataType": "POINTER",
+      "rawType": "101.03P",
+      "required": false,
+      "helpText": "This multiple contains the list of security keys which allow access to the protocol.  If there are no keys, all users have access. ",
+      "fieldNumber_": 100.3
+    },
+    {
+      "fieldNumber": 101.01,
+      "fieldName": "REQUIRES SIGNATURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PHYSICIAN SIGNATURE;1:NO SIGNATURE REQUIRED;",
+      "helpText": "This field is used to specify an orderable/protocol that does not require a physician signature in OE/RR.  Some of the things entered in OE/RR are considered instructions and don't require physician signature.  An example of this might be an entry for an Early/Late tray. ",
+      "fieldNumber_": 101.01
+    },
+    {
+      "fieldNumber": 101.041,
+      "fieldName": "DOMAIN (DATA TYPE)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:date/time;F:free text;L:list or range;N:numeric;S:set of codes;Y:yes/no;P:pointer;M:menu;W:word processing;",
+      "helpText": "This is the data type of a term (i.e. protocol of type term) used in a dialog. ",
+      "fieldNumber_": 101.041
+    },
+    {
+      "fieldNumber": 101.042,
+      "fieldName": "DEFAULT PROMPT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For this term, this is the prompt that is automatically used when the term is used as an item in a dialog.  The prompt may be modified at the item level. ",
+      "fieldNumber_": 101.042
+    },
+    {
+      "fieldNumber": 101.043,
+      "fieldName": "DEFAULT ANSWER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For a term protocol, this is the default answer that is automatically used when the term is used as an item in a dialog.  The default may be modified at the item level. ",
+      "fieldNumber_": 101.043
+    },
+    {
+      "fieldNumber": 101.0431,
+      "fieldName": "DEFAULT WORD PROCESSING ANSWER",
+      "dataType": "SUBFILE",
+      "rawType": "101.0431",
+      "required": false,
+      "helpText": "This is text used as a template for an item in a dialog that is a word processing type. ",
+      "isMultiple": true,
+      "subFileNumber": 101.0431,
+      "fieldNumber_": 101.0431
+    },
+    {
+      "fieldNumber": 101.044,
+      "fieldName": "DEFAULT HELP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For a term protocol, this is the help text that is automatically used when the term is used as an item in a dialog.  The help text may be replaced at the item level. ",
+      "fieldNumber_": 101.044
+    },
+    {
+      "fieldNumber": 101.045,
+      "fieldName": "DOMAIN PARAMETER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a parameter that may be used to further specify the data type (i.e. input transform) for a term protocol.  The parameter is what would be placed in the second up-arrow piece of DIR(0) when calling the reader. ",
+      "fieldNumber_": 101.045
+    },
+    {
+      "fieldNumber": 101.05,
+      "fieldName": "METHOD",
+      "dataType": "SUBFILE",
+      "rawType": "101.05I",
+      "required": false,
+      "helpText": "This number identifies individual methods (actions) that may be invoked for this protocol. ",
+      "isMultiple": true,
+      "subFileNumber": 101.05,
+      "fieldNumber_": 101.05
+    },
+    {
+      "fieldNumber": 101.07,
+      "fieldName": "SET MEMBERSHIP",
+      "dataType": "SUBFILE",
+      "rawType": "101.07",
+      "required": false,
+      "helpText": "This is a namespaced name of a set.  If this is entered, a cross reference of the format \"S.set membership\" is created.  This allows rapid lookups on subsets of the Protocol file. ",
+      "isMultiple": true,
+      "subFileNumber": 101.07,
+      "fieldNumber_": 101.07
+    },
+    {
+      "fieldNumber": 770.1,
+      "fieldName": "SENDING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P771",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "Enter the name of the application that initiates a transaction. It is required only when defining an EVENT POINT protocol. ",
+      "fieldNumber_": 770.1
+    },
+    {
+      "fieldNumber": 770.11,
+      "fieldName": "RESPONSE MESSAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.2'",
+      "required": false,
+      "pointerTo": 771.2,
+      "helpText": "Enter the message type of the expected RESPONSE. It should only be defined on a SUBSCRIBER PROTOCOL.   NOTE: In a contract between the initiating system and the responding system, the Event Driver protocol defines the characteristics of the INITIATING SYSTEM. The Initiating System initiates either queries or unsolicited update messages. A Subscriber Protocol defines the characteristics of the RESPONDING SYSTEM. The responding system completes a transaction by returning either an acknowledgement ",
+      "fieldNumber_": 770.11
+    },
+    {
+      "fieldNumber": 770.14,
+      "fieldName": "BATCH/FILE MESSAGE COMMIT ACK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "In a bi-directional interface, this field will be used  to determine whether or not a Batch or File message should send or receive a Commit Acknowledgement.  A Batch or File message will always send/receive an Application Ack. This feature is non-standard according to HL7.  It is needed to insure the receipt of a message. ",
+      "fieldNumber_": 770.14
+    },
+    {
+      "fieldNumber": 770.2,
+      "fieldName": "RECEIVING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P771",
+      "required": false,
+      "pointerTo": 771,
+      "helpText": "This is the application that receives a message. It is otherwise known as the \"responding\" application when a transaction takes place. This information is required for SUBSCRIBER protocols only. ",
+      "fieldNumber_": 770.2
+    },
+    {
+      "fieldNumber": 770.3,
+      "fieldName": "TRANSACTION MESSAGE TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.2'",
+      "required": false,
+      "pointerTo": 771.2,
+      "helpText": "Enter the name of the message type for the the message that is sent from the initiating system. When initiating a new transaction, this field is referenced when generating the header for the outbound message.   NOTE: In a contract between the initiating system and the responding system, the Event Driver protocol defines the characteristics of the INITIATING SYSTEM. The Initiating System initiates either queries or unsolicited update messages. A Subscriber Protocol defines the characteristics of ",
+      "fieldNumber_": 770.3
+    },
+    {
+      "fieldNumber": 770.4,
+      "fieldName": "EVENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P779.001'",
+      "required": false,
+      "pointerTo": 779.001,
+      "helpText": "This is the HL7 Event Type code for the message represented by this protocol. In HL7, the message type and event type of an application response message may be different from the original message.   If this is an event point protocol, enter the event type corresponding to the initial message generated by the SENDING APPLICATION.     If this is a subscriber protocol, then enter the event type corresponding to the RECEIVING APPLICATION response. Note that an event type is not required when respond",
+      "fieldNumber_": 770.4
+    },
+    {
+      "fieldNumber": 770.5,
+      "fieldName": "MESSAGE STRUCTURE",
+      "dataType": "POINTER",
+      "rawType": "P779.005'",
+      "required": false,
+      "pointerTo": 779.005,
+      "helpText": "The message structure is associated with the message type and event type defined by HL7 v2.3.1 and beyond. ",
+      "fieldNumber_": 770.5
+    },
+    {
+      "fieldNumber": 770.6,
+      "fieldName": "PROCESSING ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:debug;",
+      "helpText": "This field describes how a message should be processed once it is handed off to the receiving application.    PROCESSING ID is a required field in the HL7 message header. However, the Event Driver protocol entry is only used whenset to DEBUG. Data for the header is normally derived from the HL COMMUNICATION SERVER FILE. If testing a transaction in Debug mode, make sure it is changed on both the sending and receiving system.     The receiving application developer should consider checking this po",
+      "fieldNumber_": 770.6
+    },
+    {
+      "fieldNumber": 770.7,
+      "fieldName": "LOGICAL LINK",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "This field is used with a SUBSCRIBER PROTOCOL to describe the network path to the subscriber. It is most often used with a fixed point-to-point interface between Vista and another system, e.g., a local COTS application or another Vista facility. See the documentation on use of the ROUTING LOGIC field and \"dynamic addressing\" for more complex routing scenarios. ",
+      "fieldNumber_": 770.7
+    },
+    {
+      "fieldNumber": 770.8,
+      "fieldName": "ACCEPT ACK CODE",
+      "dataType": "POINTER",
+      "rawType": "P779.003'",
+      "required": false,
+      "pointerTo": 779.003,
+      "helpText": "This field defines whether or not a COMMIT ACK will be generated by the HL7 package. This only applies to transactions using version 2.2 and higher of the HL7 Standard. See Chapter 2 of the HL7 Standard for details of Enhanced Mode Acknowledgements. ",
+      "fieldNumber_": 770.8
+    },
+    {
+      "fieldNumber": 770.9,
+      "fieldName": "APPLICATION ACK TYPE",
+      "dataType": "POINTER",
+      "rawType": "P779.003'",
+      "required": false,
+      "pointerTo": 779.003,
+      "helpText": "For transactions using versions 2.2 and higher of the HL7 standard, this field defines whether or not the receiving application is expected to return an acknowledgement. Enhanced Mode Application Acks are always initiated as a new transaction. The following is an example of a 2-phased acknowledgement over a tcp connection.     (A)INITIATING SYSTEM         (B)RESPONDING SYSTEM   PHASE I Open connection to B send ADT/A04----------------->receive ADT/A04                               validate heade",
+      "fieldNumber_": 770.9
+    },
+    {
+      "fieldNumber": 770.95,
+      "fieldName": "VERSION ID",
+      "dataType": "POINTER",
+      "rawType": "P771.5'",
+      "required": false,
+      "pointerTo": 771.5,
+      "helpText": "Enter the version of the HL7 standard used to implement this transaction.   Note that a screen has been added to insure that the version selected corresponds to the appropriate version of the Message Type defined. ",
+      "fieldNumber_": 770.95
+    },
+    {
+      "fieldNumber": 771,
+      "fieldName": "PROCESSING ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is executed on the receiving system. It defines the routine used to process the original inbound message in a transaction and to GENERATE and APPLICATION response/ACK back to the sending system using the entry point, GENACK^HLMA1. ",
+      "fieldNumber_": 771
+    },
+    {
+      "fieldNumber": 772,
+      "fieldName": "RESPONSE PROCESSING ROUTINE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is executed on the sending system when an Acknowledgement or Query response is received. The message ID of the original message is always contained within the response. This is used to identify the location of the original message and the corresponding event point protocol. Note that this pertains to Original and Enhanced Mode Application Acks only. The HL7 package generates and processes Enhanced mode Commit Accepts internally. ",
+      "fieldNumber_": 772
+    },
+    {
+      "fieldNumber": 773.1,
+      "fieldName": "SENDING FACILITY REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 773.1
+    },
+    {
+      "fieldNumber": 773.2,
+      "fieldName": "RECEIVING FACILITY REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 773.2
+    },
+    {
+      "fieldNumber": 773.3,
+      "fieldName": "SECURITY REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 773.3
+    },
+    {
+      "fieldNumber": 773.4,
+      "fieldName": "DATE/TIME OF MESSAGE REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 773.4
+    },
+    {
+      "fieldNumber": 773.5,
+      "fieldName": "ACK MODE SET IN SUBSCRIBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A 'YES' of this field will indicate that MSH-15 and MSH-16 will be taken from Subscriber protocol instead of the value(s) defined in Event driver  protocol. ",
+      "fieldNumber_": 773.5
+    },
+    {
+      "fieldNumber": 774,
+      "fieldName": "ROUTING LOGIC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "M code in this field is executed only when a message is in an OUTBOUND state. Normally, Vista HL7 'broadcasts' a message to all subscribers whenever a message is generated. However, in some cases, a client may need to receive the message only if it matches a particular condition. This field allows you to set up screening logic to interpret the message and dynamically address the message to those interested in the data when it meets these conditions. The output of your routing logic routine shoul",
+      "fieldNumber_": 774
+    },
+    {
+      "fieldNumber": 775,
+      "fieldName": "SUBSCRIBERS",
+      "dataType": "POINTER",
+      "rawType": "101.0775PA",
+      "required": false,
+      "fieldNumber_": 775
+    }
+  ],
+  "fieldCount": 62,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AHL1", "field": },
+    {"name": "AHL1A", "field": },
+    {"name": "AHL1B", "field": },
+    {"name": "AHL1C", "field": },
+    {"name": "AHL2", "field": },
+    {"name": "AHL21", "field": },
+    {"name": "AHL21A", "field": },
+    {"name": "AHL21C", "field": },
+    {"name": "AM", "field": },
+    {"name": "AM1", "field": },
+    {"name": "AM41", "field": },
+    {"name": "AOC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "K", "field": },
+    {"name": "K1", "field": },
+    {"name": "K2", "field": },
+    {"name": "S", "field": },
+    {"name": "101", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "101", "field": 1, "type": "regular"},
+    {"name": "101", "field": 1, "type": "regular"},
+    {"name": "101", "field": 1, "type": "regular"},
+    {"name": "101", "field": 6, "type": "regular"},
+    {"name": "101", "field": 41, "type": "regular"},
+    {"name": "101", "field": 99, "type": "regular"},
+    {"name": "101", "field": 770.1, "type": "regular"},
+    {"name": "101", "field": 770.1, "type": "regular"},
+    {"name": "101", "field": 770.2, "type": "regular"},
+    {"name": "101", "field": 770.3, "type": "regular"},
+    {"name": "101", "field": 770.3, "type": "regular"},
+    {"name": "101", "field": 770.4, "type": "regular"},
+    {"name": "101", "field": 770.95, "type": "regular"},
+    {"name": "101", "field": 770.95, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 44, "value": "W:$D(^(4)) \"   \",$P(^(4),U,4)"}
+  ]
+}

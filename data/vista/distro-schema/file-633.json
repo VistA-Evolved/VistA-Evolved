@@ -1,0 +1,27 @@
+{
+  "fileNumber": 633,
+  "fileName": "HBHC TEAM",
+  "globalRoot": "633I",
+  "globalReference": "^HBHC(633,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents HBHC Team Name.  Team entries are referenced by HBHC Provider (631.4) file.  Field allows for 1-30 characters of free text. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "633", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

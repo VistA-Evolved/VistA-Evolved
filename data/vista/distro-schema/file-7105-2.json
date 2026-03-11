@@ -1,0 +1,777 @@
+{
+  "fileNumber": 7105.2,
+  "fileName": "NOIS USER DEFAULTS",
+  "globalRoot": "7105.2P",
+  "globalReference": "^FSC(\"SPEC\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the NOIS specialist (referenced to NEW person file). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NON-SPECIALIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field designates the user as not being a specialist. If a specialist is inactive this field should be set to YES. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available on calls where you are the specialist, ref specialist, or contact. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.8,
+      "fieldName": "WEB LINK (PERSONAL)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Web link associated with user. This link will only be selectable by this user. Use this field for a web link that you use frequently. ",
+      "fieldNumber_": 1.8
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "REASON FOR INACTIVITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short statment that states why the NOIS specialist was made inactive. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WORKS AT (HOME SITE)",
+      "dataType": "POINTER",
+      "rawType": "P7105.1",
+      "required": false,
+      "pointerTo": 7105.1,
+      "helpText": "This field is used to relate the user to a location. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "helpText": "This field is the office that this specialist is associated with. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIMARY FUNCTIONAL AREA",
+      "dataType": "POINTER",
+      "rawType": "P7106.4'",
+      "required": false,
+      "pointerTo": 7106.4,
+      "helpText": "This is the primary type of activity the NOIS specialist is involved in. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST LOGON",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date the the user entered the NOIS menu system. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EMAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the email address for the NOIS specialist.  It is used when using automatic notification of NOIS calls by email. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NOIS COORDINATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Entry of YES in this field will allow this NOIS Specialist to modify some of the NOIS data file eg. NOIS Module/Version, NOIS Specialist etc. they will also be able to modify NOIS Specialists lists. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REPORTS UPWARD TO",
+      "dataType": "POINTER",
+      "rawType": "P7105.2'",
+      "required": false,
+      "pointerTo": 7105.2,
+      "helpText": "This field is strictly for information purposes.  This information is display when reviewing a NOIS specialist's defaults. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEFAULT LIST",
+      "dataType": "POINTER",
+      "rawType": "P7107.1'",
+      "required": false,
+      "pointerTo": 7107.1,
+      "helpText": "This is a NOIS list that will be prompted when entering 'List Calls' option in NOIS.  You do not have to own a list to have it as your default.  Many specialists can have the same default list. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "LIST DISPLAY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  FSC LIST DISPLAY   This field is a set of codes that changes the default data on all of  your nois lists. Valid choices are S M U P or any combination of these four characters.   S - will show the status of the call on all lists. M - will show the NOIS module on all lists. U - will show the primary specialist currently assigned to the call. P - will show the current priority on all lists. R - will show the referal specialist ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "DEFAULT TO CLOSE NEW CALLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This default is used when logging a new call. YES will prompt to close the call. NO or no entry will prompt to not close the call. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 9.3,
+      "fieldName": "DEFAULT VIEW FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P7107.7'",
+      "required": false,
+      "pointerTo": 7107.7,
+      "helpText": "This field allows a NOIS Specialist to select a format default when viewing calls.  The Detailed format is used if no entry is made. ",
+      "fieldNumber_": 9.3
+    },
+    {
+      "fieldNumber": 9.4,
+      "fieldName": "DEFAULT EDIT FORMAT",
+      "dataType": "POINTER",
+      "rawType": "*P7107.7'",
+      "required": false,
+      "pointerTo": 7107.7,
+      "helpText": "This field allows a NOIS Specialist to select a format default when using the Edit Screen.  The Brief format is used if no entry is made. ",
+      "fieldNumber_": 9.4
+    },
+    {
+      "fieldNumber": 9.5,
+      "fieldName": "DEFAULT TO EXIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field can be set to YES to change the default of leaving a NOIS screen as an EXIT instead of QUIT.  If no entry is made, the default will be QUIT. ",
+      "fieldNumber_": 9.5
+    },
+    {
+      "fieldNumber": 9.6,
+      "fieldName": "DEFAULT ON ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "VIEW:VIEW;EDIT:EDIT;",
+      "helpText": "This field will set your default action when receiving alerts. ",
+      "fieldNumber_": 9.6
+    },
+    {
+      "fieldNumber": 9.7,
+      "fieldName": "WORKLOAD PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field determines whether or not to prompt for workload information when entering a new call, making notes, or closing a call. If no entry is made in this field, the DEFAULT WORKLOAD PROMPT in the NOIS PARAMETER file will determine if a prompt appears. Workload can always be edited from the NOIS Edit Screen. ",
+      "fieldNumber_": 9.7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PREFERRED NOTIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALERT;2:MAIL;",
+      "helpText": "This field is for information purposes only.  If someone reviews your user defaults they can can tell how you prefer to be notified. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 10.1,
+      "fieldName": "NOTIFY METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "ALERT:ALERT;MAIL:MAIL;",
+      "helpText": "This field specifies the method of notification where this NOIS Specialist is the primary specialist on the NOIS call. ",
+      "fieldNumber_": 10.1
+    },
+    {
+      "fieldNumber": 10.2,
+      "fieldName": "NOTIFY EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EDITED:EDITED;STATUS CHANGED:STATUS CHANGED;",
+      "helpText": "This field specifies the event that initiates notification where this NOIS Specialist is the primary specialist on the NOIS call. ",
+      "fieldNumber_": 10.2
+    },
+    {
+      "fieldNumber": 10.3,
+      "fieldName": "NOTIFY BY AFFILIATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALL;2:REFERRALS;",
+      "helpText": "This field can be used to automatically be notified on any NOIS calls having a package or package group that you are affiliated with.    For notification to work, you must have an entry in the NOTIFY METHOD and NOTIFY EVENT fields. You must also have an entry in the GROUP AFFILIATIONS and/or PACKAGE AFFILIATIONS fields. GROUP AFFILIATIONS should include any work groups you are affiliated with. If the ALL AFFILIATIONS field is set to YES then notification will apply to all packages within that gr",
+      "fieldNumber_": 10.3
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DTIME VALUE FOR NOIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field will hold a value that will be used for DTIME for all timed reads while the user is within the NOIS package.  Their normal DTIME from file 200 will be restored when the user leaves the NOIS menu. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "GROUP AFFILIATIONS",
+      "dataType": "POINTER",
+      "rawType": "7105.22P",
+      "required": false,
+      "helpText": "These are work groups that you are affiliated with. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "PACKAGE AFFILIATIONS",
+      "dataType": "POINTER",
+      "rawType": "7105.23P",
+      "required": false,
+      "helpText": "These are packages that you're affiliated with. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "STU MATCH PACKAGE AND SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field when set to YES will only alert when packages are installed at the selected sites. Otherwise, any installs for the selected packages or at the selected sites will generate alerts for you. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "STU PACKAGES",
+      "dataType": "POINTER",
+      "rawType": "7105.241P",
+      "required": false,
+      "helpText": "Packages the user will be alerted when they are installed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "STU PACKAGE GROUPS",
+      "dataType": "POINTER",
+      "rawType": "7105.242P",
+      "required": false,
+      "helpText": "Package groups the user will be alerted when those packages are installed. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "STU SITES",
+      "dataType": "POINTER",
+      "rawType": "7105.243P",
+      "required": false,
+      "helpText": "Sites the user will be alerted when installs are made. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "STU SITE TYPES",
+      "dataType": "POINTER",
+      "rawType": "7105.244P",
+      "required": false,
+      "helpText": "Sites types that the user will be alerted when those sites have installs. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DEFAULT FIELDS",
+      "dataType": "POINTER",
+      "rawType": "7105.21P",
+      "required": false,
+      "helpText": "These fields control defaults when entering NOIS calls. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "TIME ZONE",
+      "dataType": "POINTER",
+      "rawType": "P7106.5'",
+      "required": false,
+      "pointerTo": 7106.5,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "NORMAL HOURS START TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "NORMAL HOURS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "TEXT COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "BACKGROUND COLOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "MONDAY ALL WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "MONDAY ALL WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "MONDAY ALL WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "MONDAY EVEN WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "MONDAY EVEN WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "MONDAY EVEN WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "MONDAY ODD WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "MONDAY ODD WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "MONDAY ODD WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "TUESDAY ALL WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "TUESDAY ALL WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "TUESDAY ALL WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "TUESDAY EVEN WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "TUESDAY EVEN WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "TUESDAY EVEN WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "TUESDAY ODD WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "TUESDAY ODD WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "TUESDAY ODD WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "WEDNESDAY ALL WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "WEDNESDAY ALL WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "WEDNESDAY ALL WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "WEDNESDAY EVEN WEEKS BEGIN TIM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "WEDNESDAY EVEN WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "WEDNESDAY EVEN WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "WEDNESDAY ODD WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "WEDNESDAY ODD WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "WEDNESDAY ODD WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "THURSDAY ALL WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "THURSDAY ALL WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "THURSDAY ALL WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "THURSDAY EVEN WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "THURSDAY EVEN WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "THURSDAY EVEN WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "THURSDAY ODD WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 148,
+      "fieldName": "THURSDAY ODD WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 148
+    },
+    {
+      "fieldNumber": 149,
+      "fieldName": "THURSDAY ODD WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 149
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "FRIDAY ALL WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "FRIDAY ALL WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "FRIDAY ALL WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "FRIDAY EVEN WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "FRIDAY EVEN WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "FRIDAY EVEN WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "FRIDAY ODD WEEKS BEGIN TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "FRIDAY ODD WEEKS END TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "FRIDAY ODD WEEKS OFF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "**WS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 85,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AL", "field": },
+    {"name": "AP", "field": },
+    {"name": "AXAU", "field": },
+    {"name": "B", "field": },
+    {"name": "7105.2", "field": .01, "type": "regular"},
+    {"name": "7105.2", "field": 9, "type": "regular"},
+    {"name": "7105.2", "field": 10.3, "type": "regular"},
+    {"name": "7105.2", "field": 40, "type": "regular"},
+    {"name": "7105.2", "field": 200, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

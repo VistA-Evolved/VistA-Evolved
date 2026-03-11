@@ -1,0 +1,61 @@
+{
+  "fileNumber": 27.14,
+  "fileName": "ENROLLMENT/ELIGIBILITY UPLOAD AUDIT",
+  "globalRoot": "27.14",
+  "globalReference": "^DGENA(27.14,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The HL7 Message ID of the message that was uploaded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME OF UPLOAD",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "When the upload occurred. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Identifies the message that was uploaded. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RESULTANT CHANGES",
+      "dataType": "SUBFILE",
+      "rawType": "27.141",
+      "required": false,
+      "helpText": "This will contain the before and after values for fields changes as a result of the upload. ",
+      "isMultiple": true,
+      "subFileNumber": 27.141,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "27.14", "field": .01, "type": "regular"},
+    {"name": "27.14", "field": .02, "type": "regular"},
+    {"name": "27.14", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D AUDITID^DGENUPA(+Y)"}
+  ]
+}

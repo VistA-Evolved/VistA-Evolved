@@ -1,0 +1,86 @@
+{
+  "fileNumber": 863.8,
+  "fileName": "OCX MDD PARAMETER",
+  "globalRoot": "863.8",
+  "globalReference": "^OCXS(863.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BRIEF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATA DEFINITION PARAMETER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "863.81",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 863.81,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DEFAULT VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "UNIQUE OBJECT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Unique object ID triggered by the .01 field. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PARAMETER ATTRIBUTE",
+      "dataType": "POINTER",
+      "rawType": "863.84P",
+      "required": false,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "APAR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DD", "field": },
+    {"name": "UID", "field": },
+    {"name": "863.8", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "863.8", "field": .02, "type": "regular"},
+    {"name": "863.8", "field": .03, "type": "regular"},
+    {"name": "863.8", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

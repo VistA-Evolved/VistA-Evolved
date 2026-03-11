@@ -1,0 +1,91 @@
+{
+  "fileNumber": 100.03,
+  "fileName": "ORDER REASON",
+  "globalRoot": "100.03",
+  "globalReference": "^ORD(100.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the DC Reason. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the synonym for this reason and is used on a file lookup. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field is used to inactivate a DC Reason. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the package that this reason applies to. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a code that is used to identify this DC Reason. This field is not manditory.  If a code is not defined, then the internal number of the file entry is used to identify this reason.  Radiology uses this field for it's reasons to identify the entry with it's corresponding entry in the Radiology Reasons file. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NATURE OF ACTIVITY",
+      "dataType": "POINTER",
+      "rawType": "RP100.02'",
+      "required": true,
+      "pointerTo": 100.02,
+      "helpText": "This field is used to categorize DC reasons into types that OE/RR can take action on.  The actions and types are defined in the Nature of order file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MESSAGE STATUS",
+      "dataType": "POINTER",
+      "rawType": "P100.01'",
+      "required": false,
+      "pointerTo": 100.01,
+      "helpText": "This field is used to identify the status an order will be set to when this order reason is selected.  This is currently used by backdoor lab options when orders/accessions are canceled.  If the field is blank, lab sends the HL7 status update message with a status of DC (the default); otherwise it will use the status in this field. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "S", "field": },
+    {"name": "100.03", "field": .01, "type": "regular"},
+    {"name": "100.03", "field": .01, "type": "regular"},
+    {"name": "100.03", "field": .03, "type": "regular"},
+    {"name": "100.03", "field": .06, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

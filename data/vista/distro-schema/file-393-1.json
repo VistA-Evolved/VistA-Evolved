@@ -1,0 +1,47 @@
+{
+  "fileNumber": 393.1,
+  "fileName": "MAS SERVICE",
+  "globalRoot": "393.1",
+  "globalReference": "^DG(393.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the MAS SERVICES. It contains the service names for both inpatient wards as well as outpatient clinics. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the code for the MAS SERVICES. It can be 1-3 characters. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRINT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the print name for the MAS SERVICE. It is a shortened version of the full name. It is used to display the service for reports. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "393.1", "field": .01, "type": "regular"},
+    {"name": "393.1", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

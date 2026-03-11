@@ -1,0 +1,41 @@
+{
+  "fileNumber": 2261.8,
+  "fileName": "ASISTS RESULTS",
+  "globalRoot": "2261.8",
+  "globalReference": "^OOPS(2261.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter an event that results in exposure to body fluids. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the code that identifies the results. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.8", "field": .01, "type": "regular"},
+    {"name": "2261.8", "field": .01, "type": "regular"},
+    {"name": "2261.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

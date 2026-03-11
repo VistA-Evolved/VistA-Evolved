@@ -1,0 +1,113 @@
+{
+  "fileNumber": 52.444,
+  "fileName": "PHARMACY TELEPHONE REFILLS",
+  "globalRoot": "52.444",
+  "globalReference": "^PS(52.444,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PRESCRIPTION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the prescription file internal entry number (IEN). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This is the division from the Outpatient Site (file #59).  ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient internal entry number (DFN) from the patient file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PROCESSED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date is entered by the telephone refill process.  It is the date the telephone prescription refill request was processed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NOT FILLED:NOT FILLED;",
+      "helpText": "The status of \"NOT FILLED\" is entered if the telephone refill request  cannot be filled. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDER RENEW FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NON-RENEWABLE ORDER;U:UNSIGNED ORDERS ARE ALLOWED;I:UNSIGNED ORDERS ARE NOT ALLOWED;",
+      "helpText": "This field indicates if the prescription is renewable or not renewable. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RENEW PROCESSING RESULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PROCESSING PROBLEM;1:PROCESSING OK;2:USER STOPPED;3:NOT PRIMARY CARE PROVIDER;5:PROVIDER TERMINATED;",
+      "helpText": "'0' FOR PROCESSING PROBLEM;  '1' FOR PROCESSING OK;  '2' FOR USER STOPPED;  '3' FOR NOT PRIMARY CARE PROVIDER;  '5' FOR PROVIDER TERMINATED;    Note: 4 is not currently used.   This field holds various processing result indicators from telephone  refill processing from the RENEW^ORAREN sub routine. It is a set of codes that indicates the telephone renewable status. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HOST USER ID#",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This value comes from the AudioCare system when the prescription refill  request is placed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PROVIDER RENEW FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ANY PROVIDER CAN RENEW;P:ONLY THE PRIMARY CARE CAN RENEW;",
+      "helpText": "This field is based on a parameter that either only allows the patients primary care provider to renew the prescription, or allows any provider to renew a patient's prescription. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "52.444", "field": .01, "type": "regular"},
+    {"name": "52.444", "field": 1, "type": "regular"},
+    {"name": "52.444", "field": 2, "type": "regular"},
+    {"name": "52.444", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

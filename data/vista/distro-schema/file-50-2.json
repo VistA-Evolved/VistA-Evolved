@@ -1,0 +1,39 @@
+{
+  "fileNumber": 50.2,
+  "fileName": "IV CATEGORY",
+  "globalRoot": "50.2",
+  "globalReference": "^PS(50.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "  Enter the name of the IV CATEGORY. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IV DRUG",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "50.21IV",
+      "required": false,
+      "helpText": "  This multiple contains the drugs which are members of this category. the drugs which make up this category. ",
+      "isMultiple": true,
+      "subFileNumber": 50.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "50.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

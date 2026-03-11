@@ -1,0 +1,27 @@
+{
+  "fileNumber": 409.822,
+  "fileName": "SDEC ACCESS GROUP",
+  "globalRoot": "409.822",
+  "globalReference": "^SDEC(409.822,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCESS GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of this access group. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.822", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "fileNumber": 627.7,
+  "fileName": "DSM",
+  "globalRoot": "627.7I",
+  "globalReference": "^YSD(627.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field holds the DSM code.  The DSM code is identical to the ICD code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DSM VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "3:DSM3;3R:DSM-III-R;4:DSM-IV;",
+      "helpText": "This field identifies the DSM version to which the entry belongs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SOURCE IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "When the DSM file (#627.7) was originally created, all entries in the DSM3 (#627) and DSM-III-R (#627.5) files were copied into this file. When that was done, the internal entry number (IEN) of the DSM3 or DSM-III-R entry was recorded in the SOURCE IEN field. The data  contained in this field will be permanently maintained; even after the source files - DSM3 and DSM-III-R - have been deleted. This field holds the internal entry number (IEN) of the DSM3 (#627) or DSM-III-R (#627.5) entry which se",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DSM3 SPECIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When the DSM (#627) file was originally created, and the entries in the DSM3 (#627) files were copied into this file, the values in the DSM3 file's DSMIII SPECIFICATION field were copied into this field.  The data  now contained in this field will be maintained permanently.   Note:  This field will be blank for all other DSM version entries. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ICD VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "9:ICD9;10:ICD10;",
+      "helpText": "The values in this field identify the ICD version to which the entry corresponds.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ICDA NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When the DSM (#627) file was originally created, and the entries in the DSM3 (#627) files were copied into this file, the values in the DSM3 file's ICDA NUMBER field were copied into this field.  The data  now contained in this field will be maintained permanently.   Note:  This field will be blank for all other DSM version entries. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Every diagnosis is assigned a short name.  This short name is used in condensed display screens to identify the diagnosis. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The comment field is for internal use only; for developer and EP comments. It is not entered, edited, or displayed by the Mental Health package. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "DISORDER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The full and official name of the DSM code is recorded in this field. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "KEYWORDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "All words or phrases which might be used by users during the process of selecting DSM codes are placed in this long free text field.  The KWIC cross-reference placed on this field enables the lookup code to properly display all match possibilities for the users selection. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "QUALIFIER STRING",
+      "dataType": "POINTER",
+      "rawType": "627.701PA",
+      "required": false,
+      "helpText": "After a diagnosis is selected, additional \"modifying\" or \"qualifying\" information can be entered by the user.  These are referred to as either \"modifiers\" or \"qualifiers\", and these are placed in the QUALIFIER STRING multiple.     Note:  When entering diagnosis, usually, a list of qualifiers is  displayed for user selection.  User responses are recorded in the Diagnostic Results - Mental Health (#627.8) file.  However, at times qualifiers are used to provide information to the users - only. For ",
+      "fieldNumber_": 60
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "DN", "field": },
+    {"name": "K", "field": },
+    {"name": "SN", "field": },
+    {"name": "627.7", "field": .01, "type": "regular"},
+    {"name": "627.7", "field": 15, "type": "regular"},
+    {"name": "627.7", "field": 40, "type": "regular"},
+    {"name": "627.7", "field": 50, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"#\",+Y,\"   \",@(\"$P($P($C(59)_$S($D(^DD(627.7,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,2)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": 40, "value": "W:$D(^(\"D\")) \"   \",$P(^(\"D\"),U,1)"}
+  ]
+}

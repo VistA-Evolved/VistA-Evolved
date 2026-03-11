@@ -1,0 +1,38 @@
+{
+  "fileNumber": 50.623,
+  "fileName": "PMI MAP-ENGLISH",
+  "globalRoot": "50.623",
+  "globalReference": "^PS(50.623,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GCNSEQNO",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This field contains the GCNSEQNO. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENGLISH PMI ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "This is the entry number in the PMI-ENGLISH file. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "50.623", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

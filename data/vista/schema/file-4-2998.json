@@ -1,0 +1,815 @@
+{
+  "fileNumber": 4.2998,
+  "fileName": "MESSAGE DELIVERY STATS",
+  "globalRoot": "4.2998D",
+  "globalReference": "^XMBX(4.2998,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date and time in FileMan format that this batch of stats were created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TOTAL QUEUE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number of messages and responses in the queue waiting to be delivered by the background filer. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MESSAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is for original messages as opposed to responses to deliver. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RESPONSES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number of responses in the queue waiting to be delivered by the background filer. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LINES OUTPUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the number of lines output (displayed and printed) during the interval in question. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RESPONSE TIME - AVERAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,1",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the average response time that it took during the interval in question while messages were being deleted and/or terminated. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ACTIVE USERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number of users that were on the system when the statistics for the period were gathered. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ACTIVE ZSLOT USERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number if ZSLOT users that were on the system when the statistics for the period were gathered. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ACTIVE NON-ZSLOT USERS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the total number of non-ZSLOT users that were on the system when the statistics for the period were gathered. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LOGINS - LAST 24 HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of Logins that occured during the last 24 hours. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "LOGIN MINUTES - LAST 24 HOURS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of minutes that users were logged onto the system during the last 24 hours. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "MESSAGE NUMBER LAST ASSIGNED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the last message number assigned for the date. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "MESSAGE DELIVERIES MADE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of message deliveries made during the interval in question. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "RESPONSE DELIVERIES MADE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of response deliveries made during the interval in question. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "MESSAGE DELIVERIES IN QUEUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total number of message deliveries that remained undelivered at the time that the queues were checked. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "RESPONSE DELIVERIES IN QUEUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total number of response deliveries that remained undelivered at the time that the queues were checked. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "AGE OF OLDEST MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the longest amount of time in seconds that any message has been in the queue at the time the queue was checked. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "AGE OF OLDEST RESPONSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the longest amount of time in seconds that any message has been in the queue at the time the queue was checked.     ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "RESPONSE ANALYSIS PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a series of integers separated by commas.  The numbers define groupings of messages to analyze.  For instance the string \"10,50,300\" will cause messages to be grouped into the following groups:      10 or fewer recipients on the message    from 11 to 50 recipients on the message    from 51 to 300 recipients on the message    greater than 300 recipients on the message ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "MESSAGE ANALYSIS PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "See field 103. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "RESPONSE AGE GROUP1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 1 the longest has been there. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "RESPONSE AGE GROUP2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 2 the longest has been there. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "RESPONSE AGE GROUP3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 3 the longest has been there. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "RESPONSE AGE GROUP4",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 4 the longest has been there. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "RESPONSE AGE GROUP5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 5 the longest has been there. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "RESPONSE AGE GROUP6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 6 the longest has been there. ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "RESPONSE AGE GROUP7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 7 the longest has been there. ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "RESPONSE AGE GROUP8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 8 the longest has been there. ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "RESPONSE AGE GROUP9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 9 the longest has been there. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "RESPONSE AGE GROUP 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the response that has been in the queue for Response Group 10 the longest has been there. ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "RESPONSE NUMBER GROUP1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 1 during the last time interval. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "RESPONSE NUMBER GROUP2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 2 during the last time interval. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "RESPONSE NUMBER GROUP3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 3 during the last time interval. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "RESPONSE NUMBER GROUP4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 4 during the last time interval. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "RESPONSE NUMBER GROUP5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 5 during the last time interval. ",
+      "fieldNumber_": 305
+    },
+    {
+      "fieldNumber": 306,
+      "fieldName": "RESPONSE NUMBER GROUP6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 6 during the last time interval. ",
+      "fieldNumber_": 306
+    },
+    {
+      "fieldNumber": 307,
+      "fieldName": "RESPONSE NUMBER GROUP7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 7 during the last time interval. ",
+      "fieldNumber_": 307
+    },
+    {
+      "fieldNumber": 308,
+      "fieldName": "RESPONSE NUMBER GROUP8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 8 during the last time interval. ",
+      "fieldNumber_": 308
+    },
+    {
+      "fieldNumber": 309,
+      "fieldName": "RESPONSE NUMBER GROUP9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 9 during the last time interval. ",
+      "fieldNumber_": 309
+    },
+    {
+      "fieldNumber": 310,
+      "fieldName": "RESPONSE NUMBER GROUP 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of responses that were delivered for Response Group 10 during the last time interval. ",
+      "fieldNumber_": 310
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "MESSAGE AGE GROUP1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 1 the longest has been there. ",
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 402,
+      "fieldName": "MESSAGE AGE GROUP2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 2 the longest has been there. ",
+      "fieldNumber_": 402
+    },
+    {
+      "fieldNumber": 403,
+      "fieldName": "MESSAGE AGE GROUP3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 3 the longest has been there. ",
+      "fieldNumber_": 403
+    },
+    {
+      "fieldNumber": 404,
+      "fieldName": "MESSAGE AGE GROUP4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 4 the longest has been there. ",
+      "fieldNumber_": 404
+    },
+    {
+      "fieldNumber": 405,
+      "fieldName": "MESSAGE AGE GROUP5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 5 the longest has been there. ",
+      "fieldNumber_": 405
+    },
+    {
+      "fieldNumber": 406,
+      "fieldName": "MESSAGE AGE GROUP6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 6 the longest has been there. ",
+      "fieldNumber_": 406
+    },
+    {
+      "fieldNumber": 407,
+      "fieldName": "MESSAGE AGE GROUP7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 7 the longest has been there. ",
+      "fieldNumber_": 407
+    },
+    {
+      "fieldNumber": 408,
+      "fieldName": "MESSAGE AGE GROUP8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 8 the longest has been there. ",
+      "fieldNumber_": 408
+    },
+    {
+      "fieldNumber": 409,
+      "fieldName": "MESSAGE AGE GROUP9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 9 the longest has been there. ",
+      "fieldNumber_": 409
+    },
+    {
+      "fieldNumber": 410,
+      "fieldName": "MESSAGE AGE GROUP 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount of seconds that the message that has been in the queue for Message Group 10 the longest has been there. ",
+      "fieldNumber_": 410
+    },
+    {
+      "fieldNumber": 501,
+      "fieldName": "MESSAGE NUMBER GROUP1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 1 during the last time interval. ",
+      "fieldNumber_": 501
+    },
+    {
+      "fieldNumber": 502,
+      "fieldName": "MESSAGE NUMBER GROUP2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 2 during the last time interval. ",
+      "fieldNumber_": 502
+    },
+    {
+      "fieldNumber": 503,
+      "fieldName": "MESSAGE NUMBER GROUP3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 3 during the last time interval. ",
+      "fieldNumber_": 503
+    },
+    {
+      "fieldNumber": 504,
+      "fieldName": "MESSAGE NUMBER GROUP4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 4 during the last time interval. ",
+      "fieldNumber_": 504
+    },
+    {
+      "fieldNumber": 505,
+      "fieldName": "MESSAGE NUMBER GROUP5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 5 during the last time interval. ",
+      "fieldNumber_": 505
+    },
+    {
+      "fieldNumber": 506,
+      "fieldName": "MESSAGE NUMBER GROUP6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 6 during the last time interval. ",
+      "fieldNumber_": 506
+    },
+    {
+      "fieldNumber": 507,
+      "fieldName": "MESSAGE NUMBER GROUP7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 7 during the last time interval. ",
+      "fieldNumber_": 507
+    },
+    {
+      "fieldNumber": 508,
+      "fieldName": "MESSAGE NUMBER GROUP8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 8 during the last time interval. ",
+      "fieldNumber_": 508
+    },
+    {
+      "fieldNumber": 509,
+      "fieldName": "MESSAGE NUMBER GROUP9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 9 during the last time interval. ",
+      "fieldNumber_": 509
+    },
+    {
+      "fieldNumber": 510,
+      "fieldName": "MESSAGE NUMBER GROUP 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of messages that were delivered for Message Group 10 during the last time interval. ",
+      "fieldNumber_": 510
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 1 when the queue was checked. ",
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 602,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 2 when the queue was checked. ",
+      "fieldNumber_": 602
+    },
+    {
+      "fieldNumber": 603,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 3 when the queue was checked. ",
+      "fieldNumber_": 603
+    },
+    {
+      "fieldNumber": 604,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 4 when the queue was checked. ",
+      "fieldNumber_": 604
+    },
+    {
+      "fieldNumber": 605,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 5 when the queue was checked. ",
+      "fieldNumber_": 605
+    },
+    {
+      "fieldNumber": 606,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 6 when the queue was checked. ",
+      "fieldNumber_": 606
+    },
+    {
+      "fieldNumber": 607,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 7 when the queue was checked. ",
+      "fieldNumber_": 607
+    },
+    {
+      "fieldNumber": 608,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 8 when the queue was checked. ",
+      "fieldNumber_": 608
+    },
+    {
+      "fieldNumber": 609,
+      "fieldName": "QUEUED DELIVERIES RESPONSE G9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 9 when the queue was checked. ",
+      "fieldNumber_": 609
+    },
+    {
+      "fieldNumber": 610,
+      "fieldName": "QUEUED DELIVERIES RESP G 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of response deliveries that were in the queue for Response Group 10 when the queue was checked. ",
+      "fieldNumber_": 610
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 1 when the queue was checked. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 702,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 2 when the queue was checked. ",
+      "fieldNumber_": 702
+    },
+    {
+      "fieldNumber": 703,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 3 when the queue was checked. ",
+      "fieldNumber_": 703
+    },
+    {
+      "fieldNumber": 704,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 4 when the queue was checked. ",
+      "fieldNumber_": 704
+    },
+    {
+      "fieldNumber": 705,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 5 when the queue was checked. ",
+      "fieldNumber_": 705
+    },
+    {
+      "fieldNumber": 706,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 6 when the queue was checked. ",
+      "fieldNumber_": 706
+    },
+    {
+      "fieldNumber": 707,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 7 when the queue was checked. ",
+      "fieldNumber_": 707
+    },
+    {
+      "fieldNumber": 708,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 8 when the queue was checked. ",
+      "fieldNumber_": 708
+    },
+    {
+      "fieldNumber": 709,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 9 when the queue was checked. ",
+      "fieldNumber_": 709
+    },
+    {
+      "fieldNumber": 710,
+      "fieldName": "QUEUED DELIVERIES MESSAGE G 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of message deliveries that were in the queue for Message Group 10 when the queue was checked. ",
+      "fieldNumber_": 710
+    }
+  ],
+  "fieldCount": 80,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.2998", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

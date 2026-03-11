@@ -1,0 +1,46 @@
+{
+  "fileNumber": 2263.7,
+  "fileName": "ASISTS UNION INFORMATION",
+  "globalRoot": "2263.7",
+  "globalReference": "^OOPS(2263.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "UNION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the formal name of the Union. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "UNION ACRONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the Unions Acronym or abbreviation.  An example would be AFGE. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UNION REPRESENTATIVE",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the Union Representative's name for the Union.  It will be used to send the MailMan bulletin to if the employee consents to sending information regarding their claim to the Union. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2263.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

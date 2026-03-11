@@ -1,0 +1,114 @@
+{
+  "fileNumber": 232.6,
+  "fileName": "EDP WORKSHEET SPECIFICATION",
+  "globalRoot": "232.6",
+  "globalReference": "^EDPB(232.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the section name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AREA",
+      "dataType": "POINTER",
+      "rawType": "P231.9'",
+      "required": false,
+      "pointerTo": 231.9,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:Visit;A:Assess;P:Plan;E:Edit Closed;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ROLE",
+      "dataType": "POINTER",
+      "rawType": "P8930'",
+      "required": false,
+      "pointerTo": 8930,
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:False;1:True;",
+      "helpText": "This holds the disabled status for the worksheet. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "EDITABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:true;0:false;",
+      "helpText": "This holds the editable state for this worksheet. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SPEC",
+      "dataType": "SUBFILE",
+      "rawType": "232.61",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 232.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SECTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "232.62IA",
+      "required": false,
+      "helpText": "This multiple holds 'instances' of the sections of the worksheet. Each instance is tied to the worksheet so that its behavior can change on a case by case basis. ",
+      "isMultiple": true,
+      "subFileNumber": 232.62,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ROLES",
+      "dataType": "POINTER",
+      "rawType": "232.63P",
+      "required": false,
+      "helpText": "This multiple holds the roles that can use this worksheet. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "232.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

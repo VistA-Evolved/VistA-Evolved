@@ -1,0 +1,747 @@
+{
+  "fileNumber": 3.5,
+  "fileName": "DEVICE",
+  "globalRoot": "3.5",
+  "globalReference": "^%ZIS(1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the device. It is used at the 'DEVICE' prompt to select this device. It should not be the internal name for the device but a logical one. It must start with 1 uppercase and not contain lowercase. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LOCATION OF TERMINAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a free text description of where the device is located, e.g. Ward 2A nurse station, etc. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MNEMONIC",
+      "dataType": "SUBFILE",
+      "rawType": "3.501",
+      "required": false,
+      "helpText": "These are alternate names which may be used to select the device. ",
+      "isMultiple": true,
+      "subFileNumber": 3.501,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LOCAL SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an alternate name which may be used to select the device. When using the LOCAL SYNONYM to select the device, selection can only occur on the local CPU.  For example, if you assigned a LOCAL SYNONYM to one device on the local CPU, and the same name to a device on the remote CPU, selection using the LOCAL SYNONYM will return the device on the local CPU. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "PURGE OLD PRINT QUEUE FILES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether old HFS files associated with entries in the PRINT QUEUE JOB (#3.52) file should be deleted. It only applies to devices of the PRINT QUEUE type. For print queues, an intermediate host file is created in the PRINT_QUEUES subdirectory.   Normally, these files are automatically deleted once they have been submitted to the print queue.  For those files that are not automatically deleted, there is a scheduled option that will periodically delete host files that have been",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "$I",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the Hardware port name that the OS can identify when referencing a port on a CPU. On layered systems where opening of host files is supported, this field may hold the host file name. When defining a spool device entry(TYPE=\"SPL\") on VAX DSM or MSM-Unix, enter the name of directory where spool host files will be created. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "VOLUME SET(CPU)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the name of the CPU to which this device belongs. This field holds the name of the CPU where the physical port resides. On DSM-11, VAX DSM, this field may hold the name of the Volume Set. On M/11+, this field may hold the name of the Directory Set.   If no name has been entered for this field, this device is assumed to be accessible from all CPUs in the network.  In other words, when this device is referenced, the device handler will operate as if this device is resident on the ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 1.95,
+      "fieldName": "SIGN-ON/SYSTEM DEVICE",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If answered 'YES', this field identifies that this entry is the primary device among those device entries that have the same $I with the same VOLUME SET(CPU).   Among those device entries that have a common $I and CPU, only one of these entries can have this field set to 'YES'. If none of the common device entries are set to 'YES', the default device will be identified by the first device on the CPU x-ref.  The default device is used when the device handler is invoked with $I as the device to be",
+      "fieldNumber_": 1.95
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "TRM:TERMINAL;OTH:OTHER;MT:MAGTAPE;SDP:SDP;SPL:SPOOL;BAR:BARCODE READER;HFS:HOST FILE SERVER;VTRM:VIRTUAL TERMINAL;RES:RESOURCES;CHAN:NETWORK CHANNEL;IMPC:IMAGING WORK STATION;PQ:PRINT QUEUE;",
+      "helpText": "This field has the general type of device on the CPU.  'TRM' is the most common entry.       TRM -- Terminal devices such as most crts and printers              should be associated with a corresponding device entry              with a type of 'TRM'.       HFS -- Host File Server is only available on mumps platforms              that exists on a layered system(e.g.: VMS, UNIX, NT, etc.).              This type and the associated functionality provides              the vehicle to read and write t",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBTYPE",
+      "dataType": "POINTER",
+      "rawType": "RP3.2'",
+      "required": true,
+      "pointerTo": 3.2,
+      "helpText": "This field tells what type of terminal is on a terminal port. It has a great impact on whether the proper terminal control codes get sent to the terminal. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASK DEVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field controls if the 'DEVICE' question is asked when a call is made to ^%ZIS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ASK PARAMETERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "On devices of TYPE 'TRM' and 'VTRM', this field controls if the 'RIGHT MARGIN' question is asked after selecting the device. On devices of TYPE 'MT', 'SDP', 'BAR', and 'OTH', this field controls if the 'ADDRESS/PARAMETERS' question is asked after selecting the device. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "ASK HOST FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer 'yes' if 'HOST FILE NAME:' should be asked when the device is selected.  TYPE must be 'HFS'.  Only applicable on layered systems that support host files. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "ASK HFS I/O OPERATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "For systems that support host files, this field may be used instead of 'ADDRESS/PARAMETERS' to specify more general parameters.   If 'Ask Parameters' is null or 'NO', set this field to 'YES' and the device handler will ask for INPUT/OUTPUT OPERATION upon selecting a device. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "QUEUING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ALLOWED;1:FORCED;2:NOT ALLOWED;",
+      "helpText": "When this field is set to FORCED and queuing is allowed by the calling program (%ZIS[\"Q\"), the Device Handler will return IO(\"Q\")=1 upon device selection and the job will be queued.  That is, the user does not need to enter \"Q\" to invoke queuing and will not be prompted with the question about wanting output queued.  If the program  does not allow queuing (%ZIS'[\"Q\"), the user will see the following message: Sorry, QUEUING is required for this device.   Set this field to NOT ALLOWED if queuing i",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "OUT-OF-SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If entered then this device cannot be selected if the current date is greater than, or the same as, the date specified. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NEAREST PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The location of the telephone nearest to this device. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "KEY OPERATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the person who usually uses this device. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MARGIN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field if it has data will override the Right Margin field value from the Terminal type file. Leave this field blank unless you are sure that you need to have a different Right Margin than what is in the terminal type file. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PAGE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field, if it has data, will override the Page Length field value from the Terminal type file. Leave this field blank unless you are sure that you need to have a different Page Length than what is in the terminal type file.   If this is a CRT then this is the number of lines which can be displayed on the screen, otherwise, for printers, it is the number of print lines per page. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "SUPPRESS FORM FEED AT CLOSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used flag devices that should not have form feeds issued at the time the device is closed. This field should be answered 'YES' for label printers. ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The users DUZ(0) (fileman access) must contain at least one of the characters in this field for the user to be able to select this device. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "CLOSEST PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the name of the nearest printer, it is selected at the  \"DEVICE\" prompt simply by entering \"P\". ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "FORM CURRENTLY MOUNTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This describes the type of form currently in the printer. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "OPEN PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "These parameters are used to open a device with specified characteristics/addresses. This field is primarily used with non-terminal devices such as magtape and SDP. For SDP, use (block:0) on M/11; (0:block:drive) on DSM. For Magtape, use (\"VAL4\":0:2048) on both M/11 and DSM. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.3,
+      "fieldName": "CLOSE PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the parameters to be used in a MUMPS CLOSE statement. ",
+      "fieldNumber_": 19.3
+    },
+    {
+      "fieldNumber": 19.5,
+      "fieldName": "USE PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the parameters to be used in a MUMPS USE statement. ",
+      "fieldNumber_": 19.5
+    },
+    {
+      "fieldNumber": 19.7,
+      "fieldName": "PRE-OPEN EXECUTE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the Xecutable MUMPS code which is used by %ZIS before opening the device.  Setting %ZISQUIT=1 in the PRE-OPEN EXECUTE code will signal %ZIS to reject the selected device. ",
+      "fieldNumber_": 19.7
+    },
+    {
+      "fieldNumber": 19.8,
+      "fieldName": "POST-CLOSE EXECUTE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the Xecutable MUMPS code which is used by %ZISC after closing the device. ",
+      "fieldNumber_": 19.8
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BAUD RATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8X",
+      "length": 8X,
+      "required": false,
+      "helpText": "This field returns the Baud Rate (i.e. speed) of this device, but only if it is a terminal from which such information can be determined. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MICOM PRINTER CONTENTION PORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is reserved for future use to determine whether the device uses printer contention.  It would be a preliminary check to decide whether it is necessary to invoke the printer contention programs. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MODEM",
+      "dataType": "POINTER",
+      "rawType": "P3.2",
+      "required": false,
+      "pointerTo": 3.2,
+      "helpText": "If this device is connected to a modem, this is the name of the type of modem, as found in the TERMINAL TYPE file.  Modem names must begin with \"M-\".  This field is used by MailMan for controlling the auto-dialer. If the device is used only for dial-in (receives calls only, never places them), then this field is not necessary. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PRIORITY AT RUN TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field, if set, will be used by the Task Manager to set a job's operating system run priority. Lowest priority is 1, and 10 is the highest. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "TASKMAN PRINT A HEADER PAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "If this field is set to YES then, Taskman will print a header page before the job is started to form a break between reports. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Passwords are used for an additional level of security on devices such as modems.  If a value is entered in this field, all users trying to log on to this device will be prompted for the password before being prompted for the access code. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "SLAVED FROM DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field may permit queuing to slaved devices.  Given hard-wiring such that a display terminal may be identified with a device name, queuing may take place to the slaved device ($I=0).  Enter the device name of the display terminal in this field. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "AUTO DESPOOL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer 'YES' if the report is to be automatically despooled. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DESPOOL DEVICES",
+      "dataType": "POINTER",
+      "rawType": "3.532PA",
+      "required": false,
+      "helpText": "This is the list of printers that reports will be printed during the despool process for the named spool device. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "GENERATE SPL DOC NAME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer 'YES' to this field if the spool document name is to be automatically generated. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "RESOURCE SLOTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a value that will identify the limit of concurrent jobs that may own the same resource.  If no data is entered, the device handler will use a default value of 1. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "GLOBAL LOCK",
+      "dataType": "SET",
+      "rawType": "SO",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field tells the device handler if it should use a global lock to control access to a device. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "OPEN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field holds a count of the number of times that %ZIS has  successfully open this device. The reason is to find LAT devices that are still in use. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 51.1,
+      "fieldName": "TIMED READ (# OF SECONDS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of seconds for timed reads at this device. It is overridden by the Timed Read specification in the USER File. ",
+      "fieldNumber_": 51.1
+    },
+    {
+      "fieldNumber": 51.12,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51.12
+    },
+    {
+      "fieldNumber": 51.13,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51.13
+    },
+    {
+      "fieldNumber": 51.14,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51.14
+    },
+    {
+      "fieldNumber": 51.15,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51.15
+    },
+    {
+      "fieldNumber": 51.2,
+      "fieldName": "# OF ATTEMPTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "The number of sign-on attempts before the device is locked from use. This may be ignored by setting the BYPASS DEVICE LOCK-OUT field in the KERNEL SITE PARAMETERS File. The minimum value is set by the VA INFORMATION SYSTEM ACCOUNT AND PASSWORD MANAGEMENT POLICY. ",
+      "fieldNumber_": 51.2
+    },
+    {
+      "fieldNumber": 51.3,
+      "fieldName": "LOCK-OUT TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount of time that the device must be idle before  the lock will release. This may be ignored by setting the BYPASS DEVICE LOCK-OUT field in the KERNEL SITE PARAMETERS File. The minimum value is set by the VA INFORMATION SYSTEM ACCOUNT AND PASSWORD MANAGEMENT POLICY. ",
+      "fieldNumber_": 51.3
+    },
+    {
+      "fieldNumber": 51.4,
+      "fieldName": "MULTIPLE SIGN-ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ALLOWED;1:ALLOWED;",
+      "helpText": "Specifies whether or not the user of this device can be already signed on the system. It is overridden by the Multiple Sign-on specification in the USER File. ",
+      "fieldNumber_": 51.4
+    },
+    {
+      "fieldNumber": 51.5,
+      "fieldName": "ASK DEVICE TYPE AT SIGN-ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, ASK;0:NO, DON'T ASK;",
+      "helpText": "This field (if filled in) will over ride the ones in the KERNEL site parameter file. This is overridden by the same specification in the NEW PERSON File. It controls if the user/terminal should be asked for a terminal type during sign-on. If set to YES then a <ENQ> is sent to the terminal to collect the answer back message, if valid the terminal type is set to this. Otherwise the user is prompted. If set to NO then the one from the Last Sign-on field or device subtype will be used. ",
+      "fieldNumber_": 51.5
+    },
+    {
+      "fieldNumber": 51.6,
+      "fieldName": "AUTO MENU",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO MENUS GENERATED;1:MENUS GENERATED;",
+      "helpText": "This field controls whether the Auto-menu function will be turned on for this device. If it is turned on, it acts just as if the user types a \"?\" before each prompt. This is overridden by the same specification in the USER File. ",
+      "fieldNumber_": 51.6
+    },
+    {
+      "fieldNumber": 51.7,
+      "fieldName": "*RESERVED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 51.7
+    },
+    {
+      "fieldNumber": 51.8,
+      "fieldName": "TIED ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, if filled in, has the name of a routine that is run before the 'ACCESS CODE' question is asked. Use with care. ",
+      "fieldNumber_": 51.8
+    },
+    {
+      "fieldNumber": 51.9,
+      "fieldName": "TYPE-AHEAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:ALLOWED;N:NOT ALLOWED;",
+      "helpText": "Should the user of this device have 'Type-Ahead' turned on or off. This will be overridden by the same specification in the USER File. ",
+      "fieldNumber_": 51.9
+    },
+    {
+      "fieldNumber": 51.91,
+      "fieldName": "PERFORM DEVICE CHECKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field, if set, will override the default in the KERNEL SITE PARAMETERS File.   Device checking involves checking for device lockout, prohibited access times, etc. If turned off, logon will be faster. ",
+      "fieldNumber_": 51.91
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "SECONDARY $I",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the $IO value to be used if this is the secondary system in a mixed OS environment.  It is not used otherwise. It is only used for output devices. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "LAT SERVER NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the DECserver/terminal server node name that the device is on. It is used by XTLATSET to build data files for VMS startup. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "LAT SERVER PORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the port on the DECserver/terminal server that this device is connected to. It can be entered in the LC-2-5 form or 31 form. On EQUINOX it is in the PORT_31 form. This field is used by XTLATSET to build VMS datafiles for startup. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "VMS DEVICE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NOT SPOOLED;y:YES SPOOLED;m:HOSTSYNC/NOWRAP;l:LAB INSTRUMENT;w:NOWRAP;p:PASTHRU/NOWRAP;",
+      "helpText": "This is a flag that is passed into the file LT_PTR.DAT by the routine  XTLATSET to select how this port should be setup in VMS by the SYS$MANAGER:SYSPRINT.COM file when it runs. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "LAT PORT SPEED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "300:3;1200:12;2400:24;4800:48;9600:96;19200:192;",
+      "helpText": "This field holds the value that will be passed to the TSC_LOAD.COM file for loading the DECserver permanent database. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PRINT SERVER NAME OR ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FQDN (fully qualified domain name) or specific TCP/IP address of a remote server (e.g., for LPD/LPR printing) or device (e.g., for telnet printer). ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "TELNET PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the telnet port of a remote device (e.g., a telnet printer).  The allowable range is a number between 2000 and 65534. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "REMOTE PRINTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Name of the Remote Printer that is referenced by the \"PRINT SERVER NAME OR ADDRESS\" and \"TELNET PORT\" fields. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "WINDOWS NETWORK PRINTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Windows network name for the printer (e.g.,  '\\\\vhaistfpc4\\IST-HP4525-1'). It is used by Windows applications that  interact with VistA and need a printer identified for output purposes. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "LAB LABEL PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This field is used only if the current device has a label printer associated with it. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "PRIMARY MENU OPTION",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This field, if filled in, contains the primary menu that is run from this device. It overrides the user's primary menu. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 646,
+      "fieldName": "BARCODE AVAIL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used by Augie Turano's pharmacy barcode software. ",
+      "fieldNumber_": 646
+    },
+    {
+      "fieldNumber": 2007,
+      "fieldName": "CURRENT UNSUCCESSFUL ATTEMPTS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a count of the current number of unsuccessful attempts that have been made on this device. If it exceeds the DEFAULT # OF ATTEMPTS in the KERNEL SITE PARAMETERS File, the device will be locked for the duration specified in DEFAULT LOCKOUT TIME in the KERNEL SITE PARAMETERS.   This field is maintained internally by the KERNEL. ",
+      "fieldNumber_": 2007
+    },
+    {
+      "fieldNumber": 2008,
+      "fieldName": "LAST SIGN-ON USER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This is the name of the last user who signed on to this device. It is controlled internally by the KERNEL. ",
+      "fieldNumber_": 2008
+    },
+    {
+      "fieldNumber": 2009,
+      "fieldName": "PROHIBITED TIMES FOR SIGN-ON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field allows a device to be locked out for certain periods of the day. The time period for which logons will be prohibited is specified in the form HHMM-HHMM. For example, 1630-0800 would lock out the device from 4:30 PM to 8:00 AM.   If device checking is bypassed for this device, these times are ignored. ",
+      "fieldNumber_": 2009
+    },
+    {
+      "fieldNumber": 2009.5,
+      "fieldName": "USE TIMEOUT ON OPENS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO;y:YES;",
+      "helpText": "This field determines whether a timeout will be used to open the device. ",
+      "fieldNumber_": 2009.5
+    },
+    {
+      "fieldNumber": 2010,
+      "fieldName": "OPEN TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "If a specific timeout is needed when an open is performed, enter the value of the timeout into this field.  This will enable %ZIS to \"hang\" for the number of seconds specified in this field to achieve a connection rather than using the default of zero. ",
+      "fieldNumber_": 2010
+    },
+    {
+      "fieldNumber": 18000,
+      "fieldName": "NVS PASSOVER FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is a flag which will allow for the devices so selected to be skipped in the NVS TEST ACCOUNT initialization process.  If the test database has a different path to the device in question, some editting may be needed. ",
+      "fieldNumber_": 18000
+    }
+  ],
+  "fieldCount": 74,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACPU", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CPU", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "LSYN", "field": },
+    {"name": "3.5", "field": .01, "type": "regular"},
+    {"name": "3.5", "field": .04, "type": "regular"},
+    {"name": "3.5", "field": 1, "type": "regular"},
+    {"name": "3.5", "field": 1, "type": "regular"},
+    {"name": "3.5", "field": 1, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "3.5", "field": 1.9, "type": "regular"},
+    {"name": "3.5", "field": 1.9, "type": "regular"},
+    {"name": "3.5", "field": 1.95, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "3.5", "field": 17, "type": "regular"},
+    {"name": "", "field": 35, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "N % S %=$P($G(^(1)),U) D:$L(%) EN^DDIOL(\"  \"_%,\"\",$S($X+$L(%)>76:\"!?\"_(77-$L(%)),1:\"?0\"))"},
+    {"field": 1, "value": "D EN^DDIOL(\"   \"_$P(^(0),U,2),\"\",\"?0\")"},
+    {"field": 1.9, "value": "D EN^DDIOL(\"   \"_$P(^(0),U,9),\"\",\"?0\")"},
+    {"field": 2, "value": "W \"\""}
+  ]
+}

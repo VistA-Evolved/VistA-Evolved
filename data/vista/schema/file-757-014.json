@@ -1,0 +1,36 @@
+{
+  "fileNumber": 757.014,
+  "fileName": "EXPRESSION FORM",
+  "globalRoot": "757.014",
+  "globalReference": "^LEX(757.014,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "Three character mnemonic for the form for which the expression takes. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FORM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Describes the lexical style of an expression.  Major Concepts adopt the general form of \"MAJ\" while all other expressions describe their forms as they relate to the Major Concept (i.e., Plural, Singular, Acronym, etc,) ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757.014", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

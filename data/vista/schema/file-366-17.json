@@ -1,0 +1,26 @@
+{
+  "fileNumber": 366.17,
+  "fileName": "IB NCPDP NON-BILLABLE REASONS",
+  "globalRoot": "366.17",
+  "globalReference": "^IBCNR(366.17,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NON-BILLABLE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the non-billable status reason that will be used to  populated the IB NCPDP EVENT LOG file. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "fileNumber": 58.83,
+  "fileName": "CS COMPLETION STATUS",
+  "globalRoot": "",
+  "globalReference": "^PSD(58.83,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPLETION STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The completion status of the Controlled Substances orders. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.83", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "fileNumber": 757.2,
+  "fileName": "SUBSET DEFINITIONS",
+  "globalRoot": "757.2",
+  "globalReference": "^LEXT(757.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Vocabulary subset name (i.e., \"Nursing\", \"Social Work\"). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SHORT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Three character uppercase mnemonic representing the vocabulary subset. This short title, when appended with the letter \"A\" (i.e. \"A\"_\"NUR\" to \"ANUR\") becomes the name of the index to be used by the look-up utility. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GLOBAL REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Global root of the file containing the vocabulary subset. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HELP ROUTINE ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains the help routine's entry point (provided a separate help routine has been written to support the vocabulary subset and the entry point of this routine is other than the first line). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HELP ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains the name of the help routine (provided a separate help routine was written).  This help routine will be used by the look-up utility. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISPLAY ROUTINE ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains the display routine's entry point (provided a separate display routine has been written to support the vocabulary subset and the entry point of this routine is other than the first line). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DISPLAY ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Contains the name of the display routine (provided a separate display routine was written).  This display routine will be used by the  look-up utility. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DISPLAY CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a string of classification/coding systems (separated by slashes) to be displayed during look-up (i.e., \"ICD/CPT/DSM/NAN\"). This string will not override the user's preferred code display stored in ^LEXT(757.2,D0,200,DUZ,2) ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "APPLICATION MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Unique 3 character mnemonic representing either the application using the Lexicon or if an application has more than one set of defaults, it will represent the applications preference.  For example, PL1 - Problem  List Provider entry, PL2 - Problem List ICD only.  This field is populated  by DB Integration Agreement only ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "APPLICATION INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the index which the application will use during look-up.  This index must be contained in the global defined in the Global Reference (#2).  This index name will be appended with a leading \"A\" to create the index name (i.e., \"A\"_NUR to \"ANUR\" to use the Nursing Index).  This field is populated by DB Integration Agreement only. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "APPLICATION FILTER",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the filter to be used by the application during look-up.  It is in the format of a valid IF statement without an action to perform when the condition is true.  This field is populated by DB Integration Agreement only. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "APPLICATION DISPLAY CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a string of source abbreviations (separated by slashes) of the source code to display for an application during look-up.  For example:      ICD/CPT/DSM      will display ICD-9, CPT-4 and DSM-3R codes with the term during look-up   This field is populated by DB Integration Agreement only. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "APPLICATION USER DEFAULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:USER DEFAULTS ALLOWED;0:USER DEFAULTS ARE NOT ALLOWED;",
+      "helpText": "This is a flag indicating whether an application allows users to specify defaults in field 200 of this file. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "APPLICATION FILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ19,8",
+      "length": 19,
+      "required": false,
+      "helpText": "This is the file number from the application where the pointer to the Expressions file (#757.01) will be stored. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "APPLICATION NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique namespace prefix assigned to the package/application which is defined in this file.  It is used to extract application level defaults (filter/display/vocabulary). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "UNRESOLVED NARRATIVES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Use Unresolved Narratives;0:Do not use Unresolved Narratives;",
+      "helpText": "The Lexicon has the ability to capture user narratives which result in unsuccessful searches.  These \"Unresolved Narratives\" are returned to developers for consideration in future releases of the Lexicon.  This flag indicates whether an application will use the unresolved feature of the Lexicon. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "OVERRIDE USER DEFAULTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Boolean flag for application definition to indicate if the application defaults are to override the defaults set by the user. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SHORTCUT CONTEXT",
+      "dataType": "POINTER",
+      "rawType": "P757.41'",
+      "required": false,
+      "pointerTo": 757.41,
+      "helpText": "This points to the context describing the set of shortcuts to use during searches of the Lexicon. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "USER MODIFIERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:USE MODIFIERS;0:DO NOT USE MODIFIERS;",
+      "helpText": "Some vocabularies have modifiers.  This field is a flag indicating to the lookup whether these modifiers should be accessed during the search. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "757.22",
+      "required": false,
+      "helpText": "Contains a description of the general make-up of the vocabulary/subset. ",
+      "isMultiple": true,
+      "subFileNumber": 757.22,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DEFAULTS BY USER",
+      "dataType": "POINTER",
+      "rawType": "757.201PA",
+      "required": false,
+      "helpText": "This multiple contains user defaults for the search filter, display and the vocabulary for a limited number of applications. ",
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AB", "field": },
+    {"name": "ADEF", "field": },
+    {"name": "AN", "field": },
+    {"name": "APPS", "field": },
+    {"name": "AUD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "757.2", "field": .01, "type": "regular"},
+    {"name": "757.2", "field": .01, "type": "regular"},
+    {"name": "757.2", "field": .01, "type": "regular"},
+    {"name": "757.2", "field": 1, "type": "regular"},
+    {"name": "757.2", "field": 8, "type": "regular"},
+    {"name": "757.2", "field": 13, "type": "regular"},
+    {"name": "757.2", "field": 13, "type": "regular"},
+    {"name": "757.2", "field": 14, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

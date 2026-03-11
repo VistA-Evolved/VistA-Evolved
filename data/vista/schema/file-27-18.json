@@ -1,0 +1,38 @@
+{
+  "fileNumber": 27.18,
+  "fileName": "PENSION AWARD REASONS",
+  "globalRoot": "27.18",
+  "globalReference": "^DG(27.18,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the reason for the Pension Award. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The code identifies the Pension Award Reason. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "27.18", "field": .01, "type": "regular"},
+    {"name": "27.18", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

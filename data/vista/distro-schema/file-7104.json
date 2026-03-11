@@ -1,0 +1,62 @@
+{
+  "fileNumber": 7104,
+  "fileName": "NOIS STU MESSAGE",
+  "globalRoot": "7104",
+  "globalReference": "^FSCD(\"STU MSG\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date of when the message for package install was receiced. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P7105.5'",
+      "required": false,
+      "pointerTo": 7105.5,
+      "helpText": "This is the package that was installed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P7105.1'",
+      "required": false,
+      "pointerTo": 7105.1,
+      "helpText": "This is the site that installed the package. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "7104.03",
+      "required": false,
+      "helpText": "This is the message associated with the install. ",
+      "isMultiple": true,
+      "subFileNumber": 7104.03,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "APD", "field": },
+    {"name": "ASD", "field": },
+    {"name": "B", "field": },
+    {"name": "7104", "field": .01, "type": "regular"},
+    {"name": "7104", "field": 1, "type": "regular"},
+    {"name": "7104", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "fileNumber": 52.4,
+  "fileName": "RX VERIFY",
+  "globalRoot": "52.4P26",
+  "globalReference": "^PS(52.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RX#",
+      "dataType": "POINTER",
+      "rawType": "RP52'X",
+      "required": true,
+      "pointerTo": 52,
+      "helpText": "This refers back to the prescription number within the PRESCRIPTION file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is used to store the patient's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CLERK",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Respond by entering the name of the clerk who entered the prescription. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RENEWED FROM RX#",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This field is used to enter the Rx number from which the Rx was renewed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LOGIN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to enter the date when the data was entered. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PSORXD0",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is currently not in use. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PSORXEXP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is currently not in use. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DRUG INTERACTION",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if a drug/drug interaction was encountered from new order entry or editing of a drug in an active Rx. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "SEVERITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to store the pointer values of the interactions encountered.  Data is stored in the form of a string, i.e., 23,43,56. Each number will represent the drug/drug interaction found in file #56. Data is not added directly with file manager. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "AFFECTED MEDICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is used to store the active medication pointer numbers that are considered to be a drug interaction. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DOSE WARNING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:UNKNOWN;1:DAILY DOSE RANGE;2:MAX SINGLE DOSE;3:MAX SINGLE DOSE & DAILY DOSE RANGE;4:DOSAGE EXCEEDS MAX SINGLE DOSE;",
+      "helpText": "This field is used to indicate when a dose warning has been received, and  it will be denoted by the appropriate set of codes value.  This value is defined automatically upon order entry completion of technician entered  orders. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ADI", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "LD", "field": },
+    {"name": "52.4", "field": .01, "type": "regular"},
+    {"name": "52.4", "field": 1, "type": "regular"},
+    {"name": "52.4", "field": 2, "type": "regular"},
+    {"name": "52.4", "field": 4, "type": "regular"},
+    {"name": "52.4", "field": 7, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

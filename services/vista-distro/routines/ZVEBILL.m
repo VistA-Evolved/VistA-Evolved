@@ -1,0 +1,132 @@
+ZVEBILL ;VE;Billing Config Admin RPCs;2026-03-09
+ ;
+ ; Custom RPCs for billing admin operations.
+ ; File #350.9 (IB SITE PARAMETERS), File #355.3 (GROUP INSURANCE PLAN),
+ ; File #36 (INSURANCE COMPANY), File #399 (BILL/CLAIMS)
+ ; Read RPCs: IBSITE, INSLIST, INSDET, CLAIMCNT
+ ; Write RPCs: INSCRT, INSEDT
+ ;
+IBSITE(RESULT) ;Get IB site parameters from File #350.9
+ N IEN,U,Z0
+ S U="^"
+ S IEN=$O(^IBE(350.9,0))
+ I 'IEN S RESULT(0)="-1^No IB site parameters" Q
+ S Z0=$G(^IBE(350.9,IEN,0))
+ S RESULT(0)="1^OK"
+ S RESULT(1)="IEN^"_IEN
+ S RESULT(2)="SITE_NAME^"_$P(Z0,U,1)
+ S RESULT(3)="RATE_TYPE^"_$P(Z0,U,4)
+ S RESULT(4)="BILLING_CLOCK^"_$P(Z0,U,8)
+ Q
+ ;
+INSLIST(RESULT,SEARCH,COUNT) ;List insurance companies from File #36
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=+$G(COUNT)
+ I MAXCT<1 S MAXCT=200
+ I MAXCT>1000 S MAXCT=1000
+ S SEARCH=$G(SEARCH)
+ I SEARCH'="" D  Q
+ . S NM=SEARCH
+ . F  S NM=$O(^DIC(36,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . . S IEN=$O(^DIC(36,"B",NM,""))
+ . . Q:'IEN
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(36,IEN,0)),U,2)_U_$P($G(^DIC(36,IEN,.11)),U,1)
+ . S RESULT(0)=I
+ S IEN=0
+ F  S IEN=$O(^DIC(36,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . S NM=$P($G(^DIC(36,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(36,IEN,0)),U,2)_U_$P($G(^DIC(36,IEN,.11)),U,1)
+ S RESULT(0)=I
+ Q
+ ;
+INSDET(RESULT,INSIEN) ;Get insurance company detail from File #36
+ N U,Z0
+ S U="^",INSIEN=+$G(INSIEN)
+ I 'INSIEN S RESULT(0)="-1^Insurance IEN required" Q
+ I '$D(^DIC(36,INSIEN,0)) S RESULT(0)="-1^Insurance not found" Q
+ S Z0=^DIC(36,INSIEN,0)
+ S RESULT(0)="1^OK"
+ S RESULT(1)="IEN^"_INSIEN
+ S RESULT(2)="NAME^"_$P(Z0,U,1)
+ S RESULT(3)="CITY^"_$P($G(^DIC(36,INSIEN,.11)),U,1)
+ S RESULT(4)="STATE^"_$P($G(^DIC(36,INSIEN,.11)),U,2)
+ S RESULT(5)="ZIP^"_$P($G(^DIC(36,INSIEN,.11)),U,3)
+ S RESULT(6)="PHONE^"_$P($G(^DIC(36,INSIEN,.13)),U,1)
+ S RESULT(7)="REIMBURSE^"_$P(Z0,U,2)
+ Q
+ ;
+CLAIMCNT(RESULT) ;Get claim counts from File #399
+ N IEN,CT,U
+ S U="^",CT=0,IEN=0
+ F  S IEN=$O(^DGCR(399,IEN)) Q:'IEN  S CT=CT+1
+ S RESULT(0)="1^OK"
+ S RESULT(1)="TOTAL_CLAIMS^"_CT
+ Q
+ ;
+INSCRT(RESULT,NAME,CITY,STATE,ZIP,PHONE) ;Create insurance company in File #36
+ ; File #36 requires: .01 NAME, .111 STREET, 1 REIMBURSE, 2 SIG REQ, 3.01 TRANSMIT
+ ; Use DIC to create entry, then FILE^DIE for remaining fields
+ N U,DIC,DLAYGO,X,Y,DA,FDA,IENS,ERR
+ S U="^"
+ S NAME=$G(NAME),CITY=$G(CITY),STATE=$G(STATE)
+ S ZIP=$G(ZIP),PHONE=$G(PHONE)
+ I NAME="" S RESULT(0)="-1^Insurance company name required" Q
+ ; Create via DIC lookup/add
+ S DIC="^DIC(36,",DIC(0)="L",DLAYGO=36
+ S X=NAME
+ K DO D ^DIC K DLAYGO
+ I Y<0 S RESULT(0)="-1^Could not create insurance entry" Q
+ S DA=+Y
+ ; Set required fields plus optional address fields via FILE^DIE
+ ; Field 1 REIMBURSE: Y/*/N/** ; Field 2 SIG REQ: 0/1
+ ; Field 3.01 TRANSMIT has EDI key validation - skip on create
+ S IENS=DA_","
+ S FDA(36,IENS,1)="Y"
+ S FDA(36,IENS,2)=0
+ I CITY'="" S FDA(36,IENS,.111)=CITY
+ I STATE'="" S FDA(36,IENS,.112)=STATE
+ I ZIP'="" S FDA(36,IENS,.113)=ZIP
+ I PHONE'="" S FDA(36,IENS,.131)=PHONE
+ D FILE^DIE("E","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ S RESULT(1)="IEN^"_DA
+ S RESULT(2)="NAME^"_NAME
+ Q
+ ;
+INSEDT(RESULT,INSIEN,FIELD,VALUE) ;Edit insurance company in File #36
+ N U,FDA,IENS,ERR,FLDNUM
+ S U="^",INSIEN=+$G(INSIEN)
+ I 'INSIEN S RESULT(0)="-1^Insurance IEN required" Q
+ I '$D(^DIC(36,INSIEN,0)) S RESULT(0)="-1^Insurance not found" Q
+ S FIELD=$G(FIELD),VALUE=$G(VALUE)
+ I FIELD="" S RESULT(0)="-1^Field name required" Q
+ S FLDNUM=""
+ I FIELD="NAME" S FLDNUM=.01
+ I FIELD="CITY" S FLDNUM=.111
+ I FIELD="STATE" S FLDNUM=.112
+ I FIELD="ZIP" S FLDNUM=.113
+ I FIELD="PHONE" S FLDNUM=.131
+ I FIELD="REIMBURSE" S FLDNUM=1
+ I FLDNUM="" S RESULT(0)="-1^Unknown field: "_FIELD Q
+ S IENS=INSIEN_","
+ S FDA(36,IENS,FLDNUM)=VALUE
+ D FILE^DIE("E","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+INSTALL ;Register RPCs in File #8994
+ ; Read RPCs
+ D REG^ZVEUSER("VE IB SITE","IBSITE","ZVEBILL")
+ D REG^ZVEUSER("VE INS LIST","INSLIST","ZVEBILL")
+ D REG^ZVEUSER("VE INS DETAIL","INSDET","ZVEBILL")
+ D REG^ZVEUSER("VE CLAIM COUNT","CLAIMCNT","ZVEBILL")
+ ; Write RPCs
+ D REG^ZVEUSER("VE INS CREATE","INSCRT","ZVEBILL")
+ D REG^ZVEUSER("VE INS EDIT","INSEDT","ZVEBILL")
+ W "ZVEBILL RPCs registered",!
+ Q

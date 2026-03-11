@@ -1,0 +1,141 @@
+{
+  "fileNumber": 791811,
+  "fileName": "REMOTE INVENTORY PRODUCT",
+  "globalRoot": "791811I",
+  "globalReference": "^RMPF(791811,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ITEM NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This in the free text name of the item to be selected as part of a transaction. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAKE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the free text name of the make of the item to be selected as part of a transaction. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRODUCT GROUP",
+      "dataType": "POINTER",
+      "rawType": "P791811.1'",
+      "required": false,
+      "pointerTo": 791811.1,
+      "helpText": "This is the DDC product group to which the item belongs. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,4",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the approximate current cost of the item. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the National Stock Number of the item. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CURRENT MARKUP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,4",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the current percentage of markup for the item. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "REQUIRES SECOND BATTERY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:TWO BATTERY TYPES NOT ALLOWED;1:TWO BATTERY TYPES ALLOWED;",
+      "helpText": "This field will contain a '1' if the item ordered requires a second battery type. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "UNIT OF ISSUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "If the item is issued in a specific quantity (6-pack of batteries), this field will contain the smallest number issued.  If there is no entry, the unit of issue is assumed to be one. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AMIS CODE FOR PROSTHETICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01 A:AIDS FOR THE BLIND UNDER $5000;01 B:AIDS FOR THE BLIND OVER $5000;08:FLEX-ORTHO;20:PROSTHETIC SOCKS & HOSE;14 C:SCROTAL SUPPORT;13 K:EQUIPMENT, ALL OTHER;",
+      "helpText": "This field contains the Prosthetics AMIS code for the line item. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "COMPONENT",
+      "dataType": "POINTER",
+      "rawType": "791811.0101PA",
+      "required": false,
+      "helpText": "This multiple field contains a list of the componenets that may be associated with an item. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "BATTERY TYPE",
+      "dataType": "POINTER",
+      "rawType": "791811.0102PA",
+      "required": false,
+      "helpText": "This multiple field is a list of the specific batteries that may be associated with a line item. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 999,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;0:ACTIVE;",
+      "helpText": "If this field is set to 'Inactive', the line item will not be available for selection in the order/entry process. ",
+      "fieldNumber_": 999
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "F", "field": },
+    {"name": "791811", "field": .01, "type": "regular"},
+    {"name": "791811", "field": .02, "type": "regular"},
+    {"name": "791811", "field": .03, "type": "regular"},
+    {"name": "791811", "field": .05, "type": "regular"},
+    {"name": "791811", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "fileNumber": 8925.9,
+  "fileName": "TIU PROBLEM LINK",
+  "globalRoot": "8925.9",
+  "globalReference": "^TIU(8925.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOCUMENT",
+      "dataType": "POINTER",
+      "rawType": "RP8925'",
+      "required": true,
+      "pointerTo": 8925,
+      "helpText": "This is the document which is to be associated with one or more problems. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "P9000011'",
+      "required": false,
+      "pointerTo": 9000011,
+      "helpText": "This is the problem with which the document is associated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PURPOSE OF VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010.07'",
+      "required": false,
+      "pointerTo": 9000010.07,
+      "helpText": "This is the specific Purpose of Visit with which this document is to be associated. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLINICAL TERM",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This is the \"expression\" from the clinical lexicon, which identifies the problem or purpose of visit to which the document is linked. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROVIDER NARRATIVE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the narrative description of the problem/POV as expressed by the provider at the time of formulation. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ICD9 DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the diagnosis associated with the Problem/POV, as encoded in the International Classification of Diseases, 9th Revision/Clinical  Modification. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "APRB", "field": },
+    {"name": "APRB1", "field": },
+    {"name": "B", "field": },
+    {"name": "8925.9", "field": .01, "type": "regular"},
+    {"name": "8925.9", "field": .01, "type": "regular"},
+    {"name": "8925.9", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

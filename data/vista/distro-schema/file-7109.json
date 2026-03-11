@@ -1,0 +1,350 @@
+{
+  "fileNumber": 7109,
+  "fileName": "NOIS PARAMETER",
+  "globalRoot": "7109",
+  "globalReference": "^FSC(\"PARAM\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the application, ie. NOIS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;S:SITE;",
+      "helpText": "NOT USED. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the default web link. This link will be available to all calls. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.9,
+      "fieldName": "WEB HELP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field should be entered with a URL for using Web Help on the client. ",
+      "fieldNumber_": 1.9
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT RESOURCE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'X",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the resource device used if not already defined by the NOIS office file when a NOIS call is edited.  If this field is not entered then the edits will be separate tasks. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OPTIMIZATION VALUE CUTOFF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This entry is the cutoff as to what values will be included in determining searches.  If no value is entered, the program will default to .2.  The number is a percentage of NOIS calls that have a particular value.  If fields have a value more frequent than this number, that value will be included in the field's frequent value list.  These values are used in ranking the search criteria. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PURGE DAYS, CANCEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the number of days grace period before calls will be purged that have been canceled and have not been edited. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PURGE DAYS, CLOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the number of days grace period before calls will be purged that have been closed on an old version of software and not been edited. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the account where NOIS is being run, ie. FORUM or your site. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DEFAULT WORKLOAD PROMPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This determines if workload can be prompted. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "WORKLOAD EDIT DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days that are allowed for backdating any edits to workload for a NOIS call. No entry will assume 0 days (no backdating). Regardless of this entry, a NOIS call can only be edited from the date it was opened to the date it was closed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MAX CALLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This entry is the number of calls that are allowed to be displayed when listing calls. If the entry is blank, the maximum number of calls are allowed. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MAX LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This entry is the number of lines that can be displayed when viewing calls. If the entry is left blank, the maximum number of lines are allowed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NON-SPEC ENTRY ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:IGNORE;P:PROMPT;F:FORCE;",
+      "helpText": "This field is used for tagging a new NOIS call entered by a non-specialist to be automatically alerted when the call is edited. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "CONTACT ALERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:IGNORE;P:PROMPT;F:FORCE;",
+      "helpText": "This field is used for tagging a new NOIS call entered by a NOIS specialist to automatically notify the contact for the call. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MRE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field controls the number of calls that will be preseved on users MRE list. These are the calls most recently edited by the user. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MRA LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field controls the number of calls that will be preserved on users MRA list. These are the calls most recently alerted to the user. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MRU LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field controls the number of lists preserved for the user as the most recently used lists. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SHUTDOWN CLIENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This can be used to shutdown clients from using NOIS. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CLIENT MAX CALLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This controls the maximum number of calls in a list that can be returned to the client. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CLIENT MAX LINES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This limits the number of lines that are returned to the client. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CLIENT TIMEOUT (SPEC)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the default for the number of minutes of inactivity that will timeout a Specialist when using the client application. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CLIENT TIMEOUT (NON-SPEC)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the default for the number of minutes of inactivity that will timeout a Non-Specialist when using the client application. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "CLIENT ALERT CHECK DEFAULT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the default for the number of minutes that the client will check the server for alerts. This is in addition to checks that are made every time the user makes an action that gets data from the server. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CLIENT VERSION CHECK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field controls any version checking for the client. Only make an entry in this field to force a specific version of the client to run. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 26.1,
+      "fieldName": "CLIENT VERSION MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field displays as a message on the client if the version is not ok. ",
+      "fieldNumber_": 26.1
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "CLIENT HIDDEN MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "7109.027",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 7109.027,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "BATCH EDIT LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This limits the number of calls that can be edited with the batch editor on the client. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ENABLE WEB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will allow web links to be used in the client application. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ENABLE WEB SOLUTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will allow web pages to be created by the client application. Note: the fields for WEB DIRECTORY and WEB DIRECTORY ADDRESS must also be filled in. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "WEB DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be the directory where solution web pages are stored. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "WEB DIRECTORY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the root URL for solution pages. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "HEADING DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7109.01",
+      "required": false,
+      "helpText": "This is text that can be entered to display as a menu header on NOIS options. ",
+      "isMultiple": true,
+      "subFileNumber": 7109.01,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "REMOVE HEADING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to remove any HEADING DESCRIPTION that exists. The HEADING DESCRIPTION will be removed on this date by the nightly NOIS task. ",
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 34,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7109", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

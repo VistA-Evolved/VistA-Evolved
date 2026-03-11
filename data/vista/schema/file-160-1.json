@@ -1,0 +1,776 @@
+{
+  "fileNumber": 160.1,
+  "fileName": "ONCOLOGY SITE PARAMETERS",
+  "globalRoot": "160.1I",
+  "globalReference": "^ONCO(160.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HOSPITAL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": " This field describes the name of this set of ONCOLOGY SITE PARAMETERS.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .011,
+      "fieldName": "C. HOSPITAL NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "THE HOSPITAL NAME CENTERED FOR PRINTING ON THE FORM FOLLOW UP LETTERS. ",
+      "fieldNumber_": .011
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the street address of the site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .021,
+      "fieldName": "C. STREET ADDRESS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the street address of the site, centered for display. ",
+      "fieldNumber_": .021
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ZIPCODE",
+      "dataType": "POINTER",
+      "rawType": "P5.11'",
+      "required": false,
+      "pointerTo": 5.11,
+      "helpText": "POINTER TO A FILE CONTAINING THE ZIP CODE AND CITY COMBINATION. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "CITY,ST ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "Computes the CITY, STATE and POSTAL CODE for this site parameter entry.  ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .032,
+      "fieldName": "C. CITY,ST ZIP",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the city, state, and ZIP Code of the site, centered for display. ",
+      "fieldNumber_": .032
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TR REFERENCE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "RECORDS THE REFERENCE DATE FOR THE REGISTRY.  THIS DATE IS LISTED AS THE FIRST DAY OF THE FIRST MONTH OF THE YEAR THE REGISTRY FIRST STARTS KEEPING DATA. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .041,
+      "fieldName": "YEARS OF REGISTRY",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "RECORDS THE YEARS IN A RANGE FROM THE DATE THE REGISTRY WAS STARTED TO THE CURRENT DATE. ",
+      "fieldNumber_": .041
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TUMOR REGISTRAR",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "RECORDS THE NAME OF THE TUMOR REGISTRAR. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "C. TUMOR REGISTRAR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the name of the tumor registrar, centered for display. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.011,
+      "fieldName": "TITLE-TR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ47",
+      "length": 47,
+      "required": false,
+      "helpText": "RECORDS ANY TITLE OR CERTIFICATION THAT THE REGISTRAR MAY POSSESS. ",
+      "fieldNumber_": 1.011
+    },
+    {
+      "fieldNumber": 1.0111,
+      "fieldName": "C. TITLE TR",
+      "dataType": "COMPUTED",
+      "rawType": "CJ96",
+      "length": 96,
+      "required": false,
+      "helpText": "This is the title of the tumor registrar, centered for display. ",
+      "fieldNumber_": 1.0111
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "RECORDS THE TUMOR REGISTRAR'S TELEPHONE NUMBER. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "STATE HOSPITAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " STATE HOSPITAL NUMBER is the number assigned by the state to the reporting institution.  ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BASAL CELL INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes - Eliminate Basal Cells;N:No - DO NOT Eliminate Basal Cells;",
+      "helpText": "This field indicates whether the registry will eliminate basal cell carcinoma cases from the laboratory pathology searches. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GOVERNMENT AGENCY",
+      "dataType": "POINTER",
+      "rawType": "160.13P",
+      "required": false,
+      "helpText": "Records the name of the government institution that may provide follow up information. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LABORATORY CASEFINDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "LABORATORY CASEFINDIND DATE is the \"Start Date\" value from the previous \"Automatic Casefinding-Lab Search\" to be used as a \"Start Date\" default for the next search.  ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "AUTHORIZED QA USER",
+      "dataType": "POINTER",
+      "rawType": "160.18P",
+      "required": false,
+      "helpText": " The users authorized to produce QA reports.  ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": " Select the INSTITUTION that is associated with this set of site parameters.  ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VISN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": " VISN is the VISN number for this tumor registry.  ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AFFILIATED DIVISION",
+      "dataType": "POINTER",
+      "rawType": "160.22P",
+      "required": false,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "STATION NUMBER",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RADIOLOGY CASEFINDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "RADIOLOGY CASEFINDIND DATE is the \"Start Date\" value from the previous \"Automatic Casefinding-Radiology Search\" to be used as a \"Start Date\" default for the next search.  ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "START DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "FREE TEXT FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "FREE TEXT FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TOTAL CASES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "FREE TEXT FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ID1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ID2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ID3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FREE TEXT FIELD FOR IDENTIFYING ADDITIONAL CONTACTS. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ID4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORTS THE SUM OF ALL CASES IN THE REGISTRY. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "PTF CASEFINDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "PTF CASEFINDING DATE is the \"Start Date\" value from the previous \"Automatic Casefinding-PTF Search\" to be used as a \"Start Date\" default for the next search.  ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "COLLABORATIVE STAGING URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the URL address for the Collaborative Staging  computer algorithms. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NEG-REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "REPORTS NEGATIVE CASEFINDING REPORT WHEN NO CASES ARE FOUND OR ADDED TO THE REGISTRY SUSPENSE LIST FROM AUTOMATIC CASEFINDING. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ID5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ID6",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ID7",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ID8",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ID9",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ID10",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "FACILITY ID #",
+      "dataType": "POINTER",
+      "rawType": "P160.19'X",
+      "required": false,
+      "pointerTo": 160.19,
+      "helpText": "  Identifies the facility reporting the case.   For further information see ROADS page 208. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CENTRAL REGISTRY #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is a code number assigned by a central registry. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "CLINICAL INDICATOR",
+      "dataType": "SUBFILE",
+      "rawType": "160.11",
+      "required": false,
+      "helpText": "These are the clinical indicators used by this site. ",
+      "isMultiple": true,
+      "subFileNumber": 160.11,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "YEAR START AJCC 4TH EDITION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "92:1992;93:1993;",
+      "helpText": " YEAR START AJCC 4TH EDITION is the year in which the institution began using the AJCC Manual for Staging of Cancer (Fourth Edition).  ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "TOTAL#",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "BENIGN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "CERVIX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "LOCAL BASAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "FOREIGN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "NONANALYTIC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "ANALYTIC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DEAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "LIVING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "%LIVING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "%DEAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "CURRENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "%CURRENT-TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "LTF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0O",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "%LTF-TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "%CURRENT-ALIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "%LTF-ALIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "SFC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0O",
+      "length": 6,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "%SFC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0O",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "EXTENDED VA DATASET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether the extended VA dataset will be utilized or screened from input and display.  The extended VA dataset includes fields which collect symptom and initial diagnostic data for all CLASS OF CASE 1 (Dx here, 1st tx here) cases and LUNG (C34.0 - C34.9) or COLON and RECTUM (C18.0 - C18.9, C19.9, C20.9) cases. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as an accumulator for report generation. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "VACCR CASE COMPL END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "VACCR CASE COMPL END DATE is the previous \"End, Date Case Completed\" value from the \"Create State/VACCR Data Download\" option.  This date will be used as the \"End, Date Case Completed\" default for the next VACCR extract. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "STATE CASE COMPL END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "STATE CASE COMPL END DATE is the previous \"End, Date Case Completed\"  value from the \"Create State/VACCR Data Download\" option.  This date will be used as the \"End, Date Case Completed\" default for the next STATE extract. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "VACCR LAST CHANGED END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "VACCR LAST CHANGED END DATE is the previous \"End, Date Case Last  Changed\" value from the \"Create State/VACCR Data Download\" option. This date will be used as the \"End, Date Case Last Changed\" default for the next VACCR extract. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "STATE LAST CHANGED END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "STATE LAST CHANGED END DATE is the previous \"End, Date Case Last Changed\" value from the \"Create State/VACCR Data Download\" option.  This date will be used as the \"End, Date Case Last Changed\" default for the next STATE extract. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "POSTAL CODE CONVERSION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Converted;",
+      "helpText": "Indicates that POSTAL CODE (.03) values have been converted from pointers to ZIP CODE (5.11) to free-text postal code values. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "  Identifies the city associated with this site parameter entry. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "  Identifies the state associated with this site parameter entry. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "COC ACCREDITATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "00:Not accredited;01:CoC accredited;",
+      "helpText": "  This field records whether your facility has a Commission on Cancer (CoC) accredited cancer program.   The Commission on Cancer (CoC) Accreditation Program encourages  hospitals, treatment centers, and other facilities to improve their  quality of patient care through various cancer-related programs. These programs focus on prevention, early diagnosis, pretreatment evaluation, staging, optimal treatment, rehabilitation, surveillance for recurrent disease, support services, and end-of-life care",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "P100",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0O",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is used as accumulator for report generation for patient whose  age is over 100 years old. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "COC ACCREDITATION TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "160.26",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 160.26,
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "COC ACCREDITATION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field records the facility's Commission on Cancer (COC) Accreditation Date, if the facility has been accredited. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MAIL SERVER USER",
+      "dataType": "SUBFILE",
+      "rawType": "160.24A",
+      "required": false,
+      "helpText": "This multiple contains the mail server users and recipients. ",
+      "isMultiple": true,
+      "subFileNumber": 160.24,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "ABSTRACTOR/REGISTRAR",
+      "dataType": "POINTER",
+      "rawType": "160.25P",
+      "required": false,
+      "helpText": "This multiple contains registrars with a valid entry in New Person file  (#200). ",
+      "fieldNumber_": 105
+    }
+  ],
+  "fieldCount": 78,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AD", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "160.1", "field": .01, "type": "regular"},
+    {"name": "160.1", "field": 1.03, "type": "regular"},
+    {"name": "160.1", "field": 2, "type": "regular"},
+    {"name": "160.1", "field": 6, "type": "regular"},
+    {"name": "160.1", "field": 31, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 6, "value": "D DIVID^ONCODSP"}
+  ]
+}

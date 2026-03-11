@@ -1,0 +1,109 @@
+{
+  "fileNumber": 421.8,
+  "fileName": "FISCAL STACKED DOCUMENTS",
+  "globalRoot": "421.8",
+  "globalReference": "^PRC(421.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INTERNAL RECORD NO.",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0I",
+      "length": 8,
+      "required": true,
+      "helpText": "     This field will hold the record number in external format. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:PO;2:RR;3:MO;4:2237;",
+      "helpText": "    This field is used to store the type of document to print in FISCAL. (Purchase Orders, Receiving Reports, 1358s and 2237s) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "    This field stores the routine that will be executed to print the document in Fiscal. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VARIABLE",
+      "dataType": "SUBFILE",
+      "rawType": "421.84A",
+      "required": false,
+      "helpText": "     This field is used to store the variables that will be used to print the document. ",
+      "isMultiple": true,
+      "subFileNumber": 421.84,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "     This field is used to store the date that the document was created. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EXTERNAL RECORD NO.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "     This field is used to store the .01 field from either file 442 or 410 which is the record number for the document. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "     This field is used to store the output device from file 411 for the corresponding site and type of document. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "     This field stores the date that the document was last printed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "     This field stores the site number of the site that generated the document. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "421.8", "field": .01, "type": "regular"},
+    {"name": "421.8", "field": 5, "type": "regular"},
+    {"name": "421.8", "field": 6, "type": "regular"},
+    {"name": "421.8", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

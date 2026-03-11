@@ -1,0 +1,78 @@
+{
+  "fileNumber": 456,
+  "fileName": "PAID PARAMETERS",
+  "globalRoot": "456",
+  "globalReference": "^PRST(456,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Enter a DIVISION (the same INSTITUTION name in File #4) these parameters apply to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SEND AWS BULLETIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AWS 9MO BULLETIN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This field counts the number of bulletins that have been sent to the developers notifying them when an employee has been identified as being converted or beginning to work the 9 mo/3 mo AWS. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AWS BULLETIN LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Please enter the number of bulletins that should be sent to the  developers, once an employee is identified as working the 9 month/3 month  alternative work schedule (AWS). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AWS 36-40 BULLETIN COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0I",
+      "length": 4,
+      "required": false,
+      "helpText": "This field counts the number of bulletins that have been sent to the  developers notifying them when an employee has been identified as being  converted or beginning to work the 36/40 AWS. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACCESS TO NURSES FOR POC DATA",
+      "dataType": "SUBFILE",
+      "rawType": "456.05",
+      "required": false,
+      "helpText": "This multiple will identify the manner in which Data Entry Personnel and  Data Approval Personnel will access the nurses in a division, either by  Nurse Location or T&L Unit, and it will identify the Effective Pay Period  for which the parameter was set. ",
+      "isMultiple": true,
+      "subFileNumber": 456.05,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "456", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

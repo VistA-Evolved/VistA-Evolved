@@ -1,0 +1,85 @@
+{
+  "fileNumber": 357.08,
+  "fileName": "AICS PURGE LOG",
+  "globalRoot": "357.08",
+  "globalReference": "^IBD(357.08,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RUN DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date and time that the purge option ran.  After running a set of brief results is stored.  A new entry is created each time the option runs regardless of whether or not it is a manual or automatic purge. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "RECORDS TO PURGE THIS RUN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:COMPLETE;2:ALL;",
+      "helpText": "This is the status of records that were purged this run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTRIES PURGE UP TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date that entries were purged for based on the status of the records to purge this run. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TRACKING ENTRIES DELETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of entries in the FORM TRACKING file that were deleted this run. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FORM DEFINIT. ENTRIES DELETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of entries in the form definition file that  were deleted this run. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FORM SPEC ENTRIES DELETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of entries in the form specification file that were deleted this run. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ERROR LOG ENTRIES DELETED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "357.08", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

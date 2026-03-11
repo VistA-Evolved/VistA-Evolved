@@ -1,0 +1,60 @@
+{
+  "fileNumber": 164.47,
+  "fileName": "ONCOLOGY SCHEMA DISCRIMINATOR CODES",
+  "globalRoot": "164.47",
+  "globalReference": "^ONCO(164.47,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SCHEMA ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ5",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the SCHEMA ID which is a 5 digit code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SCHEMA NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ80",
+      "length": 80,
+      "required": true,
+      "helpText": "This is the name of the SCHEMA for the corresponding SCHEMA DISCRIMINATOR codes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCHEMA DISCRIMINATOR 1 CODE",
+      "dataType": "SUBFILE",
+      "rawType": "164.472I",
+      "required": false,
+      "helpText": "The Schema Discriminator 1 is the first of the codes that capture additional information needed for the AJCC ID and the SCHEMA ID. ",
+      "isMultiple": true,
+      "subFileNumber": 164.472,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SCHEMA DISCRIMINATOR 2 CODE",
+      "dataType": "SUBFILE",
+      "rawType": "164.473I",
+      "required": false,
+      "helpText": "The Schema Discriminator 2 is the second of the codes that capture additional information needed for the AJCC ID and the SCHEMA ID. ",
+      "isMultiple": true,
+      "subFileNumber": 164.473,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "164.47", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

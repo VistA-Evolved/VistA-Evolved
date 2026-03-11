@@ -1,0 +1,157 @@
+{
+  "fileNumber": 7107.2,
+  "fileName": "NOIS FIELD",
+  "globalRoot": "7107.2",
+  "globalReference": "^FSC(\"FLD\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the NOIS field.  This field corresponds to a field in the NOIS CALL file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This the text that this field displays on outputs. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is interpreted by the NOIS software to describe the NOIS field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NODE/PIECE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the node;piece of the the associated field in the NOIS CALL file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INDEX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the field in the NOIS CALL file has a simple index, this is entered here. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "**OFFSET NODE/PIECE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "NOT USED. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7107.25",
+      "required": false,
+      "helpText": "These are synonyms for this field. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.25,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This abbreviation for the field is used by the NOIS software for extracts of data from the NOIS CALL file. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FIELD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the associated field number in the NOIS CALL file. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.9,
+      "fieldName": "**USED FOR DEFAULT ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "NOT USED. ",
+      "fieldNumber_": 9.9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEARCH PERCENTAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,5",
+      "length": 7,
+      "required": false,
+      "helpText": "This field stores the percentage of times this entry exists in the NOIS CALL file. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SCREEN ON LOOKUP",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This field is used to set DIC(\"S\") and is used if this field is a pointer type of field. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FREQUENT VALUES",
+      "dataType": "SUBFILE",
+      "rawType": "7107.21",
+      "required": false,
+      "helpText": "These values are used for search optimization. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.21,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7107.299",
+      "required": false,
+      "helpText": "These are the names of the field used by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7107.299,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7107.2", "field": .01, "type": "regular"},
+    {"name": "7107.2", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

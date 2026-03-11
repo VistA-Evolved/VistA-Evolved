@@ -45,6 +45,8 @@ const BYPASS_PATTERNS = [
   /^\/posture\//, // Phase 107: Infrastructure posture routes
   /^\/fhir\//, // Phase 178: FHIR R4 gateway (auth handled per-route in security.ts)
   /^\/\.well-known\//, // Phase 179: SMART on FHIR discovery (public per spec)
+  /^\/docs\//, // Phase VII: VistA documentation assistant (public reference API)
+  /^\/vista-help\//, // VistA help API (public reference)
 ];
 
 /* ------------------------------------------------------------------ */

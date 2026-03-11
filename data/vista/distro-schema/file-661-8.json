@@ -1,0 +1,65 @@
+{
+  "fileNumber": 661.8,
+  "fileName": "VENDOR PRODUCT HCPCS MAP",
+  "globalRoot": "661.8",
+  "globalReference": "^RMPR(661.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VENDOR UCC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique code assigned by the Uniform Code Council (UCC) to product vendors. This code is obtained from scanning in the bar code found with a vendor's products. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRODUCT UCC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique UCC product code used by a given vendor. This code is obtained by scanning the UPC barcode associated with an item. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VENDOR VA CODE",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This field points to the Vendor file (440). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HCPCS CODE",
+      "dataType": "POINTER",
+      "rawType": "P661.1'",
+      "required": false,
+      "pointerTo": 661.1,
+      "helpText": "This field points to the Prosthetic HCPCS file (661.1). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HCPCS ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is the HCPCS ITEM field held on the 661.12 sub field  of the PROSTHETIC HCPCS file (661.1). The value held is the sub file's IEN not the ITEM text field. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "661.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

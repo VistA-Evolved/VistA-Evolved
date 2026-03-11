@@ -1,0 +1,28 @@
+{
+  "fileNumber": 19620.94,
+  "fileName": "DSIR SENSITIVE PROVIDERS",
+  "globalRoot": "19620.94",
+  "globalReference": "^DSIR(19620.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to New Person File (200) ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19620.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

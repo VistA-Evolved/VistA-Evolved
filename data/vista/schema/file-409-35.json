@@ -1,0 +1,94 @@
+{
+  "fileNumber": 409.35,
+  "fileName": "SDWL TRANSFER REQUEST",
+  "globalRoot": "409.35",
+  "globalReference": "^SDWL(409.35,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WAIT LIST ENTRY",
+      "dataType": "POINTER",
+      "rawType": "RP409.3",
+      "required": true,
+      "pointerTo": 409.3,
+      "helpText": "The patient that is to be on the Sch/PCMM Wait List. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "The Station Number of the Institution the request for transfer is to be made to. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Exact date and time (including seconds) of the moment of transmission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "P:PENDING XMIT;T:TRANSMITTED;R:RECEIVED;X:REFUSED;A:RESOLVED;C:CANCELLED;E:ON EWL;",
+      "helpText": "PENDING XMIT : The details have been entered and are about to be                  transmitted to their destination TRANSMITTED  : The details have been transmitted to their destination RECEIVED     : The details have arrived at the destination facility and                 are held on a pending file (#409.36) REFUSED      : The details were not accepted by the users at the                 desination facility RESOLVED     : The details were accepted by the users at the desination                 f",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUESTOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "The person making the request for transfer. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "409.355",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 409.355,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RECEIVING FACILITY TRANSFER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACCEPTING PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person who accepted the transfer at the  destination facility. It is a free text name from the NEW PERSON file  (#200). ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

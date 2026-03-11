@@ -1,0 +1,106 @@
+{
+  "fileNumber": 779.004,
+  "fileName": "COUNTRY CODE",
+  "globalRoot": "779.004I",
+  "globalReference": "^HL(779.004,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The three-character alpha identifying code.   The alpha 3 code for the USA is \"USA\". ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "NUMERIC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The three-digit numeric identifying code.   The numeric code for the USA is \"840\". ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "FIPS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The code assigned to this nation by US Government standard FIPS 10-4.   The FIPS code for the USA is \"US\". ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "POSTAL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name used as the destination country for mail sent from the United States to this country. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "779.00409DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 779.00409,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "VERSION",
+      "dataType": "POINTER",
+      "rawType": "779.00401P",
+      "required": false,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "779.004", "field": .01, "type": "regular"},
+    {"name": "779.004", "field": 1.3, "type": "regular"},
+    {"name": "779.004", "field": 2, "type": "regular"},
+    {"name": "779.004", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

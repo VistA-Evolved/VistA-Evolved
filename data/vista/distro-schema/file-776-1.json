@@ -1,0 +1,135 @@
+{
+  "fileNumber": 776.1,
+  "fileName": "HL7 MONITOR",
+  "globalRoot": "776.1",
+  "globalReference": "^HLEV(776.1,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the free-text name of the monitor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "The values for this set of code field are ACTIVE and INACTIVE.  If set to  ACTIVE the master job will queue background monitor jobs for the  monitor.  If set to INACTIVE the master job will ignore the entry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds a short description of the monitor.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUEUE MIN-MONITOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "Whenever the master job runs it checks every entry in this HL7 Monitor file (#776.1).  If an entry is active, a secondary check is made whether \"it is time\" to start a background job for the monitor.  If the active monitor has never been run, a background job is started.  If the monitor has been run, then the next \"time to run\" is calculated by adding the number of minutes specified in this field to the time the monitor was last run.  If the next \"time to run\" is now (or earlier), a background j",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REMOTE REQUESTABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is not currently in use. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "M STARTUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Background tasks, started by the master job, are queued to the API  specified in this field.  (The value of this field must be in the format  of TAG~ROUTINE, which is converted to TAG^ROUTINE at run time.) ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "M START CHECK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Normally, the only test made by the master job to determine whether a  monitor job should be started is STATUS (it must be ACTIVE) and the  requeue minutes.  However, if this field is filled in with an extrinsic  function that returns a positive or null value, it can be used as an  additional test.   Let's say that the extrinsic fuction $$RUNOW^ROUTINE returns a 1 if a  background job should be started, or null if not.  In this case,  \"$$RUNOW^ROUTINE\" should be entered in this field. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "TECHNICAL DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "776.1041",
+      "required": false,
+      "helpText": "This field holds any additional technical notes deemed necessary by the  monitor creator. ",
+      "isMultiple": true,
+      "subFileNumber": 776.1041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "EVENT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "776.101",
+      "required": false,
+      "helpText": "This field should be used by the application developer to describe the  monitor, and how it is used.  (If desired, the application developer may  add additional, more technical notes in the TECHNICAL DESCRIPTION word  processing field.) ",
+      "isMultiple": true,
+      "subFileNumber": 776.101,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "MAIL GROUPS",
+      "dataType": "POINTER",
+      "rawType": "776.106P",
+      "required": false,
+      "helpText": "When a monitor runs, the M code can conditionally send a mail message to  recipients.  This field, and other fields, are used to determine the  recipients.  In addition, recipients can be added by M code immediately  before the sending of the message.   The fields used to determine mail message recipients are:   * MAIL GROUPS (#60) - pointer to the Mail Group file (#3.8.) * RECIPIENTS (#61) - pointer to the New Person file (#200.) * REMOTES (#62) - free-text remote recipient addresses.   And, re",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "RECIPIENTS",
+      "dataType": "POINTER",
+      "rawType": "776.1061P",
+      "required": false,
+      "helpText": "See documentation for the MAIL GROUPS field. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "REMOTES",
+      "dataType": "SUBFILE",
+      "rawType": "776.1062",
+      "required": false,
+      "helpText": "See documentation for the MAIL GROUPS field. ",
+      "isMultiple": true,
+      "subFileNumber": 776.1062,
+      "fieldNumber_": 53
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "776.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

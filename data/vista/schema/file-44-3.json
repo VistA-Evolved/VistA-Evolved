@@ -1,0 +1,36 @@
+{
+  "fileNumber": 44.3,
+  "fileName": "SDAM DATA MAP",
+  "globalRoot": "44.3",
+  "globalReference": "^SDAM(44.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The field is the formal name of the mapped item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VISTA CODE",
+      "dataType": "MUMPS",
+      "rawType": "RK",
+      "required": true,
+      "helpText": "This is the executable 'M' code that retrieves the data. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "44.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": 42.7,
+  "fileName": "AMIS 345&346",
+  "globalRoot": "42.7D",
+  "globalReference": "^DGAM(345,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MONTH/YR",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Month and year the AMIS 345 and AMIS 346 (NHCU and DOM) reports have been generated for.  These reports cannot be generated until after the last day of reporting cycle. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SEGMENT",
+      "dataType": "SET",
+      "rawType": "42.701SA",
+      "required": false,
+      "helpText": "Segment number is the number of the AMIS assigned per VA Manual MP6, Part VI, Supp. 1.2.  AMIS 345 is for NHCU statistics and AMIS 346 is for Domiciliary statistics. ",
+      "isMultiple": true,
+      "subFileNumber": 42.701,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ALST", "field": },
+    {"name": "B", "field": },
+    {"name": "42.7", "field": .01, "type": "regular"},
+    {"name": "42.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

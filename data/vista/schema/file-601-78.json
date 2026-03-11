@@ -1,0 +1,60 @@
+{
+  "fileNumber": 601.78,
+  "fileName": "MH BATTERY CONTENTS",
+  "globalRoot": "601.78",
+  "globalReference": "^YTT(601.78,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATTERY CONTENT ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is a unique identifier for the record, this is the IEN of the MH BATTERY  CONTENTS file (#601.78). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BATTERY ID",
+      "dataType": "POINTER",
+      "rawType": "RP601.77'",
+      "required": true,
+      "pointerTo": 601.77,
+      "helpText": "Identifies the current MH BATTERIES file (#601.77) entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEQUENCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the display sequence of the instrument within a selected battery. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "P601.71'",
+      "required": false,
+      "pointerTo": 601.71,
+      "helpText": "This ties an entry in the MH BATTERY CONTENTS file (#601.78) to an instrument in the MH TESTS AND SURVEYS file (#601.71). ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "601.78", "field": .01, "type": "regular"},
+    {"name": "601.78", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

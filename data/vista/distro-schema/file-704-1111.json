@@ -1,0 +1,166 @@
+{
+  "fileNumber": 704.1111,
+  "fileName": "OBS_VIEW_TERMINOLOGY",
+  "globalRoot": "704.1111",
+  "globalReference": "^MDC(704.1111,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VIEW_ID",
+      "dataType": "POINTER",
+      "rawType": "RP704.111'",
+      "required": true,
+      "pointerTo": 704.111,
+      "helpText": "This field identifies an entry in the OBS VIEW File (#704.111);  correlates this file entry with a view. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TERM_ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "This field indicates the order this term will display in that view  identified by VIEW ID (field #.01). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TERM_ID",
+      "dataType": "POINTER",
+      "rawType": "P704.101'",
+      "required": false,
+      "pointerTo": 704.101,
+      "helpText": "This field identifies an entry in the TERM File (#704.001); correlates  this file entry with a term. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name that will display to the user when the Clinical Flowsheets application shows this term (TERM ID field #.03).   A sample DISPLAY NAME could be \"IV - Platelets\". ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DISPLAY_WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field is the number of pixels this term (TERM ID field #.03) will require to be displayed in the Clinical Flowsheets application.   A sample could be \"120\". ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DISPLAY_TOTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a summation of term (TERM ID field  #.03) measurements will display at the bottom of a grid shown via the  Clinical Flowsheets application. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DISPLAY_COUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a count of terms (TERM ID field#.03) related to the view (VIEW ID field #.01) will display at the bottom of  the grid shown via the Clinical Flowsheets application. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DISPLAY_AVERAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not an average of term (TERM ID field  #.03) measurements will display at the bottom of the grid shown via the  Clinical Flowsheets application. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DISPLAY_ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This indicates whether or not this term (TERM ID field#.03) in this view  (VIEW ID field#.01) is only for display and reporting purposes and cannot  be modified. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DISPLAY_COLUMNS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "When a \"picklist\" value is displayed for input in a radio group box this  value is used to indicate how many columns this term-value will be  displayed in. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DISPLAY_IN_CELL_TOTAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether a sub-totals of indicated totals (e.g.,  total(#.06), count(#.07), average(#.08) etc.) display within each TIME  INTERVAL (file #704.111 field #.03) of this view (VIEW ID #.01). ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DISPLAY_MINIMUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not the least of a list of term  measurements will display at the bottom of the grid shown via the  Clinical Flowsheets application. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DISPLAY_MAXIMUM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not the greatest of a list of  term measurements will display at the bottom of the grid shown via  the Clinical Flowsheets application. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "REQUIRED_TERM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this term (TERM ID #.03) must be given a value when using this view (VIEW ID #.01) for input. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "USE_DROPDOWN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not a value for this term will  necessitate the use of a \"drop down\" instead of a \"radio group\".   With long \"picklists\"  it is sometimes necessary to display items in a  drop down instead of a radio group. ",
+      "fieldNumber_": .15
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

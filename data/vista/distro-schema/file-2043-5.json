@@ -1,0 +1,39 @@
+{
+  "fileNumber": 2043.5,
+  "fileName": "VARO CLAIMS",
+  "globalRoot": "2043.5",
+  "globalReference": "^ANRV(2043.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2040'X",
+      "required": true,
+      "pointerTo": 2040,
+      "helpText": "This is the name of the veteran for which the claim is entered. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLAIM",
+      "dataType": "DATE",
+      "rawType": "2043.51D",
+      "required": false,
+      "helpText": "This is the type of VARO claim filed for this veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 2043.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2043.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

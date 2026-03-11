@@ -1,0 +1,29 @@
+{
+  "fileNumber": 699.82,
+  "fileName": "CONSULTATION TYPE",
+  "globalRoot": "699.82",
+  "globalReference": "^MCAR(699.82,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a list of Consultation types for use with the Consult enter/edit.  ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.82", "field": .01, "type": "regular"},
+    {"name": "699.82", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

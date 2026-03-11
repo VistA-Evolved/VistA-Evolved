@@ -1,0 +1,37 @@
+{
+  "fileNumber": 631.2,
+  "fileName": "HBHC EXPRESSIVE COMMUNICATION",
+  "globalRoot": "631.2I",
+  "globalReference": "^HBHC(631.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0I",
+      "length": 1,
+      "required": false,
+      "helpText": "This field represents 1 digit numeric code for HBHC Expressive Communication.  Valid entries are 1-5 or 9. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This field represents HBHC Expressive Communication text.  Field allows 1-80 characters of free text. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "631.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

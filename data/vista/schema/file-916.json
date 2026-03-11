@@ -1,0 +1,90 @@
+{
+  "fileNumber": 916,
+  "fileName": "ESP DAILY JOURNAL",
+  "globalRoot": "916D",
+  "globalReference": "^ESP(916,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This should be the date that the Daily Operations Journal is being opened or initiated regardless of whether the time period covered is from 0001-2400 or 0800-0800.  Enter the date that the Journal is started. Date cannot be (4) numeric digits. Four digit  entries could be time (HHMM), and time would be converted to a date if  allowed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'I",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Enter The Facility that the Journal belongs to. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FROM",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Correct format consists of Year-Month-Day-Starting Time, i.e., '93-04-05-0001' or '93-04-05-0800'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Correct format consists of Year-Month-Day-Ending Time, i.e., '93-04-05-2400' or '93-04-06-0800'. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WATCH",
+      "dataType": "SET",
+      "rawType": "916.03S",
+      "required": false,
+      "helpText": "This field is used to record the police officers assigned to the watch or work shift that is making the Daily Journal entries. ",
+      "isMultiple": true,
+      "subFileNumber": 916.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SPECIAL INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "916.04",
+      "required": false,
+      "helpText": "This field is used to record any specific operational instructions for any of the assigned watches or work shifts. ",
+      "isMultiple": true,
+      "subFileNumber": 916.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TIME",
+      "dataType": "SUBFILE",
+      "rawType": "916.05I",
+      "required": false,
+      "helpText": "This field is used to record a time that an activity occurred which necessitates the creation of a Daily Journal Entry. ",
+      "isMultiple": true,
+      "subFileNumber": 916.05,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "916", "field": .01, "type": "regular"},
+    {"name": "916", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

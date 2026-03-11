@@ -1,0 +1,268 @@
+{
+  "fileNumber": 393,
+  "fileName": "INCOMPLETE RECORDS",
+  "globalRoot": "393PI",
+  "globalReference": "^VAS(393,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Enter the patient for which this summary or op report has been recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF DEFICIENCY",
+      "dataType": "POINTER",
+      "rawType": "RP393.3'",
+      "required": true,
+      "pointerTo": 393.3,
+      "helpText": "Enter the type of deficiency that is being tracked. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EVENT DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Enter the date of the event (discharge date for discharge summaries, date of summary for interim summaries, or date of surgery for op reports). ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "*P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "Enter the admission associated with this report.  Enter nothing if this is an outpatient op report. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "Enter the location of the patient at the time of the event (discharge operation or interim summary. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "R*P40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Enter the division at which this event took place.  Will initially be determined by the WARD field. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P45.7'",
+      "required": true,
+      "pointerTo": 45.7,
+      "helpText": "Enter the treating specialty the patient had at the time of this event. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP393.1'",
+      "required": true,
+      "pointerTo": 393.1,
+      "helpText": "Enter the service responsible for filing this report.  This field will be used to generate reports that are incomplete by service. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PRIMARY PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Enter the physician responsible for the patient... usually the physician that will be responsible for the dictation of the summary or report.  ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the physician responsible for reviewing this summary (if applicable). ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "R*P393.2'",
+      "required": true,
+      "pointerTo": 393.2,
+      "helpText": "Enter the status of this report at the present time. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "PHYSICIAN RESPONSIBLE",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the physician that is responsible for the dictation of the report. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "INPATIENT REPORT?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter  1 if this report is for an inpatient episode.  Enter 0 if it is an outpatient op report. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PHYSICIAN FOR DEFICIENCY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the physician that is responsible for the deficiency at the present time.  This field changes whenever an action is taken against a deficiency and the status changes.  This field will be displayed on all the IRT reports as well as all of the enter/edit screens. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 10.01,
+      "fieldName": "DATE DICTATED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date on which this record was dictated.  Time of day may also be entered. ",
+      "fieldNumber_": 10.01
+    },
+    {
+      "fieldNumber": 10.02,
+      "fieldName": "DICTATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the user responsible for dictation of this summary or op report. ",
+      "fieldNumber_": 10.02
+    },
+    {
+      "fieldNumber": 10.03,
+      "fieldName": "DATE TRANSCRIBED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date (or date/time) on which this report was transcribed. ",
+      "fieldNumber_": 10.03
+    },
+    {
+      "fieldNumber": 10.04,
+      "fieldName": "TRANSCRIBED BY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "Enter the person or vendor that transcribed this report. ",
+      "fieldNumber_": 10.04
+    },
+    {
+      "fieldNumber": 10.05,
+      "fieldName": "DATE SIGNED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date on which this summary was signed by the responsible provider. ",
+      "fieldNumber_": 10.05
+    },
+    {
+      "fieldNumber": 10.06,
+      "fieldName": "SIGNED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter in this field the name of the provider that signed this summary or op report. ",
+      "fieldNumber_": 10.06
+    },
+    {
+      "fieldNumber": 10.07,
+      "fieldName": "DATE REVIEWED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date on which this summary or op report was reviewed. Entry of a review date/reviewer is optional. ",
+      "fieldNumber_": 10.07
+    },
+    {
+      "fieldNumber": 10.08,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the individual responsible for reviewing the signed summary or op report. ",
+      "fieldNumber_": 10.08
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a free text field that the user may add any comments that they need to, in regards to the deficiency.  Each deficiency has a comment field. ",
+      "fieldNumber_": 20.01
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AAT", "field": },
+    {"name": "AC", "field": },
+    {"name": "ADB", "field": },
+    {"name": "ADD", "field": },
+    {"name": "ADM", "field": },
+    {"name": "ADR", "field": },
+    {"name": "ADS", "field": },
+    {"name": "ADT", "field": },
+    {"name": "ARB", "field": },
+    {"name": "ASB", "field": },
+    {"name": "ATB", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "393", "field": .01, "type": "regular"},
+    {"name": "393", "field": .03, "type": "regular"},
+    {"name": "", "field": .04, "type": "regular"},
+    {"name": "393", "field": .04, "type": "regular"},
+    {"name": "393", "field": .08, "type": "regular"},
+    {"name": "", "field": .09, "type": "regular"},
+    {"name": "393", "field": .1, "type": "regular"},
+    {"name": "", "field": .12, "type": "regular"},
+    {"name": "393", "field": 10.01, "type": "regular"},
+    {"name": "393", "field": 10.02, "type": "regular"},
+    {"name": "393", "field": 10.03, "type": "regular"},
+    {"name": "393", "field": 10.04, "type": "regular"},
+    {"name": "393", "field": 10.05, "type": "regular"},
+    {"name": "393", "field": 10.06, "type": "regular"},
+    {"name": "393", "field": 10.07, "type": "regular"},
+    {"name": "393", "field": 10.08, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "S DGJT=^(0) D WR^DGJTUTL"}
+  ]
+}

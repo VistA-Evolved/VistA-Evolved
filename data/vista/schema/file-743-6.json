@@ -1,0 +1,37 @@
+{
+  "fileNumber": 743.6,
+  "fileName": "AUTO ENROLL RUN DATE",
+  "globalRoot": "743.6D",
+  "globalReference": "^QA(743.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RUN DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date that auto enroll was run for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MONITOR",
+      "dataType": "POINTER",
+      "rawType": "743.61PA",
+      "required": false,
+      "helpText": "This field contains the monitor(s) that auto enroll ran. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AM", "field": },
+    {"name": "B", "field": },
+    {"name": "743.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

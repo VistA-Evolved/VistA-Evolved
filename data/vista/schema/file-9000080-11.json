@@ -1,0 +1,651 @@
+{
+  "fileNumber": 9000080.11,
+  "fileName": "V IMMUNIZATION DELETED",
+  "globalRoot": "9000080.11",
+  "globalReference": "^AUPDVIMM(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMMUNIZATION",
+      "dataType": "POINTER",
+      "rawType": "RP9999999.14'I",
+      "required": true,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the type of immunization that was given to the patient at the encounter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient who was given the immunization. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "RP9000010'I",
+      "required": true,
+      "pointerTo": 9000010,
+      "helpText": "This is the encounter defined in the Visit file that represents when and where the immunization was given. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SERIES",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "P:PARTIALLY COMPLETE;C:COMPLETE;B:BOOSTER;1:SERIES 1;2:SERIES 2;3:SERIES 3;4:SERIES 4;5:SERIES 5;6:SERIES 6;7:SERIES 7;8:SERIES 8;",
+      "helpText": "This field allows the provider to specify which series of immunization type was given to the patient. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LOT",
+      "dataType": "POINTER",
+      "rawType": "P9999999.41'I",
+      "required": false,
+      "pointerTo": 9999999.41,
+      "helpText": "This Indian Health Service field indicates the lot number associated  with this immunization. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "REACTION",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:FEVER;2:IRRITABILITY;3:LOCAL REACTION OR SWELLING;4:VOMITING;5:RASH OR ITCHING;6:LETHARGY;7:CONVULSIONS;8:ARTHRITIS OR ARTHRALGIAS;9:ANAPHYLAXIS OR COLLAPSE;10:RESPIRATORY DISTRESS;11:OTHER;0:NONE;",
+      "helpText": "This is the reaction that may have been observed by the provider as a result of the immunization given. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CONTRAINDICATED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES (DO NOT REPEAT THIS VACCINE).;0:NO (OK TO USE IN THE FUTURE);",
+      "helpText": "This field allows the immunization to be recorded as contraindicated. Reminders will include a check to see if the previous immunization was  contraindicated before creating reminders. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DOSE OVERRIDE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:@;1:INVALID--BAD STORAGE;2:INVALID--DEFECTIVE;3:INVALID--EXPIRED;4:INVALID--ADMIN ERROR;9:FORCED VALID;",
+      "helpText": "This Indian Health Service field indicates the dose override status of  this immunization. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "INJECTION SITE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "LTI:Left Thigh IM;LTS:Left Thigh SQ;RTI:Right Thigh IM;RTS:Right Thigh SQ;BTI:Both Thighs IM;LDI:Left Delt IM;LAS:Left Arm SQ;RDI:Right Delt IM;RAS:Right Arm SQ;O:Oral;IN:Nasal;LID:Left Arm Intradermal;RID:Right Arm Intradermal;",
+      "helpText": "This Indian Health Service field identifies the body site where the  immunization was administered. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2I",
+      "length": 4,
+      "required": false,
+      "helpText": "This Indian Health Service field indicates the volume of vaccine  administered for this immunization. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DATE OF VAC INFO STATEMENT",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This Indian Health Service field indicates the date the vaccine  information statement associated with this immunization was  offered/given to the patient. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CREATED BY V CPT ENTRY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0I",
+      "length": 9,
+      "required": false,
+      "helpText": "This Indian Health Service field identifies the V CPT entry, if any, that created this V Immunization entry. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "VAC ELIGIBILITY",
+      "dataType": "POINTER",
+      "rawType": "P9002084.83'I",
+      "required": false,
+      "pointerTo": 9002084.83,
+      "helpText": "This Indian Health Service field indicates the Vaccine for Children  (VFC) Program eligibility for this patient on this visit. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "IMPORT FROM OUTSIDE REGISTRY",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:IMPORTED;0:NOT IMPORTED;2:EDITED AFTER IMPORT;",
+      "helpText": "This Indian Health Service field indicated the import status of this  immunization from an outside registry. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "NDC",
+      "dataType": "POINTER",
+      "rawType": "P9002084.95'I",
+      "required": false,
+      "pointerTo": 9002084.95,
+      "helpText": "This Indian Health Service field identifies the National Drug Code  (NDC) for this vaccine. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMINISTRATIVE NOTES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This Indian Health Service field is a free text field used to document administrative information about this immunization. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VIS OFFERED/GIVEN TO PATIENT",
+      "dataType": "POINTER",
+      "rawType": "9000080.112PA",
+      "required": false,
+      "helpText": "This is the Vaccine Information Statement (VIS) that was offered to the  patient prior to the administration of the immunization, along with the date/time it was offered. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "OTHER DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "9000080.113P",
+      "required": false,
+      "helpText": "This is a list of diagnoses for this immunization event, in addition to the Primary Diagnosis selected for this event. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 820,
+      "fieldName": "DISCLOSED TO",
+      "dataType": "POINTER",
+      "rawType": "9000080.1182P",
+      "required": false,
+      "helpText": "A list of agencies this record has been disclosed to. ",
+      "fieldNumber_": 820
+    },
+    {
+      "fieldNumber": 1101,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "9000080.1111",
+      "required": false,
+      "helpText": "This is additional comments or remarks related to the immunization given to the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 9000080.1111,
+      "fieldNumber_": 1101
+    },
+    {
+      "fieldNumber": 1201,
+      "fieldName": "EVENT DATE AND TIME",
+      "dataType": "DATE",
+      "rawType": "DXI",
+      "required": false,
+      "helpText": "This is the date and time the immunization was given. This date and time may be different from the visit date and time. For example, for clinic appointment visits, the visit date and time is the date and time of the appointment, not the time the provider performed the clinical event.   The date may be an imprecise date such as for an historical  immunization.   Date and time may be within 30 days before or after the visit date,  with the restriction the date cannot be a future date. ",
+      "fieldNumber_": 1201
+    },
+    {
+      "fieldNumber": 1202,
+      "fieldName": "ORDERING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The field can be used to document the provider who ordered the immunization. ",
+      "fieldNumber_": 1202
+    },
+    {
+      "fieldNumber": 1203,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P40.7'I",
+      "required": false,
+      "pointerTo": 40.7,
+      "helpText": "This Indian Health Service field indicates the clinic stop associated  with this visit. ",
+      "fieldNumber_": 1203
+    },
+    {
+      "fieldNumber": 1204,
+      "fieldName": "ENCOUNTER PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who gave this immunization. ",
+      "fieldNumber_": 1204
+    },
+    {
+      "fieldNumber": 1205,
+      "fieldName": "DATE/TIME RECORDED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This timestamp field is the date and time of documentation of administration of the immunization. This field is set automatically  when the IMMUNIZATION is entered. ",
+      "fieldNumber_": 1205
+    },
+    {
+      "fieldNumber": 1206,
+      "fieldName": "IMMUNIZATION DOCUMENTER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person/provider who documented this immunization by entering the data into the system by whatever means. ",
+      "fieldNumber_": 1206
+    },
+    {
+      "fieldNumber": 1207,
+      "fieldName": "LOT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P9999999.41'I",
+      "required": false,
+      "pointerTo": 9999999.41,
+      "helpText": "This is the lot number of the immunization entered for this event. If historical event, enter lot number (if known) in Comments. ",
+      "fieldNumber_": 1207
+    },
+    {
+      "fieldNumber": 1208,
+      "fieldName": "PARENT",
+      "dataType": "POINTER",
+      "rawType": "P9000010.11'I",
+      "required": false,
+      "pointerTo": 9000010.11,
+      "helpText": "This Indian Health Service field indicates the parent immunization, if  any, associated with this immunization, such as for immunizations given  in series. ",
+      "fieldNumber_": 1208
+    },
+    {
+      "fieldNumber": 1209,
+      "fieldName": "EXTERNAL KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This Indian Health Service free text field identifies the external key  associated with this immunization. ",
+      "fieldNumber_": 1209
+    },
+    {
+      "fieldNumber": 1210,
+      "fieldName": "OUTSIDE PROVIDER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This Indian Health Service field contains the name of the outside  provider associated with this immunization. ",
+      "fieldNumber_": 1210
+    },
+    {
+      "fieldNumber": 1213,
+      "fieldName": "ANCILLARY POV",
+      "dataType": "POINTER",
+      "rawType": "P80'I",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This Indian Health Service field indicated the ancillary diagnosis  related to this immunization. ",
+      "fieldNumber_": 1213
+    },
+    {
+      "fieldNumber": 1214,
+      "fieldName": "USER LAST UPDATE",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This Indian Health Service field indicates the user who last updated  information for this immunization. ",
+      "fieldNumber_": 1214
+    },
+    {
+      "fieldNumber": 1215,
+      "fieldName": "ORDERING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'I",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This Indian Health Service field indicated the hospital location ordering  this immunization. ",
+      "fieldNumber_": 1215
+    },
+    {
+      "fieldNumber": 1216,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This Indian Health Service field indicates the date and time that this  immunization information was entered into this record. ",
+      "fieldNumber_": 1216
+    },
+    {
+      "fieldNumber": 1217,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This Indian Health Service field indicates the user who entered this  immunization record. ",
+      "fieldNumber_": 1217
+    },
+    {
+      "fieldNumber": 1218,
+      "fieldName": "DATE/TIME LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This Indian Health Service field indicates the date and time this  immunization record was last modified. ",
+      "fieldNumber_": 1218
+    },
+    {
+      "fieldNumber": 1219,
+      "fieldName": "LAST MODIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This Indian Health Service field indicates the user who last modified  this immunization record. ",
+      "fieldNumber_": 1219
+    },
+    {
+      "fieldNumber": 1220,
+      "fieldName": "WARNING ACKNOWLEDGED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates acknowledgement of a contraindication/refusal  events warning for this immunization with the decision to proceed with administration. ",
+      "fieldNumber_": 1220
+    },
+    {
+      "fieldNumber": 1221,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Indicates the date/time the record was added or edited. ",
+      "fieldNumber_": 1221
+    },
+    {
+      "fieldNumber": 1301,
+      "fieldName": "EVENT INFORMATION SOURCE",
+      "dataType": "POINTER",
+      "rawType": "RP920.1'I",
+      "required": true,
+      "pointerTo": 920.1,
+      "helpText": "This is the source of the information obtained for this immunization event. ",
+      "fieldNumber_": 1301
+    },
+    {
+      "fieldNumber": 1302,
+      "fieldName": "ROUTE OF ADMINISTRATION",
+      "dataType": "POINTER",
+      "rawType": "P920.2'I",
+      "required": false,
+      "pointerTo": 920.2,
+      "helpText": "This is the method this vaccine was administered.  Select from the list provided. ",
+      "fieldNumber_": 1302
+    },
+    {
+      "fieldNumber": 1303,
+      "fieldName": "SITE OF ADMINISTRATION (BODY)",
+      "dataType": "POINTER",
+      "rawType": "P920.3'I",
+      "required": false,
+      "pointerTo": 920.3,
+      "helpText": "This is the area of the patient's body through which the vaccine was administered. ",
+      "fieldNumber_": 1303
+    },
+    {
+      "fieldNumber": 1304,
+      "fieldName": "PRIMARY DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "*P80'XI",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "This is the primary (or initial) diagnosis for this immunization event. It is selected from the ISC DIAGNOSIS file. ",
+      "fieldNumber_": 1304
+    },
+    {
+      "fieldNumber": 1312,
+      "fieldName": "DOSE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2OI",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the amount of vaccine product administered for this immunization. The units are expressed in the DOSE UNITS field (#1313). ",
+      "fieldNumber_": 1312
+    },
+    {
+      "fieldNumber": 1312.5,
+      "fieldName": "DOSAGE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10I",
+      "length": 10I,
+      "required": false,
+      "helpText": "A computed field that concatenates the DOSE (#1312) and DOSE UNITS (#1313) fields. The resulting output will look something likes this: \".5 mL\". ",
+      "fieldNumber_": 1312.5
+    },
+    {
+      "fieldNumber": 1313,
+      "fieldName": "DOSE UNITS",
+      "dataType": "POINTER",
+      "rawType": "P757.5'OI",
+      "required": false,
+      "pointerTo": 757.5,
+      "helpText": "This is the units that reflect the actual quantity of the vaccine product  administered. ",
+      "fieldNumber_": 1313
+    },
+    {
+      "fieldNumber": 1401,
+      "fieldName": "RESULTS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "T:TAKE;N:NO TAKE;I:INDETERMINATE;",
+      "helpText": "This is the interpretation of the inoculation result. ",
+      "fieldNumber_": 1401
+    },
+    {
+      "fieldNumber": 1402,
+      "fieldName": "READING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0I",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the objective, measurable reading following the inoculation. ",
+      "fieldNumber_": 1402
+    },
+    {
+      "fieldNumber": 1403,
+      "fieldName": "DATE/TIME READ",
+      "dataType": "DATE",
+      "rawType": "DXI",
+      "required": false,
+      "helpText": "This is the date and time of the reading of the immunization results. Time entry is optional and imprecise date is allowed for historical immunizations. ",
+      "fieldNumber_": 1403
+    },
+    {
+      "fieldNumber": 1404,
+      "fieldName": "READER",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who read and interpreted the results of  the inoculation. ",
+      "fieldNumber_": 1404
+    },
+    {
+      "fieldNumber": 1405,
+      "fieldName": "READING RECORDED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This timestamp field is the date and time of documentation of reading of  the inoculation results. This field is set automatically when the  DATE/TIME READ is entered. ",
+      "fieldNumber_": 1405
+    },
+    {
+      "fieldNumber": 1406,
+      "fieldName": "HOURS READ POST-INOCULATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of hours between the inoculation and the reading of  the results. ",
+      "fieldNumber_": 1406
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "READING COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is a comment related to the reading of the patient's inoculation.  The provider may enter this manually via the PCE User Interface. ",
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1601,
+      "fieldName": "WARNING OVERRIDE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the reason for overriding the warning of existing contraindication and/or refusal reasons. ",
+      "fieldNumber_": 1601
+    },
+    {
+      "fieldNumber": 2601,
+      "fieldName": "SNOMED CT",
+      "dataType": "SUBFILE",
+      "rawType": "9000080.1126A",
+      "required": false,
+      "helpText": "This Indian Health Service field indicates the SNOMED Clinical Terms (CT) that describe this immunization and their preferred terms. ",
+      "isMultiple": true,
+      "subFileNumber": 9000080.1126,
+      "fieldNumber_": 2601
+    },
+    {
+      "fieldNumber": 2701,
+      "fieldName": "LOINC CODES",
+      "dataType": "SUBFILE",
+      "rawType": "9000080.1127A",
+      "required": false,
+      "helpText": "This Indian Health Service field is the LOINC codes that identifies this immunization, along with their descriptions. ",
+      "isMultiple": true,
+      "subFileNumber": 9000080.1127,
+      "fieldNumber_": 2701
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "EDITED FLAG",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:EDITED;",
+      "helpText": "This field is automatically set to 1 if PCE detects that any original immunization data is being edited. ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "AUDIT TRAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is populated automatically by the PCE filing logic.  The format of the field is as follows:  Pointer to PCE data source file_\"-\"_A for Add or E for Edit_\" \"_DUZ of the person who entered the data_\";\"... ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 81101,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is a comment related to the patient's immunization.  The provider may enter this manually via the PCE User Interface. ",
+      "fieldNumber_": 81101
+    },
+    {
+      "fieldNumber": 81201,
+      "fieldName": "VERIFIED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:ELECTRONICALLY SIGNED;2:VERIFIED BY PACKAGE;",
+      "helpText": "This is used to note how the event was verified and is automatically entered by the software. ",
+      "fieldNumber_": 81201
+    },
+    {
+      "fieldNumber": 81202,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P9.4'I",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This is the VistA package from which this immunization record  originated through PCE.   This is automatically entered by the software and uneditable by users. ",
+      "fieldNumber_": 81202
+    },
+    {
+      "fieldNumber": 81203,
+      "fieldName": "DATA SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P839.7'I",
+      "required": false,
+      "pointerTo": 839.7,
+      "helpText": "This is the data source for this immunization, automatically entered  through the PCS software and uneditable by users. ",
+      "fieldNumber_": 81203
+    },
+    {
+      "fieldNumber": 88001,
+      "fieldName": "DELETED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user that deleted this record from the V IMMUNIZATION file. ",
+      "fieldNumber_": 88001
+    },
+    {
+      "fieldNumber": 88002,
+      "fieldName": "DATE/TIME DELETED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date and time this record was deleted from the V IMMUNIZATION  file. ",
+      "fieldNumber_": 88002
+    }
+  ],
+  "fieldCount": 64,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AV10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "DD", "field": },
+    {"name": "9000080.11", "field": .01, "type": "regular"},
+    {"name": "9000080.11", "field": .02, "type": "regular"},
+    {"name": "9000080.11", "field": .03, "type": "regular"},
+    {"name": "9000080.11", "field": .03, "type": "regular"},
+    {"name": "9000080.11", "field": 88002, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .03, "value": "W \"   \" S AIHSY=Y,Y=$S($D(^AUPNVSIT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\") X:Y ^DD(\"DD\") W Y S Y=AIHSY K AIHSY W @(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

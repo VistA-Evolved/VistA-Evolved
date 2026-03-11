@@ -1,0 +1,109 @@
+{
+  "fileNumber": 811.8,
+  "fileName": "REMINDER EXCHANGE",
+  "globalRoot": "811.8",
+  "globalReference": "^PXD(811.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the entry in the Exchange File. It will be the same as the name of the reminder definition that was packed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SOURCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the source of the packed reminder. It will contain the name of the person who packed it and their site.  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE PACKED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the reminder was originally packed. When a packed reminder is put into the Exchange File from a MailMan message or a host file, this will reflect the original packing date and time. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PACKED REMINDER",
+      "dataType": "SUBFILE",
+      "rawType": "811.801A",
+      "required": false,
+      "helpText": "This multiple stores the packed reminder definition in XML format. ",
+      "isMultiple": true,
+      "subFileNumber": 811.801,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "811.804",
+      "required": false,
+      "helpText": "This contains formatted information about the Exchange File entry. It includes source information, a brief description, and keywords. This information will be displayed when an entry is selected for possible installation. ",
+      "isMultiple": true,
+      "subFileNumber": 811.804,
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "NUMBER OF UNIQUE COMPONENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the number of unique components in the packed reminder. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "COMPONENT LIST",
+      "dataType": "SUBFILE",
+      "rawType": "811.802A",
+      "required": false,
+      "helpText": "This is a list of components that are included in the packed reminder. ",
+      "isMultiple": true,
+      "subFileNumber": 811.802,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "INSTALLATION HISTORY",
+      "dataType": "DATE",
+      "rawType": "811.803DA",
+      "required": false,
+      "helpText": "This multiple is used to record a history of packed reminder installations. ",
+      "isMultiple": true,
+      "subFileNumber": 811.803,
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "PACKING ATTRIBUTES",
+      "dataType": "SUBFILE",
+      "rawType": "811.805A",
+      "required": false,
+      "helpText": "Packing Attributes are included in the Reminder Exchange XML data when the content is packed. They are extracted and stored in this multiple when the content is loaded for installation. The Packing Attributes can then be used to control various aspects of content installation.  ",
+      "isMultiple": true,
+      "subFileNumber": 811.805,
+      "fieldNumber_": 140
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

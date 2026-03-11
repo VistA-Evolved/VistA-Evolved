@@ -1,0 +1,471 @@
+{
+  "fileNumber": 745.1,
+  "fileName": "CONSUMER CONTACT",
+  "globalRoot": "745.1I",
+  "globalReference": "^QA(745.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONTACT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a self generated Contact number used to identify consumer contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF CONTACT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date the Patient Representative was initially contacted. The date must be Today or earlier. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient concerned in the inquiry. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the Social Security Number of the patient concerned in the contact. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "This is the date of birth of the patient concerned in the contact. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SEX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the sex of the patient concerned in the contact. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ELIGIBILITY STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the patient's eligibility status at the time of the contact. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CATEGORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the Means test category assigned to the patient at the time of the contact. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "INFORMATION TAKEN BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who collected the information from the contact. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person entering the contact information.  This is not a user interactive field. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NAME OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person who contacted the Patient Representative. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TELEPHONE NO. OF CONTACT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the telephone number of the contact.  Use one of the following formats.  Use a hyphen in the main portion of the number.  Leave a space between area code and the number and between the number and any extension.   i.e. 123 123-1234   123 123-1234 1234   123-1234   123-1234 1234 ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CONTACT MADE BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "PA:Patient;RE:Relative;FR:Friend;CO:Congressional;VH:VISN/HQ;VO:Veterans Service Organization;AT:Attorney/Legal Guardian/Conservator/Trustee;DI:Director's Office;ST:Staff - VAMC;OT:Other;",
+      "helpText": "This is the person, organization, or authority that made the contact. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SOURCE OF CONTACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "L:Letter;W:Ward Visit;V:Visit;P:Phone;S:Survey;I:Internet;",
+      "helpText": "This is how the contact was made. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LOCATION OF EVENT",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the hospital location associated with the issue of the contact. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "*SERVICES INVOLVED",
+      "dataType": "POINTER",
+      "rawType": "745.115PA",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "*CATEGORY OF CARE",
+      "dataType": "POINTER",
+      "rawType": "*P745.3'",
+      "required": false,
+      "pointerTo": 745.3,
+      "helpText": "This is the patient's service and level of care as defined for the Quality Matrix. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "TREATMENT STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:Inpatient;O:Outpatient;D:Domiciliary;N:NHCU;L:Long Term Psych;E:Extended/Intermed. Care;H:HBHC;",
+      "helpText": "This indicates whether the patient was inpatient, outpatient, etc. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "745.117PA",
+      "required": false,
+      "helpText": "This is the employee allegedly involved in the issue or the  employee receiving the compliment. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "*REFER TO",
+      "dataType": "SUBFILE",
+      "rawType": "745.118A",
+      "required": false,
+      "helpText": "This is the person or service the issue is referred to for action. ",
+      "isMultiple": true,
+      "subFileNumber": 745.118,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE SENT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the issue was referred to a person or service for action. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DAYS RESPONSE EXPECTED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of days to expect a response on the issue. Enter a whole number between 0 and 9999. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 20.1,
+      "fieldName": "DATE DUE",
+      "dataType": "DATE",
+      "rawType": "DC",
+      "required": false,
+      "helpText": "If there is a number in the Days Response Expected By field, that is added to the Date Sent to obtain the entry in the Date Due field.  Date Due applies to when a response is expected for a Report of Contact. ",
+      "fieldNumber_": 20.1
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ISSUE CODES",
+      "dataType": "POINTER",
+      "rawType": "745.121PA",
+      "required": false,
+      "helpText": "This is a code for a brief statement of the issue. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ISSUE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "745.122",
+      "required": false,
+      "helpText": "This is a written discussion of the issue(s). ",
+      "isMultiple": true,
+      "subFileNumber": 745.122,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "*REPORT OF CONTACT GENERATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field contains a \"1\" when a report of contact has been generated. This is not a user interactive field. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "QM INVOLVEMENT",
+      "dataType": "SET",
+      "rawType": "745.124SA",
+      "required": false,
+      "helpText": "This is the type of QM activity for this same issue. ",
+      "isMultiple": true,
+      "subFileNumber": 745.124,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "RESOLUTION COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "745.125",
+      "required": false,
+      "helpText": "This is a discussion of how the issue or issues were resolved. ",
+      "isMultiple": true,
+      "subFileNumber": 745.125,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "DATE RESOLVED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date the record was closed. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:Open;C:Closed;",
+      "helpText": "This field contains \"O\" while the record is Open and \"C\" when the record is  Closed.  This is not a user interactive field. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "REFER CONTACT TO",
+      "dataType": "POINTER",
+      "rawType": "745.128PA",
+      "required": false,
+      "helpText": "This is the person(s) who will be notified of this patient contact. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "CONGRESSIONAL CONTACT",
+      "dataType": "POINTER",
+      "rawType": "*P745.4'",
+      "required": false,
+      "pointerTo": 745.4,
+      "helpText": "This is the congressional office or person that contacted the Patient Representative. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SOURCE(S) OF CONTACT",
+      "dataType": "SET",
+      "rawType": "745.11SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 745.11,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PERIOD OF SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P21'",
+      "required": false,
+      "pointerTo": 21,
+      "helpText": "This is the period of service, taken from the Patient File. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PERSIAN GULF SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is taken from the Patient file, field #.32201, Persian War Service. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "REFER TO SEAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Has this Report of Contact been referred to SEAT?  ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "*DATE RESOLVED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field will not be used-was set up in planning stages of patch QAC*2*3 ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DAYS TO RESOLUTION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This a field calculated by subtracting date ROC created by date resolved. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LEVEL OF SATISFACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Not at all satisfied;2:Slightly satisfied;3:Somewhat satisfied;4:Pretty satisfied;5:Very satisfied;6:Extremey satisfied;",
+      "helpText": "This is the patient's level of satisfaction with the resolution of the  Report of Contact. This field will not be used after patch QAC*2*17. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "R*P4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This field will hold the Division where the Contact occured. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "DISCIPLINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "RESOLVED BY SEAT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field stores whether or not there has been a resolution of the problem by SEAT.  ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "SEAT RESOLUTION COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "745.12",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 745.12,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "ROLL-UP STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CLEARED;1:REJECTED;2:SENT - OPEN;3:EDITED;",
+      "helpText": "This field is being changed with QAC*2.0*17.  The field will now contain a \"3\" if it was edited since the last run of the QAC Patient Representative Roll-up.  It will be deleted after the next run.     ******************Original use of this field****************************** ****This field will be stuffed if a record is rejected from roll-up either because the record has not been closed or does not have at least one issue code.  It will also be stuffed if it was sent but still open. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "INTERNAL APPEAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field will flag ROCs that need, or have gotten, Internal Appeals. ",
+      "fieldNumber_": 43
+    }
+  ],
+  "fieldCount": 45,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "BU", "field": },
+    {"name": "C", "field": },
+    {"name": "CMB", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "745.1", "field": .01, "type": "regular"},
+    {"name": "745.1", "field": .01, "type": "regular"},
+    {"name": "745.1", "field": 1, "type": "regular"},
+    {"name": "745.1", "field": 2, "type": "regular"},
+    {"name": "745.1", "field": 12, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "", "field": 26, "type": "regular"},
+    {"name": "745.1", "field": 27, "type": "regular"},
+    {"name": "", "field": 34, "type": "regular"},
+    {"name": "745.1", "field": 41, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

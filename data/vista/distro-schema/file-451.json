@@ -1,0 +1,46 @@
+{
+  "fileNumber": 451,
+  "fileName": "POC DAILY TIME RECORDS",
+  "globalRoot": "451",
+  "globalReference": "^PRSN(451,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PAY PERIOD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Pay Period in format YY-PP. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RELEASE HISTORY",
+      "dataType": "POINTER",
+      "rawType": "451.06P",
+      "required": false,
+      "helpText": "This is the released log for each releasing by the release option. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VA NURSE",
+      "dataType": "POINTER",
+      "rawType": "451.09P",
+      "required": false,
+      "helpText": "It contains the point of care data associated with the VA nurse for this pay period. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AL", "field": },
+    {"name": "B", "field": },
+    {"name": "451", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "fileNumber": 8930,
+  "fileName": "USR CLASS",
+  "globalRoot": "8930",
+  "globalReference": "^USR(8930,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the user class (e.g., Transcriptionist, Medical Record Technician, MIS Manager, Medical Student, Nurse, Resident, etc.). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "1:Active;0:Inactive;",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PERSON CLASS",
+      "dataType": "POINTER",
+      "rawType": "P8932.1'",
+      "required": false,
+      "pointerTo": 8932.1,
+      "helpText": "This provides a mapping between the User Class file of ASU and the Person  Class file, which encodes the HCFA draft standard Taxonomy of Health Care  Providers. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SUBCLASS",
+      "dataType": "POINTER",
+      "rawType": "8930.01P",
+      "required": false,
+      "helpText": "If for example Service Chief is entered as a subclass of Staff Physician, then persons listed as service chiefs inherit all privileges assigned to staff physicians. A subclass of a class is a subset of the class.  For example, since the class Staff Physician.   Subclasses will be used for inheriting user authorizations/subscriptions. For example, if an entry in the User Authorization/Subscription file states that the user class Staff Physician may sign progress notes, and if the entry states tha",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OK TO DISTRIBUTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Answer \"YES\" if this individual User Class is to be distributed nationally.  Answer \"NO\" if not. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "ADNM", "field": },
+    {"name": "ADNM1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "DNAME", "field": },
+    {"name": "8930", "field": .01, "type": "regular"},
+    {"name": "8930", "field": .02, "type": "regular"},
+    {"name": "8930", "field": .03, "type": "regular"},
+    {"name": "8930", "field": .03, "type": "regular"},
+    {"name": "8930", "field": .04, "type": "regular"},
+    {"name": "8930", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

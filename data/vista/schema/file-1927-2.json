@@ -1,0 +1,79 @@
+{
+  "fileNumber": 1927.2,
+  "fileName": "NUPA ASSESSMENT PROBLEMS",
+  "globalRoot": "1927.2",
+  "globalReference": "^NUPA(1927.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROBLEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A problem that a patient may have. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PLAN",
+      "dataType": "SUBFILE",
+      "rawType": "1927.21",
+      "required": false,
+      "helpText": "Not used in the Class 1 version. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESIRED OUTCOME",
+      "dataType": "SUBFILE",
+      "rawType": "1927.22",
+      "required": false,
+      "helpText": "Word processing description of the desired outcome of the problem. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Not used in the Class 1 version. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TAB",
+      "dataType": "POINTER",
+      "rawType": "P1927.23'",
+      "required": false,
+      "pointerTo": 1927.23,
+      "helpText": "This is the tab in the GUI that the problem will appear on. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines whether the problem can be displayed.  Never delete a problem using Fileman. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

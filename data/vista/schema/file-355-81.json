@@ -1,0 +1,75 @@
+{
+  "fileNumber": 355.81,
+  "fileName": "SPONSOR RELATIONSHIP",
+  "globalRoot": "355.81",
+  "globalReference": "^IBA(355.81,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the patient with whom the sponsor has a relationship. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P355.8'",
+      "required": false,
+      "pointerTo": 355.8,
+      "helpText": "This field is used to point to the sponsor with whom the patient has a relationship. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FAMILY PREFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field describes how the patient is related to the sponsor (spouse, child, etc.).  The following scheme for identifying this relationship (referred to as the 'family prefix'), which has been adopted by DOD, is recommended for use:      Code      Relationship    ----      ------------     01        Spouse     02        Oldest child     03        Next oldest child, etc.     NB        Newborn of Vet ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SPONSOR TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TRICARE;C:CHAMPVA;",
+      "helpText": "This field is used to describe whether the sponsor relationship is for Tricare or CHAMPVA. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to denote the effective date of the patient's relationship with the sponsor. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If the patient's relationship with the sponsor has expired, this field is used to denote the date that the relationship has expired. ",
+      "fieldNumber_": .06
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "355.81", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

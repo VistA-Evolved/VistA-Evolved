@@ -1,0 +1,420 @@
+{
+  "fileNumber": 698,
+  "fileName": "GENERATOR IMPLANT",
+  "globalRoot": "698ID",
+  "globalReference": "^MCAR(698,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME OF IMPLANT",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This allows analysis based on time. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "Patient's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PACEMAKER MODEL",
+      "dataType": "POINTER",
+      "rawType": "*P698.4'",
+      "required": false,
+      "pointerTo": 698.4,
+      "helpText": "This field identifies the device by the manufacturer's production name. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PACEMAKER MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "P698.6'",
+      "required": false,
+      "pointerTo": 698.6,
+      "helpText": "This field identifies the producer of the pacemaker. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PACEMAKER SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies the specific device. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PACING MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AAI;2:VVI;3:DDD;4:DVI;5:AAT;6:VVT;7:VAT;8:VDD;9:AOO;10:VOO;11:DOO;12:OTHER;13:VVIR;",
+      "helpText": "This defines the operation established with the device. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "OTHER PACING MODE EXPLANATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field permits an explanation of the pacing mode if \"OTHER\" is chosen at the PACING MODE prompt.  It does not apply if anything besides \"OTHER\" is chosen at the PACING MODE prompt. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HOSP WHERE IMPLANT OCCURRED",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field identifies the facility where the implant procedure was performed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSMITTER MODEL",
+      "dataType": "POINTER",
+      "rawType": "*P698.4'",
+      "required": false,
+      "pointerTo": 698.4,
+      "helpText": "This field identifies the device by the manufacturer's production name. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "TRANSMITTER MANUFACTURER",
+      "dataType": "POINTER",
+      "rawType": "P698.6'",
+      "required": false,
+      "pointerTo": 698.6,
+      "helpText": "This field identifies the producer of the transmitter. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "LEADS (A,V,AV)",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ATRIAL;V:VENTRICULAR;AV:BOTH A & V;",
+      "helpText": "This describes the placement/type of conductors established. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "IMPLANTATION ETIOLOGY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CONDUCTION TISSUE FIBROSIS;2:ISCHEMIA;3:POST INFARCTION;4:SURGICAL;5:CONGENITAL;6:MYOCARDIOPATHY;7:VALVULAR HEART DISEASE;8:CAROTID SINUS SYNDROME;9:IDIOPATHIC;10:OTHER;",
+      "helpText": "This allows for the storage of historical patient data. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FIRST SCHEDULED F/U VISIT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows documentation of the primary visit. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "NON-MAG RATE AT BEGIN-OF-LIFE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows documentation of initial rate. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "MAGNET RATE AT BEGIN-OF-LIFE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows documentation of initial rate. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "NON-MAG PULSE WIDTH AT B-O-L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows documentation of initial width. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "MAGNET PULSE WIDTH AT B-O-L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows documentation of initial width. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "OTHER BEGIN-OF-LIFE INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows other initial documentation. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "NON-MAG RATE AT END-OF-LIFE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows documentation of terminal rate. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "MAGNET RATE AT END-OF-LIFE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows documentation of terminal rate. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "NON-MAG PULSE WIDTH AT E-O-L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows documentation of terminal width. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "MAGNET PULSE WIDTH AT E-O-L",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows documentation of terminal width. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "OTHER END-OF-LIFE INDICATOR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows documentation of other terminal parameters. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "NO. PULSE GENERATORS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the sequential value of this generator. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "DATE OF LAST PREVIOUS IMPLANT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows documentation of previous implantations. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "DATE OF INCIPIENT MALFUNCTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows documentation of malfunction date. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "PACING FAILURE (EKG)",
+      "dataType": "SET",
+      "rawType": "698.093SA",
+      "required": false,
+      "helpText": "This allows documentation of failures. ",
+      "isMultiple": true,
+      "subFileNumber": 698.093,
+      "fieldNumber_": 93
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "EXPLANT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows documentation of generator removal. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "REASON FOR GENERATOR CHANGE",
+      "dataType": "POINTER",
+      "rawType": "*P695.8'",
+      "required": false,
+      "pointerTo": 695.8,
+      "helpText": "This allows documentation of change  rationale. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "ATTENDING PHYSICIAN",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of the Attending Physician for this Generator Implant.  ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "FELLOW-1st",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of a Cardiology Fellow for this Generator Implant.  ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "FELLOW-2nd",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the name of a second Cardiology Fellow for this Generator Implant.  ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 500,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "698.01",
+      "required": false,
+      "helpText": "This allows a documentation area of free form. ",
+      "isMultiple": true,
+      "subFileNumber": 698.01,
+      "fieldNumber_": 500
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field identifies a required free text summary of the Generator Implant.  This summary  (up to 79 characters) will appear on the Summary of Patient Procedures.  ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 601,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ABNORMAL;B:BORDERLINE;N:NORMAL;",
+      "helpText": "This field identifies a required summary of the implant (Abnormal,Borderline,Normal).  This summary will appear on the Summary of Patient Procedures.  ",
+      "fieldNumber_": 601
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "698.02P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC Visit File for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "698", "field": .01, "type": "regular"},
+    {"name": "698", "field": .01, "type": "regular"},
+    {"name": "698", "field": 1, "type": "regular"},
+    {"name": "698", "field": 1, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 12, "type": "regular"},
+    {"name": "", "field": 300, "type": "regular"},
+    {"name": "698", "field": 900, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MCAR(690,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(690,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "fileNumber": 801,
+  "fileName": "REMINDER ORDER CHECK ITEMS GROUP",
+  "globalRoot": "801",
+  "globalReference": "^PXD(801,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field is the name of the Reminder Orderable Item Group. Nationally distributed reminder orderable items group names are prefixed with \"VA-\".  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "801.01",
+      "required": false,
+      "helpText": "This field contains a description of the clinical reminder order checks. It is used to document its purpose and intended goals. ",
+      "isMultiple": true,
+      "subFileNumber": 801.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ORDER CHECK ITEMS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "801.015V",
+      "required": false,
+      "helpText": "This multiple stores a list of VA Generic, VA Drug Class, Drugs,  VA Product, Imaging Type, and Orderable Item. If the ordered orderable item belongs to one of the items in this multiple than the rules attached to the group will be evaluated. ",
+      "isMultiple": true,
+      "subFileNumber": 801.015,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "RULE LIST",
+      "dataType": "POINTER",
+      "rawType": "801.04P",
+      "required": false,
+      "helpText": "This multiple contains a list of rules that are evaluated for each item in the ORDER CHECK ITEMS multiple. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "L:LOCAL;V:VISN;N:NATIONAL;",
+      "helpText": "This is the CLASS of the Orderable Item Group. Possible classes are \"N\" for national, \"V\" for VISN, and \"L\" for local.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SPONSOR",
+      "dataType": "POINTER",
+      "rawType": "P811.6'X",
+      "required": false,
+      "pointerTo": 811.6,
+      "helpText": "This is the organization or group that sponsors this orderable item group.  ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The REVIEW DATE is used to determine when the orderable item group should be reviewed to verify that it is current with the latest standards and guidelines.  ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "801.03DA",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes made to the order check group.  ",
+      "isMultiple": true,
+      "subFileNumber": 801.03,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

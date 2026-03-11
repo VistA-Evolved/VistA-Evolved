@@ -1,0 +1,144 @@
+{
+  "fileNumber": 228.5,
+  "fileName": "DENTAL FEE BASIS EXTRACT",
+  "globalRoot": "228.5",
+  "globalReference": "^DENT(228.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION UID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ15,0",
+      "length": 15,
+      "required": true,
+      "helpText": "This is the unique transaction identifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CREATE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the fee basis record was created. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CREATE PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the fee basis record. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the patient file. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FACILITY NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P225'",
+      "required": false,
+      "pointerTo": 225,
+      "helpText": "This is the division responsible for the dental fee basis. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P220.2'",
+      "required": false,
+      "pointerTo": 220.2,
+      "helpText": "This is the dental classification for the fee basis. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE AUTHORIZED FOR TREATMENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the dental fee basis was authorized. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TOTAL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total amount paid or adjusted to the provider of the fee  basis. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "DATE DELETED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This is the date the user marked this record as deleted. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DELETE PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who marked the record as deleted. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DELETE REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a brief description of why the record was deleted. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "HL7 STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:pending;T:transmitted;C:canceled;E:error;",
+      "helpText": "This field contains the status of the Dental Fee Basis HL7 transmission. \"P\" means the transaction is pending submission to AAC.  \"T\" means the  transaction has been transmitted.  \"C\" means the transaction was marked  as deleted before it was transmitted.  If a record is deleted AFTER being  transmitted, then this field will be changed back to \"P\" to be  resubmitted.  If the HL7 message could not be generated because of data  errors, then this field will be set to \"E\" for error. ",
+      "fieldNumber_": .12
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "228.5", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "228.5", "field": .04, "type": "regular"},
+    {"name": "228.5", "field": .07, "type": "regular"},
+    {"name": "", "field": .11, "type": "regular"},
+    {"name": "", "field": .11, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DENT(225,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(225,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .07, "value": "W \"   \",$$FMTE^DILIBF($P(^(0),U,7),6)"}
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "fileNumber": 67.3,
+  "fileName": "ENVIRONMENTAL",
+  "globalRoot": "67.3I",
+  "globalReference": "^LRT(67.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the environmental factor within the VAMC. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Location of the environmental factor. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .104,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of provider ",
+      "fieldNumber_": .104
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Short description of the name. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "The environmental sample's record number in the lab data file. ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "67.3", "field": .01, "type": "regular"},
+    {"name": "67.3", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W:$D(^(\".1\")) \"   \",$P(^(\".1\"),U,1)"},
+    {"field": 9, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,9)"}
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "fileNumber": 162.6,
+  "fileName": "FEE BASIS DISPOSITION CODE",
+  "globalRoot": "162.6",
+  "globalReference": "^FBAA(162.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the internal number of this file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The disposition of a patient used during the inpatient payment process. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the code associated with a disposition and is sent with the payment record to Austin. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "162.6", "field": .01, "type": "regular"},
+    {"name": "162.6", "field": 1, "type": "regular"},
+    {"name": "162.6", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

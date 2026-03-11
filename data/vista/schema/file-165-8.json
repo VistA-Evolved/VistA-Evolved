@@ -1,0 +1,177 @@
+{
+  "fileNumber": 165.8,
+  "fileName": "ONCO AJCC STAGING CHAPTERS",
+  "globalRoot": "165.8",
+  "globalReference": "^ONCO(165.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CHAPTER NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,1",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the Chapter Number corresponding to the AJCC Staging Manual, 8th Edition. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHAPTER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This is the name of the chapter corresponding to the AJCC Staging Manual, 8th Edition. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PARENT T CHAPTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "If this chapter uses the same codes as another chapter this will point to the chapter in question. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "PARENT N CHAPTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the parent chapter entry for N-Codes. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "PARENT M CHAPTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the parent chapter for M Codes. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "T-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.82IA",
+      "required": false,
+      "helpText": "This is the detailed site-specific code for the clinical tumor. ",
+      "isMultiple": true,
+      "subFileNumber": 165.82,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "V9 T-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.801AI",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 165.801,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "N-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.83IA",
+      "required": false,
+      "helpText": "This is the detailed site-specific code for the clinical nodes. ",
+      "isMultiple": true,
+      "subFileNumber": 165.83,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "V9 N-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.802AI",
+      "required": false,
+      "helpText": "This is the Definition of Regional Lymph Node (N-Code) for this chapter. ",
+      "isMultiple": true,
+      "subFileNumber": 165.802,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "M-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.84IA",
+      "required": false,
+      "helpText": "This is the detailed site-specific code for the clinical metastases. ",
+      "isMultiple": true,
+      "subFileNumber": 165.84,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "V9 M-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.803AI",
+      "required": false,
+      "helpText": "This is the Definition of Distant Metastasis (M-Code) for this Chapter/Schema. ",
+      "isMultiple": true,
+      "subFileNumber": 165.803,
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "T SUFFIXES",
+      "dataType": "SUBFILE",
+      "rawType": "165.85I",
+      "required": false,
+      "helpText": "This is the detailed site-specific code for the clinical T category suffix. ",
+      "isMultiple": true,
+      "subFileNumber": 165.85,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "N SUFFIXES",
+      "dataType": "SUBFILE",
+      "rawType": "165.86I",
+      "required": false,
+      "helpText": "This is the detailed site-specific code for the clinical N category suffix. ",
+      "isMultiple": true,
+      "subFileNumber": 165.86,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PATH-T-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.87IA",
+      "required": false,
+      "helpText": "This is the pathologic T-code for AJCC Chapters in which the pathologic T-code differs from the clinical T-code. ",
+      "isMultiple": true,
+      "subFileNumber": 165.87,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PATH-N-CODES",
+      "dataType": "SUBFILE",
+      "rawType": "165.88AI",
+      "required": false,
+      "helpText": "This is the pathologic N-code for AJCC Chapters in which the pathologic N-code differs from the clinical T-code. ",
+      "isMultiple": true,
+      "subFileNumber": 165.88,
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "165.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

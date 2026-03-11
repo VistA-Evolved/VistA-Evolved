@@ -1,0 +1,38 @@
+{
+  "fileNumber": 83.2,
+  "fileName": "DRG MDC CATEGORY CASE",
+  "globalRoot": "83.2",
+  "globalReference": "^ICDD(83.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MDC CASE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "The Case ID is an assigned number that provides a unique identifier  for the Case. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MDC CODE SET",
+      "dataType": "POINTER",
+      "rawType": "83.2001P",
+      "required": false,
+      "helpText": "The MDC Code Sets assigned to the Case are the group of Code Sets that  define a DRG and are required for that DRGs selection.  Each Case may have  multiple Code Sets assigned, each of the Code Sets must be satisfied for  the Case to be satisfied (AND). ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "ACS", "field": },
+    {"name": "B", "field": },
+    {"name": "83.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

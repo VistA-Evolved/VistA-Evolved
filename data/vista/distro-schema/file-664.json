@@ -1,0 +1,424 @@
+{
+  "fileNumber": 664,
+  "fileName": "PROSTHETICS 1358",
+  "globalRoot": "664ID",
+  "globalReference": "^RMPR(664,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the 1358 transaction took place. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "OBLIGATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the IFCAP obligation number. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP665",
+      "required": true,
+      "pointerTo": 665,
+      "helpText": "The prosthetics patient. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BILLING ITEM",
+      "dataType": "POINTER",
+      "rawType": "664.02PA",
+      "required": false,
+      "helpText": "This is the item that will be posted to the RECORD OF APPLIANCE/REPAIR file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CANCELLATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the purchasing transaction was cancelled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "CANCELLATION REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Any remarks the Purchasing Agent, or Prosthetic Clerk would like to say in the mail message. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "CANCELLED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is pointer to the New Person file. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP440'",
+      "required": true,
+      "pointerTo": 440,
+      "helpText": "The name of the vendor that the item is being purchased from. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "C.P.",
+      "dataType": "POINTER",
+      "rawType": "RP410'I",
+      "required": true,
+      "pointerTo": 410,
+      "helpText": "This is the IFCAP Control Point number for VAF 4-1358. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the individual reference number that this transaction has been assigned. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "IFCAP ORDER",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This is usedd to pass the ien back to IFCAP for cancellations. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "PURCHASE CARD REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the unique Purchase Card Transaction Number.  Do not edit this field from Fileman. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CLOSE OUT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the transaction was closed-out, and posted as complete in IFCAP and the electronic 10-2319.  This is the date AMIS will be based on. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "CLOSE-OUT REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any remarks at the time the transaction is being marked as complete. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a pointer to the DUZ of the person who canceled the transaction. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 8.6,
+      "fieldName": "LAST IFCAP AMEND BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 8.6
+    },
+    {
+      "fieldNumber": 8.7,
+      "fieldName": "LAST AMEND TOTAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the last total amount that was amended through IFCAP on this transaction. ",
+      "fieldNumber_": 8.7
+    },
+    {
+      "fieldNumber": 8.8,
+      "fieldName": "LAST AMEND REPRINT OK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Y;",
+      "helpText": "This is a flag used to determine if the order should be reprinted or not. If this is set to 1, or yes, then the order may be reprinted.  This means no pending IFCAP amendments are outstanding. ",
+      "fieldNumber_": 8.8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INITIATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who created the transaction. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EST. SHIPPING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "The estimated shipping charge when the transaction is created.  This field only holds the estimate, and not the actual charge. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACT. SHIPPING CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field will be set when closing out the transaction if shipping charges were changed or deleted. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SHIPPING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P660'",
+      "required": false,
+      "pointerTo": 660,
+      "helpText": "All shipping entries are posted as entries on the electronic 10-2319. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PICKUP/DELIVERY REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Pickup and delivery remarks go here. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "FORM TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field will contain the Form type of the 2319 and should not be edited thru Fileman. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PSC CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WHEELCHAIR;O:BRACE;B:BLIND AIDS;A:ART. LIMBS;",
+      "helpText": "Contains the PSC CATEGORY for the type of 10-55 or 2520 purchase. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PERCENT DISCOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "Contains the % Discount for the Purchase.  Estimated Cost and Actual Cost are calculated with the % Discount. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the Institution File.  If a site is Multi   Divisional this field is used to screen out entries by site number. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DELIVER TO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the destination for delivery of the purchased item. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DATE REQUIRED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field stores the date the vendor is required to provide the Item/Service by. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DELIVERY TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field stores the number of days the vendor has to delivery the Item/Service. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.1,
+      "fieldName": "DELIVER TO ATTENTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Attention to:  line for delivery  ",
+      "fieldNumber_": 21.1
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "WORK ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P664.2'",
+      "required": false,
+      "pointerTo": 664.2,
+      "helpText": "Lab Work Order Number is a pointer to the Prosthetic Work Order file.  It is  the associated Lab work order number. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LAB TECHNICIAN",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the lab technician that entered the 2421. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "2529-3",
+      "dataType": "POINTER",
+      "rawType": "P664.1'",
+      "required": false,
+      "pointerTo": 664.1,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PURCHASE CARD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Purchase Card Number used in a credit card transaction. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "BANK AUTHORIZATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This six digit number is the authorization number VISA gives to the vendor for guaranteed payment.  This number is used in the reconciliation process. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "EST AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the estimated amount of the transaction.  This field is only used for Purchase Card Transactions. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "CLOSE-OUT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the final amount authorized on the Purchase Card Transaction. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "NEW PURCHASE CARD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field was created with the release of Prosthetics patch RMPR*3.0*67. This patch was released to allow users to modify the credit card number contained in the Oracle reconciliation document received from Austin and stored in the IFCAP PURCHASE CARD RECONCILE file (#440.6).  Due to CitiBank canceling and re-issuing a number of credit cards, it may be necessary to modify the credit card number in the file #440.6 Oracle document to match the credit card number that is in the original purchase o",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "AUDIT REPAIR",
+      "dataType": "POINTER",
+      "rawType": "P440.6'",
+      "required": false,
+      "pointerTo": 440.6,
+      "helpText": "This field was created with the release of Prosthetics patch RMPR*3.0*67. This patch was released to allow users to modify the credit card number contained in the Oracle reconciliation document received from Austin and stored in the IFCAP PURCHASE CARD RECONCILE file (#440.6).  Due to CitiBank canceling and re-issuing a number of credit cards, it may be necessary to modify the credit card number in the file #440.6 Oracle document to match the credit card number that is in the original purchase o",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "AUDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field was created with the release of Prosthetics patch RMPR*3.0*67. This patch was released to allow users to modify the credit card number contained in the Oracle reconciliation document received from Austin and stored in the IFCAP PURCHASE CARD RECONCILE file (#440.6).  Due to CitiBank canceling and re-issuing a number of credit cards, it may be necessary to modify the credit card number in the file #440.6 Oracle document to match the credit card number that is in the original purchase o",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 41,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "E1", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "664", "field": .01, "type": "regular"},
+    {"name": "664", "field": .5, "type": "regular"},
+    {"name": "664", "field": 1, "type": "regular"},
+    {"name": "", "field": 3.1, "type": "regular"},
+    {"name": "664", "field": 7, "type": "regular"},
+    {"name": "664", "field": 7, "type": "regular"},
+    {"name": "664", "field": 7.5, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 20, "type": "regular"},
+    {"name": "664", "field": 26, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RMPR(665,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(665,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I D EN1^RMPRD1"}
+  ]
+}

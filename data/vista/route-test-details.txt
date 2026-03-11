@@ -1,0 +1,357 @@
+﻿data_returned	200	an	/vista/an/rpc/anrv-create-outcome	{"ok":true,"source":"vista","rpcUsed":["ANRV CREATE OUTCOME"],"data":["\u0018M  ERROR=MKREC+12^ANRVOB, Undefined local v
+ok_empty	200	an	/vista/an/rpc/anrv-get-outcome-text	{"ok":true,"source":"vista","rpcUsed":["ANRV GET OUTCOME TEXT"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrv-get-pt-outcomes	{"ok":true,"source":"vista","rpcUsed":["ANRV GET PT OUTCOMES"],"data":["\u0018M  ERROR=GETTXT+6^ANRVOB, Undefined local 
+ok_empty	200	an	/vista/an/rpc/anrv-get-ptall	{"ok":true,"source":"vista","rpcUsed":["ANRV GET PTALL"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrv-get-ptlast5	{"ok":true,"source":"vista","rpcUsed":["ANRV GET PTLAST5"],"data":["\u0018M  ERROR=LISTALL+2^ANRVOA, Undefined local var
+ok_empty	200	an	/vista/an/rpc/anrv-ptinfo-core	{"ok":true,"source":"vista","rpcUsed":["ANRV PTINFO CORE"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrv-outcome-section-text	{"ok":true,"source":"vista","rpcUsed":["ANRV OUTCOME SECTION TEXT"],"data":["\u0018M  ERROR=ADDTXT+11^ANRVOB, Undefined 
+ok_empty	200	an	/vista/an/rpc/anrv-tanrvmessage	{"ok":true,"source":"vista","rpcUsed":["ANRV TANRVMESSAGE"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrv-set-record-status	{"ok":true,"source":"vista","rpcUsed":["ANRV SET RECORD STATUS"],"data":["\u0018M  ERROR=UPREC+7^ANRVOB, Undefined local
+ok_empty	200	an	/vista/an/rpc/anrv-tanrvpatient	{"ok":true,"source":"vista","rpcUsed":["ANRV TANRVPATIENT"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrv-gui-parameter	{"ok":true,"source":"vista","rpcUsed":["ANRV GUI PARAMETER"],"data":["-1^No data returned"]}
+data_returned	200	an	/vista/an/rpc/anrv-tanrvuser	{"ok":true,"source":"vista","rpcUsed":["ANRV TANRVUSER"],"data":["-1^No results returned"]}
+ok_empty	200	an	/vista/an/rpc/anrv-fullssn	{"ok":true,"source":"vista","rpcUsed":["ANRV FULLSSN"],"data":[]}
+data_returned	200	an	/vista/an/rpc/anrvj1-rpc-main	{"ok":true,"source":"vista","rpcUsed":["ANRVJ1_RPC_MAIN"],"data":["0^No results returned"]}
+data_returned	200	an	/vista/an/rpc/anrv-create-encounter	{"ok":true,"source":"vista","rpcUsed":["ANRV CREATE ENCOUNTER"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Label referenced
+ok_empty	200	dg	/vista/dg/rpc/dg-sensitive-record-access	{"ok":true,"source":"vista","rpcUsed":["DG SENSITIVE RECORD ACCESS"],"data":[]}
+data_returned	200	dg	/vista/dg/rpc/dg-sensitive-record-bulletin	{"ok":true,"source":"vista","rpcUsed":["DG SENSITIVE RECORD BULLETIN"],"data":["1"]}
+data_returned	200	dg	/vista/dg/rpc/dg-chk-bs5-xref-y-n	{"ok":true,"source":"vista","rpcUsed":["DG CHK BS5 XREF Y/N"],"data":["0"]}
+data_returned	200	dg	/vista/dg/rpc/dg-chk-bs5-xref-array	{"ok":true,"source":"vista","rpcUsed":["DG CHK BS5 XREF ARRAY"],"data":["0"]}
+data_returned	200	dg	/vista/dg/rpc/dg-chk-means-test-div-display	{"ok":true,"source":"vista","rpcUsed":["DG CHK MEANS TEST DIV DISPLAY"],"data":["-1"]}
+data_returned	200	dg	/vista/dg/rpc/dg-chk-pat-means-test-required	{"ok":true,"source":"vista","rpcUsed":["DG CHK PAT MEANS TEST REQUIRED"],"data":["1"]}
+data_returned	200	dg	/vista/dg/rpc/dg-chk-pat-div-means-test	{"ok":true,"source":"vista","rpcUsed":["DG CHK PAT/DIV MEANS TEST"],"data":["0"]}
+data_returned	200	dg	/vista/dg/rpc/dg-patient-treatment-data	{"ok":true,"source":"vista","rpcUsed":["DG PATIENT TREATMENT DATA"],"data":["-1"]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt-dfltsrc	{"ok":true,"source":"vista","rpcUsed":["DGWPT DFLTSRC"],"data":["\u0018M  ERROR=DFLTSRC^DGWPT, More actual parameters th
+ok_empty	200	dg	/vista/dg/rpc/dgwpt-top	{"ok":true,"source":"vista","rpcUsed":["DGWPT TOP"],"data":[]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt-selchk	{"ok":true,"source":"vista","rpcUsed":["DGWPT SELCHK"],"data":["\u0018M  ERROR=TOP^DGWPT, More actual parameters than fo
+ok_empty	200	dg	/vista/dg/rpc/dgwpt-savdflt	{"ok":true,"source":"vista","rpcUsed":["DGWPT SAVDFLT"],"data":[]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt-clinrng	{"ok":true,"source":"vista","rpcUsed":["DGWPT CLINRNG"],"data":["\u0018M  ERROR=CLINRNG^DGWPT, More actual parameters th
+ok_empty	200	dg	/vista/dg/rpc/dgwpt-byward	{"ok":true,"source":"vista","rpcUsed":["DGWPT BYWARD"],"data":[]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt-diedon	{"ok":true,"source":"vista","rpcUsed":["DGWPT DIEDON"],"data":["0"]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt1-prcare	{"ok":true,"source":"vista","rpcUsed":["DGWPT1 PRCARE"],"data":["^^"]}
+data_returned	200	dg	/vista/dg/rpc/dgwpt-select	{"ok":true,"source":"vista","rpcUsed":["DGWPT SELECT"],"data":["ZZZRETFOURNINETYFOUR,PATIENT^M^2350407^666678888^^^^A^0^
+data_returned	200	dg	/vista/dg/rpc/dgrr-patient-lookup-search	{"ok":true,"source":"vista","rpcUsed":["DGRR PATIENT LOOKUP SEARCH"],"data":["<?xml version=\"1.0\" encoding=\"utf-8\" ?
+data_returned	200	dg	/vista/dg/rpc/dgrr-get-ptlk-business-data	{"ok":true,"source":"vista","rpcUsed":["DGRR GET PTLK BUSINESS DATA"],"data":["<?xml version=\"1.0\" encoding=\"utf-8\" 
+data_returned	200	dg	/vista/dg/rpc/dgrr-set-sensitive-access-log	{"ok":true,"source":"vista","rpcUsed":["DGRR SET SENSITIVE ACCESS LOG"],"data":["1"]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getdssunitusrs	{"ok":true,"source":"vista","rpcUsed":["EC GETDSSUNITUSRS"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getecscreen	{"ok":true,"source":"vista","rpcUsed":["EC GETECSCREEN"],"data":["1^CAMP MASTER^SOCIAL WORK^INFO AND REF^SW040 INFO/REFE
+ok_empty	200	ec	/vista/ec/rpc/ec-getpxreason	{"ok":true,"source":"vista","rpcUsed":["EC GETPXREASON"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getecsdetail	{"ok":true,"source":"vista","rpcUsed":["EC GETECSDETAIL"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getpatprocs	{"ok":true,"source":"vista","rpcUsed":["EC GETPATPROCS"],"data":["\u0018M  ERROR=PATPROC+23^ECUERPC, Undefined local var
+ok_empty	200	ec	/vista/ec/rpc/ec-getscnhelp	{"ok":true,"source":"vista","rpcUsed":["EC GETSCNHELP"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getecloc	{"ok":true,"source":"vista","rpcUsed":["EC GETECLOC"],"data":["\u0018M  ERROR=ECLOC^ECUMRPC, More actual parameters than
+ok_empty	200	ec	/vista/ec/rpc/ec-getusrdssunit	{"ok":true,"source":"vista","rpcUsed":["EC GETUSRDSSUNIT"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getcptlst	{"ok":true,"source":"vista","rpcUsed":["EC GETCPTLST"],"data":["46948^46948^INT HRHC TRANAL DARTLZJ 2+"]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getecsprocs	{"ok":true,"source":"vista","rpcUsed":["EC GETECSPROCS"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getecscats	{"ok":true,"source":"vista","rpcUsed":["EC GETECSCATS"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getbatprocs	{"ok":true,"source":"vista","rpcUsed":["EC GETBATPROCS"],"data":["\u0018M  ERROR=PROCBAT+21^ECUERPC1, Undefined local va
+ok_empty	200	ec	/vista/ec/rpc/ec-reports	{"ok":true,"source":"vista","rpcUsed":["EC REPORTS"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getien	{"ok":true,"source":"vista","rpcUsed":["EC GETIEN"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getpatinfo	{"ok":true,"source":"vista","rpcUsed":["EC GETPATINFO"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getpxmodifier	{"ok":true,"source":"vista","rpcUsed":["EC GETPXMODIFIER"],"data":[]}
+ok_empty	200	ec	/vista/ec/rpc/ec-getprovider	{"ok":true,"source":"vista","rpcUsed":["EC GETPROVIDER"],"data":[]}
+data_returned	200	ec	/vista/ec/rpc/ec-getnatpx	{"ok":true,"source":"vista","rpcUsed":["EC GETNATPX"],"data":["63^CASE MANAGEMENT^SW003^^^107115^NO SUCH ENTRY","64^FAM 
+data_returned	200	ec	/vista/ec/rpc/ec-validate-spreadsheet-data	{"ok":true,"source":"vista","rpcUsed":["EC VALIDATE SPREADSHEET DATA"],"data":["\u0018M  ERROR=ECV2RPC+20^ECV2RPC, $DATA
+ok_empty	200	ec	/vista/ec/rpc/ec-getpatelig	{"ok":true,"source":"vista","rpcUsed":["EC GETPATELIG"],"data":[]}
+ok_empty	200	gmv	/vista/gmv/rpc/gmv-convert-date	{"ok":true,"source":"vista","rpcUsed":["GMV CONVERT DATE"],"data":[]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-add-vm	{"ok":true,"source":"vista","rpcUsed":["GMV ADD VM"],"data":["\u0018M  ERROR=CHKDT+6^GMVDCSAV, Access or update failed b
+ok_empty	200	gmv	/vista/gmv/rpc/gmv-extract-rec	{"ok":true,"source":"vista","rpcUsed":["GMV EXTRACT REC"],"data":[]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-ward-location	{"ok":true,"source":"vista","rpcUsed":["GMV WARD LOCATION"],"data":["12^2-INTERMED^12","7^3 NORTH GASTRO^283","6^3 NORTH
+ok_empty	200	gmv	/vista/gmv/rpc/gmv-ward-pt	{"ok":true,"source":"vista","rpcUsed":["GMV WARD PT"],"data":[]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-mark-error	{"ok":true,"source":"vista","rpcUsed":["GMV MARK ERROR"],"data":["ERROR: Record Not Found"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-pt-graph	{"ok":true,"source":"vista","rpcUsed":["GMV PT GRAPH"],"data":["This report is no longer available. Please right click o
+data_returned	200	gmv	/vista/gmv/rpc/gmv-v-m-alldata	{"ok":true,"source":"vista","rpcUsed":["GMV V/M ALLDATA"],"data":["ZZZRETFOURNINETYFOUR,PATIENT  8888  APR 7,1935  90 (Y
+data_returned	200	gmv	/vista/gmv/rpc/gmv-team-patients	{"ok":true,"source":"vista","rpcUsed":["GMV TEAM PATIENTS"],"data":["NO PATIENTS"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-allergy	{"ok":true,"source":"vista","rpcUsed":["GMV ALLERGY"],"data":["This patient has the following allergy(ies): ","SULFONAMI
+data_returned	200	gmv	/vista/gmv/rpc/gmv-clinic-pt	{"ok":true,"source":"vista","rpcUsed":["GMV CLINIC PT"],"data":["ERROR^No clinic identified"]}
+ok_empty	200	gmv	/vista/gmv/rpc/gmv-vitals-cat-qual	{"ok":true,"source":"vista","rpcUsed":["GMV VITALS/CAT/QUAL"],"data":[]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-ptselect	{"ok":true,"source":"vista","rpcUsed":["GMV PTSELECT"],"data":["-1^No results returned"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-latest-vm	{"ok":true,"source":"vista","rpcUsed":["GMV LATEST VM"],"data":["Temp.:       (04/07/03@11:13)  98.6 F  (37.0 C)  _LABTE
+ok_empty	200	gmv	/vista/gmv/rpc/gmv-room-bed	{"ok":true,"source":"vista","rpcUsed":["GMV ROOM/BED"],"data":[]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-cumulative-report	{"ok":true,"source":"vista","rpcUsed":["GMV CUMULATIVE REPORT"],"data":["Report sent to device. Task #: 1414"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-latest-vitals-by-location	{"ok":true,"source":"vista","rpcUsed":["GMV LATEST VITALS BY LOCATION"],"data":["Report sent to device. Task #: 1415"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-latest-vitals-for-patient	{"ok":true,"source":"vista","rpcUsed":["GMV LATEST VITALS FOR PATIENT"],"data":["Report sent to device. Task #: 1416"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-entered-in-error-patient	{"ok":true,"source":"vista","rpcUsed":["GMV ENTERED IN ERROR-PATIENT"],"data":["Report sent to device. Task #: 1417"]}
+data_returned	200	gmv	/vista/gmv/rpc/gmv-qualifier-table	{"ok":true,"source":"vista","rpcUsed":["GMV QUALIFIER TABLE"],"data":["1^Report Queued. Task #:1418"]}
+data_returned	200	ib	/vista/ib/rpc/ibd-expand-formid	{"ok":true,"source":"vista","rpcUsed":["IBD EXPAND FORMID"],"data":["@Remote Procedure 'IBD EXPAND FORMID' cannot be run
+data_returned	200	ib	/vista/ib/rpc/ibd-get-formspec	{"ok":true,"source":"vista","rpcUsed":["IBD GET FORMSPEC"],"data":["?Remote Procedure 'IBD GET FORMSPEC' cannot be run a
+data_returned	200	ib	/vista/ib/rpc/ibd-get-input-object-by-clinic	{"ok":true,"source":"vista","rpcUsed":["IBD GET INPUT OBJECT BY CLINIC"],"data":["8","PX INPUT VITALS^99^PRIMARY CARE SA
+data_returned	200	ib	/vista/ib/rpc/ibd-get-input-object-by-form	{"ok":true,"source":"vista","rpcUsed":["IBD GET INPUT OBJECT BY FORM"],"data":["Form not scannable"]}
+data_returned	200	ib	/vista/ib/rpc/ibd-get-one-input-object	{"ok":true,"source":"vista","rpcUsed":["IBD GET ONE INPUT OBJECT"],"data":["No package Interface found, 1"]}
+data_returned	200	ib	/vista/ib/rpc/ibd-receive-form-data	{"ok":true,"source":"vista","rpcUsed":["IBD RECEIVE FORM DATA"],"data":["DRemote Procedure 'IBD RECEIVE FORM DATA' canno
+data_returned	200	ib	/vista/ib/rpc/ibd-validate-user	{"ok":true,"source":"vista","rpcUsed":["IBD VALIDATE USER"],"data":["@Remote Procedure 'IBD VALIDATE USER' cannot be run
+data_returned	200	ib	/vista/ib/rpc/ibd-receive-data	{"ok":true,"source":"vista","rpcUsed":["IBD RECEIVE DATA"],"data":["?Remote Procedure 'IBD RECEIVE DATA' cannot be run a
+data_returned	200	ib	/vista/ib/rpc/ibd-return-image-id	{"ok":true,"source":"vista","rpcUsed":["IBD RETURN IMAGE ID"],"data":["BRemote Procedure 'IBD RETURN IMAGE ID' cannot be
+data_returned	200	ib	/vista/ib/rpc/ibd-elapsed-time	{"ok":true,"source":"vista","rpcUsed":["IBD ELAPSED TIME"],"data":["?Remote Procedure 'IBD ELAPSED TIME' cannot be run a
+data_returned	200	ib	/vista/ib/rpc/ibd-store-workstation-error	{"ok":true,"source":"vista","rpcUsed":["IBD STORE WORKSTATION ERROR"],"data":["JRemote Procedure 'IBD STORE WORKSTATION 
+data_returned	200	ib	/vista/ib/rpc/ibd-store-image-name	{"ok":true,"source":"vista","rpcUsed":["IBD STORE IMAGE NAME"],"data":["CRemote Procedure 'IBD STORE IMAGE NAME' cannot 
+data_returned	200	ib	/vista/ib/rpc/ibd-get-all-pce-data	{"ok":true,"source":"vista","rpcUsed":["IBD GET ALL PCE DATA"],"data":["CRemote Procedure 'IBD GET ALL PCE DATA' cannot 
+data_returned	200	ib	/vista/ib/rpc/ibd-get-past-appt-list	{"ok":true,"source":"vista","rpcUsed":["IBD GET PAST APPT LIST"],"data":["ERemote Procedure 'IBD GET PAST APPT LIST' can
+ok_empty	200	ib	/vista/ib/rpc/ibarxm-query-only	{"ok":true,"source":"vista","rpcUsed":["IBARXM QUERY ONLY"],"data":[]}
+data_returned	200	ib	/vista/ib/rpc/ibarxm-trans-data	{"ok":true,"source":"vista","rpcUsed":["IBARXM TRANS DATA"],"data":["0"]}
+data_returned	200	ib	/vista/ib/rpc/ibarxm-trans-bill	{"ok":true,"source":"vista","rpcUsed":["IBARXM TRANS BILL"],"data":["-1^Patient not found"]}
+ok_empty	200	ib	/vista/ib/rpc/ibarxm-query-suppress-user	{"ok":true,"source":"vista","rpcUsed":["IBARXM QUERY SUPPRESS USER"],"data":[]}
+data_returned	200	ib	/vista/ib/rpc/ibo-mt-ltc-copay-query	{"ok":true,"source":"vista","rpcUsed":["IBO MT LTC COPAY QUERY"],"data":["-1^Patient not found"]}
+data_returned	200	ib	/vista/ib/rpc/ibcn-insurance-query	{"ok":true,"source":"vista","rpcUsed":["IBCN INSURANCE QUERY"],"data":["-1^ICN Not found"]}
+data_returned	200	mag	/vista/mag/rpc/mag-consult-msg-create	{"ok":true,"source":"vista","rpcUsed":["MAG CONSULT MSG CREATE"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zli
+ok_empty	200	mag	/vista/mag/rpc/mag-olu-consult	{"ok":true,"source":"vista","rpcUsed":["MAG OLU CONSULT"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-absjb	{"ok":true,"source":"vista","rpcUsed":["MAG ABSJB"],"data":["1^SUCCESSFUL"]}
+data_returned	200	mag	/vista/mag/rpc/mag-get-netloc	{"ok":true,"source":"vista","rpcUsed":["MAG GET NETLOC"],"data":["1^SUCCESS"]}
+data_returned	200	mag	/vista/mag/rpc/mag-ekg-online	{"ok":true,"source":"vista","rpcUsed":["MAG EKG ONLINE"],"data":["\u0018M  ERROR=ONLINE^MAGGTU6, More actual parameters 
+ok_empty	200	mag	/vista/mag/rpc/mag-field-validate	{"ok":true,"source":"vista","rpcUsed":["MAG FIELD VALIDATE"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-key-validate	{"ok":true,"source":"vista","rpcUsed":["MAG KEY VALIDATE"],"data":["-1^The passed flag(s) '46' are unknown or inconsiste
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-get-patient-vitals	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET PATIENT VITALS"],"data":["VIP^"]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-audit-count	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM AUDIT COUNT"],"data":["-2,No Message Specified"]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-audit-purge	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM AUDIT PURGE"],"data":["0 days purged."]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-audit-range	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM AUDIT RANGE"],"data":["\u0018M  ERROR=RANGE^MAGDRPC7, More actual para
+ok_empty	200	mag	/vista/mag/rpc/mag-dicom-et-phone-home	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM ET PHONE HOME"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-fileman-get	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM FILEMAN GET"],"data":["\u0018M  ERROR=FMGET+2^MAGDRPC1, Undefined loca
+ok_empty	200	mag	/vista/mag/rpc/mag-dicom-find-location	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM FIND LOCATION"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-get-basic-image	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET BASIC IMAGE"],"data":["-2,No data for \"46\"."]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-get-domain	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET DOMAIN"],"data":["\u0018M  ERROR=DOMAIN^MAGDRPC1, More actual para
+ok_empty	200	mag	/vista/mag/rpc/mag-dicom-get-highest-hl7	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET HIGHEST HL7"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-get-image-group	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET IMAGE GROUP"],"data":["\u0018M  ERROR=HIGHHL7^MAGDRPC8, More actua
+ok_empty	200	mag	/vista/mag/rpc/mag-dicom-get-imaging-types	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET IMAGING TYPES"],"data":[]}
+data_returned	200	mag	/vista/mag/rpc/mag-dicom-get-next-queue-entry	{"ok":true,"source":"vista","rpcUsed":["MAG DICOM GET NEXT QUEUE ENTRY"],"data":["\u0018M  ERROR=VALIMGT^MAGDRPC8, More 
+ok_empty	200	mp	/vista/mp/rpc/mpif-remote-local-icn-assign	{"ok":true,"source":"vista","rpcUsed":["MPIF REMOTE LOCAL ICN ASSIGN"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-remote-full-icn-stats	{"ok":true,"source":"vista","rpcUsed":["MPIF REMOTE FULL ICN STATS"],"data":["\u0018M  ERROR=NEXTIMG+18^MAGDRPC4, Undefi
+ok_empty	200	mp	/vista/mp/rpc/mpif-change-cmor	{"ok":true,"source":"vista","rpcUsed":["MPIF CHANGE CMOR"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-ssn-dups	{"ok":true,"source":"vista","rpcUsed":["MPIF SSN DUPS"],"data":["1^46 PROCESSED - COMPLETED @ 3260311.010544"]}
+data_returned	200	mp	/vista/mp/rpc/mpif-icn-stats	{"ok":true,"source":"vista","rpcUsed":["MPIF ICN STATS"],"data":["\u0018M  ERROR=STATS^MPIFFULL, More actual parameters 
+ok_empty	200	mp	/vista/mp/rpc/mpif-ext-pdat-remote	{"ok":true,"source":"vista","rpcUsed":["MPIF EXT PDAT REMOTE"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-inactivate	{"ok":true,"source":"vista","rpcUsed":["MPIF INACTIVATE"],"data":["\u0018M  ERROR=PATINFO+3^MPIFEXT2, Undefined local va
+ok_empty	200	mp	/vista/mp/rpc/mpif-remote-spi	{"ok":true,"source":"vista","rpcUsed":["MPIF REMOTE SPI"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-remote-icn-update	{"ok":true,"source":"vista","rpcUsed":["MPIF REMOTE ICN UPDATE"],"data":["-1^No such ICN"]}
+data_returned	200	mp	/vista/mp/rpc/mpif-ack-check	{"ok":true,"source":"vista","rpcUsed":["MPIF ACK CHECK"],"data":["\u0018M  ERROR=UPDATE+2^MPIFRPC2, Undefined local vari
+ok_empty	200	mp	/vista/mp/rpc/mpif-seeding-update	{"ok":true,"source":"vista","rpcUsed":["MPIF SEEDING UPDATE"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-seeding-stats	{"ok":true,"source":"vista","rpcUsed":["MPIF SEEDING STATS"],"data":["\u0018M  ERROR=STATS^MPIFSEED, More actual paramet
+ok_empty	200	mp	/vista/mp/rpc/mpif-cmor-push-remote	{"ok":true,"source":"vista","rpcUsed":["MPIF CMOR PUSH REMOTE"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-remote-primary-dfn-icn	{"ok":true,"source":"vista","rpcUsed":["MPIF REMOTE PRIMARY DFN ICN"],"data":["-1^NULL PATIENT NUMBER^Null patient DFN p
+data_returned	200	mp	/vista/mp/rpc/rg-primary-view-reject	{"ok":true,"source":"vista","rpcUsed":["RG PRIMARY VIEW REJECT"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zli
+ok_empty	200	mp	/vista/mp/rpc/rg-primary-view-from-mpi	{"ok":true,"source":"vista","rpcUsed":["RG PRIMARY VIEW FROM MPI"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpif-dnl-add-upd	{"ok":true,"source":"vista","rpcUsed":["MPIF DNL ADD UPD"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zlinking 
+ok_empty	200	mp	/vista/mp/rpc/mpif-edat-remote	{"ok":true,"source":"vista","rpcUsed":["MPIF EDAT REMOTE"],"data":[]}
+data_returned	200	mp	/vista/mp/rpc/mpi-event-list	{"ok":true,"source":"vista","rpcUsed":["MPI EVENT LIST"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zlinking \"
+ok_empty	200	mp	/vista/mp/rpc/mpi-tk-poc-user-setup	{"ok":true,"source":"vista","rpcUsed":["MPI TK POC USER SETUP"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqqal-list	{"ok":true,"source":"vista","rpcUsed":["ORQQAL LIST"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zlinking \"MPI
+ok_empty	200	or	/vista/or/rpc/orqqal-detail	{"ok":true,"source":"vista","rpcUsed":["ORQQAL DETAIL"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqqpl-list	{"ok":true,"source":"vista","rpcUsed":["ORQQPL LIST"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zlinking \"MPI
+ok_empty	200	or	/vista/or/rpc/orqqpl-detail	{"ok":true,"source":"vista","rpcUsed":["ORQQPL DETAIL"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqqxqa-patient	{"ok":true,"source":"vista","rpcUsed":["ORQQXQA PATIENT"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zlinking \
+ok_empty	200	or	/vista/or/rpc/orqqxqa-user	{"ok":true,"source":"vista","rpcUsed":["ORQQXQA USER"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqqvi-vitals	{"ok":true,"source":"vista","rpcUsed":["ORQQVI VITALS"],"data":["\u0018M  ERROR=DETAIL+1^ORQQAL, Undefined local variabl
+ok_empty	200	or	/vista/or/rpc/orqpt-default-patient-list	{"ok":true,"source":"vista","rpcUsed":["ORQPT DEFAULT PATIENT LIST"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqpt-providers	{"ok":true,"source":"vista","rpcUsed":["ORQPT PROVIDERS"],"data":["\u0018M  ERROR=LIST+10^ORQQPL, Undefined local variab
+ok_empty	200	or	/vista/or/rpc/orqpt-provider-patients	{"ok":true,"source":"vista","rpcUsed":["ORQPT PROVIDER PATIENTS"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqpt-clinic-patients	{"ok":true,"source":"vista","rpcUsed":["ORQPT CLINIC PATIENTS"],"data":["\u0018M  ERROR=DETAIL+7^ORQQPL, Undefined local
+ok_empty	200	or	/vista/or/rpc/orqpt-specialties	{"ok":true,"source":"vista","rpcUsed":["ORQPT SPECIALTIES"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqpt-specialty-patients	{"ok":true,"source":"vista","rpcUsed":["ORQPT SPECIALTY PATIENTS"],"data":["\u0018M  ERROR=PATIENT+20^ORQQXQA, Undefined
+ok_empty	200	or	/vista/or/rpc/orqpt-teams	{"ok":true,"source":"vista","rpcUsed":["ORQPT TEAMS"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqpt-team-patients	{"ok":true,"source":"vista","rpcUsed":["ORQPT TEAM PATIENTS"],"data":["\u0018M  ERROR=USER^ORQQXQA, More actual paramete
+ok_empty	200	or	/vista/or/rpc/orqpt-ward-patients	{"ok":true,"source":"vista","rpcUsed":["ORQPT WARD PATIENTS"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orqpt-clinics	{"ok":true,"source":"vista","rpcUsed":["ORQPT CLINICS"],"data":["\u0018M  ERROR=DEFLIST^ORQPTQ11, More actual parameters
+ok_empty	200	or	/vista/or/rpc/orqqps-list	{"ok":true,"source":"vista","rpcUsed":["ORQQPS LIST"],"data":[]}
+data_returned	200	or	/vista/or/rpc/orb-follow-up-string	{"ok":true,"source":"vista","rpcUsed":["ORB FOLLOW-UP STRING"],"data":["\u0018M  ERROR=PROV^ORQPTQ2, More actual paramet
+ok_empty	200	or	/vista/or/rpc/orb-delete-alert	{"ok":true,"source":"vista","rpcUsed":["ORB DELETE ALERT"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-scanpt	{"ok":true,"source":"vista","rpcUsed":["PSB SCANPT"],"data":["\u0018M  ERROR=CLINPTS+7^ORQPTQ2, Undefined local variable
+ok_empty	200	psb	/vista/psb/rpc/psb-instructor	{"ok":true,"source":"vista","rpcUsed":["PSB INSTRUCTOR"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-userload	{"ok":true,"source":"vista","rpcUsed":["PSB USERLOAD"],"data":["\u0018M  ERROR=SPEC^ORQPTQ2, More actual parameters than
+ok_empty	200	psb	/vista/psb/rpc/psb-usersave	{"ok":true,"source":"vista","rpcUsed":["PSB USERSAVE"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-fmdate	{"ok":true,"source":"vista","rpcUsed":["PSB FMDATE"],"data":["\u0018M  ERROR=TEAMS^ORQPTQ1, More actual parameters than 
+ok_empty	200	psb	/vista/psb/rpc/psb-scanmed	{"ok":true,"source":"vista","rpcUsed":["PSB SCANMED"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-parameter	{"ok":true,"source":"vista","rpcUsed":["PSB PARAMETER"],"data":["\u0018M  ERROR=CLIN^ORQPTQ2, More actual parameters tha
+ok_empty	200	psb	/vista/psb/rpc/psb-transaction	{"ok":true,"source":"vista","rpcUsed":["PSB TRANSACTION"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-validate-order	{"ok":true,"source":"vista","rpcUsed":["PSB VALIDATE ORDER"],"data":["\u0018M  ERROR=LIST+3^ORQQPS, Undefined local vari
+ok_empty	200	psb	/vista/psb/rpc/psb-server-clock-variance	{"ok":true,"source":"vista","rpcUsed":["PSB SERVER CLOCK VARIANCE"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-medication-history	{"ok":true,"source":"vista","rpcUsed":["PSB MEDICATION HISTORY"],"data":["\u0018M  ERROR=INST+8^PSBRPC, Undefined local 
+ok_empty	200	psb	/vista/psb/rpc/psb-getprns	{"ok":true,"source":"vista","rpcUsed":["PSB GETPRNS"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-report	{"ok":true,"source":"vista","rpcUsed":["PSB REPORT"],"data":["\u0018M  ERROR=USRSAVE+27^PSBRPC, Undefined local variable
+ok_empty	200	psb	/vista/psb/rpc/psb-submit-missing-dose	{"ok":true,"source":"vista","rpcUsed":["PSB SUBMIT MISSING DOSE"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-validate-esig	{"ok":true,"source":"vista","rpcUsed":["PSB VALIDATE ESIG"],"data":["-1^Invalid Date/Time"]}
+data_returned	200	psb	/vista/psb/rpc/psb-lock	{"ok":true,"source":"vista","rpcUsed":["PSB LOCK"],"data":["\u0018M  ERROR=SCANMED+15^PSBRPC2, Undefined local variable:
+ok_empty	200	psb	/vista/psb/rpc/psb-check-server	{"ok":true,"source":"vista","rpcUsed":["PSB CHECK SERVER"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-mail	{"ok":true,"source":"vista","rpcUsed":["PSB MAIL"],"data":["\u0018M  ERROR=EDITML+5^PSBML, Undefined local variable: PSB
+ok_empty	200	psb	/vista/psb/rpc/psb-getordertab	{"ok":true,"source":"vista","rpcUsed":["PSB GETORDERTAB"],"data":[]}
+data_returned	200	psb	/vista/psb/rpc/psb-wardlist	{"ok":true,"source":"vista","rpcUsed":["PSB WARDLIST"],"data":["\u0018M  ERROR=EN+10^PSBVDLVL, Undefined local variable:
+ok_empty	200	pso	/vista/pso/rpc/pso-vcc-refill	{"ok":true,"source":"vista","rpcUsed":["PSO VCC REFILL"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-edit	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS EDIT"],"data":["\u0018M  ERROR=HISTORY+8^PSBMLHS, Undefined local varia
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-add-dea	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS ADD DEA"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-deadoj	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS DEADOJ"],"data":["\u0018M  ERROR=RPC+13^PSBO, Undefined local variable:
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-mbm	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS MBM"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-remove-dea	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS REMOVE DEA"],"data":["\u0018M  ERROR=RPC+18^PSBMD, Undefined local vari
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-dea-dup-check	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS DEA DUP CHECK"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-dealist	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS DEALIST"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Label referenced but 
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-version	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS VERSION"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-detox-check	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS DETOX CHECK"],"data":["\u0018M  ERROR=RPC+8^PSBVDLTB, Undefined local v
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-va-dup-check	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS VA# DUP CHECK"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-filer	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS FILER"],"data":["\u0018M  ERROR=FILEFM+2^PSOEPUT, Undefined local varia
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-reports	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS REPORTS"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-system-date-time	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS SYSTEM DATE TIME"],"data":["\u0018M  ERROR=MBM^PSOEPUT, More actual par
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-field-help	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS FIELD HELP"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-get-list	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS GET LIST"],"data":["\u0018M  ERROR=DEAREM+2^PSOEPUT, Undefined local va
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-list-np-sched	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS LIST NP SCHED"],"data":[]}
+data_returned	200	pso	/vista/pso/rpc/pso-epcs-file-np-sched	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS FILE NP SCHED"],"data":["0^DATA DIDN'T FILE SUCCESSFULLY IN NPSFILE."]}
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-list-optn-desc	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS LIST OPTN DESC"],"data":[]}
+ok_empty	200	pso	/vista/pso/rpc/pso-epcs-topic-help	{"ok":true,"source":"vista","rpcUsed":["PSO EPCS TOPIC HELP"],"data":[]}
+ok_empty	200	px	/vista/px/rpc/pxrm-reminder-category	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER CATEGORY"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminders-and-categories	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDERS AND CATEGORIES"],"data":["\u0018M  ERROR=SEL^PXRMRPCD, More actua
+ok_empty	200	px	/vista/px/rpc/orqqpx-get-not-purpose	{"ok":true,"source":"vista","rpcUsed":["ORQQPX GET NOT PURPOSE"],"data":[]}
+data_returned	200	px	/vista/px/rpc/orqqpxrm-get-wh-proc-result	{"ok":true,"source":"vista","rpcUsed":["ORQQPXRM GET WH PROC RESULT"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error whil
+ok_empty	200	px	/vista/px/rpc/pxrm-education-subtopics	{"ok":true,"source":"vista","rpcUsed":["PXRM EDUCATION SUBTOPICS"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-education-summary	{"ok":true,"source":"vista","rpcUsed":["PXRM EDUCATION SUMMARY"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Error while zli
+ok_empty	200	px	/vista/px/rpc/pxrm-education-topic	{"ok":true,"source":"vista","rpcUsed":["PXRM EDUCATION TOPIC"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminder-categories	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER CATEGORIES"],"data":["\u0018M  ERROR=CATEGORY+7^PXRMRPCA, Undefine
+ok_empty	200	px	/vista/px/rpc/pxrm-reminder-dialog	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER DIALOG"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminder-dialog-prompts	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER DIALOG PROMPTS"],"data":["\u0018M  ERROR=DIALOG+20^PXRMRPCC, Undef
+ok_empty	200	px	/vista/px/rpc/pxrm-reminder-evaluation	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER EVALUATION"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminder-inquiry	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER INQUIRY"],"data":["\u0018M  ERROR=PROMPT+11^PXRMRPCC, Undefined lo
+ok_empty	200	px	/vista/px/rpc/pxrm-reminder-web	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER WEB"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminders-unevaluated	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDERS (UNEVALUATED)"],"data":["\u0018M  ERROR=LIST+7^PXRMRPCA, Undefine
+ok_empty	200	px	/vista/px/rpc/pxrm-reminder-detail	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER DETAIL"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-mental-health	{"ok":true,"source":"vista","rpcUsed":["PXRM MENTAL HEALTH"],"data":["\u0018M  ERROR=REMDET+6^PXRMRPCA, Undefined local 
+ok_empty	200	px	/vista/px/rpc/pxrm-progress-note-header	{"ok":true,"source":"vista","rpcUsed":["PXRM PROGRESS NOTE HEADER"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-mental-health-results	{"ok":true,"source":"vista","rpcUsed":["PXRM MENTAL HEALTH RESULTS"],"data":["\u0018M  ERROR=START+10^PXRMDLR, Undefined
+ok_empty	200	px	/vista/px/rpc/pxrm-mental-health-save	{"ok":true,"source":"vista","rpcUsed":["PXRM MENTAL HEALTH SAVE"],"data":[]}
+data_returned	200	px	/vista/px/rpc/pxrm-reminder-rpc	{"ok":true,"source":"vista","rpcUsed":["PXRM REMINDER RPC"],"data":["\u0018M  ERROR=MHS+5^PXRMRPCC, Undefined local vari
+ok_empty	200	ra	/vista/ra/rpc/ramag-exam-order	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAM ORDER"],"data":[]}
+data_returned	200	ra	/vista/ra/rpc/ramag-exam-register	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAM REGISTER"],"data":["-3^1","-3^Parameter 'EXMDTE' has an invalid value
+data_returned	200	ra	/vista/ra/rpc/ramag-order-cancel	{"ok":true,"source":"vista","rpcUsed":["RAMAG ORDER CANCEL"],"data":["-10^2","-10^Missing required parameters.^CHKREQ+6~
+data_returned	200	ra	/vista/ra/rpc/ramag-exam-cancel	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAM CANCEL"],"data":["-10^2","-10^Missing required parameters.^CHKREQ+6~R
+data_returned	200	ra	/vista/ra/rpc/ramag-exam-complete	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAM COMPLETE"],"data":["-3^1","-3^Parameter 'RACASE' has an invalid value
+data_returned	200	ra	/vista/ra/rpc/ramag-examined	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAMINED"],"data":["-3^1","-3^Parameter 'RACASE' has an invalid value.^CHK
+data_returned	200	ra	/vista/ra/rpc/ramag-exam-status-requirements	{"ok":true,"source":"vista","rpcUsed":["RAMAG EXAM STATUS REQUIREMENTS"],"data":["-3^1","-3^Parameter 'RACTION' has an i
+data_returned	200	rm	/vista/rm/rpc/rmim-convert-date	{"ok":true,"source":"vista","rpcUsed":["RMIM CONVERT DATE"],"data":["0/0/2046"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-send-email	{"ok":true,"source":"vista","rpcUsed":["RMIM SEND EMAIL"],"data":["\u0018M  ERROR=XM+4^RMIMRP, Null subscripts not allow
+ok_empty	200	rm	/vista/rm/rpc/rmim-get-form	{"ok":true,"source":"vista","rpcUsed":["RMIM GET FORM"],"data":[]}
+data_returned	200	rm	/vista/rm/rpc/rmim-get-cases	{"ok":true,"source":"vista","rpcUsed":["RMIM GET CASES"],"data":["\u0018M  ERROR=FRM+2^RMIMRP, Global variable undefined
+ok_empty	200	rm	/vista/rm/rpc/rmim-get-selected-case	{"ok":true,"source":"vista","rpcUsed":["RMIM GET SELECTED CASE"],"data":[]}
+data_returned	200	rm	/vista/rm/rpc/rmim-get-user-info	{"ok":true,"source":"vista","rpcUsed":["RMIM GET USER INFO"],"data":["46^^0"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-get-dfn	{"ok":true,"source":"vista","rpcUsed":["RMIM GET DFN"],"data":["-1^Invalid SSN"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-fim-parameter	{"ok":true,"source":"vista","rpcUsed":["RMIM FIM PARAMETER"],"data":["\u0018M  ERROR=PRM^RMIMRP, More actual parameters 
+ok_empty	200	rm	/vista/rm/rpc/rmim-get-patient-dme	{"ok":true,"source":"vista","rpcUsed":["RMIM GET PATIENT DME"],"data":[]}
+data_returned	200	rm	/vista/rm/rpc/rmim-save-fsod	{"ok":true,"source":"vista","rpcUsed":["RMIM SAVE FSOD"],"data":["-4^No Data Received"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-patient-lookup	{"ok":true,"source":"vista","rpcUsed":["RMIM PATIENT LOOKUP"],"data":["374^ZZZRETFOURTHREE,PATIENT^2350407^666664663^^23
+data_returned	200	rm	/vista/rm/rpc/rmim-patient-info	{"ok":true,"source":"vista","rpcUsed":["RMIM PATIENT INFO"],"data":["46^ZZZRETFOURNINETYFOUR,PATIENT^666678888^WHITE, NO
+data_returned	200	rm	/vista/rm/rpc/rmim-author-lookup	{"ok":true,"source":"vista","rpcUsed":["RMIM AUTHOR LOOKUP"],"data":["10000000321^USER,NOKEY"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-location-lookup	{"ok":true,"source":"vista","rpcUsed":["RMIM LOCATION LOOKUP"],"data":["895^TESTCLINIC460","896^TESTCLINIC461","897^TEST
+data_returned	200	rm	/vista/rm/rpc/rmim-restricted-record	{"ok":true,"source":"vista","rpcUsed":["RMIM RESTRICTED RECORD"],"data":["1"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-version	{"ok":true,"source":"vista","rpcUsed":["RMIM VERSION"],"data":["0"]}
+data_returned	200	rm	/vista/rm/rpc/rmim-consult-list	{"ok":true,"source":"vista","rpcUsed":["RMIM CONSULT LIST"],"data":["\u0018M  ERROR=CON+7^RMIMV, Undefined local variabl
+ok_empty	200	rm	/vista/rm/rpc/rmim-lock-patient	{"ok":true,"source":"vista","rpcUsed":["RMIM LOCK PATIENT"],"data":[]}
+data_returned	200	rm	/vista/rm/rpc/rmim-check-duplicate	{"ok":true,"source":"vista","rpcUsed":["RMIM CHECK DUPLICATE"],"data":["0"]}
+ok_empty	200	rm	/vista/rm/rpc/rmpr-nppd-list	{"ok":true,"source":"vista","rpcUsed":["RMPR NPPD LIST"],"data":[]}
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-full-data	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE FULL DATA"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-create-file	{"ok":true,"source":"vista","rpcUsed":["SD W/L CREATE FILE"],"data":["\u0018M  ERROR=F+2^DIED, Undefined local variable:
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-brief	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE BRIEF"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-retrive-medical-review	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE MEDICAL REVIEW"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Label re
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-disposition	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE DISPOSITION"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-retrive-institution-4	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE INSTITUTION(#4)"],"data":["\u0018M  ERROR=OUTPUT3+8^SDWLRP1, Unde
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-clinic-409-32	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE CLINIC(#409.32)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-retrive-hosp-loc-44	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE HOSP LOC(#44)"],"data":["\u0018M  ERROR=OUTIN^SDWLRP2, More actua
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-team-404-51	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE TEAM(#404.51)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-retrive-tm-pos-404-57	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE TM POS(404.57)"],"data":["\u0018M  ERROR=OUTSC0^SDWLRP2, More act
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-retrive-ser-sp-409-31	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE SER/SP(409.31)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-retrive-person-200	{"ok":true,"source":"vista","rpcUsed":["SD W/L RETRIVE PERSON(200)"],"data":["\u0018M  ERROR=OUTSC2^SDWLRP2, More actual
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-priority-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L PRIORITY(#409.3)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-req-by-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L REQ BY(409.3)"],"data":["\u0018M  ERROR=OUTST^SDWLRP2, More actual parame
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-type-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L TYPE(409.3)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-disposition-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L DISPOSITION(409.3)"],"data":["\u0018M  ERROR=OUTSP^SDWLRP2, More actual p
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-current-status-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L CURRENT STATUS(409.3)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-package-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L PACKAGE(409.3)"],"data":["\u0018M  ERROR=OUTSS^SDWLRP2, More actual param
+ok_empty	200	sd	/vista/sd/rpc/sd-w-l-new-enrollee-409-3	{"ok":true,"source":"vista","rpcUsed":["SD W/L NEW ENROLLEE(409.3)"],"data":[]}
+data_returned	200	sd	/vista/sd/rpc/sd-w-l-create-disposition	{"ok":true,"source":"vista","rpcUsed":["SD W/L CREATE DISPOSITION"],"data":["\u0018M  ERROR=OUTPROV^SDWLRP2, More actual
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-notes	{"ok":true,"source":"vista","rpcUsed":["TIU NOTES"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-get-record-text	{"ok":true,"source":"vista","rpcUsed":["TIU GET RECORD TEXT"],"data":["\u0018M  ERROR=SDPRIOUT^SDWLRP3, More actual para
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-summaries	{"ok":true,"source":"vista","rpcUsed":["TIU SUMMARIES"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-notes-by-visit	{"ok":true,"source":"vista","rpcUsed":["TIU NOTES BY VISIT"],"data":["\u0018M  ERROR=SDREQOUT^SDWLRP3, More actual param
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-summaries-by-visit	{"ok":true,"source":"vista","rpcUsed":["TIU SUMMARIES BY VISIT"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-get-pn-titles	{"ok":true,"source":"vista","rpcUsed":["TIU GET PN TITLES"],"data":["\u0018M  ERROR=SDTYOUT^SDWLRP3, More actual paramet
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-get-ds-titles	{"ok":true,"source":"vista","rpcUsed":["TIU GET DS TITLES"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-load-boilerplate-text	{"ok":true,"source":"vista","rpcUsed":["TIU LOAD BOILERPLATE TEXT"],"data":["\u0018M  ERROR=SDDISOUT^SDWLRP3, More actua
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-sign-record	{"ok":true,"source":"vista","rpcUsed":["TIU SIGN RECORD"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-get-personal-preferences	{"ok":true,"source":"vista","rpcUsed":["TIU GET PERSONAL PREFERENCES"],"data":["\u0018M  ERROR=SDSTOUT^SDWLRP3, More act
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-update-record	{"ok":true,"source":"vista","rpcUsed":["TIU UPDATE RECORD"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-requires-cosignature	{"ok":true,"source":"vista","rpcUsed":["TIU REQUIRES COSIGNATURE"],"data":["\u0018M  ERROR=SDPACOUT^SDWLRP3, More actual
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-load-record-for-edit	{"ok":true,"source":"vista","rpcUsed":["TIU LOAD RECORD FOR EDIT"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-detailed-display	{"ok":true,"source":"vista","rpcUsed":["TIU DETAILED DISPLAY"],"data":["\u0018M  ERROR=SDNEOUT^SDWLRP3, More actual para
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-create-addendum-record	{"ok":true,"source":"vista","rpcUsed":["TIU CREATE ADDENDUM RECORD"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-create-record	{"ok":true,"source":"vista","rpcUsed":["TIU CREATE RECORD"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Label referenced but
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-delete-record	{"ok":true,"source":"vista","rpcUsed":["TIU DELETE RECORD"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-print-record	{"ok":true,"source":"vista","rpcUsed":["TIU PRINT RECORD"],"data":["\u0018M  ERROR=NOTES^TIUSRVD, More actual parameters
+ok_empty	200	tiu	/vista/tiu/rpc/tiu-get-document-parameters	{"ok":true,"source":"vista","rpcUsed":["TIU GET DOCUMENT PARAMETERS"],"data":[]}
+data_returned	200	tiu	/vista/tiu/rpc/tiu-get-ds-urgencies	{"ok":true,"source":"vista","rpcUsed":["TIU GET DS URGENCIES"],"data":["\u0018M  ERROR=SUMMARY^TIUSRVD, More actual para
+ok_empty	200	wv	/vista/wv/rpc/orqqpxrm-get-wh-letter-text	{"ok":true,"source":"vista","rpcUsed":["ORQQPXRM GET WH LETTER TEXT"],"data":[]}
+data_returned	200	wv	/vista/wv/rpc/orqqpxrm-get-wh-letter-type	{"ok":true,"source":"vista","rpcUsed":["ORQQPXRM GET WH LETTER TYPE"],"data":["\u0018M  ERROR=BLRSHELL+2^TIUSRVD, Undefi
+ok_empty	200	wv	/vista/wv/rpc/wvrpcor-cover	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR COVER"],"data":[]}
+data_returned	200	wv	/vista/wv/rpc/wvrpcor-postrep	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR POSTREP"],"data":["\u0018M  ERROR=MAKE+38^TIUSRVP, Undefined local varia
+ok_empty	200	wv	/vista/wv/rpc/wvrpcor-savedata	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR SAVEDATA"],"data":[]}
+data_returned	200	wv	/vista/wv/rpc/wvrpcor-eie	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR EIE"],"data":["\u0018M  ERROR=URGENCY^TIUSRVA, More actual parameters th
+ok_empty	200	wv	/vista/wv/rpc/wvrpcor-reasons	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR REASONS"],"data":[]}
+data_returned	200	wv	/vista/wv/rpc/wvrpcor-sites	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR SITES"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, Label referenced but not
+ok_empty	200	wv	/vista/wv/rpc/wvrpcor-consave	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR CONSAVE"],"data":[]}
+data_returned	200	wv	/vista/wv/rpc/wvrpcor-detail	{"ok":true,"source":"vista","rpcUsed":["WVRPCOR DETAIL"],"data":["\u0018M  ERROR=REASONS^WVRPCOR1, More actual parameter
+ok_empty	200	xq	/vista/xq/rpc/xqal-gui-alerts	{"ok":true,"source":"vista","rpcUsed":["XQAL GUI ALERTS"],"data":[]}
+data_returned	200	xq	/vista/xq/rpc/xu-rebuild-menu-tree	{"ok":true,"source":"vista","rpcUsed":["XU REBUILD MENU TREE"],"data":["\u0018M  ERROR=SITES^WVRPCOR1, More actual param
+ok_empty	200	xt	/vista/xt/rpc/xtmunit-test-load	{"ok":true,"source":"vista","rpcUsed":["XTMUNIT-TEST LOAD"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xtmunit-test-next	{"ok":true,"source":"vista","rpcUsed":["XTMUNIT-TEST NEXT"],"data":["\u0018M  ERROR=CINPUTS+5^PXRMGEV, Access or update 
+ok_empty	200	xt	/vista/xt/rpc/xtmunit-test-group-load	{"ok":true,"source":"vista","rpcUsed":["XTMUNIT-TEST GROUP LOAD"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xt-eclipse-m-editor	{"ok":true,"source":"vista","rpcUsed":["XT ECLIPSE M EDITOR"],"data":["\u0018M  ERROR=REBUILD^XQ84, More actual paramete
+ok_empty	200	xt	/vista/xt/rpc/xtdebug-do-line	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG DO LINE"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xtdebug-next	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG NEXT"],"data":["\u0018M  ERROR=GETTREE+6^XTMUNIT, Routine name expected 
+ok_empty	200	xt	/vista/xt/rpc/xtdebug-start	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG START"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xtdebug-symbol-table	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG SYMBOL TABLE"],"data":["\u0018M  ERROR=CAPI+16^XWBPRS, The formal list i
+ok_empty	200	xt	/vista/xt/rpc/xtdebug-add-breakpoint	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG ADD BREAKPOINT"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xtdebug-add-watch	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG ADD WATCH"],"data":["\u0018M  ERROR=NEXT1+5^XTDEBUG, Global variable und
+ok_empty	200	xt	/vista/xt/rpc/xtdebug-delete-break	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG DELETE BREAK"],"data":[]}
+data_returned	200	xt	/vista/xt/rpc/xtdebug-delete-watch	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG DELETE WATCH"],"data":["\u0018M  ERROR=GETVALS^XTDEBUG, More actual para
+ok_empty	200	xt	/vista/xt/rpc/xtdebug-read-input	{"ok":true,"source":"vista","rpcUsed":["XTDEBUG READ INPUT"],"data":[]}
+data_returned	200	xu	/vista/xu/rpc/xups-personquery	{"ok":true,"source":"vista","rpcUsed":["XUPS PERSONQUERY"],"data":["0"]}
+data_returned	200	xu	/vista/xu/rpc/xu-epcs-edit	{"ok":true,"source":"vista","rpcUsed":["XU EPCS EDIT"],"data":["1"]}
+data_returned	200	xu	/vista/xu/rpc/mpi-vista-hws-config	{"ok":true,"source":"vista","rpcUsed":["MPI VISTA HWS CONFIG"],"data":["-1^NO WEB SERVER ENTRY FOR MPI_PSIM_NEW EXECUTE"
+data_returned	200	xu	/vista/xu/rpc/xulm-get-lock-table	{"ok":true,"source":"vista","rpcUsed":["XULM GET LOCK TABLE"],"data":["\u0018M  ERROR=NODE+1^XULMU, Expression expected 
+ok_empty	200	xu	/vista/xu/rpc/xulm-kill-process	{"ok":true,"source":"vista","rpcUsed":["XULM KILL PROCESS"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-signon-setup	{"ok":true,"source":"vista","rpcUsed":["XUS SIGNON SETUP"],"data":["\u0018M  ERROR=KILLPROC+14^XULMRPC, Undefined local 
+ok_empty	200	xus	/vista/xus/rpc/xus-send-keys	{"ok":true,"source":"vista","rpcUsed":["XUS SEND KEYS"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-av-code	{"ok":true,"source":"vista","rpcUsed":["XUS AV CODE"],"data":["NThe remote procedure XUS SEND KEYS is not registered to 
+data_returned	200	xus	/vista/xus/rpc/xus-intro-msg	{"ok":true,"source":"vista","rpcUsed":["XUS INTRO MSG"],"data":["\u0018M  ERROR=INTRO^XUSRB, More actual parameters than
+ok_empty	200	xus	/vista/xus/rpc/xus-key-check	{"ok":true,"source":"vista","rpcUsed":["XUS KEY CHECK"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-cvc	{"ok":true,"source":"vista","rpcUsed":["XUS CVC"],"data":["99"]}
+data_returned	200	xus	/vista/xus/rpc/xus-av-help	{"ok":true,"source":"vista","rpcUsed":["XUS AV HELP"],"data":["\u0018M  ERROR=AVHELP^XUSRB, More actual parameters than 
+ok_empty	200	xus	/vista/xus/rpc/xus-division-set	{"ok":true,"source":"vista","rpcUsed":["XUS DIVISION SET"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-get-user-info	{"ok":true,"source":"vista","rpcUsed":["XUS GET USER INFO"],"data":["\u0018M  ERROR=USERINFO^XUSRB2, More actual paramet
+ok_empty	200	xus	/vista/xus/rpc/xus-division-get	{"ok":true,"source":"vista","rpcUsed":["XUS DIVISION GET"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-kaajee-get-user-via-proxy	{"ok":true,"source":"vista","rpcUsed":["XUS KAAJEE GET USER VIA PROXY"],"data":["^The remote procedure XUS KAAJEE GET US
+data_returned	200	xus	/vista/xus/rpc/xus-kaajee-get-ccow-token	{"ok":true,"source":"vista","rpcUsed":["XUS KAAJEE GET CCOW TOKEN"],"data":["ZThe remote procedure XUS KAAJEE GET CCOW T
+data_returned	200	xus	/vista/xus/rpc/xus-get-token	{"ok":true,"source":"vista","rpcUsed":["XUS GET TOKEN"],"data":["\u0018M  ERROR=ASH^XUSRB4, More actual parameters than 
+ok_empty	200	xus	/vista/xus/rpc/xus-ccow-vault-param	{"ok":true,"source":"vista","rpcUsed":["XUS CCOW VAULT PARAM"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-get-ccow-token	{"ok":true,"source":"vista","rpcUsed":["XUS GET CCOW TOKEN"],"data":["\u0018M  ERROR=CCOWPC^XUSRB4, More actual paramete
+ok_empty	200	xus	/vista/xus/rpc/xus-allkeys	{"ok":true,"source":"vista","rpcUsed":["XUS ALLKEYS"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-set-visitor	{"ok":true,"source":"vista","rpcUsed":["XUS SET VISITOR"],"data":["\u0018M  ERROR=CCOW^XUSRB4, More actual parameters th
+ok_empty	200	xus	/vista/xus/rpc/xus-get-visitor	{"ok":true,"source":"vista","rpcUsed":["XUS GET VISITOR"],"data":[]}
+data_returned	200	xus	/vista/xus/rpc/xus-kaajee-get-user-info	{"ok":true,"source":"vista","rpcUsed":["XUS KAAJEE GET USER INFO"],"data":["PThe remote procedure XUS GET VISITOR is not
+data_returned	200	xus	/vista/xus/rpc/xus-kaajee-logout	{"ok":true,"source":"vista","rpcUsed":["XUS KAAJEE LOGOUT"],"data":["1"]}
+data_returned	200	xwb	/vista/xwb/rpc/xwb-egcho-string	{"ok":true,"source":"vista","rpcUsed":["XWB EGCHO STRING"],"data":["QThe remote procedure XWB EGCHO STRING is not regist
+data_returned	200	xwb	/vista/xwb/rpc/xwb-egcho-list	{"ok":true,"source":"vista","rpcUsed":["XWB EGCHO LIST"],"data":["OThe remote procedure XWB EGCHO LIST is not registered
+data_returned	200	xwb	/vista/xwb/rpc/xwb-egcho-big-list	{"ok":true,"source":"vista","rpcUsed":["XWB EGCHO BIG LIST"],"data":["SThe remote procedure XWB EGCHO BIG LIST is not re
+data_returned	200	xwb	/vista/xwb/rpc/xwb-egcho-sort-list	{"ok":true,"source":"vista","rpcUsed":["XWB EGCHO SORT LIST"],"data":["TThe remote procedure XWB EGCHO SORT LIST is not 
+data_returned	200	xwb	/vista/xwb/rpc/xwb-egcho-memo	{"ok":true,"source":"vista","rpcUsed":["XWB EGCHO MEMO"],"data":["OThe remote procedure XWB EGCHO MEMO is not registered
+data_returned	200	xwb	/vista/xwb/rpc/xwb-file-list	{"ok":true,"source":"vista","rpcUsed":["XWB FILE LIST"],"data":["NThe remote procedure XWB FILE LIST is not registered t
+data_returned	200	xwb	/vista/xwb/rpc/xwb-filename-check	{"ok":true,"source":"vista","rpcUsed":["XWB FILENAME CHECK"],"data":["SThe remote procedure XWB FILENAME CHECK is not re
+ok_empty	200	xwb	/vista/xwb/rpc/xwb-rpc-list	{"ok":true,"source":"vista","rpcUsed":["XWB RPC LIST"],"data":[]}
+data_returned	200	xwb	/vista/xwb/rpc/xwb-get-variable-value	{"ok":true,"source":"vista","rpcUsed":["XWB GET VARIABLE VALUE"],"data":["WThe remote procedure XWB GET VARIABLE VALUE i
+data_returned	200	xwb	/vista/xwb/rpc/xwb-create-context	{"ok":true,"source":"vista","rpcUsed":["XWB CREATE CONTEXT"],"data":["1"]}
+data_returned	200	xwb	/vista/xwb/rpc/xwb-example-echo-string	{"ok":true,"source":"vista","rpcUsed":["XWB EXAMPLE ECHO STRING"],"data":["XThe remote procedure XWB EXAMPLE ECHO STRING
+data_returned	200	xwb	/vista/xwb/rpc/xwb-example-get-list	{"ok":true,"source":"vista","rpcUsed":["XWB EXAMPLE GET LIST"],"data":["UThe remote procedure XWB EXAMPLE GET LIST is no
+data_returned	200	xwb	/vista/xwb/rpc/xwb-example-wptext	{"ok":true,"source":"vista","rpcUsed":["XWB EXAMPLE WPTEXT"],"data":["SThe remote procedure XWB EXAMPLE WPTEXT is not re
+data_returned	200	xwb	/vista/xwb/rpc/xwb-example-sort-numbers	{"ok":true,"source":"vista","rpcUsed":["XWB EXAMPLE SORT NUMBERS"],"data":["YThe remote procedure XWB EXAMPLE SORT NUMBE
+data_returned	200	xwb	/vista/xwb/rpc/xwb-get-broker-info	{"ok":true,"source":"vista","rpcUsed":["XWB GET BROKER INFO"],"data":["\u0018M  ERROR=BRKRINFO^XWBLIB, More actual param
+ok_empty	200	xwb	/vista/xwb/rpc/xwb-im-here	{"ok":true,"source":"vista","rpcUsed":["XWB IM HERE"],"data":[]}
+data_returned	200	xwb	/vista/xwb/rpc/xwb-is-rpc-available	{"ok":true,"source":"vista","rpcUsed":["XWB IS RPC AVAILABLE"],"data":["\u0018M  ERROR=IMHERE^XWBLIB, More actual parame
+ok_empty	200	xwb	/vista/xwb/rpc/xwb-are-rpcs-available	{"ok":true,"source":"vista","rpcUsed":["XWB ARE RPCS AVAILABLE"],"data":[]}
+data_returned	200	xwb	/vista/xwb/rpc/xwb-remote-rpc	{"ok":true,"source":"vista","rpcUsed":["XWB REMOTE RPC"],"data":["WThe remote procedure XWB ARE RPCS AVAILABLE is not re
+data_returned	200	xwb	/vista/xwb/rpc/xwb-remote-status-check	{"ok":true,"source":"vista","rpcUsed":["XWB REMOTE STATUS CHECK"],"data":["XThe remote procedure XWB REMOTE STATUS CHECK
+data_returned	200	ys	/vista/ys/rpc/ys-gaf-api	{"ok":true,"source":"vista","rpcUsed":["YS GAF API"],"data":["9Remote Procedure 'YS GAF API' cannot be run at this time.
+data_returned	200	ys	/vista/ys/rpc/ytapi-new-gaf	{"ok":true,"source":"vista","rpcUsed":["YTAPI NEW GAF"],"data":["<Remote Procedure 'YTAPI NEW GAF' cannot be run at this
+data_returned	200	ys	/vista/ys/rpc/ysrp-asi-narrative	{"ok":true,"source":"vista","rpcUsed":["YSRP ASI NARRATIVE"],"data":[")Application context has not been created!\u0000"]
+data_returned	200	ys	/vista/ys/rpc/ysrp-asi-item	{"ok":true,"source":"vista","rpcUsed":["YSRP ASI ITEM"],"data":[")Application context has not been created!\u0000"]}
+data_returned	200	ys	/vista/ys/rpc/ytapi-asi-factors	{"ok":true,"source":"vista","rpcUsed":["YTAPI ASI FACTORS"],"data":[")Application context has not been created!\u0000"]}

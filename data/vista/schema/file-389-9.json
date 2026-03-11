@@ -1,0 +1,110 @@
+{
+  "fileNumber": 389.9,
+  "fileName": "STATION NUMBER (TIME SENSITIVE)",
+  "globalRoot": "389.9I",
+  "globalReference": "^VA(389.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REFERENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field is the reference number of the entry in the file.  It is  assigned by the enter/edit routine. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the effective date of the station number for this division.  If you are creating a new division with a new station number then the entry for this division should be sufficient.  If your medical center is changing station numbers then an entry for this effective date is required for all medical center divisions. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MEDICAL CENTER DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This is the medical center division that you want to create a station number entry for.  You must create one entry for each medical center  division.  If you are changing station numbers then one entry for each division is required for the new effective date. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the 3 digit station number, if this divison has a suffix then this is the station number and the suffix. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "IS PRIMARY DIVISION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Each station has one primary divison.  This normally is the divison where the station number is 3 numberic characters with no suffix.  If this is the primary division then this field should be set to 'YES'.   Only one division may be the primary division at a time. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES - INACTIVE;0:NO - ACTIVE;",
+      "helpText": "This field is used to inactivate a station number.  A new entry for a station number for the date it became inactive is required, and this field should be made set to 'YES' for the entry that inactivates the station number. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "OTHER INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "If this entry in the Station Number file is for a station that is not a Medical Center Division then this is the institution pointer to this  entry.   This field isn't currently used but could be used for possibly Record Tracking, Outpatient Pharmacy CMOP's, or Reference Lab work and others if only I knew what else to do with it. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 17000,
+      "fieldName": "INTEGRATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This will be used for the new name for sites that have integrated. ",
+      "fieldNumber_": 17000
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AIVDT", "field": },
+    {"name": "AIVDT0", "field": },
+    {"name": "AIVDT1", "field": },
+    {"name": "AIVDT10", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "389.9", "field": .01, "type": "regular"},
+    {"name": "389.9", "field": .02, "type": "regular"},
+    {"name": "389.9", "field": .02, "type": "regular"},
+    {"name": "389.9", "field": .02, "type": "regular"},
+    {"name": "389.9", "field": .03, "type": "regular"},
+    {"name": "389.9", "field": .03, "type": "regular"},
+    {"name": "389.9", "field": .04, "type": "regular"},
+    {"name": "389.9", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DG(40.8,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(40.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .04, "value": "W \"   \",$P(^(0),U,4)"}
+  ]
+}

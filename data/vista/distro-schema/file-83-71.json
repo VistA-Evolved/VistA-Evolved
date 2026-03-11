@@ -1,0 +1,70 @@
+{
+  "fileNumber": 83.71,
+  "fileName": "DRG HAC CODE SETS",
+  "globalRoot": "83.71",
+  "globalReference": "^ICDD(83.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "HAC CODE SET ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "The HAC Code Set ID is an assigned number that provides a unique  identifier for the Set. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HAC GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP83.7'",
+      "required": true,
+      "pointerTo": 83.7,
+      "helpText": "The HAC Group the Code Set and its codes are assigned to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "DX:DIAGNOSIS;PR:PROCEDURE;",
+      "helpText": "The primary definition of the HAC Code Set is which type of codes it  contains, either Diagnosis or Procedures.  This identifies the location  of the list of specific codes contained within the set. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SET TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRINCIPAL;S:SECONDARY;",
+      "helpText": "Type of Diagnosis as related to the care provided.  A diagnosis may be  either the Principal Diagnosis or one of the Secondary Diagnosis.  The  assignment to the record of care will affect if the diagnosis satisfies  a HAC Code Set.  A Diagnosis assigned to a stay as a Secondary Diagnosis  cannot satisfy a HAC Code Set of Set Type Principal. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "HAC CASE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The HAC Case is a grouping of multiple Sets required to satisfy a single  HAC instance.  Some HAC Groups have multiple cases that separately may  define the HAC. ",
+      "fieldNumber_": .05
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "83.71", "field": .01, "type": "regular"},
+    {"name": "83.71", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

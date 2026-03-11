@@ -1,0 +1,92 @@
+{
+  "fileNumber": 355.1,
+  "fileName": "TYPE OF PLAN",
+  "globalRoot": "355.1I",
+  "globalReference": "^IBE(355.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "There are a number of different types of policies, some have very specific types of coverage while others cover a much broader range of care.  This is the name of the type of policy.  Select the name that best describes the type of policy.  This is a list of  standard types of policies.   The type of policy may be dependent on the type of coverage provided by the insurance company and may affect the type of benefits that are available for the policy.  This will be used in determining if the reim",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the standard abbreviation for this type of policy.  The abbreviation will be used on standard displays of policy information where space is limited. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "MAJOR CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MAJOR MEDICAL;2:DENTAL;3:HMO;4:PPO;5:MEDICARE;6:MEDICAIDE;7:CHAMPUS;8:WORKMANS COMP;9:INDEMNITY;10:PRESCRIPTION;11:MEDICARE SUPPLEMENTAL;12:ALL OTHER;",
+      "helpText": "Each type of policy must be identified with a major category.  It is the major category field that will be used to determine the type of policy internally by the computer. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "An Inactive Type of Plan should no longer be used to define Plans. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "355.11",
+      "required": false,
+      "helpText": "Enter a one or two sentence description of the type of policy. ",
+      "isMultiple": true,
+      "subFileNumber": 355.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "355.14D",
+      "required": false,
+      "helpText": "The effective date multiple contains the date(s) on which  the coverage amounts paid by a supplemental Type of Plan  go into effect or change.  The percentages paid are  stored within this Effective Date multiple by Group Code  and Reason Code.  When these percentages change, a new  effective date should be entered along with each Group  and Reason Code for which this plan pays.  If there is no  effective date entry or the effective date is AFTER the  claim service From date, the secondary balan",
+      "isMultiple": true,
+      "subFileNumber": 355.14,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "MASTER TYPE OF PLAN",
+      "dataType": "POINTER",
+      "rawType": "*P355.99'",
+      "required": false,
+      "pointerTo": 355.99,
+      "helpText": "This field points to the MASTER TYPE OF PLAN file (#355.99). This is a  link to the national standard names for source of payment. ",
+      "fieldNumber_": 15
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "MTOP", "field": },
+    {"name": "355.1", "field": .02, "type": "regular"},
+    {"name": "355.1", "field": .03, "type": "regular"},
+    {"name": "355.1", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.1,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

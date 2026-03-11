@@ -1,0 +1,68 @@
+{
+  "fileNumber": 2101.1,
+  "fileName": "GENERIC CODE SHEET BATCH TYPE",
+  "globalRoot": "2101.1",
+  "globalReference": "^GECS(2101.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to store the batch type name which will be used to group code sheets.  Example of batch types would be DENTAL, VOLUNTARY, MAS, etc. The full name of the type of code sheet.  For example: DENTAL, VOLUNTARY, MAS, etc. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "BATCH DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "2101.11",
+      "required": false,
+      "helpText": "This field is used to store the description of the batch type. This field is used for informational purposes only. ",
+      "isMultiple": true,
+      "subFileNumber": 2101.11,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECEIVING USER",
+      "dataType": "SUBFILE",
+      "rawType": "2101.12",
+      "required": false,
+      "helpText": "The receiving user (queue) where code sheets within this batch type will be transmitted. ",
+      "isMultiple": true,
+      "subFileNumber": 2101.12,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAX CODE SHEETS PER MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The maximum number of code sheets which can be transmitted in one message for this batch type. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYSTEM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The 'code sheet system identifier' (3 characters) used to identify this batch type. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2101.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

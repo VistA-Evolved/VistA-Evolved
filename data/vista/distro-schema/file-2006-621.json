@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2006.621,
+  "fileName": "MAG CT PARAMETER",
+  "globalRoot": "2006.621",
+  "globalReference": "^MAG(2006.621,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Free-text version of the Location/Site code corresponding to the division where the images were acquired. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MANUFACTURER",
+      "dataType": "SUBFILE",
+      "rawType": "2006.6211",
+      "required": false,
+      "helpText": "Modality Manufacturer name. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.6211,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.621", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "fileNumber": 458.6,
+  "fileName": "OVERTIME WARNINGS",
+  "globalRoot": "458.6",
+  "globalReference": "^PRST(458.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "a sequential number to uniquely identify each warning. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "EMPLOYEE",
+      "dataType": "POINTER",
+      "rawType": "RP450'",
+      "required": true,
+      "pointerTo": 450,
+      "helpText": "The employee who has more calculated overtime in their 8B string than  approved overtime in the OT/CT requests file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PAY PERIOD",
+      "dataType": "POINTER",
+      "rawType": "RP458'",
+      "required": true,
+      "pointerTo": 458,
+      "helpText": "The pay period in which the overtime warning occurs. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "WEEK",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "helpText": "Either the first (1) or second (2) week of the pay period in which the overtime warning occurs. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;C:CLEARED;",
+      "helpText": "When a supervisor approves a timecard with an overtime warning an entry is added to this file and it is assumed active.  Payroll may decide to  clear the warning thereby changing the status to cleared. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User in file 200 who changes the STATUS of the warning to CLEARED (C). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME CLEARED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time that the overtime warning is cleared. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "8B STRING OVERTIME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "The total of all types of overtime in the employees 8B string for either  week 1 or 2. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "APPROVED OVERTIME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "The total amount of approved overtime at the time this warning is filed. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "458.6", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "458.6", "field": 2, "type": "regular"},
+    {"name": "458.6", "field": 2, "type": "regular"},
+    {"name": "458.6", "field": 4, "type": "regular"},
+    {"name": "458.6", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

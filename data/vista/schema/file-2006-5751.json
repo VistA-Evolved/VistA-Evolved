@@ -1,0 +1,247 @@
+{
+  "fileNumber": 2006.5751,
+  "fileName": "DICOM OBJECTS TO BE IMPORTED",
+  "globalRoot": "2006.5751",
+  "globalReference": "^MAGDICOM(2006.5751,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the patient name as identified in DICOM tag 0010,0010 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient ID as identified in DICOM tag 0010,0020 from the DICOM Object file that is to be imported.   The patient id may be a social security number or the sending facility's own patient identification. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DOB",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The patient's date of birth is obtained in DICOM tag 0010,0030 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;O:UNKNOWN;",
+      "helpText": "The patient's sex is obtained in DICOM tag 0010,0040 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STUDY DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The study date is obtained in DICOM tag 0008,0020 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STUDY TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The study time is obtained in DICOM tag 0008,0030 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the accession number as identified in DICOM tag 0008,0050 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REFERRING PHYSICIAN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the physician name as identified in DICOM tag 0008,0090 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "STUDY DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the image's study description obtained in DICOM tag 0008,1030 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STUDY INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The study instance uid is obtained in DICOM tag 0020,000D from the  DICOM Object file that is to be imported.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The modality is obtained in DICOM tag 0008,0060 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "INSTITUTION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The institution name is obtained from the DICOM Object file under DICOM tag 0008,0080.   The DICOM Object file's institution may be an outside non-VA facility such as DOD facility or a fee basis entity. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "INSTITUTION ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The institution address is obtained from the DICOM Object file under DICOM tag 0008,0081.   ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SERIES DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the image's series description as identified in DICOM tag 0008,103E from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SERIES INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the image's series instance uid as identified in DICOM tag 0020,000E from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PATH TO DICOM OBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the share path either on the local machine or a mapped drive where the images to be imported reside. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SOP CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The image's sop class is obtained in DICOM tag from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "TRANSFER SYNTAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The image's transfer syntax is obtained in DICOM tag 0004,1523 from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "SOP INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The image's sop instance uid is obtained in DICOM tag 0008,0018 and 0004,1511 from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "INSTANCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The image's instance number (actual image number within the study) is obtained in DICOM tag 0020,0013 from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "NUMBER OF FRAMES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is optional and used for multi-frame images.  The information is obtained in DICOM tag 0028,0008 from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "INSTRUMENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the Instrument Name (C-Store process name). ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "CALLING AE TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores the Calling application entity title, e.g. DICOM_TEST.  The possible values are defined in file AE_TITLE.DIC. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date and time when an entry was made into this file. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PRESENTATION CONTEXT FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:acceptable;2:VISTA_STORAGE is missing;3:abstract syntax not supported;4:transfer syntax not supported;",
+      "helpText": "This field is updated during the process of reading the DICOM Object file and will store the image's presentation context.  The values provided are DICOM standards.   If VISTA_STORAGE is undefined in the PROVIDER APPLICATION file (#2006.586), this field will record 'VISTA_STORAGE is missing'. ",
+      "fieldNumber_": 44
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5751", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

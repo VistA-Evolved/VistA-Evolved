@@ -1,0 +1,103 @@
+{
+  "fileNumber": 214,
+  "fileName": "NURS PATIENT",
+  "globalRoot": "214P",
+  "globalReference": "^NURSF(214,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the name of the person associated with this record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ADMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "Determines if patient is actively admitted into the hospital. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NURS LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P211.4'",
+      "required": true,
+      "pointerTo": 211.4,
+      "helpText": "Nursing location to which the patient is admitted.  Pointer to the NURS Location File (#211.4) ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NURS BED SECTION",
+      "dataType": "POINTER",
+      "rawType": "RP213.3'",
+      "required": true,
+      "pointerTo": 213.3,
+      "helpText": "The nursing bed section of the patient.  Pointer to the NURS AMIS Ward (#213.3) file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE/TIME ON UNIT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time the patient was admitted to the ward. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE/TIME DISCHARGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time the patient physically left the ward. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PHYSICIAN NOTIFIED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicates if a physician was notified of patient's admission. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PHYSICIAN NOTIFIED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time physician was notified of patient's admission. ",
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "AZ1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "214", "field": .01, "type": "regular"},
+    {"name": "214", "field": 1, "type": "regular"},
+    {"name": "214", "field": 1, "type": "regular"},
+    {"name": "214", "field": 2, "type": "regular"},
+    {"name": "214", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

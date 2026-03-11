@@ -1,0 +1,86 @@
+{
+  "fileNumber": .86,
+  "fileName": "DATA TYPE PROPERTY",
+  "globalRoot": ".86I",
+  "globalReference": "^DI(.86,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ16,2",
+      "length": 16,
+      "required": false,
+      "helpText": "This NUMBER should be number-spaced to your institution, if you create a new one. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "This NAME will appear in a list of PROPERTIES  (e.g., \"FIELD LENGTH\") ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIXa",
+      "required": false,
+      "helpText": "Enter an abbreviation for this property.   ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This should tell briefly what the PROPERTY is used for. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".861",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .861,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "DATA TYPE",
+      "dataType": "POINTER",
+      "rawType": "P.81'a",
+      "required": false,
+      "pointerTo": .81,
+      "helpText": "This should tell the attribute of the PROPERTY. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DIR(0)",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "Enter the string that goes into DIR(0) for a ^DIR call. ",
+      "fieldNumber_": 42
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": ".86", "field": .01, "type": "regular"},
+    {"name": ".86", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

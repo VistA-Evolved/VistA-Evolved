@@ -1,0 +1,270 @@
+{
+  "fileNumber": 195.9,
+  "fileName": "BORROWERS/FILE AREAS",
+  "globalRoot": "195.9IV",
+  "globalReference": "^RTV(195.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "These entries describe entities which can posses records. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HOSPITAL LOCATION FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This defines borrowers who are entries in the hospital location file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP195.1'IX",
+      "required": true,
+      "pointerTo": 195.1,
+      "helpText": "This defines the application associated with the entry in this file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECORD BARCODE PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This allows the system to know where to print record barcodes depending on the borrower/file area. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "REQUEST NOTICE PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This allows the system to know where to print requests for records. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MANAGEMENT REPORT PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This allows the system to know where to print management reports. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PHONE/LOCATION COMBO",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the phone number and location in a dynamic format for descriptions of borrowers/file areas. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the phone number of the borrower/file areas. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LOCATION/ROOM#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the location of a borrower/file areas. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "BORROWING PRIVILEGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NORMAL;i:INACTIVATED;r:REVOKED;",
+      "helpText": "NORMAL means records may be charged to the borrower/file area. INACTIVATED means records will not normally be charged. REVOKED means records may not be charged to this borrower/file area. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "RECORD SORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:ALPHA;t:TERMINAL DIGITS;",
+      "helpText": "ALPHA means record lists are sorted alphabetically. TERMINAL DIGIT means record lists are sorted by social security number in right to left order. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REQUESTS FOR WHICH BORROWER?",
+      "dataType": "POINTER",
+      "rawType": "*P195.9'X",
+      "required": false,
+      "pointerTo": 195.9,
+      "helpText": "This allows the system to query for a associated borrower/file area when a borrower is selected. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "HOSPITAL LOCATION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CLINIC;F:FILE AREA;I:IMAGING;M:MODULE;N:NON-CLINIC STOP;W:WARD;Z:OTHER;",
+      "helpText": "This defines the hospital location type when a borrower is an entry in the hospital location file. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ARE RECORDS REQUIRED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "YES means request a record when a patient visit is scheduled. NO means records are not required. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ACTION IF HOME IS DIFFERENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "n:NO ACTION;a:AUTOMATICALLY CHANGE;q:QUESTION USER ABOUT CHANGE;d:DISPLAY WARNING ONLY;",
+      "helpText": "These actions take place when the device of the user is not associated with the file room where the user is logged in. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DOMAIN FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "REMOTE MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "MAIL ROUTING SYMBOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "RECORDS NEEDED BY LOCATION",
+      "dataType": "POINTER",
+      "rawType": "195.9001PA",
+      "required": false,
+      "helpText": "This defines the record types, volumes and application for records which are normally needed when a particular borrower requests records. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "WHICH SECURITY KEY IS NEEDED?",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This defines a security key to be associated with a file area to limit system actions normally associated only with file areas. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "INPUT DEVICES",
+      "dataType": "SUBFILE",
+      "rawType": "195.9002A",
+      "required": false,
+      "helpText": "This allows the system to know the borrower/file area associated with the user logged on the system. ",
+      "isMultiple": true,
+      "subFileNumber": 195.9002,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "NO. OF RECORDS CHARGED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the number of records currently charged to this borrower. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "195.9003A",
+      "required": false,
+      "helpText": "This allows a particular borrower to be selected by short notation. ",
+      "isMultiple": true,
+      "subFileNumber": 195.9003,
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "SCHEDULED ADMISSION BORROWER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "TREATING SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "P45.7'",
+      "required": false,
+      "pointerTo": 45.7,
+      "fieldNumber_": 172
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "ABOR", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "ADEV", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "S", "field": },
+    {"name": "195.9", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "", "field": 2, "type": "regular"},
+    {"name": "195.9", "field": 3, "type": "regular"},
+    {"name": "195.9", "field": 4, "type": "regular"},
+    {"name": "", "field": 8, "type": "regular"},
+    {"name": "", "field": 9, "type": "regular"},
+    {"name": "195.9", "field": 21, "type": "regular"},
+    {"name": "195.9", "field": 171, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W ?30,$E($S($D(^DIC(195.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),1,25) W ?58,$E($S('$D(^SC(+$P(^RTV(195.9,Y,0),U,2),0)):\"\",'$D(^DIC(4,+$P(^(0),U,4),0)):\"\",1:\"  [\"_$P(^(0),U)_\"]\"),1,20),?79,@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

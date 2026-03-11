@@ -1,0 +1,373 @@
+{
+  "fileNumber": 798.1,
+  "fileName": "ROR REGISTRY PARAMETERS",
+  "globalRoot": "798.1",
+  "globalReference": "^ROR(798.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REGISTRY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   You can either select an existing registry or add  a new one. Registry names must be unique. Names of the National registries must start with \"VA\".   You can only select records of those registries that you have appropriate security key(s) for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "NATIONAL",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "ONLY AUTHORIZED NATIONAL REGISTRY DEVELOPERS CAN EDIT THIS FIELD!   The national registries must have this field set to \"YES\". This prevents local editing of other  fields of national registry definitions. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REGISTRY UPDATED UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date of the last  successful run of the regular registry update process. The search engine looks for new patients starting from this date.   Usually, this field should not be manually edited; it is updated automatically. Before initial population of the registry, enter the date that the data search should start from. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATA EXTRACTED UNTIL",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date of the last  successful run of the regular data extraction process. Do not edit this field. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SELECTION RULE",
+      "dataType": "SUBFILE",
+      "rawType": "798.13",
+      "required": false,
+      "helpText": "The SELECTION RULE field contains a list of the  top-level selection rules that are used to screen the patients to be added to the registry.   The records of the multiple are uniquely  identified by the selection rule names. The \"A\" primary key and the uniqueness index \"B\" are used for this purpose. ",
+      "isMultiple": true,
+      "subFileNumber": 798.13,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION! ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "798.15",
+      "required": false,
+      "helpText": "Any additional reference information related to the registry may be stored in this field. ",
+      "isMultiple": true,
+      "subFileNumber": 798.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "BEFORE UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   Enter a full name ($$TAG^ROUTINE) of the external MUMPS function that will be called before adding a new record to the registry. This entry point can be used to prepare any additional data. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "AFTER UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   Enter a full name ($$TAG^ROUTINE) of the external MUMPS function that will be called after adding a new record to the registry. This entry point can be used to create record(s) in additional linked file(s) of the local registry. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "EXTRACT PERIOD FOR NEW PATIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   Enter the number of days that should be subtracted from the earliest date when the patient passed one of the selection rules. The result will be used as the start date of the data extraction for this new patient.   If this field is empty, the default value of 3650 is used. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ENABLE LOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Select \"YES\" to enable recording of different  kinds of events (debug messages, errors, etc.) generated by registry processes. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "LOG EVENT",
+      "dataType": "SET",
+      "rawType": "798.11S",
+      "required": false,
+      "helpText": "The LOG EVENT multiple contain a list of event  types that are enabled to record.    If the list is empty and recording is enabled,  all events except debug messages will be recorded.   Otherwise, only recording of the events from the list and error messages will be enabled. ",
+      "isMultiple": true,
+      "subFileNumber": 798.11,
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MESSAGE BUILDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   Enter a full name ($$TAG^ROUTINE) of the external  MUMPS function that will be called to generate the registry-specific section of the HL7 message for each record of the registry.   If this field has no value, the default entry  point ($$REGDATA^ROREXT02) will be used. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REGISTRY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "Select the \"INACTIVE\" code if you want to exclude the registry from the regular registry updates and data transmissions. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "EXTRACTED RESULT",
+      "dataType": "SUBFILE",
+      "rawType": "798.112I",
+      "required": false,
+      "helpText": "This multiple contains a list of Lab result codes. These results will be extracted and transmitted to AAC. ",
+      "isMultiple": true,
+      "subFileNumber": 798.112,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "*P101'X",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   This field contains a pointer to the protocol in  the PROTOCOL file that is used as the event driver for sending HL7 messages. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 13.1,
+      "fieldName": "MAXIMUM MESSAGE SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,1",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the maximum size (in megabytes) of a batch HL7 message that can be sent to Austin Automation Center (AAC). If this field is empty or contains 0, the size is not limited.   You must coordinate your intentions with AAC support personnel if you are going to edit this field. ",
+      "fieldNumber_": 13.1
+    },
+    {
+      "fieldNumber": 13.2,
+      "fieldName": "ALERT FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Value of the ALERT FREQUENCY field determines how often e-mail notifications and VistA alerts are  sent to the AAC and local staff in case of problems with the site's CCR software (data extraction problems, unsent HL7 messages, etc.).   If this field is empty or 0, notifications are not sent.   Otherwise, the nightly task increments the error counters and checks the remainders from division of the counters by the value of this field. When a reminder becomes 0, the software sends the correspondin",
+      "fieldNumber_": 13.2
+    },
+    {
+      "fieldNumber": 13.3,
+      "fieldName": "NATIONAL NOTIFICATION E-MAIL",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   The NATIONAL NOTIFICATION E-MAIL field holds an  e-mail address where notifications about registry problems (mostly, data transmission problems) are sent to.   If the field is empty, e-mail notifications will not be sent. ",
+      "fieldNumber_": 13.3
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "NOTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "798.114P",
+      "required": false,
+      "helpText": "This multiple contains a list of VistA users that should be notified about problems with the local registry. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15.1,
+      "fieldName": "LAG DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Number of days that defines an overlap of the data searches during the registry updates and a data extraction delay during the regular data extractions.   If this field is empty, the default value of 1 is  used by the registry update and data extraction processes.   See the package documentation or Technical Description of the field in the data dictionary for more information. ",
+      "fieldNumber_": 15.1
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SECURITY KEY",
+      "dataType": "SUBFILE",
+      "rawType": "798.118",
+      "required": false,
+      "helpText": "This multiple stores a list of security keys  associated with the registry. ",
+      "isMultiple": true,
+      "subFileNumber": 798.118,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19.1,
+      "fieldName": "NUMBER OF PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The NUMBER OF PATIENTS field contains total number of confirmed patients in the registry right after the last registry update. ",
+      "fieldNumber_": 19.1
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "NUMBER OF PENDING PATIENTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The NUMBER OF PENDING PATIENTS field stores number of pending patients in the registry right after the last registry update. ",
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 19.3,
+      "fieldName": "HL7 ATTEMPT COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The HL7 ATTEMPT COUNTER field is incremented each time the nightly task (the Registry Update & Data  Extraction [ROR TASK] option) encounters at least one unsent HL7 message.   The nightly task assigns 1 to the field when new HL7 messages are generated (only if all previous messages have been successfully transmitted).   Usually, you should not edit this field. ",
+      "fieldNumber_": 19.3
+    },
+    {
+      "fieldNumber": 21.01,
+      "fieldName": "AUTOMATIC BACKPULL",
+      "dataType": "POINTER",
+      "rawType": "*P799.6'",
+      "required": false,
+      "pointerTo": 799.6,
+      "helpText": "This field stores the pointer to the historical  data extraction definition that was used during the previous run of the nightly task. ",
+      "fieldNumber_": 21.01
+    },
+    {
+      "fieldNumber": 21.04,
+      "fieldName": "LOCAL DATA RESENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date when all local registry  data was resent to AAC after the installation (to  fix the data incorrectly overwritten with the  historical data).   Usually, you should not modify this field. If you need to resend all local registry and demographic data to AAC, you should clear this field. The data will be resent automatically during the next nightly transmission. ",
+      "fieldNumber_": 21.04
+    },
+    {
+      "fieldNumber": 21.05,
+      "fieldName": "HDT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is initialized with the current  date/time by the registry setup task upon successful completion of the initial registry population. ",
+      "fieldNumber_": 21.05
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LAST BATCH CONTROL ID",
+      "dataType": "SUBFILE",
+      "rawType": "798.122",
+      "required": false,
+      "helpText": "This multiple contains a list of identifiers of the HL7 batch messages generated during the previous run of the nightly task. ",
+      "isMultiple": true,
+      "subFileNumber": 798.122,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ENABLE PROTOCOLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "If this field is set to \"YES\", event protocols will be used by the package to speed up the  registry processing.   The protocols create references to patient events in the ROR PATIENT EVENTS file. Only those  patients that have new references will be  processed by the next registry update.   If several registries are updated at the same  time and at least one of them has this field set  to \"YES\", all these registries will be processed  using event references. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "EXCLUDE EMPLOYEES",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY DEFINITION!   If this field is set to \"YES\", patients who are employees will not be processed by the registry update or data extraction functions. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "AVAILABLE REPORTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS A PART OF NATIONAL REGISTRY DEFINITION!   The AVAILABLE REPORTS field stores a list of  report codes (not the IENs!) separated by commas. These reports will be available for this registry in the GUI. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "LOCAL TEST NAME",
+      "dataType": "POINTER",
+      "rawType": "798.128PI",
+      "required": false,
+      "helpText": "This multiple maps local lab tests to the  predefined lab test groups that are used in the  reports. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "LOCAL DRUG NAME",
+      "dataType": "POINTER",
+      "rawType": "798.129P",
+      "required": false,
+      "helpText": "This multiple maps local medication names to the predefined medication groups that are used in the reports. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "REPORT STATS",
+      "dataType": "POINTER",
+      "rawType": "798.12P",
+      "required": false,
+      "helpText": "Records of this multiple store the statistic data  related to running reports. Usually, the stats are reset after successful data transmission to the AAC. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "AUTO-CONFIRM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is used during the registry update to set the status of new  patients.  If the registry is set to auto-confirm, the patient status is set to 'Confirmed'.  If auto-confirm is no, the patient status is set to 'Pending'. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 36,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "AEP", "field": },
+    {"name": "ARULES", "field": },
+    {"name": "C", "field": },
+    {"name": "798.1", "field": 25, "type": "regular"},
+    {"name": "798.1", "field": 31, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "D EN^DDIOL(\"  \"_$P($G(^(0)),U,4),,\"?30\")"}
+  ]
+}

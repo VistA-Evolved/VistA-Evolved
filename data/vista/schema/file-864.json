@@ -1,0 +1,35 @@
+{
+  "fileNumber": 864,
+  "fileName": "OCX MDD SITE PREFERENCES",
+  "globalRoot": "864P",
+  "globalReference": "^OCXS(864,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEVELOPMENT SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OBJECT NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The object namespace is used to produce a unique identifier for each object consisting of namespace_class mnemonic_IEN ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "864", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fileNumber": 119,
+  "fileName": "DIETITIAN TICKLER FILE",
+  "globalRoot": "119P",
+  "globalReference": "^FH(119,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIETITIAN",
+      "dataType": "POINTER",
+      "rawType": "RP200'X",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the Dietitian in File 200. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "DATE",
+      "rawType": "119.01D",
+      "required": false,
+      "helpText": "This field contains a free-text description of the item requiring action. ",
+      "isMultiple": true,
+      "subFileNumber": 119.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "119", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

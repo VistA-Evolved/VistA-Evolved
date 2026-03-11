@@ -1,0 +1,218 @@
+{
+  "fileNumber": 341,
+  "fileName": "AR EVENT",
+  "globalRoot": "341I",
+  "globalReference": "^RC(341,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is a unique identifier of an event logged into the AR Event file.  Usually the first 3 numbers will be the station number followed by a dash. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "POINTER",
+      "rawType": "RP341.1'",
+      "required": true,
+      "pointerTo": 341.1,
+      "helpText": "The event type describes the type of event that occurred for a debtor by storing all events that occur for this debtor.  This allows better reporting capabilities, financial integrity, and history recreation.   In version 4.0 of AR, the only types of events that are tracked under this new system are notification type events (letters, UBs, and patient statements) and comments.  Eventually, payments, refunds, etc. will be tracked in this new file but are currently being tracked in the Accounts Rec",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DEBTOR",
+      "dataType": "POINTER",
+      "rawType": "RP340'",
+      "required": true,
+      "pointerTo": 340,
+      "helpText": "This debtor field is used to store what debtor this event belongs to. By storing events by debtor, this will allow a more efficient system when trying to re-create the activity for a debtor account. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE/TIME OF EVENT",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The Date/Time of event represents the date the event occurred.  For example, if a user is logging a comment against a debtor account for the previous day, then this field would be dated for that day and not the day it is being entered.  This allows the user to back-date events that occurred in the past. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DATE/TIME CLOSED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date/time an event is closed is the time the AR package 'recognizes' the event as being closed and complete.  An event has two status, OPEN and CLOSED.  While a transaction is in a status of 'OPEN' the AR package does not recognize the transaction. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person that caused the event to be created. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "The site field represents the site that the event belongs to.  This field would be used when multiple divisional sites are supported and will allow events to be 'traced' to a particular site. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:OPEN;1:CLOSED;",
+      "helpText": "The status of an event is either OPEN or CLOSED.  When an event for a debtor is in an 'OPEN' status, this means that activity is occurring and has not completed.  After the activity is completed, the event would be changed to a status of CLOSED. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PRINCIPAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the principal amount of the event if applicable. Some events, such as comment type events, do not have a dollar amount associated with the event. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "INTEREST AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the interest amount of the event if applicable. Some events, such as comment type events, do not have a dollar amount associated with the event. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "ADMINISTRATIVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the administrative amount of the event if applicable. Some events, such as comment type events, do not have a dollar amount associated with the event. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "COURT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the court cost amount of the event if applicable. Some events, such as comment type events, do not have a dollar amount associated with the event. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "MARSHAL AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2O",
+      "length": 9,
+      "required": false,
+      "helpText": "This field contains the marshal cost amount of the event if applicable. Some events, such as comment type events, do not have a dollar amount associated with the event. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "341.01",
+      "required": false,
+      "helpText": "This field gives the user the ability to give expanded comments for an event or the reason the event occurred or to better describe the event.   For example, if a patient called on the phone, an event could be logged to describe the call and what was discussed with the patient. ",
+      "isMultiple": true,
+      "subFileNumber": 341.01,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "BRIEF COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A brief comment may exist for certain types of events that can be entered by the user.  A brief comment would consist of a short summary to better describe the reason for the event. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "FOLLOW-UP DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Comment type transactions that are entered by the user can have an optional follow-up date.  The follow-up date will allow the AR package to remind the user, via a nightly report, to take some action based on the event.   For example, if a patient calls and needs information that is not readily available, a user can enter as a comment with a follow-up date as a 'reminder' to return the information to the patient. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P430'",
+      "required": false,
+      "pointerTo": 430,
+      "helpText": "If the event type is related to a bill in the Accounts Receivable file, then the bill number will be stored in this field.  For now, the only events that will contain a bill are notification type events. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "NOTIFICATION NUMBER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FIRST;2:SECOND;3:THIRD;4:LAST;",
+      "helpText": "This field is used when a notification is sent to a debtor.  A notification is either a patient statement, UB bill to insurance company, or follow-up letter to Vendors, Institutions, and persons.   This field will represent the number of times a notification was sent. If the notification being sent is over three, then this field will be set to four. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "CCPC STATEMENT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the STATEMENT on the sttement from CCPC in Austin. ",
+      "fieldNumber_": 6.01
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "AD1", "field": },
+    {"name": "AD2", "field": },
+    {"name": "AD3", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "341", "field": .01, "type": "regular"},
+    {"name": "341", "field": .02, "type": "regular"},
+    {"name": "341", "field": .05, "type": "regular"},
+    {"name": "341", "field": .05, "type": "regular"},
+    {"name": "341", "field": .07, "type": "regular"},
+    {"name": "341", "field": .07, "type": "regular"},
+    {"name": "341", "field": .11, "type": "regular"},
+    {"name": "341", "field": 4.02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RC(341.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(341.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .05, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RCD(340,+$P(^(0),U,5),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(340,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

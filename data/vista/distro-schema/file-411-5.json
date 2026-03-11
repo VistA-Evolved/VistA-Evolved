@@ -1,0 +1,47 @@
+{
+  "fileNumber": 411.5,
+  "fileName": "IFCAP PARAMETERS",
+  "globalRoot": "411.5",
+  "globalReference": "^PRC(411.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the IFCAP parameter record.  It will name entries that are not site specific but are specific to the computer system that is running IFCAP.     This file will have only one record.  Any IFCAP specific parameters will be entered as different fields within this one record.     This file will be set up with the only record being internal entry number 1.  The user will not be allowed to change or delete that one entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DAYS TO RETAIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field will control how many days records in the EDI STATUS FILE (#443.75) will be retained.  Any records older than this fields number of days will be removed from the file.     If no value is entered in this field all records over 60 days will be removed.     The DATE/TIME CREATED field (#6) in the EDI STATUS FILE will be used as the date governing when the record was entered into the file.  Any date before the magic date will be removed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EDI PURGE QUEUED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be set when the background task to remove records over XXX days old from file 443.75 is tasked.   This will show up as any record over XXX days old will not be available in the EDI/RFQ Report option. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "411.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

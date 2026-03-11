@@ -1,0 +1,88 @@
+{
+  "fileNumber": 53.46,
+  "fileName": "CLINIC DEFINITION",
+  "globalRoot": "53.46",
+  "globalReference": "^PS(53.46,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44'",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the clinic for which the stop date calculations are being  entered. The clinic should allow the ordering of Inpatient Medications  for Outpatients. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NUMBER OF DAYS UNTIL STOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days to default the length of an order. Cannot  exceed 365 days. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTO-DC IMO ORDERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field gives the site the ability to define, by clinic, whether or  not inpatient orders for outpatients should be auto-dc'd on patient  movements. This field will only affect those orders where Inpatient  Medications V. 5.0 controls the discontinue action. If the patient  movement discontinue action is handled by any other package, this field  will have no effect. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEND TO BCMA?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will determine if inpatient orders for outpatients in this  clinic will be made available to the Bar Code Medication Admnistration  package. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MISSING DOSE PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the print device that this Clinic will use to print Missing Dose  requests.  This device overrides the default \"Clinic Missing Dose  Request Printer:\" device (stored as an XPAR Division parameter), set by  the BCMA Site Parameters GUI Client, for Clinics. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRE-EXCHANGE REPORT DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "The device most frequently used to print the Pre-Exchange Report for this CLINIC. This device will be shown as the default for the 'Select DEVICE for PRE-EXCHANGE UNITS REPORT:' prompt when printing the Pre-Exchange  Report. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IMO DC/EXPIRED DAY LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of days that DC/Expired orders  will be included in the enhanced order checks for drug interactions and therapeutic duplications for clinic orders. If this field is left blank, a default value of 30 days will be used. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "53.46", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

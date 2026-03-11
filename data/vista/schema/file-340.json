@@ -1,0 +1,581 @@
+{
+  "fileNumber": 340,
+  "fileName": "AR DEBTOR",
+  "globalRoot": "340V",
+  "globalReference": "^RCD(340,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DEBTOR",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This field contains the debtor to which this account belongs to.  An account can belong to an insurance company, vendor, institution, person, or patient.  Accounts can be set up for Medical Care Cost Recovery charges and also for non-benefit debts, such as: Employee bills, Ex-employee bills, and Vendor bills. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT STATEMENT DETAIL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:USE SITE DEFAULT;1:BRIEF;2:EXPANDED;",
+      "helpText": "This field is used to determine the amount of detail to be displayed on the patient statement for RX Copay charges.  A site can define brief or detailed information for each patient to be displayed on the statement.  Brief information consists only of the RX # and Fill date, while the expanded information consists of much more (Physician, drug name, etc.). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATEMENT DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "A statement day is assigned to all types of debtors, except insurance companies.  A statement day is the day that a patient statement is generated or a follow-up letter is generated for non-benefit debts. The AR package will hold 'notifications' from being sent until the debtors 'statement day' arrives.  This allows all activity since the previous statement to print and update the debtor on the account activity.   Patient statement days never change, but Institution, Person, and Vendor statement",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RECEIVABLE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:DEFAULT;1:FEDERAL;2:NON-FEDERAL;3:OWCP;",
+      "helpText": "This field identifies the type of of debtor ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VENDOR LINK",
+      "dataType": "POINTER",
+      "rawType": "P440'",
+      "required": false,
+      "pointerTo": 440,
+      "helpText": "This field is used to link a vendor from file 440 to a debtor that is not a vendor debtor.   It is used to get the vendor ID to send to FMS on Billing Documents (BDs). ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ACCT. PROCESSED (KATRINA)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be set by the software whenever a debtor is processed for  a possible refund of payments made to interest and/or administrative  charges that were charged inappropriately during the Hurricane Katrina  emergency period.  A '1' in this field indicates that the account was  already processed and should not be processed again. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "COPAY CHARGES CANCELLED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to flag debtors, who were affected by Hurricane Katrina, who had copay charges from 8/29/05 through 2/28/06 cancelled by patch PRCA*4.5*241. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LAST DATE ACCT CHARGED ADMIN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to track the last date the account was charged an administrative charge. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "STREET ADDRESS #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the first address field on patient statements and profiles. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "STREET ADDRESS #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the second address field on patient statements and profiles. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "STREET ADDRESS #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the third address field on patient statements and profiles. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the city field on patient statements and profiles. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the state address field on patient statements and profiles. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a 'billing address' that will over-ride the address fields in the patient file.  This is necessary for patients that may be incompetent and may need to have a separate billing address from their home address.  Once the MAS package supports 'billing addresses', then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the Zip Code address field on patient statements and profiles. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For patients, the MCCR/Fiscal staff can enter a \"billing phone number\" that will over-ride the address fields in the Patient file.  This is necessary for patients that may be incompetent and may need to have a separate phone number from their home phone number.  Once the MAS package supports \"billing phone numbers\", then the AR software will incorporate this functionality from the MAS package.   This field will be displayed as the phone number on the patient account profiles and bill profiles. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "FOREIGN COUNTRY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will be used for foreign addresses where the state is a foreign country. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "ADDRESS UNKNOWN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will indicate whether the address is unknown or not. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "DEBTOR ADDR UPDATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field stores who updated the Debtor Address fields in the AR DEBTOR  file. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "DEBTOR ADDR LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field stores the date and time when the Debtor Address fields in the AR DEBTOR file were updated. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "340.02",
+      "required": false,
+      "helpText": "This field should contain any necessary \"general\" comments about the debtor.  This information will be displayed at the top of the Account Profile. ",
+      "isMultiple": true,
+      "subFileNumber": 340.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "ACCOUNT AT DMC?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACCOUNT FORWARDED TO DMC;",
+      "helpText": "This field will contain a '1' if this account has been referred to the Debt Management Center (DMC).  It will be automatically set by the AR software upon creation of the DMC Master Record. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "DATE SENT TO DMC",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the DMC Master Record was created and transmitted. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "DMC DISCOVERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date bill established of the oldest bill referred to DMC. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "CURRENT TOTAL AT DMC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current amount of the debt that has been referred to DMC. This field will be updated by the DMC weekly transmission. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "CURRENT PRINCIPAL AT DMC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current principal amount of the debt that has been referred to DMC. This field will be updated by the DMC weekly transmission. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "CURRENT INTEREST AT DMC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current interest amount of the debt that has been referred to DMC. This field will be updated by the DMC weekly transmission. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "CURRENT ADMIN AT DMC",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the current admin amount of the debt that has been referred to DMC. This field will be updated by the DMC weekly transmission. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "LESSER WITHHOLDING AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field is used to enter a lesser withholding amount for DMC (Debt Management Center).  Currently, when a debtor is identified for withholding by DMC, the full amount that the debtor holds is withheld.  An amount in this field will allow the DMC to take a lesser amount monthly until the full debt is paid. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "SITE DELETION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DELETED BY SITE;",
+      "helpText": "This field will be sent whenever a site deletes a debtor from DMC.  When the weekly updates encounters this flag, a '0' balance code sheet will be sent to DMC to delete the debtor from their files.  However, the debtor could be resent with the next master record run. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "ORIGINAL TOP TIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the SSN or Tax ID number sent to TOP on the original referral document. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "ORIGINAL TOP DEBTOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name as sent on the original TOP referral document. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "CURRENT TOP DEBT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,2",
+      "length": 13,
+      "required": false,
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "ALIAS TOP TIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the most current \"Alias\" TIN sent to TOP. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "ALIAS TOP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the most current \"Alias\" name sent to TOP ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "TOP DELINQUENCY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the oldest active bill currently sent to TOP.  This is initially entered upon creation of the master documents and may be changed during the creation of the update documents.The date in this field is placed on Recertification and Refund/ Refund Reversal documents. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "TOP DEBTOR ADDRESS, LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the 1st line of the current debtor address transmitted to TOP. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "TOP DEBTOR ADDRESS, LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the 2nd line of the current debtor address transmitted to TOP. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "TOP DEBTOR ADDRESS, CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the city included in the current debtor address transmitted to TOP. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "TOP DEBTOR ADDRESS, STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a pointer to the State file.  It includes the state from the current address sent to TOP. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "TOP DEBTOR ADDRESS, ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This contains the Zip Code included in the current debtor address transmitted to TOP. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 6.01,
+      "fieldName": "DATE DEBTOR REFERRED TO TOP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This contains the date the account was 1st referred to TOP. ",
+      "fieldNumber_": 6.01
+    },
+    {
+      "fieldNumber": 6.02,
+      "fieldName": "STOP TOP REFERRAL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STOP TOP REFERRAL FLAG SET;",
+      "helpText": "This flag is set whenver a 'Stop TOP Referral' is entered by the user through the menu option RCTOP STOP REFERRAL. ",
+      "fieldNumber_": 6.02
+    },
+    {
+      "fieldNumber": 6.03,
+      "fieldName": "STOP TOP REFERRAL EFF. DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains a date, for which bills generated after, are eligible for TOP referral. ",
+      "fieldNumber_": 6.03
+    },
+    {
+      "fieldNumber": 6.04,
+      "fieldName": "STOP TOP REFERRAL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WAIVER;B:BANKRUPTCY;N:NOT FORWARDED BY AAC;O:OTHER;R:REJECTED BY TOP;",
+      "helpText": "This field contains a code ,detailing the reason TOP referral was stopped. ",
+      "fieldNumber_": 6.04
+    },
+    {
+      "fieldNumber": 6.05,
+      "fieldName": "STOP TOP REFERRAL COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field must be answered whenever a reason of 'Other' is entered for stopping TOP referral. ",
+      "fieldNumber_": 6.05
+    },
+    {
+      "fieldNumber": 6.06,
+      "fieldName": "TOP REFERRAL HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the Vendor or Ex-Employee referral will be forwarded to TOP by the AAC. ",
+      "fieldNumber_": 6.06
+    },
+    {
+      "fieldNumber": 6.07,
+      "fieldName": "CURRENT TOP TRACE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the number assigned by TOP to the last payment from the debtor. ",
+      "fieldNumber_": 6.07
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "TCSP RECALL FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TCSP RECALL FLAG SET;",
+      "helpText": "The flag that marks this debtor for recall from Cross-Servicing together with all of the debts at Cross-Servicing. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "TCSP RECALL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the Cross-Servicing recall record was sent to Cross-Servicing. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 7.04,
+      "fieldName": "TCSP RECALL REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "03:BANKRUPTCY WITH AUTOMATIC STAY;05:DEBTOR IS DISABLED WITH INABILITY TO PAY;06:DEBTOR IS DECEASED;",
+      "helpText": "The reason that the debtor is being recalled from Cross-Servicing.  Select from: '03' for bankruptcy,  '05' for debtor is disabled with inability to pay,  '06' for debtor is deceased. ",
+      "fieldNumber_": 7.04
+    },
+    {
+      "fieldNumber": 7.05,
+      "fieldName": "DATE DEBTOR REFERRED TO TCSP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the debtor was first referred to Cross-Servicing. ",
+      "fieldNumber_": 7.05
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TCSP REFERRAL STOP FLAG",
+      "dataType": "SET",
+      "rawType": "340.08SA",
+      "required": false,
+      "helpText": "This multiple is for stoping and reactivating TCSP referrals for debtor ",
+      "isMultiple": true,
+      "subFileNumber": 340.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AR REPAYMENT PLANS",
+      "dataType": "POINTER",
+      "rawType": "340.09PA",
+      "required": false,
+      "helpText": "This field contains links to AR REPAYMENT PLAN file (#340.5) for each  plan the Debtor is associated with. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ10",
+      "length": 10,
+      "required": false,
+      "helpText": "This field is used to display the SSN of patient and persons on AR reports or local reports. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "LARGE PRINT NEEDED ON STMT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will identify 1st party debtors requiring statements with large print. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "LOCAL PRINT",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This field is used as a flag to indicate if the debtor has oversized  statements to be manually printed on a local printer. It will set to 0 or  null if there are no oversized statements to be printed or 1 if there are  statements to print. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "LOCAL PRT DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "<INTERNAL USE ONLY>   This field is used to capture a copy of the internal BBAL variable for a statement flagged as oversize for later manual printing to a local printer. The field is cleared when the local print field flag is cleared. ",
+      "fieldNumber_": 113
+    }
+  ],
+  "fieldCount": 57,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "ALOCAL", "field": },
+    {"name": "B", "field": },
+    {"name": "DMC", "field": },
+    {"name": "TCSP", "field": },
+    {"name": "TOP", "field": },
+    {"name": "340", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "340", "field": .01, "type": "regular"},
+    {"name": "340", "field": .03, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.02, "type": "regular"},
+    {"name": "", "field": 1.03, "type": "regular"},
+    {"name": "", "field": 1.04, "type": "regular"},
+    {"name": "", "field": 1.05, "type": "regular"},
+    {"name": "", "field": 1.06, "type": "regular"},
+    {"name": "", "field": 1.07, "type": "regular"},
+    {"name": "", "field": 1.08, "type": "regular"},
+    {"name": "", "field": 1.09, "type": "regular"},
+    {"name": "", "field": 1.1, "type": "regular"},
+    {"name": "340", "field": 3.01, "type": "regular"},
+    {"name": "340", "field": 6.01, "type": "regular"},
+    {"name": "340", "field": 7.05, "type": "regular"},
+    {"name": "340", "field": 112, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

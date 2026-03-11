@@ -1,0 +1,48 @@
+{
+  "fileNumber": 2006.5839,
+  "fileName": "DICOM GMRC TEMP LIST",
+  "globalRoot": "2006.5839",
+  "globalReference": "^MAG(2006.5839,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE NUMBER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "123:Consults/Requests;",
+      "helpText": "The value of this field is a pointer to a file.   Since this field may point only to a very limited number of files, the datatype for this field is a SET OF CODES, rather than a pointer to the File of Files.   Currently, the only possible value is 123 (Consults). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENTRY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,0",
+      "length": 13,
+      "required": true,
+      "helpText": "The value of this field is a pointer into a file.   The file number of the file into which this field points is stored as the value of field FILE NUMBER.   Since this value is not a \"variable pointer\", nor a \"normal pointer\", the data type of this field is NUMBER, not POINTER. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "RP2005'",
+      "required": true,
+      "pointerTo": 2005,
+      "helpText": "The value of this field is a pointer into the Image File (2005).   The image that is being pointed to is usually the group-parent of the group of images that is linked to the entity in the temporary file.   (When the image group consists of one single image, that image won't have a \"group parent\", and this field will point to the image itself.) ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.5839", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

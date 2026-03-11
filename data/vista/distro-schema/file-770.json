@@ -1,0 +1,189 @@
+{
+  "fileNumber": 770,
+  "fileName": "HL7 NON-DHCP APPLICATION PARAMETER",
+  "globalRoot": "770I",
+  "globalReference": "^HL(770,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The applications that the DHCP system will communicate with are referred to as non-DHCP applications simply as a way of distinguishing between the two applications.  The application that the DHCP system will be communicating with could also be another DHCP application (e.g., Radiology sending/receiving HL7 messages to MAS).   All application names (in files 770 and 771 combined) must be unique. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DHCP STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The station number of the DHCP site that will receive/send HL7 messages to the non-DHCP application. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NON-DHCP FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of the facility associated with the non-DHCP application. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAXIMUM BLOCK SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The maximum block size should almost always be 245 characters. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NUMBER OF RETRIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of times (1 to 99) to attempt sending an HL7 message (if initially unsuccessful) before requeuing the message for later transmission.  A value of three is recommended. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "HL7 DEVICE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "NOTE:  This field is only applicable if you are using the HL7 Hybrid Lower Layer Protocol.  The HL7 Device and Mail Group fields are mutually exclusive. You may only enter a value in one of the fields.  If you wish to enter a value in the HL7 Device field, you must first delete any value you have entered in the Mail Group field. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HL7 VERSION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP771.5'",
+      "required": true,
+      "pointerTo": 771.5,
+      "helpText": "This is the version of the HL7 interface that the sending and receiving applications are using. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DHCP APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "This is the DHCP application related to this non-DHCP application entry. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LOWER LEVEL PROTOCOL TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of seconds (1 to 60) the lower level protocol should wait to receive data.  This field is only applicable if you are using the HL7 Hybrid Lower Layer Protocol. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'X",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "NOTE:  This field is only applicable if you are using the MailMan lower level protocol.  The Mail Group and HL7 Device fields are mutually exclusive.  You may only enter a value in one of the fields. If you wish to enter a value in the Mail Group field, you must first delete any value you have entered in the HL7 Device field. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSMISSION TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The time that transmissions to the non-DHCP application should occur expressed in 24 hour notation (i.e., 0001 to 2400). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RELATED FILE 771 ENTRY",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "This field links entries in file 770 to corresponding entries in file 771. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LAST TRANSMISSION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time of the last transmission to this non-DHCP application. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "HL7 PROCESSING ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DEBUG;P:PRODUCTION;",
+      "helpText": "The HL7 processing ID may be either 'D' for 'DEBUG' or 'P' for 'PRODUCTION'.  'DEBUG' should be used while the interface is under test. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "START/STOP TRANSMISSION LOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:START LOG;0:STOP LOG;",
+      "helpText": "This field is set automatically by the DHCP HL7 package when the option Start/Stop Log of HL7 Transmissions is executed.  It indicates whether the log is turned on. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "PURPOSE",
+      "dataType": "SUBFILE",
+      "rawType": "770.01",
+      "required": false,
+      "helpText": "This field is used to document the purpose of this non-DHCP application entry for local IRM staff.  Basic information about the types of information exchanged, the frequency of the exchange, etc. should be entered. ",
+      "isMultiple": true,
+      "subFileNumber": 770.01,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AL", "field": },
+    {"name": "ALOG", "field": },
+    {"name": "B", "field": },
+    {"name": "770", "field": .01, "type": "regular"},
+    {"name": "770", "field": .01, "type": "regular"},
+    {"name": "770", "field": .01, "type": "regular"},
+    {"name": "770", "field": 2, "type": "regular"},
+    {"name": "770", "field": 3, "type": "regular"},
+    {"name": "770", "field": 6, "type": "regular"},
+    {"name": "770", "field": 8, "type": "regular"},
+    {"name": "770", "field": 50, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",$P(^(0),U,2)"},
+    {"field": 3, "value": "W \"   \",$P(^(0),U,3)"},
+    {"field": 8, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HL(771,+$P(^(0),U,8),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(771,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

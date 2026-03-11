@@ -1,0 +1,325 @@
+{
+  "fileNumber": 9002313.56,
+  "fileName": "BPS PHARMACIES",
+  "globalRoot": "9002313.56",
+  "globalReference": "^BPS(9002313.56,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name used to distinguish the BPS Pharmacy. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NCPDP #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The NCPDP # is sent as part of the electronic claim header. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DEFAULT DEA #",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Many insurances require the prescriber's DEA number as part of the  claim.  If your pharmacy has a DEA # that may be used in case a  prescriber doesn't have this DEA # on file with you, enter that default DEA # here. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "LAST REGISTERED STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This field is set by the software in the background when registration messages are sent to Austin.  If the STATUS is Inactive and the last registered status is also Inactive then this pharmacy will not be registered again as Inactive. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "AUTO-REVERSE PARAMETER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "ECME shall use the following AUTO-REVERSE site parameter when determining whether non-released prescription claims (that have returned a PAYABLE response) are to be automatically REVERSED.   The AUTO-REVERSE site parameter is set for the number of days that ECME will wait before the claim is automatically REVERSED. The user is allowed to enter a number from 3 to 10. 5 is the suggested setting.   ECME will wait the entered number of days before REVERSING the non-released Rx with a PAYABLE respons",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "Indicates whether a BPS Pharmacy is active or inactive. If active, claims  will be processed through ECME. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CMOP SWITCH",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:CMOP OFF;1:CMOP ON;",
+      "helpText": "Indicates whether ECME shall process CMOP claims.  If ON, CMOP claims  will be processed.  If OFF, CMOP claims will not be processed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BPS PHARMACY FOR CS",
+      "dataType": "POINTER",
+      "rawType": "P9002313.56'",
+      "required": false,
+      "pointerTo": 9002313.56,
+      "helpText": "BPS Pharmacy for Controlled Substances is an optional field.  This field  should only be used when a dispensing pharmacy does not have a  valid DEA Controlled Substance Registration Certificate and therefore those products are dispensed by a different pharmacy. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 41.01,
+      "fieldName": "NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "National Provider ID.  This is a unique ID assigned to providers by CMS.   It is used as the second piece of the Claim ID field (.01) of BPS CLAIMS file (#9002313.02) and is sent as part of the electronic claim header. ",
+      "fieldNumber_": 41.01
+    },
+    {
+      "fieldNumber": 41.02,
+      "fieldName": "DATE/TIME OF LAST NPI CHANGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time of the last change to the NPI value. ",
+      "fieldNumber_": 41.02
+    },
+    {
+      "fieldNumber": 102.03,
+      "fieldName": "SITE CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter City ",
+      "fieldNumber_": 102.03
+    },
+    {
+      "fieldNumber": 120.01,
+      "fieldName": "SITE ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The site's street address.  ",
+      "fieldNumber_": 120.01
+    },
+    {
+      "fieldNumber": 120.02,
+      "fieldName": "SITE ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Site's address line 2. ",
+      "fieldNumber_": 120.02
+    },
+    {
+      "fieldNumber": 120.03,
+      "fieldName": "SITE ADDRESS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Site's Business name. ",
+      "fieldNumber_": 120.03
+    },
+    {
+      "fieldNumber": 120.04,
+      "fieldName": "SITE STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state in which the site is located. ",
+      "fieldNumber_": 120.04
+    },
+    {
+      "fieldNumber": 120.05,
+      "fieldName": "SITE ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the zip code for the ePharmacy billing site. ",
+      "fieldNumber_": 120.05
+    },
+    {
+      "fieldNumber": 120.06,
+      "fieldName": "SITE PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For NCPDP claim forms. ",
+      "fieldNumber_": 120.06
+    },
+    {
+      "fieldNumber": 120.07,
+      "fieldName": "SITE FAX",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For NCPDP claim forms. ",
+      "fieldNumber_": 120.07
+    },
+    {
+      "fieldNumber": 130.01,
+      "fieldName": "REMITTANCE ADDRESS NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Pharmacy Business Name ",
+      "fieldNumber_": 130.01
+    },
+    {
+      "fieldNumber": 130.02,
+      "fieldName": "REMIT ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Street Address (Line 1) for the Remittance Address. ",
+      "fieldNumber_": 130.02
+    },
+    {
+      "fieldNumber": 130.03,
+      "fieldName": "REMIT ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street Address (Line 2) for the Remittance Address. ",
+      "fieldNumber_": 130.03
+    },
+    {
+      "fieldNumber": 130.04,
+      "fieldName": "REMIT DWELLING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the dwelling number for the claim remittance address. ",
+      "fieldNumber_": 130.04
+    },
+    {
+      "fieldNumber": 130.07,
+      "fieldName": "REMIT STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "Enter the state for the claim remittance address. ",
+      "fieldNumber_": 130.07
+    },
+    {
+      "fieldNumber": 130.08,
+      "fieldName": "REMIT ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the zip for the claim remittance address. ",
+      "fieldNumber_": 130.08
+    },
+    {
+      "fieldNumber": 130.5,
+      "fieldName": "REMIT OTHER DESIGNATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the other designation for the claim remittance address. ",
+      "fieldNumber_": 130.5
+    },
+    {
+      "fieldNumber": 130.6,
+      "fieldName": "REMIT CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the city for the claim remittance address. ",
+      "fieldNumber_": 130.6
+    },
+    {
+      "fieldNumber": 1830.01,
+      "fieldName": "CONTACT NAMES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "You may enter more than one name, separated by \"/\". Put corresponding phone numbers separated by \"/\" in the phone number field. A random name-phone combination will appear on each bill and that way the calls get distributed evenly. ",
+      "fieldNumber_": 1830.01
+    },
+    {
+      "fieldNumber": 1830.02,
+      "fieldName": "CONTACT PHONES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "(See CONTACT NAMES description for details about \"/\"-separated list.) ",
+      "fieldNumber_": 1830.02
+    },
+    {
+      "fieldNumber": 1900.01,
+      "fieldName": "VA CONTACT",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the New Person file for the VA contact person information. ",
+      "fieldNumber_": 1900.01
+    },
+    {
+      "fieldNumber": 1900.02,
+      "fieldName": "VA ALTERNATE CONTACT",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the alternate site contact name to be contacted if site setup  problems are identified. ",
+      "fieldNumber_": 1900.02
+    },
+    {
+      "fieldNumber": 1900.03,
+      "fieldName": "VA LEAD PHARMACIST",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "Pointer to the New Person file for the lead Pharmacists.  ",
+      "fieldNumber_": 1900.03
+    },
+    {
+      "fieldNumber": 1900.04,
+      "fieldName": "VA LEAD PHARMACIST LICENSE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lead pharmacist license number will be used as a default on ePharmacy  claims. ",
+      "fieldNumber_": 1900.04
+    },
+    {
+      "fieldNumber": 13800,
+      "fieldName": "OUTPATIENT SITE",
+      "dataType": "POINTER",
+      "rawType": "9002313.5601P",
+      "required": false,
+      "fieldNumber_": 13800
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.56", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

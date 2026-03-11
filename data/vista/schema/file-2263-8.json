@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2263.8,
+  "fileName": "ASISTS BODY PART GROUPINGS",
+  "globalRoot": "2263.8",
+  "globalReference": "^OOPS(2263.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BODY PART GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The body part group name is the category name for a group of body parts that are related.  It is designed to assist the user in selecting the correct body part affected by the incident.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BODY PART GROUP ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the body part group name abbreviation. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2263.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

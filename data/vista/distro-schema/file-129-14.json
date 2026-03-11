@@ -1,0 +1,28 @@
+{
+  "fileNumber": 129.14,
+  "fileName": "LOINC EXCLUDED WORDS",
+  "globalRoot": "129.14",
+  "globalReference": "^ETSLNC(129.14,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TERM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ40",
+      "length": 40,
+      "required": true,
+      "helpText": "The term contained in this field will be excluded from indexing. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "129.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

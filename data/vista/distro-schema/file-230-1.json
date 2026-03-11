@@ -1,0 +1,283 @@
+{
+  "fileNumber": 230.1,
+  "fileName": "ED LOG HISTORY",
+  "globalRoot": "230.1",
+  "globalReference": "^EDP(230.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG ENTRY",
+      "dataType": "POINTER",
+      "rawType": "RP230'",
+      "required": true,
+      "pointerTo": 230,
+      "helpText": "This references an entry in the ED LOG file.  Entries in this file record  modifications to entries in the ED LOG file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the time that the log record was modified. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who updated the log. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the patient name. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT SSN*",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the patient social security  number. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PATIENT ID",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "If updated, this is the updated value of the patient DFN. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "COMPLAINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the complaint. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .0701,
+      "fieldName": "CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .0701
+    },
+    {
+      "fieldNumber": .071,
+      "fieldName": "CLOSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .071
+    },
+    {
+      "fieldNumber": .072,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .072
+    },
+    {
+      "fieldNumber": .073,
+      "fieldName": "REMOVED IN ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": .073
+    },
+    {
+      "fieldNumber": .074,
+      "fieldName": "RESTORED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .074
+    },
+    {
+      "fieldNumber": .075,
+      "fieldName": "RESTORED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .075
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TIME IN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the arrival time of the patient. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TIME OUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the departure time of the  patient. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ARRIVAL MODE",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If updated, this is the updated value of the source of the patient visit  (came from nursing home, hospital ward, walk-in). ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "DISPOSITION",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If updated, this is the updated value of the disposition. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "DELAY",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If updated, this is the updated value of the delay reason. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "If updated, this is the updated value of the clinic. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPLAINT (LONG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If updated, this is the updated value of the long complaint (the optional  complaint that may be longer than the display board allows). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If updated, this is the updated value of the status. ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "ACUITY",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "If updated, this is the updated value of the acuity. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "LOC",
+      "dataType": "POINTER",
+      "rawType": "P231.8'",
+      "required": false,
+      "pointerTo": 231.8,
+      "helpText": "If updated, this is the updated value of the room / area. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "MD ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If updated, this is the updated provider. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "NURSE ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If updated, this is the updated nurse. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "RESIDENT ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If updated, this is the updated resident. ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 3.8,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If updated, this is the updated comment. ",
+      "fieldNumber_": 3.8
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "MODIFIED FIELDS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This lists the fields that were modified in the corresponding ED LOG  record at the time of this update.  The list contains the field numbers  and is semi-colon delimited. ",
+      "fieldNumber_": 9.1
+    }
+  ],
+  "fieldCount": 28,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "230.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .0701, "type": "regular"},
+    {"name": "", "field": .0701, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

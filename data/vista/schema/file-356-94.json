@@ -1,0 +1,77 @@
+{
+  "fileNumber": 356.94,
+  "fileName": "INPATIENT PROVIDERS",
+  "globalRoot": "356.94ID",
+  "globalReference": "^IBT(356.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF CHANGE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the first day that this provider is responsible for care for the patient.  Enter the date that the provider assumes responsibility. For claims tracking purposes the provider will be resonsible for the care from this date (inclusive) until another provider assumes responsibility for the same level.   The date must not be before the admission date or after the discharge date.  If a current inpatient, it can not be more than 7 days into the future. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADMISSION MOVEMENT",
+      "dataType": "POINTER",
+      "rawType": "R*P405'",
+      "required": true,
+      "pointerTo": 405,
+      "helpText": "This is the admission movement that the provider is responsible for. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the provider who is responsible for care of this  patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE PROVIDER",
+      "dataType": "SET",
+      "rawType": "R*S",
+      "required": true,
+      "setOfCodes": "1:ATTENDING;2:PROVIDER;3:ADMITTING;",
+      "helpText": "Enter whether this physician is an attending physician, admitting physician, or the daily care provider (or resident).   It may be that the admitting physician is different from either the attending or provider.  If the admission to acure care does not meet UR criteria, it is important to track the admitting physician.   The attending physician is the physician responsible for the care of the patient, more than one physician may be the attending.   The provider is the physician directly providin",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ADG", "field": },
+    {"name": "ADG1", "field": },
+    {"name": "ADG2", "field": },
+    {"name": "ADGPM", "field": },
+    {"name": "ADGPM1", "field": },
+    {"name": "ATP", "field": },
+    {"name": "ATP1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "356.94", "field": .01, "type": "regular"},
+    {"name": "356.94", "field": .02, "type": "regular"},
+    {"name": "356.94", "field": .02, "type": "regular"},
+    {"name": "356.94", "field": .02, "type": "regular"},
+    {"name": "356.94", "field": .02, "type": "regular"},
+    {"name": "356.94", "field": .03, "type": "regular"},
+    {"name": "356.94", "field": .03, "type": "regular"},
+    {"name": "356.94", "field": .03, "type": "regular"},
+    {"name": "356.94", "field": .04, "type": "regular"},
+    {"name": "356.94", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGPM(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(405,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WRITE, "value": "N Y S Y=$G(^(0)) W \"   \",$P($G(^DPT(+$P($G(^DGPM(+$P(Y,U,2),0)),U,3),0)),U)"}
+  ]
+}

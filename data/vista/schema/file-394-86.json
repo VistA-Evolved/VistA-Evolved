@@ -1,0 +1,58 @@
+{
+  "fileNumber": 394.86,
+  "fileName": "VAQ - AUTO-NUMBERING",
+  "globalRoot": "394.86",
+  "globalReference": "^VAT(394.86,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Stub",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0X",
+      "length": 1,
+      "required": true,
+      "helpText": "  Stub entry (always '1'). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Last Transaction",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Last \"Transaction Number\" used (field .01 for file 394.61). ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Last Data",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Last \"Data\" used (field .01 for file 394.62). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "Last Encrypted Field",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "Last \"Extract\" used (field .01 for file 394.712). ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.86", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

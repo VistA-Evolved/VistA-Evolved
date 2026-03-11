@@ -1,0 +1,237 @@
+{
+  "fileNumber": 395,
+  "fileName": "DVB PARAMETERS",
+  "globalRoot": "395",
+  "globalReference": "^DVB(395,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0X",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "USE HINQ SCREENS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "When this field is set to NO alert processing will not call HINQ screens ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NETWORK DAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date of the current network workday. This will usually be the current day's date.  On days that the network is unavailable (weekends and holidays) this field will contain the value of the previous network workday's date.  For example, on a Sunday, this field will contain the date of the previous Friday.   The value in this field is updated automatically by the system on workdays when a HINQ request is sent.  It should not be necessary to edit  this field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST NET-WORKDAY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date of the network workday that is previous to the current network workday.  For example, on a Tuesday, it contains Monday's date.  On a Sunday, the network workday is still Friday so Last Net-Workday will contain Thursday's date.   When the parameter, NETWORK DAY, is updated on workdays, LAST NET-WORKDAY field is automatically updated to the value of the previous NETWORK DAY. Thus at times LAST NET-WORKDAY can be days apart from NETWORK DAY because a HINQ hasn't been re",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GMT OFFSET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This entry is derived from the time zone field of the Kernel parameter file and the Mailman time zone file.  If these files are not present it may be set to a positive number which is the difference between  GMT and the sites current time zone, i.e. for Eastern daylight time it should be set to 4, Central daylight to 5, etc. This field is used to check the time of availability of the VBA computer and disable appropriate HINQ options if the VBA computer is not available. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NETWORK ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This parameter enables or disables the options which transmit requests to the VBA computer - GENERATE A HINQ REQUEST and  PROCESS THE HINQ SUSPENSE FILE.  Enter a yes to enable these options or a no to disable them.   These options are automatically disabled during VBA computer non-workday hours.  However, it may be necessary to disable these options temporarily if transmission problems are occurring. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BATCH PROCESSING ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This parameter is set to a YES or NO by the system to enable or disable the option, PROCESS THE SUSPENSE FILE.  The option is automatically disabled during VBA computer non-workday hours. When the option is selected during workday hours and this field contains a NO, a test of the network is automatically performed. This field will be set to a YES or NO value that indicates whether or not the HINQ Suspense file contains 'P'ending entries. The system sets this field.  If this field is set to NO, q",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "USE HIGH INTENSITY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AUTO-REQUEUE OF IDCU ERRORS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES REQUEUE;0:NO REQUEUEING;",
+      "helpText": "This parameter should be set to indicate to the system whether or not requests with communications errors should automatically be retransmitted to the VBA computer.  Set this field to Y for YES REQUEUE or to N for NO REQUEUEING.   If this parameter is set to REQUEUE requests will not be retransmitted if the Network is Disabled or the remote VBA computer is not available because of time, or Saturday, Sunday, Holidays. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AUTO-REQUEUE LIMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This parameter should be set to a number between 0 and 100 to indicate to the system the total number of requeued jobs that can be Retransmitted to the VBA computer in a day. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REQUEUE COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is a count of the number of batch processes that have been requeued by the system on a particular day.  This field is incremented by the system each time a process is automatically requeued to the VBA computer.  It is reset to zero by the system on workdays.   To allow processes to be requeued, the number in this field must not be greater than the number in the AUTO-REQUEUE LIMIT field. If necessary, this field can be reset to zero by the user to allow additional processes to be reque",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HINQ MAIL MESSAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will allow the site to turn on the mailing of HINQ mail messages when they process the suspense file.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NEW IDCU INTERFACE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When this field is set to YES, IDCU addressing is changed to access a new interface at the RDPCs. through the mailman's queues. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RDPC Time Difference",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field should contain the time difference between the site  and the RDPC where HINQ requests are sent.  A site in the Eastern time zone sending to the Midwest RDPC should enter '-1' here.  A site in the Pacific time zone sending to the Midwest RDPC should enter '2' here.  If the RDPC is in the same time zone enter '0' here.  Philadelphia is East, Hines, Midwest, and Austin are in  Central time zones. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ASK MEDICAL CENTER DIVISION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When a user enters a request in the HINQ suspense file 395.5, if the site is multi-divisional as defined in the ADT parameter file 43, field 11, the user will be prompted to enter a medical center division as defined in file 40.8.   When the HINQ request is processed, the top line of the response will show the division name to aid in patient identification. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "HINQ MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "395.015P",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "IDCU ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DMS.BDNE:Philadelphia;DMS.BDNC:Hines;DMS.BDNW:Austin;DMS.BDNM:Midwest;DMS.BDNS:Philadelphia;",
+      "helpText": "This is the code for addressing the VBA computer through IDCU. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "IDCU USERNAME-PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the IDCU USERNAME and PASSWORD   Ex.(USERNAME-PASSWORD) Do NOT enter HINQ password here. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "*HINQ device name",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field should contain the name of the device which will be used to connect the DHCP computer to the IDCU for transmitting and receiving HINQ requests. This entry must be a name in the Device file.   As of Patch DVB*4.0*34 this field is no longer used. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "*BATCH DEVICE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field holds the device that is to be used when a batch process (process the HINQ Suspense file) is run.  It should be different from HINQ device.   As of Patch DVB*4.0*34 this field is no longer used. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INSTITUTION/STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field holds the station number of the site. The HINQ program will get the station number it needs from this field. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "RDPC IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This parameter contains the IP Address of the VBA Remote Data Processing Center.  Users at a site will have HINQ passwords only valid at this RDPC. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "AAC PORT DESIGNATOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is a counter for the number of HINQ connections used at a  site.   The remainder of this number, divided by the number of available  ports at the AAC, will determine which port to use for this HINQ  session.  The number will automatically reset after #99999. ",
+      "fieldNumber_": 23
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "395", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

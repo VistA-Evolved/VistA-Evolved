@@ -1,0 +1,103 @@
+{
+  "fileNumber": 404.95,
+  "fileName": "SCHEDULING REPORT QUERY TEMPLATE",
+  "globalRoot": "404.95",
+  "globalReference": "^SD(404.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the query template specified by the creator/user.  Two templates cannot have the same name for a given user. Templates can have the same name but they must be created by different users. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the name of the creator of the template. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACCESS LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIVATE;2:PUBLIC;",
+      "helpText": "When a template is created, the creator designates whether the template is a private template or a public template. Public templates can be used by other users but can only be edited by the creator.  Another user can copy the template with the 'save as' command and then make modifications. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "REPORT",
+      "dataType": "POINTER",
+      "rawType": "P404.92'",
+      "required": false,
+      "pointerTo": 404.92,
+      "helpText": "This field indicates the report that the template's pre-defined specifications are applied against. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST SAVED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the user lasted saved this template. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "404.9501",
+      "required": false,
+      "helpText": "Personal description for template specified by the template's  creator. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9501,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "FIELDS",
+      "dataType": "POINTER",
+      "rawType": "404.9502P",
+      "required": false,
+      "helpText": "This multiple contains the field names and user specified values needed by the REPORT (#.04). ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "SELECTIONS",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "404.9503V",
+      "required": false,
+      "helpText": "This multiple contains the list of file entries selected by the user to meet the report criteria selection requirements. ",
+      "isMultiple": true,
+      "subFileNumber": 404.9503,
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "404.95", "field": .01, "type": "regular"},
+    {"name": "404.95", "field": .02, "type": "regular"},
+    {"name": "404.95", "field": .03, "type": "regular"},
+    {"name": "404.95", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

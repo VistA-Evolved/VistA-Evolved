@@ -1,0 +1,58 @@
+{
+  "fileNumber": 129.23,
+  "fileName": "RXNORM SEMANTIC TYPES",
+  "globalRoot": "129.23",
+  "globalReference": "^ETSRXN(129.23,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RXCUI",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ8",
+      "length": 8,
+      "required": true,
+      "helpText": "Unique identifier of concept (concept ID). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEMANTIC_TYPE (STY)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ50",
+      "length": 50,
+      "required": true,
+      "helpText": "The semantic Type.  The valid values for the Semantic Type are defined in  the Semantic Network. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CONTENT_VIEW_FLAG (CVF)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ50",
+      "length": 50,
+      "required": false,
+      "helpText": "This fields denotes whether or not a concept is currently prescribable. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "OBSOLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT OBSOLETE;1:OBSOLETE;",
+      "helpText": "This field will be used to indicate whether the record is obsolete.  A  empty value will be treated the same way as a 0 (not obsolete) value. ",
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "129.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

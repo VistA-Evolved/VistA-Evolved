@@ -1,0 +1,36 @@
+{
+  "fileNumber": 58.36,
+  "fileName": "RETURN DRUG CONTRACTOR",
+  "globalRoot": "58.36",
+  "globalReference": "^PSD(58.36,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the Contractor/Manufacturer used for returning drug for credit. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date when the Contractor/Manufacturer is no longer active. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.36", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,1251 @@
+{
+  "id": "patient-registration",
+  "name": "Patient Registration",
+  "description": "Patient demographics, insurance, eligibility, means test",
+  "vdlManual": "pims-registration-scheduling-tm.pdf",
+  "generatedAt": "2026-03-11T04:21:11.840Z",
+  "files": {
+    "count": 6,
+    "items": [
+      {
+        "fileNumber": 2,
+        "fileName": "File #2",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 2.98,
+        "fileName": "File #2.98",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 355.3,
+        "fileName": "File #355.3",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 391.91,
+        "fileName": "File #391.91",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 408.12,
+        "fileName": "File #408.12",
+        "fieldCount": 0,
+        "fields": []
+      },
+      {
+        "fileNumber": 408.13,
+        "fileName": "File #408.13",
+        "fieldCount": 0,
+        "fields": []
+      }
+    ]
+  },
+  "rpcs": {
+    "count": 48,
+    "items": [
+      {
+        "name": "DG SENSITIVE RECORD ACCESS",
+        "tag": "PTSEC",
+        "routine": "DGSEC4",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGMSG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGOPT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will:           - Verify user is not accessing his/her own Patient file record if the Restrict Patient Record Access (#1201) field in the MAS parameters (#43) file is set to yes and the user does not hold the DG RECORD ACCESS security key.  If parameter set to yes an"
+      },
+      {
+        "name": "DG SENSITIVE RECORD BULLETIN",
+        "tag": "NOTICE",
+        "routine": "DGSEC4",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "ACTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGOPT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will add an entry to the DG SECURITY LOG (#38.1) file and/or generate the sensitive record access bulletin depending on the value in ACTION input parameter.  If ACTION parameter not defined, defaults to update DG Security Log file and generate Sensitive Record Access"
+      },
+      {
+        "name": "DG CHK BS5 XREF Y/N",
+        "tag": "GUIBS5",
+        "routine": "DPTLK6",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CHECKS IF OTHER PATIENTS ON \"BS5\" XREF WITH SAME LAST NAME RETURNS 1 OR 0 IN 1ST STRING (OR -1 IF BAD DFN OR NO ZERO NODE) IF 1 RETURNS TEXT TO BE DISPLAYED "
+      },
+      {
+        "name": "DG CHK BS5 XREF ARRAY",
+        "tag": "GUIBS5A",
+        "routine": "DPTLK6",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CHECKS IF OTHER PATIENTS ON 'BS5' XREF WITH SAME LAST NAME RETURN 1 OR 0 IN 1ST STRING (-1 IF BAD DFN OR NO ZERO NODE). RETURNS ARRAY NODES WHERE TEXT IS PRECEEDED BY 0 AND PATIENT DATA IS PRECEEDED BY 1.  PATIENT DATA WILL BE IN FOLLOWING FORMAT:  1^DFN^PATIENT NAME^DOB^SSN "
+      },
+      {
+        "name": "DG CHK MEANS TEST DIV DISPLAY",
+        "tag": "GUIDMT",
+        "routine": "DPTLK6",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DUZ2",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CHECKS DIVISION FILE FOR DIV USER IS IN  IF MEANS TEST REQUIRED IS SET TO YES RETURNS 1 IN 1ST STRING AND MEANS TEST TEXT   IN 2ND AND 3RD STRING (IF ANY) OTHERWISE RETURNS 0 IN 1ST STRING "
+      },
+      {
+        "name": "DG CHK PAT MEANS TEST REQUIRED",
+        "tag": "GUIMT",
+        "routine": "DPTLK6",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CHECKS WHETHER MEANS TEST IS REQUIRED FOR PATIENT RETURNS 1 OR 0 "
+      },
+      {
+        "name": "DG CHK PAT/DIV MEANS TEST",
+        "tag": "GUIMTD",
+        "routine": "DPTLK6",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DUZ2",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "CHECKS IF MEANS TEST REQUIRED FOR PATIENT AND CHECKS IF MEANS TEST DISPLAY REQUIRED FOR USER'S DIVISION RETURNS 1 IN 1ST STRING IF BOTH TRUE OTHERWISE 0 IF BOTH TRUE RETURNS TEXT IN 2ND AND 3RD STRING (IF ANY) "
+      },
+      {
+        "name": "DG PATIENT TREATMENT DATA",
+        "tag": "RPC",
+        "routine": "DGPTFAPI",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PTFNUMBER",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return data from the Patient Treatment (#45) file.   Input:   PTFNUMBR - The Patient Treatment IFN (.001 of the #45 file record)    RESULTS - Results array (passed by reference)       Output:      RESULTS - Results array (passed by reference) with the following                nodes.   "
+      },
+      {
+        "name": "DGWPT DFLTSRC",
+        "tag": "DFLTSRC",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return user's default patient list source. "
+      },
+      {
+        "name": "DGWPT TOP",
+        "tag": "TOP",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the last selected patient by the defined user. "
+      },
+      {
+        "name": "DGWPT SELCHK",
+        "tag": "SELCHK",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a 1 if the patient record is flagged as senstive, otherwise returns 0. "
+      },
+      {
+        "name": "DGWPT SAVDFLT",
+        "tag": "SAVDFLT",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Saves user's preference for default list source. "
+      },
+      {
+        "name": "DGWPT CLINRNG",
+        "tag": "CLINRNG",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of selectable options from which a user can choose a date range for appointments. "
+      },
+      {
+        "name": "DGWPT BYWARD",
+        "tag": "BYWARD",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of patients currently residing on a specified ward location. "
+      },
+      {
+        "name": "DGWPT DIEDON",
+        "tag": "DIEDON",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns date of death if patient has expired.  Otherwise returns 0. "
+      },
+      {
+        "name": "DGWPT1 PRCARE",
+        "tag": "PRCARE",
+        "routine": "DGWPT1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return primary care information for a patient in the format:   VAL=Primary Care Team^Primary Care Provider^Attending "
+      },
+      {
+        "name": "DGWPT SELECT",
+        "tag": "SELECT",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "RPC to return key information on a patient as follows:   1    2   3   4    5      6    7    8       9       10      11   12 13  14 NAME^SEX^DOB^SSN^LOCIEN^LOCNM^RMBD^CWAD^SENSITIVE^ADMITTED^CONV^SC^SC%^ICN "
+      },
+      {
+        "name": "DGRR PATIENT LOOKUP SEARCH",
+        "tag": "SEARCH",
+        "routine": "DGRRLU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This rpc is set to return an xml document via VistaLink that contains the display data for a gui patient lookup.     "
+      },
+      {
+        "name": "DGRR GET PTLK BUSINESS DATA",
+        "tag": "BUS",
+        "routine": "DGRRLU1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Returns XML document containing data needed to perform business logic checks on patient lookup. "
+      },
+      {
+        "name": "DGRR SET SENSITIVE ACCESS LOG",
+        "tag": "NOTICE",
+        "routine": "DGRRLU2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "ACTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGOPT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will add an entry to the DG SECURITY LOG (#38.1) file and/or generate the sensitive record access bulletin depending on the value in ACTION input parameter.  If ACTION parameter not defined, defaults to update DG Security Log file and generate Sensitive Record Access"
+      },
+      {
+        "name": "DGRR GET LOOKUP TYPE LIST",
+        "tag": "GETLIST",
+        "routine": "DGRRLU3",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Returns an XML document containing a list of wards or a list of clinics (depending on what was requested) "
+      },
+      {
+        "name": "DGRR PATIENT LKUP PREFERENCES",
+        "tag": "START",
+        "routine": "DGRRLU4",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns an xml document containing the division or package preferences.   "
+      },
+      {
+        "name": "DGRR SET PTLK PREFERENCES",
+        "tag": "UPDATE",
+        "routine": "DGRRLU4",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call updates the division/institutional preferences  passed to the call. It returns an xml document containing the station number and status.  If update was successful, status is returned as true.  If errors were encountered during the update, false is returned with an error me"
+      },
+      {
+        "name": "DGRR CANCEL SEARCH",
+        "tag": "CANCEL",
+        "routine": "DGRRLU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "JOB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The DGRR CANCEL SEARCH RPC will cancel a patient search in VistA. "
+      },
+      {
+        "name": "DGRR GET PATIENT SERVICES DATA",
+        "tag": "PATIENT",
+        "routine": "DGRRPSGT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return an XML via VistaLink containing Patient Service Demographic information for any given Patient ICN "
+      },
+      {
+        "name": "DG VIC PATIENT LOOKUP",
+        "tag": "RPCVIC",
+        "routine": "DPTLK",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DPTX",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC will allow lookup of a patient with the input from a VIC card or DOD CAC card. The VIC card can be an old VIC card or the newer VIC 4.0 card.  The entire card's input should be provided.  If the patient is known locally the patient's DFN will be returned. "
+      },
+      {
+        "name": "DG PATIENT ADMISSIONS",
+        "tag": "ADMITS",
+        "routine": "DGRPCLV",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC retrieves all admissions for the last year for a specific  patient. "
+      },
+      {
+        "name": "DGBT CLAIM DEDUCTIBLE PAID",
+        "tag": "RPC",
+        "routine": "DGBTRDV",
+        "returnType": "ARRAY",
+        "paramCount": 2,
+        "params": [
+          {
+            "name": "PATIENT ICN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "CLAIM DATE",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "THIS RPC IS USED BY BENEFICIARY TRAVEL PACKAGE TO RETRIEVE TRAVEL CLAIM  INFORMATION ABOUT ANY TRAVEL CLAIMS FOR PATIENT. "
+      },
+      {
+        "name": "DG DEATH SOURCE/DOC UPDATE",
+        "tag": "BRDATA",
+        "routine": "DGDTHBR",
+        "returnType": "ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DGDATA",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will receive data from the MPI for updates to selectable Source of Notifications and Supporting Documents and their associated Business Rules. "
+      },
+      {
+        "name": "DG FULL ICN SHOW/UPDATE",
+        "tag": "EN",
+        "routine": "DGFLICN",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "DGDATA",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This RPC is invoked by MPI option - MPI SHOW/UPDATE VISTA ICN. It will  send ICN related fields (FULL ICN, INTEGRATION CONTROL NUMBER, ICN  CHECKSUM) from PATIENT file #2 to MPI for given DFN. It will also update  ICN fields in Patient file if user have selected to update them with  Primary View ICN"
+      },
+      {
+        "name": "DG UPDATE NAME COMPONENTS",
+        "tag": "UPDNC",
+        "routine": "DGNAME",
+        "returnType": "ARRAY",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "FLAG",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "IEN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "NAME COMPONENTS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure updates or retrieves values in a NAME COMPONENTS  file (#20) entry. "
+      },
+      {
+        "name": "DGWPT DFLTSRC",
+        "tag": "DFLTSRC",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return user's default patient list source. "
+      },
+      {
+        "name": "DGWPT TOP",
+        "tag": "TOP",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns the last selected patient by the defined user. "
+      },
+      {
+        "name": "DGWPT SELCHK",
+        "tag": "SELCHK",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a 1 if the patient record is flagged as senstive, otherwise returns 0. "
+      },
+      {
+        "name": "DGWPT SAVDFLT",
+        "tag": "SAVDFLT",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Saves user's preference for default list source. "
+      },
+      {
+        "name": "DGWPT CLINRNG",
+        "tag": "CLINRNG",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of selectable options from which a user can choose a date range for appointments. "
+      },
+      {
+        "name": "DGWPT BYWARD",
+        "tag": "BYWARD",
+        "routine": "DGWPT",
+        "returnType": "ARRAY",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns a list of patients currently residing on a specified ward location. "
+      },
+      {
+        "name": "DGWPT DIEDON",
+        "tag": "DIEDON",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Returns date of death if patient has expired.  Otherwise returns 0. "
+      },
+      {
+        "name": "DGWPT1 PRCARE",
+        "tag": "PRCARE",
+        "routine": "DGWPT1",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "Return primary care information for a patient in the format:   VAL=Primary Care Team^Primary Care Provider^Attending "
+      },
+      {
+        "name": "DGWPT SELECT",
+        "tag": "SELECT",
+        "routine": "DGWPT",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 0,
+        "params": [],
+        "description": "RPC to return key information on a patient as follows:   1    2   3   4    5      6    7    8       9       10      11   12 13  14 NAME^SEX^DOB^SSN^LOCIEN^LOCNM^RMBD^CWAD^SENSITIVE^ADMITTED^CONV^SC^SC%^ICN "
+      },
+      {
+        "name": "DGRR PATIENT LOOKUP SEARCH",
+        "tag": "SEARCH",
+        "routine": "DGRRLU",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This rpc is set to return an xml document via VistaLink that contains the display data for a gui patient lookup.     "
+      },
+      {
+        "name": "DGRR GET PTLK BUSINESS DATA",
+        "tag": "BUS",
+        "routine": "DGRRLU1",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Returns XML document containing data needed to perform business logic checks on patient lookup. "
+      },
+      {
+        "name": "DGRR SET SENSITIVE ACCESS LOG",
+        "tag": "NOTICE",
+        "routine": "DGRRLU2",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 3,
+        "params": [
+          {
+            "name": "ACTION",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DFN",
+            "type": "LITERAL",
+            "required": false
+          },
+          {
+            "name": "DGOPT",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "This Remote Procedure Call (RPC) will add an entry to the DG SECURITY LOG (#38.1) file and/or generate the sensitive record access bulletin depending on the value in ACTION input parameter.  If ACTION parameter not defined, defaults to update DG Security Log file and generate Sensitive Record Access"
+      },
+      {
+        "name": "DGRR GET LOOKUP TYPE LIST",
+        "tag": "GETLIST",
+        "routine": "DGRRLU3",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "Returns an XML document containing a list of wards or a list of clinics (depending on what was requested) "
+      },
+      {
+        "name": "DGRR PATIENT LKUP PREFERENCES",
+        "tag": "START",
+        "routine": "DGRRLU4",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call returns an xml document containing the division or package preferences.   "
+      },
+      {
+        "name": "DGRR SET PTLK PREFERENCES",
+        "tag": "UPDATE",
+        "routine": "DGRRLU4",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAMS",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This remote procedure call updates the division/institutional preferences  passed to the call. It returns an xml document containing the station number and status.  If update was successful, status is returned as true.  If errors were encountered during the update, false is returned with an error me"
+      },
+      {
+        "name": "DGRR CANCEL SEARCH",
+        "tag": "CANCEL",
+        "routine": "DGRRLU",
+        "returnType": "SINGLE VALUE",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "JOB",
+            "type": "LITERAL",
+            "required": false
+          }
+        ],
+        "description": "The DGRR CANCEL SEARCH RPC will cancel a patient search in VistA. "
+      },
+      {
+        "name": "DGRR GET PATIENT SERVICES DATA",
+        "tag": "PATIENT",
+        "routine": "DGRRPSGT",
+        "returnType": "GLOBAL ARRAY",
+        "paramCount": 1,
+        "params": [
+          {
+            "name": "PARAM",
+            "type": "REFERENCE",
+            "required": false
+          }
+        ],
+        "description": "This RPC will return an XML via VistaLink containing Patient Service Demographic information for any given Patient ICN "
+      }
+    ]
+  },
+  "menus": {
+    "count": 30,
+    "items": [
+      {
+        "name": "DG MANAGER MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG ADMIT PATIENT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG TRANSFER PATIENT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DISCHARGE PATIENT",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG BED SWITCH",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG BED CONTROL",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG BED AVAILABILITY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG G&L SHEET",
+        "type": "action",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG OUTPUTS MENU",
+        "type": "menu",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DISPOSITION APPLICATION",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG SCHED ADMIT PRINT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG SCHED ADMIT ENTRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG ABSENCE OUTPUT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DISPOSITION LOG",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DISPOSITION SUMMARY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG INPATIENT LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG AMIS 334-341",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG AMIS 345-346",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG SERIOUSLY ILL LIST",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG REGISTER PATIENT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG LOAD PATIENT DATA",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DISPOSITION EDIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG PARAMETER ENTRY",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG G&L INIT",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG WARD DEFINITION",
+        "type": "edit",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG DRG CALCULATION",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG PTF MESSAGE ENTER",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG PTF MESSAGE INQUIRE",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG PTF MESSAGE CHECK",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      },
+      {
+        "name": "DG PTF SCREEN",
+        "type": "run-routine",
+        "securityKey": null,
+        "displayText": ""
+      }
+    ]
+  },
+  "promptMappings": {
+    "count": 42,
+    "items": [
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG SENSITIVE RECORD ACCESS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGMSG:",
+        "rpcName": "DG SENSITIVE RECORD ACCESS",
+        "paramName": "DGMSG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGOPT:",
+        "rpcName": "DG SENSITIVE RECORD ACCESS",
+        "paramName": "DGOPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ACTION:",
+        "rpcName": "DG SENSITIVE RECORD BULLETIN",
+        "paramName": "ACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG SENSITIVE RECORD BULLETIN",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGOPT:",
+        "rpcName": "DG SENSITIVE RECORD BULLETIN",
+        "paramName": "DGOPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG CHK BS5 XREF Y/N",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG CHK BS5 XREF ARRAY",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ2:",
+        "rpcName": "DG CHK MEANS TEST DIV DISPLAY",
+        "paramName": "DUZ2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG CHK PAT MEANS TEST REQUIRED",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG CHK PAT/DIV MEANS TEST",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DUZ2:",
+        "rpcName": "DG CHK PAT/DIV MEANS TEST",
+        "paramName": "DUZ2",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PTFNUMBER:",
+        "rpcName": "DG PATIENT TREATMENT DATA",
+        "paramName": "PTFNUMBER",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR PATIENT LOOKUP SEARCH",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET PTLK BUSINESS DATA",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ACTION:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "ACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGOPT:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "DGOPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET LOOKUP TYPE LIST",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR PATIENT LKUP PREFERENCES",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMS:",
+        "rpcName": "DGRR SET PTLK PREFERENCES",
+        "paramName": "PARAMS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "JOB:",
+        "rpcName": "DGRR CANCEL SEARCH",
+        "paramName": "JOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET PATIENT SERVICES DATA",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DPTX:",
+        "rpcName": "DG VIC PATIENT LOOKUP",
+        "paramName": "DPTX",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DG PATIENT ADMISSIONS",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PATIENT ICN:",
+        "rpcName": "DGBT CLAIM DEDUCTIBLE PAID",
+        "paramName": "PATIENT ICN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "CLAIM DATE:",
+        "rpcName": "DGBT CLAIM DEDUCTIBLE PAID",
+        "paramName": "CLAIM DATE",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGDATA:",
+        "rpcName": "DG DEATH SOURCE/DOC UPDATE",
+        "paramName": "DGDATA",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGDATA:",
+        "rpcName": "DG FULL ICN SHOW/UPDATE",
+        "paramName": "DGDATA",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "FLAG:",
+        "rpcName": "DG UPDATE NAME COMPONENTS",
+        "paramName": "FLAG",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "IEN:",
+        "rpcName": "DG UPDATE NAME COMPONENTS",
+        "paramName": "IEN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "NAME COMPONENTS:",
+        "rpcName": "DG UPDATE NAME COMPONENTS",
+        "paramName": "NAME COMPONENTS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR PATIENT LOOKUP SEARCH",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET PTLK BUSINESS DATA",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "ACTION:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "ACTION",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DFN:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "DFN",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "DGOPT:",
+        "rpcName": "DGRR SET SENSITIVE ACCESS LOG",
+        "paramName": "DGOPT",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET LOOKUP TYPE LIST",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR PATIENT LKUP PREFERENCES",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAMS:",
+        "rpcName": "DGRR SET PTLK PREFERENCES",
+        "paramName": "PARAMS",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "JOB:",
+        "rpcName": "DGRR CANCEL SEARCH",
+        "paramName": "JOB",
+        "paramType": "LITERAL",
+        "required": false,
+        "source": "rpc"
+      },
+      {
+        "prompt": "PARAM:",
+        "rpcName": "DGRR GET PATIENT SERVICES DATA",
+        "paramName": "PARAM",
+        "paramType": "REFERENCE",
+        "required": false,
+        "source": "rpc"
+      }
+    ]
+  }
+}

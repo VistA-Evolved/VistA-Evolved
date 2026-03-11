@@ -1,0 +1,116 @@
+{
+  "fileNumber": 220.6,
+  "fileName": "DENTAL SCREEN (USER)",
+  "globalRoot": "220.6I",
+  "globalReference": "^DENT(220.6,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the screen name associated with a display of entries. The screen should be namespaced. The name should start the namespace characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MAXLINE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field contain the maximun length used by the screen display. It can not exceed 15 lines. The system computes this field automatically. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PREVIOUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is only applicable to multiple page screens. This field points to the previous screen name. It is a free text pointer entered by the system automatically. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is set automatically to the write (WR) security of the file selected by the user, at the time the file is created. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RIGHTLINKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field is only applicable to multiple page screens. This field contains the name of the screen to be executed next. It is a free text pointer entered by the system automatically. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ13,4X",
+      "length": 13,
+      "required": true,
+      "helpText": "The contents of this field should be a legal Data Definition (DD) number. It could be a first level . ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "RD",
+      "dataType": "SUBFILE",
+      "rawType": "220.67A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 220.67,
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The data entered in this field will be displayed at the top of the screen display as a title with the current date. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FILE LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field keeps track of the level of the screen display with respect to the hierarchy of the file. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "HIGHEST NUMBER USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the highest number used in the screen display. It is used when continuing adding entries. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "220.6", "field": .01, "type": "regular"},
+    {"name": "220.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .06, "value": "W \"   \",$P(^(0),U,6)"},
+    {"field": .08, "value": "W:$D(^(0)) \"   \",$P(^(0),U,7)"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "fileNumber": 457.6,
+  "fileName": "ENVIRONMENTAL DIFFERENTIALS",
+  "globalRoot": "457.6",
+  "globalReference": "^PRST(457.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the hazard or environmental danger for which differential pay is approved. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HAZARD/ENVIR. DIFF.",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "H:HAZARD;E:ENVIR. DIFF.;",
+      "helpText": "Identifies the reason for the differential pay. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PREMIUM %",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The percentage rate of the differential pay. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "457.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

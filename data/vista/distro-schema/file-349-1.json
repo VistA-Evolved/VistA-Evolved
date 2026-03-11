@@ -1,0 +1,168 @@
+{
+  "fileNumber": 349.1,
+  "fileName": "AR TRANSMISSION TYPE",
+  "globalRoot": "349.1",
+  "globalReference": "^RCT(349.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will hold the unique codes for the transmission types. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPANDED NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the expanded name of the transmission type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will indicate if the transmission type is being used. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PURGE FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field indicates if and when a purge of the entries will take place. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LOCAL ADDRESSEE",
+      "dataType": "POINTER",
+      "rawType": "349.11P",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCAL MAILGROUP",
+      "dataType": "POINTER",
+      "rawType": "349.12P",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "REMOTE ADDRESSEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the addressee name at the remote domain. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "REMOTE DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This is the remote domain where the transmission record is being sent. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the DOMAIN from file 4.2 DOMAIN. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "RC MAIL ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field will contain the Regional Counsel mail address for the primary site.  It will be the default mail address. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "RC DEATH NOTIFICATION ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the Regional Counsel mail address for death notifications for the primary site.  This will be the default for death notifications. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LAST MESSAGE ACK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of last message type sent from CCPC. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "FINAL MESSAGE ACK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Final message number of this type from CCPC. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "LAST MESSAGE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the last message number of this type for the transmission from CCPC. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "ACK MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "349.151A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 349.151,
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DIVISION OF CARE",
+      "dataType": "POINTER",
+      "rawType": "349.161PA",
+      "required": false,
+      "helpText": "This field is a multiple that allows divisions to be entered if their Regional Counsel mail addresses and death notification addresses are  different from the primary addresses.   ",
+      "fieldNumber_": 61
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "349.1", "field": .01, "type": "regular"},
+    {"name": "", "field": 32, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

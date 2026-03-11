@@ -1,0 +1,502 @@
+{
+  "fileNumber": 503340,
+  "fileName": "DONATIONS",
+  "globalRoot": "503340",
+  "globalReference": "^ABS(503340,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRACKING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "VOLUNTARY STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "P503338'",
+      "required": false,
+      "pointerTo": 503338,
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "RP503334'",
+      "required": true,
+      "pointerTo": 503334,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "ORGANIZATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.6,
+      "fieldName": "PRINTING ORG NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 1.6
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "INDIVIDUAL DONOR",
+      "dataType": "POINTER",
+      "rawType": "P503346.1",
+      "required": false,
+      "pointerTo": 503346.1,
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 1.71,
+      "fieldName": "DONOR ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.71
+    },
+    {
+      "fieldNumber": 1.72,
+      "fieldName": "DONOR ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1.72
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE ACKNOWLEDGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "POST/CHAPTER/UNIT",
+      "dataType": "POINTER",
+      "rawType": "P503347",
+      "required": false,
+      "pointerTo": 503347,
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "POST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "ITEM(S) DONATED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE OF DONATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CASH/CHECK;2:OTHER;3:SERVICES;4:COMFORT ARTICLES;5:EQUIPMENT;6:CLOTHING;7:FOOD;8:CANTEEN COUPON BOOKS;9:MAGAZINES/BOOKS;",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,2",
+      "length": 11,
+      "required": true,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FUND",
+      "dataType": "POINTER",
+      "rawType": "P503342'",
+      "required": false,
+      "pointerTo": 503342,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "503340.08",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 503340.08,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "WORKDAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "PERMANENT RECEIPT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 14.5,
+      "fieldName": "DATE OF PERMANENT RECEIPT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 14.5
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LETTER SENT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PURPOSE OF DONATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LETTER FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P503341'",
+      "required": false,
+      "pointerTo": 503341,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "NAME OF ITEM(S)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE DEPOSITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DONOR CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DONOR STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 21.5,
+      "fieldName": "DONOR STATE ABBREVIATION",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 21.5
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "DONOR ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PRINT LETTER NOW?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "NUMBER OF COPIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field stores the number of copies of the thank you letter for a specific donation. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "LETTER RECIPIENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 30.5,
+      "fieldName": "LETTER RECIPIENT TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 30.5
+    },
+    {
+      "fieldNumber": 30.7,
+      "fieldName": "LETTER SALUTATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 30.7
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "LETTER ADD1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LETTER ADD2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "LETTER CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "LETTER STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.5,
+      "fieldName": "LETTER STATE ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 34.5
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "LETTER ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "LETTER CC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "LETTER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "LETTER CC1 NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "LETTER CC1 TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "LETTER CC1 ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 42.5,
+      "fieldName": "LETTER CC1 ORGANIZATION NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 42.5
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "LETTER CC2 NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "LETTER CC2 TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "LETTER CC2 ORGANIZATION",
+      "dataType": "POINTER",
+      "rawType": "P503334'",
+      "required": false,
+      "pointerTo": 503334,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 45.5,
+      "fieldName": "LETTER CC2 ORGANIZATION NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "fieldNumber_": 45.5
+    }
+  ],
+  "fieldCount": 55,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "503340", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .5, "type": "regular"},
+    {"name": "503340", "field": .5, "type": "regular"},
+    {"name": "503340", "field": .6, "type": "regular"},
+    {"name": "", "field": 1, "type": "regular"},
+    {"name": "503340", "field": 1, "type": "regular"},
+    {"name": "", "field": 1.7, "type": "regular"},
+    {"name": "", "field": 1.71, "type": "regular"},
+    {"name": "", "field": 1.72, "type": "regular"},
+    {"name": "503340", "field": 2, "type": "regular"},
+    {"name": "", "field": 20, "type": "regular"},
+    {"name": "", "field": 21, "type": "regular"},
+    {"name": "", "field": 22, "type": "regular"},
+    {"name": "", "field": 34, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1.5, "value": "W \"   \",$P(^(0),U,14)"},
+    {"field": 2, "value": "W \"   \",$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 7101,
+  "fileName": "NOIS TEXT",
+  "globalRoot": "7101",
+  "globalReference": "^FSCD(\"TEXT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This is a sequence of a text entry that is used for editing NOIS calls. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "7101.01",
+      "required": false,
+      "helpText": "This is the text entry made when editing NOIS calls. ",
+      "isMultiple": true,
+      "subFileNumber": 7101.01,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,608 @@
+{
+  "fileNumber": 52.41,
+  "fileName": "PENDING OUTPATIENT ORDERS",
+  "globalRoot": "52.41P",
+  "globalReference": "^PS(52.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PLACER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the internal number of the order from the ORDER file (#100), representing the corresponding Computerized Patient Record System  (CPRS) order to this pending Outpatient Pharmacy order. This field also  acts as a temporary holding place for any external system order number, for orders received from any external system. An external system order number will only be stored here temporarily, until the CPRS order number is received to replace the external system order number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'I",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the pointer to the Patient file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PATIENT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the pointer to the Hospital Location file. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ORDER TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "NW:NEW ORDER;HD:HOLD;RNW:RENEW;DE:DISCONTINUED (EDIT);DC:DISCONTINUED;RF:REFILL REQUEST;",
+      "helpText": "This field describes the status of the Pending order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "QUANTITY TIMING SUB-FILE",
+      "dataType": "SUBFILE",
+      "rawType": "52.413A",
+      "required": false,
+      "helpText": "This sub-file is used to store the quantity timing field from the ORC segment from CPRS. The components are used to build a Possible Sig for the finish process in Pharmacy. ",
+      "isMultiple": true,
+      "subFileNumber": 52.413,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the person who entered the order in CPRS, pointer to the New Person file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the provider for the order, pointer to the New Person file. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the order goes into effect. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NATURE OF ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WRITTEN;P:TELEPHONE;V:VERBAL;E:PROVIDER ENTERED;",
+      "helpText": "This is the Nature of the order, as it is entered through CPRS. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PHARMACY ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "P50.7'",
+      "required": false,
+      "pointerTo": 50.7,
+      "helpText": "This is the Pharmacy Orderable Item for the order, as entered through CPRS.  ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PROVIDER COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "52.419",
+      "required": false,
+      "helpText": "This field contains any Provider comments that may have been entered through CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.419,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PHARMACY INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.42",
+      "required": false,
+      "helpText": "This field contains any special instructions for the Pharmacist, as entered through CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.42,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the pointer to the Drug file entry that is associated with the Pharmacy Orderable Item. Not all orders will have a Drug when received from CPRS, but upon finishing the order, a Drug must be entered. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2X",
+      "length": 11,
+      "required": false,
+      "helpText": "This shows the amount of the medication to be dispensed. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "# OF REFILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of refills allowed for this order. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "INDICATION FOR USE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This field contains the Indication For Use that was chosen when the medication was ordered in CPRS. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LOGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the order was received from CPRS. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "MED ROUTE",
+      "dataType": "POINTER",
+      "rawType": "P51.2'",
+      "required": false,
+      "pointerTo": 51.2,
+      "helpText": "This is the Med Route that the medication is to be administered by. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This indicates whether the order is for a service connected or non-service connected condition. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ORDERS CHECKS",
+      "dataType": "SUBFILE",
+      "rawType": "52.4118A",
+      "required": false,
+      "helpText": "This is a multiple for the order checks passed to Pharmacy from CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4118,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "PICKUP ROUTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MAIL;W:WINDOW;C:ADMINISTERED IN CLINIC;P:PARKED;",
+      "helpText": "This is how the medication is to be given to the patient. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TITRATION RX FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This flag indicates whether the prescription is being dispensed as a Titration Dose. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "Rx REFILL REQUEST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This field will be used to indicate the Rx number for refill request from CPRS. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "REASON ORDER CREATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NEW;R:RENEWAL;E:EDIT;F:REFILL;",
+      "helpText": "This shows why the order was created in CPRS. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 22.1,
+      "fieldName": "PREVIOUS ORDER #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field will store the pointer value to the Rx that is being Renewed. ",
+      "fieldNumber_": 22.1
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains any comments associated with the order. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DISPENSING INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.4124A",
+      "required": false,
+      "helpText": "Dispensing instruction for the medication. ",
+      "isMultiple": true,
+      "subFileNumber": 52.4124,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:STAT;E:EMERGENCY;R:ROUTINE;",
+      "helpText": "This field is used to indicate the urgency of the order. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "POSSIBLE FILLDATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be used to display the effective date of a discharge med or pass med. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DATE/TIME FLAGGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time when this order was flagged. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "FLAGGED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who flagged this order. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "REASON FOR FLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DATE/TIME UNFLAGGED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time this order was unflagged. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "UNFLAGGED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who unflagged this order. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "REASON FOR UNFLAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the reason for unflagging this order, usually a response to the reason for flag. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "RELATED INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the Institution that the order was issued from. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DAYS SUPPLY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a whole number between 1 and 365. The maximum upper limit is 365, but may be lower based on the maximum specified for the drug in this pending order. The maximum value for the  drug can be found in the DRUG file (#50) or the VA PRODUCT file (#50.68) for drugs matched to NDF. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Flagged;",
+      "helpText": "This field shall designate whether or not a prescription has been flagged for follow up with a provider. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "PRE-POE ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will be used to identify pending orders entered before the installation of the Pharmacy Order Enhancement patch.  PSO*7*46. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "PATIENT INSTRUCTIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The text in this field shall be used for the Patient Instructions in the Outpatient Pharmacy package when entering orders, if the Dispense Drug selected is matched to a Pharmacy Orderable Item with patient instructions. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 104.1,
+      "fieldName": "PATIENT INSTRUCTIONS FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate for the provider wanted the patient instructions included in the SIG. ",
+      "fieldNumber_": 104.1
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "EXPANDED PATIENT INSTRUCTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "52.41105",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 52.41105,
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been treated for Military Sexual Trauma, the clinician will be asked to identify whether or not the outpatient medication order being prescribed is being used to treat a condition related to Military Sexual Trauma. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that was entered ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been exposed to Agent Orange during Vietnam service, the clinician will be asked to identify whether or not the outpatient medication order prescribed is being used to treat a condition due to this exposure. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that was entered through",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been exposed to ionizing radiation during military service, the clinician will be asked to identify whether or not the outpatient medication order prescribed is being used to treat a condition due to this exposure. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that was entered ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "SOUTHWEST ASIA CONDITIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been exposed to Southwest Asia Conditions during the Persian Gulf War, the clinician will be asked to identify whether or not the outpatient medication order prescribed is being used to treat a condition due to this exposure. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that w",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been treated for Head and/or Neck Cancer due to nose or throat radium treatments while in the military, the clinician will be asked to identify whether or not the outpatient medication order prescribed is being used to treat this condition. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medicati",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 110.1,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been  treated for a condition related to Combat Services, the clinician will be  asked to identify whether or not the outpatient medication order being prescribed is being used to treat a condition related to Combat Services. This field will store the response that was entered for this question. This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that w",
+      "fieldNumber_": 110.1
+    },
+    {
+      "fieldNumber": 110.2,
+      "fieldName": "PROJ 112/SHAD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "During CPRS order entry, if a veteran has been identified as having been treated for a condition related to PROJ 112/SHAD, the clinician will be  asked to identify whether or not the outpatient medication order being  prescribed is being used to treat a condition related to PROJ 112/SHAD.  This field will store the response that was entered for this question.   This value will be used as the default value for the same prompt presented to the pharmacist when finishing the medication order that wa",
+      "fieldNumber_": 110.2
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "DDSTATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field will hold the status of the pending order at the time a date of death was entered. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "EXTERNAL PLACER ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field represents the external system order number of this order. This field will only be populated if this order was originally received from an external system into Vista. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "EXTERNAL SYSTEM ORDER REPLACED",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field will be set to 1 by the software when an external system order number is successfully replaced by a Computerized Patient Record System (CPRS) order number. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "EXTERNAL APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field represents the name of the external system from where the  external order was received. ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "SIGNATURE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Digital Signature status indicator. ",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "DRUG INCLUDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates CPRS included the dispense drug as part of the hash calculation for digitally signed orders. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "DIRECTIONS FOR USE",
+      "dataType": "SUBFILE",
+      "rawType": "52.44A",
+      "required": false,
+      "helpText": "This multiple contains the raw HL7 dosage data as sent from CPRS. ",
+      "isMultiple": true,
+      "subFileNumber": 52.44,
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 311,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "52.41311PA",
+      "required": false,
+      "helpText": "This multiple is used to store up to eight ICD-9 codes per prescription with the first always being the primary diagnosis code and subsequent ones being secondary diagnosis codes.  Also stored in this multiple are all of the Service Connection (SC) and Environmental Indicators (EI) that  directly relate to each ICD-9 code.  These SC/EI's are passed from CPRS in this manner. This ICD-9/SC/EI relationship is necessary for 3rd Party Billing.   Current Copay functionality deals only with SC<50% and ",
+      "fieldNumber_": 311
+    }
+  ],
+  "fieldCount": 57,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AOR", "field": },
+    {"name": "AOR1", "field": },
+    {"name": "AP", "field": },
+    {"name": "APSOD", "field": },
+    {"name": "AQ", "field": },
+    {"name": "ARF", "field": },
+    {"name": "B", "field": },
+    {"name": "HL", "field": },
+    {"name": "HLP", "field": },
+    {"name": "P", "field": },
+    {"name": "PN", "field": },
+    {"name": "52.41", "field": .01, "type": "regular"},
+    {"name": "52.41", "field": 1, "type": "regular"},
+    {"name": "52.41", "field": 1, "type": "regular"},
+    {"name": "52.41", "field": 1, "type": "regular"},
+    {"name": "52.41", "field": 1.1, "type": "regular"},
+    {"name": "52.41", "field": 1.1, "type": "regular"},
+    {"name": "52.41", "field": 1.1, "type": "regular"},
+    {"name": "52.41", "field": 2, "type": "regular"},
+    {"name": "52.41", "field": 15, "type": "regular"},
+    {"name": "52.41", "field": 15, "type": "regular"},
+    {"name": "52.41", "field": 19, "type": "regular"},
+    {"name": "52.41", "field": 21, "type": "regular"},
+    {"name": "52.41", "field": 22.1, "type": "regular"},
+    {"name": "52.41", "field": 25, "type": "regular"},
+    {"name": "52.41", "field": 100, "type": "regular"},
+    {"name": "52.41", "field": 100, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

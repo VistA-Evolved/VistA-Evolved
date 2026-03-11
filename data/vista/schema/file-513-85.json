@@ -1,0 +1,70 @@
+{
+  "fileNumber": 513.85,
+  "fileName": "UTILIZATION REVIEW CONFIGURATION",
+  "globalRoot": "513.85",
+  "globalReference": "^PRMQ(513.85,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PERCENT SAMPLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EXCLUDE WARD",
+      "dataType": "POINTER",
+      "rawType": "513.852PA",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "NEXT SCHEDULED REVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:50%;2:75%;3:5 DAYS AFTER ADMISSION OR TRANSFER DATE;",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MEDICARE CODE",
+      "dataType": "POINTER",
+      "rawType": "RP36'",
+      "required": true,
+      "pointerTo": 36,
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "513.85", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

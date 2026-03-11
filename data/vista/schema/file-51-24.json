@@ -1,0 +1,103 @@
+{
+  "fileNumber": 51.24,
+  "fileName": "DOSE UNITS",
+  "globalRoot": "51.24",
+  "globalReference": "^PS(51.24,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the Dose Unit. Local Possible Dosages entries in the DRUG (#50) File will be mapped to entries in this file. This mapping will enable the software to derive a First DataBank Dose Unit, also in this file, that can be passed into the Dose API for Dose checks for medication orders. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIRST DATABANK DOSE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field provides the mapping from the Vista Dose Unit to the First DataBank Dose Unit. The First DataBank Dose Unit will be used when processing the dosage checks provided by First DataBank. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "51.242",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 51.242,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DOSE FORM INDICATOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether the Dose Unit is considered by First  DataBank (FDB) as a Dose Form type of Dose Unit when returning data for  the Dosing Check API. It determines what values should be used to compose  the general dosing information message. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P51.24'",
+      "required": false,
+      "pointerTo": 51.24,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "51.2499DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 51.2499,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "51.24", "field": .01, "type": "regular"},
+    {"name": "51.24", "field": 1, "type": "regular"},
+    {"name": "51.24", "field": 99.97, "type": "regular"},
+    {"name": "51.24", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

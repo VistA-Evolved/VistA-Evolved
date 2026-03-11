@@ -1,0 +1,38 @@
+{
+  "fileNumber": 509850.5,
+  "fileName": "A&SP PROCEDURE MODIFIER",
+  "globalRoot": "509850.5",
+  "globalReference": "^ACK(509850.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODIFIER",
+      "dataType": "POINTER",
+      "rawType": "*P81.3'XI",
+      "required": false,
+      "pointerTo": 81.3,
+      "helpText": "Valid Procedure Modifiers used within A&SP. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MODIFIER STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This is the current status of the CPT Modifier.  If the status is Inactive  the Modifier will be unselectable within the New/Edit Function. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "509850.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

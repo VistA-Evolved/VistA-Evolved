@@ -1,0 +1,47 @@
+{
+  "fileNumber": 912.4,
+  "fileName": "ESP CRIME DATA",
+  "globalRoot": "912.4DI",
+  "globalReference": "^ESP(912.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BEGINNING DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will indicate the beginning date of the generated report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ENDING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the ending date of the generated report. This field is stuffed when running the Uniform Crime Report option with the date entered at the \"Ending Date\" prompt. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INSTITUTION",
+      "dataType": "SUBFILE",
+      "rawType": "912.41",
+      "required": false,
+      "helpText": "This field will indicate the local field station generating the report. ",
+      "isMultiple": true,
+      "subFileNumber": 912.41,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "912.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

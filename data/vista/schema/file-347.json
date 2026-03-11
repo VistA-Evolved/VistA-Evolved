@@ -1,0 +1,153 @@
+{
+  "fileNumber": 347,
+  "fileName": "AR FMS DOCUMENT",
+  "globalRoot": "347I",
+  "globalReference": "^RC(347,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "Incremental number to record FMS documents in file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP347.1'",
+      "required": true,
+      "pointerTo": 347.1,
+      "helpText": "Type of FMS document being recorded. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:NOT-SENT;1:SENT;2:ACCEPTED;3:REJECTED;",
+      "helpText": "Status to prevent/allow transmission of FMS documents. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "System date/time of last activity of entry. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Identifies what type of entry and internal number that caused an AR FMS document entry.   i.e. T1 = AR transaction (file 433), transaction number 1. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "AR BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P430'",
+      "required": false,
+      "pointerTo": 430,
+      "helpText": "AR bill number from file 430. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "AR TRANSACTION",
+      "dataType": "POINTER",
+      "rawType": "P433'",
+      "required": false,
+      "pointerTo": 433,
+      "helpText": "AR transaction number from file 433. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "FMS DOCUMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "FMS document number sent to FMS. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "FMS BATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS batch number on a modified document. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "FUND",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "FMS accounting FUND.  Used for summary documents. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "Amount of FMS document.  Used on Summary documents. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "RECEIPT #",
+      "dataType": "POINTER",
+      "rawType": "P344'",
+      "required": false,
+      "pointerTo": 344,
+      "helpText": "This is the receipt number that was used to create FMS documents. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FMS TRANSMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date this document was transmitted to FMS. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "FMS", "field": },
+    {"name": "347", "field": .01, "type": "regular"},
+    {"name": "347", "field": .05, "type": "regular"},
+    {"name": "347", "field": .06, "type": "regular"},
+    {"name": "347", "field": .09, "type": "regular"},
+    {"name": "347", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WR1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RC(347.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(347.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WR2, "value": "W \"   \",$E($P(^(0),U,5),4,5)_\"-\"_$E($P(^(0),U,5),6,7)_\"-\"_$E($P(^(0),U,5),2,3)"},
+    {"field": WR3, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(347,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": WR4, "value": "W \"   \",$P(^(0),U,6)"}
+  ]
+}

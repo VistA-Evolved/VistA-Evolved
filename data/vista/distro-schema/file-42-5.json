@@ -1,0 +1,38 @@
+{
+  "fileNumber": 42.5,
+  "fileName": "WAIT LIST",
+  "globalRoot": "42.5P",
+  "globalReference": "^DGWAIT(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "R*P40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Enter the division for which there is a waiting list established. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "42.51IPA",
+      "required": false,
+      "helpText": "This multiple contains data about patients on a waiting list for this division.  Information includes the patient's name, the type of waiting list, and when they were entered on the waiting list. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "42.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

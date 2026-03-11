@@ -1,0 +1,180 @@
+{
+  "fileNumber": 667.3,
+  "fileName": "V.O.R. TRANSACTION",
+  "globalRoot": "667.3ID",
+  "globalReference": "^RMPR(667.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "The date that the item or repair was processed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VEHICLE ID#",
+      "dataType": "POINTER",
+      "rawType": "P667'",
+      "required": false,
+      "pointerTo": 667,
+      "helpText": "The Identification number of the Vehicle of Records.  This points to file 667 and is an internal entry number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "RP667.1",
+      "required": true,
+      "pointerTo": 667.1,
+      "helpText": "The name of the item that will be on the Vehicle of Records. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "Contains the quantity of items purchased. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "The cost of the item. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "AMIS CODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "21B:A;21A:V;R16:R;",
+      "helpText": "This field contains the AMIS code for the transaction. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "667.35",
+      "required": false,
+      "helpText": "This field contains the description of the vehicle transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 667.35,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SERIAL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the serial number of the item being purchased or repaired. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AMIS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,0I",
+      "length": 17,
+      "required": false,
+      "helpText": "This field contains the grouper number stored in the Site Parameters file 669.9 and should not be edited. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "TYPE OF TRANSACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INITIAL ISSUE;R:REPLACE;S:SPARE;X:REPAIR;",
+      "helpText": "Set of Codes for type of transaction processed. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SC/OP;2:SC/IP;3:NSC/IP;4:NSC/OP;",
+      "helpText": "This field stores the patient category for this V.O.R. transaction. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SPECIAL CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL LEGISLATION;2:A&A;3:PHC;",
+      "helpText": "This field stores the patient's special category for this V.O.R. transaction. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "V:VA;C:COMMERCIAL;",
+      "helpText": "Set of codes for the source of the item either Commercial or VA. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field is a pointer to the Insitution file.  If the data base is  Multi Divisional entries are screened out by the station number. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who entered the transaction. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RETURN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Contains the date that the item was retunred thru the Flag Item a Returned /Condemned option. ",
+      "fieldNumber_": 14
+    }
+  ],
+  "fieldCount": 16,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "667.3", "field": .01, "type": "regular"},
+    {"name": "667.3", "field": 1, "type": "regular"},
+    {"name": "667.3", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^RMPR(667.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(667.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

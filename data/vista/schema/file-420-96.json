@@ -1,0 +1,99 @@
+{
+  "fileNumber": 420.96,
+  "fileName": "IFCAP/FMS OBLIGATION RECONCILIATION REPORT",
+  "globalRoot": "420.96",
+  "globalReference": "^PRCU(420.96,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the OOP document ID number from FMS. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the station number of the site receiving the 850 report. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALM/FMS UDO AMT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the undelivered obligation dollar amount from CALM or FMS. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FMS FUND CONTROL POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the FMS fund control point. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "FMS LINE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field references the FMS line number on the document. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IFCAP DOCUMENT NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P442'",
+      "required": false,
+      "pointerTo": 442,
+      "helpText": "This field contains the IFCAP document number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "IFCAP UDO AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This field contains the undelivered order amount from IFCAP. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:IFCAP OPEN/NO FMS RECORD;2:IFCAP CLOSED/ FMS OPEN;3:UDO'S OUT OF BALANCE;0:VALID DOCUMENT;4:NO IFCAP RECORD/ FMS OPEN;",
+      "helpText": "This field contains a status code for the type of obligation reconciliation. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "420.96", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "420.96", "field": .5, "type": "regular"},
+    {"name": "420.96", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

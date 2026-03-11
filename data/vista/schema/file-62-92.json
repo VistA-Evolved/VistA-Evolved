@@ -1,0 +1,27 @@
+{
+  "fileNumber": 62.92,
+  "fileName": "LAB SHIPPING METHOD",
+  "globalRoot": "62.92",
+  "globalReference": "^LAHM(62.92,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the method used to ship/transport test specimens to a host facility for testing. Examples: courier, Fedex, UPS, USPS, etc. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "62.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

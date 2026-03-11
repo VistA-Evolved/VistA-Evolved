@@ -1,0 +1,27 @@
+{
+  "fileNumber": 365.14,
+  "fileName": "IIV TRANSMISSION STATUS",
+  "globalRoot": "365.14",
+  "globalReference": "^IBE(365.14,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is the full name of the transmission status. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "365.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

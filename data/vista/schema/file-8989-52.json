@@ -1,0 +1,67 @@
+{
+  "fileNumber": 8989.52,
+  "fileName": "PARAMETER TEMPLATE",
+  "globalRoot": "8989.52",
+  "globalReference": "^XTV(8989.52,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the parameter template.  The template names must be namespaced. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the display name (non-namespaced) for the template. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "USE ENTITY FROM",
+      "dataType": "POINTER",
+      "rawType": "*P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This identifies the file from which an entity will be selected. The parameters in this template will apply to that entity. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USE INSTANCE FROM",
+      "dataType": "POINTER",
+      "rawType": "P8989.51'",
+      "required": false,
+      "pointerTo": 8989.51,
+      "helpText": "This allows a parameter to be chosen which will be used to prompt for an instance value.  This instance value will be used for all other parameters in the template that are a multiple type. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "PARAMETERS",
+      "dataType": "SUBFILE",
+      "rawType": "8989.521IA",
+      "required": false,
+      "helpText": "This lists the parameters that make up the template. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.521,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8989.52", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N X S X=^(0) D EN^DDIOL($P(X,U,2),\"\",\"?36\")"}
+  ]
+}

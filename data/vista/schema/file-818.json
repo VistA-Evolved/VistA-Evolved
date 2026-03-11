@@ -1,0 +1,65 @@
+{
+  "fileNumber": 818,
+  "fileName": "COMPACT ACT EPISODE OF CARE",
+  "globalRoot": "818",
+  "globalReference": "^PXCOMP(818,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient receiving acute suicidal crisis treatment for this episode of  care. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EOC OPEN/CLOSE FLAG",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "Flag is set to Yes if the patient is in acute suicidal crisis. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "BENEFIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;",
+      "helpText": "This is the current benefit clock that is open, e.g. Inpatient 30 day clock or Outpatient 90 day clock. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EPISODES OF CARE",
+      "dataType": "DATE",
+      "rawType": "818.01D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 818.01,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ACENR0", "field": },
+    {"name": "ACENR1", "field": },
+    {"name": "ACENR2", "field": },
+    {"name": "ACENR3", "field": },
+    {"name": "ACENR4", "field": },
+    {"name": "AENR", "field": },
+    {"name": "B", "field": },
+    {"name": "CAENR2", "field": },
+    {"name": "818", "field": .01, "type": "regular"},
+    {"name": "818", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

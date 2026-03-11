@@ -1,0 +1,340 @@
+{
+  "fileNumber": 2005.2,
+  "fileName": "NETWORK LOCATION",
+  "globalRoot": "2005.2I",
+  "globalReference": "^MAG(2005.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NETWORK LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the alias name of an Imaging share. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PLACE",
+      "dataType": "POINTER",
+      "rawType": "RP2006.1'",
+      "required": true,
+      "pointerTo": 2006.1,
+      "helpText": "This field identifies the SITE PARAMETER file entry. The Site parameter entry defines all of the attributes of Vista Imaging local area network.   This includes facility user preferences, network write locations, etc. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHYSICAL REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the physical network location where the image is stored. This is the Universal Naming Convention (UNC) path for the  Image Storage. For example: \\\\ISWIMG01\\IMAGE1\\   This is a required field for all entries except for an entry  defined with a RAID-GROUP STORAGE TYPE (#6).   Duplicate PHYSICAL REFERENCE values within the same VistA Imaging configuration PLACE (#.04) are not allowed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TOTAL SPACE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the total available formatted space of this network location.    The information in this field is dependent on the connectivity of the  share and may be set to zero if the share is not available.    This field is maintained by the RPC MAGQ FS CHNGE. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPACE USED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the amount of space which has been used for this network location - this value is device dependent. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FREE SPACE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,0",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the amount of available space remaining for this network location. The information in this field is dependent on the  connectivity of the share and may be set to zero if the share is not available. This field is maintained by the RPC MAGQ FS CHNGE. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "OPERATIONAL STATUS",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "0:Off-Line;1:On-Line;",
+      "helpText": "This field tells the Imaging software whether or not this network location, where images are stored, is online. The default is online if the field is null. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "READ ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field enables applications to filter shares that are  designated as read only by active VistA Imaging applications. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STORAGE TYPE",
+      "dataType": "SET",
+      "rawType": "RSO",
+      "required": true,
+      "setOfCodes": "MAG:MAGNETIC;WORM-DG:WORM-DG;WORM-PDT:WORM-PDT;RW:READ/WRITE;WORM-OTG:WORM-OTG;EKG:MUSE-EKG;GCC:EXPORT;DGM:DIAGRAM;URL:URL;RTR:ROUTER;GRP:RAID-GROUP;",
+      "helpText": "This field describes the media type of this network location.  It should be MAGNETIC for a magnetic disk server.   Jukeboxes should be WORM-DG for Data General Jukeboxes under  OpenNetware or WORM-PDT for Pegasus Jukeboxes or WORM-OTG for  OTG Disk Extender. WORM-DG and WORM-PDT are for backward  compatibility only. Note: WORM stands for Write Once, Read Many.   The GCC type refers to the Generic Carbon Copy (GCC) utility.    URL is used for Web based file access.    Type 'RTR' should be used to",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "HASH SUBDIRECTORY",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "Control whether subdirectory should be hashed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ABSTRACT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag indicating whether or not  a network location supports ABSTRACT image files'.   ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FULL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag indicating whether or not  a network location supports FULL image files.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "BIG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag indicating whether or not  a network location supports BIG image files.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TEXT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag indicating whether or not  a network location supports TEXT image files.   ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DICOM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field is a flag indicating whether or not  a network location supports DICOM image files.  ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "COMPRESSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NONE:None;J2K:JPEG-2000;",
+      "helpText": "This field indicates which type of compression, if any,  is to use while transmitting files to this network location. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "USER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is for a user name used to establish  a connection with the network location. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is a password used with a user name to  establish a connection with this network location.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "MAINTAINCONNECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "MAX # RETRY ON CONNECT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates  the number of attempts to make to connect with the network location. When no connection can be established within this number of attempts, the status of the network location will be  set to 'Off-Line'.  ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "MAX # RETRY ON TRANSMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field indicates  the number of attempts to make to transmit a file. When a file cannot be transmitted within this number of  attempts, its status will be set to 'FAILED'. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SYNTAX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "UNC:UNC;",
+      "helpText": "This field is a code for the syntax that describes the actual  (physical) name of the network location. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SUBDIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Files are typically not stored in root directories.    This field is the name of a subdirectory where files are to be stored.  The value of this field is concatenated to the  name of the network location (the 'physical name') to create  the complete path-name for the location where files are to be  stored.  When \"directory hashing\" iS active, additional  subdirectory names will be added to the above-mentioned  path-name before the file name  is appended. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "EMAIL",
+      "dataType": "POINTER",
+      "rawType": "2005.201PA",
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "RETENTION PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field  indicates the number of days to retain routed image files at the location identified by this entry in the NETWORK LOCATION file.    When Images  are present for more than this number of days, they are  candidates for automatic removal. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "LAST PURGE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field indicates the date and time of the most recent purge  at this network location.  An automatic purge will be executed at most once per day; the value of this field determines whether  or not a purge has already taken place.   ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "SITE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a code for the site of the 'network location.     This code is typically a three-letter abbreviation\\acronym (WAS for Washington DC, STL for St. Louis, etcetera).   For stations 'at home', a longer code that starts with \"HOME\"  is entered. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ROUTER",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This boolean value is used to designate certain network location  shares as routing shares.  This is necessary to allow clinical WS  applications access to images on these shares but to prevent the  background processor from designating this share as the current  write location. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "TIME OFFLINE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is a time stamp indicating when the equipment  in question most recently went off-line.  This time stamp is used by the Routing software to decide whether or not to  attempt to reconnect to a destination that was not reachable at an earlier stage.   ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "MUSE SITE #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "If this is a MUSE EKG network location, enter the MUSE site  number for this location. Typically, a site with a single MUSE  server that holds EKGs for one site uses 1.  If a MUSE server stores EKGs for more than one site, then Marquette assigns  each site a MUSE site number.   ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "MUSE VERSION #",
+      "dataType": "POINTER",
+      "rawType": "P2006.17'",
+      "required": false,
+      "pointerTo": 2006.17,
+      "helpText": "Enter the MUSE version number if this network location is a  MUSE EKG storage type. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SHARE GROUP",
+      "dataType": "POINTER",
+      "rawType": "2005.22PA",
+      "required": false,
+      "helpText": "This subfile identifies the entries that are part of a Shared  Group Imaging sites can use this functionality to group their   network shares. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "GROUP MEMBER",
+      "dataType": "POINTER",
+      "rawType": "*P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the Group name that this network location  is part of. Only entries that have a Storage Type of 'GRP' can  be selected. ",
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 33,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "2005.2", "field": .01, "type": "regular"},
+    {"name": "2005.2", "field": 1, "type": "regular"},
+    {"name": "2005.2", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

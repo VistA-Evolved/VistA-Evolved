@@ -1,0 +1,785 @@
+{
+  "fileNumber": 112,
+  "fileName": "FOOD NUTRIENTS",
+  "globalRoot": "112",
+  "globalReference": "^FHNU(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the name of the food nutrient item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field, if present, contains the USDA code of the food nutrient item. It may be either a Revised Handbook 8 number or a Handbook 456 number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMMON UNITS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field represents the type of common units used (e.g., oz., serving, each) when quantities are to be represented in common units. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GRAMS/COMMON UNIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,3",
+      "length": 8,
+      "required": false,
+      "helpText": "This field contains the number of grams in the common unit specified for this nutrient. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ORIGINAL NAME ON QUICK LIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, means that the main name of this nutrient will be on a Quick List for rapid look-up. In short, this is a commonly used item. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "ALTERNATE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field may contain an alternate name for the nutrient item. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 4.4,
+      "fieldName": "ALT NAME QUICK LIST?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered YES, means that the alternate name of this nutrient is also on the Quick List for rapid look-up. ",
+      "fieldNumber_": 4.4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "% AS PURCHASED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the percentage of the as purchased weight that is present after preparation. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EDITABLE?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, when answered NO, means that the item is an USDA item and that the Handbook values for the various nutrients cannot be edited by dietetic personnel. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "E:EDIBLE;R:RAW/RARE;X:RECIPE;",
+      "helpText": "This field, if E, will allow selection of edible foods for energy analyses; if R, can be selected for recipe analyses. If X, analysis is of a recipe in File 114 and cannot be selected. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PROTEIN; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "LIPIDS; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CARBOHYDRATE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "FOOD ENERGY; KCAL/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "WATER; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "CALCIUM; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "IRON; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MAGNESIUM; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PHOSPHORUS; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "POTASSIUM; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SODIUM; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ZINC; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "COPPER; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "MANGANESE; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "ALPHA TOCOPHEROL; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "VITAMIN A; IU/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "ASCORBIC ACID; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "THIAMIN; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "RIBOFLAVIN; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "NIACIN; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PANTOTHENIC ACID; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "VITAMIN B6; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "FOLATE; MCG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "VITAMIN B12; MCG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "LINOLEIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "LINOLENIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "CHOLESTEROL; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "SATURATED FAT; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "MONOUNSATURATED FAT; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "POLYUNSATURATED FAT; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,3",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "VITAMIN A; RE/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "ASH; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ALCOHOL; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "CAFFEINE; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "TOTAL DIETARY FIBER; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "TOTAL TOCOPHEROL; MG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "TRYPTOPHAN; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "THREONINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "ISOLEUCINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "LEUCINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "LYSINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "METHIONINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "CYSTINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "PHENYLALANINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "TYROSINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "VALINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ARGININE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "HISTIDINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "ALANINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ASPARTIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "GLUTAMIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "GLYCINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PROLINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "SERINE; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "CAPRIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "LAURIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "MYRISTIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "PALMITIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "PALMITOLEIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "STEARIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "OLEIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "ARACHIDONIC ACID; GM/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "VITAMIN K; MCG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the value per 100 gms. of this nutrient ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "SELENIUM; MCG/100G",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This is the value per 100 gms. of this nutrient. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "SOURCE OF DATA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value per 100 grams for this nutrient. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 76,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AQ", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "112", "field": .01, "type": "regular"},
+    {"name": "112", "field": .01, "type": "regular"},
+    {"name": "112", "field": 1, "type": "regular"},
+    {"name": "112", "field": 4, "type": "regular"},
+    {"name": "112", "field": 4.2, "type": "regular"},
+    {"name": "112", "field": 4.2, "type": "regular"},
+    {"name": "112", "field": 4.4, "type": "regular"},
+    {"name": "112", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

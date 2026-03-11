@@ -1,0 +1,76 @@
+{
+  "fileNumber": 7115.3,
+  "fileName": "HDIS XML TEMPLATE",
+  "globalRoot": "7115.3",
+  "globalReference": "^HDIS(7115.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the XML Template.  Identifies which XML schema the template relates too. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "XML VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,4",
+      "length": 7,
+      "required": true,
+      "helpText": "Identifies what version of XML this XML message will be used. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ENCODING",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Defines the encoding which will be used when creating this XML message. Normally set to \"UTF-8\". ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PRIMARY ELEMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Identifies the Primary Element in the XML schema.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ELEMENT NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "7115.34",
+      "required": false,
+      "helpText": "Each element (line) in the XML message is assigned an element number. The elements are processed by this number, so this data determines the sequence of data for the XML message. ",
+      "isMultiple": true,
+      "subFileNumber": 7115.34,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INDENTATION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "Used to define the number of spaces for each element indentation.  The  level indicator is multiplied by the indentation field.  This field can be set to zero, so that no indentation occurs. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7115.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

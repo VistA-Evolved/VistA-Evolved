@@ -1,0 +1,204 @@
+{
+  "fileNumber": 61,
+  "fileName": "TOPOGRAPHY FIELD",
+  "globalRoot": "61I",
+  "globalReference": "^LAB(61,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the specimen or source. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ICDO CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The appropriate ICD0 code associated with this specimen or source. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "HL7 CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "LEDI HL7",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field contains the HL7 standard specimen type code. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .0961,
+      "fieldName": "TIME ASPECT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field describes the time aspect for this specimen. (i.e. 24hour, point, fasting, 30 mins ...)  You may select any entry in the LAB ELECTRONIC CODE (#64.061) that has the type of SPECIMEN.   This field is used to determine the correct specimen LOINC code during verification of results. ",
+      "fieldNumber_": .0961
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SNOMED CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The code consists of the characters following \"T-\" in the SNOMED reference book. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "SEX SPECIFIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "If this specimen is specific to one sex only, enter F for female or M for male. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "61.01A",
+      "required": false,
+      "helpText": "This is a multiple field.  Enter synonyms or common misspellings of the specimen or organ/tissue. ",
+      "isMultiple": true,
+      "subFileNumber": 61.01,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "WEIGH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "WEIGH is a YES/NO question.  Answer YES if you want this specimen to be weighed for surgical pathology.  A null answer equals NO. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "COLLECTION SAMPLE",
+      "dataType": "POINTER",
+      "rawType": "P62'",
+      "required": false,
+      "pointerTo": 62,
+      "helpText": "The name of the collection sample for this specimen. Points to the COLLECTION SAMPLE file. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "JOURNAL REFERENCE",
+      "dataType": "SUBFILE",
+      "rawType": "61.02A",
+      "required": false,
+      "helpText": "This is a multiple field.  You may enter Journal references that apply to this specimen. Points to FILE #95. ",
+      "isMultiple": true,
+      "subFileNumber": 61.02,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This must be a 1,2, or 3 character abbreviation of the specimen. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SNOMED CT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is the SNOMED CT concept identifier for this entry. If this entry is null then the entry is either unmapped or no valid SNOMED concept term exists to map this term.   This field is not editable except by the Lab software. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "SCT CODE STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "P:PREFERRED TERM;S:SYNONYM;L:LOCAL;R:REFERRED;X:NO APPLICABLE MAPPING;LN:NEW TERM PENDING LEXICON UPDATE;RN:STS REQUEST NEW CODE;E:ERROR;",
+      "helpText": "This field indicate the status or disposition of this entry.  P  = SNOMED Preferred term  S  = SNOMED Synonym term  L  = Local spelling of a SNOMED term (miss-spelled)  R  = Referred to national coders to determine if acceptable  X  = No applicable mapping  LN = New term pending LEXICON release/update.  RN = STS Request New Code  E  = Error encountered when applying STS disposition to file entry.  ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SCT TOP CONCEPT",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": "This field Identifies the SNOMED CT top level concept for this SNOMED code. This is useful to determine the proper code when the spelling of the terms are identical but have different concept (meaning). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SCT STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "61.023DA",
+      "required": false,
+      "helpText": "This multiple tracks the status of SNOMED SCT codes referred to STS to  determine if the code is a valid VHA SCT term.  This field is not editable except by Lab software. ",
+      "isMultiple": true,
+      "subFileNumber": 61.023,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 63.05,
+      "fieldName": "*NEGATIVE BACTERIOLOGY COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This comment facilitates batch entry of microbiology results.  The text contained in this field is the default comment for the named specimen. ",
+      "fieldNumber_": 63.05
+    },
+    {
+      "fieldNumber": 64.9103,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date on or after which the entry will no longer be active.   Inactive entries will not be available for selection in CPRS nor be able to be associated with a test in the LABORATORY TEST file (#60).   ",
+      "fieldNumber_": 64.9103
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "HL7", "field": },
+    {"name": "61", "field": .01, "type": "regular"},
+    {"name": "61", "field": .09, "type": "regular"},
+    {"name": "61", "field": 2, "type": "regular"},
+    {"name": "61", "field": 6, "type": "regular"},
+    {"name": "61", "field": 6, "type": "regular"},
+    {"name": "61", "field": 20, "type": "regular"},
+    {"name": "61", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

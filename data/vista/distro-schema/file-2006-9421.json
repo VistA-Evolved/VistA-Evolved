@@ -1,0 +1,157 @@
+{
+  "fileNumber": 2006.9421,
+  "fileName": "MAGV IMPORT STUDY LOG",
+  "globalRoot": "2006.9421",
+  "globalReference": "^MAGV(2006.9421,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IMPORT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time of the study import event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IMPORT USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "User who performed the study import. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "Logon location of the user who reconciled this study. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient to which the imported study is associated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STUDY ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the VistA accession number assigned to the study during the import reconciliation process. During this process, this value is also coerced into the Accession Number data tag (0008,0050) of the DICOM header. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STUDY INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Study Record ID - Primary Identifier DICOM tag: Study Instance UID (0020,000D). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "STUDY PERFORMED LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Location where the study was performed. DICOM tag:  Institution Name (0008,0080). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STUDY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:RADIOLOGY;CON:CONSULT;",
+      "helpText": "Study type indicator for the aggregated child series. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SERIES COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of series imported for this study. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "OBJECT COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The number of objects imported for this study. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OBJECT REQUEST COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of study objects requested to be imported. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OBJECT FAIL COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The number of requested study objects which failed to be imported. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "MEDIA LOG",
+      "dataType": "POINTER",
+      "rawType": "P2006.9422'",
+      "required": false,
+      "pointerTo": 2006.9422,
+      "helpText": "This is the media bundle from which the study was imported. A media  bundle is a group of studies under a single Importer II work item. A  media bundle may or may not represent a single piece of media or a single  network transaction. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "MODALITY COUNTERS",
+      "dataType": "SUBFILE",
+      "rawType": "2006.94211A",
+      "required": false,
+      "helpText": "Subfile to hold the number of imported objects per modality. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.94211,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.9421", "field": .01, "type": "regular"},
+    {"name": "2006.9421", "field": 12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

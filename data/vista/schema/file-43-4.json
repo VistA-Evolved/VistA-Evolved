@@ -1,0 +1,89 @@
+{
+  "fileNumber": 43.4,
+  "fileName": "VA ADMITTING REGULATION",
+  "globalRoot": "43.4I",
+  "globalReference": "^DIC(43.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The number is the internal reference number assigned by the system as each new entry is added to the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "R",
+      "required": true,
+      "helpText": "The name of the VA Admitting Regulation is derived from the United States Code of Federal Regulations, Title 38.  These admitting regulations are utilized to determine a veteran's type of status at the time of admission to any VA facility.  For example, 'Humanitarian Non-Vet' is the admission of a person who is a non-veteran and is being treated as an emergency until his/her condition has stablized to the point of being able to transfer to a public facility. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*REGULATION #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CFR #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The CFR# is the Code of Federal Regulations number assigned to each of the types of admission regulations, derived from Title 38.  This number cannot be manipulated or any 'local' ones added to this file. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:ACTIVE;1:INACTIVE;",
+      "helpText": "This field is defined as a set of codes, '0' standing for ACTIVE and '1' standing for INACTIVE.  When a VA Admitting Regulation Code has been either inactivated or activated as a result of changed legislation effecting the Federal Code of Regulations, Title 38, this field will be noted accordingly. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NURSING HOME",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:USE FOR NH;",
+      "helpText": "Nursing Home is a specialized code that is utilized to identify veterans who are admitted to a VA Nursing Home Care Unit.  This field, although available is not currently in use. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "EDR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the code that is transferred to BDC indicating the admitting regulation.  The code and related regulation are defined in the HL7 VA defined table VA10. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AEDR", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "43.4", "field": .01, "type": "regular"},
+    {"name": "43.4", "field": 1, "type": "regular"},
+    {"name": "43.4", "field": 2, "type": "regular"},
+    {"name": "43.4", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "W ?50,$P(^(\"0\"),U,3)"}
+  ]
+}

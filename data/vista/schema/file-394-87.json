@@ -1,0 +1,114 @@
+{
+  "fileNumber": 394.87,
+  "fileName": "VAQ - WORKLOAD",
+  "globalRoot": "394.87D",
+  "globalReference": "^VAT(394.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Date/Time of Work",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "  When work was done. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Done By",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Who did the work. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Work Done",
+      "dataType": "POINTER",
+      "rawType": "P394.88'",
+      "required": false,
+      "pointerTo": 394.88,
+      "helpText": "Type of work done. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Patient Ptr",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "On whom the work was done. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "Patient's Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of the patient on whom the work was done. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "Patient's SSN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Social Security Number of the patient on whom the work was done. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "Patient ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Patient ID of the patient on whom the work was done. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Remote Facility",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Facility associated with the transaction. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "Remote Domain",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Domain associated with the transaction. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "Segment in Transaction",
+      "dataType": "POINTER",
+      "rawType": "394.873P",
+      "required": false,
+      "helpText": "Multiple containing all data segments contained in the transaction. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.87", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"},
+    {"name": "", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

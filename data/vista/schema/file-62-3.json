@@ -1,0 +1,107 @@
+{
+  "fileNumber": 62.3,
+  "fileName": "LAB CONTROL NAME",
+  "globalRoot": "62.3I",
+  "globalReference": "^LAB(62.3,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "These tests are placed on the accession when ever the control is referenced by load or work list. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The expiration date of the control. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXCLUDE DATA ENTRY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If or when no more data is to be allowed to be entered for this control, this field must contain a YES entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MIMIC SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "P61",
+      "required": false,
+      "pointerTo": 61,
+      "helpText": "The specimen (topography) that this control imitates.  Points to FILE #61. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "IDENTIFIER/LOT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lot number or other identifier of this control. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TEST",
+      "dataType": "POINTER",
+      "rawType": "62.31PA",
+      "required": false,
+      "helpText": "These are all the tests that are done with the \"Lab Control\" named. They must be individual tests, i.e. no panels of tests. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PARALLEL CONTROL",
+      "dataType": "POINTER",
+      "rawType": "P62.3'",
+      "required": false,
+      "pointerTo": 62.3,
+      "helpText": "This indicates what other control is to be used for paired controls in the Multirule-Shewhart. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACCESSION TEST",
+      "dataType": "POINTER",
+      "rawType": "62.32PA",
+      "required": false,
+      "helpText": "Entries here are used when controls are accessioned into the laboratory. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "IXP63'",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "Points to the LAB DATA file.  Cannot be altered except by programmer. This is the INTERNAL pointer to the lab data file. (LRDFN) ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "62.3", "field": .01, "type": "regular"},
+    {"name": "62.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W:$D(^(\"0\")) \"   \",$$FMTE^XLFDT($P(^(\"0\"),U,2),\"5Z\")"},
+    {"field": .04, "value": "W \"\""},
+    {"field": .09, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,9)"}
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "fileNumber": 364,
+  "fileName": "EDI TRANSMIT BILL",
+  "globalRoot": "364P",
+  "globalReference": "^IBA(364,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP399'",
+      "required": true,
+      "pointerTo": 399,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P364.1'",
+      "required": false,
+      "pointerTo": 364.1,
+      "helpText": "The EDI transmission batch that includes this bill entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TRANSMISSION STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "X:READY FOR EXTRACT;P:PENDING AUSTIN RECEIPT;A0:RECEIVED IN AUSTIN;A1:ACCEPTED BY NON-PAYER;A2:ACCEPTED PAYER;E:ERROR CONDITION;C:CANCELLED;R:CORRECTED/RETRANSMITTED;Z:CLOSED;",
+      "helpText": "The current transmission status of this EDI transmission attempt for the bill. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "The date/time that the current status occurred. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RESUBMIT BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P364.1'",
+      "required": false,
+      "pointerTo": 364.1,
+      "helpText": "This is the batch number this bill was included in when resubmitted. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "TEST BILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not the bill is being transmitted to the test queue or live queue. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "COB SEQUENCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PRIMARY;S:SECONDARY;T:TERTIARY;",
+      "helpText": "This is the COB sequence for the bill when it was transmitted.  This is used to relate the return messages with the correct COB sequence payer. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "837 FHIR TRANS REQUEST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NEVER REQUESTED;1:REQUESTED FOR SUBMISSION;2:REQUEST COMPLETED;",
+      "helpText": "This field will be  used to determine when an 837 claim transaction is  ready for submission using the new FHIR Transaction format. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "RESUBMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "This field indicates if this claim was a re-submitted claim. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "FHIR BUNDLE VALIDATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:COMPLETE;1:INPROGRESS;",
+      "helpText": "This field indicates if the FHIR Bundle is in progress. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "OLD STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ20",
+      "length": 20,
+      "required": false,
+      "helpText": "This field represents the old status of this EDI entry. ",
+      "fieldNumber_": .12
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ASTAT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "364", "field": .01, "type": "regular"},
+    {"name": "364", "field": .02, "type": "regular"},
+    {"name": "364", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBA(364.1,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(364.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(364,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .04, "value": "W \"   \",$E($P(^(0),U,4),4,5)_\"-\"_$E($P(^(0),U,4),6,7)_\"-\"_$E($P(^(0),U,4),2,3)"}
+  ]
+}

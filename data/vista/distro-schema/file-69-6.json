@@ -1,0 +1,310 @@
+{
+  "fileNumber": 69.6,
+  "fileName": "LAB PENDING ORDERS ENTRY",
+  "globalRoot": "69.6I",
+  "globalReference": "^LRO(69.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;U:UNKNOWN;",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "RACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the patient's race using HL7 code and text. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "PAT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDERING SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COLLECTING SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ORDERING SITE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "ORDERING SITE ACC #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "P61'",
+      "required": false,
+      "pointerTo": 61,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COLLECTION SAMPLE",
+      "dataType": "POINTER",
+      "rawType": "P62'",
+      "required": false,
+      "pointerTo": 62,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SPECIMEN STATUS",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "FILE REF",
+      "dataType": "POINTER",
+      "rawType": "P67'",
+      "required": false,
+      "pointerTo": 67,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "VISIT NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ORDERED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "COLLECTED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.1,
+      "fieldName": "COLLECTION END DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Used to record the collection end date/time of specimen collection when the specimen has a timed collection, i.e. 24 hour urine, 72 hour stool, etc. ",
+      "fieldNumber_": 11.1
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SHIPPED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RECD DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "TRANS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATA ACCEPT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "COMPLETE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "INCOMING MESS #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "SHIPPING MANIFEST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field should contain the invoice number from the collection labs SHIPPING MANIFEST file. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ORDERED TESTS",
+      "dataType": "SUBFILE",
+      "rawType": "69.64A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 69.64,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "AP SPECIMENS",
+      "dataType": "SUBFILE",
+      "rawType": "69.6061",
+      "required": false,
+      "helpText": "Stores the specimens information that accompany an AP order. Information is moved to corresponding fields in LAB DATA file (#63) when order is accessioned. ",
+      "isMultiple": true,
+      "subFileNumber": 69.6061,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "AP INFO",
+      "dataType": "SET",
+      "rawType": "69.6063S",
+      "required": false,
+      "helpText": "Stores the various textual information that accompanies AP orders  - patient history, pre-op diagnosis, operative findings, gross    description, frozen section , etc. ",
+      "isMultiple": true,
+      "subFileNumber": 69.6063,
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "69.699",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 69.699,
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "HL ENCODING CHARACTERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the HL7 field separator and encoding characters from the HL7 message used to create this pending order entry. This allows the HL7 data that is saved from the message to be processed and returned to the placer. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 700.02,
+      "fieldName": "HL PID-2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the placer's patient identification information from PID-2 for transmittal back to the placer when the order is completed. ",
+      "fieldNumber_": 700.02
+    },
+    {
+      "fieldNumber": 700.04,
+      "fieldName": "HL PID-4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Stores the placer's patient identification information from PID-4 for transmittal back to the placer when the order is completed.  ",
+      "fieldNumber_": 700.04
+    }
+  ],
+  "fieldCount": 31,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "RST", "field": },
+    {"name": "RST1", "field": },
+    {"name": "69.6", "field": .01, "type": "regular"},
+    {"name": "69.6", "field": .09, "type": "regular"},
+    {"name": "69.6", "field": 1, "type": "regular"},
+    {"name": "69.6", "field": 2, "type": "regular"},
+    {"name": "69.6", "field": 2, "type": "regular"},
+    {"name": "69.6", "field": 3, "type": "regular"},
+    {"name": "69.6", "field": 3, "type": "regular"},
+    {"name": "69.6", "field": 3, "type": "regular"},
+    {"name": "69.6", "field": 18, "type": "regular"},
+    {"name": "69.6", "field": 18, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W1, "value": "N LRX S LRX=^(0) D EN^DDIOL(\"Pat ID: \"_$P(LRX,U,9)_\"  DOB: \"_$$FMTE^XLFDT($P(LRX,U,3),1)_\"  Sex: \"_$$EXTERNAL^DILFD(69.6,.02,\"\",$P(LRX,U,2)),,\"!\")"},
+    {"field": W2, "value": "N LRX S LRX=^(0) D EN^DDIOL(\"Spec ID: \"_$P(LRX,U,6)_\"  Manifest: \"_$P(LRX,U,14)_\"  Site: \"_$$EXTERNAL^DILFD(69.6,1,\"\",$P(LRX,U,4)),,\"!\")"},
+    {"field": W3, "value": "N LRX S LRX=^(0),LRX(1)=^(1) D EN^DDIOL(\"Collected D/T: \"_$$FMTE^XLFDT($P(LRX(1),U,2),\"1M\")_\"  Specimen: \"_$$EXTERNAL^DILFD(69.6,4,\"\",$P(LRX,U,7))_\"  Spec. Status: \"_$$EXTERNAL^DILFD(69.6,6,\"\",$P(LRX,U,10)),,\"!\")"}
+  ]
+}

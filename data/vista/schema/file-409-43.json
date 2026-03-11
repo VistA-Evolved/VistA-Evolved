@@ -1,0 +1,53 @@
+{
+  "fileNumber": 409.43,
+  "fileName": "OUTPATIENT DIAGNOSIS",
+  "globalRoot": "409.43IP",
+  "globalReference": "^SDD(409.43,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "R*P80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "This field contains the outpatient diagnosis. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OUTPATIENT ENCOUNTER",
+      "dataType": "POINTER",
+      "rawType": "RP409.68'I",
+      "required": true,
+      "pointerTo": 409.68,
+      "helpText": "This field contains the outpatient encounter associated with this outpatient diagnosis. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DIAGNOSIS RANKING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is to hold the ranking of the particular diagnosis related to the encounter.  Currently a number one will indicate the primary diagnosis. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AO", "field": },
+    {"name": "AO1", "field": },
+    {"name": "B", "field": },
+    {"name": "OE", "field": },
+    {"name": "409.43", "field": .01, "type": "regular"},
+    {"name": "409.43", "field": .01, "type": "regular"},
+    {"name": "409.43", "field": .02, "type": "regular"},
+    {"name": "409.43", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SCE(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(409.68,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

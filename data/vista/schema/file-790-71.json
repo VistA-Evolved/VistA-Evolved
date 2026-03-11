@@ -1,0 +1,502 @@
+{
+  "fileNumber": 790.71,
+  "fileName": "WV SNAPSHOT REPORTS",
+  "globalRoot": "790.71",
+  "globalReference": "^WV(790.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE OF SNAPSHOT",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field stores the date on which a Program Snapshot report was run. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "Facility",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field stores the name of the facility for which this Program Snapshot report was run. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Total Women in Register",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the total number of women with active records in the WV Patient (#790) file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "Women Who Are Pregnant",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women who were pregnant at the time the Program Snapshot report option was run. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "Women Who Are DES Daughters",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women who were DES daughters when the Program Snapshot report option was run.  ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PAP Needs Not Spec'd/Dated",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women whose records indicated that their cervical treatment needs were not specificed or the due date was not recorded. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PAP Needs Spec'd & Past Due",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women whose records indicated that their cervical treatment needs were specificed and are past due. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "MAM Needs Not Spec'd/Dated",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women whose records indicated that breast treatment needs were not specificed or the due date was not entered. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MAM Needs Spec'd & Past Due",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of women whose records indicated that their breast treatment needs were specificed and are past due. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "Total Procedures Status OPEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of procedure records that have a status of open. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "OPEN Procedures Past Due",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of procedure records (with an 'Open' status) which indicate that breast or cervical treatment needs are past due. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "Total PAPS for the Year",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a count of the PAP smears done since the beginning of the calendar or fiscal year, depending upon what the user selected. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "Total MAMS for the Year",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a count of the mammograms done since the beginning of the calendar or fiscal year, depending upon what the user selected. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "Total Notifications Stat OPEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field stores the number of notification records, with a status of open, when the Program Snapshot report was run. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "OPEN Notifications Past Due",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of notification records that were past due when the Program Snaphot report was run.  ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "Number of Letters Queued",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains the number of letters scheduled to be queued at a future time.  This count is calculated from the type of notification and the print date fields in the WV Notification (790.4) file. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "Total CBEs for the Year",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This field contains a count of the clinical breast exams (CBE) done since the beginning of the calendar or fiscal year, depending upon what the user selected. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "TYPE OF YEAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:Fiscal Year;C:Calendar Year;",
+      "helpText": "This field contains a code to identify if the report output is for a calendar year (1/1-12/31) or a fiscal year (10/1/-9/30). ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "Breast Ultrasounds",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a breast ultrasound within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "Clinical Breast Exams",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a clinical breast exam within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": .52,
+      "fieldName": "Colposcopy Impression (NO BX)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, colposcopy impression without biopsy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .52
+    },
+    {
+      "fieldNumber": .53,
+      "fieldName": "Colposcopy W/Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, colposcopy with biopsy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .53
+    },
+    {
+      "fieldNumber": .54,
+      "fieldName": "Cone Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, cone biopsy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .54
+    },
+    {
+      "fieldNumber": .55,
+      "fieldName": "Cryotherapy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, cryotherapy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .55
+    },
+    {
+      "fieldNumber": .56,
+      "fieldName": "Ectocervical Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, ectocervical biospy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .56
+    },
+    {
+      "fieldNumber": .57,
+      "fieldName": "Endocervical Currettage",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, endocervical currettage, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .57
+    },
+    {
+      "fieldNumber": .58,
+      "fieldName": "Endometrial Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, endometrial biopsy, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .58
+    },
+    {
+      "fieldNumber": .59,
+      "fieldName": "Fine Needle Aspiration",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the procedure, fine needle aspiration, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .59
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "General Surgery Consult",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined a general surgery consult referral within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .61,
+      "fieldName": "Gyn Onc Consult",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined a gynecological oncology consult referral, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .61
+    },
+    {
+      "fieldNumber": .62,
+      "fieldName": "Hysterectomy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a hysterectomy within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .62
+    },
+    {
+      "fieldNumber": .63,
+      "fieldName": "Laser Abilation",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a laser abilation procedure within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .63
+    },
+    {
+      "fieldNumber": .64,
+      "fieldName": "Laser Cone",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a laser cone procedure, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .64
+    },
+    {
+      "fieldNumber": .65,
+      "fieldName": "Leep",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a loop electrosurgical excision procedure (LEEP) within the timeframe of the Program Snapshot report. ",
+      "fieldNumber_": .65
+    },
+    {
+      "fieldNumber": .66,
+      "fieldName": "Lumpectomy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having lumpectomy (of the breast) within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .66
+    },
+    {
+      "fieldNumber": .67,
+      "fieldName": "Mammogram Dx Bilat",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the radiology test, mammogram Dx bilateral, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .67
+    },
+    {
+      "fieldNumber": .68,
+      "fieldName": "Mammogram Dx Unilat",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the radiology test, mammogram Dx unilateral, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .68
+    },
+    {
+      "fieldNumber": .69,
+      "fieldName": "Mammogram Screening",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having the radiology procedure, mammogram screening, within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .69
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "Masectomy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating that a patient declined having a mastectomy within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": .71,
+      "fieldName": "Needle Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a needle biopsy within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .71
+    },
+    {
+      "fieldNumber": .72,
+      "fieldName": "Open Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having an open biopsy within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .72
+    },
+    {
+      "fieldNumber": .73,
+      "fieldName": "Pap Smear",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a PAP smear within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .73
+    },
+    {
+      "fieldNumber": .74,
+      "fieldName": "Pregnancy Test",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a pregnancy test within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .74
+    },
+    {
+      "fieldNumber": .75,
+      "fieldName": "STD Evaluation",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a STD evaluation within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .75
+    },
+    {
+      "fieldNumber": .76,
+      "fieldName": "Stereotactic Biopsy",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a stereotactic biospy within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .76
+    },
+    {
+      "fieldNumber": .77,
+      "fieldName": "Tubal Ligation",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a tubal ligation within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .77
+    },
+    {
+      "fieldNumber": .78,
+      "fieldName": "Pelvic Ultrasound",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a pelvic ultrasound within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .78
+    },
+    {
+      "fieldNumber": .79,
+      "fieldName": "Vaginal Ultrasound",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of records (in File #790.3) indicating a patient declined having a vaginal ultrasound within the timeframe associated with the Program Snapshot report. ",
+      "fieldNumber_": .79
+    }
+  ],
+  "fieldCount": 48,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "T", "field": },
+    {"name": "790.71", "field": .01, "type": "regular"},
+    {"name": "790.71", "field": .02, "type": "regular"},
+    {"name": "790.71", "field": .18, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .18, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(790.71,.18,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,18)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

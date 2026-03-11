@@ -1,0 +1,94 @@
+{
+  "fileNumber": 355.91,
+  "fileName": "IB INSURANCE CO LEVEL BILLING PROV ID",
+  "globalRoot": "355.91",
+  "globalReference": "^IBA(355.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSURANCE CO",
+      "dataType": "POINTER",
+      "rawType": "RP36'X",
+      "required": true,
+      "pointerTo": 36,
+      "helpText": "This is the name of the insurance company that the id is being defined for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PROVIDER ID CARE UNIT",
+      "dataType": "POINTER",
+      "rawType": "*P355.96'X",
+      "required": false,
+      "pointerTo": 355.96,
+      "helpText": "This is the generic, lowest breakdown provided for identification of the provider id.  This can be virtually any piece of data the insurance co chooses to use.  The unit must be entered manually on each bill.  *** NOT CURRENTLY USED *** ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FORM TYPE APPLIED TO",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:BOTH UB-04 AND CMS-1500 FORMS;1:UB-04 FORMS ONLY;2:CMS-1500 FORMS ONLY;",
+      "helpText": "This designates whether the id number is to be used for just UB-04 form types, just CMS-1500 form types or both form types. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BILL CARE TYPE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "0:BOTH INPATIENT AND OUTPATIENT;1:INPATIENT ONLY;2:OUTPATIENT ONLY;3:PRESCRIPTION ONLY;",
+      "helpText": "This designates whether the id number is to be used for just inpatient bills, just outpatient bills, both inpatient and outpatient bills or just prescriptions. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PROVIDER ID TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P355.97'X",
+      "required": true,
+      "pointerTo": 355.97,
+      "helpText": "This is the indicator of what type of id is being recorded. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "PROVIDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the provider ID that will be reported for the provider id type for the insurance co ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INDEX VALUE CARE UNIT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the value for the care unit or '*N/A*' if no care unit is selected.  This is to assure uniqueness in the records in the file even if the care unit is blank. ",
+      "fieldNumber_": .1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ACARE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.91", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "355.91", "field": .03, "type": "regular"},
+    {"name": "355.91", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .04, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.91,.04,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,4)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .05, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(355.91,.05,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,5)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(355.97,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(355.97,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

@@ -1,0 +1,576 @@
+{
+  "fileNumber": 433,
+  "fileName": "AR TRANSACTION",
+  "globalRoot": "433NI",
+  "globalReference": "^PRCA(433,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0XI",
+      "length": 6,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FISCAL YEAR",
+      "dataType": "SUBFILE",
+      "rawType": "433.01I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 433.01,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP430'X",
+      "required": true,
+      "pointerTo": 430,
+      "helpText": "This is the bill number from File 430. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CALM CODE DONE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NOT DONE;0:DONE;",
+      "helpText": "This flag indicates whether or not a CALM code sheet has been completed for this transaction. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSACTION STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INCOMPLETE;2:COMPLETE;",
+      "helpText": "This flag indicates whether or not this transaction is complete. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DATE CALM DONE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the CALM code sheet was completed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "BRIEF COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a brief description of the reason for the transaction.  This description is displayed on the profile option as a single line item. ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "FOLLOW-UP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date represents the date that an action or follow-up should take place by MCCR.  For example, if an insurance company estimates that a payment should be received by the VA in two weeks, then the follow-up date should be set to two weeks.  A report will be generated in two weeks displaying this transaction as a reminder to follow-up on the payment. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SEGMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the AMIS segment for this transaction. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "RC DOJ CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DC:REGIONAL COUNSEL;DOJ:DEPARTMENT OF JUSTICE;IRS:INTERNAL REVENUE SERVICE;RC:REGIONAL COUNSEL;TOP:TREASURY OFFSET PROGRAM;",
+      "helpText": "This indicates a referral to the Regional Counsel, IRS or the Department of Justice. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "APPROPRIATION SYMBOL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the appropriation symbol for this transaction. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INCOMPLETE TRANSACTION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INCOMPLETE TRANSACTION;",
+      "helpText": "This field marks a transaction as being \"invalid\" for printing on the patient statement.  This will also exclude the transaction from being counted on the balance discrepancy report. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "TRANSACTION DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date of this transaction. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "TRANSACTION TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP430.3'X",
+      "required": true,
+      "pointerTo": 430.3,
+      "helpText": "This points to the AR transaction file (#430.3). The input would be accepted only if the transaction has a bill number. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RECEIPT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This is a number assigned to the receipt when the payment was received. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "ADJUSTMENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a number assigned automatically and sequentially. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "TRANS. AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the amount of the transaction. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SENT RECEIPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag indicates whether or not a receipt was sent to the debtor. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TERMINATION REASON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DEBTOR'S DEATH;2:BANKRUPTCY;3:INABILITY TO LOCATE;4:WAIVED;5:COMPROMISED;6:A DEBT UNDER $25;7:INABILITY TO COLLECT;8:INCORRECT BILLING;9:OTHERS;",
+      "helpText": "This is the reason for terminating an account. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "AMENDMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "P430.3",
+      "required": false,
+      "pointerTo": 430.3,
+      "helpText": "This is the type of transaction from File 430.3 for an amendment. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "PREPAYMT TRANS.",
+      "dataType": "POINTER",
+      "rawType": "P433'",
+      "required": false,
+      "pointerTo": 433,
+      "helpText": "This field holds the corresponding transaction that caused this transaction to be set. This field should be set when a payment is posted from a prepayment bill. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "IRS LOC.COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the cost charged to an account for an IRS locator search. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CREDIT REP.COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the cost charged to an account for a Credit Rep. locator search. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "DMV LOC.COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the cost charged to an account for a State Agency/Department of Motor Vehicles locator search. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "CONSUMER REP.AGENCY COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the cost paid for the consumer reporting agency referral. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "MARSHAL FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2X",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the cost of a Marshal's Fee charged to an account. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "COURT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2X",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the court cost charged to an account. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "INT.CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2X",
+      "length": 8,
+      "required": false,
+      "helpText": "This is an interest charge added to an account. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "ADM.CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2X",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the cost of administrative charges added to an account. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "PENALTY CHARGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is used to track the penalty charge dollars added or exempted from a bill. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PRIN.COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount received that has been applied to the principal balance. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "INTEREST COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount received that has been applied to the interest charges. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "ADMIN.COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the amount received that has been applied to the administrative charges. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "MARSHAL FEE COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount received that has been applied to the Marshal's Fees. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "COURT COST COLLECTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the amount received that has been applied to the Court Cost charges. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "433.041",
+      "required": false,
+      "helpText": "This is an optional comments field for this transaction. ",
+      "isMultiple": true,
+      "subFileNumber": 433.041,
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PROCESSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who processed this transaction. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "EOB CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the EOB Code that is on the EOB from the Insurance Company.  This field should be populated for all  payment transactions on TP bills that are Referred to RC. If a payment was posted to a bill and this field  is not populated, notification will be made.      ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "DESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "433.061DA",
+      "required": false,
+      "helpText": "This is a description of the individual charges. ",
+      "isMultiple": true,
+      "subFileNumber": 433.061,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "PRINCIPAL BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the principal balance after payment has been applied. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "INTEREST BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the balance of interest charges after payment has been applied. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "ADMIN. BALANCE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the balance of the administrative charges after payment has been applied. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "MARSHAL FEE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the balance of the Marshal Fee after payment has been applied. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "COURT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the court cost that has been applied. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "TRANS. COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional short comment for this transaction. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "EXCESS PAYMENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the amount of an overpayment that needs to be liquidated. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "CONTRACTUAL ADJUSTMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter a 1 for Yes if this decrease is for a reimbursable bill. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "CO-PAY EXEMPTION TRANSACTION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is set to a '1' whenever a decrease adjustment or an interest exemption is applied automatically due to exemption from medication co-pays. It is also set for increases to prepayment bills due to co-pay exemption. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "SUSPENSION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NON-COPAY SUSPENSION;1:INITIAL CO-PAY WAIVER;2:APPEAL CO-PAY WAIVER;3:ADMINISTRATIVE SUSPENSION;4:COMPROMISE;5:TERMINATION;6:BANKRUPTCY CHAP 7;7:BANKRUPTCY CHAP 13;8:BANKRUPTCY OTHER;9:PROBATE;10:CHOICE;11:DISPUTE;",
+      "helpText": "This field documents the reason for the type of suspension for copay waiver request by veterans.  Two types of waiver can be documented, one for the initial copay waiver and the second is when the original copay waiver was denied and the veteran is appealing the decision. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "AMOUNT PAID TO MCCF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "For a payment transaction, this field stores the amount of the payment that is paid to the MCCF fund. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "AMOUNT PAID TO HSIF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,2",
+      "length": 12,
+      "required": false,
+      "helpText": "For a payment transaction, this field stores the amount of the payment that is paid to the HSIF fund. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 93,
+      "fieldName": "HARTFORD/USAA SETTLEMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is a flag indicating that this transaction relates to the  Hartford/USAA settlement. ",
+      "fieldNumber_": 93
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACE", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AEOB", "field": },
+    {"name": "AEOB1", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AP", "field": },
+    {"name": "AT1", "field": },
+    {"name": "AT2", "field": },
+    {"name": "ATD", "field": },
+    {"name": "AW", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CA", "field": },
+    {"name": "433", "field": .01, "type": "regular"},
+    {"name": "433", "field": .03, "type": "regular"},
+    {"name": "", "field": .03, "type": "regular"},
+    {"name": "433", "field": 3, "type": "regular"},
+    {"name": "433", "field": 5.03, "type": "regular"},
+    {"name": "433", "field": 11, "type": "regular"},
+    {"name": "433", "field": 12, "type": "regular"},
+    {"name": "433", "field": 12, "type": "regular"},
+    {"name": "433", "field": 12, "type": "regular"},
+    {"name": "433", "field": 12, "type": "regular"},
+    {"name": "433", "field": 13, "type": "regular"},
+    {"name": "433", "field": 17, "type": "regular"},
+    {"name": "433", "field": 19, "type": "regular"},
+    {"name": "433", "field": 19, "type": "regular"},
+    {"name": "433", "field": 19, "type": "regular"},
+    {"name": "433", "field": 20, "type": "regular"},
+    {"name": "433", "field": 54, "type": "regular"},
+    {"name": "433", "field": 88, "type": "regular"},
+    {"name": "433", "field": 89, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCA(430,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(430,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 11, "value": "W:$D(^(1)) \"   \",$E($P(^(1),U,1),4,5)_\"-\"_$E($P(^(1),U,1),6,7)_\"-\"_$E($P(^(1),U,1),2,3)"},
+    {"field": 12, "value": "S %I=Y,Y=$S('$D(^(1)):\"\",$D(^PRCA(430.3,+$P(^(1),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(430.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": WR1, "value": "I +$P(^(0),U,4)<2 D EN^DDIOL(\"  TRANSACTION STATUS: INCOMPLETE\",\"\",\"?0\")"}
+  ]
+}

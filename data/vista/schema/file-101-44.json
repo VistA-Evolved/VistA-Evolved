@@ -1,0 +1,55 @@
+{
+  "fileNumber": 101.44,
+  "fileName": "ORDER QUICK VIEW",
+  "globalRoot": "101.44",
+  "globalReference": "^ORD(101.44,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name for the list to be displayed by a Windows Listview control. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST UPDATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The contains the time when the items in the list were last built. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUICK ORDER",
+      "dataType": "POINTER",
+      "rawType": "101.441PA",
+      "required": false,
+      "helpText": "This multiple contains the quick orders that belong to a given list. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SET MEMBER",
+      "dataType": "POINTER",
+      "rawType": "101.442PA",
+      "required": false,
+      "helpText": "This multiple contains the orderable items in a specific subset (lab, inpatient meds, diets, etc.). ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "101.44", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

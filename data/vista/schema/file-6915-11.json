@@ -1,0 +1,35 @@
+{
+  "fileNumber": 6915.11,
+  "fileName": "AV REASON",
+  "globalRoot": "6915.11",
+  "globalReference": "^ENG(6915.11,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICABLE FAP DOCUMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "List of FAP Documents for which this reason can be selected. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6915.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "fileNumber": 195.3,
+  "fileName": "RECORD MOVEMENT TYPES",
+  "globalRoot": "195.3I",
+  "globalReference": "^DIC(195.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This describes the action when the system manipulates a record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This describes what is displayed by the system when a movement is done. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP195.1'",
+      "required": true,
+      "pointerTo": 195.1,
+      "helpText": "This allows certain types of movements to be allowed for some applications and not performed for others. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INCLUDE ON OVERDUE REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "YES means that the current movement of the record indicates that it may not be available for distribution. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AA1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "195.3", "field": .01, "type": "regular"},
+    {"name": "195.3", "field": .01, "type": "regular"},
+    {"name": "195.3", "field": 3, "type": "regular"},
+    {"name": "195.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 3, "value": "W \"   \",$S($D(^DIC(195.1,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"}
+  ]
+}

@@ -1,0 +1,697 @@
+{
+    "packages":  [
+                     {
+                         "routeCount":  15,
+                         "registered":  true,
+                         "namespace":  "an",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "arc",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "arj",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "bch",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "den",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "dent",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  31,
+                         "registered":  true,
+                         "namespace":  "dg",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "di",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "dinz",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "dpt",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "dss",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "dvb",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  46,
+                         "registered":  true,
+                         "namespace":  "ec",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "edp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "en",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "fb",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "fh",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "fm",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "gmpl",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "gmra",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "gmrc",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "gmts",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  32,
+                         "registered":  true,
+                         "namespace":  "gmv",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "hd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "hl",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "hmp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  38,
+                         "registered":  true,
+                         "namespace":  "ib",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "ibcn",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "ibd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "ic",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "icd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "imm",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "iv",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "kmp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "kmps",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "lr",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  166,
+                         "registered":  true,
+                         "namespace":  "mag",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "mc",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "mcar",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  24,
+                         "registered":  true,
+                         "namespace":  "md",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  26,
+                         "registered":  true,
+                         "namespace":  "mp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "nur",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "onc",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  1127,
+                         "registered":  true,
+                         "namespace":  "or",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "ppp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "prc",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "prca",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "prs",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "psa",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  44,
+                         "registered":  true,
+                         "namespace":  "psb",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "psd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "psj",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "psn",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  35,
+                         "registered":  true,
+                         "namespace":  "pso",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "pss",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "psx",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  46,
+                         "registered":  true,
+                         "namespace":  "px",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "pxrm",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "qa",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  7,
+                         "registered":  true,
+                         "namespace":  "ra",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  77,
+                         "registered":  true,
+                         "namespace":  "rm",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "rmpr",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "rt",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  225,
+                         "registered":  true,
+                         "namespace":  "sd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "sow",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "spn",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "sr",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  128,
+                         "registered":  true,
+                         "namespace":  "tiu",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "tmp",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "vdef",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "vfd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "vic",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  10,
+                         "registered":  true,
+                         "namespace":  "wv",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xhd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xm",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xob",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xobw",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xpar",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "xpd",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     },
+                     {
+                         "routeCount":  2,
+                         "registered":  true,
+                         "namespace":  "xq",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  13,
+                         "registered":  true,
+                         "namespace":  "xt",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  5,
+                         "registered":  true,
+                         "namespace":  "xu",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  38,
+                         "registered":  true,
+                         "namespace":  "xus",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  33,
+                         "registered":  true,
+                         "namespace":  "xwb",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  5,
+                         "registered":  true,
+                         "namespace":  "ys",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "certified"
+                     },
+                     {
+                         "routeCount":  0,
+                         "registered":  true,
+                         "namespace":  "zis",
+                         "hasDocs":  true,
+                         "hasPanel":  true,
+                         "certification":  "partial"
+                     }
+                 ],
+    "certified":  23,
+    "scaffold":  0,
+    "generatedAt":  "2026-03-11T19:49:28Z",
+    "totalPackages":  86,
+    "partial":  63
+}

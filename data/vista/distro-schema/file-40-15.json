@@ -1,0 +1,72 @@
+{
+  "fileNumber": 40.15,
+  "fileName": "OPC ERRORS",
+  "globalRoot": "40.15P",
+  "globalReference": "^SDASE(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field contains the pointer value of the patient file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P40.8'",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "This field contains the pointer value of the Medical Center Division. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SSN",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This field stores the 9 digit social security number of the patient who has been identified as having missing data and requires editing the OPC ERROR in order for the workload to be transmitted to the Austin DPC. | ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD NAME",
+      "dataType": "SUBFILE",
+      "rawType": "40.16A",
+      "required": false,
+      "helpText": "This contains the name of the field that needs to be corrected. ",
+      "isMultiple": true,
+      "subFileNumber": 40.16,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VISIT DATE MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "40.152A",
+      "required": false,
+      "helpText": "This field contains the error message related to the visit date. ",
+      "isMultiple": true,
+      "subFileNumber": 40.152,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AF", "field": },
+    {"name": "B", "field": },
+    {"name": "40.15", "field": .01, "type": "regular"},
+    {"name": "40.15", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

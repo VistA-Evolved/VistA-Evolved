@@ -1,0 +1,49 @@
+{
+  "fileNumber": 790.07,
+  "fileName": "WV REFERRAL SOURCE",
+  "globalRoot": "790.07",
+  "globalReference": "^WV(790.07,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains a referral source used to describe how the patient was referred to the Women Veterans Health Program.  The source can be a clinic, a special event (e.g., health fair), newspaper advertisement, or individual (such as a primary provider, self, other patient). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This field stores a set of codes (1 = active and 0 = inactive) used to display or hide an entry in a selection list.  If the field is active, users of this package can select the entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "UPPERCASE REFERRAL SOURCE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "This field converts the referral source to all capital letters for  x-referencing. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "790.07", "field": .01, "type": "regular"},
+    {"name": "790.07", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

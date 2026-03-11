@@ -1,0 +1,283 @@
+{
+  "fileNumber": 772,
+  "fileName": "HL7 MESSAGE TEXT",
+  "globalRoot": "772D",
+  "globalReference": "^HL(772,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME ENTERED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The Date/Time the message was created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SERVER APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "The DHCP application related to this transmission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "FAST PURGE DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CLIENT APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP771'",
+      "required": true,
+      "pointerTo": 771,
+      "helpText": "The client application related to this transmission. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TRANSMISSION TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INCOMING;O:OUTGOING;",
+      "helpText": "The type of transmission (incoming or outgoing). ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RELATED MAILMAN MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The MailMan message number related to this transmission. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MESSAGE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The unique ID for this HL7 message. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "ACKNOWLEDGMENT TO",
+      "dataType": "POINTER",
+      "rawType": "P772'",
+      "required": false,
+      "pointerTo": 772,
+      "helpText": "The incoming message that this message is replying to.  This field is only applicable to outgoing messages. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PARENT MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P772'",
+      "required": false,
+      "pointerTo": 772,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:IMMEDIATE;D:DEFERRED;",
+      "helpText": "The delivery priority assigned to this message.  Either 'I' for Immediate or 'D' for Deferred. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RELATED EVENT PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "P101'",
+      "required": false,
+      "pointerTo": 101,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "LOGICAL LINK",
+      "dataType": "POINTER",
+      "rawType": "P870'",
+      "required": false,
+      "pointerTo": 870,
+      "helpText": "This is a pointer to the Logical Link file (#870).  This link is used to transmit messages to an external (client) application.  This field is not filled in when messages are exchanged between DHCP applications on the same system. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "SECURITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "CONTINUATION POINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MESSAGE TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "M:SINGLE MESSAGE;B:BATCH OF MESSAGES;F:FILE OF BATCHES;",
+      "helpText": "There are three types of messages as follows:   M for Single message (contains only one MSH segment) B for Batch of messages (contains multiple MSH segments) F for File of batches (contains multiple BHS segments)   This field is automatically filled in by the Messaging System and is used to determine the appropriate header segment to build for a message. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DON'T PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DON'T PURGE;0:TO PURGE;",
+      "helpText": "When this field is set to 1, the message wil never be purged by the HL7 \"Purge Message Text File Entries\" option. However, when this field is set to 0 or is empty, the message is allowed to be purged by the HL7 \"Purge Message Text Entries\" option. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field must not be filled in manually.  It will be filled in automatically by the HL7 processes that create entries in the HL7 Message Text file (#772).  In most instances, applications will call GENERATE^HLMA, GENACK^HLMA, or DIRECT^HLMA.  When they do, they will pass by reference into the last OPTIONS (in the documentation) parameter the value of the namespace.  The value of the namespace will be in the form of OPTIONS(\"NAMESPACE\")=NAMESPACE.   Please note that the calls to the three APIs ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP771.6'",
+      "required": true,
+      "pointerTo": 771.6,
+      "helpText": "The status currently assigned to this transmission. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "DATE/TIME PROCESSED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time this transmission was actually processed (sent or received). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If there was an error in sending or receiving this transmission, this field will contain the 3-200 character error message. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ERROR TYPE",
+      "dataType": "POINTER",
+      "rawType": "P771.7'",
+      "required": false,
+      "pointerTo": 771.7,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "ACK TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of seconds the Lower Layer Protocol waits for an acknowledgement from the receiving application. This field will override the ACK TIMEOUT of the Logical Link for this message. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "NO. OF CHARACTERS IN MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "A count of the total number of characters in the mail message associated with this HL7 transmission entry. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "NO. OF EVENTS IN MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "A count of the total number of events (HL7 messages) contained in the mail message associated with this HL7 transmission entry. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "TRANSMISSION TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The time it took to transmit this message to the primary network addressee. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "MESSAGE TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "772.02",
+      "required": false,
+      "helpText": "The actual text of the incoming HL7 message(s).  ",
+      "isMultiple": true,
+      "subFileNumber": 772.02,
+      "fieldNumber_": 200
+    }
+  ],
+  "fieldCount": 26,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AXMITOUT1", "field": },
+    {"name": "AXMITOUT2", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "772", "field": .01, "type": "regular"},
+    {"name": "772", "field": 3, "type": "regular"},
+    {"name": "772", "field": 3, "type": "regular"},
+    {"name": "772", "field": 4, "type": "regular"},
+    {"name": "772", "field": 6, "type": "regular"},
+    {"name": "772", "field": 8, "type": "regular"},
+    {"name": "772", "field": 11, "type": "regular"},
+    {"name": "772", "field": 20, "type": "regular"},
+    {"name": "772", "field": 20, "type": "regular"},
+    {"name": "772", "field": 21, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^HL(771,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(771,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

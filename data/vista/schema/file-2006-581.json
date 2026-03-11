@@ -1,0 +1,75 @@
+{
+  "fileNumber": 2006.581,
+  "fileName": "INSTRUMENT DICTIONARY",
+  "globalRoot": "2006.581",
+  "globalReference": "^MAGDICOM(2006.581,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NICKNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is an abbreviation that identifies the instrument that is being described in this entry.   Typical abbreviations are CR1, CT2, US, etcetera. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The value of this field is a description that identifies the equipment that is specified by this entry. Such a description typically includes the name of a building or the number of a room. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "CON:Consults;RAD:Radiology;",
+      "helpText": "The value of this field is a code that indicates the kind of studies that is supported by this instrument.   Possible values are:    \"RAD\"   for Radiology    \"CON\"   for Consults ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this field is an integer number that identifies the TCP/IP port number to which the instrument connects that is described in this entry.   TCP/IP port numbers are integers between 1 and 65535.   The TCP/IP connection in question is between this instrument and the computer on which this table is stored. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The value of this field is a pointer that identifies the site where the instrument is located that is described in this entry.   The value of this field is a pointer to the Institution File (number 4, stored in ^DIC(4,...) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MACHINE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the hostname of the computer on which the image files for this instrument are stored.   ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.581", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

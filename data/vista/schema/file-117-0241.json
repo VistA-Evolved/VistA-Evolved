@@ -1,0 +1,37 @@
+{
+  "fileNumber": 117.0241,
+  "fileName": "FHQUE REPORT DAYS",
+  "globalRoot": "117.0241",
+  "globalReference": "^FH(117.0241,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DAY OF WEEK",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is for the Day of Week that a report will be run. For example Sunday or Monday. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This number is used as a cross reference for the day of week. For example  1 maybe for Sunday, 2 for Monday. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "117.0241", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

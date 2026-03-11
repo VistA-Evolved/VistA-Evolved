@@ -1,0 +1,122 @@
+{
+  "fileNumber": 351.6,
+  "fileName": "TRANSFER PRICING PATIENT",
+  "globalRoot": "351.6",
+  "globalReference": "^IBAT(351.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is a pointer to the Patient file (#2). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE ADDED TO FILE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This stores when this Transfer Pricing patient was added to the file. Usually happens when this patient has his first Transfer Pricing transaction. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PREFERRED FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the Transfer Pricing patient's preferred facility as of the last transaction processed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSFER PRICING STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "This is a flag showing if the patient is still enrolled with their preferred facility being other than the current facility.  This is only updated if there are Transfer Pricing transactions or by user intervention. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "LAST ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the patient's last admission date that they were considered an active Transfer Pricing patient. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LAST OUTPATIENT VISIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the patient's last outpatient visit date that they were considered an active Transfer Pricing patient. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "LAST PRESCRIPTION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the patient's last prescription date that they were considered an active Transfer Pricing patient. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "LAST AUTHORIZING PERSON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the person's name from the patient's preferred facility who last authorized services.  This is used as a default for any future authorizations being entered. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "LAST AUTHORIZING FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the facility where the last authorization was gotten from. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "OVERRIDDEN FACILITY",
+      "dataType": "POINTER",
+      "rawType": "*P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This field, if filled in, will override what the patient's preferred facility is for all future transactions as long as there is something in this field. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "LAST PROSTHETIC DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the last date a prosthetic device was issued. ",
+      "fieldNumber_": .11
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "351.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

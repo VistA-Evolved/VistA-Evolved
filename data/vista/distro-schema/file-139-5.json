@@ -1,0 +1,1939 @@
+{
+  "fileNumber": 139.5,
+  "fileName": "SURGERY TRANSPLANT ASSESSMENTS",
+  "globalRoot": "139.5",
+  "globalReference": "^SRT(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the name of the patient. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE OF TRANSPLANT",
+      "dataType": "DATE",
+      "rawType": "DXR",
+      "required": true,
+      "helpText": "Indicate date organ transplant was completed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SURGERY CASE",
+      "dataType": "POINTER",
+      "rawType": "P130'X",
+      "required": false,
+      "pointerTo": 130,
+      "helpText": "This is the case in the SURGERY file associated with this file entry. This field is entered if the transplant was done in a VA medical  center. This field will remain blank if the transplant was done in  a non-VA facility. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VACO ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0XR",
+      "length": 6,
+      "required": true,
+      "helpText": "The VACO ID is a unique identifier provided centrally for each patient undergoing a transplant.  This field is required for creating  a Transplant Assessment. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RECIPIENT HEIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Indicate the Recipient's height in either inches (in) or centimeters (cm) based upon an actual measurement (if possible) or based on the Recipient's estimate.   The measurement should be entered in inches (48 to 86) or centimeters  (122 to 218). If you are entering the patient's height in centimeters,  enter 'C' after the number of centimeters.   Your answer should be in one of the following two formats.  68    (representing inches)  173C  (representing centimeters)   Enter NS for NO STUDY if th",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECIPIENT WEIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Indicate the Recipient's most recent weight before surgery in either  pounds (lbs) or kilograms (kg) based upon an actual measurement (if  possible) or based on the Recipient's estimate.     The weight should be entered in pounds (50 to 700) or kilograms (23  to 318). If you are entering the patient's weight in kilograms, enter 'K' after the number of kilograms.   Your answer should be in one of the following formats.  178     (weight in pounds)  80K     (weight in Kilograms)   Enter NS for NO S",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RECIPIENT IVIG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BEFORE TRANSPLANT;2:AFTER TRANSPLANT;3:BOTH;4:NO;",
+      "helpText": "Indicate if transplant recipient receives intravenous immunoglobulin  (IVIG).  IVIG is used to treat acute humoral rejection after organ  transplantation.  IVIG is also used to reduce antibody titers  prophylactically to permit ABO incompatible and cross match positive  renal transplants.  ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RECIPIENT ABO BLOOD TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:A;B:B;AB:AB;O:O;",
+      "helpText": "This is the ABO blood type of the organ recipient. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DATE PLACED ON WAITING LIST",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Indicate date entered on UNOS Waiting List for Transplant. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "RECIPIENT CMV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "+:POSITIVE;-:NEGATIVE;",
+      "helpText": "This is the Recipient CMV status field. The field will capture the  cytomegalovirus (CMV) serologic status of the transplant recipient. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "RECIPIENT HLA-A TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-A typing status of the organ recipient.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus.  Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "RECIPIENT HLA-B TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-B typing status of the organ recipient.  It is  Human Leukocyte Antigen (HLA) typing - described as A, B, C, BW,  DQ, & DR locus. Acceptable answers are numerical in the format  of # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "RECIPIENT HLA-C TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-C typing status of the organ recipient.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#. The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "RECIPIENT HLA-BW TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-BW typing status of the organ recipient.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "RECIPIENT HLA-DR TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-DR typing status of the organ recipient.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "RECIPIENT HLA-DQ TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-DQ typing status of the organ recipient.  It is  Human Leukocyte Antigen (HLA) typing - described as A, B, C, BW,  DQ, & DR locus. Acceptable answers are numerical in the format  of # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments.  ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "TRANSPLANT COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Transplant comments include additional information not available  elsewhere on this form. This field has a limit of 130 characters. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ACETAMINOPHEN TOXICITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Acetaminophen Toxicity is a condition as defined by development of  encephalopathy within 8 weeks of onset of illness and an  acetaminophen level exceeding 4000 units/liter or diagnosis as  documented by an attending physician. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ACUTE LIVER FAILURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Acute Liver Failure is when a patient develops encephalopathy  within 8 weeks of an onset of illness or as documented by an  attending physician. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LUNG CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate presence or history of lung cancer with pathology report  confirming diagnosis as documented by attending physician. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "ALCOHOLIC CIRRHOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Continued alcohol abuse in many patients will result in the  development of alcoholic cirrhosis which causes permanent scarring  of the liver. Answer \"YES\" if a diagnosis of Alcoholic cirrhosis is  documented by a physician in medical record. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "ALPHA 1 ANTI-TRYPSIN DEF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Alpha 1 Anti-Trypsin Deficiency is the genetic predisposition to  produce the protein (alpha1-antitrypsin) that helps protect the lungs. Indicate if patient has diagnosis of alpha-1 anti-trypsin deficiency documented by an attending physician. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "BRONCHIECTASIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Bronchiectasis is an abnormal destruction and dilation of the large  airways; or a diagnosis of bronchiectasis documented by an attending  physician. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "GLOMERULAR SCLEROSIS/NEPHRITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Glomerular Sclerosis/Nephritis is kidney disease involving primarily the glomeruli. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "GRAFT FAILURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "For kidney transplants, Graft Failure is documented return to maintenance dialysis after a successful kidney transplant.   For liver transplants, graft failure is failure of transplanted liver  caused by the etiologic factor for which the original transplant was  performed or the diagnosis of graft failure from recurrent disease  documented in the medical record. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "HBV CIRRHOSIS (HEPATITIS B)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Cirrhosis characterized by hepatitis B surface antibody, hepatitis  surface antigen, and hepatitis B core antibody positive and pathology of cirrhosis on liver biopsy. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "HCC (HEPATOCELLULAR CA)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "HCC (Hepatocellular carcinoma) is characterized by the presence of a  lesion on two separate liver imaging studies and at least one of the  following: a vascular blush corresponding to the area of suspicion  seen on other imaging studies; an alpha-fetoprotein level of >200  ng/ml; an arteriogram confirming a tumor; a biopsy confirming HCC; chemoembolization of lesion, radio frequency, cryo, or chemical  ablation of the lesion; or diagnosis of hepatocellular carcinoma documented in medical record",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "HCV CIRRHOSIS (HEPATITIS C)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "HCV Cirrohosis (Hepatitis C) is characterized by hepatitis C antibody  positive and/or PCR positive for HCV RNA and pathology of cirrhosis on  liver biopsy. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "DONOR HEIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Indicate the Donor's height in either inches (in) or centimeters (cm)  based upon an actual measurement (if possible) or based on estimate.   The measurement should be entered in inches (48 to 86) or centimeters  (122 to 218). If you are entering the donor's height in centimeters,  enter 'C' after the number of centimeters.   Your answer should be in one of the following two formats.  68    (representing inches)  173C  (representing centimeters)   Enter NS for NO STUDY if the donor's height cann",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "INTERSTITIAL LUNG DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Interstitial Lung Disease (ILD) refers to a group of lung diseases  which affect the alveolar epithelium, pulmonary capillary endothelium, basement membrane, perivascular and perilymphatic tissues; or  a diagnosis of interstitial lung disease documented by an attending physician. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "MEMBRANOUS NEPHROPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the Membranous Nephropathy status of the organ recipient.   Membranous Nephropathy is a kidney disorder resulting in disruption  of kidney function because of inflammation of the glomerulus and  changes in the glomerular basement membrane. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "METABOLIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate yes if one of the following diagnoses is recorded in  patient's medical record: hemachromatosis, alpha1 antitrypsin  deficiency, Wilson's, Banti's, lupoid. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "NASH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Non-alcoholic steatohepatitis (or non-alcoholic fatty liver disease)  - hepatitis or cirrhosis diagnosed by liver biopsy pathology or a diagnosis of non-alcoholic steatohepatitis (or non-alcoholic fatty  liver disease) documented in the medical record. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DONOR WEIGHT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Indicate the Donor's most recent weight before surgery in either  pounds (lbs) or kilograms (kg) based upon an actual measurement (if possible) or based on estimate.   The weight should be entered in pounds (50 to 700) or kilograms  (23 to 318). If you are entering the donor's weight in kilograms,  enter 'K' after the number of kilograms.   Your answer should be in one of the following formats.  178     (weight in pounds)  80K     (weight in Kilograms)   Enter NS for NO STUDY if the donor's weig",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "POLYCYSTIC DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is Polycystic Disease status of the organ recipient.  Polycystic  Disease is a condition in which multiple cysts on the kidneys cause the  kidneys to fail. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "PRIMARY BILIARY CHOLANGITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Primary Biliary Cholangitis or Cirrhosis is an autoimmune liver  disease where over time an antibody created within the body attacks  and destroys the bile ducts in the liver. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "PRIMARY SCLEROSING CHOLANGITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate whether a diagnosis of Primary Sclerosing Cholangitis is  documented in the medical record. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PULMONARY FIBROSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Pulmonary Fibrosis involves scarring of the lung.  Gradually, the air  sacs of the lungs become replaced by fibrotic tissue.  When the scar  forms, the tissue becomes thicker causing an irreversible loss of the  tissue's ability to transfer oxygen into the bloodstream. Indicate if  patient has diagnosis of pulmonary fibrosis documented in the medical  record. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PULMONARY HYPERTENSION ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if patient has diagnosis of pulmonary hypertension with  Mean PA pressure > 35 mmHg documented in medical record. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "RENAL CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the Renal Cancer status of the organ recipient.  Renal Cancer is malignant neoplasm of the kidney. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "SARCOIDOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with clinical manifestations  of cardiac sarcoidosis, which is dependent upon the location and  extent of granulomatous inflammation. Cardiac involvement may  precede, follow, or occur concurrently with involvement of the  lungs or other organs. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "DONOR RACE",
+      "dataType": "SET",
+      "rawType": "139.544SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 139.544,
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DONOR GENDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MALE;F:FEMALE;",
+      "helpText": "Indicate donor's gender as \"M\" if male, \"F\" if female. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "DONOR AGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the age of the donor at the time of organ harvest. Field  will be automatically calculated and filled if DONOR DATE OF BIRTH entered.  Enter NS for NO STUDY if the donor's age cannot be determined. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "BILIARY STRICTURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Narrowing or occlusion of the bile ducts either extrahepatic  (for  choledochocholedochostomy or choledochojejunostomy) or intrahepatic,  seen on MRCP, ERCP, or PTC or as documented in the medical record. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "DONOR ABO BLOOD TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:A;B:B;AB:AB;O:O;",
+      "helpText": "This is the ABO blood type of the organ donor. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "DONOR CMV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "+:POSITIVE;-:NEGATIVE;",
+      "helpText": "Indicate whether the donor tested positive or negative to  Cytomegalovirus. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LAS SCORE AT LISTING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Lung allocation score (LAS) is a calculated value which is used by  the United Network for Organ Sharing (UNOS) based upon a number of  factors including age, geographic distance, lab test results, and  disease diagnosis for prospective lung transplants recipients.  Indicate patient Lung Allocation Score at Listing with UNOS. Enter a  number between 0 and 100. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "LAS SCORE AT TRANSPLANT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Lung allocation score (LAS) is a calculated value which is used by  the United Network for Organ Sharing (UNOS) based upon a number of  factors including age, geographic distance, lab test results, and  disease diagnosis for prospective lung transplants recipients.  Indicate patient Lung Allocation Score at Transplant with UNOS. Enter  a number between 0 and 100. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "MELD SCORE AT LISTING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Biologic Model of End Stage Liver Disease score plus the extra  points as defined by UNOS (for example, for HCC or an appeal has  been made for higher MELD score due to other clinical entities) at  time of listing and as documented in the UNOS data base. Enter  a number between 6 and 40. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "BIOLOGIC MELD SCORE AT LISTING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Actual Model of End Stage Liver Disease score using the laboratory  values of bilirubin, creatinine, and INR at the time of listing and  as documented in the UNOS data base. Enter a number between 6 and 40. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "MELD SCORE AT TRANSPLANT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Biologic Model of End Stage Liver Disease score plus the extra  points as defined by UNOS (for example, for HCC, or an appeal has  been made for higher MELD score due to other clinical entities) at  time of transplant and as documented in the UNOS data base. Enter a  number between 6 and 40. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "BIOLOGIC MELD SCORE AT TRANSP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Actual Model of End Stage Liver Disease score using the laboratory  values of bilirubin, creatinine, and INR at the time of transplant and as documented in the UNOS data base. Enter a number between 6  and 40. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "BILE LEAK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Evidence of extravasation of bile from the biliary tree by a  cholangiogram.  The contrast imaging studies to obtain  a cholangiogram include: ERCP, PTC, MRCP, or tube cholangiogram.   A HIDA scan can also reveal a bile leak.  In addition, bile leak  can be identified  as documented in the medical record. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "UNOS STATUS AT TIME OF TRANSP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:1A;B:1B;2:2;",
+      "helpText": "Indicate the UNOS (United Network for Organ Sharing database) status at the time the transplant procedure was performed. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "UNOS STATUS AT TIME OF LISTING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:1A;B:1B;2:2;7:7 - ON HOLD;",
+      "helpText": "Indicate the UNOS (United Network for Organ Sharing database) status  at the time the heart transplant procedure was listed. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "DIABETIC RETINOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Diabetic Retinopathy is damage to the blood vessels in the retina  as a consequence of diabetes mellitus. Enter YES if organ recipient is diagnosed with this condition. Otherwise, enter NO. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "DIABETIC NEUROPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter the Diabetic Neuropathy status of the organ recipient.   Diabetic Neuropathy is damage to the nervous system as a consequence  of diabetes mellitus which can include peripheral neuropathy (sensory nervous system) or autonomic neuropathy (autonomic nervous system) or  as defined by the attending physician. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "CARDIAC DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Any documented cardiac abnormality (i.e. EKG abnormality, fixed or  reversible defects, cardiac disease on heart catheterization,  hypertension, and hyperlipidemia). ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "INOTROPE DEPENDENT PRE-TRANSP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient required an inotropic agent (dobutamine,  milrinone, levophed, etc.) to maintain adequate cardiac output while  awaiting a donor heart. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the name of the institution credited for performing this  transplant. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "DONOR HLA-A TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-A typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#. The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "DONOR HLA-B TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-B typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus.  Acceptable answers are numerical in the format of  # to #,#,#,#. The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "DONOR HLA-C TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-C typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "DONOR HLA-BW TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-BW typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "CROSSMATCH D/R",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "+:POSITIVE;-:NEGATIVE;",
+      "helpText": "Crossmatch is pretransfusion testing or compatibility testing. It is  a series of procedures used to give an indication of blood group compatibility between the donor and the recipient and to detect  irregular antibodies in the recipient's serum. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "DECEASED DONOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:DCD (Donor after Cardiac Death);2:ECD (Extended Criteria Donor);3:SCD (Standard Criteria Donor);4:ECD-DCD;NS:NO STUDY;",
+      "helpText": "Transplanted organ was harvested from a deceased donor. Acceptable  answers include DCD (Donor after Cardiac Death), ECD (Extended Criteria Donor), SCD (Standard Criteria Donor), ECD-DCD, and No Study. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "DONOR DATE OF BIRTH",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the donor's date of birth between December 31, 1870 and today's date. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "ELEVATED PAP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Elevated pulmonary artery pressure (PAP) may indicate left-to-right  shunt, LV failure, mitral stenosis or pulmonary hypertension. Indicate if patient has an Elevated PAP. Mean PA pressure of  > 35 mmHg for right heart catheterization measurement. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "DONOR HLA-DQ TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-DQ typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus. Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "DONOR HLA-DR TYPING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HLA-DR typing status of the organ Donor.  It is Human  Leukocyte Antigen (HLA) typing - described as A, B, C, BW, DQ, & DR  locus.  Acceptable answers are numerical in the format of  # to #,#,#,#.  The numbers between commas can be from 0 to 9999.   NS (No Study) is also an acceptable response for heart transplants assessments. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "PULMONARY HYPER/ELEVATED PAP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has Pulmonary Hypertension or an Elevated  PAP not reversible by sodium nitroprusside (Nipride). ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "LIVER DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate the presence of liver disease such as positive HCV, Hep  BsAg, or documented cirrhosis in organ transplant recipient. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "COPD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has chronic obstructive pulmonary disease  (COPD) resulting in functional disability, and/or hospitalization,  and/or requiring chronic bronchodilator therapy, and/or an FEV1 of  less than 75% of predicted. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "DONOR SUBSTANCE ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "This is any documented history of illicit or recreational drug abuse  of the donor.  The route may be intravenous, subcutaneous, intranasal, oral, or inhaled.  The drugs may include opioids, methamphetamines, cocaine, hallucinogens, marijuana, alcohol or other substances. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "PORTO PULMONARY HYPERTENSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The pulmonary arterial vasculopathy associated with elevated  pulmonary artery pressure (mean > 35mmHg) and as a consequence of  severe hepatic dysfunction or as documented in the medical record. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "BLEEDING ESOPH/GASTRIC VARICES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLEEDING;NB:NOT BLEEDING;N:NO;",
+      "helpText": "The presence of upper gastrointestinal bleeding from esophageal or  gastric varices any time in the patient's medical history. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "PRE-TRANSPLANT MALIGNANCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is Pre-transplant Malignancy status of the organ recipient.   Pre-transplant Malignancy is any history of solid organ, blood cell,  or lymph node malignancy prior to kidney transplantation. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "PRE-TRANSPLANT SKIN MALIGNANCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has any neoplasm or tumor of the skin that is  biopsy-proven to be malignant prior to organ transplant. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "OTHER PRE-TRANS MALIGNANCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if patient has history of solid organ, blood cell, or lymph node malignancy (other than skin) prior to organ transplantation. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "RECIPIENT SUBSTANCE ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if there is any documented history of illicit or  recreational drug abuse by the organ recipient.  The route may be intravenous, subcutaneous, intranasal, oral, or inhaled.  The drugs  may include opioids, methamphetamines, cocaine, hallucinogens,  marijuana, alcohol or other substances. ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 84,
+      "fieldName": "ACTIVE INFECTION FOR PSC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The presence of infection related to the diseased biliary tract in  the native liver at the time of liver transplantation. The infection would be manifest as cholangitis, bacteremia, or biliary sepsis. ",
+      "fieldNumber_": 84
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "WARM ISCHEMIA TIME FOR ORGAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter warm ischemia time for organ in minutes as written on  transplant data sheet or operative note. This is defined by the time that the donor organ is off ice until the time of reperfusion. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "ACUTE/CHRONIC ENCEPHALOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "History of new onset of hepatic encephalopathy, recurrent hepatic  encephalopathy, or a state of ongoing, continued hepatic  encephalopathy as documented in the medical record. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "COLD ISCHEMIA TIME FOR ORGAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter cold ischemia time for organ in minutes as written on  transplant data sheet or operative note. This is defined by the time that the donor organ is cross-clamped to the time that the donor  organ is removed from the ice. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "HISTORY OF ASCITES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The presence of ascites fluid (presence of fluid accumulation in  the peritoneal cavity noted on physical exam, abdominal ultrasound,  or abdominal CT/MRI) at any time in the patient's medical history. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "TOTAL ISCHEMIA TIME FOR ORGAN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Enter the total ischemia time for organ in minutes which is the sum of warm ischemia time and cold ischemia time. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "NON-COMPLIANCE (MED AND DIET)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter the non-compliance (medication and diet) status of the organ  recipient.  This refers to documented history of nonadherence/noncompliance to medical regimens such as diet,  exercise, monitoring blood sugars, attending scheduled appointments  and laboratory draws when requested. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "ON METHADONE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Patient who has had previous substance abuse with opioids and is  currently prescribed methadone by a physician or methadone clinic.  This patient would be yes for drug abuse variable as well. ",
+      "fieldNumber_": 91
+    },
+    {
+      "fieldNumber": 92,
+      "fieldName": "POST-TX PROPHYLAXIS - TB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NA:NOT APPLICABLE;",
+      "helpText": "Definition Revised (2010):  Indicate whether patient is receiving  post-transplant prophylaxis Tuberculosis/Antimycobacterial drugs  continuously post operatively for at least 30 days. Indicate Yes if  patient receiving therapy. Indicate No if patient is indicated to  receive therapy but doesn't. Indicate Not Applicable if patient is  not indicated to receive therapy. ",
+      "fieldNumber_": 92
+    },
+    {
+      "fieldNumber": 94,
+      "fieldName": "REJECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "A diagnosis of acute rejection as made by pathologic evaluation of  allograft biopsy or a diagnosis of acute rejection as documented in  the medical record. ",
+      "fieldNumber_": 94
+    },
+    {
+      "fieldNumber": 95,
+      "fieldName": "IGA NEPHROPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "IgA Nephropathy is a kidney disorder caused by deposits of the  protein immunoglobulin A (IgA) inside the glomeruli within the  kidney. The chronic kidney disease may progress over a period of  10 to 20 years. If this disorder leads to end-stage renal disease,  the patient must go on dialysis or receive a kidney transplant. ",
+      "fieldNumber_": 95
+    },
+    {
+      "fieldNumber": 96,
+      "fieldName": "CALCINEURIN INHIBITOR TOXICITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Cyclosporin and tacrolimus are calcineurin inhibitors and are widely used as immunosuppressive therapy.   Among the toxicities of the calcineurin inhibitor class are nephrotoxicity manifest as acute  renal failure, hyperkalemia with or without acidosis and progressive chronic renal failure and neurotoxicity manifest primarily as tremors and headache. ",
+      "fieldNumber_": 96
+    },
+    {
+      "fieldNumber": 97,
+      "fieldName": "LITHIUM TOXICITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Mild to moderate acute toxic reactions may occur at lithium drug  concentrations from 1.5 - 2 mmol/L, and moderate to severe reactions  at concentrations above 2 mmol/L. In patients with normal renal  clearance the acute toxic manifestations appear to occur in a fairly predictable sequence related to lithium concentrations. Thirst and polyuria may be followed by increased drowsiness, ataxia, tinnitus  and blurred vision, indicating early intoxication. As intoxication progresses the following man",
+      "fieldNumber_": 97
+    },
+    {
+      "fieldNumber": 98,
+      "fieldName": "OBSTRUCTIVE UROPATHY FROM BPH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Obstructive uropathy from BPH is a non-cancerous enlargement of the  prostate gland causing obstruction to the free flow of urine due to  narrowing of the urethra. As obstruction progresses, the bladder  decompensates, increasingly larger amounts of residual urine are  left behind. Infection is frequently associated with the residual  urine. This can be transmitted to the upper urinary tracts, with  ensuing hydroureter, hydronephrosis and progressive renal damage  and if untreated to ESRD. ",
+      "fieldNumber_": 98
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "AUTOIMMUNE HEPATITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Hepatitis or cirrhosis due to immune cell attack of the liver causing  inflammation and or cell death; or diagnosis of autoimmune  hepatitis  documented in medical record. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CRYPTOGENIC CIRRHOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Cryptogenic Cirrhosis is cirrhosis of the liver by biopsy with no  specific etiology for the cirrhosis. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "CHRONIC REJECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The diagnosis of chronic rejection as made by pathologic evaluation  or a diagnosis of chronic rejection documented in the medical record. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "HEPATIC ARTERY THROMBOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Thrombosis of the liver allograft hepatic artery documented by  ultrasound duplex, angiogram, or another vascular imaging study;  or a diagnosis of hepatic artery thrombosis documented in the  medical record. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "LIVING DONOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:RELATED;U:UNRELATED;NS:NO STUDY;",
+      "helpText": "Transplanted organ was harvested from a living donor.  ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "DONOR WITH MALIGNANCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "Indicate if the donor has or has a history of a cancer, neoplasm,  or tumor that grows in an uncontrolled manner, invading nearby  tissue and metastasizing (spreading) to other sites through the  bloodstream.  Entering 'NS' for 'No Study/Unknown' is also allowed. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "PRIMARY NON-FUNCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Primary Non-Function is defined as failure in the function of the  liver allograft within 7 days of liver transplantation as defined  by 1) or 2):   1) AST > 4999 and one or both of the following: an INR >2.4, acidosis,     defined as having an arterial pH < 7.31 or venous pH of 7.25 and/or     lactate  > 3.9 mMol/L;    2) anhepatic candidate; or diagnosis of primary non-function     documented in the medical record. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "SECOND SCLEROSING CHOLANGITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "A diagnosis of secondary sclerosing cholangitis in medical record. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "TOXIC EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Hepatitis and or necrosis of the liver due to a known hepatotoxic  agent or diagnosis of toxic exposure causing liver failure as  documented in medical record. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "HIV POSITIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Enter YES if organ recipient is HIV positive on laboratory test or  HIV positive as documented in the medical record. Otherwise,  enter NO. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "POST-TX PROPHYLAXIS - CMV",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the Post Transplant Prophylaxis for CMV/Antiviral Treatment  status of a patient who is receiving ganciclovir, valganciclovir, or  acyclovir continuously post operatively for at least 30 days. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "POST-TX PROPHYLAXIS - PCP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the Post Transplant Prophylaxis for PCP/Antibacterial  Treatment status of a patient receiving septra/bactrim, pentamidine, or dapsone continuously post operatively for at least 30 days. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "PORTAL VEIN THROMBOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Thrombosis of the liver allograft portal vein documented by  ultrasound duplex, angiogram, or CT angiogram or MRI; or a diagnosis  of portal vein thrombosis as documented in the medical record. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "OTHER CARDIOMYOPATHY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient was diagnosed with any other form of cardiomyopathy  that is not listed elsewhere on this form, specify details into the comment field. ",
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "LUNG DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate the presence of lung disease such as documented COPD,  pulmonary hypertension, or interstitial disease in organ transplant recipient. ",
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "RENAL IMPAIRMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Renal dysfunction is evidenced by a serum creatinine results over 1.5  mg/dl. ",
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "INFECTION REQ ANTIBIOTICS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate the presence of infection in recipient of the target organ  or system requiring antibiotic treatment. ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "BLEEDING/TRANSFUSIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Any transfusion (including autologous) of packed red blood cells or   whole blood given from the time the patient leaves the operating  room up to and including 72 hours postoperatively. Report as an  occurrence for five or more units of packed red blood cell in the postoperative period including hanging blood from the OR that is  finished outside of the OR. If the patient receives shed blood,  autologous blood, cell saver blood or pleurovac postoperatively,  this is counted if greater than four",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "PNEUMONIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Report patients with evidence of pneumonia at the time the patient  is brought to the OR. Patients with pneumonia must meet ONE of the  following two criteria:       Criterion 1. Rales or dullness to percussion on physical examination of chest  AND any of the following: a. New onset of purulent sputum or change in character of sputum b. Organism isolate from blood culture c. Isolation of pathogen from specimen obtained by transtracheal  aspirate, bronchial brushing, or biopsy   OR   Criterion 2.",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "ON VENTILATOR >48 HOURS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2011): Total duration of ventilator-assisted  respirations during postoperative hospitalization was >48 hours.  This can occur at any time during the 30-day period postoperatively.  This time assessment is CUMULATIVE, not necessarily consecutive. Ventilator-assisted respirations can be via endotracheal tube,  nasotracheal tube, or tracheostomy tube. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "CARDIAC ARREST REQ CPR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;I:INTRAOPERATIVELY;P:POSTOPERATIVELY;",
+      "helpText": "Definition Revised (2011): Indicate if there was any cardiac arrest  requiring external or open cardiopulmonary resuscitation (CPR)  occurring in the operating room, ICU, ward, or out-of-hospital after  the chest had been completely closed and within 30 days of surgery. Patients with AICDs that fire but the patient does not lose  consciousness should be excluded.   If patient had cardiac arrest requiring CPR, indicate whether the  arrest occurred intraoperatively or postoperatively. Indicate the",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "PSYCHOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Documentation in the medical record of a mental state involving  a loss of contact with reality that may include hallucinations,  delusional beliefs, or personality changes or the diagnosis of  psychosis in the medical record. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "STROKE/CVA",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;1:NO SYMPTOMS;2:<24 HOURS;3:24-72 HOURS;4:>72 HOURS;",
+      "helpText": "VASQIP Definitions (2011): Indicate if the patient developed a new neurologic deficit with onset  immediately post-operatively or occurring within the 30 days after  surgery.  Neurologic deficits are defined as an embolic, thrombotic, or hemorrhagic vascular accident or stroke with motor, sensory, or  cognitive dysfunction (e.g., hemiplegia,hemiparesis, aphasia, sensory deficit, impaired memory).  Indicate the duration as follows:  1) no symptoms  2) symptomatic duration less than 24 hours  3) s",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "COMA > 24 HOURS POSTOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2011): Indicate if either postoperatively or  within 30 days of surgery there was a significantly decreased level  of consciousness (exclude transient disorientation or psychosis) for greater than or equal to 24 hours as evidenced by lack of response  to deep, painful stimuli. Do not include drug-induced coma  (e.g. Propofol drips, etc.) ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "SUPERFICIAL INCISIONAL SSI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2004): Superficial incisional SSI is an infection that occurs within 30 days after the operation and infection involves only skin or subcutaneous tissue of the incision and at least one of the following:    - Purulent drainage, with or without laboratory confirmation, from the    superficial incision.  - Organisms isolated from an aseptically obtained culture of fluid or    tissue from the superficial incision.  - At least one of the following signs or symptoms of infection: ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DEEP INCISIONAL SSI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2004): Deep Incision SSI is an infection that occurs within 30 days after the operation and the infection appears to be related to the operation and infection involved deep soft tissues (e.g., fascial and muscle layers) of the incision and at least one of the following:    - Purulent drainage from the deep incision but not from the    organ/space component of the surgical site.  - A deep incision spontaneously dehisces or is deliberately opened by    a surgeon when the patien",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "SYSTEMIC SEPSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2007): Sepsis is a vast clinical entity that takes a variety of forms. The spectrum of disorders spans from relatively mild physiologic abnormalities to septic shock. Please report the most significant level using the criteria below:   1. Sepsis: Sepsis is the systemic response to infection. Report this variable if the patient has clinical signs and symptoms of SIRS. SIRS is a widespread inflammatory response to a variety of severe clinical insults. This syndrome is clinicall",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "RETURN TO SURGERY W/I 30 DAYS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field documents returns to the operating room including all  surgical procedures that required the patient to be taken to the surgical operating room for intervention of any kind. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "SEIZURES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Documentation of a sudden change in behavior due to an excessive  electrical activity in the brain or the diagnosis of seizure in the  medical record. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 128,
+      "fieldName": "EMPHYSEMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Emphysema is a chronic obstructive pulmonary disease that is caused  by loss of elasticity of the lung tissue from destruction of  structures supporting the alveoli and/or destruction of capillaries feeding the alveoli which often results in shortness of breath.  Indicate if the patient has a diagnosis of emphysema documented by  an attending physician. ",
+      "fieldNumber_": 128
+    },
+    {
+      "fieldNumber": 129,
+      "fieldName": "OTHER DIAGNOSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the patient was diagnosed with any other condition that is not  listed elsewhere on this form, specify details into the comment  field. Free text field will have a limit of 50 characters. ",
+      "fieldNumber_": 129
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "NEW MECHANICAL CIRCULATORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;I:INTRAOPERATIVELY;P:POSTOPERATIVELY;",
+      "helpText": "Definition Revised (2004): Indicate if the patient left the operating  room suite with or required post-op placement of a new IABP, ECMO, or  VAD for circulatory support within 30 days perioperatively. A \"yes\" response is appropriate even if the pump is only used for a short  time perioperatively. A \"yes\" response, however, is only correct if  the patient did not enter the operating room with this same  mechanical circulatory support, and the device insertion occurred  AFTER the induction of  an",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "PREOP FUNCTIONAL HEALTH STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INDEPENDENT;P:PARTIALLY DEPENDENT;T:TOTALLY DEPENDENT;U:UNKNOWN;",
+      "helpText": "Definition Revised (2008): This is a question that focuses on the patient's abilities to perform activities of daily living (ADLs) in the 30 days prior to surgery. Activities of daily living are defined as 'the activities usually performed in the course of a normal day in a person's life'. ADLs include: bathing, feeding, dressing, toileting, and mobility. Report the corresponding level of self-care for activities of daily living demonstrated by this patient at the time the patient is being consi",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "PERIPHERAL VASCULAR DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has peripheral vascular disease, defined as  disease of the arteries to legs below bifurcation of aorta  manifested by exertional claudication, and/or ischemic rest pain,  and/or prior revascularization procedure(s) on vessels to legs,  and/or absent or diminished pulses in legs, and/or angiographic  evidence of noniatrogenic peripheral arterial obstruction greater  than or equal to 50% of luminal diameter. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "GRAFT FAILURE DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This is the date of Graft Failure and return to maintenance dialysis  after successful kidney transplant. System will also accept an entry  for NS (No Study) ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "PANCREAS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SPK;P:PAK;N:NO STUDY;",
+      "helpText": "Occasionally, the kidney is transplanted together with the pancreas.  SPK is a simultaneous pancreas transplant and kidney transplant.   Both organs would be from the same donor. PAK is a pancreas  transplant after a kidney transplant. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "GLUCOSE AT TIME OF LISTING",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Glucose is blood sugar. Blood glucose helps measure pancreas  function. This is the blood glucose level of organ recipient at the  time of listing as a transplant candidate. Enter NS to represent \"No Study\" if this information is not available. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 136,
+      "fieldName": "C-PEPTIDE AT TIME OF LISTING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Definition Revised (2010):  C-peptide is a peptide which is made when proinsulin is split into insulin and c-peptide. Proinsulin is  released from the pancreas into the blood in response to a rise in serum glucose. Acceptable answers are numerical in the format of #.#.   Enter NS to represent \"No Study\" if this information is not available. ",
+      "fieldNumber_": 136
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "PANCREATIC DUCT ANASTOMOSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "B:BLADDER;E:ENTERIC;NS:NO STUDY;",
+      "helpText": "The pancreatic duct anastomosis refers to the anastomosis of the  duodenal pouch, which is connected to the pancreas, for drainage of  the digestive enzymes.  The anastomosis will be to the bladder, or  to the intestine (enteric). ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "GLUCOSE POST TRANSPLANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Glucose is blood sugar. Blood glucose helps measure pancreas function.  Enter the blood glucose level of the organ recipient after transplant. ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 139,
+      "fieldName": "AMYLASE POST TRANSPLANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Amylase is an enzyme produced by the pancreas to help digest  carbohydrates. It is measured by a blood level. Enter the blood  amylase level of the organ recipient after transplant.  Enter NS to  represent \"No Study\" if this information is not available. ",
+      "fieldNumber_": 139
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "LIPASE POST TRANSPLANT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Lipase is a fat digesting enzyme. It is primarily made in the  pancreas. Enter the blood lipase level of the organ recipient after transplant.  Enter NS to represent \"No Study\" if this information is not available. ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "INSULIN REQ POST TRANSPLANT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "Insulin is a hormone made by the islet cells in the pancreas. It  controls sugar in the blood by moving it into the cells where it can be used for energy. Indicate if insulin treatment was necessary after the transplant. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 142,
+      "fieldName": "ORAL HYPOGLYCEMICS/POST TRANS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "Oral hypoglycemics are oral medications taken to lower blood  glucose levels. Indicate if oral hypoglycemics were administered to  lower blood glucose levels after the transplant. ",
+      "fieldNumber_": 142
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "PRA AT LISTING",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicate the Panel Reactive Antibody of organ recipient at time of  listing with UNOS. PRA represents the percent of the U.S. population  that the anti-human antibody in the organ recipient's blood reacts  with. ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "PRA AT TRANSPLANT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Indicate the Panel Reactive Antibody of organ recipient at time of  transplant. PRA represents the percent of the U.S. population that  the anti-human antibody in the organ recipient's blood reacts with. ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 145,
+      "fieldName": "HYPERTENSION REQUIRING MEDS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "Hypertension is characterized by high blood pressure repeatedly  exceeding 140 over 90mm Hg - a systolic pressure above 140 with a diastolic pressure above 90.   For heart transplant assessments, indicate if the patient has a  documented history of hypertension with or without current treatment of antihypertensive medication(s). ",
+      "fieldNumber_": 145
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "TRANSFUSION >4 RBC UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;NS:NO STUDY;",
+      "helpText": "Preoperative loss of blood necessitating a minimum of 5 units of  whole blood/packed red cells transfused during the 72 hours prior to surgery including any blood transfused in the emergency room. ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "*DIABETES MELLITUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "N:NO;D:DIET;O:ORAL;I:INSULIN;",
+      "helpText": "This field has been flagged as obsolete for VASQIP. It should no longer  be used.   Indicate if the patient has diabetes treated with diet, oral, and/or  insulin therapy. Diabetes is defined as a metabolic disorder of the  pancreas whereby the individual requires daily dosages of exogenous  parenteral insulin or an oral hypoglycemic agent to prevent a  hyperglycemic/metabolic acidosis. If the patient is on both Oral and  Insulin therapy, indicate Insulin therapy. Indicate the one most  appropria",
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 148,
+      "fieldName": "REOPERATION FOR BLEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Definition Revised (2004): Indicate if there was any re-exploration of the thorax for suspected bleeding within 30 days of surgery. ",
+      "fieldNumber_": 148
+    },
+    {
+      "fieldNumber": 149,
+      "fieldName": "AMIODARONE USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Amiodarone is an antiarrhythmic agent used for various types of  tachyarrhythmias, both ventricular and supraventricular arrhythmias.  Indicate if the patient has a history of current or past use of  Amiodarone. ",
+      "fieldNumber_": 149
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "HEPARIN SENSITIVITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has heparin sensitivity. ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "HYPERLIPIDEMIA HISTORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has a history of elevated cholesterol, as  defined as a fasting LDL level > 160 mg/dL, a fasting triglyceride  level > 200 mg/dL, or current/past use of drugs (statins, niacin, fibrates) to treat elevated cholesterol levels. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "VENTRICULAR TACHYCARDIA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient had rapid beating of the heart-paroxysmal  tachycardia originating in an ectopic focus in the ventricle.  ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "PRIOR BLOOD TRANSFUSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has ever received a transfusion of blood  and/or blood products. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "CREATININE ON TRANSPLANT DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the patient's Serum Creatinine result (mg/dl) preoperatively  evaluated closest to transplant surgery but not greater than 72 hours  before surgery. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "DILATED CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate whether the patient was diagnosed with dilated  cardiomyopathy (DCM) as characterized by dilation and impaired  contraction of one or both ventricles - generally with an ejection fraction < 40% ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "CORONARY ARTERY DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if patient was diagnosed with coronary plaque formation or  endothelial inflammation of the lining of the coronary arteries. ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "ISCHEMIC CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with ischemic cardiomyopathy,  primarily due to fixed or non-fixed ischemic damage of the  myocardium. ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "ALCOHOLIC CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with myocardial disease due to  chronic alcoholism. ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "VALVULAR CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with valvular cardiomyopathy  thought to be secondary to valvular disease, usually of the aortic or  mitral valve. ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 160,
+      "fieldName": "IDIOPATHIC CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with idiopathic cardiomyopathy. ",
+      "fieldNumber_": 160
+    },
+    {
+      "fieldNumber": 161,
+      "fieldName": "VIRAL CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with viral cardiomyopathy.   Viral infection is the most common cause of myocarditis and has  been implicated in the development of DCM. Viruses known to involve  the myocardium include Coxsackievirus, Influenza virus, Adenovirus, Echovirus, Cytomegalovirus, and Human Immunodeficiency Virus. ",
+      "fieldNumber_": 161
+    },
+    {
+      "fieldNumber": 162,
+      "fieldName": "PERIPARTUM CARDIOMYOPATHY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was diagnosed with cardiac failure in the  period before, during, or after pregnancy and delivery. ",
+      "fieldNumber_": 162
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "PVR BEFORE VASODILATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1X",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the patient's Pulmonary Vascular Resistance measured in  Woods Units before vasodilation in numerical format of #.# . Entering \"NS\" for \"No Study/Unknown\" is also allowed, if not applicable and  PVR (wood units) after Vasodilation is obtained. ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "PVR AFTER VASODILATION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1X",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the patient's Pulmonary Vascular Resistance measured in  Woods Units after vasodilation.  Entering \"NS\" for \"No Study/Unknown\" is also allowed, if not applicable and PVR (wood units) before Vasodilation is obtained. ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "LVEF% ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0O",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the most recent pre-transplant Left Ventricular Ejection  Fraction as measured by MUGA scan or Echocardiogram. ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 166,
+      "fieldName": "PRA% ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0O",
+      "length": 3,
+      "required": false,
+      "helpText": "Indicate the most recent T-cell and B-cell pre-transplant Percent  Reactive Antibodies as measured by flow cyometry. ",
+      "fieldNumber_": 166
+    },
+    {
+      "fieldNumber": 167,
+      "fieldName": "PA SYSTOLIC PRESSURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For patients having a right heart catheterization, indicate the  patient's pulmonary artery (PA) systolic pressure at the  catheterization most recent prior to surgery.  PA pressures obtained in the operating room prior to surgery are acceptable if they are  obtained prior to anesthesia induction. If no right heart  catheterization performed, entering \"NS\" for \"No Study/Unknown\" is  also allowed. ",
+      "fieldNumber_": 167
+    },
+    {
+      "fieldNumber": 168,
+      "fieldName": "PAW MEAN PRESSURE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "For patients having a right heart catheterization, indicate the  patient's mean pulmonary artery wedge (PAW) [also called pulmonary capillary] pressure or left atrial pressure measured at the catheterization most recent prior to surgery. PAW pressures obtained in the operating room prior to surgery are acceptable if they are  obtained prior to anesthesia induction. If no right heart or  transseptal catheterization performed, entering \"NS\" for \"No Study/Unknown\" is also allowed. ",
+      "fieldNumber_": 168
+    },
+    {
+      "fieldNumber": 169,
+      "fieldName": "FEV1",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Indicate the amount of forced expiratory volume in one second from  the most recent pulmonary function test prior to surgery. Enter 'NS' for No Study if there has been no FEV1 measured in the year preceding surgery. ",
+      "fieldNumber_": 169
+    },
+    {
+      "fieldNumber": 170,
+      "fieldName": "DATE OF DEATH",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "If the patient has died, this is the date of death.  Enter NA if DATE  OF DEATH is not applicable. ",
+      "fieldNumber_": 170
+    },
+    {
+      "fieldNumber": 171,
+      "fieldName": "*CURRENT SMOKER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEVER A SMOKER;2:WITHIN 2 WEEKS OF SURGERY;3:2 WEEKS TO 3 MONTHS PRIOR TO SURGERY;4:>3 MONTHS PRIOR TO SURGERY (REMOTE SMOKER);",
+      "helpText": "This field has been flagged as obsolete for VASQIP. It should no longer  be used.   Indicate the patient's smoking status from information from the  patient, or the chart, that best describes the patient's use of  tobacco in any form (pipe, cigar, cigarette, tobacco chew).  If more than one representation is found, please record according to the most conservative (most recent) quit date:   1 = Never a Smoker    2 = Smoking w/i 2 weeks prior to surgery   3 = Smoking w/i 2 weeks to 3 months prior ",
+      "fieldNumber_": 171
+    },
+    {
+      "fieldNumber": 172,
+      "fieldName": "PRIOR MI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:LESS THAN OR EQUAL 7 DAYS OF SURG;2:GREATER THAN 7 DAYS PRIOR TO SURG;",
+      "helpText": "Indicate whether the patient has a history of a non-Q-wave or Q-wave  myocardial infarction as diagnosed in his or her medical records.  Myocardial infarction may be indicated by the presence of one of the  following: 1) typical rise and fall in biochemical markers, 2) cardiac  pain, 3) typical ECG changes (new Q-waves, ST segment elevation or  depression). In the absence of the above supporting data, a clear  statement or diagnosis of prior myocardial infarction in the chart  will suffice; howe",
+      "fieldNumber_": 172
+    },
+    {
+      "fieldNumber": 173,
+      "fieldName": "NUM OF PRIOR HEART SURGERIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:None;1:1;2:2;3:3;>:>3;",
+      "helpText": "Indicate the number of previous heart surgeries the patient has had  upon current admission, by referencing the patient history.  The  prior heart surgery/ies would have occurred during a separate hospitalization (more than 30 days prior to current surgery).  Both  on and off-pump cardiac surgical procedures should be considered.   Count all surgical procedures performed during separate hospital admissions (not the number of grafts, and not additional procedures performed during the same admissi",
+      "fieldNumber_": 173
+    },
+    {
+      "fieldNumber": 174,
+      "fieldName": "*CEREBRAL VASCULAR DISEASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field has been flagged as obsolete for VASQIP. It should no longer  be used.   Indicate if the patient has cerebral vascular disease, defined as  disease of the arteries to the head manifested by previous stroke (cerebral vascular accident), and/or transient ischemic attack (TIA), and/or prior surgical repair (e.g., carotid endarterectomy), and/or greater than or equal to 50% obstruction of luminal diameter  documented by contrast angiography or duplex ultrasound examination. (NOTE: Stroke ",
+      "fieldNumber_": 174
+    },
+    {
+      "fieldNumber": 175,
+      "fieldName": "CONGESTIVE HEART FAILURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Class I;2:Class II;3:Class III;4:Class IV;",
+      "helpText": "Indicate whether the patient has congestive heart failure if the  patient chart or patient self-report indicates a history of  congestive heart failure within the 30 days before surgery.  Congestive heart failure is defined as the inability of the heart  to pump a sufficient quantity of blood to meet the metabolic needs  of the body or can do so only at increased ventricular filling  pressure. Common manifestations are identified:   From the history: 1) Abnormal limitation in exercise tolerance ",
+      "fieldNumber_": 175
+    },
+    {
+      "fieldNumber": 176,
+      "fieldName": "IV NTG WITHIN 48 HOURS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient was administered nitroglycerin intravenously  within 48 hours prior to surgery. ",
+      "fieldNumber_": 176
+    },
+    {
+      "fieldNumber": 177,
+      "fieldName": "CURRENT DIGOXIN USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has used a digitalis preparation (digoxin,  Lanoxin, digitoxin, etc.) within the two weeks prior to surgery.  ",
+      "fieldNumber_": 177
+    },
+    {
+      "fieldNumber": 178,
+      "fieldName": "CURRENT DIURETIC USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient has used any diuretic preparation within the two weeks prior to surgery. ",
+      "fieldNumber_": 178
+    },
+    {
+      "fieldNumber": 179,
+      "fieldName": "PREOP CIRCULATORY DEVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NONE;I:IABP;V:VAD;A:ARTIFICIAL HEART;O:OTHER;",
+      "helpText": "Indicate whether there was any use of any device to assist  ventricular function at the time the patient presents for surgery. Indicate the one appropriate response:   None - No New Mechanical Circulatory Device was placed.   IABP - An intra-aortic balloon pump was placed to assist ventricular         function.   VAD - A ventricular assist device (e.g., LVAD, BIVAD) was placed to        assist ventricular function.   Artificial Heart - An artificial heart was placed to assist ventricular        ",
+      "fieldNumber_": 179
+    },
+    {
+      "fieldNumber": 181,
+      "fieldName": "ASSESSMENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INCOMPLETE;C:COMPLETE;T:TRANSMITTED;",
+      "helpText": "This is the current status of the surgery risk  assessment.  When creating a new assessment, the status will automatically be entered as 'INCOMPLETE'.  Upon completion of the assessment, this field will be updated to 'COMPLETED'.  After the assessment is transmitted, this field will be automatically updated to 'TRANSMITTED'. ",
+      "fieldNumber_": 181
+    },
+    {
+      "fieldNumber": 182,
+      "fieldName": "TRANSPLANT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "K:KIDNEY;LI:LIVER;LU:LUNG;H:HEART;",
+      "helpText": "The Transplant Type is the name of the organ transplanted. This field  only allows selection of KIDNEY, LIVER, LUNG, or HEART. ",
+      "fieldNumber_": 182
+    },
+    {
+      "fieldNumber": 183,
+      "fieldName": "RE-TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT RE-TRANSMITTED;1:RE-TRANSMITTED;",
+      "helpText": "This determines whether the assessment will be  re-transmitted.  It will automatically be set to '1' when a transmitted assessment is updated to an INCOMPLETE status to edit and re-transmit. ",
+      "fieldNumber_": 183
+    },
+    {
+      "fieldNumber": 184,
+      "fieldName": "DATE TRANSMITTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date (or date/time) that this surgery risk assessment was transmitted. ",
+      "fieldNumber_": 184
+    },
+    {
+      "fieldNumber": 185,
+      "fieldName": "VA/NON VA INDICATOR",
+      "dataType": "SET",
+      "rawType": "SR",
+      "required": true,
+      "setOfCodes": "V:VA;N:NON-VA;",
+      "helpText": "This field indicates whether the transplant was performed in VA facility or Non-VA facility. ",
+      "fieldNumber_": 185
+    },
+    {
+      "fieldNumber": 187,
+      "fieldName": "DATE STARTED DIALYSIS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Indicate date that patient began renal replacement therapy due to  renal failure. System will also accept an entry for NS (No Study). ",
+      "fieldNumber_": 187
+    },
+    {
+      "fieldNumber": 188,
+      "fieldName": "DATE OF LAST TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the retransmission if this assessment has been retransmitted to the national database. If there was no  retransmission of this assessment, this is the date of the original transmission. ",
+      "fieldNumber_": 188
+    },
+    {
+      "fieldNumber": 189,
+      "fieldName": "TRACHEOSTOMY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if a procedure to cut into the trachea and insert a tube to  overcome tracheal obstruction or to facilitate extended mechanical  ventilation was performed within 30 days postoperatively. ",
+      "fieldNumber_": 189
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "MEDIASTINITIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient developed a bacterial infection involving the  sternum or deep to the sternum requiring drainage and anti-microbial  therapy diagnosed within 30 days after surgery. ",
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 191,
+      "fieldName": "RENAL FAILURE REQ. DIALYSIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "VASQIP Definition (2011): Indicate if the patient developed new renal  failure requiring renal replacement therapy or experienced an  exacerbation of preoperative renal failure requiring initiation of  renal replacement therapy (not on renal replacement therapy preoperatively) within 30 days postoperatively.  Renal replacement  therapy is defined as venous to venous hemodialysis [CVVHD],  continuous venous to arterial hemodialysis [CVAHD], peritoneal  dialysis, hemofiltration, hemodiafiltration ",
+      "fieldNumber_": 191
+    },
+    {
+      "fieldNumber": 192,
+      "fieldName": "PERIOPERATIVE MI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "VASQIP Definition (2011):  Indicate the presence of a peri-operative MI that occurs either  intraoperatively or postoperatively within 30 days:    Non-Cardiac Surgery:  A new transmural acute myocardial infarction as manifested by new  Q-waves on ECG. (Non-Q-wave infarctions should be entered under  \"Other Occurrence\").   Cardiac Surgery:  A new transmural acute myocardial infarction as manifested by at  least one of the following criteria:   1. Development of new Q-waves in two or more contiguo",
+      "fieldNumber_": 192
+    },
+    {
+      "fieldNumber": 193,
+      "fieldName": "OPERATIVE DEATH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "Indicate if the patient died within the 30 days after surgery in or  out of the hospital regardless of cause; or within the index hospitalization regardless of cause; or patient died greater than 30 days as a direct result of a perioperative occurrence of the surgery (e.g., mediastinitis). ",
+      "fieldNumber_": 193
+    },
+    {
+      "fieldNumber": 197,
+      "fieldName": "PLASMAPHERESIS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BEFORE TRANSPLANT;2:AFTER TRANSPLANT ;3:BOTH;4:NO;",
+      "helpText": "Plasmapheresis is the procedure of removing, treating, and returning  of plasma from blood circulation. It is an extracorporeal therapy. ",
+      "fieldNumber_": 197
+    },
+    {
+      "fieldNumber": 198,
+      "fieldName": "TOBACCO USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NEVER USED TOBACCO;2:NO USE IN LAST 12 MOS;3:CIGARETTES ONLY;4:OTHER (NO CIGARETTES);5:CIGARETTES PLUS OTHER;",
+      "helpText": "VASQIP Definitions (2011): Indicate the patient's type of tobacco product used in the 12 months   prior to surgery. Select one:  1 = Never used tobacco  2 = No tobacco use in the last 12 months  3 = Cigarettes only  4 = Pipe, cigar, snuff, or chewing tobacco only (no cigarettes)  5 = Cigarettes plus one or more of pipe, cigar, snuff, or chewing       tobacco ",
+      "fieldNumber_": 198
+    },
+    {
+      "fieldNumber": 199,
+      "fieldName": "TOBACCO USE TIMEFRAME",
+      "dataType": "SET",
+      "rawType": "SX",
+      "required": false,
+      "setOfCodes": "1:WITHIN 2 WEEKS;2:2 WKS TO 3 MOS;3:3 TO 12 MONTHS;NA:NOT APPLICABLE;",
+      "helpText": "VASQIP Definitions (2011): If the patient used tobacco products in the 12 months prior to  surgery, indicate the timeframe:  1 = within the 2 weeks prior to surgery  2 = between 2 weeks and 3 months prior to surgery  3 = between 3 months and 12 months prior to surgery ",
+      "fieldNumber_": 199
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "DIABETES MELLITUS CHRONIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;2:DIET;3:ORAL;4:INSULIN;",
+      "helpText": "VASQIP Definitions (2011): Indicate the chronic, long-term treatment regimen for patients with a  diagnosis of Diabetes Mellitus. Diabetes Mellitus is defined as a  metabolic disorder of the pancreas whereby the individual requires  diet modification, daily dosages of exogenous parenteral insulin or an oral hypoglycemic agent to prevent a hyperglycemic/metabolic acidosis. If the patient is on both Oral and Insulin therapy, indicate Insulin therapy.     No - no diagnosis of diabetes  Diet - a dia",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "DIABETES MELLITUS PREOP MGMT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NO;2:DIET;3:ORAL;4:INSULIN;",
+      "helpText": "VASQIP Definitions (2011): Indicate the treatment regimen for patients with a diagnosis of  Diabetes Mellitus in the two weeks prior to surgery. Diabetes Mellitus is defined as a metabolic disorder of the pancreas whereby the individual requires diet modification, daily dosages of exogenous parenteral insulin or an oral hypoglycemic agent to prevent a hyperglycemic/metabolic acidosis. If the patient is on both Oral and Insulin therapy, indicate Insulin therapy.    No - no diagnosis of diabetes  ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "CVD REPAIR/OBSTRUCTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO CVD;1:YES - NO SURGICAL REPAIR;2:YES - PRIOR SURGICAL REPAIR;",
+      "helpText": "VASQIP Definitions (2011): Select one of the following if patient has indication of  Cerebrovascular Disease (CVD):  0 = No CVD indication  1 = Yes, CVD indication by documented obstruction of carotid artery       luminal diameter greater than or equal to 50% obstruction of the      carotid artery documented by contrast angiography or duplex      ultrasound examination which did not result in surgical repair  2 = Yes, CVD indication resulting in prior carotid artery surgical       repair (e.g., ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "HISTORY OF CVD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO CVD;1:HISTORY OF TIA'S;2:CVA/STROKE - NO NEURO DEFICIT;3:CVA/STROKE W/ NEURO DEFICIT;",
+      "helpText": "VASQIP Definitions (2011): Indicate if the patient has a history of cerebrovascular accident by  selecting one of the following indications:  (If multiple events,  select the one with greatest severity.):    0 = No CVD    1 = History of Transient Ischemic Attacks: Transient ischemic attacks      (TIAs) are focal neurologic deficits (e.g. numbness of an arm or       amaurosis fugax) of sudden onset and brief duration (usually <30      minutes ), which usually reflect dysfunction in a cerebral vas",
+      "fieldNumber_": 203
+    }
+  ],
+  "fieldCount": 195,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADT", "field": },
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "139.5", "field": .01, "type": "regular"},
+    {"name": "139.5", "field": 1, "type": "regular"},
+    {"name": "139.5", "field": 1, "type": "regular"},
+    {"name": "139.5", "field": 188, "type": "regular"},
+    {"name": "", "field": 198, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

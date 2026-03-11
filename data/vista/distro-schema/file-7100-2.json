@@ -1,0 +1,108 @@
+{
+  "fileNumber": 7100.2,
+  "fileName": "NOIS NOTIFICATION",
+  "globalRoot": "7100.2PI",
+  "globalReference": "^FSCD(\"NOTIFY\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "RP7100'",
+      "required": true,
+      "pointerTo": 7100,
+      "helpText": "This is the call flagged for notification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIST",
+      "dataType": "POINTER",
+      "rawType": "P7107.1'",
+      "required": false,
+      "pointerTo": 7107.1,
+      "helpText": "This is the NOIS list that uses notification to schedule this call for notification. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P7105.1'",
+      "required": false,
+      "pointerTo": 7105.1,
+      "helpText": "This is the NOIS location that has scheduled notification for this call. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is a user who has requested notification on this call. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NOTIFY METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MAIL:MAIL;ALERT:ALERT;",
+      "helpText": "This is the method (mail or menu alert) that will be used for notification. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NOTIFY EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "EDITED:EDITED;STATUS CHANGED:STATUS CHANGED;",
+      "helpText": "This is the event (change of status or edit) that triggers the notification. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MANUAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is a flag designating the notification was sent manually. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "ACLIST", "field": },
+    {"name": "ACLIST1", "field": },
+    {"name": "ACLOC", "field": },
+    {"name": "ACLOC1", "field": },
+    {"name": "ACUSER", "field": },
+    {"name": "ACUSER1", "field": },
+    {"name": "ALIST", "field": },
+    {"name": "ALOC", "field": },
+    {"name": "AUSER", "field": },
+    {"name": "B", "field": },
+    {"name": "7100.2", "field": .01, "type": "regular"},
+    {"name": "7100.2", "field": .01, "type": "regular"},
+    {"name": "7100.2", "field": .01, "type": "regular"},
+    {"name": "7100.2", "field": .01, "type": "regular"},
+    {"name": "7100.2", "field": 1, "type": "regular"},
+    {"name": "7100.2", "field": 1, "type": "regular"},
+    {"name": "7100.2", "field": 2, "type": "regular"},
+    {"name": "7100.2", "field": 2, "type": "regular"},
+    {"name": "7100.2", "field": 3, "type": "regular"},
+    {"name": "7100.2", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^FSC(\"LIST\",+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(7107.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^FSC(\"SITE\",+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(7105.1,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^VA(200,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(200,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

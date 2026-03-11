@@ -1,0 +1,38 @@
+{
+  "fileNumber": 7,
+  "fileName": "PROVIDER CLASS",
+  "globalRoot": "7",
+  "globalReference": "^DIC(7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name represents the title for this provider classification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ABBREV. TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Abbreviation for this provider classification. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7", "field": .01, "type": "regular"},
+    {"name": "7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

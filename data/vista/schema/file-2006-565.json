@@ -1,0 +1,311 @@
+{
+  "fileNumber": 2006.565,
+  "fileName": "EXPORT DICOM RUN",
+  "globalRoot": "2006.565",
+  "globalReference": "^MAGDICOM(2006.565,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "START TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date/time value. This value is the time-stamp that indicates the date and time when a batch-run was begun. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGING SERVICE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "RADIOLOGY:Radiology;CONSULTS:Consults;LABORATORY:Laboratory;",
+      "helpText": "This is the Imaging Service that exported the DICOM objects. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RUN TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date/time value. This value is the time-stamp that indicates when the export for the last study in this batch run was created. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "NUMBER OF STUDIES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This value identifies the number of studies that have been processed in the current batch-run. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "STARTED:Started;COMPLETED:Completed;",
+      "helpText": "This is the status of the run. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SCAN MODE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "DATE:Date;NUMBER:Number;PATIENT:Patient;ACCESSION:Accession Number;",
+      "helpText": "The value of this field is a code that identifies the method of scanning the reports. Possible values are \"DATE\", \"NUMBER\", \"PATIENT\" and \"ACCESSION\".   A value of \"DATE\" indicates that the reports are scanned by date.   A value of \"PATIENT\" indicates that the reports are scanned by (internal entry number of) patient.   A value of \"NUMBER\" indicates that the reports are scanned by (internal entry number of) report.   A value of \"ACCESSION\" indicates that a single study was selected by the Access",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STORAGE SCP",
+      "dataType": "POINTER",
+      "rawType": "RP2006.585'",
+      "required": true,
+      "pointerTo": 2006.585,
+      "helpText": "The value of this field is a pointer to the User Application table (file # 2006.585). This pointer identifies the Storage SCP to which the images are to be transmitted in this batch run. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NUMBER OF IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This value identifies the number of images in the current batch run. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date identifies the first day of the period that is intended to be included in this batch run. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "END DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date. This date identifies the last day of the period that is intended to be included in this batch run. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "START IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is a pointer to the Radiology Report table (file # 74), a pointer to the Consult table (file # 123), or a pointer to the Laboratory table (file #63). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "BATCH SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number. This number identifies the maximum number of image groups that may be included in this batch run. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SORT ORDER",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "ASCENDING:Ascending;DESCENDING:Descending;",
+      "helpText": "The value of this field is a code that indicates the direction in which the report file is to be scanned in this batch run. Possible values are \"ASCENDING\" and \"DESCENDING\". ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "HOURS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ24",
+      "length": 24,
+      "required": true,
+      "helpText": "The value of this field is a string that consists of the letters \"Y\" and \"N\". This value indicates during which hours of the day this batch run may be active. A string of 24 letters \"Y\" denotes a batch run that may run all day long. A string like \"YYYYYYYYNNNNNNNNNYYYYYYY\" denotes a batch run that may only run outside of regular office hours (midnight to 9am and 6pm to midnight). ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The patient to whom the current report applies. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "STUDY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a (VA-FileMan formatted) date/time value. This value is the time-stamp that indicates when the report was created for the current study in this batch run.  ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "STUDY IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is a pointer to the study report table. This pointer identifies the last study that was transmitted. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ16",
+      "length": 16,
+      "required": false,
+      "helpText": "This is the accession number of the last study to be transmitted. It may either be a radiology, consult, or laboratory accession number. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "EXPORT",
+      "dataType": "POINTER",
+      "rawType": "2006.56519P",
+      "required": false,
+      "helpText": "This is a list of pointers to the DICOM OBJECT EXPORT file (#2006.574) on VistA.  The Display of Batch Export Statistics application on the DICOM Gateway uses these pointers to get the transmission status for each of the DICOM images. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "2006.56599P",
+      "required": false,
+      "helpText": "List of request services for the consult/procedure export run. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LRSS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ2",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the laboratory subscript LRSS in the LAB DATA file (#63). ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LRDFN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the laboratory patient pointer LRDFN value in the LAB DATA file (#63). ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LRI",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,6",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the reverse Fileman date/time subscript LRI from LAB DATA file (#63). ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "COPY OR SEND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "COPY:Copy images to a folder;SEND:Send images to a Store SCP;",
+      "helpText": "This field indicates how images will be exported. They can be copied to a folder or sent to a Store SCP. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "ACCESSION NUMBER FILE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "This is the file containing the accession numbers of the images that will be copied. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "NUMBER OF MISSING IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number that indicates the number of images that were missing in the current batch run. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "NUMBER OF FAILED IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number that indicates the number of images that failed to be exported in the current batch run. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "NUMBER OF SUCCESSFUL IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "The value of this field is an integer number.  This value indicate the number of images that were exported in the current batch run. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "NUMBER OF STUDIES W/O IMAGES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the number of studies in this batch run that did not have images. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "COPY FOLDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ60",
+      "length": 60,
+      "required": false,
+      "helpText": "This is the folder to which the images will be copied. ",
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 30,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.565", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

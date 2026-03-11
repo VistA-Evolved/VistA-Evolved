@@ -1,0 +1,39 @@
+{
+  "fileNumber": 46.14,
+  "fileName": "RAI MDS ASIH PATIENT",
+  "globalRoot": "46.14",
+  "globalReference": "^DGRU(46.14,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The name of the patient in the format last name,first name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "TO ASIH DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "46.15D",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 46.15,
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "46.14", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

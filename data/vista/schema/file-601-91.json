@@ -1,0 +1,70 @@
+{
+  "fileNumber": 601.91,
+  "fileName": "MH SCORING KEYS",
+  "globalRoot": "601.91",
+  "globalReference": "^YTT(601.91,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "KEY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0X",
+      "length": 7,
+      "required": true,
+      "helpText": "This is the unique record number for MH Scoring Keys. This is the IEN.  Numbers under 100,000 belong to the national database and should not be  edited locally. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "Scale",
+      "dataType": "POINTER",
+      "rawType": "RP601.87'",
+      "required": true,
+      "pointerTo": 601.87,
+      "helpText": "Pointer to the SCALE ID field (#.01) of the MH SCALES file (#601.87) for which this scoring key applies. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "Question",
+      "dataType": "POINTER",
+      "rawType": "RP601.72'",
+      "required": true,
+      "pointerTo": 601.72,
+      "helpText": "Pointer to the QUESTION NUMBER field (#.01) of the MH QUESTIONS file  (#601.72) to which this scoring key record applies. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Target",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ300",
+      "length": 300,
+      "required": false,
+      "helpText": "Text against which an Answer is compared. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Value",
+      "dataType": "NUMERIC",
+      "rawType": "NJ13,3",
+      "length": 13,
+      "required": false,
+      "helpText": "Value added to score if target matches Answer. May be a negative number. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "601.91", "field": .01, "type": "regular"},
+    {"name": "601.91", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

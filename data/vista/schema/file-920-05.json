@@ -1,0 +1,48 @@
+{
+  "fileNumber": 920.05,
+  "fileName": "IMM DEFAULT RESPONSES",
+  "globalRoot": "920.05",
+  "globalReference": "^PXV(920.05,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP4a",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the facility associated with this set of default immunization  responses. At multi-division institutions this facility is a division  of that multi-division institution. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "IMMUNIZATION",
+      "dataType": "POINTER",
+      "rawType": "920.051P",
+      "required": false,
+      "helpText": "This multiple field contains the default responses for documenting this  immunization at each facility. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CONTRA/REFUSAL",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "920.052V",
+      "required": false,
+      "helpText": "This multiple field contains the default responses for documenting this Contraindication or Refusal Reason at each facility. ",
+      "isMultiple": true,
+      "subFileNumber": 920.052,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "920.05", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

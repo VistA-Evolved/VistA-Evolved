@@ -1,0 +1,619 @@
+{
+  "fileNumber": 355.4,
+  "fileName": "ANNUAL BENEFITS",
+  "globalRoot": "355.4ID",
+  "globalReference": "^IBA(355.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BENEFIT YEAR BEGINNING ON",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the year to which the health insurance policy's benefits apply. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "HEALTH INSURANCE POLICY",
+      "dataType": "POINTER",
+      "rawType": "P355.3'",
+      "required": false,
+      "pointerTo": 355.3,
+      "helpText": "This is the particular health insurance policy that provides some  subset of all of the possible benefits for the year selected. Enter the name of the health insurance policy. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAX. OUT OF POCKET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the dollar amount that this policy does not cover in claims. This information will be used in calculating whether reimbursement for claims against this policy are appropriate. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "AMBULANCE COVERAGE (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides an ambulance coverage benefit, then this is  the amount of that benefit. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the information was first entered.  It is necessary to supply a time as well as date, for example \"12/12/93@1300\". ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who entered the information. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the information was last verified.  It is  necessary to supply a time as well as date, for example \"12/12/93@1300\". ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "VERIFIED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who verified the information on \"DATE LAST VERIFIED\". ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "DATE LAST EDITED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the information was last edited.  The time must be included, for example 12/12/93@1300. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "LAST EDIT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the name of the person who last edited the information. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "PERSON CONTACTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the person who was contacted for verification  purposes. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any additional information here. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "CONTACT'S PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the telephone number of the person who was contacted for verification purposes. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "ANNUAL DEDUCTIBLE (OPT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the amount that this policy does not cover in claims. This information will be used in calculating whether reimbursement for claims against this policy are appropriate. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "PER VISIT DEDUCTIBLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the deductible that the patient must pay for each outpatient visit. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "OUTPATIENT LIFETIME MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this policy has a lifetime maximum benefit for outpatient services, then this is the amount of that benefit. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "OUTPATIENT ANNUAL MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "If this policy has a benefit for outpatient services, then this amount is the maxiumum of that benefit for one year. ",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "MH LIFETIME OUTPATIENT MAX.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "If this policy has a lifetime maximum benefit for mental health services, then this is the amount of that benefit. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "MH ANNUAL OUTPATIENT MAX.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy has a benefit for mental health services, then this amount is the maximum of that benefit for one year. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "DENTAL COVERAGE TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:PER VISIT AMOUNT;2:PERCENTAGE AMOUNT;",
+      "helpText": "This indicates whether there is a dental benefit, and if so, the  per visit or percentage amount. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "DENTAL COVERAGE $ OR %",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "If there is a dental benefit, this number indicates the dollar or percentage amount of that benefit. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 2.09,
+      "fieldName": "OUTPATIENT VISIT (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has an outpatient benefit, this is the percentage coverage per outpatient visit. ",
+      "fieldNumber_": 2.09
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "EMERGENCY OUTPATIENT (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "If this policy has a benefit for emergency outpatient services, this is the percentage covered by that benefit. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.11,
+      "fieldName": "MENTAL HEALTH OUTPATIENT (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has a benefit for mental health outpatient services, this is the percentage covered by that benefit. ",
+      "fieldNumber_": 2.11
+    },
+    {
+      "fieldNumber": 2.12,
+      "fieldName": "PRESCRIPTION (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "If this policy has a benefit for prescription services, this is the percentage covered by that benefit. ",
+      "fieldNumber_": 2.12
+    },
+    {
+      "fieldNumber": 2.13,
+      "fieldName": "OUTPATIENT SURGERY (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "If this policy has a benefit for outpatient surgery services, this is the percentage covered by that benefit. ",
+      "fieldNumber_": 2.13
+    },
+    {
+      "fieldNumber": 2.14,
+      "fieldName": "MH OPT. MAX DAYS PER YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for mental health outpatient services, this is the maximum number of days per year of this benefit. ",
+      "fieldNumber_": 2.14
+    },
+    {
+      "fieldNumber": 2.15,
+      "fieldName": "OUTPATIENT VISITS PER YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides outpatient benefits, this is the maximum number of visits per year. ",
+      "fieldNumber_": 2.15
+    },
+    {
+      "fieldNumber": 2.17,
+      "fieldName": "ADULT DAY HEALTH CARE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the policy has a benefit for Adult Day Health Care services. ",
+      "fieldNumber_": 2.17
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "HOME HEALTH CARE LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NONE;1:NURSES AIDE;2:LPN;3:RN;4:THERAPIST/OTHER;",
+      "helpText": "If this policy provides home health care, this is the highest level of nursing care that it will cover. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "HOME HEALTH VISITS PER YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides home health care, this is the maximum number of visits per year. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "HOME HEALTH MAX DAYS PER YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides home health care, this is the maximum number of days per year of home health care services. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "HOME HEALTH MED. EQUIPMENT (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for medical equipment used in home health care services, this is the percentage of that benefit. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "HOME HEALTH VISIT DEFINITION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this policy provides for home health visits, this defines the nature of the visits. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "OCCUPATIONAL THERAPY # VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has a benefit for occupational therapy, then this is the maximum number of OT visits that the policy allows in one year. ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 3.07,
+      "fieldName": "PHYSICAL THERAPY # VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has a benefit for physical therapy, then this is the maximum number of PT visits that the policy allows in one year. ",
+      "fieldNumber_": 3.07
+    },
+    {
+      "fieldNumber": 3.08,
+      "fieldName": "SPEECH THERAPY # VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has a benefit for speech therapy, then this is the maximum number of ST visits that the policy allows in one year. ",
+      "fieldNumber_": 3.08
+    },
+    {
+      "fieldNumber": 3.09,
+      "fieldName": "MEDICATION COUNSELING # VISITS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy has a benefit for medication counseling, then this is the maximum number of MC visits that the policy allows in one year. ",
+      "fieldNumber_": 3.09
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "HOSPICE ANNUAL DEDUCTIBLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides hospice services, this is the amount that the policy does not cover in claims.  This information will be used in calculating whether reimbursement for claims against this policy are appropriate. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "HOSPICE INPATIENT ANNUAL MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides hospice inpatient services, this is the maximum amount of coverage for one year. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "HOSPICE INPT. LIFETIME MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this policy provides hospice inpatient services, this is the maximum amount over the life of the policy for this benefit. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "ROOM AND BOARD (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a room and board benefit, this is the  percentage of the charges that the policy will cover. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 4.05,
+      "fieldName": "OTHER INPATIENT CHARGES (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for other inpatient charges, this is the percentage covered by that benefit. ",
+      "fieldNumber_": 4.05
+    },
+    {
+      "fieldNumber": 4.06,
+      "fieldName": "IV INFUSION OPT.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the policy has a benefit for outpatient IV Infusion services. ",
+      "fieldNumber_": 4.06
+    },
+    {
+      "fieldNumber": 4.07,
+      "fieldName": "IV INFUSION INPT.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the policy has a benefit for inpatient IV Infusion services. ",
+      "fieldNumber_": 4.07
+    },
+    {
+      "fieldNumber": 4.08,
+      "fieldName": "IV ANTIBIOTICS OPT.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the policy has a benefit for outpatient IV Antibiotics services. ",
+      "fieldNumber_": 4.08
+    },
+    {
+      "fieldNumber": 4.09,
+      "fieldName": "IV ANTIBIOTICS INPT.",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether the policy has a benefit for inpatient IV Antibiotics. ",
+      "fieldNumber_": 4.09
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "ANNUAL DEDUCTIBLE (INPATIENT)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides for inpatient services, this is the amount that the policy does not cover in claims.  This information will be used in calculating whether reimburseent for claims against this policy are appropriate. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "PER ADMISSION DEDUCTIBLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the dollar amount that this policy does not cover in claims for each admission.   ",
+      "fieldNumber_": 5.02
+    },
+    {
+      "fieldNumber": 5.03,
+      "fieldName": "INPATIENT LIFETIME MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this policy provides inpatient services, this is the maximum amount over the life of this policy for this benefit. ",
+      "fieldNumber_": 5.03
+    },
+    {
+      "fieldNumber": 5.04,
+      "fieldName": "INPATIENT ANNUAL MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides inpatient services, this is the maximum annual amount of this benefit. ",
+      "fieldNumber_": 5.04
+    },
+    {
+      "fieldNumber": 5.05,
+      "fieldName": "MH LIFETIME INPATIENT MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this policy provides a benefit for mental health inpatient services, this is the maximum amount over the life of the policy for this benefit. ",
+      "fieldNumber_": 5.05
+    },
+    {
+      "fieldNumber": 5.06,
+      "fieldName": "MH ANNUAL INPATIENT MAXIMUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides a benefit for mental health inpatient services, this is the maximum amount that this policy will pay toward these services in one year. ",
+      "fieldNumber_": 5.06
+    },
+    {
+      "fieldNumber": 5.07,
+      "fieldName": "DRUG & ALCOHOL LIFETIME MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "If this policy provides a benefit for drug and alcohol services, this is the maximum amount over the life of the policy for this benefit. ",
+      "fieldNumber_": 5.07
+    },
+    {
+      "fieldNumber": 5.08,
+      "fieldName": "DRUG & ALCOHOL ANNUAL MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "If this policy provides a benefit for drug and alcohol services, this is the maximum amount that this policy will pay toward these services in one year. ",
+      "fieldNumber_": 5.08
+    },
+    {
+      "fieldNumber": 5.09,
+      "fieldName": "ROOM AND BOARD (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a room and board benefit, this is the  percentage of room and board charges that the policy will cover. ",
+      "fieldNumber_": 5.09
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "NURSING HOME (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for nursing home services, this is the percentage of nursing home charges that the policy will cover. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.11,
+      "fieldName": "MENTAL HEALTH INPATIENT (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for mental health inpatient services, this is the percentage of the charges that the policy will cover. ",
+      "fieldNumber_": 5.11
+    },
+    {
+      "fieldNumber": 5.12,
+      "fieldName": "OTHER INPATIENT CHARGES (%)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for other inpatient charges, this is the percentage of those charges that the policy will cover. ",
+      "fieldNumber_": 5.12
+    },
+    {
+      "fieldNumber": 5.14,
+      "fieldName": "MH INPT. MAX DAYS PER YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "If this policy provides a benefit for mental health inpatient services, this is the maximum number of days per year of this benefit. ",
+      "fieldNumber_": 5.14
+    }
+  ],
+  "fieldCount": 60,
+  "crossReferences": [
+    {"name": "APY", "field": },
+    {"name": "APY1", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.4", "field": .01, "type": "regular"},
+    {"name": "355.4", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "355.4", "field": .02, "type": "regular"},
+    {"name": "355.4", "field": .02, "type": "regular"},
+    {"name": "", "field": 2.07, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBA(355.3,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(355.3,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

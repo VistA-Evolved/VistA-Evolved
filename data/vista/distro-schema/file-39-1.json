@@ -1,0 +1,109 @@
+{
+  "fileNumber": 39.1,
+  "fileName": "EMBOSSED CARD TYPE",
+  "globalRoot": "39.1",
+  "globalReference": "^DIC(39.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "CARD TYPE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains the internal record number that is associated with this data card type. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "UNKNOWN",
+      "rawType": "RX",
+      "required": true,
+      "helpText": "This field contains the name of this card type.  Card type names must be between 3 and 30 characters in length. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DEFAULT DEVICE",
+      "dataType": "POINTER",
+      "rawType": "P39.3'",
+      "required": false,
+      "pointerTo": 39.3,
+      "helpText": "This field is used to assign the default embosser device to be associated with each card type (Service Connected, Non-Service Connected, Non-Veteran, Free Text, etc.).  Each card type may be associated with a different embosser device.  Default devices are assigned at each site by the computer site manager.  If a default device is not entered here, the user will be prompted for a device.   This field points to the EMBOSSER EQUIPMENT file (#39.3).  Therefore, the device selected here must match a",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MANDATORY HOLD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;0:ASK;",
+      "helpText": "This field is used to determine whether or not data cards should be printed immediately or put into 'Hold' status, or if the user should be prompted for the correct action. This field can be set up with a different action for each card type (Service Connected, Non-Service Connected, Non-Veteran, Free Text, etc.)..   The computer site manager should set this field to YES to automatically place the cards in 'Hold' status, to NO to automatically 'Print' the cards immediately, or to ASK to ask the u",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DEFAULT NUMBER OF CARDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field is used to assign the number of duplicate cards to be embossed for each card type (Service Connected, Non-Service Connected, Non-Veteran, Free Text, etc.).  Each card type may be assigned a different default number of cards.  The default number of cards must be a number between one and eight. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:NON SERVICE CONNECTED;2:SERVICE CONNECTED;9:FREE TEXT;3:NON-VETERAN;10:WRISTBAND;",
+      "helpText": "This field should contain the name and code number associated with this data card type.  ('1' for NON SERVICE CONNECTED, '2' for 'SERVICE CONNECTED, '3' fNON-VETERAN, or '9' for FREE TEXT, '10' for WRISTBAND.) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LINE NUMBER",
+      "dataType": "SUBFILE",
+      "rawType": "39.11",
+      "required": false,
+      "helpText": "This multiple field contains information about each line to be printed on the data cards. ",
+      "isMultiple": true,
+      "subFileNumber": 39.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "MAIL TO REQUESTOR",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to determine if users who request data cards who are not in the DGEMBOSSER mail group should receive embosser error messages. If this field is set to YES, then a user who requests a card that does not get embossed due to an error will receive an error message.  If this field is set to NO, only members of the DGEMBOSSER mail group will receive the message. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CARDS IN HOLD",
+      "dataType": "POINTER",
+      "rawType": "39.13P",
+      "required": false,
+      "helpText": "This multiple contains the number of this card type that are presently in hold awaiting printing. ",
+      "fieldNumber_": 12
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "39.1", "field": .01, "type": "regular"},
+    {"name": "39.1", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "fileNumber": 62.05,
+  "fileName": "URGENCY",
+  "globalRoot": "62.05",
+  "globalReference": "^LAB(62.05,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The internal number associated with the URGENCY NAME. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "URGENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the urgency status. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CAN LAB COLLECT?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "If the Lab may collect a sample with this urgency, this field must contain a YES entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WORKLOAD ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "  This field should only be set to yes for workload (WKL) urgency. This urgency is used only with workload module. Only internal file number 50 and greater should have this field set to yes. Internal file number of 49 and below should be set to no if they exist. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "HL7 CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:Stat (with highest priority);A:ASAP (Fill after S orders);R:Routine;P:Preop;T:Timing critical (do as near as possible to requested time);C:Callback;PRN:As Needed;",
+      "helpText": "This is the corresponding Health Level Seven (HL7) Table of Priority entry that most closely matches the VistA Lab urgency.  This field will be used in HL7 messages to describe the laboratory test urgency. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LEDI HL7",
+      "dataType": "POINTER",
+      "rawType": "*P64.061'",
+      "required": false,
+      "pointerTo": 64.061,
+      "helpText": " This field is used to map a local urgency to a standard entry in the  LAB ELECTRONIC CODES file (#64.061) for the purpose of creating HL7 message segments. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LABEL PRINT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:YES, REVERSE FIELD;",
+      "helpText": "Determines if urgency's abbreviation is to be printed on labels. If \"YES, REVERSE FIELD\" is selected and label printer supports reverse field printing, then abbreviation will be printed with white letters on a  black background. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Abbreviation used when printing this urgency on labels. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "62.05", "field": .01, "type": "regular"},
+    {"name": "62.05", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

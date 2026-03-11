@@ -1,0 +1,138 @@
+{
+  "fileNumber": 1.5212,
+  "fileName": "SQLI_DOMAIN",
+  "globalRoot": "1.5212",
+  "globalReference": "^DMSQ(\"DM\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DM_NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of FileMan domain Includes names of standard SQL data types. Must not be a keyword. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DM_DATA_TYPE",
+      "dataType": "POINTER",
+      "rawType": "RP1.5211'",
+      "required": true,
+      "pointerTo": 1.5211,
+      "helpText": "IEN of a standard data type in SQLI_DATA_TYPE. Required. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DM_COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A short comment which describes the data type set ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DM_TABLE",
+      "dataType": "POINTER",
+      "rawType": "P1.5215'",
+      "required": false,
+      "pointerTo": 1.5215,
+      "helpText": "IEN of table in SQLI_TABLE if domain is of type PRIMARY_KEY Only primary and foreign keys have such domains. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DM_WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Default display width. Overrides data type display width. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DM_SCALE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "Default number of decimal places displayed for numbers. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DM_OUTPUT_FORMAT",
+      "dataType": "POINTER",
+      "rawType": "P1.5214'",
+      "required": false,
+      "pointerTo": 1.5214,
+      "helpText": "Default output format for elements of this domain. Used to provide text value of pointer chains, etc. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DM_INT_EXPR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "An M expression which returns the internal value of a base value. Expression uses placeholder {B} to represent the base value ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DM_INT_EXEC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "M code line which sets internal value, {I}, to some function of base value, {B}. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DM_BASE_EXPR",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "An M expression which returns the internal value of base value, {B}. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DM_BASE_EXEC",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "Code which when executed returns the base value of X ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DM_FILEMAN_FIELD_TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FREE TEXT;N:NUMERIC;P:POINTER;D:DATE;W:WORD-PROCESSING;K:MUMPS;B:BOOLEAN;S:SET-OF-CODES;V:VARIABLE POINTER;",
+      "helpText": "FileMan field type (F, N, D, DT, K, ...) ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "1.5212", "field": .01, "type": "regular"},
+    {"name": "1.5212", "field": 1, "type": "regular"},
+    {"name": "1.5212", "field": 3, "type": "regular"},
+    {"name": "1.5212", "field": 11, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

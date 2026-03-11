@@ -1,0 +1,98 @@
+{
+  "fileNumber": 441.7,
+  "fileName": "AMENDMENTS TO DELIVERY SCHEDULES",
+  "globalRoot": "441.7IsO",
+  "globalReference": "^PRC(441.7,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER NUMBER (PAT)",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the entire PAT (Pending Accounting Transaction) number that must be a Purchase Order or Requisition. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the Line-item number for a Purchase Order or Requisition. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date on which delivery of the item (s) is to be made. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LOCATION FOR DELIVERY",
+      "dataType": "POINTER",
+      "rawType": "RP410.8X",
+      "required": true,
+      "pointerTo": 410.8,
+      "helpText": "This is the location to which the item should be delivered. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "QTY TO BE DELIVERED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2X",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the quantity to be delivered to the specified location on the specified date. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DELETE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DELETE;",
+      "helpText": "It is a flag to delete the amendments to delivery schedules. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "PERMANENT ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P442.8'",
+      "required": false,
+      "pointerTo": 442.8,
+      "helpText": "It is a permanent corresponding entry in File 442.8 ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "441.7", "field": .01, "type": "regular"},
+    {"name": "441.7", "field": .01, "type": "regular"},
+    {"name": "441.7", "field": 1, "type": "regular"},
+    {"name": "441.7", "field": 2, "type": "regular"},
+    {"name": "441.7", "field": 3, "type": "regular"},
+    {"name": "441.7", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": Z1, "value": "W ?5,$E($P(^(0),U,3),4,5)_\"-\"_$E($P(^(0),U,3),6,7)_\"-\"_$E($P(^(0),U,3),2,3)"},
+    {"field": Z2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PRCS(410.8,+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(410.8,.01,0),U,2) D Y^DIQ:Y]\"\" W ?14,Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": Z3, "value": "W ?55,$P(^(0),U,2)"},
+    {"field": Z4, "value": "W ?62,\"DELV.QTY:\",$J($P(^(0),U,5),6)"}
+  ]
+}

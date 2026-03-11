@@ -1,0 +1,48 @@
+{
+  "fileNumber": 116.1,
+  "fileName": "MEAL",
+  "globalRoot": "116.1",
+  "globalReference": "^FH(116.1,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a meal which is a collection of all recipes which will be served at a given breakfast, noon or evening meal. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECIPE",
+      "dataType": "POINTER",
+      "rawType": "116.11P",
+      "required": false,
+      "helpText": "This multiple contains the various recipes which will be served for the meal. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "116.1", "field": .01, "type": "regular"},
+    {"name": "116.1", "field": 99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

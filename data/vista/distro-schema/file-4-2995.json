@@ -1,0 +1,130 @@
+{
+  "fileNumber": 4.2995,
+  "fileName": "MAILMAN OUTSTANDING FTP TRANSACTIONS",
+  "globalRoot": "4.2995",
+  "globalReference": "^XMBX(4.2995,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of the entry is the same as the name of the executable file that actually sends a BLOB across the network using FTP. for the file that actually sends a BLOB  across the network using FTP. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CREATION TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the  time the entry was made [$H*86400+$P($H,\",\",2)] in seconds since the beginning of system time. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the DUZ (internal ID) of the user whose message initiated the transfer. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "P2005'",
+      "required": false,
+      "pointerTo": 2005,
+      "helpText": "This field is a pointer to the image file and is necessary to facilitate interjob communications. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "GET/PUT A FILE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:GET A FILE;2:PUT A FILE;",
+      "helpText": "Enter a GET command if you want to receive a file from a       Remote Host and place the file into a Local Host. Enter a PUT command if you want to transfer a file from a       Local Host and place the file into a Remote Host.       the Origination node and place the file into the       Destination node. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "LOGON USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the logon name at the Remote Host where the file will be placed or from where the file will be retrieved. Username must be 3-15 characters in length. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LOGON PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the password that are appropriate for the  logon name at the Remote Host. the file will be retrieved. Password must be 3-15 characters in length. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "IP ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a valid IP address in the form: nn.nn.nn.nn (IPv4) or hhhh:hhhh:hhhh:hhhh:hhhh:hhhh:hhhh:hhhh (IPv6) ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "FILENAME AT LOCAL HOST",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "For PUT command, enter the file name that you want to         transfer from the Local Host. For GET command, enter the file name that you wnat to         place at the Local Host. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DIRECTORY AT LOCAL HOST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For PUT command, enter the Directory Name in which the file         name you want to transfer from the Local Host. For GET command, enter the Directory Name in which the file         name you wnat to place at the Local Host. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FILENAME AT REMOTE HOST",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "For Get command, enter the file name that you want to         receive from the Remote Host. For PUT command, enter the file name that you want to         place at the Remote Host. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DIRECTORY AT REMOTE HOST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For GET command, enter the Directory Name in which the file         name you want to receive from the Remote Host. For PUT command, enter the Directory Name in which the file         name you want to place at the Remote Host. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "4.2995", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "fileNumber": 233.2,
+  "fileName": "TRACKING CODE SET",
+  "globalRoot": "233.2",
+  "globalReference": "^EDPB(233.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name for this set of tracking codes.  The set is used as a  selection list in the patient tracking software.  The selection lists may  be modifed at each site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODES",
+      "dataType": "SUBFILE",
+      "rawType": "233.21A",
+      "required": false,
+      "helpText": "This is the list of codes that are available in the selection list. ",
+      "isMultiple": true,
+      "subFileNumber": 233.21,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "233.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

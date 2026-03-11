@@ -1,0 +1,122 @@
+{
+  "fileNumber": 71.99,
+  "fileName": "MASTER RADIOLOGY PROCEDURE",
+  "globalRoot": "71.99",
+  "globalReference": "^RAMRPF(71.99,",
+  "ddAccess": "Y",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GOLD NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "Controlling field for the Master Radiology Procedure File (MRPF).  This is the Gold Name (national Name). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the CPT code most closely matching the procedures. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LOINC CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the LOINC most closely matching the procedure. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "LOINC SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "The short description assigned to this LOINC ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "LOINC LONG DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "71.9901",
+      "required": false,
+      "helpText": "This is the long description for this LOINC.  This description can exceed 500 characters in length. ",
+      "isMultiple": true,
+      "subFileNumber": 71.9901,
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MRPF LONG NAME",
+      "dataType": "SUBFILE",
+      "rawType": "71.993",
+      "required": false,
+      "helpText": "This the long name assigned to this entry.  This name can exceed 500 characters. ",
+      "isMultiple": true,
+      "subFileNumber": 71.993,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P71.99'a",
+      "required": false,
+      "pointerTo": 71.99,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "71.9999DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 71.9999,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "71.99", "field": .01, "type": "regular"},
+    {"name": "71.99", "field": 1, "type": "regular"},
+    {"name": "71.99", "field": 99.97, "type": "regular"},
+    {"name": "71.99", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

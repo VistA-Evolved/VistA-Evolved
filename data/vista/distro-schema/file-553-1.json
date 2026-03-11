@@ -1,0 +1,90 @@
+{
+  "fileNumber": 553.1,
+  "fileName": "CMOP QUERY",
+  "globalRoot": "553.1",
+  "globalReference": "^PSX(553.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUERY ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The number of the query.         ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUERY DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the Query request was sent to the non-DHCP system. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACKNOWLEDGED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time the non-DHCP system acknowledgement was received. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPLETED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time the non-DHCP system returned an 'End of Transmission' response  to the query request. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INITIATED;1:COMPLETED;2:NO DATA AVAILABLE;3:NO ACKNOWLEDGEMENT RECEIVED;4:ABORTED/INVALID RESPONSE;5:IN PROGRESS;",
+      "helpText": "This field indicates the current status of the query request. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RXS RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "  Total number of Rx's received from this query. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FILER DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the background filer filed the data from this query in the CMOP Master Database file.                ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "553.1", "field": .01, "type": "regular"},
+    {"name": "553.1", "field": 1, "type": "regular"},
+    {"name": "553.1", "field": 3, "type": "regular"},
+    {"name": "553.1", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "fileNumber": 853.9,
+  "fileName": "VPS APPOINTMENTS QUEUE",
+  "globalRoot": "853.9",
+  "globalReference": "^VPS(853.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "QUEUE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0X",
+      "length": 10,
+      "required": true,
+      "helpText": "This field contains a sequential number generated at the time a record is  stored in the file. It only serves to create an entry in the file and has  no other special meaning. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPOINTMENT FROM DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Appointment From Date in which the appointments for the queue  was retrieved. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "APPOINTMENT THROUGH DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Appointment Through Date in which the appointments for the queue was retrieved. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "APPOINTMENTS",
+      "dataType": "POINTER",
+      "rawType": "853.91P",
+      "required": false,
+      "helpText": "A list of appointments for the given queue. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "853.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "fileNumber": 391.919,
+  "fileName": "EHRM MIGRATED FACILITIES",
+  "globalRoot": "391.919",
+  "globalReference": "^DGCN(391.919,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "INSTITUTION identifies the facility from the INSTITUTION (#4) file that  has implemented the CERNER application in support of the Electronic  Health Record Modernization (EHRM). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CERNER ENABLED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The CERNER ENABLED? field indicates whether the CERNER application has  been installed/implemented at the site or not. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "391.919", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

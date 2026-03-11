@@ -1,0 +1,416 @@
+{
+  "fileNumber": 119.6,
+  "fileName": "NUTRITION LOCATION",
+  "globalRoot": "119.6P",
+  "globalReference": "^FH(119.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of a ward on which dietetic activity occurs. It is selected from a list of MAS wards. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLINICIAN",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the clinician(s) assigned to the ward and the one(s) to whom dietetic consults will be routed and notification made of special diet orders and tubefeedings. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROOM-BED",
+      "dataType": "POINTER",
+      "rawType": "119.62P",
+      "required": false,
+      "helpText": "This is a pointer to File 405.4 and indicates that that room-bed is to be considered part of this Dietetic Ward. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "ASSOCIATED MAS WARD",
+      "dataType": "POINTER",
+      "rawType": "119.63P",
+      "required": false,
+      "helpText": "This is a list of MAS wards which are to be used as defaults to this Dietetic ward for purposes of patient location when the room-bed is unknown and for purposes of forecasting. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "ASSOCIATED HOSPITAL LOCATION",
+      "dataType": "POINTER",
+      "rawType": "119.64P",
+      "required": false,
+      "helpText": "This multiple contains the hospital location(s)/clinic(s) associated with this outpatient nutrition location. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TRAY SERVICE POINT",
+      "dataType": "POINTER",
+      "rawType": "*P119.72'",
+      "required": false,
+      "pointerTo": 119.72,
+      "helpText": "This field, if used, indicates that tray service is available to this ward and is provided by the indicated Service Point. Note: if a Dining Room is also available, then a Tray Service Point must be specified as Dining Room trays are prepared there.  For outpatient nutrition locations this field indicates the tray Service Point available for the location. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "TRAY FORECAST %",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the % of patients on the ward typically receiving tray service. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CAFETERIA SERVICE POINT",
+      "dataType": "POINTER",
+      "rawType": "*P119.72'",
+      "required": false,
+      "pointerTo": 119.72,
+      "helpText": "This field, if used, indicates that cafeteria service is available to this ward and is provided by the indicated Service Point.  For outpatient nutrition locations this field indicates the cafeteria Service Point available for the location. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "CAFETERIA FORECAST %",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the % of patients on the ward typically receiving cafeteria service. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DINING ROOM TRAY SERVICE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A YES means that Dining Room tray service is available to this ward.  For outpatient nutrition locations a YES in this field indicates that Dining Room tray service is available for this location. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "DINING ROOM FORECAST %",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the % of patients on the ward typically receiving dining room service. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "COMMUNICATION OFFICE",
+      "dataType": "POINTER",
+      "rawType": "RP119.73'",
+      "required": true,
+      "pointerTo": 119.73,
+      "helpText": "This field indicates which Communication Office is responsible for processing diet requests from this ward or outpatient location. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SUPP. FDG. SITE",
+      "dataType": "POINTER",
+      "rawType": "P119.74'",
+      "required": false,
+      "pointerTo": 119.74,
+      "helpText": "This field indicates which Supplemental Feeding Site is responsible for preparing Supplemental Feedings and Bulk Nourishments for this ward. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRINT ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field represents the print order of this ward. It is used to sort the wards for delivery purposes which are then printed from low print order to high print order. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DEFAULT ADMISSION DIET",
+      "dataType": "POINTER",
+      "rawType": "P111'",
+      "required": false,
+      "pointerTo": 111,
+      "helpText": "This field is optional. It may contain a diet from the Diets file (111) and, if so, the diet will automatically be ordered for each patient at the time of admission. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "'NO ORDER' DIET ON ADMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is used to indicate whether a 'No Order' Diet order should be generated upon admission; this field is applicable only if no default admission diet is specified. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BULK NOURISHMENTS",
+      "dataType": "POINTER",
+      "rawType": "119.61P",
+      "required": false,
+      "helpText": "This multiple represents bulk nourishments (supplemental feedings) delivered to this ward. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "# DAYS TO REVIEW NPO",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field indicates the number of days following an NPO order after which the patient should be reviewed. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "# DAYS TO REVIEW TF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the number of days following a Tubefeeding order after which the patient should be reviewed. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "# DAYS TO REVIEW SF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the number of days following a Supplemental Feeding order after which the patient should be reviewed. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "# DAYS FOR STATUS AFTER ADMIT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field indicates the number of days following admission after which a Nutrition Status evaluation should have been performed. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "# DAYS TO REVIEW STATUS I",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days after which a patient in this Nutrition Status category should be reviewed. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "# DAYS TO REVIEW STATUS II",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days after which a patient in this Nutrition Status category should be reviewed. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "# DAYS TO REVIEW STATUS III",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days after which a patient in this Nutrition Status category should be reviewed. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "# DAYS TO REVIEW STATUS IV",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days after which a patient in this Nutrition Status category should be reviewed. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "CAFETERIA ON TRAY TICKET",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field is optional and it is used to indicate whether patients that go to the cafeteria should be included on the tray ticket. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if answered YES, will prohibit further selection of this entry. ",
+      "fieldNumber_": 99
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "SERVICES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains one or more of the characters T, C or D indicating tray service, cafeteria service, and/or dining room service is available. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "OUTPATIENT LOCATION",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field is a variable pointer to either the Ward Location (#42) file or the Hospital Location (#44) file.  This will be used for outpatient locations. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "MAX # OF DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field is optional.  If used it will be set to the maximum number of days ahead a recurring meal plan can be ordered, ie, if this field is set to 365 then when ordering a recurring meal it cannot be ordered past one year from the ordering date.  If the field is left NULL then a default of 999 days is assumed.  This field will be checked upon entering the FROM/TO dates in the Order/Edit Outpatient Meals option. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "NUMBER OF DAYS FOR REVIEW",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field will be used for the Outpatient Meals Print Meal Plan Expiration List option.  It may be set to a number of days which will be used for review by the above option, ie, if this field is set to 7 then when the Print Meal Plan Expiration List option is run it will check for recurring meal plans that will be expiring within the next 7 days. ",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "NON-VA FACILITY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This will be an optional YES/NO field that may be set when setting up new outpatient locations.  If the field is set to YES the Order/Edit Recurring Meal option will use this flag to allow selection of up to 5 diets from any diet in the Diets (#111) file.  If the field is blank or set to NO then the Order/Edit option will only allow selection of 1 diet from the 5 allowable diets set up in the site parameters. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "INPATIENT/OUTPATIENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:Inpatient;O:Outpatient;",
+      "helpText": "This field will serve as a flag to determine whether the location is an inpatient or an outpatient location.  This will be required with the Outpatient Meals functionality, since it will be necessary to store  inpatient and outpatient locations in this file.  For all outpatient locations this field should be set to OUTPATIENT. ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "ALERT BMI",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if set to YES, indicates that a clinicians will be alerted if  the Body Mass Index (BMI) is below its level. ",
+      "fieldNumber_": 107
+    },
+    {
+      "fieldNumber": 108,
+      "fieldName": "ALERT TUBEFEEDING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if set to YES, indicates that a clinician will be alerted if  tubefeeding needs to be reviewed. ",
+      "fieldNumber_": 108
+    },
+    {
+      "fieldNumber": 109,
+      "fieldName": "ALERT HYPERALS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if set to YES, indicates that a clinician will be alerted if  certain patient is in hyperals. ",
+      "fieldNumber_": 109
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "ALERT ALBUMIN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if set to YES, indicates that a clinician will be alerted if  the albumin value is below the designated level. ",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "ALERT NPO+CLRLIQ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field, if set to YES, indicates that a clinician will be  alerted if certain patient with Nothing by Mouth (NPO) + Clear Liquid (CLRLIQ) diet needs to be reviewed. ",
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "CLINICIAN(S)",
+      "dataType": "POINTER",
+      "rawType": "119.66P",
+      "required": false,
+      "fieldNumber_": 112
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AL", "field": },
+    {"name": "AP", "field": },
+    {"name": "AR", "field": },
+    {"name": "AS1", "field": },
+    {"name": "AS2", "field": },
+    {"name": "AS3", "field": },
+    {"name": "AW", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "CO", "field": },
+    {"name": "119.6", "field": .01, "type": "regular"},
+    {"name": "119.6", "field": 3, "type": "regular"},
+    {"name": "119.6", "field": 4, "type": "regular"},
+    {"name": "119.6", "field": 5, "type": "regular"},
+    {"name": "119.6", "field": 6, "type": "regular"},
+    {"name": "119.6", "field": 11, "type": "regular"},
+    {"name": "119.6", "field": 99, "type": "regular"},
+    {"name": "119.6", "field": 102, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "I $D(^(\"I\")) D EN^DDIOL(\"(** Inactive **)\",\"\",\"?3\")"}
+  ]
+}

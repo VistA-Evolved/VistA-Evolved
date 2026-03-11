@@ -1,0 +1,38 @@
+{
+  "fileNumber": 6003,
+  "fileName": "VISTA BLOOD BANK RESTRICTED OPTIONS LIST",
+  "globalRoot": "6003",
+  "globalReference": "^VBEC(6003,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "OPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The name of the VistA Blood Bank (LRBL) option that will be set  'out-of-order'. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "6003.01",
+      "required": false,
+      "helpText": "This field contains a brief explanation of the particular option. It will be displayed in the menu system to the user when '??' are entered to the selection choice of the parent menu. ",
+      "isMultiple": true,
+      "subFileNumber": 6003.01,
+      "fieldNumber_": 100
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6003", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

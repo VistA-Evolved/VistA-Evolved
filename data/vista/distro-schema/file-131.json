@@ -1,0 +1,60 @@
+{
+  "fileNumber": 131,
+  "fileName": "PERSON FIELD RESTRICTION",
+  "globalRoot": "131I",
+  "globalReference": "^SRP(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FIELD IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the field identifier.  It is the combination of a file (or sub-file) number and field number.  These numbers are separated by a comma.  Examples of typical entries are listed below.     1. 130,.14   <-------- 130 is the file number of the SURGERY file                          and .14 is the field number of the SURGEON                          field contained in that file.     2. 130.28,.01 <------- 130.28 is the sub-file number of the OR                          CIRC SUPPORT sub-file of ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KEYS",
+      "dataType": "SUBFILE",
+      "rawType": "131.03",
+      "required": false,
+      "helpText": "This field contains the key(s) used to restrict entries into this field.  ",
+      "isMultiple": true,
+      "subFileNumber": 131.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MODIFY LOCALLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This determines whether the keys associated with this field can be modified at each individual medical center.  If this field is set to '0', only the keys created by the initialization of the package will be used to restrict entries.  The deletion or addition of keys will not be allowed.   ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "131.05",
+      "required": false,
+      "helpText": "This contains any special comments related to this field or the keys used to restrict entries into it.    ",
+      "isMultiple": true,
+      "subFileNumber": 131.05,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AX", "field": },
+    {"name": "B", "field": },
+    {"name": "131", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4, "value": "W \"\""}
+  ]
+}

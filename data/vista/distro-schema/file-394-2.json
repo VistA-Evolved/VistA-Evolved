@@ -1,0 +1,81 @@
+{
+  "fileNumber": 394.2,
+  "fileName": "*PDX PARAMETER",
+  "globalRoot": "394.2",
+  "globalReference": "^VAT(394.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ONE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LIFETIME OF PDX DATA",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LIFETIME IN TRANSMIT QUEUE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PDX DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "RP4.2'",
+      "required": true,
+      "pointerTo": 4.2,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "STATION NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "STATION NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WORK GROUP",
+      "dataType": "POINTER",
+      "rawType": "394.26P",
+      "required": false,
+      "helpText": "MULTIPLE CONTAINING INSTITUTIONS IN YOUR PDX WORKING GROUP.  INSTITUTIONS IN YOUR WORKING GROUP ARE ALLOWED TO HAVE PDX REQUESTS AUTOMATICALLY PROCESSED UPON THEIR RECEIPT.  IN ADDITION TO THIS, THE SAME PDX MAY BE SENT TO THE WORKING GROUP WITHOUT HAVING TO MAKE A REQUEST FOR EACH INSTITUTION. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.2", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

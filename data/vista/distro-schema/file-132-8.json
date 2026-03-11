@@ -1,0 +1,44 @@
+{
+  "fileNumber": 132.8,
+  "fileName": "ASA CLASS",
+  "globalRoot": "132.8",
+  "globalReference": "^SRO(132.8,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ASA CLASS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the American Society of Anesthesiologists class.  It relates to the patient's physiologic status.  Numbers followed by an 'E' indicate  an emergency.          1        1-NO DISTURB.        1E       1E-NO DISTURB-EMERG        2        2-MILD DISTURB.        2E       2E-MILD DISTURB.-EMERG        3        3-SEVERE DISTURB.        3E       3E-SEVERE DIST.-EMERG.        4        4-LIFE THREAT        4E       4E-LIFE THREAT-EMERG.        5        5-MORIBUND        5E       5E-MORIBUND-EMERG  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHYSICAL STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For this ASA class, this is the brief description of the physical status of the patient.  This field is used on reports that display the ASA class. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "For this ASA class, this field describes the physical status of the patient. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

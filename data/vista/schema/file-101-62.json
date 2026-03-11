@@ -1,0 +1,39 @@
+{
+  "fileNumber": 101.62,
+  "fileName": "PDMP QUERY LOG",
+  "globalRoot": "101.62",
+  "globalReference": "^ORD(101.62,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient who a PDMP query was executed for.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUERIES",
+      "dataType": "DATE",
+      "rawType": "101.621D",
+      "required": false,
+      "helpText": "This is the list of PDMP queries for this patient. ",
+      "isMultiple": true,
+      "subFileNumber": 101.621,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "101.62", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

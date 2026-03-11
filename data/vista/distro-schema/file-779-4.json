@@ -1,0 +1,104 @@
+{
+  "fileNumber": 779.4,
+  "fileName": "HLO SUBSCRIPTION REGISTRY",
+  "globalRoot": "779.4",
+  "globalReference": "^HLD(779.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "There are two means of assigning a name to a subscription list:   1) Subscription lists may be created at design time when developing a new    messaging application via the user option.  I that case the is textual and    should be a unique identifier namespaced by the application.   2) New subscription lists may be created dynamically via an API.  For example,    a subscription list may be added for a new patient for an existing    messaging applcation.  In that case the name is numeric, equal t",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "OWNER APPLICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the application or package responsible for creating this subscription. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "LOOKUP 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "LOOKUP 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "LOOKUP 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "LOOKUP 4",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "LOOKUP 5",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "LOOKUP 6",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "RECIPIENTS",
+      "dataType": "SUBFILE",
+      "rawType": "779.41",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 779.41,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "AH", "field": },
+    {"name": "B", "field": },
+    {"name": "779.4", "field": .01, "type": "regular"},
+    {"name": "779.4", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

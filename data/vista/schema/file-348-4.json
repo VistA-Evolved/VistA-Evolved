@@ -1,0 +1,160 @@
+{
+  "fileNumber": 348.4,
+  "fileName": "AR DATA QUEUE",
+  "globalRoot": "348.4",
+  "globalReference": "^RCXV(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The Batch Number is a sequential counter distinguishing each batch of data to be transmitted ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BATCH DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date for which the batch is generated. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING;T:TRANSMITTED;C:COMPLETED;",
+      "helpText": "This field contains the status of the batch. 'Pending' will indicate that the batch is ready for the nightly process. 'Transmitted' will indicate that the batch has been sent to the Vitria server but no completed acknowledgement has been received. If the batch is still at the status of 'Transmitted' the next night, it will be sent to Vitria. 'Completed' will indicate that the batch has been successfully received and processed on the Vitria server and records may now be  available for purging. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BATCH TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DAILY;H:HISTORICAL;A:ACTIVE;R:DEPOSITS/RECEIPTS;C:CURRENT FY;E:FY 05;P:PRE-REGISTRATION;B:BUFFER;I:IB COPAY;",
+      "helpText": "This field contains the type of data contained in this batch. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BATCH SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the sequence number of the batch where there may be more than one batch transmitted in the daily transmission. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TOTAL BATCH SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the total number of batches in a daily transmission. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NUMBER OF RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,0",
+      "length": 11,
+      "required": false,
+      "helpText": "This field will contain the number of records contained in this batch. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ACK RECEIVED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will contain the date and time that the successful acknowledgement was received from the Vitria server. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ARC ACK RECEIVED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date and time that the Boston Allocation Resource Center sent back an acknowledgement that the data was loaded succesfully. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "COPAY MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this batch is a Co-Pay Transmission, (\"I\" batch type), this field will  hold the month/year that the transmission is for. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BILL NUMBER",
+      "dataType": "POINTER",
+      "rawType": "348.41PA",
+      "required": false,
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "AR BATCH PAYMENT",
+      "dataType": "POINTER",
+      "rawType": "348.42P",
+      "required": false,
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "COPAY PATIENT",
+      "dataType": "POINTER",
+      "rawType": "348.43P",
+      "required": false,
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRE-REGISTRATION MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this batch is a Pre-registration transmission, (\"P\" batch type), this field will hold the month/year that the transmission is for. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INSURANCE BUFFER MONTH/YEAR",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "If this batch is a Buffer file transmission, (\"B\" batch type), this field will hold the month/year that the transmission is for. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "348.4", "field": .01, "type": "regular"},
+    {"name": "348.4", "field": .02, "type": "regular"},
+    {"name": "348.4", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "fileNumber": 131.4,
+  "fileName": "CPT-SPINAL LEVEL",
+  "globalRoot": "131.4",
+  "globalReference": "^SRO(131.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "RP81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "This CPT code is on the list of VASQIP Spinal Level CPT codes. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "131.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

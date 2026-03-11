@@ -1,0 +1,81 @@
+{
+  "fileNumber": 78.4,
+  "fileName": "FILM SIZES",
+  "globalRoot": "78.4",
+  "globalReference": "^RA(78.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the names of the types of films that the hospital uses in performing rad/nuc med exams.   The names are specified by the rad/nuc med coordinator at each site and must be 3 to 30 characters in length.  They should be set up with unique first few characters to allow the technologist to use the first few characters only to specify a film type.  This speeds up processing time when this field is used for exam status tracking.   For procedures which do not involve films, 'No Films'",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IS THIS A 'CINE' FILM SIZE?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If this field contains a 'Yes', it indicates that this is cine feet film type.  The system uses this information in compiling the AMIS reports and the Film Usage Reports. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FLUORO ONLY?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If this field contains a 'Yes', exams for which this is entered as the film size are assumed to be 'Fluoro Only', not requiring the use of films. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter a date if this film size becomes inactive or is no longer needed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "WASTED FILM?",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field indicates that this film will be considered a wasted film type and will be included on the 'Wasted Film report'. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ANALOGOUS UNWASTED FILM SIZE",
+      "dataType": "POINTER",
+      "rawType": "*P78.4'",
+      "required": false,
+      "pointerTo": 78.4,
+      "helpText": "Identifies a corresponding film size which is not wasted. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AUW", "field": },
+    {"name": "AW", "field": },
+    {"name": "B", "field": },
+    {"name": "78.4", "field": .01, "type": "regular"},
+    {"name": "78.4", "field": 5, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"},
+    {"name": "78.4", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

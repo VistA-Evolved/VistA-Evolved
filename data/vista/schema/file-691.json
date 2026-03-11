@@ -1,0 +1,1086 @@
+{
+  "fileNumber": 691,
+  "fileName": "ECHO",
+  "globalRoot": "691ID",
+  "globalReference": "^MCAR(691,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This field identifies the date and time when the echo was taken. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter any site specific unique identification number for this ECHO test.   No need to enter the SSN.  SSN is already recorded for this ECHO. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUMMARY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NORMAL;A:ABNORMAL;B:BORDERLINE;",
+      "helpText": "This field identifies the result of the echo procedure. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SYMPTOM",
+      "dataType": "POINTER",
+      "rawType": "691.08PA",
+      "required": false,
+      "helpText": "This field identifies the medical patients symptoms listed on the procedure request form. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RISK FACTOR",
+      "dataType": "POINTER",
+      "rawType": "691.09PA",
+      "required": false,
+      "helpText": "This field identifies the medical patient's risk factors listed on the procedure request form. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP690X",
+      "required": true,
+      "pointerTo": 690,
+      "helpText": "This field identifies the medical patient's name. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "WT LBS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3X,0",
+      "length": 3X,
+      "required": false,
+      "helpText": "This field identifies the medical patient's weight in pounds. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "SEX",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This code tells the gender of the patient. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "HT IN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2X,0",
+      "length": 2X,
+      "required": false,
+      "helpText": "This field identifies the medical patient's height in inches. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BODY SURFACE AREA",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2I",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the patient's BSA, computed from patient's height and weight. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RESTING SYSTOLIC BP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the patient's resting systolic blood pressure. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RESTING DIASTOLIC BP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the patient's resting diastolic blood pressure. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RESTING HEART RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field identifies the patient's resting heart rate. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "RHYTHM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:NSR;2:A-FIB;3:OTHER;",
+      "helpText": "This field identifies the patient's current ECG/EKG rhythm. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STUDY QUALITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field identifies the technical quality of the procedure. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "STUDY TYPE",
+      "dataType": "SET",
+      "rawType": "691.48SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 691.48,
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MED(CARDIOLOGY MEDICATION)",
+      "dataType": "POINTER",
+      "rawType": "691.01PA",
+      "required": false,
+      "helpText": "This field identifies the medications listed on the medical patient's request form. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "PRE-DX",
+      "dataType": "SET",
+      "rawType": "691.02SA",
+      "required": false,
+      "helpText": "This defines the medical patient's pre-diagnosis listed on the  procedure request form. ",
+      "isMultiple": true,
+      "subFileNumber": 691.02,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "691.03",
+      "required": false,
+      "helpText": "This allows the user to make specific comments on a particular field. ",
+      "isMultiple": true,
+      "subFileNumber": 691.03,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SEPTUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the ventricular septum. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "POSTERIOR WALL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the posterior wall. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "LT. ATRIUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the left atrium. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "AORTIC ROOT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the aortic root. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "RT VENTRICLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the right ventricle. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ANT. RV WALL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the dimensions of the anterior right  ventricular wall. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "LT. VENT. DIASTOLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the internal left ventricular  diastolic dimensions. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "LT. VENT. SYSTOLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the internal left ventricular  systolic dimensions. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "% FRACT. SHORTENING",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field identifies the computed percent shortening fraction of the left ventricular. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "E-SEPT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the E-point of the mitral valve to  septum dimensions. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "LV XS AREA, MIT. SYST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "LV XS AREA, PAP. MUSC. SYST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "LV XS AREA, AP. 4-CH SYST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "LV XS AREA, MIT. DIAST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "LV XS AREA, PAP. MUSC. DIAST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "LV XS AREA, AP. 4-CH DIAST.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "% FAS MITRAL LEVEL",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "% FAS PAP. MUSCLE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "% FAS AP. 4-CH VIEW",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "EDV",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular end diastolic volume. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ESV",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular end systolic volume. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "ANGIOGRAPHIC CARDIAC OUTPUT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ9",
+      "length": 9,
+      "required": false,
+      "helpText": "This field computes the Angiographic Cardiac Output from the Resting Heart Rate (#5), EDV (#30), and ESV (#31).   The formula used is:  Heart_Rate * ( EDV - ESV ). ",
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "EF",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the computed left ventricular ejection fraction. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.1,
+      "fieldName": "ESTIMATED EF",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular ejection fraction. ",
+      "fieldNumber_": 32.1
+    },
+    {
+      "fieldNumber": 32.2,
+      "fieldName": "ESTIMATED EF DESCRIPTOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL;I:INCREASED;MIN:MINIMALLY DEPRESSED;MOD:MODERATELY DEPRESSED;S:SEVERELY DEPRESSED;",
+      "helpText": "This allows the user to enter the estimated ejection fraction descriptor. ",
+      "fieldNumber_": 32.2
+    },
+    {
+      "fieldNumber": 32.8,
+      "fieldName": "LV MASS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,3",
+      "length": 8,
+      "required": false,
+      "fieldNumber_": 32.8
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "REGIONAL WALL MOTION",
+      "dataType": "POINTER",
+      "rawType": "691.04PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple left ventricular regional wall abnormalities. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DOPPLER",
+      "dataType": "SET",
+      "rawType": "691.05SA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple doppler findings. ",
+      "isMultiple": true,
+      "subFileNumber": 691.05,
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.1,
+      "fieldName": "AORTIC MAX VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated aortic maximum velocity. ",
+      "fieldNumber_": 34.1
+    },
+    {
+      "fieldNumber": 34.2,
+      "fieldName": "AORTIC MEAN VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated mean velocity. ",
+      "fieldNumber_": 34.2
+    },
+    {
+      "fieldNumber": 34.3,
+      "fieldName": "AORTIC INTEGRAL ",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated aortic valve integral. ",
+      "fieldNumber_": 34.3
+    },
+    {
+      "fieldNumber": 34.4,
+      "fieldName": "LVOT MAX VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular outflow tract  maximum velocity. ",
+      "fieldNumber_": 34.4
+    },
+    {
+      "fieldNumber": 34.5,
+      "fieldName": "LVOT MEAN VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular outflow tract mean velocity. ",
+      "fieldNumber_": 34.5
+    },
+    {
+      "fieldNumber": 34.6,
+      "fieldName": "LVOT INTEGRAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the left ventricular outflow tract integral. ",
+      "fieldNumber_": 34.6
+    },
+    {
+      "fieldNumber": 34.7,
+      "fieldName": "AORTIC MAX PRESSURE GRADIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the computed aortic valve maximum pressure gradient. ",
+      "fieldNumber_": 34.7
+    },
+    {
+      "fieldNumber": 34.8,
+      "fieldName": "AORTIC MEAN PRESSURE GRADIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the aortic valve mean pressure gradient. ",
+      "fieldNumber_": 34.8
+    },
+    {
+      "fieldNumber": 34.9,
+      "fieldName": "AORTIC ESTIMATED VALVE ORIFICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated aortic valve estimated orifice. ",
+      "fieldNumber_": 34.9
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "MITRAL MAX VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated mitral valve maximum velocity. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 35.1,
+      "fieldName": "MITRAL MEAN VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the mitral valve mean velocity. ",
+      "fieldNumber_": 35.1
+    },
+    {
+      "fieldNumber": 35.2,
+      "fieldName": "MITRAL INTEGRAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the mitral valve calculated integral. ",
+      "fieldNumber_": 35.2
+    },
+    {
+      "fieldNumber": 35.3,
+      "fieldName": "MITRAL MAX GRADIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the computed mitral valve maximum gradient. ",
+      "fieldNumber_": 35.3
+    },
+    {
+      "fieldNumber": 35.4,
+      "fieldName": "MITRAL MEAN GRADIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This allows the user to enter the mitral valve mean gradient. ",
+      "fieldNumber_": 35.4
+    },
+    {
+      "fieldNumber": 35.5,
+      "fieldName": "MITRAL P 1/2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the mitral valve P-1/2 time. ",
+      "fieldNumber_": 35.5
+    },
+    {
+      "fieldNumber": 35.6,
+      "fieldName": "MITRAL EST VALVE ORIFICE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,1",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the computed mitral valve estimated orifices. ",
+      "fieldNumber_": 35.6
+    },
+    {
+      "fieldNumber": 35.65,
+      "fieldName": "COMPUTED MITRAL VALVE ORIFICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,1",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the computed mitral valve orifices. ",
+      "fieldNumber_": 35.65
+    },
+    {
+      "fieldNumber": 35.7,
+      "fieldName": "PULMONIC MAX VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated pulmonic valve  maximum velocity. ",
+      "fieldNumber_": 35.7
+    },
+    {
+      "fieldNumber": 35.8,
+      "fieldName": "PULMONIC MEAN VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated pulmonic valve mean velocity. ",
+      "fieldNumber_": 35.8
+    },
+    {
+      "fieldNumber": 35.9,
+      "fieldName": "PULMONIC INTEGRAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated pulmonic valve integral. ",
+      "fieldNumber_": 35.9
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "PULMONIC MAX PRESSURE GRADIENT",
+      "dataType": "COMPUTED",
+      "rawType": "CJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This field identifies the computed pulmonic valve maximum pressure gradient. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 36.1,
+      "fieldName": "PULMONIC MEAN GRADIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated pulmonic valve mean gradient. ",
+      "fieldNumber_": 36.1
+    },
+    {
+      "fieldNumber": 36.2,
+      "fieldName": "TRICUS DIAS MAX VEL (m/s)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated tricuspid valve  maximum velocity. ",
+      "fieldNumber_": 36.2
+    },
+    {
+      "fieldNumber": 36.3,
+      "fieldName": "TRICUSPID MEAN VELOCITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ1,0",
+      "length": 1,
+      "required": false,
+      "helpText": "This field quantifies the average speed of tricuspid valve flow. ",
+      "fieldNumber_": 36.3
+    },
+    {
+      "fieldNumber": 36.31,
+      "fieldName": "TRICUS DIAS MAX PRESS GRAD",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This field is computed ",
+      "fieldNumber_": 36.31
+    },
+    {
+      "fieldNumber": 36.4,
+      "fieldName": "TRICUS REGURG SYS MAX VEL(m/s)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2",
+      "length": 4,
+      "required": false,
+      "helpText": "This allows the user to enter the calculated tricuspid valve integral. ",
+      "fieldNumber_": 36.4
+    },
+    {
+      "fieldNumber": 36.5,
+      "fieldName": "PA SYSTOLIC PRESSURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,2",
+      "length": 6,
+      "required": false,
+      "helpText": "This field identifies is the Pulmonary Artery Wedge Pressure in millimeters of Mercury. ",
+      "fieldNumber_": 36.5
+    },
+    {
+      "fieldNumber": 36.6,
+      "fieldName": "TRICUSPID MEAN GRADIENT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field identifies the average Tricuspid gradient. ",
+      "fieldNumber_": 36.6
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "FINDINGS",
+      "dataType": "POINTER",
+      "rawType": "691.06PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple interpreted echo findings. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 37.5,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.15PA",
+      "required": false,
+      "helpText": "This allows the user to enter multiple interpreted echo diagnoses. ",
+      "fieldNumber_": 37.5
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "OTHER CONCLUSION",
+      "dataType": "SUBFILE",
+      "rawType": "691.07",
+      "required": false,
+      "helpText": "This allows the user to enter additional comments on the findings  and diagnosis fields. ",
+      "isMultiple": true,
+      "subFileNumber": 691.07,
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "CARDIOLOGY ATTENDING",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies the physician who interpreted the procedure. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "WARD/CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This allows the user to enter the medical patients location.  ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "ONSET DATE ATRIAL FIB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This allows the user to enter the date of the onset of the patient's atrial fibrillation ECG/EKG rhythm. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DURATION ATRIAL FIB",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This allows the user to enter the duration of the atrial fibrillation ECG/EKG rhythm. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CARDIOLOGY FELLOW",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field identifies one of the key members of the clinical staff assigned to follow this patient. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "STUDY PHASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRE-CV;2:POST-CV;3:1 MON CV;4:6 MON CV;",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "CARDIOVERSION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "RHYTHM 2",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:A-FIB;2:A-FLUTTER;3:NSR;",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 600,
+      "fieldName": "PROCEDURE SUMMARY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This allows the user to enter the procedure summary information. ",
+      "fieldNumber_": 600
+    },
+    {
+      "fieldNumber": 700,
+      "fieldName": "ICD DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "691.19P",
+      "required": false,
+      "helpText": "This field contains the ICD Diagnosis(es) for the procedure. ",
+      "fieldNumber_": 700
+    },
+    {
+      "fieldNumber": 701,
+      "fieldName": "PRIMARY PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This contains the primary provider.  It is triggered by another field in the file and is located here to provider a standard provider location for use in transferring data to the PCC. ",
+      "fieldNumber_": 701
+    },
+    {
+      "fieldNumber": 900,
+      "fieldName": "PCC POINTER",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This field is used to link the Medicine package results with the PCC VISIT file for use by Queryman. ",
+      "fieldNumber_": 900
+    },
+    {
+      "fieldNumber": 1000,
+      "fieldName": "ORIFN",
+      "dataType": "POINTER",
+      "rawType": "P100'",
+      "required": false,
+      "pointerTo": 100,
+      "helpText": "This field contains a pointer to the 'Consult Orders' internal file number, stored in file 100.  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1000
+    },
+    {
+      "fieldNumber": 1001,
+      "fieldName": "GMRCO",
+      "dataType": "POINTER",
+      "rawType": "P123'",
+      "required": false,
+      "pointerTo": 123,
+      "helpText": "This field contains a pointer to the internal number of the consult order stored in the REQUEST/CONSULTATION file (123).  This field is entered when results are entered in the Medicine package. ",
+      "fieldNumber_": 1001
+    },
+    {
+      "fieldNumber": 1500,
+      "fieldName": "ENTERING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains the provider who enter the information into the database. ",
+      "fieldNumber_": 1500
+    },
+    {
+      "fieldNumber": 1501,
+      "fieldName": "COSIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1501
+    },
+    {
+      "fieldNumber": 1502,
+      "fieldName": "ENTERING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1502
+    },
+    {
+      "fieldNumber": 1503,
+      "fieldName": "VERIFYING DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1503
+    },
+    {
+      "fieldNumber": 1504,
+      "fieldName": "SIGNER VALIDATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1504
+    },
+    {
+      "fieldNumber": 1505,
+      "fieldName": "VERIFIER DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1505
+    },
+    {
+      "fieldNumber": 1506,
+      "fieldName": "RELEASE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DRAFT;PD:PROBLEM DRAFT;RV:RELEASED ON-LINE VERIFIED;ROV:RELEASED OFF-LINE VERIFIED;RNV:RELEASED NOT VERIFIED;S:SUPERSEDED;SRV:RELEASED ON-LINE VERIFIED OF SUPERSEDED;SROV:RELEASED OFF-LINE VERIFIED OF SUPERSEDED;",
+      "fieldNumber_": 1506
+    },
+    {
+      "fieldNumber": 1507,
+      "fieldName": "DATE OF RELEASED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1507
+    },
+    {
+      "fieldNumber": 1508,
+      "fieldName": "DATE OF VERIFIED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1508
+    },
+    {
+      "fieldNumber": 1509,
+      "fieldName": "SUPERSEDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1509
+    },
+    {
+      "fieldNumber": 1510,
+      "fieldName": "SUPERSEDED BY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": 1510
+    },
+    {
+      "fieldNumber": 1511,
+      "fieldName": "MARK FOR DELETATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MARK FOR DELETATION;",
+      "fieldNumber_": 1511
+    },
+    {
+      "fieldNumber": 1512,
+      "fieldName": "DELETER DUZ",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": 1512
+    },
+    {
+      "fieldNumber": 1513,
+      "fieldName": "SUPERSEDED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1513
+    },
+    {
+      "fieldNumber": 1514,
+      "fieldName": "CREATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1514
+    },
+    {
+      "fieldNumber": 1515,
+      "fieldName": "SUPERSEDED NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1515
+    },
+    {
+      "fieldNumber": 2005,
+      "fieldName": "IMAGE",
+      "dataType": "POINTER",
+      "rawType": "691.02005PA",
+      "required": false,
+      "helpText": "This field points to an entry in the image file. ",
+      "fieldNumber_": 2005
+    }
+  ],
+  "fieldCount": 109,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AI", "field": },
+    {"name": "AJ", "field": },
+    {"name": "APCE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "ES", "field": },
+    {"name": "691", "field": .01, "type": "regular"},
+    {"name": "691", "field": .01, "type": "regular"},
+    {"name": "691", "field": 1, "type": "regular"},
+    {"name": "691", "field": 1, "type": "regular"},
+    {"name": "691", "field": 1.1, "type": "regular"},
+    {"name": "691", "field": 1.2, "type": "regular"},
+    {"name": "691", "field": 2, "type": "regular"},
+    {"name": "691", "field": 11, "type": "regular"},
+    {"name": "691", "field": 12, "type": "regular"},
+    {"name": "691", "field": 17, "type": "regular"},
+    {"name": "", "field": 39, "type": "regular"},
+    {"name": "691", "field": 900, "type": "regular"},
+    {"name": "691", "field": 1506, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S ZZ=+$P(^(0),\"^\",2) W \"   \",$S($D(^MCAR(690,ZZ,0))#2:$P(^DPT(ZZ,0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\") K ZZ"},
+    {"field": X1, "value": "W:$D(^(\"ES\")) \"   \",@(\"$P($P($C(59)_$S($D(^DD(691,1506,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(\"\"ES\"\"),U,7)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

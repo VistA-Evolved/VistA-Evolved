@@ -1,0 +1,38 @@
+{
+  "fileNumber": 163.98,
+  "fileName": "FEE BASIS PAYMENT METHODOLOGY",
+  "globalRoot": "163.98",
+  "globalReference": "^FBAA(163.98,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name of the payment methodology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the single character code associated with the payment methodology. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "163.98", "field": .01, "type": "regular"},
+    {"name": "163.98", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

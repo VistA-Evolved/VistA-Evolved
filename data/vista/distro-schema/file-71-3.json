@@ -1,0 +1,133 @@
+{
+  "fileNumber": 71.3,
+  "fileName": "RAD/NUC MED COMMON PROCEDURE",
+  "globalRoot": "71.3P",
+  "globalReference": "^RAMIS(71.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "R*P71'X",
+      "required": true,
+      "pointerTo": 71,
+      "helpText": "This field is an \"active\" entry from your RAD/NUC MED PROCEDURES file (#71). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "This is a unique number that puts a procedure on the common procedure display and allows selection by this number. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;",
+      "helpText": "This field should be answered 'yes' if you do not want the procedure to show up on display during order entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CATEGORY OF EXAM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:INPATIENT;O:OUTPATIENT;C:CONTRACT;S:SHARING;E:EMPLOYEE;R:RESEARCH;",
+      "helpText": "This field contains a category for this procedure of 'I' for inpatient, 'O' for outpatient, 'C' for Contract, 'S' for  sharing, 'E' for employee, or 'R' for research. If an entry is not made for this field, the category of 'Inpatient' will be automatically entered for each request generated from the protocal that is built for this procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "REQUESTED DATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "TODAY:TODAY;TODAY+1:TOMORROW;",
+      "helpText": "Enter the date on which you would like the exam done. This field should not be interpreted as an appointment date. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "IMAGING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "R*P79.1'",
+      "required": true,
+      "pointerTo": 79.1,
+      "helpText": "This field contains the imaging location for this procedure. Only an imaging location is selectable.  The procedure request will be printed at this location. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MODE OF TRANSPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "a:AMBULATORY;p:PORTABLE;s:STRETCHER;w:WHEEL CHAIR;",
+      "helpText": "Enter the mode of transport, 'a' for ambulatory, 'p' for portable, 's' for stretcher, and 'w' for wheelchair. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ISOLATION PROCEDURES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "y:YES;n:NO;",
+      "helpText": "Enter 'y'es if isolation procedures are required for this procedure. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REQUEST URGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:STAT;2:URGENT;9:ROUTINE;",
+      "helpText": "Enter the urgency of this request. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PROCEDURE MODIFIERS",
+      "dataType": "POINTER",
+      "rawType": "71.312P",
+      "required": false,
+      "helpText": "This field identifies the Procedure Modifiers that are associated with this Common Procedure.  Common Procedures may have more than one Procedure Modifier association. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NAME OF ORDERABLE ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name (menu text) that the person ordering this procedure will see when they are placing orders in the OE/RR package. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "71.3", "field": .01, "type": "regular"},
+    {"name": "71.3", "field": .01, "type": "regular"},
+    {"name": "71.3", "field": .01, "type": "regular"},
+    {"name": "71.3", "field": 3, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

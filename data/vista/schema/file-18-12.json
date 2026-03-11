@@ -1,0 +1,153 @@
+{
+  "fileNumber": 18.12,
+  "fileName": "WEB SERVER",
+  "globalRoot": "18.12",
+  "globalReference": "^XOB(18.12,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field indicates the user friendly name of the web services server defined by this entry.   The value must be unique compared to the NAME field value of the other entries in this file.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field indicates the port for the web service. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SERVER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field indicates the ip address or domain name of the web server.   If the SSL ENABLED (#3.01) field is TRUE, this SERVER field may need to be a domain name.   As part of the Cache SSL configuration setup, if SSL/TLS peer (server) verification is required, you must enter the Domain Name of the server in this SERVER field.   The verification will fail if an ip address is specified because the server's certificate common name [CN] value will not match.   Note: This 'Peer certificate verificati",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENABLED;0:DISABLED;",
+      "helpText": "This field indicates whether or not the web service server is available for use (ENABLED) using this entry. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DEFAULT HTTP TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field indicates the number of seconds to use as the default HTTP timeout for requests to the web server.   [Default: 30 seconds] ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LOGIN REQUIRED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether or not login is required for the web server. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "Want to edit PASSWORD (Y/N)",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Entering YES to this field calls the routine for entering a PASSWORD. No  data is stored for this field. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE PASSWORD LAST CHANGED",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field is triggered by a change in the PASSWORD.   The purpose of the field is to track the last time the PASSWORD was  changed. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "SSL ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This field indicates whether SSL is enabled for this server.   As part of the Cache SSL configuration setup, if SSL/TLS peer (server) verification is required, you must enter the Domain Name of the server in field SERVER (#.04).   The verification will fail if an ip address is specified because the server's certificate common name [CN] value will not match.   Note: This 'Peer certificate verification level' is specified       during SSL configuration setup when using Cache's System       Managem",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "SSL CONFIGURATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ200X",
+      "length": 200X,
+      "required": false,
+      "helpText": "On Cache: This field contains the name of the Cache SSL configuration associated  with the web server.    The Cache SSL configurations are defined as part of Cache's System  Management Portal.   On GT.M/YottaDB: This field contains the path to the client certificate. The client key is  assumed to be the name of the certificate with the extension .key in the  same folder. A password can be set in the password field for decryption  of the client certificate. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "SSL PORT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field contains the port number for SSL connectivity. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "AUTHORIZED WEB SERVICES",
+      "dataType": "POINTER",
+      "rawType": "18.121P",
+      "required": false,
+      "helpText": "This multiple contains the list of web services that the web server is authorized to contact in order to a issue request. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of a user in the security realm on server that is authorized to call the web server.   The user usually is required to be in a 'role' as defined by the web.xml.   Examples of relevant sections of the web.xml: <security-constraint>     <web-resource-collection>        <auth-constraint>           <description>These are the roles who have access</description>           <role-name>XOBW_Tester_Users</role-name>        </auth-constraint> ...   <security-role>    <description>XOBW Tester User</des",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIO",
+      "required": false,
+      "helpText": "The password associated with the user indicated in the USERNAME (#200) field.   This password is encrypted/decrypted and stored in the M account. Currently, Advanced Encryption Standard (AES) is being used for the  encryption algorithm. ",
+      "fieldNumber_": 300
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "18.12", "field": .01, "type": "regular"},
+    {"name": "", "field": 300, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

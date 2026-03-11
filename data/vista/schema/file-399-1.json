@@ -1,0 +1,238 @@
+{
+  "fileNumber": 399.1,
+  "fileName": "MCCR UTILITY",
+  "globalRoot": "399.1I",
+  "globalReference": "^DGCR(399.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the internal file number of this entry. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name/description of this entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This identifies the code or number associated with this entry. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviation (if any) of the name of this entry. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "OCCURRENCE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether or not this entry is an Occurrence Code. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "BEDSECTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether or not this entry is a Bedsection. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DISCHARGE STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether or not this entry is a Discharge Status. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "IB ACTION TYPE (COPAYMENT)",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This field will only be used for those bedsections which are included in the billing of Means Test/Category C charges.   The field is a pointer to the IB ACTION TYPE file.  Once the bedsection is derived from the patient's treating specialty, the IB ACTION TYPE for the Category C Inpatient/NHC co-payment charge can be determined. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "IB ACTION TYPE (PER DIEM)",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This field will only be used for those bedsections which are included in the billing of Means Test/Category C charges.   The field is a pointer to the IB ACTION TYPE file.  Once the bedsection is derived from the patient's treating specialty, the IB ACTION TYPE for the Category C Inpatient/NHC per diem charge can be determined. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "OCC RELATED TO",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:EMPLOYMENT;2:AUTO ACCIDENT;3:OTHER ACCIDENT;",
+      "helpText": "Relates the Occurrence Codes to the 'Condition Related To' question on the CMS-1500, box 10. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "OCCURRENCE SPAN",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A code and related dates that identify an event that relates to the payment of the claim. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "VALUE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "VALUE CODE AMOUNT",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter Yes if the value amount associated with this value code should be right justified to the right of the delimiter, ie with cents printed. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "BILLABLE SERVICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "These are the types of services a patient may receive that may be billable to a payer. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "BILLABLE EVENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "These are the types of events used to itemize on the bill the care provided to the patient and are billable for at least one payer rate. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "CONDITION CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This indicates whether or not this entry is a Condition Code. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "BILL CLASSIFICATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This indicates whether or not this entry is a bill classification code. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "VALID LOCATION OF CARE VALUES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the list of valid location of care values that are consistent with the bill classification code.  More than 1 value can be entered, separated by commas. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "OTHER CARE",
+      "dataType": "POINTER",
+      "rawType": "*P399.1'",
+      "required": false,
+      "pointerTo": 399.1,
+      "helpText": "If this Bedsection is associated with an 'Other Type of Care', then this  Billable Service will identify the Rate Schedules that apply. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "VALUE CODE OBSOLETE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VALUE CODE HELP TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "399.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 399.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VALUE CODE AMOUNT SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "KX",
+      "required": false,
+      "helpText": "This field is only editable by a developer.    Standard MUMPS code can be entered to screen the values entered for the  VALUE CODE AMOUNT field in file #399     The screen API VCSCREEN^IBCVC provides a simple interface for the  developer to add standard screens that automatically insert code to take  advantage of the IB ERROR functionality.   Or the developer can enter simple MUMPS code to screen the entries.   Enter some MUMPS code or the space bar and press Enter to enter the  interface. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 22,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "C1", "field": },
+    {"name": "D", "field": },
+    {"name": "399.1", "field": .01, "type": "regular"},
+    {"name": "399.1", "field": .02, "type": "regular"},
+    {"name": "399.1", "field": .02, "type": "regular"},
+    {"name": "399.1", "field": .03, "type": "regular"},
+    {"name": "399.1", "field": .14, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

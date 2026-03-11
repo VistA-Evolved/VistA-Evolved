@@ -1,0 +1,153 @@
+{
+  "fileNumber": 3.077,
+  "fileName": "ERROR TRAP SUMMARY",
+  "globalRoot": "3.077",
+  "globalReference": "^%ZTER(3.077,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the text captured with the error.  It is a means of providing a common key for the errors to be clustered under.  Each one will has a series of characteristics which will be captured for later analysis even after the error has been purged off of the ^%ZTER global.  The first date and time is stored as will be the most recent occurrence. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIRST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the first date and time that the error has occurred.  It is of historic importance and can be used to find the causative event of the  error that is being reported. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MOST RECENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the most recent time that the situation has happened.  It is  important in that it is the most likely to still be in the error trap global, ^%ZTER. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ROUTINE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the routine in question.  It will be parsed out of the  error string in .01.  This will make the errors much easier to cluster around the causitive routine.  This may actually be amended from the  error string presentation if the causative program is found to be  different. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P9.4'",
+      "required": false,
+      "pointerTo": 9.4,
+      "helpText": "This field will help to identify who are the responsible parties for this problem.  Eventually, as a package is identified, the primaries and  secondaries will be notified of the problem automatically as the problem happens. ",
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the number of times that the error has been encountered, ever. See FREQUENCY DISTRIBUTION below for how the error is occurring  during the run of the day. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FREQUENCY DISTRIBUTION",
+      "dataType": "SUBFILE",
+      "rawType": "3.0775A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 3.0775,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST GLOBAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last global referenced with the first such error recorded. If subsequent errors are recorded, and have different globals listed, they will be recorded in the following detail under ERROR EVENTS. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STACK LIST",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is generated from the GETSTK^XTERSUM function call.  It is the chain of calling levels which were accessed to bring about the error. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "UPLOADED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field holds the date/time that the Error Summary was set to a  consolidation site. A message will be sent if this field in empty or less than the \"Last  seen\" field. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ERROR EVENTS",
+      "dataType": "SUBFILE",
+      "rawType": "3.07701",
+      "required": false,
+      "helpText": "This is the $H date and the Sequence number of this error on that $H date. It provides an easy way to scan quickly historic occurrences of these  errors.  Long period failures will become more evident when they  start showing up as reoccurring situations which will need to be dealt with. ",
+      "isMultiple": true,
+      "subFileNumber": 3.07701,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "LINE OF CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the original line of code which caused this problem.  It should be the same for all occurrences, but may reflect other failures on the same  line. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "DISCUSSION",
+      "dataType": "SUBFILE",
+      "rawType": "3.07702",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 3.07702,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "SUPPORT PERSONNEL",
+      "dataType": "POINTER",
+      "rawType": "3.077031PA",
+      "required": false,
+      "fieldNumber_": 31
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "USER", "field": },
+    {"name": "3.077", "field": .01, "type": "regular"},
+    {"name": "3.077", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

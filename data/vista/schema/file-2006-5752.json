@@ -1,0 +1,108 @@
+{
+  "fileNumber": 2006.5752,
+  "fileName": "IMPORTABLE DICOM OBJECTS",
+  "globalRoot": "2006.5752",
+  "globalReference": "^MAGD(2006.5752,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the patient name as identified in DICOM tag 0010,0010 from the DICOM Object file for the image to be imported. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Patient ID as identified in DICOM tag 0010,0020 from the DICOM Object file that is to be imported.   The patient id may be a social security number or the sending facility's own patient identification. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DICOM GATEWAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This the DICOM Gateway that received the DICOM Object file. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STUDY DATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The study date is obtained in DICOM tag 0008,0020 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ACCESSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the accession number as identified in DICOM tag 0008,0050 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "STUDY INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The study instance uid is obtained in DICOM tag 0020,000D from the  DICOM Object file that is to be imported. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "MODALITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The modality is obtained in DICOM tag 0008,0060 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SERIES INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the image's series instance uid as identified in DICOM tag  0020,000E from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PATH TO DICOM OBJECT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the share path either on the local machine or a mapped drive where the images to be imported reside. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "SOP INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The image's sop instance uid is obtained in DICOM tag 0008,0018 and 0004,1511 from the DICOM Object file that is to be imported. ",
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "2006.5752", "field": 32, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "fileNumber": 231.6,
+  "fileName": "TRACKING BOARD",
+  "globalRoot": "231.6",
+  "globalReference": "^EDPB(231.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AREA",
+      "dataType": "POINTER",
+      "rawType": "P231.9'",
+      "required": false,
+      "pointerTo": 231.9,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PUBLIC DISPLAY;2:SIGNED-IN;",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "XML SPEC",
+      "dataType": "SUBFILE",
+      "rawType": "231.61",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 231.61,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ROOM CONSTRAINTS",
+      "dataType": "POINTER",
+      "rawType": "231.62PA",
+      "required": false,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "231.6", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

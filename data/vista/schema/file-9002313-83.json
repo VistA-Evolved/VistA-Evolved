@@ -1,0 +1,47 @@
+{
+  "fileNumber": 9002313.83,
+  "fileName": "BPS RESULT CATEGORY",
+  "globalRoot": "9002313.83",
+  "globalReference": "^BPSF(9002313.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name of this result category. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An abbreviation which can be displayed in a 5-character wide column. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OTHER NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Any other way of saying this kind of a claim result, usually colloquial or short, usually without the \"E \" prefix.  For lookup. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "9002313.83", "field": .01, "type": "regular"},
+    {"name": "9002313.83", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

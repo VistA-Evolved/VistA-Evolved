@@ -1,0 +1,212 @@
+{
+  "fileNumber": 52.87,
+  "fileName": "PSO AUDIT LOG",
+  "globalRoot": "52.87",
+  "globalReference": "^PS(52.87,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "AUDIT ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "This is the Audit ID that represents this specific audit record. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PRESCRIPTION",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "This is the prescription number associated with this audit record. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FILL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the Refill number associated with the prescription. The original  fill is always '0'. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the Patient for whom the medication was prescribed. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This the Outpatient Pharmacy Division from which the RX/Fill was  dispensed. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Provider who prescribed the medication. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NDC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the National Drug Code (NDC) of the drug identified in the DRUG  field. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "This is the drug prescribed to the patient. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "BILL COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the total bill cost for the TRICARE prescription being audited. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ECME NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Electronic Claims Management Engine (ECME) number associated  with the ePharmacy billing transaction. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QTY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the quantity of medication dispensed. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "POINTER",
+      "rawType": "P53'",
+      "required": false,
+      "pointerTo": 53,
+      "helpText": "This is the RX PATIENT STATUS that represents the authorization for the  RX. This is independent of the eligibility code assigned to the patient  by Medical Administration Service (MAS) representative. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "AUDIT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:NCPDP REJECT;N:NON BILLABLE;I:INPATIENT;P:PARTIAL FILL;",
+      "helpText": "This is the type of audit associated with a TRICARE/CHAMPVA Bypass or  Override event.  ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "NCPDP REJECT CODE",
+      "dataType": "SUBFILE",
+      "rawType": "52.8713",
+      "required": false,
+      "helpText": "This multiple is used to store the NCPDP Rject Code(s) returned in the ECME response from the TRICARE payer indicating the reason(s) why the claim was rejected. ",
+      "isMultiple": true,
+      "subFileNumber": 52.8713,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The person who is responsible for creating the audit record. This would  either be a Pharmacy system user or Postmaster if the audit is created by  a background process. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DATE OF ACTION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time that the event that generated the audit record  occurred.  ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "DATE OF SERVICE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date the prescription was filled or professional service  rendered. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "JUSTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used to hold the free-text explanation why the TRICARE or CHAMPVA prescription was bypassed or overridden. For partial fills, the reason is hard-coded to [TRICARE or CHAMPVA] \"Partial Fill\". For 'Inpatient Meds (Bypass)',the justification is hard-coded to [TRICARE or CHAMPVA] \"INPATIENT/DISCHARGE\" or [TRICARE or CHAMPVA] \"INPATIENT AUTO-REVERSAL\". Overrides (TRICARE/CHAMPVA rejects and TRICARE/CHAMPVA non-billables) come from user entry. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TRICARE;C:CHAMPVA;",
+      "helpText": "This field is the eligibility indicator of the event type.  ",
+      "fieldNumber_": 18
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "52.87", "field": .01, "type": "regular"},
+    {"name": "52.87", "field": 1, "type": "regular"},
+    {"name": "52.87", "field": 4, "type": "regular"},
+    {"name": "52.87", "field": 5, "type": "regular"},
+    {"name": "52.87", "field": 15, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

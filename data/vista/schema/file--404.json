@@ -1,0 +1,84 @@
+{
+  "fileNumber": .404,
+  "fileName": "BLOCK",
+  "globalRoot": ".404",
+  "globalReference": "^DIST(.404,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter the name of the block, 3-30 characters in length.  The block name must be unique and cannot be numeric or start with punctuation. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATA DICTIONARY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter the data dictionary number of the file or subfile that contains the fields that are placed on this block.  A block can contain fields from only one file or subfile. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISABLE NAVIGATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;2:OUTOK;",
+      "helpText": "Enter 'YES' if navigation within the block should be disabled.  When navigation is disabled, user cannot ^-jump to other fields, they cannot ^-jump to the Command Line, and the <Up>, <Down>, <Tab>, and <F4> keys traverse the fields in the same order as the <RET> key -- that is, in the order established by the Field Order property of the fields.   Enter 'OUTOK' to disable navigation, but allow the user to ^-jump to the Command Line. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRE ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed when the user navigates to the block.   This pre-action is part of the block definition itself, so if this block is used on another page or another form, the pre-action still applies. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "POST ACTION",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code that is executed when the user leaves the block.   This post-action is part of the block definition itself, so if the block is used on another page or on another form, the post-action still applies. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".40415",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .40415,
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "FIELD",
+      "dataType": "SUBFILE",
+      "rawType": ".4044I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4044,
+      "fieldNumber_": 40
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".404", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

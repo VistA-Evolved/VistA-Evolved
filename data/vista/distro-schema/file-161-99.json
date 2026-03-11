@@ -1,0 +1,38 @@
+{
+  "fileNumber": 161.99,
+  "fileName": "FEE BASIS PAYMENT REJECT CODE",
+  "globalRoot": "161.99",
+  "globalReference": "^FBAA(161.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The field contains a reject reason code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "161.991",
+      "required": false,
+      "helpText": "This field contains a description of the reject reason code. ",
+      "isMultiple": true,
+      "subFileNumber": 161.991,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

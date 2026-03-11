@@ -1,0 +1,39 @@
+{
+  "fileNumber": 164.46,
+  "fileName": "RACE CODE FOR ONCOLOGY",
+  "globalRoot": "164.46",
+  "globalReference": "^ONCO(164.46,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the race code as listed in the ACOS Data Acquisition Manual. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the race or race group. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "164.46", "field": .01, "type": "regular"},
+    {"name": "164.46", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "fileNumber": 59.9,
+  "fileName": "PBM PATIENT DEMOGRAPHICS",
+  "globalRoot": "59.9",
+  "globalReference": "^PSUDEM(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "59.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

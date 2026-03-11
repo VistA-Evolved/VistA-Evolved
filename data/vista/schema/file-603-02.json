@@ -1,0 +1,38 @@
+{
+  "fileNumber": 603.02,
+  "fileName": "CLOZAPINE LAB TEST",
+  "globalRoot": "603.02",
+  "globalReference": "^YSCL(603.02,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "WHITE BLOOD COUNT",
+      "dataType": "POINTER",
+      "rawType": "RP64'X",
+      "required": true,
+      "pointerTo": 64,
+      "helpText": "This is the Workload Code (from file 64) that will be used to track the White Blood Count for Clozapine patients. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NEUTROPHIL COUNT",
+      "dataType": "POINTER",
+      "rawType": "RP64'X",
+      "required": true,
+      "pointerTo": 64,
+      "helpText": "This is the test used to track the Neutrophil Count for the Clozapine patients. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "603.02", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

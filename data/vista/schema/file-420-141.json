@@ -1,0 +1,36 @@
+{
+  "fileNumber": 420.141,
+  "fileName": "PRCD FMS SUB-ALLOWANCE ACCOUNT",
+  "globalRoot": "420.141",
+  "globalReference": "^PRCD(420.141,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFO",
+      "required": true,
+      "helpText": "This is to store FMS SUBALLOWANCE ACCOUNT data. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FUND CONTROL POINT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is used to store FCP data. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "420.141", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

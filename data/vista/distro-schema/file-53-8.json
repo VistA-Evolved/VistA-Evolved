@@ -1,0 +1,88 @@
+{
+  "fileNumber": 53.8,
+  "fileName": "CLOZAPINE MEDICATION OVERRIDES",
+  "globalRoot": "53.8",
+  "globalReference": "^PS(53.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE TIME",
+      "dataType": "DATE",
+      "rawType": "MRDI",
+      "required": true,
+      "helpText": "This is the date and time of the decision to override the prohibition on  dispensing Clozaril. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP100'I",
+      "required": true,
+      "pointerTo": 100,
+      "helpText": "Contains the order number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "USER ENTERING",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This records the name of the individual entering the order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "APPROVING TEAM MEMBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'I",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the member of the clozapine treatment team who authorized this  order to be filled. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REASON FOR OVERRIDE",
+      "dataType": "POINTER",
+      "rawType": "RP52.54'I",
+      "required": true,
+      "pointerTo": 52.54,
+      "helpText": "This field contains the reason for the Clozapine override as a pointer  to file 52.54. It should be between 5 and 100 characters in length. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is any information about why the order was filled. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SECOND APPROVING TEAM MEMBER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field records the name as a pointer to file 200. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "A", "field": },
+    {"name": "B", "field": },
+    {"name": "53.8", "field": .01, "type": "regular"},
+    {"name": "53.8", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

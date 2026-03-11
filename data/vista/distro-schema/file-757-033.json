@@ -1,0 +1,120 @@
+{
+  "fileNumber": 757.033,
+  "fileName": "CHARACTER POSITIONS",
+  "globalRoot": "757.033",
+  "globalReference": "^LEX(757.033,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a unique identifier consisting of the  source abbreviation and a code fragment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FRAGMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a portion of a code (fragment) that specifies a character (last character of the fragment) and a character position (length of fragment).  ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the code fragment was initially entered. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SOURCE",
+      "dataType": "POINTER",
+      "rawType": "P757.03'",
+      "required": false,
+      "pointerTo": 757.03,
+      "helpText": "This is the coding system (source) that the code fragment belongs to. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DETAILS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is a flag to indicate if the fragment should have additonal details, i.e., description, explanation or inclusions. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "DATE",
+      "rawType": "757.331D",
+      "required": false,
+      "helpText": "This multiple tracks the activation status of a code fragment. ",
+      "isMultiple": true,
+      "subFileNumber": 757.331,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME/TITLE",
+      "dataType": "DATE",
+      "rawType": "757.332D",
+      "required": false,
+      "helpText": "This is a history of names/titles for a character position identified by a code fragment. ",
+      "isMultiple": true,
+      "subFileNumber": 757.332,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "DATE",
+      "rawType": "757.043D",
+      "required": false,
+      "helpText": "This is a history of descriptions for a character position identified by a code fragment. ",
+      "isMultiple": true,
+      "subFileNumber": 757.043,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EXPLANATION",
+      "dataType": "DATE",
+      "rawType": "757.334D",
+      "required": false,
+      "helpText": "This is a history of Explanations for a character position identified by a code fragment. ",
+      "isMultiple": true,
+      "subFileNumber": 757.334,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INCLUDES",
+      "dataType": "DATE",
+      "rawType": "757.335D",
+      "required": false,
+      "helpText": "This is a history of terminology synonyms for the character identified by the code fragment.  There can be multiple synonyms. ",
+      "isMultiple": true,
+      "subFileNumber": 757.335,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "757.033", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

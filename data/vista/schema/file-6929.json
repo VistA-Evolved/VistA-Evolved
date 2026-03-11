@@ -1,0 +1,206 @@
+{
+  "fileNumber": 6929,
+  "fileName": "ENG EMPLOYEE",
+  "globalRoot": "6929",
+  "globalReference": "^ENG(\"EMP\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Name of Engineering Service employee.  Last name, first name and middle initial. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ORGANIZATIONAL TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Informal job title. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .3,
+      "fieldName": "SHOP",
+      "dataType": "POINTER",
+      "rawType": "RP6922'",
+      "required": true,
+      "pointerTo": 6922,
+      "helpText": "Engineering shop to which this employee is assigned. ",
+      "fieldNumber_": .3
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "HOME STREET ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Street address, including house number, apartment number, etc. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": .6,
+      "fieldName": "HOME CITY, STATE ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "City, state and zip code of employee's residence. ",
+      "fieldNumber_": .6
+    },
+    {
+      "fieldNumber": .7,
+      "fieldName": "HOME PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Employee's home telephone number, including area code. ",
+      "fieldNumber_": .7
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GRADE/STEP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Payroll grade and step. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WAGE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2",
+      "length": 6,
+      "required": true,
+      "helpText": "Hourly wage (base pay). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "OT RATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Overtime wage, computed from base pay. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "STATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of permanent duty station. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ACTIVITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Number of the shop to which employee is assigned. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ID#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Unique identification number.  Assigned by Engineering Service. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "COST CENTER",
+      "dataType": "POINTER",
+      "rawType": "P420.1'",
+      "required": false,
+      "pointerTo": 420.1,
+      "helpText": "Standardized cost center to which this employee's time is most often charged. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEMP;P:PERM;V:VACATED;",
+      "helpText": "Employment status. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "HOURLYRATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Actual cost of this employee, including benefits.  Formula is not universally agreed to, so the Engineering Package bases calculations of labor costs on WAGE only. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.1,
+      "fieldName": "ANNUALIZED ESTIMATE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,2",
+      "length": 8,
+      "required": false,
+      "helpText": "Annual salary, based on hourly wage.  Computed automatically. ",
+      "fieldNumber_": 8.1
+    },
+    {
+      "fieldNumber": 10.5,
+      "fieldName": "CLASSIFICATION SERIES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Personnel classification series applicable to this employee. ",
+      "fieldNumber_": 10.5
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "POS. #",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Position number.  Assigned by the facility. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "CLASSIFICATION TITLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Formal title of the position being filled by this employee. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "HOSP.TELE.EXT.",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Telephone extension on which this employee may be reached. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 20,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6929", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

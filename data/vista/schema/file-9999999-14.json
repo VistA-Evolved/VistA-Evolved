@@ -1,0 +1,515 @@
+{
+  "fileNumber": 9999999.14,
+  "fileName": "IMMUNIZATION",
+  "globalRoot": "9999999.14I",
+  "globalReference": "^AUTTIMM(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXa",
+      "required": true,
+      "helpText": "This is the name of the Immunization (e.g. Hib-Hep B).   Enter the Name of the Immunization using 3 to 100 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the \"Short\" name for this immunization such as an acronym,  nickname, or other name by which it might be called (e.g. Tet Tox).   Enter the short name using 2 to 10 characters (e.g. Tet Tox). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CVX CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXa",
+      "required": false,
+      "helpText": "This is the Center for Disease Control's (CDC) code for this vaccine, known as the CVX Code.  The purpose of the CVX code is mainly when using HL7 to share data regarding this vaccine. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "DEFAULT LOT#",
+      "dataType": "POINTER",
+      "rawType": "*P9999999.41a",
+      "required": false,
+      "pointerTo": 9999999.41,
+      "helpText": "This is the default lot number for this immunization. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MAX # IN SERIES",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NON-SERIES;1:1;2:2;3:3;4:4;5:5;6:6;7:7;8:8;",
+      "helpText": "(Optional) This is the maximum number of vaccinations that can be given for this immunization.   Enter the number between 0 and 8 that represents the maximum allowable  vaccinations that can be given for this immunization. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CHILDHOOD IMMUNIZATION",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "YES in this field indicates this immunization is a childhood  immunization. NO in this field indicates this immunization is not a childhood immunization. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This field is used to inactivate an immunization type.  If this field contains a \"1\" then the immunization is inactive.  Inactive immunizations cannot be selected in the manual data entry process. Immunization entries should be made inactive when they are no longer used. Do not delete the entry or change the meaning of the immunization entry.   To make an inactive immunization active, enter the \"@\" symbol to delete the \"1\" from the field. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "SKIN TEST",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NOT A SKIN TEST;1:SKIN TEST;",
+      "helpText": "This field indicates if this immunization is a skin test. Enter '1' if  this immunization is a skin test. Enter '0' if this immunization is not  a skin test. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "VACCINE GROUP (SERIES TYPE)",
+      "dataType": "POINTER",
+      "rawType": "P9002084.93'Ia",
+      "required": false,
+      "pointerTo": 9002084.93,
+      "helpText": "This field identifies the Imm/Serve Series Type (or \"Vaccine group\") to  which this immunization belongs. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ALTERNATE SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIa",
+      "required": false,
+      "helpText": "This is an alternate short name for this immunization. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "P81'Ia",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This is the CPT code associated with this immunization. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "RELATED CONTRAIND HL7 CODES",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIa",
+      "required": false,
+      "helpText": "This field indicates the HL7 code(s) of any immunizations that should be contraindicated when this immunization is contraindicated. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "VIS DEFAULT DATE",
+      "dataType": "DATE",
+      "rawType": "Da",
+      "required": false,
+      "helpText": "This is the default date of the Vaccine Information Statement for this  immunization. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "ICD DIAGNOSIS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIa",
+      "required": false,
+      "helpText": "This is the ICD diagnosis code associated with this immunization. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ICD PROCEDURE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIa",
+      "required": false,
+      "helpText": "This is the ICD Procedure Code associated with this immunization. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "INCLUDE IN FORECAST",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:YES, INCLUDE;1:NO, EXCLUDE;",
+      "helpText": "This field indicates if this vaccine is allowed to be forecast for  patients when appropriate. Enter NO to exclude this vaccine from all  forecasts. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "INCLUDE IN VAC ACCOUNT REPORT",
+      "dataType": "SET",
+      "rawType": "SIa",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if this vaccine should be included in the Vaccine  Accountability Report. Enter NO if not. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "DEFAULT VOLUME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,2a",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the default volume for this vaccine. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "COMBINATION IMMUNIZATION (Y/N)",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This YES/NO field identifies if this immunization is a combination product or not.  If this immunization is a combination product (a multi-component vaccine requiring multiple vaccine information statements), enter YES.  If this immunization is not a combination product, but can be represented by a single vaccine information statement, enter NO. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "COMPONENT #1",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the first component of this combination vaccine. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "COMPONENT #2",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the second component of this combination vaccine. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "COMPONENT #3",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the third component of this combination vaccine. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "COMPONENT #4",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the fourth component of this combination vaccine. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "COMPONENT #5",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the fifth component of this combination vaccine. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "COMPONENT #6",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'a",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This is the sixth component of this combination vaccine. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .51,
+      "fieldName": "READING REQUIRED",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if this inoculation requires an objective reading  and a subjective interpretation of the reading. ",
+      "fieldNumber_": .51
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BRAND #1",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the first brand name for this vaccine. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "BRAND #2",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the second brand name for this vaccine. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "BRAND #3",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the third brand name for this vaccine. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "BRAND #4",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the fourth brand name for this vaccine. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "BRAND #5",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the fifth brand name for this vaccine. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the full name for this immunization. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "CPT CODE 2ND",
+      "dataType": "POINTER",
+      "rawType": "P81'Ia",
+      "required": false,
+      "pointerTo": 81,
+      "helpText": "This is a second CPT code for this immunization. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CDC FULL VACCINE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.142",
+      "required": false,
+      "helpText": "This is the CDC Full Vaccine Name for this immunization. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.142,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.143",
+      "required": false,
+      "helpText": "This multiple stores the coding system(s) associated with the codes  identifying this immunization. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.143,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "VACCINE INFORMATION STATEMENT",
+      "dataType": "POINTER",
+      "rawType": "9999999.144P",
+      "required": false,
+      "helpText": "This multiple identifies the Vaccine Information Statement(s)  associated with this immunization. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CDC PRODUCT NAME",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.145",
+      "required": false,
+      "helpText": "This multiple stores the CDC Product Name(s) reflecting manufacturer  trade names, but may not be identical to those registered trade names. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.145,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "VACCINE GROUP NAME",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.147A",
+      "required": false,
+      "helpText": "This multiple field contains the VACCINE GROUP NAME(s) with which this immunization is associated. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.147,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "9999999.141",
+      "required": false,
+      "helpText": "This multiple stores locally editable synonyms for this immunization. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.141,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99.97,
+      "fieldName": "REPLACED BY VHA STANDARD TERM",
+      "dataType": "POINTER",
+      "rawType": "P9999999.14'Ia",
+      "required": false,
+      "pointerTo": 9999999.14,
+      "helpText": "This field is populated when one Term/Concept replaces another  Term/Concept.  This field is controlled by standardization and should  only be changed by standardization processes.  This field contains a  pointer to a VHA standard term that replaces this entry. ",
+      "fieldNumber_": 99.97
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSIa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXIa",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "9999999.1499DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 9999999.1499,
+      "fieldNumber_": 99.991
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of this Immunization.  ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 8801,
+      "fieldName": "MNEMONIC",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This is the mnemonic for this Immunization.   Enter a 1 to 3 character mnemonic. ",
+      "fieldNumber_": 8801
+    },
+    {
+      "fieldNumber": 8802,
+      "fieldName": "ACRONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "This standardized vaccine acronym for this immunization is intended to  provide a uniform approach to vaccine references. ",
+      "fieldNumber_": 8802
+    },
+    {
+      "fieldNumber": 8803,
+      "fieldName": "SELECTABLE FOR HISTORIC",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines whether an inactive immunization is selectable when  documenting a historic administration. ",
+      "fieldNumber_": 8803
+    }
+  ],
+  "fieldCount": 47,
+  "crossReferences": [
+    {"name": "ACPT", "field": },
+    {"name": "AREPLACETERM", "field": },
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "D1", "field": },
+    {"name": "D2", "field": },
+    {"name": "D3", "field": },
+    {"name": "D4", "field": },
+    {"name": "D5", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "G", "field": },
+    {"name": "H", "field": },
+    {"name": "I", "field": },
+    {"name": "V1", "field": },
+    {"name": "V2", "field": },
+    {"name": "V3", "field": },
+    {"name": "V4", "field": },
+    {"name": "V5", "field": },
+    {"name": "9999999.14", "field": .01, "type": "regular"},
+    {"name": "9999999.14", "field": .02, "type": "regular"},
+    {"name": "9999999.14", "field": .03, "type": "regular"},
+    {"name": "9999999.14", "field": .1, "type": "regular"},
+    {"name": "9999999.14", "field": .11, "type": "regular"},
+    {"name": "9999999.14", "field": 1.01, "type": "regular"},
+    {"name": "9999999.14", "field": 1.01, "type": "regular"},
+    {"name": "9999999.14", "field": 1.03, "type": "regular"},
+    {"name": "9999999.14", "field": 1.03, "type": "regular"},
+    {"name": "9999999.14", "field": 1.05, "type": "regular"},
+    {"name": "9999999.14", "field": 1.05, "type": "regular"},
+    {"name": "9999999.14", "field": 1.07, "type": "regular"},
+    {"name": "9999999.14", "field": 1.07, "type": "regular"},
+    {"name": "9999999.14", "field": 1.09, "type": "regular"},
+    {"name": "9999999.14", "field": 1.09, "type": "regular"},
+    {"name": "9999999.14", "field": 1.15, "type": "regular"},
+    {"name": "9999999.14", "field": 99.97, "type": "regular"},
+    {"name": "9999999.14", "field": 99.99, "type": "regular"},
+    {"name": "9999999.14", "field": 8801, "type": "regular"},
+    {"name": "9999999.14", "field": 8802, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

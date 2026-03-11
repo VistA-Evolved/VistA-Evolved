@@ -1,0 +1,60 @@
+{
+  "fileNumber": 129.11,
+  "fileName": "LOINC COMPONENT",
+  "globalRoot": "129.11",
+  "globalReference": "^ETSLNC(129.11,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "COMPONENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ240I",
+      "length": 240I,
+      "required": true,
+      "helpText": "This is the name of the component or analyte measured e.g., potassium, hemoglobin, or hepatitis C antigen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTIVE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ250",
+      "length": 250,
+      "required": false,
+      "helpText": "This is the descriptive name of the component or analyte measured. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ40",
+      "length": 40,
+      "required": false,
+      "helpText": "This is the display name of the component or analyte measured. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RELATED NAME",
+      "dataType": "SUBFILE",
+      "rawType": "129.111",
+      "required": false,
+      "helpText": "This field contains related names of the component or analyte measured. ",
+      "isMultiple": true,
+      "subFileNumber": 129.111,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "VR", "field": },
+    {"name": "129.11", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

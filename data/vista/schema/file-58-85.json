@@ -1,0 +1,254 @@
+{
+  "fileNumber": 58.85,
+  "fileName": "CS WORKSHEET",
+  "globalRoot": "58.85",
+  "globalReference": "^PSD(58.85,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "RECORD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0",
+      "length": 9,
+      "required": true,
+      "helpText": "The record number for this worksheet entry. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DISPENSING SITE",
+      "dataType": "POINTER",
+      "rawType": "R*P58.8'",
+      "required": true,
+      "pointerTo": 58.8,
+      "helpText": "The pharmacy dispensing site (vault) for this Controlled Substances order. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAOU",
+      "dataType": "POINTER",
+      "rawType": "R*P58.8'",
+      "required": true,
+      "pointerTo": 58.8,
+      "helpText": "The Narcotic Area of Use requesting the Controlled Substances order. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "R*P50'",
+      "required": true,
+      "pointerTo": 50,
+      "helpText": "The Controlled Substances drug requested on this order. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "REQUEST #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0",
+      "length": 8,
+      "required": true,
+      "helpText": "The request number for this Controlled Substances order. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "QUANTITY ORDERED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0",
+      "length": 6,
+      "required": true,
+      "helpText": "The drug quantity originally requested on this Controlled Substances order. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORDER STATUS",
+      "dataType": "POINTER",
+      "rawType": "RP58.82'",
+      "required": true,
+      "pointerTo": 58.82,
+      "helpText": "A pointer to the order status for this Controlled Substances request. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TRANSACTION #",
+      "dataType": "POINTER",
+      "rawType": "P58.81'",
+      "required": false,
+      "pointerTo": 58.81,
+      "helpText": "If this request is processed by pharmacy, this field contains a pointer to the transaction dispensing this order. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "58.858",
+      "required": false,
+      "helpText": "Comments to pharmacy concerning this Controlled Substances order request. ",
+      "isMultiple": true,
+      "subFileNumber": 58.858,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MANUFACTURER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The manufacturer for the drug requested on this order. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LOT #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The lot number for the drug requested on this order. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "EXPIRATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The expiration date for the drug requested on this order. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ORDERED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the person requesting this Controlled Substances order. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PRINTED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "This printed flag will be set to a counter if this request has been printed on a worksheet report.  This flag will be used to compile the pharmacy worksheet log used in dispensing Controlled Substances drugs. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "DISPENSED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the name of the pharmacist dispensing this Controlled Substances order. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "DISPENSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The dispensed date/time of this Controlled Substances order. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "PHARMACY DISPENSING #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The pharmacy control number (Green Sheet #) assigned to identify and track this Controlled Substances order. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "TECH",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If a pharmacy technician processed this order, this field will contain a pointer to the name of the technician. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "QUANTITY DISPENSED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The actual drug quantity dispensed from pharmacy for this Controlled Substances order. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "REQUEST DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date/time this Controlled Substances request was entered by the NAOU. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ORDERED BY PHARMACY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "A pointer to the pharmacy employee's name entering the Controlled Substances request for nursing. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "EMERGENCY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "A \"YES\" entry in this field will cause an order to print on the pharmacy emergency order printer and allow for expedited processing. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This field is for infusion and PCA syringe orders. ",
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 23,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "AW", "field": },
+    {"name": "AW1", "field": },
+    {"name": "B", "field": },
+    {"name": "58.85", "field": .01, "type": "regular"},
+    {"name": "58.85", "field": 1, "type": "regular"},
+    {"name": "58.85", "field": 1, "type": "regular"},
+    {"name": "58.85", "field": 4, "type": "regular"},
+    {"name": "58.85", "field": 6, "type": "regular"},
+    {"name": "58.85", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSD(58.8,+$P(^(0),U,3),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(58.8,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 3, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^PSDRUG(+$P(^(0),U,4),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(50,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

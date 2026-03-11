@@ -1,0 +1,58 @@
+{
+  "fileNumber": 860.3,
+  "fileName": "ORDER CHECK ELEMENT",
+  "globalRoot": "860.3",
+  "globalReference": "^OCXS(860.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ELEMENT CONTEXT",
+      "dataType": "POINTER",
+      "rawType": "P860.6'",
+      "required": false,
+      "pointerTo": 860.6,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONDITIONAL EXPRESSION",
+      "dataType": "SUBFILE",
+      "rawType": "860.31",
+      "required": false,
+      "helpText": "    List of expressions that determine if this element  is TRUE. When all of the expressions are TRUE then  the element is TRUE.      Expressions are in the form of:       Data Field -> Conditional Operator -> 1 or 2 comparison                                           values depending on                                           the operator.      The conditional values can be either constant values, Reserved  words (NOW or TODAY as in the case of dates), or other fields within  the data.   ",
+      "isMultiple": true,
+      "subFileNumber": 860.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COMPILED ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "APGM", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "860.3", "field": .01, "type": "regular"},
+    {"name": "860.3", "field": .01, "type": "regular"},
+    {"name": "860.3", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

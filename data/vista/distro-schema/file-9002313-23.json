@@ -1,0 +1,36 @@
+{
+  "fileNumber": 9002313.23,
+  "fileName": "BPS NCPDP REASON FOR SERVICE CODE",
+  "globalRoot": "9002313.23",
+  "globalReference": "^BPS(9002313.23,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Code identifying the type of utilization conflict detected or the reason for the pharmacist's professional service.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the NCPDP REASON FOR SERVICE CODE used to override DUR rejects (e.g., SUBOPTIMAL DRUG/INDICATION, LABORATORY TEST NEEDED). ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.23", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

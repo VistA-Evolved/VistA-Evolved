@@ -1,0 +1,48 @@
+{
+  "fileNumber": 47.75,
+  "fileName": "SUPPORTING DOCUMENTATION TYPES",
+  "globalRoot": "47.75",
+  "globalReference": "^DG(47.75,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SUPPORTING DOCUMENTATION TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The SUPPORTING DOCUMENTATION TYPE field identifies the document  associated with a specific patient death event. Specifically how the  patient's death was recorded. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This code uniquely identifies the SUPPORTING DOCUMENTATION TYPE record. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "47.751",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 47.751,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "47.75", "field": .01, "type": "regular"},
+    {"name": "47.75", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

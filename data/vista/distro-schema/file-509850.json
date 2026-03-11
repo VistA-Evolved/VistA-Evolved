@@ -1,0 +1,68 @@
+{
+  "fileNumber": 509850,
+  "fileName": "CDR ACCOUNT",
+  "globalRoot": "509850I",
+  "globalReference": "^ACK(509850,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The ACCOUNT NUMBER field contains the account number for each cost  account as defined in the CDR Handbook issued annually. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The NAME field contains a descriptive title for the Cost Distribution Report (CDR) ACCOUNT NUMBER field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NORMAL ACCOUNT;E:EDUCATION & TRAINING;R:RESEARCH;P:PASS THROUGH;",
+      "helpText": "The TYPE field contains a designator for various kinds of CDR accounts  (i.e., N for NORMAL ACCOUNT, R for RESEARCH, E for EDUCATION, or P for  PASS THROUGH). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MEDICAL;2:SURGICAL;3:PSYCHIATRIC;4:VA NURSING HOME;5:INTERMEDIATE CARE;6:OUTPATIENT CARE;7:NON-VA FACILITIES;8:MISC BENEFITS & SVC;9:DOMICILIARY CARE;10:PSYCH RESIDENTIAL REHAB;11:INTERSTATION TRANS;12:SPEC INTEREST PROGRAMS;",
+      "helpText": "The CATEGORY field refers to the cost account series headings (e.g.,  MEDICAL, SURGICAL, etc.). ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "The ACTIVE field contains 0 for INACTIVE or 1 for ACTIVE.  Because entries in the CDR ACCOUNT file are pointed to by the CDR ACCOUNT field in the A&SP CLINIC VISIT file, entries should not be deleted. CDR account numbers which are not to be used should be marked as inactive. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AT", "field": },
+    {"name": "B", "field": },
+    {"name": "509850", "field": .01, "type": "regular"},
+    {"name": "509850", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

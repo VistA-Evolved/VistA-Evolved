@@ -1,0 +1,195 @@
+{
+  "fileNumber": 1.1,
+  "fileName": "AUDIT",
+  "globalRoot": "1.1",
+  "globalReference": "^DIA(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "INTERNAL ENTRY NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE/TIME RECORDED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "RECORD ADDED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:Added Record;",
+      "helpText": "When a new recorded is added to a file (sub-file) and the .01 field is being audited, then this field will be set to an 'A'. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ACCESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "i:INQUIRED TO ENTRY",
+      "helpText": "This flag (settable by ACCESSED^DIET) is designed to record that a user LOOKED UP the Entry, without necessarily changing it.  Such an audit might be set by the POST-SELECTION ACTION of a File, e.g. for HIPAA. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ENTRY NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ30",
+      "length": 30,
+      "required": false,
+      "helpText": "The value of the .01 field of the entry in which the audited change  occurred is retrieved from the Audit Log and output. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "FIELD NAME",
+      "dataType": "COMPUTED",
+      "rawType": "CJ50X",
+      "length": 50X,
+      "required": false,
+      "helpText": "The Field NAME of the Field for which the audited change was made is output. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "OLD VALUE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "The value that was changed by an audited edit is retrieved from the Audit Log  and output.  If no value existed <no previous value> is output. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "OLD INTERNAL VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.14,
+      "fieldName": "OLD W-P TEXT",
+      "dataType": "COMPUTED",
+      "rawType": "Cm",
+      "required": false,
+      "helpText": "Tells what the entire multi-line text field looked like BEFORE it was changed by the audited event. retrieved from the Audit Log and output. ",
+      "fieldNumber_": 2.14
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "DATATYPE OF OLD VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SET;P:POINTER;V:VARIABLE POINTER;",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.9,
+      "fieldName": "PATIENT",
+      "dataType": "COMPUTED",
+      "rawType": "Cp2",
+      "required": false,
+      "helpText": "If the audited File is #2 or #9000001, or if there is a pointer back to either of these Files from the audited File, then this field shows which particular Patient is involved in the audited data. ",
+      "fieldNumber_": 2.9
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NEW VALUE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "The value that was entered by an audited edit is retrieved from the Audit Log  and output.  If the existing value was removed and not replaced,  <deleted> is output. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.1,
+      "fieldName": "NEW INTERNAL VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3.1
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "DATATYPE OF NEW VALUE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SET;P:POINTER;V:VARIABLE POINTER;",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "MENU OPTION USED",
+      "dataType": "POINTER",
+      "rawType": "P19'",
+      "required": false,
+      "pointerTo": 19,
+      "helpText": "This is the Option that the Kernel menu system used to change the audited data. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "PROTOCOL or OPTION USED",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the Protocol or Option (type Protocol) that was used when the audit took place. ",
+      "fieldNumber_": 4.2
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "1.1", "field": .01, "type": "regular"},
+    {"name": "1.1", "field": .02, "type": "regular"},
+    {"name": "1.1", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N % S %=$P(^(0),U,2) D EN^DDIOL(\"   \"_$$NAKED^DIUTL(\"$$DATE^DIUTL(%)\"),\"\",\"?0\")"}
+  ]
+}

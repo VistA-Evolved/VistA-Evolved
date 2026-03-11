@@ -1,0 +1,54 @@
+{
+  "fileNumber": 394.73,
+  "fileName": "VAQ - ENCRYPTED FIELDS",
+  "globalRoot": "394.73I",
+  "globalReference": "^VAT(394.73,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "Encrypt Field",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "  Incrementing number used to uniquely identify each entry.  Entering  '+' will automatically determine this number. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "File",
+      "dataType": "NUMERIC",
+      "rawType": "NJ20,9",
+      "length": 20,
+      "required": false,
+      "helpText": "File containing the field to encrypt. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "Field",
+      "dataType": "NUMERIC",
+      "rawType": "NJ20,9",
+      "length": 20,
+      "required": false,
+      "helpText": "Field to encrypt. ",
+      "fieldNumber_": .03
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AB1", "field": },
+    {"name": "AB2", "field": },
+    {"name": "B", "field": },
+    {"name": "394.73", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "394.73", "field": .02, "type": "regular"},
+    {"name": "394.73", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE1, "value": "W ?($X+5),\"FILE: \",$P(^(0),U,2)"},
+    {"field": WRITE2, "value": "W ?($X+5),\"FIELD: \",$P(^(0),U,3)"}
+  ]
+}

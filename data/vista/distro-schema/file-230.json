@@ -1,0 +1,396 @@
+{
+  "fileNumber": 230,
+  "fileName": "ED LOG",
+  "globalRoot": "230",
+  "globalReference": "^EDP(230,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "LOG ENTRY TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time that this log record was added to the file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This allows the log entry to be associated with the station that  originated it.  It allows multiple institutions to be served by the same  system. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "AREA",
+      "dataType": "POINTER",
+      "rawType": "RP231.9'",
+      "required": true,
+      "pointerTo": 231.9,
+      "helpText": "This is the area in the hospital for which this record applies.   Initially, the only area is the emergency department.  This field allows  use to be expanded into other departments. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PATIENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the patient.  It allows a name to be entered in the  case of humanitarian care when the patient has not been entered into  VistA yet.   LastName,FirstName is the name format that should be used. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT SSN*",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the patient social security number in the case of humanitarian  care for a patient that does not exist in VistA. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "PATIENT ID",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "This is the patient in VistA for whom this log record is created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CLOSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This flag is set to YES when the patient has left the area (Emergency Department) and has been properly dispositioned.  At this time, the entry  no longer appears on the display board. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .071,
+      "fieldName": "CLOSED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the Date/Time when the 'CLOSED' field was set to true. ",
+      "fieldNumber_": .071
+    },
+    {
+      "fieldNumber": .072,
+      "fieldName": "CLOSED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "fieldNumber_": .072
+    },
+    {
+      "fieldNumber": .073,
+      "fieldName": "REMOVED IN ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "fieldNumber_": .073
+    },
+    {
+      "fieldNumber": .074,
+      "fieldName": "RESTORED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who restored the patient to the board. ",
+      "fieldNumber_": .074
+    },
+    {
+      "fieldNumber": .075,
+      "fieldName": "RESTORED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time when a patient was restored to the board. This only occurs if  the patient was 'Removed in Error'. ",
+      "fieldNumber_": .075
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TIME IN",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the patient actually arrived at the emergency  department.  The length of the visit is measured from this point in time. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "TIME OUT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the patient was discharged from the emergency  department (sent home, admitted, transferred somewhere else). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ARRIVAL MODE",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This is the source of the emergency department visit.  For example, the  patient may have arrived from a nursing home, VA Hospital, walked in, etc. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "PATIENT BRIEF ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a patient identifier that shows on the display board.  In the case of an ambulance or non-VA patient, this identifier may be constructed and stored here.  The identifier should be in the format:  last initial + last 4 of ssn.  For example, given a fictional patient named TWENTY VEHU with an SSN of 000-00-0020, this field would be V0020. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "VISIT",
+      "dataType": "POINTER",
+      "rawType": "P9000010'",
+      "required": false,
+      "pointerTo": 9000010,
+      "helpText": "This is the VISIT associated with this emergency department encounter. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CREATION SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:EDIS;1:SCHEDULING;2:CPRS;",
+      "helpText": "This field identifies the route by which the visit was created. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the specific clinic within the department (if multiple clinics  are used) that will be associated with this visit. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "COMPLAINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the complaint that the patient presents with.  It is usually  shown on the display board, so it should be brief enough to fit in the  column on the display board. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.2,
+      "fieldName": "DISPOSITION",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This is how the patient is dispositioned at the end of the visit. ",
+      "fieldNumber_": 1.2
+    },
+    {
+      "fieldNumber": 1.3,
+      "fieldName": "DISPOSITION TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the disposition field was last updated. ",
+      "fieldNumber_": 1.3
+    },
+    {
+      "fieldNumber": 1.4,
+      "fieldName": "DIAGNOSIS TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the time that the diagnoses were last updated. ",
+      "fieldNumber_": 1.4
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DELAY REASON",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This is the reason for delay in the case where the visit has taken longer  than the time recommended. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 1.51,
+      "fieldName": "DELAY REASON START TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.51
+    },
+    {
+      "fieldNumber": 1.52,
+      "fieldName": "DELAY REASON END TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 1.52
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COMPLAINT (LONG)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an optional field that allows the complaint to be entered in a  form that is longer than that allowed by the complaint column on the  display board. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3.2,
+      "fieldName": "STATUS",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This is the status of the patient during the course of the emergency  department visit (awaiting triage, ed patient, etc.). ",
+      "fieldNumber_": 3.2
+    },
+    {
+      "fieldNumber": 3.3,
+      "fieldName": "ACUITY",
+      "dataType": "POINTER",
+      "rawType": "P233.1'",
+      "required": false,
+      "pointerTo": 233.1,
+      "helpText": "This is the acuity of the patient.  The acuity is based on the ESI scale  with acuity levels 1-5. ",
+      "fieldNumber_": 3.3
+    },
+    {
+      "fieldNumber": 3.4,
+      "fieldName": "LOC",
+      "dataType": "POINTER",
+      "rawType": "P231.8'",
+      "required": false,
+      "pointerTo": 231.8,
+      "helpText": "This is the room / area where the patient is.  This may be a physical  room or a specific bed.  It may also be a \"conceptual area\", such as the  hallway, parking lot, x-ray, etc.  It does not necessarily need to be a  physical location. ",
+      "fieldNumber_": 3.4
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "MD ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider currently assigned to the patient. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 3.6,
+      "fieldName": "NURSE ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the nurse assigned to the patient. ",
+      "fieldNumber_": 3.6
+    },
+    {
+      "fieldNumber": 3.7,
+      "fieldName": "RESIDENT ASSIGNED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the resident assigned to the patient. ",
+      "fieldNumber_": 3.7
+    },
+    {
+      "fieldNumber": 3.8,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a comment that may be entered or updated for this particular  visit.  The comment may be optionally shown on the display board. ",
+      "fieldNumber_": 3.8
+    },
+    {
+      "fieldNumber": 3.9,
+      "fieldName": "HELD LOC",
+      "dataType": "POINTER",
+      "rawType": "P231.8'",
+      "required": false,
+      "pointerTo": 231.8,
+      "fieldNumber_": 3.9
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DISCHARGE DIAGNOSIS",
+      "dataType": "SUBFILE",
+      "rawType": "230.04A",
+      "required": false,
+      "helpText": "This multiple contains the diagnosis or diagnoses for the visit. ",
+      "isMultiple": true,
+      "subFileNumber": 230.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 7.1,
+      "fieldName": "FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the number of minutes desired between each set of repeated vital measurements taken. ",
+      "fieldNumber_": 7.1
+    },
+    {
+      "fieldNumber": 7.2,
+      "fieldName": "TIMER ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is an on/off switch, whether to continue taking vital measurements. ",
+      "fieldNumber_": 7.2
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ORDERS",
+      "dataType": "SUBFILE",
+      "rawType": "230.08A",
+      "required": false,
+      "helpText": "This multiple tracks orders during the course of the patient stay in the  emergency department. ",
+      "isMultiple": true,
+      "subFileNumber": 230.08,
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "AVISIT", "field": },
+    {"name": "B", "field": },
+    {"name": "V", "field": },
+    {"name": "230", "field": .01, "type": "regular"},
+    {"name": "", "field": .07, "type": "regular"},
+    {"name": "", "field": .074, "type": "regular"},
+    {"name": "230", "field": .12, "type": "regular"},
+    {"name": "230", "field": .12, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

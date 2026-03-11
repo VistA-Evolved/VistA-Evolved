@@ -1,0 +1,98 @@
+{
+  "fileNumber": 100.01,
+  "fileName": "ORDER STATUS",
+  "globalRoot": "100.01I",
+  "globalReference": "^ORD(100.01,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0X",
+      "length": 7,
+      "required": false,
+      "helpText": "This is the number of the status entry. All entries are reserved. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the status. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SHORT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a shorter version of the status name to be displayed on the Orders tab of the CPRS Chart. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the abbreviation of the status to be displayed on order reviews and printouts. The abbreviation is placed in its own node of the global and the entire node is reserved.  This allows for the possibility of an abbreviation which contains an up arrow. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "100.12",
+      "required": false,
+      "helpText": "This is the description of the status. ",
+      "isMultiple": true,
+      "subFileNumber": 100.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99.98,
+      "fieldName": "MASTER ENTRY FOR VUID",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field identifies the Master entry for a VUID associated with a  Term/Concept. ",
+      "fieldNumber_": 99.98
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXI",
+      "required": true,
+      "helpText": "VHA Unique ID (VUID). A unique meaningless integer assigned to reference terms VHA wide. ",
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "EFFECTIVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "100.0199DA",
+      "required": false,
+      "helpText": "Describes the pair Status and Effective Date/Time for each reference term. ",
+      "isMultiple": true,
+      "subFileNumber": 100.0199,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "AVUID", "field": },
+    {"name": "B", "field": },
+    {"name": "100.01", "field": .01, "type": "regular"},
+    {"name": "100.01", "field": 99.99, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W:$D(^(.1)) \"   \",$E(^(.1),1,245)"}
+  ]
+}

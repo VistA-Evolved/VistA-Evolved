@@ -1,0 +1,115 @@
+{
+  "fileNumber": 2006.916,
+  "fileName": "ARTIFACT",
+  "globalRoot": "2006.916",
+  "globalReference": "^MAGV(2006.916,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ARTIFACT TOKEN",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Holds the token that external clients will use to request a stream or the metadata for an artifact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ARTIFACT DESCRIPTOR",
+      "dataType": "POINTER",
+      "rawType": "RP2006.915'",
+      "required": true,
+      "pointerTo": 2006.915,
+      "helpText": "This is the Artifact Descriptor.   Tracks the type the artifact was originally stored as, provides file extension, etc. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "KEYLIST",
+      "dataType": "POINTER",
+      "rawType": "P2006.913'",
+      "required": false,
+      "pointerTo": 2006.913,
+      "helpText": "This is an ordered list of strings that have meaning for the client software.   Allows the client to retrieve artifacts in potentially nested groups defined by the client. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "SIZE IN BYTES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "The size of the artifact in bytes. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CRC",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The CRC value for the artifact. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CREATING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "RP2006.9193",
+      "required": true,
+      "pointerTo": 2006.9193,
+      "helpText": "This is the application that initially created the artifact. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CREATED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date and time at which the artifact was created. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LAST ACCESS DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time at which the artifact was most recently retrieved. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "DELETING APPLICATION",
+      "dataType": "POINTER",
+      "rawType": "P2006.9193",
+      "required": false,
+      "pointerTo": 2006.9193,
+      "helpText": "This is the application that deleted the artifact. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DELETED DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the atrifact was deleted. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "KL", "field": },
+    {"name": "2006.916", "field": .01, "type": "regular"},
+    {"name": "2006.916", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

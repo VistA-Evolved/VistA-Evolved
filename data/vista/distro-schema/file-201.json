@@ -1,0 +1,54 @@
+{
+  "fileNumber": 201,
+  "fileName": "USER CLASS",
+  "globalRoot": "201",
+  "globalReference": "^VA(201,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is User Class that is to be used for identifying users. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 99.99,
+      "fieldName": "VUID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "fieldNumber_": 99.99
+    },
+    {
+      "fieldNumber": 99.991,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "201.01SA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 201.01,
+      "fieldNumber_": 99.991
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "201", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

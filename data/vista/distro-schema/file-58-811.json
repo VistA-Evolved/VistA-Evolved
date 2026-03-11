@@ -1,0 +1,56 @@
+{
+  "fileNumber": 58.811,
+  "fileName": "DRUG ACCOUNTABILITY ORDER",
+  "globalRoot": "58.811I",
+  "globalReference": "^PSD(58.811,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORDER NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The ORDER NUMBER field contains number of the order placed with  the prime vendor. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VENDOR NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The VENDOR NAME field contains the name of the vendor from whom the order was placed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INVOICE DATA",
+      "dataType": "SUBFILE",
+      "rawType": "58.8112AI",
+      "required": false,
+      "helpText": "The INVOICE DATA multiple contains detail invoice data. It contains the line item data and adjustment data. ",
+      "isMultiple": true,
+      "subFileNumber": 58.8112,
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ADATE", "field": },
+    {"name": "AINV", "field": },
+    {"name": "AINV2", "field": },
+    {"name": "AINVDT", "field": },
+    {"name": "ALOC", "field": },
+    {"name": "ALOCMV", "field": },
+    {"name": "ASTAT", "field": },
+    {"name": "B", "field": },
+    {"name": "58.811", "field": .01, "type": "regular"},
+    {"name": "58.811", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

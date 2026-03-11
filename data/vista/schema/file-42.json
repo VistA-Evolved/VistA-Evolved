@@ -1,0 +1,282 @@
+{
+  "fileNumber": 42,
+  "fileName": "WARD LOCATION",
+  "globalRoot": "42I",
+  "globalReference": "^DIC(42,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFa",
+      "required": true,
+      "helpText": "Enter in this field the name of the ward location as selectable using bed control options in MAS.  Mixing ward names that are pure numbers (4,5,6...) with ward names that are alphabetic (A,B,C...) or  with ward names that combine numbers with alphas (4A, 4B, 5C...) may yield unexpected results when printing  output sorted by ward. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .015,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "*P40.8'a",
+      "required": false,
+      "pointerTo": 40.8,
+      "helpText": "Enter the division at which this ward is located. ",
+      "fieldNumber_": .015
+    },
+    {
+      "fieldNumber": .017,
+      "fieldName": "SPECIALTY",
+      "dataType": "POINTER",
+      "rawType": "R*P42.4'X",
+      "required": true,
+      "pointerTo": 42.4,
+      "helpText": "Enter the PTF specialty that this ward is assign to.  The specialty and its MPCR number will be transmitted to Austin as part of the N501 and N535 transactions.  This information is sent in the physcial specialty and physcial MPCR elements of those transactions. ",
+      "fieldNumber_": .017
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "BEDSECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter 2-10 characters describing the bedsection of this ward. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SERVICE",
+      "dataType": "SET",
+      "rawType": "RSX",
+      "required": true,
+      "setOfCodes": "M:MEDICINE;S:SURGERY;P:PSYCHIATRY;NH:NHCU;NE:NEUROLOGY;I:INTERMEDIATE MED;R:REHAB MEDICINE;SCI:SPINAL CORD INJURY;D:DOMICILIARY;B:BLIND REHAB;NC:NON-COUNT;",
+      "helpText": "Enter the service of the ward.  Choose from the available list.  This service is used by various MAS reports to determine how inpatient stays on this ward should be counted.  This should be answered carefully. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .035,
+      "fieldName": "RAI/MDS WARD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "This field provides a parameter to determine whether HL7 messages should  be generated and sent for patients in this ward to the RAI/MDS COTS system. ",
+      "fieldNumber_": .035
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "PRINT WARD ON WRISTBAND",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field determines if the ward location is printed on the patient's wristband.  If it is answered 'NO', it will not print, otherwise it will. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "FY TARGET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the target number of patients to be deen during a particular fiscal year. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SERIOUSLY ILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INCLUDE ON SERIOUSLY ILL LIST;",
+      "helpText": "If patients seen on this ward are typically seriously ill, enter yes here. When admitting or transferring patients to this ward their status will be changed to seriously ill (unless the users chooses otherwise). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "TERMINAL",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter the device number ($I value) on which inpatient reports for this ward should print. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PRIMARY LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If this field is left blank, the primary location on the Bed Status Report  will be 'UNKNOWN'.  You may group different wards together for a 'mini' Bed Status Report, examples of what you might want to group are wards  in the same physical location or wards of the same treating specialty, etc. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "INTERMEDIATE MEDICINE - LTC",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "1:Yes;0:No;",
+      "helpText": "Intermediate Medicine Service can provide both acute care and long term care.  The long term care wards must utilize the RAI/MDS tool.  Therefore, this field is needed to distinguish between the acute care and long term care wards.  This field only applies to those wards that have a service of \"INTERMEDIATE MED\".  When this field contains a \"1\" representing \"Yes\", the business rules that apply to a nursing home patient will be followed for patients in this ward.  For example, a patient in this w",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "CURRENTLY OUT-OF-SERVICE?",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8",
+      "length": 8,
+      "required": false,
+      "helpText": "This is a computed field to determine whether this ward is currently out of service.  A 1 will be returned if it is, otherwise, 0 will be returned. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "BEDS OUT-OF-SERVICE",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field will display the number of beds on this ward that are currently listed as out-of-service. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "AUTHORIZED BEDS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field will display the number of beds that are currently authorized by CO to be utilized on this ward. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "OPERATING BEDS",
+      "dataType": "COMPUTED",
+      "rawType": "CJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This computed field will display the number of operating beds currently existing on this ward.  Operating beds = Authorized beds - Out-of-service beds. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "SUBFILE",
+      "rawType": "42.01A",
+      "required": false,
+      "helpText": "This multiple contains all alternate names by which this ward location is known.  At any WARD LOCATION prompt, either the name of the ward or one of the synonyms can be entered. ",
+      "isMultiple": true,
+      "subFileNumber": 42.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "HOSPITAL LOCATION FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P44Xa",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "Enter the entry in the hospital location which this ward is associated with.  This is defined automatically when setting up a ward through the 'Ward Definition' option.  It MUST NOT BE EDITED!! ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "AUTHORIZED BEDS DATE",
+      "dataType": "DATE",
+      "rawType": "42.09D",
+      "required": false,
+      "helpText": "This multiple contains a history of the number of CO-authorized beds for this ward broken down by date.  Each time a new number is assigned, the date and the number of beds must be entered here.  This data is utilized by the gains and lossed and bed status reports. ",
+      "isMultiple": true,
+      "subFileNumber": 42.09,
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "OUT-OF-SERVICE DATE",
+      "dataType": "DATE",
+      "rawType": "42.08D",
+      "required": false,
+      "helpText": "This multiple contains data on when a ward was placed out-of-service and returned to service.  This multiple also contains information on the number of beds that are placed out-of-service at any given time. ",
+      "isMultiple": true,
+      "subFileNumber": 42.08,
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 400,
+      "fieldName": "G&L ORDER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,3X",
+      "length": 9,
+      "required": false,
+      "helpText": "This field indicates the G&L Order that this Ward will print and subsequently, the Totals on the Bed Status Report, (e.g. Ward with a G&L Order of 1.5 would be placed after a Ward with a G&L Order of 1.49 or earlier and would be before a Ward with a G&L Order of 1.51 or greater). This G&L Order placement has a direct impact on the way the totals calculate on the Bed Status Report. ",
+      "fieldNumber_": 400
+    },
+    {
+      "fieldNumber": 401,
+      "fieldName": "TOTALS",
+      "dataType": "SUBFILE",
+      "rawType": "42.05",
+      "required": false,
+      "helpText": "This field is a multiple and is directly related to the G&L Order field.   The information contained in this multiple is utilized on the Bed Status  Report. ",
+      "isMultiple": true,
+      "subFileNumber": 42.05,
+      "fieldNumber_": 401
+    },
+    {
+      "fieldNumber": 804,
+      "fieldName": "G&L HEADER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is free text (1 to 89 characters in length) and contains the  name that you want to print for this ward on the Bed Status Report. ",
+      "fieldNumber_": 804
+    },
+    {
+      "fieldNumber": 1490,
+      "fieldName": "*ACUITY CLASS",
+      "dataType": "COMPUTED",
+      "rawType": "CX",
+      "required": false,
+      "fieldNumber_": 1490
+    },
+    {
+      "fieldNumber": 1491,
+      "fieldName": "*NSERV",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:MED;2:SUR;3:ICU;4:PSY;",
+      "helpText": "Enter the nursing service associated with this ward. ",
+      "fieldNumber_": 1491
+    }
+  ],
+  "fieldCount": 25,
+  "crossReferences": [
+    {"name": "AGL", "field": },
+    {"name": "AINV", "field": },
+    {"name": "AWU", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "42", "field": .01, "type": "regular"},
+    {"name": "42", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "42", "field": .03, "type": "regular"},
+    {"name": "", "field": 44, "type": "regular"},
+    {"name": "42", "field": 400, "type": "regular"},
+    {"name": "42", "field": 1491, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 44, "value": "W \"\""},
+    {"field": 400, "value": "N D0,X S D0=+Y D WIN^DGPMDDCF I X W ?40,\"   *** INACTIVE ***\""}
+  ]
+}

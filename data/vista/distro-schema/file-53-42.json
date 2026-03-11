@@ -1,0 +1,35 @@
+{
+  "fileNumber": 53.42,
+  "fileName": "INPATIENT BACKGROUND JOB",
+  "globalRoot": "53.42DO",
+  "globalReference": "^PS(53.42,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "START DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MRDX",
+      "required": true,
+      "helpText": "  This is the date and time a background job was started. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FINISH DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "  This is the date and time the background job was finished. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

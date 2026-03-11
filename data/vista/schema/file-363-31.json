@@ -1,0 +1,62 @@
+{
+  "fileNumber": 363.31,
+  "fileName": "BILLING REGION",
+  "globalRoot": "363.31",
+  "globalReference": "^IBE(363.31,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REGION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Descriptive name of an area defined by one set of charges for a rate. This area may contain one or more divisions. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This uniquely identifies a region for a specific Billing Rate and defines  the smallest geographic area for which charges are created for that Rate.   For Reasonable Charges, this identifier is the 3-digit zip code of the  region's primary site. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This identifies the type of facility for the divisions assigned to the  region.  For Reasonable Charges these include: 1 - Provider based with  Inpatient care, 2 - Provider based with Outpatient care only,  3 - Non-Provider based Outpatient care. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "363.3111P",
+      "required": false,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "363.3121PA",
+      "required": false,
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "B", "field": },
+    {"name": "363.31", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

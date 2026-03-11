@@ -1,0 +1,149 @@
+{
+  "fileNumber": 351.2,
+  "fileName": "SPECIAL INPATIENT BILLING CASES",
+  "globalRoot": "351.2PI",
+  "globalReference": "^IBE(351.2,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient whose inpatient episode must be tracked. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "P405'",
+      "required": false,
+      "pointerTo": 405,
+      "helpText": "This field points to the admission in the PATIENT MOVEMENT (#405) file which is being tracked. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:AGENT ORANGE;2:IONIZING RADIATION;3:SOUTHWEST ASIA;4:SERVICE CONNECTED;5:MILITARY SEXUAL TRAUMA;6:HEAD/NECK CANCER;7:COMBAT VETERAN;8:PROJECT 112/SHAD;",
+      "helpText": "This field is used to determine whether the patient has claimed exposure to Agent Orange, Ionizing Radiation, Southwest Asia, Military Sexual Trauma, Head/Neck Cancer or Project 112/SHAD. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "BILLING EVENT",
+      "dataType": "POINTER",
+      "rawType": "P350'",
+      "required": false,
+      "pointerTo": 350,
+      "helpText": "This field points to the event record in the INTEGRATED BILLING ACTION (#350) file which may be used to reference all charges associated with the admission. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PATIENT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ADMITTED;2:DISCHARGED;",
+      "helpText": "This field indicates whether the patient is admitted or has been discharged.  The field is used to determine if monitoring of the billing case should begin. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE DISCHARGE ENTERED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date that the patient's discharge movement was entered into the system.  The date is used as the starting date in the 45-day period in which this case must be dispositioned. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CARE RELATED TO CONDITION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this patient's inpatient episode of care has any component at all which is related to the patient's claimed exposure. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "CASE DISPOSITIONED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether this billing case has been fully dispositioned.  Once the case has been dispositioned, then it will no longer be monitored by the nightly billing job. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REASON FOR NON-BILLING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field allows the user to enter a free-text comment explaining why this inpatient episode of care was not billed. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "USER ADDING ENTRY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field contains a pointer to the user who caused this entry to be created.  This would normally be the user who enters the admission movement for the patient. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DATE/TIME ENTRY CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the entry was created. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "USER LAST UPDATING",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is a pointer to the user who last updated the entry. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the entry was last updated. ",
+      "fieldNumber_": 2.04
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "351.2", "field": .01, "type": "regular"},
+    {"name": "351.2", "field": .02, "type": "regular"},
+    {"name": "351.2", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DGPM(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(405,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   Adm: \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(351.2,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

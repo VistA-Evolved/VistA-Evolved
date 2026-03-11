@@ -1,0 +1,50 @@
+{
+  "fileNumber": 2261.7,
+  "fileName": "ASISTS DEVICE/EQUIPMENT",
+  "globalRoot": "2261.7",
+  "globalReference": "^OOPS(2261.7,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter a Device/Equipment that will identify a sharps exposure item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "Enter a code that will identify a sharps exposure item. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:Sharp;N:Needlestick;",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2261.7", "field": .01, "type": "regular"},
+    {"name": "2261.7", "field": .01, "type": "regular"},
+    {"name": "2261.7", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

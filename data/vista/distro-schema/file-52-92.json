@@ -1,0 +1,175 @@
+{
+  "fileNumber": 52.92,
+  "fileName": "TPB INSTITUTION LETTERS",
+  "globalRoot": "52.92",
+  "globalReference": "^PS(52.92,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Pointer to Instituion file #4, to be used for printing TPB letters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARENT INSTITUTION",
+      "dataType": "POINTER",
+      "rawType": "P52.92'",
+      "required": false,
+      "pointerTo": 52.92,
+      "helpText": "This field is to be used to re-map Instituions, like CBOCs, to a  parent Institution for the purpose of providing a proper:            Letter Heading                      Local Pharmacy Phone Number(s)            Directors Signature Block ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TPB CONTACT PHONE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the first phone number veterans are to call for more  information regarding TPB. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TPB CONTACT PHONE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second phone number veterans are to call for more information regarding TPB. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ADDRESS LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ADDRESS LINE 1 ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ADDRESS LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ADDRESS LINE 2 ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "CITY ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ZIP CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ZIP CODE ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "The state portion of the institution physical address. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "ADDRESS LINE 1 (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TPB Mailing Address line 1 ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ADDRESS LINE 2 (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TPB Mailing Address line 2 ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "CITY (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "CITY (MAILING) ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "STATE (MAILING)",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "STATE For both Physical Address & TPB Mailing Address ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "ZIP CODE (MAILING)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "TPB ZIP CODE for mailing. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DIRECTORS SIG LINE 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Director Sig Line 1, it is typically the director's name. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "DIRECTORS SIG LINE 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DIRECTORS SIG LINE 2 ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "DIRECTORS SIG LINE 3",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "DIRECTORS SIG LINE 3 ",
+      "fieldNumber_": 2.03
+    }
+  ],
+  "fieldCount": 17,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "52.92", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

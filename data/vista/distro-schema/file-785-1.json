@@ -1,0 +1,27 @@
+{
+  "fileNumber": 785.1,
+  "fileName": "EEO COMPLAINT BASIS",
+  "globalRoot": "785.1",
+  "globalReference": "^EEO(785.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the 18 valid bases for filing EEO discrimination cases. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "785.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

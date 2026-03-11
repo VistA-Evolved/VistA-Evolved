@@ -1,0 +1,112 @@
+{
+  "fileNumber": 119.8,
+  "fileName": "NUTRITION EVENTS",
+  "globalRoot": "119.8",
+  "globalReference": "^FH(119.8,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This field contains a sequential number assigned to the event and has no meaning. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date/time at which the event occurred. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP115'",
+      "required": true,
+      "pointerTo": 115,
+      "helpText": "This is a pointer to the patient with which the event is associated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ADMISSION",
+      "dataType": "POINTER",
+      "rawType": "RP405'",
+      "required": true,
+      "pointerTo": 405,
+      "helpText": "This is a pointer to the admission (Movement) with which the event is associated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "TYPE OF EVENT",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "L:LOCATION;D:DIET;I:ISOLATION;T:T/F;O:OTHER;P:PREF.;S:STD. ORDERS;F:SUPP. FDG.;M:MESSAGE;Z:OUTPATIENT EVENT;",
+      "helpText": "This is a set of codes indicating the type of event. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "O:ORDERED;C:CANCELLED;A:ADMIT;T:TRANSFER;D:DISCHARGE;",
+      "helpText": "This is a set of codes indicating the type of action; A D T are associated only with location changes. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ORDER #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "helpText": "This value corresponds to the associated Order for the event. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the order; for location changes it represents the From-To Ward and Bed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ENTERED CLERK",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field contains the user who entered the order and is automatically captured at the time of entry. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AP", "field": },
+    {"name": "AP1", "field": },
+    {"name": "B", "field": },
+    {"name": "119.8", "field": .01, "type": "regular"},
+    {"name": "119.8", "field": 1, "type": "regular"},
+    {"name": "119.8", "field": 1, "type": "regular"},
+    {"name": "119.8", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

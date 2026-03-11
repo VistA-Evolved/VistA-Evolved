@@ -1,0 +1,81 @@
+{
+  "fileNumber": 407.5,
+  "fileName": "LETTER",
+  "globalRoot": "407.5I",
+  "globalReference": "^VA(407.5,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The name of a letter that has been initially created by the developer in a 'skeleton form' and the user edits the body of the letter.  These letters are utilized mostly in the Scheduling Module of the MAS DHCP software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The letter created is assigned a type for user specific needs.  For example, a letter created to alert a veteran that he has an appointment and a new travel legislation has been passed, the user may call this letter 'Beneficiary Travel'. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INITIAL SECTION OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "407.52",
+      "required": false,
+      "helpText": "The initial section of the letter is the portion that has been pre-\\ programmed by the developer to include items such as veteran's name, address, social security number and is in the format of a  VA style letter.  The first paragraph automatically lists the clinic and date/time he/she may have or had an appointment in one of the facility's outpatient areas. ",
+      "isMultiple": true,
+      "subFileNumber": 407.52,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "FINAL SECTION OF LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "407.53",
+      "required": false,
+      "helpText": "The final section of the letter is a word-processing field in which, through a scheduling menu option, the user can enter the body of the letter with site=specific information or announcements for the veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 407.53,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRINT DEFAULT PROVIDER?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field controls the printing of the clinic default provider on a  Scheduling letter regardless of its type. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "PRINT CLINIC LOCATION?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This field controls the printing of the clinic physical location for a  Scheduling letter regardless of its type. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "407.5", "field": .01, "type": "regular"},
+    {"name": "407.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"\""},
+    {"field": WRITE, "value": "W:$P(^(0),\"^\",2)]\"\" $S($D(^VA(407.6,$N(^VA(407.6,\"B\",$P(^VA(407.5,+Y,0),\"^\",2),0)),0)):$P(^(0),\"^\",2),1:\"\")"}
+  ]
+}

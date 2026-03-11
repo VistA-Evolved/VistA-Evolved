@@ -1,0 +1,114 @@
+{
+  "fileNumber": 344.71,
+  "fileName": "RCDPE SUSPENSE AUDIT",
+  "globalRoot": "344.71",
+  "globalReference": "^RCY(344.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date and time an ERA item was added to or removed from the Suspense  status. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user ID of the user who either placed the ERA line item in suspense  or edited an item already in suspense. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RECEIPT #",
+      "dataType": "POINTER",
+      "rawType": "P344'",
+      "required": false,
+      "pointerTo": 344,
+      "helpText": "Enter the receipt number associated with the ERA line item that is in  suspense. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "TRANSACTION #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "The receipt line item that is currently in suspense. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ17,2",
+      "length": 17,
+      "required": false,
+      "helpText": "Amount of the transaction that is suspended. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CLAIM #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Claim Number that is associated with the suspense entry. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "DISPOSITION OF SUSPENSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "I:In Suspense;P:Paid;R:Refund Sent;",
+      "helpText": "The disposition of the Suspended entry in the ERA file. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REASON TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Comment why the entry is in its current disposition. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MULTI TRANS SPLIT",
+      "dataType": "SUBFILE",
+      "rawType": "344.711A",
+      "required": false,
+      "helpText": "This multiple contains details of how a suspense line is apportioned between claims when a multi-transaction split is performed in Receipt Processing.   ",
+      "isMultiple": true,
+      "subFileNumber": 344.711,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "F", "field": },
+    {"name": "344.71", "field": .01, "type": "regular"},
+    {"name": "344.71", "field": .02, "type": "regular"},
+    {"name": "344.71", "field": .03, "type": "regular"},
+    {"name": "344.71", "field": .06, "type": "regular"},
+    {"name": "344.71", "field": .07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

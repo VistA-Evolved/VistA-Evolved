@@ -1,0 +1,68 @@
+{
+  "fileNumber": 403.43,
+  "fileName": "SCHEDULING EVENT",
+  "globalRoot": "403.43I",
+  "globalReference": "^SD(403.43,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Unique code that identifies an enrollment, request or appointment event.    This field uniquely identifies an event and is the primary key to the Scheduling Event file.  The event code corresponds to the following scheme:    HL-xxx    HL7 related event codes  SC-RSxxx  Resource related event codes  SC-RQxxx  Request related event codes  ZMxxx to become SC-MCxxx  Managed Care related event codes  SC-TMxxx  Team related event codes  SC-OExxx  Encounter related event codes   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Brief description of event type.   This field briefly describes the event type and is used to help identify the event. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EVENT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:REQUEST;2:ENROLLMENT;3:ENCOUNTER;4:TEAM;5:TEAM POSITION;6:PRACTITIONER POSITION;7:PATIENT TEAM;8:PATIENT POSITION;9:RESOURCE;10:VISIT TYPE;11:CLINICAL RESOURCE;12:SCHEDULE;13:QUERY;",
+      "helpText": "This field contains the event type.   Possible event types include:  Request, Enrollment and Encounter ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "HL7 EVENT CODE",
+      "dataType": "POINTER",
+      "rawType": "P779.001'",
+      "required": false,
+      "pointerTo": 779.001,
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "403.435",
+      "required": false,
+      "helpText": "This field contains the scheduling event description. ",
+      "isMultiple": true,
+      "subFileNumber": 403.435,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "EVN", "field": },
+    {"name": "403.43", "field": .01, "type": "regular"},
+    {"name": "403.43", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

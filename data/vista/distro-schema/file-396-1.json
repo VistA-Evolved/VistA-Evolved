@@ -1,0 +1,196 @@
+{
+  "fileNumber": 396.1,
+  "fileName": "AMIE SITE PARAMETER",
+  "globalRoot": "396.1",
+  "globalReference": "^DVB(396.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the name of the facility running the AMIE software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "*DAYS TO KEEP 2507 HISTORY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days a 2507 request will be kept before it is purged. Starred for deletion with DVBA*2.7*48. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ALL ADMISSIONS REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the admission reports are run. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DISCHARGE REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the discharge report is run. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INCOMPETENT REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the incompetent report is run. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "READMISSION REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the readmission report is run. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SERVICE-CONNECTED REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the service-connected report is run. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PENSION/A&A REPORT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the pension/A&A report is run. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "*NUMBER OF DAYS TO KEEP HISTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0I",
+      "length": 3,
+      "required": false,
+      "helpText": "This field determines how many days of 7131 information are kept as history by the 7131 purge routine. Starred for deletion with DVBA*2.7*48. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "REGIONAL OFFICES ALLOWED",
+      "dataType": "POINTER",
+      "rawType": "396.12P",
+      "required": false,
+      "helpText": "This field contains the regional offices that will be using AMIE at the site. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REMOTE SITE (7131)",
+      "dataType": "POINTER",
+      "rawType": "396.13P",
+      "required": false,
+      "helpText": "This field contains the names of the divisions that will be using the 7131 portion of AMIE. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "REMOTE SITE (2507)",
+      "dataType": "POINTER",
+      "rawType": "396.14P",
+      "required": false,
+      "helpText": "This field contains the names of the divisions that will be using the C&P portion of AMIE. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "2507 INTEGRITY REPORT STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:OPEN;2:COMPLETED;3:ALL;4:OFF;",
+      "helpText": "This field contains the parameter that controls the 2507's to review when reporting C&P Appointment Links on the C&P Exam Integrity report. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "C&P ROUTING LOCATION",
+      "dataType": "POINTER",
+      "rawType": "396.115P",
+      "required": false,
+      "helpText": "This field is a pointer to the HOSPITAL LOCATION file.  Its' purpose is to identify any Hospital location that requests C&P exams.  This field will also allow screening of Lab and Radiology data for printing with the final exam results.  When final results are printed, the system will search for Lab/Radiology results previous to 30 days from the request Release Date and print the results if they are associated with a location contained in this multiple. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "RUN NEW REQUESTS ON SATURDAY?",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The DATE REPORTED TO MAS is the start of the clock for a 2507 request. If the Hospital C&P section is open on Saturday, this field will be marked 'Yes' so that the Clerks can process 'New' requests on Saturday.         If Saturdays are skipped, those requests entered on Friday will be reported  as 'New' on Monday morning. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "APPT LINKING ENHANCED DIALOGUE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is an On/Off switch controlling the warnings and prompts that  may display when scheduling C&P appointments. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "C&P REPORT PARAMETER",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is an On/Off switch controlling inclusion of the C&P Appointment Report in the C&P Integrity Report. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "LAST EXAM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0I",
+      "length": 12,
+      "required": false,
+      "helpText": "This field contains the number of the last entry in the 2507 EXAM file (#396.4).  It should NEVER be edited. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "POST INIT SCRATCH",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used during AMIE installations to globally store data needed to complete a post initialization. ",
+      "fieldNumber_": 90
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "396.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

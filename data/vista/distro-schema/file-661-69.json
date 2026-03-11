@@ -1,0 +1,48 @@
+{
+  "fileNumber": 661.69,
+  "fileName": "PROSTHETIC INVENTORY GAIN/LOSS",
+  "globalRoot": "661.69",
+  "globalReference": "^RMPR(661.69,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION POINTER",
+      "dataType": "POINTER",
+      "rawType": "RP661.6'",
+      "required": true,
+      "pointerTo": 661.6,
+      "helpText": "This field is the back pointer to the reconciliation transaction in file 661.6 ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "GAIN/LOSS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This records the quantity gained or lost after a reconciliation (stock count) transaction has been posted for a HCPCS Item (for a given Station, Location and Vendor). The transaction record in file 661.6 will record the actual quantity counted. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GAIN/LOSS VALUE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "See comments for filed 2 - GAIN/LOSS. This is the dollar value associated with the gain or loss. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "661.69", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "fileNumber": 729,
+  "fileName": "DSS PRODUCTION UNIT",
+  "globalRoot": "729",
+  "globalReference": "^ECX(729,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DSS PRODUCTION UNIT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A unique two-character code for the DSS Production Unit.  DSS Production Units and associated codes are provided by the Bedford Technical Services Office.   The two characters may consist of any numeric digit or any uppercase alphabetic character. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "LONG DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "A descriptive phrase which defines the DSS Production Unit.   As with all information associated with DSS Production Units, this is provided by the Bedford Technical Services Office. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "An acronym-like character string which identifies the DSS Production Unit.   The string may be no more than 10 characters in length.  It may contain uppercase letters, numeric digits, and certain special characters (e.g., \"/\", \"-\", and <space>). ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "729", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,3)"}
+  ]
+}

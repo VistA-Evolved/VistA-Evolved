@@ -1,0 +1,67 @@
+{
+  "fileNumber": 19200.112,
+  "fileName": "VPE RTN VERSIONING",
+  "globalRoot": "19200.112O",
+  "globalReference": "^XVV(19200.112,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0X",
+      "length": 5,
+      "required": true,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "19200.1121",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19200.1121,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AC1", "field": },
+    {"name": "AC2", "field": },
+    {"name": "B", "field": },
+    {"name": "UNIQ", "field": },
+    {"name": "19200.112", "field": .01, "type": "regular"},
+    {"name": "19200.112", "field": .01, "type": "regular"},
+    {"name": "19200.112", "field": .01, "type": "regular"},
+    {"name": "19200.112", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

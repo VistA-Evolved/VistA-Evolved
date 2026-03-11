@@ -1,0 +1,551 @@
+{
+  "fileNumber": 411,
+  "fileName": "ADMIN. ACTIVITY SITE PARAMETER",
+  "globalRoot": "411I",
+  "globalReference": "^PRC(411,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION/SUBSTATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is station number or substation code. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INSTITUTION NAME",
+      "dataType": "POINTER",
+      "rawType": "P4'I",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "This is the name of the institution in this transaction. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "FACILITY TYPE",
+      "dataType": "POINTER",
+      "rawType": "P411.2'",
+      "required": false,
+      "pointerTo": 411.2,
+      "helpText": "This is the facility type. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "RECEIVING LOCATION",
+      "dataType": "SUBFILE",
+      "rawType": "411.01",
+      "required": false,
+      "helpText": "This is the receiving location. ",
+      "isMultiple": true,
+      "subFileNumber": 411.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAIL INVOICE LOCATION",
+      "dataType": "SUBFILE",
+      "rawType": "411.03",
+      "required": false,
+      "helpText": "This is information about the mail invoice location. ",
+      "isMultiple": true,
+      "subFileNumber": 411.03,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PRINTER USE",
+      "dataType": "SET",
+      "rawType": "411.02S",
+      "required": false,
+      "helpText": "This is information about the printer. ",
+      "isMultiple": true,
+      "subFileNumber": 411.02,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "HOSPITAL STREET ADDR.1",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the street address of the hospital. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "HOSPITAL STREET ADDR.2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the second street address of the hospital. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "HOSPITAL CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the city of the address of the hospital. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "HOSPITAL STATE",
+      "dataType": "POINTER",
+      "rawType": "RP5'",
+      "required": true,
+      "pointerTo": 5,
+      "helpText": "This is the state of the address of the hospital. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "HOSPITAL ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the 5 to 9 digit zip code for the address of the hospital. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 19.2,
+      "fieldName": "HOSPITAL PHONE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the phone number of the hospital. ",
+      "fieldNumber_": 19.2
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "SUPPLY P.O. FORM TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PRE-PRINTED;2:FREE FORM;",
+      "helpText": "This is the supply purchase order form type. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PRIMARY STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;",
+      "helpText": "This is the station (e.g., VA Medical Center) that provides administrative support for other facilities such as national cemeteries, remote warehouses, etc.. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "FISCAL ACCOUNTING AUTOMATED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates if the accounting module of the IFCAP system is operating. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FMS PAYMENTS BY STATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALL PAYMENTS;C:CERTIFIED PAYMENTS ONLY;N:NO PAYMENTS;",
+      "helpText": "These are FMS payments listed by station. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SUPPLY RECEIVING LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "W:WAREHOUSE;P:PPM;N:NO AUTOMATED RECEIVING;",
+      "helpText": "This is a location that will be processing a receiving report on the computer. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "RECEIVING REPORT TRANS METHOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:US POSTAL SERVICE;1:ELECTRONIC - IMMEDIATE RELEASE;2:ELECTRONIC - BATCH RELEASE;",
+      "helpText": "   Enter 0 or null, if printed copies of receiving reports will be mailed to the Austin Finance Center.    Enter 1, if each receiving report will be automatically transmitted electronically to Austin, as soon as the CALM code sheet is released.    Enter 2, if receiving reports will be added to a list (batch) of receiving reports ready to be transmitted electronically to Austin. Every receiving report on the list will be transmitted at the same time, either through an option allowing the user to ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "CODE SHEET RETENTION PERIOD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This indicates the number of days code sheets are to be retained before deletion. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "DATE/TIME STAMP IN FISCAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the date/time stamp purchase order that is printed in fiscal from supply. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "SUPPLY ENTER BOC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This is the supply budget object code (BOC). ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "STATUS OF FUNDS TRACKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "YES allows status of funds tracking based on the FMS 826 report. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "INTERMEDIATE PRODUCT CODE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "YES indicates that Fiscal is using Intermediate Product Codes. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "PRINT FMS VENDOR ID",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "YES indicates the FMS ID will print on purchase orders. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ADDRESS CODE (GSA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the six digit activity address code for General Services Administration (GSA) and Defense Logistics Agency (DLA) code sheets. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "PRINT REC RPT IN FISCAL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:ASK TO PRINT RECEIVING REPORT IN FISCAL;N:NOT ASK TO PRINT RECEIVING REPORT IN FISCAL;",
+      "helpText": "This flag will control whether users doing Warehouse Receiving will see the question 'Do you want to also print the receiving report in FISCAL?'. If they answer 'Y' (YES), then each time the warehouse person signs (approves) the receiving information just entered, the computer will give him/her the option to print a copy of the receiving report in Fiscal at the same time the copy prints in Supply.  If they answer 'N' (NO), then they will not even see the question, and will not have the option to",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DISPLAY UNOBLIGATED BALANCE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This flag is temporary.  Currently, during Fiscal Obligation processing, the unobligated balance is displayed online.  To get this figure, the system adds up all transactions (2237's) from file 410 for the fiscal year, quarter and control point of the current obligation.  This can be very time consuming near the end of a quarter.  This function will allow Fiscal to 'turn off' the display, so that the obligation will work faster. We plan to find a quicker way to display the balance, at which time",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "RECEIPT BEFORE OBLIGATION OK?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "If 'YES' is entered, the system will allow receiving to be entered on a purchase order before obligation by Fiscal. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ACTIVITY ADDRESS CODE (DLA)",
+      "dataType": "SUBFILE",
+      "rawType": "411.04",
+      "required": false,
+      "helpText": "This is the multiple to the field that contains a six digit activity address code for Defense Logistics Agency (DLA) code sheets. ",
+      "isMultiple": true,
+      "subFileNumber": 411.04,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "CAN FISCAL ADD VENDORS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Enter '1' if Fiscal can add entries to the Vendor File. If this field is not filled in, the default value is NO. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ISSUE BOOK SORT DEFAULT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ALPHA;N:NSN;",
+      "helpText": "This field contains codes for the Issue Book sort defaults, used to sort items on the Issue Request Form that prints in supply.  They are used only for those services not on the Inventory/Distribution file.  'A' stands for alpha sort and 'N' stands for NSN sort. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "SCREEN FOR FISCAL USER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Yes in this field allows for screening of more than one Fiscal Service (i.e., VA Medical Centers and VA Regional Offices). ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "AUTHORIZED FISCAL USER",
+      "dataType": "POINTER",
+      "rawType": "411.05P",
+      "required": false,
+      "helpText": "This is a multiple to a pointer field for Authorized Fiscal Users, #411.05.  Information under this field is required when replying Yes in the Screen for Fiscal User field. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "ISMS/LOG SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LOG ONLY;2:ISMS ONLY;",
+      "helpText": "This field indicates whether the local IFCAP system is transmitting code sheets to LOG or to ISMS. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "ISMS MAILGROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the name of the Mail Group which is to receive MailMan messages about ISMS transmissions. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "ISMS TRANSACTION TIMEOUT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field contains the number of seconds that IFCAP should wait for a response before timing out when transmitting records to ISMS. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "VALIDATION VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This is the version number of the algorithms used to encode and decode the Validation Code created at the time that the official approving the transaction entered their electronic signature.   ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "IFCAP TERMINATED USER",
+      "dataType": "POINTER",
+      "rawType": "411.045PA",
+      "required": false,
+      "helpText": "This field is automatically populated when a user is terminated via entry in the Kernel Termination field.  Users stored in this field cannot be entered as requestors in IFCAP. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "APPLICATION COORDINATOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the name of the application coordinator. This field is used in conjunction with FMS transaction processing. If a transmission error occurs, a MailMan message with all available information is sent to the application coordinator, using the name in this field. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "FMS SECURITY CODE",
+      "dataType": "POINTER",
+      "rawType": "RP420.138'",
+      "required": true,
+      "pointerTo": 420.138,
+      "helpText": "This is the FMS security code used in document transmissions. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "DAYS TO TRACK INVOICES",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field holds the number of days to track invoices. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "CARRY FORWARD 4TH QTR REQUESTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "The field is used to control the 4th quarter outstanding requests being carried forward to the new fiscal year. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "FMS-ET VENDOR CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a vendor code used in FMS documents. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "FMS-ET ALTERNATE ADDRESS IND.",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is an alternate address indicator used in FMS documents. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "RANGE OF % FOR RECONCILING AMT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the % range used to match the purchase card order in the purchase card reconciliation option. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "FMS-ET RECORD COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is a counter used to assign an id number for the FMS-ET record. The id number is assigned by counter number modulo 10000 (last four digits are used). ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "PROMPT WHEN PRINTING?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "YES indicates that when approving a 1358/2237, the user will be prompted for a print device.  NO indicates that the user will not be prompted and the document will queue to a background printer, if possible.  This feature is in effect only if substations are being utilized. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "PARENT STATION",
+      "dataType": "POINTER",
+      "rawType": "*P411'",
+      "required": false,
+      "pointerTo": 411,
+      "helpText": "This is the parent station # of a substation entry. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "FACILITY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the facility name. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "FISCAL REVIEW OF VRQ",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:NO;Y:YES;",
+      "helpText": "This field is used to require FISCAL to review each FMS VENDOR REQUEST. If this field is set to YES no VRQ will be sent to Austin untill FISCAL reviews the request.  If FISCAL wants they can check to see if the vendor is in the FMS VENDor FILE.  Any differences between the FMS entry and the local entry can be changed at the local site and FISCAL is able to prevent sending the VRQ to Austin.       If this field is set to NO all VRQs will go to Austin as soon as they are created.  If this field is",
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "PRODUCTION/TRAINING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TRAINING;P:PRODUCTION;",
+      "helpText": "Setting this field to TRAINING will send all transactions to the non- production queue in Austin.  Leaving this field blank or setting it to PRODUCTION will send all transactions to the production queue in Austin. ",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 106,
+      "fieldName": "FCP MONITOR STATUS",
+      "dataType": "SET",
+      "rawType": "*S",
+      "required": false,
+      "setOfCodes": "0:NOT USED;1:ENABLED;2:NOT ENABLED;",
+      "helpText": "This field is used to control the state of the FCP monitor and should be  populated for the primary station only (others are ignored). To ask the  monitor to stop, set this field to \"NOT ENABLED\", to allow it to start,  set it to \"ENABLED\". ",
+      "fieldNumber_": 106
+    },
+    {
+      "fieldNumber": 107,
+      "fieldName": "FCP MONITOR RUNNING?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This flag is set to 1 (\"YES\") to indicate that the FCP monitor is  running. Users should not edit this field. ",
+      "fieldNumber_": 107
+    }
+  ],
+  "fieldCount": 53,
+  "crossReferences": [
+    {"name": "A IFCAP-Wide Parameters", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "UP", "field": },
+    {"name": "411", "field": .01, "type": "regular"},
+    {"name": "411", "field": .01, "type": "regular"},
+    {"name": "411", "field": .01, "type": "regular"},
+    {"name": "411", "field": .1, "type": "regular"},
+    {"name": "411", "field": 21, "type": "regular"},
+    {"name": "411", "field": 39, "type": "regular"},
+    {"name": "411", "field": 101, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,10),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"  \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

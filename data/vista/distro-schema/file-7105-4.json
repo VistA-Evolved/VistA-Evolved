@@ -1,0 +1,133 @@
+{
+  "fileNumber": 7105.4,
+  "fileName": "NOIS MODULE/VERSION",
+  "globalRoot": "7105.4",
+  "globalReference": "^FSC(\"MOD\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the module and version. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field can be set to YES to inactivate this module/version. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available for any call having this module. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VERSION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:(current version);2:(beta version);3:(old version);",
+      "helpText": "This field indicates the type of module/version (beta, current, old). This field reflects the current status of this module/version. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the common namespace for this module/version. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DEVELOPING OFFICE",
+      "dataType": "POINTER",
+      "rawType": "P7105.3'",
+      "required": false,
+      "pointerTo": 7105.3,
+      "helpText": "This field is the office that developed this module/version. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "NAMING CONVENTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is a naming convention used to distribute media and identify this module/version. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PACKAGE",
+      "dataType": "POINTER",
+      "rawType": "P7105.5'",
+      "required": false,
+      "pointerTo": 7105.5,
+      "helpText": "This is the package for this module/version. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7105.48",
+      "required": false,
+      "helpText": "These are synonyms for this module/version. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.48,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "7105.41",
+      "required": false,
+      "helpText": "This is a description of this module/version. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.41,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7105.499",
+      "required": false,
+      "helpText": "These are the names used by the client for this module/version. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.499,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "7105.4", "field": .01, "type": "regular"},
+    {"name": "7105.4", "field": 3, "type": "regular"},
+    {"name": "7105.4", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 2, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(7105.4,2,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

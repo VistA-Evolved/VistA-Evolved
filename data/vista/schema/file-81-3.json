@@ -1,0 +1,151 @@
+{
+  "fileNumber": 81.3,
+  "fileName": "CPT MODIFIER",
+  "globalRoot": "81.3I",
+  "globalReference": "",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MODIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the modifier. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a brief description of the modifier. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the modifier code. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "C:CPT;H:HCPCS;V:VA NATIONAL;",
+      "helpText": "This field contains the modifier source.  For example, the source could be either American Medical Association (AMA) or Health Care Financing Administration (HCFA). ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "INACTIVE FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INACTIVE;",
+      "helpText": "This is 1 if the modifier is currently inactive. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the CPT Modifier becomes/became inactivated. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "ACTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date the CPT Modifier becomes/became activated. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "RANGE",
+      "dataType": "SUBFILE",
+      "rawType": "81.32A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 81.32,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "81.31",
+      "required": false,
+      "helpText": "This field contains a detailed description of the modifier. ",
+      "isMultiple": true,
+      "subFileNumber": 81.31,
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "81.33DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 81.33,
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "NAME (VERSIONED)",
+      "dataType": "DATE",
+      "rawType": "81.361D",
+      "required": false,
+      "helpText": "This is a history of the CPT Modifiers (short text) to include the date the text was first used along with the text. ",
+      "isMultiple": true,
+      "subFileNumber": 81.361,
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "DESCRIPTION (VERSIONED)",
+      "dataType": "DATE",
+      "rawType": "81.362D",
+      "required": false,
+      "helpText": "This is a history of the CPT Modifiers descriptions (long text) to  include the date the text was first used along with the text.   ",
+      "isMultiple": true,
+      "subFileNumber": 81.362,
+      "fieldNumber_": 62
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "ACT1", "field": },
+    {"name": "ACT2", "field": },
+    {"name": "ACT3", "field": },
+    {"name": "ASD", "field": },
+    {"name": "AST", "field": },
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "M", "field": },
+    {"name": "MR", "field": },
+    {"name": "81.3", "field": .01, "type": "regular"},
+    {"name": "81.3", "field": .01, "type": "regular"},
+    {"name": "81.3", "field": .01, "type": "regular"},
+    {"name": "81.3", "field": .02, "type": "regular"},
+    {"name": "81.3", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "D EN^DDIOL((\"  \"_$$IDMDS^ICPTID(+Y)),\"\",\"?0\")"},
+    {"field": 5, "value": "D EN^DDIOL((\"   \"_$$IDMD^ICPTID(+Y,5)),\"\",\"?0\")"}
+  ]
+}

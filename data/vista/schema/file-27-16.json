@@ -1,0 +1,104 @@
+{
+  "fileNumber": 27.16,
+  "fileName": "ENROLLMENT GROUP THRESHOLD",
+  "globalRoot": "27.16",
+  "globalReference": "^DGEN(27.16,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EGT EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field will contain the date that the enrollment group threshold is effective. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EGT PRIORITY",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:GROUP 1;2:GROUP 2;3:GROUP 3;4:GROUP 4;5:GROUP 5;6:GROUP 6;7:GROUP 7;8:GROUP 8;",
+      "helpText": "This field will contain the enrollment priority group threshold. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EGT SUBGROUP",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:a;3:c;4:d;",
+      "helpText": "This field will contain the enrollment priority subgroup threshold. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "EGT TYPE",
+      "dataType": "SET",
+      "rawType": "RSI",
+      "required": true,
+      "setOfCodes": "1:ANNUAL FISCAL YEAR;2:STOP NEW ENROLLMENTS DURING CYCLE;3:MID-CYCLE CHANGE;4:ENROLLMENT DECISION;",
+      "helpText": "This field will contain the reason associated with the enrollment group threshold setting. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "FEDERAL REGISTER DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field will contain the date that the enrollment group threshold is posted in the Federal Register. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This field will contain the date/time that the enrollment group threshold record is entered/created. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SOURCE OF EGT",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:HEC;",
+      "helpText": "How the enrollment group threshold was determined. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is populated automatically when a new Enrollment Group  Threshold is set, to prevent problems with future EGT settings. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "REMARKS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FIX",
+      "required": false,
+      "helpText": "This field will contain any remarks associated with the enrollment group threshold setting. ",
+      "fieldNumber_": 25
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "27.16", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

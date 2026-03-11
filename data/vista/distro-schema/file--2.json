@@ -1,0 +1,25 @@
+{
+  "fileNumber": .2,
+  "fileName": "DESTINATION",
+  "globalRoot": ".21",
+  "globalReference": "^DIC(.2,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESTINATION",
+      "dataType": "POINTER",
+      "rawType": "P",
+      "required": false,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+
+  ],
+  "identifiers": [
+
+  ]
+}

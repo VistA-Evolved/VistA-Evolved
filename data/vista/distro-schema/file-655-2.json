@@ -1,0 +1,620 @@
+{
+  "fileNumber": 655.2,
+  "fileName": "SWS ASSESSMENT DATA BASE",
+  "globalRoot": "655.2OIP",
+  "globalReference": "^SOWK(655.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This field is used for the patient's name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "FILE ENTRY DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to show date the data was entered. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .022,
+      "fieldName": "SOURCE OF REFERRAL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show where the source of referral was made from. ",
+      "fieldNumber_": .022
+    },
+    {
+      "fieldNumber": .0221,
+      "fieldName": "SOURCE OF INFORMATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to show where the source of information was received from. ",
+      "fieldNumber_": .0221
+    },
+    {
+      "fieldNumber": .023,
+      "fieldName": "REFERRAL DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to show the date referral was made. ",
+      "fieldNumber_": .023
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PRIMARY SOCIAL WORKER",
+      "dataType": "POINTER",
+      "rawType": "R*P200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is used to show what social worker first entered data on a patient. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "PRIMARY CASE NUMBER",
+      "dataType": "POINTER",
+      "rawType": "RP650'",
+      "required": true,
+      "pointerTo": 650,
+      "helpText": "This field is used to show first case number for patient. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SUPERVISOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This field is used to show the social worker's supervisor.   ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SURROGATE",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the surrogate supervisor for another supervisor.   ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "OTHER FINANCIAL RESOURCES",
+      "dataType": "SUBFILE",
+      "rawType": "655.21",
+      "required": false,
+      "helpText": "This field is used to enter description of other financial resources of veteran.   ",
+      "isMultiple": true,
+      "subFileNumber": 655.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "EMPLOY/FINANCIAL ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.22",
+      "required": false,
+      "helpText": "This field is used to enter employment and financial assessments of veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 655.22,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "IS INCOME SUFFICIENT ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;0:UNKNOWN;",
+      "helpText": "This field is used to show if reported income is sufficient to meet veteran's needs. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "POTENTIAL EMPLOYABILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;U:UNKNOWN;",
+      "helpText": "This field is used to show if veteran has any employability potential. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPECIAL TRAINING/SKILLS",
+      "dataType": "SUBFILE",
+      "rawType": "655.23",
+      "required": false,
+      "helpText": "This field is used to enter any special training or skills of the veteran.   ",
+      "isMultiple": true,
+      "subFileNumber": 655.23,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EDUCATIONAL ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.24",
+      "required": false,
+      "helpText": "This field is used to enter educational assessment of the veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 655.24,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "HIGHEST LEVEL OF EDUCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LESS THAN 6;2:6 - 12;3:12 - 16;4:MORE THAN 16;",
+      "helpText": "This field is used to show highest level of education attained. ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 4.2,
+      "fieldName": "EDUCATIONAL PROGRAM/SCHOOL?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to show if veteran is currently enrolled in a educational program/trade. ",
+      "fieldNumber_": 4.2
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MILITARY ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.25",
+      "required": false,
+      "helpText": "This field is used to enter military assessment of the veteran.   ",
+      "isMultiple": true,
+      "subFileNumber": 655.25,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "MILITARY ADJUSTMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter military assessment of veteran. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "SPOUSE'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the veteran's spouse.  This information is recommended to be entered if the spouse is not listed as the primary next of kin. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.1,
+      "fieldName": "ADDRESS 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the address of the spouse. ",
+      "fieldNumber_": 6.1
+    },
+    {
+      "fieldNumber": 6.2,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter a second line for the address. ",
+      "fieldNumber_": 6.2
+    },
+    {
+      "fieldNumber": 6.3,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the city in which the spouse lives. ",
+      "fieldNumber_": 6.3
+    },
+    {
+      "fieldNumber": 6.4,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is used to show what state the spouse resides. ",
+      "fieldNumber_": 6.4
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the zip code of the spouse. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the phone number of the spouse. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "CHILDREN'S NAME",
+      "dataType": "SUBFILE",
+      "rawType": "655.28",
+      "required": false,
+      "helpText": "This multiple field is used to enter the name(s) of veterans's children if there are any.  ",
+      "isMultiple": true,
+      "subFileNumber": 655.28,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MOTHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter name of the veteran's mother. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 9.1,
+      "fieldName": "FATHER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the veteran's father. ",
+      "fieldNumber_": 9.1
+    },
+    {
+      "fieldNumber": 9.2,
+      "fieldName": "SIBLINGS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the siblings of the veteran. ",
+      "fieldNumber_": 9.2
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "INITIAL PLAN OF ACTION",
+      "dataType": "SUBFILE",
+      "rawType": "655.31",
+      "required": false,
+      "helpText": "This field is used to enter plan of action as related to problems entered. ",
+      "isMultiple": true,
+      "subFileNumber": 655.31,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "CAREGIVER",
+      "dataType": "SUBFILE",
+      "rawType": "655.32I",
+      "required": false,
+      "helpText": "This sub field is used to enter potential caregivers for the veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 655.32,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "655.33",
+      "required": false,
+      "helpText": "This field is used to enter comments about the social/family assessment. ",
+      "isMultiple": true,
+      "subFileNumber": 655.33,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SOCIAL SUPPORT SYSTEM",
+      "dataType": "SUBFILE",
+      "rawType": "655.34",
+      "required": false,
+      "helpText": "This field is used to enter social support system. ",
+      "isMultiple": true,
+      "subFileNumber": 655.34,
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "USE OF COMMUNITY RESOURCES",
+      "dataType": "SUBFILE",
+      "rawType": "655.35",
+      "required": false,
+      "helpText": "This field is used to enter Use of Available Community Resources. ",
+      "isMultiple": true,
+      "subFileNumber": 655.35,
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CURRENT LIVING ARRANGEMENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ALONE;2:SPOUSE;3:RELATIVES;4:NON-RELATIVES;5:GROUP QUARTERS, NOT HEALTH RELATED;6:GROUP QUARTERS, HEALTH RELATED;",
+      "helpText": "This field is used to enter living arrangements of the veteran. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "SOCIAL/FAMILY ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.37",
+      "required": false,
+      "helpText": "This field is used to enter Social and Family Assessments. ",
+      "isMultiple": true,
+      "subFileNumber": 655.37,
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PRELIMINARY PROBLEMS",
+      "dataType": "POINTER",
+      "rawType": "655.38PA",
+      "required": false,
+      "helpText": "This sub file is used to enter preliminary problems of veterans.   ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 17.1,
+      "fieldName": "PROGRESS NOTE DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field is used to enter date that progress note was entered/edited. ",
+      "fieldNumber_": 17.1
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "NOTES SECTION",
+      "dataType": "POINTER",
+      "rawType": "655.218PA",
+      "required": false,
+      "helpText": "This section of file #655.2 will contain notes about the patients. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 29.1,
+      "fieldName": "DURABLE POWER OF ATTORNEY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:N0;",
+      "helpText": "This field is used to show if there is a power of attorney. ",
+      "fieldNumber_": 29.1
+    },
+    {
+      "fieldNumber": 29.2,
+      "fieldName": "LIVING WILL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to show there is a Living Will. ",
+      "fieldNumber_": 29.2
+    },
+    {
+      "fieldNumber": 29.3,
+      "fieldName": "GUARDIANSHIP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to show guardianship if applicable. ",
+      "fieldNumber_": 29.3
+    },
+    {
+      "fieldNumber": 29.4,
+      "fieldName": "ATTORNEY'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show the name of the Power of Attorney. ",
+      "fieldNumber_": 29.4
+    },
+    {
+      "fieldNumber": 29.5,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show the address of the attorney. ",
+      "fieldNumber_": 29.5
+    },
+    {
+      "fieldNumber": 29.6,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter a second address. ",
+      "fieldNumber_": 29.6
+    },
+    {
+      "fieldNumber": 29.7,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show what city the attorney resides. ",
+      "fieldNumber_": 29.7
+    },
+    {
+      "fieldNumber": 29.8,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is used to show what state the attorney resides. ",
+      "fieldNumber_": 29.8
+    },
+    {
+      "fieldNumber": 29.9,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the zip code. ",
+      "fieldNumber_": 29.9
+    },
+    {
+      "fieldNumber": 29.91,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the phone number of the attorney. ",
+      "fieldNumber_": 29.91
+    },
+    {
+      "fieldNumber": 29.92,
+      "fieldName": "GUARDIAN'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the name of the veteran's guardian. ",
+      "fieldNumber_": 29.92
+    },
+    {
+      "fieldNumber": 29.93,
+      "fieldName": "ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter the address of the guardian. ",
+      "fieldNumber_": 29.93
+    },
+    {
+      "fieldNumber": 29.94,
+      "fieldName": "ADDRESS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to enter a second line for address. ",
+      "fieldNumber_": 29.94
+    },
+    {
+      "fieldNumber": 29.95,
+      "fieldName": "CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show what city the guardian resides. ",
+      "fieldNumber_": 29.95
+    },
+    {
+      "fieldNumber": 29.96,
+      "fieldName": "STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "This field is used to show what state the guardian resides. ",
+      "fieldNumber_": 29.96
+    },
+    {
+      "fieldNumber": 29.97,
+      "fieldName": "ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show the zip code of the guardian. ",
+      "fieldNumber_": 29.97
+    },
+    {
+      "fieldNumber": 29.98,
+      "fieldName": "PHONE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to show the phone number of the guardian. ",
+      "fieldNumber_": 29.98
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "LEGAL ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.36",
+      "required": false,
+      "helpText": "This field is used to enter any legal assessment. ",
+      "isMultiple": true,
+      "subFileNumber": 655.36,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "CURRENT SUBSTANCE ABUSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:NO;U:UNKNOWN;",
+      "helpText": "This field is used to indicate if there is any known substance abuse problem. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.1,
+      "fieldName": "SUBSTANCE ABUSE COMMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.26",
+      "required": false,
+      "helpText": "This field is used to enter comments about any known substance abuse problems. ",
+      "isMultiple": true,
+      "subFileNumber": 655.26,
+      "fieldNumber_": 31.1
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "PSYCHO-SOCIAL ASSESSMENT",
+      "dataType": "SUBFILE",
+      "rawType": "655.232",
+      "required": false,
+      "helpText": "This sub file is used to enter overall impressions of the psycho-social assessment of the veteran. ",
+      "isMultiple": true,
+      "subFileNumber": 655.232,
+      "fieldNumber_": 32
+    }
+  ],
+  "fieldCount": 61,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "E", "field": },
+    {"name": "655.2", "field": .01, "type": "regular"},
+    {"name": "655.2", "field": .03, "type": "regular"},
+    {"name": "655.2", "field": .04, "type": "regular"},
+    {"name": "655.2", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

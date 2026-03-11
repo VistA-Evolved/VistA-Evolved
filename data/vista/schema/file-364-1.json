@@ -1,0 +1,239 @@
+{
+  "fileNumber": 364.1,
+  "fileName": "EDI TRANSMISSION BATCH",
+  "globalRoot": "364.1",
+  "globalReference": "^IBA(364.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,0",
+      "length": 10,
+      "required": true,
+      "helpText": "The number of the batch for EDI transmissions. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LATEST RECEIPT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PENDING AUSTIN RECEIPT;A0:RECEIVED IN AUSTIN;",
+      "helpText": "This field indicates where the last receipt for this batch came from.  It is used in tracking how far a batch has gone in the transmission path for as long as it can be tracked with electronic receipt messages. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "NUMBER OF BILLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the total number of bills currently under the control of this batch. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "MAIL MESSAGE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ15,0",
+      "length": 15,
+      "required": false,
+      "helpText": "This is the number of the mail message that was generated for this batch. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "BATCH REJECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether or not a batch has been rejected at any point in the transmission path. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "BILL TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "2:CMS-1500 (PROF);3:UB-04 (INST);7:J430D (DENT);",
+      "helpText": "THIS IS THE TYPE OF BILL THAT IS CONTAINED IN THIS BATCH ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "BATCH TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:EDI 837 BILL SUBMISSION;",
+      "helpText": "This identifies the type of ANSI X12 data contained in the batch. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free text description to identify the contents of the batch. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "BATCH RESUBMIT TASK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the batch is being resubmitted, this is the task # of the task that is doing the resubmission if the job is queued.  No entry is made here if the task is not queued. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "BATCH RESUBMIT INCOMPLETE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is 0 or null if batch either was not resubmitted or if all bills in the batch have been resubmitted.  It is a 1 (YES) if any bills in the batch were not resubmitted, but the batch itself was. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "REJECT MESSAGE",
+      "dataType": "POINTER",
+      "rawType": "P364.2'",
+      "required": false,
+      "pointerTo": 364.2,
+      "helpText": "Pointer to the reject message received for this batch. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is the insurance company associated with this batch. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "BATCH RESUBMIT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the last date/time the batch was resubmitted.  It is set when the resubmit process is done. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "TEST BATCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates the batch is a test batch in a production environment. All bills in this batch will have also been printed. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "PREVIOUS BATCH",
+      "dataType": "POINTER",
+      "rawType": "*P364.1'",
+      "required": false,
+      "pointerTo": 364.1,
+      "helpText": "If this data exists, this batch was created as a result of another batch being resubmitted.  This data references the original batch that contained the bills that are now contained in this batch. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "DATE FIRST SENT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date/time that this batch was first transmitted. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "FIRST SENT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user who was responsible for the first transmission of this batch. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "DATE LAST SENT",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date/time that the batch was last transmitted. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "LAST SENT BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The name of the user who was responsible for the last transmission of this batch. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "LATEST STATUS DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time contained on the latest receipt message for this batch. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "DATE LATEST STATUS RECORDED",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This is the date and time the latest status was recorded in this file. ",
+      "fieldNumber_": 1.06
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AINC", "field": },
+    {"name": "ALT", "field": },
+    {"name": "ASTAT", "field": },
+    {"name": "ATYP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "FDATE", "field": },
+    {"name": "MSG", "field": },
+    {"name": "364.1", "field": .01, "type": "regular"},
+    {"name": "364.1", "field": .01, "type": "regular"},
+    {"name": "", "field": .02, "type": "regular"},
+    {"name": "364.1", "field": .02, "type": "regular"},
+    {"name": "364.1", "field": .04, "type": "regular"},
+    {"name": "364.1", "field": .07, "type": "regular"},
+    {"name": "364.1", "field": .1, "type": "regular"},
+    {"name": "", "field": .11, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "364.1", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.02, "type": "regular"},
+    {"name": "364.1", "field": 1.03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .08, "value": "W \"   \",$P(^(0),U,8)"}
+  ]
+}

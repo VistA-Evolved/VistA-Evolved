@@ -1,0 +1,56 @@
+{
+  "fileNumber": 6926,
+  "fileName": "EMPLOYEE(KEYS)",
+  "globalRoot": "6926",
+  "globalReference": "^ENG(\"KEY\",",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EMPLOYEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "These employee entries must not be deleted without first deleting all keys issued under the KEYS ISSUED field. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .4,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "RP49'",
+      "required": true,
+      "pointerTo": 49,
+      "helpText": "Service or section to which employee is assigned. ",
+      "fieldNumber_": .4
+    },
+    {
+      "fieldNumber": .5,
+      "fieldName": "ID NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Identification number.  To be assigned by Engineering Service. Not required. ",
+      "fieldNumber_": .5
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "KEYS ISSUED",
+      "dataType": "POINTER",
+      "rawType": "6926.01P",
+      "required": false,
+      "helpText": "Door key(s) issued to this individual. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "K", "field": },
+    {"name": "6926", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

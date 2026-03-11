@@ -1,0 +1,91 @@
+{
+  "fileNumber": 67.1,
+  "fileName": "RESEARCH",
+  "globalRoot": "67.1I",
+  "globalReference": "^LRT(67.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of the research animal. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Location of animal. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .104,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Name of provider ",
+      "fieldNumber_": .104
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEMALE;M:MALE;",
+      "helpText": "Sex of animal.  Set of codes; F for female, M for male. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DOB",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date of birth of the animal. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "A short description categorizing the animal. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "LABORATORY REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P63'X",
+      "required": false,
+      "pointerTo": 63,
+      "helpText": "Animal's record number in the Lab data file. ",
+      "fieldNumber_": 63
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "67.1", "field": .01, "type": "regular"},
+    {"name": "67.1", "field": .01, "type": "regular"},
+    {"name": "67.1", "field": 9, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .1, "value": "W:$D(^(\".1\")) \"   \",$P(^(\".1\"),U,1)"},
+    {"field": 2, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,2)"},
+    {"field": 3, "value": "W:$D(^(\"0\")) \"   \",$$FMTE^XLFDT($P(^(\"0\"),U,3),\"5Z\")"},
+    {"field": 9, "value": "W:$D(^(\"0\")) \"   \",$P(^(\"0\"),U,9)"}
+  ]
+}

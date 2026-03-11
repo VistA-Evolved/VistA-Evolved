@@ -1,0 +1,86 @@
+{
+  "fileNumber": 414.03,
+  "fileName": "COTS INVENTORY SUBSCRIPTION CONTROL",
+  "globalRoot": "414.03",
+  "globalReference": "^PRCV(414.03,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION",
+      "dataType": "POINTER",
+      "rawType": "P411'",
+      "required": false,
+      "pointerTo": 411,
+      "helpText": "This is the station number associated with the IFCAP object being  moniored. It is required, but may be 0. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUBSCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the object (e.g., fund control point) being monitored. This field  is an identifying string (required) and field .03 identifies the type of  objct. The format of the string depends on the object type. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUBSCRIPTION TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:FCP Running Balance;",
+      "helpText": "This field is a code that specifies the subscription type. The  interpretation of field .02 depends on the value of this code. These two  fields are intended to provide support for multiple types of  subscriptions within the one file. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that this subscription was created. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SUBSCRIPTION MID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the message control ID (MID) of the HL7 message requesting that  this subscription be created. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ATTRIBUTE SET",
+      "dataType": "SUBFILE",
+      "rawType": "414.031",
+      "required": false,
+      "helpText": "This subfile is used to store attribute values for the object associated  with the subscription. Since the file is designed to work with various  types of objects, attributes are stored as simple key/value pairs, where  both the key and  value are free text. ",
+      "isMultiple": true,
+      "subFileNumber": 414.031,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "414.03", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

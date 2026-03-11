@@ -1,0 +1,148 @@
+{
+  "fileNumber": 19617,
+  "fileName": "VEJD PATIENT",
+  "globalRoot": "19617",
+  "globalReference": "^VEJD(19617,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is a pointer to the PATIENT file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "FAM-HIST PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who last updated the Family History word processing  field. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "FAM-HIST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the family history word processing field was last  updated ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "MED-HIST PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who last updated that the medical history word processing field ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "MED-HIST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the medical history word processing field was last  updated ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "SOC-HIST PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who last updated the social history word processing field ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "SOC-HIST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the social history word processing field was last  updated ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "SURG-HIST PERSON",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who last updated the surgical history word processing field ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "SURG-HIST DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the surgical history word processing field was last  updated ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "FAMILY HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "19617.021",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19617.021,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "MEDICAL HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "19617.022",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19617.022,
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "SOCIAL HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "19617.023",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19617.023,
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "SURGICAL HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "19617.024",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 19617.024,
+      "fieldNumber_": 24
+    }
+  ],
+  "fieldCount": 13,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "19617", "field": .01, "type": "regular"},
+    {"name": "", "field": 1.01, "type": "regular"},
+    {"name": "", "field": 1.03, "type": "regular"},
+    {"name": "", "field": 1.05, "type": "regular"},
+    {"name": "", "field": 1.07, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

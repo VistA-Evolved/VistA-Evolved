@@ -1,0 +1,61 @@
+{
+  "fileNumber": 165.1,
+  "fileName": "FOLLOW-UP FORM LETTER",
+  "globalRoot": "165.1I",
+  "globalReference": "^ONCO(165.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter contact MD, Institution, or non-kin Oncology related contact. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MAIN FORM BODY",
+      "dataType": "SUBFILE",
+      "rawType": "165.11",
+      "required": false,
+      "helpText": "WORD PROCESSING FIELDS RECORDING THE MAIN BODY OF THE CONTACT FORM LETTERS. ",
+      "isMultiple": true,
+      "subFileNumber": 165.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FORM TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:PATIENT;2:PHYSICIAN;3:NEXT OF KIN;4:INSTITUTION;5:TUMOR REGISTRAR;6:DEATH INQUIRY;",
+      "helpText": "RECORDS THE TYPE OF FORM TO BE USED IN CONTACT. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "165.13",
+      "required": false,
+      "helpText": "This field allows the Tumore Registrar to define and describe each letter. Also it allows for the description of letters exported. ",
+      "isMultiple": true,
+      "subFileNumber": 165.13,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "165.1", "field": .01, "type": "regular"},
+    {"name": "165.1", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

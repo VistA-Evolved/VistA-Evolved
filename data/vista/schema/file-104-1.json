@@ -1,0 +1,92 @@
+{
+  "fileNumber": 104.1,
+  "fileName": "MDRO TOOLS LAB SEARCH/EXTRACT",
+  "globalRoot": "104.1",
+  "globalReference": "^MMRS(104.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "MDRO",
+      "dataType": "POINTER",
+      "rawType": "RP104.2'",
+      "required": true,
+      "pointerTo": 104.2,
+      "helpText": "This is the multi-drug resistant organism (MDRO) for the parameters you  are defining. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P104'",
+      "required": false,
+      "pointerTo": 104,
+      "helpText": "This is the site that this lab test is defined for. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INCLUDED SITES",
+      "dataType": "POINTER",
+      "rawType": "104.103PA",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "EXCLUDED SITES",
+      "dataType": "POINTER",
+      "rawType": "104.104PA",
+      "required": false,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAB TEST",
+      "dataType": "POINTER",
+      "rawType": "104.15PA",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "INCLUDED BACT RPT REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "104.107A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 104.107,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "EXCLUDED BACT RPT REMARKS",
+      "dataType": "SUBFILE",
+      "rawType": "104.108A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 104.108,
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ETIOLOGY",
+      "dataType": "POINTER",
+      "rawType": "104.109PA",
+      "required": false,
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "104.1", "field": .01, "type": "regular"},
+    {"name": "104.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^MMRS(104,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(104,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

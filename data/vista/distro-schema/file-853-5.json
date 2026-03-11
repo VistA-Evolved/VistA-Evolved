@@ -1,0 +1,39 @@
+{
+  "fileNumber": 853.5,
+  "fileName": "VPS MRAR PDO",
+  "globalRoot": "853.5",
+  "globalReference": "^VPS(853.5,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'X",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is the patient that the MRAR belongs to. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "MRAR INSTANCE",
+      "dataType": "DATE",
+      "rawType": "853.51DA",
+      "required": false,
+      "helpText": "This multiple field contains MRAR transactions sent by Vetlink to VistA.  ",
+      "isMultiple": true,
+      "subFileNumber": 853.51,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "853.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

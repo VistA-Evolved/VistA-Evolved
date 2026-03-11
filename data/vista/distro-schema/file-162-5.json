@@ -1,0 +1,1542 @@
+{
+  "fileNumber": 162.5,
+  "fileName": "FEE BASIS INVOICE",
+  "globalRoot": "162.5",
+  "globalReference": "^FBAAI(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "This field contains the internal entry number for the Fee Basis Invoice. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INVOICE DATE RECEIVED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date the correct invoice was received.  It is used by Austin for the calculation of any applicable interest payments. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VENDOR",
+      "dataType": "POINTER",
+      "rawType": "RP161.2'",
+      "required": true,
+      "pointerTo": 161.2,
+      "helpText": "Reference to the vendor file, this field contains the name of the vendor associated with this invoice. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "VETERAN",
+      "dataType": "POINTER",
+      "rawType": "RP161'",
+      "required": true,
+      "pointerTo": 161,
+      "helpText": "Reference the Fee Basis Patient file, this field contains the name of the veteran for which this invoice is established. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "ASSOCIATED 7078/583",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This field contains the pointer to the appropriate 7078 or 583 file. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "TREATMENT FROM DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Information in this field indicates the starting date for this invoice. (i.e. the starting treatment date for which this billing covers). ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TREATMENT TO DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "Information in this field indicates the ending date for this invoice. (i.e. the ending treatment date this billing covers). ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "DISCHARGE TYPE CODE",
+      "dataType": "POINTER",
+      "rawType": "P162.6'",
+      "required": false,
+      "pointerTo": 162.6,
+      "helpText": "This field contains the code pertaining to the type of discharge associated with this invoice. ",
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 6.6,
+      "fieldName": "BILLED CHARGES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ10,2",
+      "length": 10,
+      "required": true,
+      "helpText": "This field contains cost information on the amount the VA was initially billed by the vendor for an inpatient stay. ",
+      "fieldNumber_": 6.6
+    },
+    {
+      "fieldNumber": 6.7,
+      "fieldName": "PAYMENT BY MEDICARE/FED AGENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "Answer 'Yes' if Medicare or some other federal agency has paid some of the bill for contract hospital. ",
+      "fieldNumber_": 6.7
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "AMOUNT CLAIMED",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2X",
+      "length": 9,
+      "required": true,
+      "helpText": "The portion of the billed charges that the vendor is requesting payment for from the VA.  Usually the billed charges and the amount claimed will be the same. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "AMOUNT PAID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2X",
+      "length": 9,
+      "required": true,
+      "helpText": "The dollar amount that was actually paid to the vendor for the service provided. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AMOUNT SUSPENDED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The difference between the amount claimed and the amount paid. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SUSPEND CODE",
+      "dataType": "POINTER",
+      "rawType": "P161.27'",
+      "required": false,
+      "pointerTo": 161.27,
+      "helpText": "If an amount was suspended, the user is requested to indicate the reason for suspense from the selection of suspense codes. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "FEE PROGRAM",
+      "dataType": "POINTER",
+      "rawType": "RP161.8'",
+      "required": true,
+      "pointerTo": 161.8,
+      "helpText": "This field contains the valid Fee Program associated with this Invoice as contained in the Fee Basis Program file (i.e. Contract Hospital or Community Nursing Home for an inpatient stay). ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "PAYMENT TYPE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REIMBURSEMENT;V:VENDOR;S:STATISTICAL;SR:STAT-REIMBURSEMENT;",
+      "helpText": "An entry of 'R' will indicate the invoice is for a reimbursement to the veteran for services that he/she has already paid. An entry of 'V' will indicate the invoice is for a payment directly to a vendor. An entry of 'S' will indicate the invoice was paid \"out of system\" to a vendor and allows the update of the payment history files. An entry of 'SR' will indicate a statistical reimbursement to a party other than the vendor. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "REJECT STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:REJECTED, PENDING ACTION;C:REJECTED, COMPLETED;",
+      "helpText": "An entry in this field will indicate that the invoice has been rejected. An entry of 'P' will indicate the invoice has been rejected and it is awaiting action.  An entry of 'C' will indicate the invoice has been rejected and action on it has been completed. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "REJECT REASON",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "If the invoice has a status of rejected, the user will be prompted to enter a reason that the reject has occurred. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "OLD BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P161.7'",
+      "required": false,
+      "pointerTo": 161.7,
+      "helpText": "This field is populated only if there is a reject pending.  It will contain the batch number of the old batch associated with the invoice.  This is to provide a link back to that batch if the user deletes the reject. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 15.3,
+      "fieldName": "INTERFACE REJECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is populated by the FBAA BATCH SERVER and FBAA REJECT SERVER server options when a payment line item is rejected via the interface with Central Fee.  This field is used to distinguish line items that were  locally rejected from those that were rejected by a downstream system.   This field is not populated for a local reject. ",
+      "fieldNumber_": 15.3
+    },
+    {
+      "fieldNumber": 15.6,
+      "fieldName": "REJECT CODE",
+      "dataType": "SUBFILE",
+      "rawType": "162.515",
+      "required": false,
+      "helpText": "The REJECT CODE multiple is populated with one to four reject codes by the FBAA BATCH SERVER and FBAA REJECT SERVER server options when a line item is rejected via the interface with Central Fee.  The REJECT CODE multiple is not used for local rejects.  The reason for a local reject is entered into the REJECT REASON (#14) field. ",
+      "isMultiple": true,
+      "subFileNumber": 162.515,
+      "fieldNumber_": 15.6
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "VOID PAYMENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "VP:VOIDED PAYMENT;",
+      "helpText": "Entry into this field is made when the user indicates the payment must be voided. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "REASON FOR VOIDED PAYMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is only populated if the Void Payment field is flagged for a void.  The user is prompted to enter a reason the payment was voided. ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "SUPERVISOR WHO VOIDED",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field is only populated when the Void Payment field is flagged for a void.  The field is stuffed with the user who voided the payment (and in all instances, the user must be a supervisor). ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "DESCRIPTION OF SUSPENSION",
+      "dataType": "SUBFILE",
+      "rawType": "162.518",
+      "required": false,
+      "helpText": "This field is only populated when there is a dollar amount that has been suspended.  The user is prompted to enter a description of the suspension in word-processing format. ",
+      "isMultiple": true,
+      "subFileNumber": 162.518,
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "DATE FINALIZED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field contains the date the invoice was vouchered by Fiscal. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "BATCH NUMBER",
+      "dataType": "POINTER",
+      "rawType": "*P161.7'",
+      "required": false,
+      "pointerTo": 161.7,
+      "helpText": "This field contains the batch number associated with this invoice. (The batch number that the invoice resides in). ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "PURPOSE OF VISIT",
+      "dataType": "POINTER",
+      "rawType": "*P161.82'",
+      "required": false,
+      "pointerTo": 161.82,
+      "helpText": "Contains the valid Purpose of Visit code as defined in the Fee Basis Purpose of Visit file. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PATIENT TYPE CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "00:SURGICAL;10:MEDICAL;60:HOME NURSING SERVICE;85:PSYCHIATRIC-CONTRACT;86:PSYCHIATRIC;95:NEUROLOGICAL-CONTRACT;96:NEUROLOGICAL;",
+      "helpText": "This field requires the entry of the type of treatment being provided to the patient (i.e. Surgical, Medical, Home Nursing Service, etc.) ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PRIMARY SERVICE FACILITY",
+      "dataType": "POINTER",
+      "rawType": "P4'",
+      "required": false,
+      "pointerTo": 4,
+      "helpText": "The VA Hospital responsible for that Veterans care. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "DISCHARGE DRG",
+      "dataType": "POINTER",
+      "rawType": "P80.2'",
+      "required": false,
+      "pointerTo": 80.2,
+      "helpText": "This field should contain the discharge DRG that is returned from the Austin Pricer System. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 24.5,
+      "fieldName": "DRG WEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,4",
+      "length": 8,
+      "required": false,
+      "helpText": "Enter the DRG weight as reported by the Austin Pricer. ",
+      "fieldNumber_": 24.5
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "RESUBMISSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Entry into this field indicates that this invoice is a resubmission. Failure to annotate an invoice in such a manner would cause Austin to  reject the payment as duplicate. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "NVH PRICER AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "The amount for this payment as determined by the Austin Pricer. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "ICD1",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "The first valid ICD code associated with this payment. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 30.02,
+      "fieldName": "POA1",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD1 field. ",
+      "fieldNumber_": 30.02
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "ICD2",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The second valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 31.02,
+      "fieldName": "POA2",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD2 field. ",
+      "fieldNumber_": 31.02
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "ICD3",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The third valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 32.02,
+      "fieldName": "POA3",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD3 field. ",
+      "fieldNumber_": 32.02
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "ICD4",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The fourth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 33.02,
+      "fieldName": "POA4",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD4 field. ",
+      "fieldNumber_": 33.02
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "ICD5",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The fifth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 34.02,
+      "fieldName": "POA5",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD5 field. ",
+      "fieldNumber_": 34.02
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "ICD6",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The sixth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 35.02,
+      "fieldName": "POA6",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD6 field. ",
+      "fieldNumber_": 35.02
+    },
+    {
+      "fieldNumber": 35.1,
+      "fieldName": "ICD7",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The seventh valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.1
+    },
+    {
+      "fieldNumber": 35.12,
+      "fieldName": "POA7",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD7 field. ",
+      "fieldNumber_": 35.12
+    },
+    {
+      "fieldNumber": 35.2,
+      "fieldName": "ICD8",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The eighth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.2
+    },
+    {
+      "fieldNumber": 35.22,
+      "fieldName": "POA8",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD8 field. ",
+      "fieldNumber_": 35.22
+    },
+    {
+      "fieldNumber": 35.3,
+      "fieldName": "ICD9",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The ninth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.3
+    },
+    {
+      "fieldNumber": 35.32,
+      "fieldName": "POA9",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD9 field. ",
+      "fieldNumber_": 35.32
+    },
+    {
+      "fieldNumber": 35.4,
+      "fieldName": "ICD10",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The tenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.4
+    },
+    {
+      "fieldNumber": 35.42,
+      "fieldName": "POA10",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD10 field. ",
+      "fieldNumber_": 35.42
+    },
+    {
+      "fieldNumber": 35.5,
+      "fieldName": "ICD11",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The eleventh valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.5
+    },
+    {
+      "fieldNumber": 35.52,
+      "fieldName": "POA11",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD11 field. ",
+      "fieldNumber_": 35.52
+    },
+    {
+      "fieldNumber": 35.6,
+      "fieldName": "ICD12",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twelfth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.6
+    },
+    {
+      "fieldNumber": 35.62,
+      "fieldName": "POA12",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD12 field. ",
+      "fieldNumber_": 35.62
+    },
+    {
+      "fieldNumber": 35.7,
+      "fieldName": "ICD13",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The thirteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.7
+    },
+    {
+      "fieldNumber": 35.72,
+      "fieldName": "POA13",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD13 field. ",
+      "fieldNumber_": 35.72
+    },
+    {
+      "fieldNumber": 35.8,
+      "fieldName": "ICD14",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The fourteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.8
+    },
+    {
+      "fieldNumber": 35.82,
+      "fieldName": "POA14",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD14 field. ",
+      "fieldNumber_": 35.82
+    },
+    {
+      "fieldNumber": 35.9,
+      "fieldName": "ICD15",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The fifteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 35.9
+    },
+    {
+      "fieldNumber": 35.92,
+      "fieldName": "POA15",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD15 field. ",
+      "fieldNumber_": 35.92
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "ICD16",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The sixteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 36.02,
+      "fieldName": "POA16",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD16 field. ",
+      "fieldNumber_": 36.02
+    },
+    {
+      "fieldNumber": 36.1,
+      "fieldName": "ICD17",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The seventeenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.1
+    },
+    {
+      "fieldNumber": 36.12,
+      "fieldName": "POA17",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD17 field. ",
+      "fieldNumber_": 36.12
+    },
+    {
+      "fieldNumber": 36.2,
+      "fieldName": "ICD18",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The eighteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.2
+    },
+    {
+      "fieldNumber": 36.22,
+      "fieldName": "POA18",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD18 field. ",
+      "fieldNumber_": 36.22
+    },
+    {
+      "fieldNumber": 36.3,
+      "fieldName": "ICD19",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The nineteenth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.3
+    },
+    {
+      "fieldNumber": 36.32,
+      "fieldName": "POA19",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD19 field. ",
+      "fieldNumber_": 36.32
+    },
+    {
+      "fieldNumber": 36.4,
+      "fieldName": "ICD20",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twentieth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.4
+    },
+    {
+      "fieldNumber": 36.42,
+      "fieldName": "POA20",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD20 field. ",
+      "fieldNumber_": 36.42
+    },
+    {
+      "fieldNumber": 36.5,
+      "fieldName": "ICD21",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twenty-first valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.5
+    },
+    {
+      "fieldNumber": 36.52,
+      "fieldName": "POA21",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD21 field. ",
+      "fieldNumber_": 36.52
+    },
+    {
+      "fieldNumber": 36.6,
+      "fieldName": "ICD22",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twenty-second valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.6
+    },
+    {
+      "fieldNumber": 36.62,
+      "fieldName": "POA22",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD22 field. ",
+      "fieldNumber_": 36.62
+    },
+    {
+      "fieldNumber": 36.7,
+      "fieldName": "ICD23",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twenty-third valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.7
+    },
+    {
+      "fieldNumber": 36.72,
+      "fieldName": "POA23",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD23 field. ",
+      "fieldNumber_": 36.72
+    },
+    {
+      "fieldNumber": 36.8,
+      "fieldName": "ICD24",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twenty-fourth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.8
+    },
+    {
+      "fieldNumber": 36.82,
+      "fieldName": "POA24",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD24 field. ",
+      "fieldNumber_": 36.82
+    },
+    {
+      "fieldNumber": 36.9,
+      "fieldName": "ICD25",
+      "dataType": "POINTER",
+      "rawType": "P80'",
+      "required": false,
+      "pointerTo": 80,
+      "helpText": "The twenty-fifth valid ICD code (if one exists) associated with this payment. ",
+      "fieldNumber_": 36.9
+    },
+    {
+      "fieldNumber": 36.92,
+      "fieldName": "POA25",
+      "dataType": "POINTER",
+      "rawType": "P161.94'",
+      "required": false,
+      "pointerTo": 161.94,
+      "helpText": "This field contains the present on admission (POA) indicator for the  diagnosis in the ICD25 field. ",
+      "fieldNumber_": 36.92
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ADMITTING DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "RP80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "This is the admitting diagnosis code from the claim. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PROC1",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The first valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "PROC2",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The second valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "PROC3",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The third valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PROC4",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The fourth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "PROC5",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The fifth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 44.06,
+      "fieldName": "PROC6",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The sixth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.06
+    },
+    {
+      "fieldNumber": 44.07,
+      "fieldName": "PROC7",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The seventh valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.07
+    },
+    {
+      "fieldNumber": 44.08,
+      "fieldName": "PROC8",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The eighth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.08
+    },
+    {
+      "fieldNumber": 44.09,
+      "fieldName": "PROC9",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The ninth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.09
+    },
+    {
+      "fieldNumber": 44.1,
+      "fieldName": "PROC10",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The tenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.1
+    },
+    {
+      "fieldNumber": 44.11,
+      "fieldName": "PROC11",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The eleventh valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.11
+    },
+    {
+      "fieldNumber": 44.12,
+      "fieldName": "PROC12",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twelfth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.12
+    },
+    {
+      "fieldNumber": 44.13,
+      "fieldName": "PROC13",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The thirteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.13
+    },
+    {
+      "fieldNumber": 44.14,
+      "fieldName": "PROC14",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The fourteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.14
+    },
+    {
+      "fieldNumber": 44.15,
+      "fieldName": "PROC15",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The fifteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.15
+    },
+    {
+      "fieldNumber": 44.16,
+      "fieldName": "PROC16",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The sixteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.16
+    },
+    {
+      "fieldNumber": 44.17,
+      "fieldName": "PROC17",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The seventeenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.17
+    },
+    {
+      "fieldNumber": 44.18,
+      "fieldName": "PROC18",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The eighteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.18
+    },
+    {
+      "fieldNumber": 44.19,
+      "fieldName": "PROC19",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The nineteenth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.19
+    },
+    {
+      "fieldNumber": 44.2,
+      "fieldName": "PROC20",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twentieth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.2
+    },
+    {
+      "fieldNumber": 44.21,
+      "fieldName": "PROC21",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twenty-first valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.21
+    },
+    {
+      "fieldNumber": 44.22,
+      "fieldName": "PROC22",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twenty-second valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.22
+    },
+    {
+      "fieldNumber": 44.23,
+      "fieldName": "PROC23",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twenty-third valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.23
+    },
+    {
+      "fieldNumber": 44.24,
+      "fieldName": "PROC24",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twenty-fourth valid procedure code (if one exists) associated with  this payment. ",
+      "fieldNumber_": 44.24
+    },
+    {
+      "fieldNumber": 44.25,
+      "fieldName": "PROC25",
+      "dataType": "POINTER",
+      "rawType": "P80.1'",
+      "required": false,
+      "pointerTo": 80.1,
+      "helpText": "The twenty-fifth valid procedure code (if one exists) associated with this payment. ",
+      "fieldNumber_": 44.25
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "DATE PAID",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of the check, as issued by the treasury.  This information will be passed back to DHCP from the Financial Management System (FMS) when the check is issued to the vendor.  This field will use the check date beginning with version 3.5 of Fee Basis. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "VENDOR INVOICE DATE",
+      "dataType": "DATE",
+      "rawType": "RDX",
+      "required": true,
+      "helpText": "This is the date that the vendor issued the invoice. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "PROMPT PAY TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:MONEY MANAGED;",
+      "helpText": "Field is set to 1 if the payment is subject to interest payments (prompt pay). ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "CHECK NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Contains the check number as issued by the treasury.  This field is updated after the check is issued, through a server option that records actual payment information for each Fee payment made. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "CANCELLATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the treasury cancelled the check.  This field is updated through a server option that records cancellations of previously recorded payment data. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "REASON CODE",
+      "dataType": "POINTER",
+      "rawType": "P162.95'",
+      "required": false,
+      "pointerTo": 162.95,
+      "helpText": "This field contains a pointer to the Fee Basis Check Cancellation Reason file.  It is populated through a server option that updates the payment record when the treasury cancels a check that was previously payed. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "CANCELLATION ACTIVITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:WILL BE REPLACED;C:WILL BE REISSUED;X:WILL NOT BE REISSUED;",
+      "helpText": "This field is populated when a cancellation is recorded for the payment referenced.  This field will always remain populated, to indicate that there was cancellation activity on this payment at one time.  New payments will replace the cancellation date and reason code fields, but the cancellation activity flag will not be overwritten.  This flag will allow the user to know that previous cancellation activity existed, and to review the cancellation history output for further information. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "DISBURSED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This is the dollar amount paid by the treasury, less any interest paid. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "INTEREST AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "The interest amount paid on this line item by the treasury. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "COVERED DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This is the number of total number of Inpatient days that the Fee Staff  has determined will be paid.  Enter number of inpatient days to be paid. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "PATIENT CONTROL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Please enter the Patient control number.  This could be either the Patient Identification Number or Patient Account Number from the vendor's invoice. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "FPPS CLAIM ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the entire FPPS Claim ID as shown on the invoice document.  (1-32  character text ID created by FPPS system). ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "FPPS LINE ITEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the line item sequence number associated with this charge.  Each  charge on the FPPS invoice document will have a line item sequence number  associated with it.  A line item can be entered individually or a group of charges from multiple lines can be entered.  If all line items in a group are in numerical sequence, you may enter the first line item sequence number followed by a hyphen and the last line item sequence number.  If the grouped charges are not in sequential order, each line ite",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "ADJUSTMENT",
+      "dataType": "POINTER",
+      "rawType": "162.558P",
+      "required": false,
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "REMITTANCE REMARK",
+      "dataType": "POINTER",
+      "rawType": "162.559P",
+      "required": false,
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "CONTRACT",
+      "dataType": "POINTER",
+      "rawType": "P161.43'",
+      "required": false,
+      "pointerTo": 161.43,
+      "helpText": "If the payment is for contracted services, the contract number can be specified in this field.  The selected contract must be active and applicable to the vendor being paid. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "ROUTING NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the financial routing number information that was returned with the payment from Central Fee for Electronic Fund Transfer (EFT) entries. This information will be forwarded to FPPS so that the vendor can be notified of the payment. This field must be 9 characters, including any leading zeros.  Note: The Central Fee nightly update will automatically set this field if the data is included in their message. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "ACCOUNT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the financial account number information that was returned with the payment from Central Fee for Electronic Fund Transfer (EFT) entries. This information will be forwarded to FPPS so that the vendor can be notified of the payment. This field must be 1-17 characters, including any leading zeros.  Note: The Central Fee nightly update will automatically set this field if the data is included in their message. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "FINANCIAL INSTITUTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the financial institution name that was returned with the payment from Central Fee for Electronic Fund Transfer (EFT) entries. This information will be forwarded to FPPS so that the vendor can be notified of the payment. Note: The Central Fee nightly update will automatically set this field if the data is included in their message. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "ATTENDING PROV NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Attending Provider's name found in the claim information. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "ATTENDING PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Attending Provider's National Provider Identifier (NPI) found in the claim information. This value must be 10 characters, including any leading zeros. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "ATTENDING PROV TAXONOMY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Attending Provider's Taxonomy code found in the claim  information. This value must be 10 characters, including any leading  zeros. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "OPERATING PROV NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Operating Provider's name found in the claim information. ",
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 68,
+      "fieldName": "OPERATING PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Operating Provider's National Provider Identifier (NPI) found  in the claim information. This value must be 10 characters, including any  leading zeros. ",
+      "fieldNumber_": 68
+    },
+    {
+      "fieldNumber": 69,
+      "fieldName": "RENDERING PROV NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Rendering Provider's name found in the claim information. ",
+      "fieldNumber_": 69
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "RENDERING PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Rendering Provider's National Provider Identifier (NPI) found  in the claim information. This value must be 10 characters, including any  leading zeros. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "RENDERING PROV TAXONOMY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Rendering Provider's Taxonomy code found in the claim  information. This value must be 10 characters, including any leading  zeros. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "SERVICING PROV NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Servicing Provider's name found in the claim information. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "SERVICING PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Servicing Provider's National Provider Identifier (NPI) found  in the claim information. This value must be 10 characters, including any  leading zeros. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "REFERRING PROV NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Referring Provider's name found in the claim information. ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "REFERRING PROV NPI",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Referring Provider's National Provider Identifier (NPI) found  in the claim information. This value must be 10 characters, including any  leading zeros. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "LINE ITEM RENDERING PROV",
+      "dataType": "SUBFILE",
+      "rawType": "162.579",
+      "required": false,
+      "helpText": "This multiple stores Rendering Provider information that is specific  to a line item on the claim. A record should only be added to this  multiple if the Rendering Provider for a line item is different from the  Rendering Provider at the claim level. Example, if the PROC1 code is entered and has a different Rendering Provider than the claim Rendering  Provider (field #70) the multiple will store the different data. Line  item #1 would be referencing PROC1; Line Item #5 would reference PROC5. ",
+      "isMultiple": true,
+      "subFileNumber": 162.579,
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "SERVICING FACILITY ADDRESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Servicing Facility street address found in the claim  information. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 81,
+      "fieldName": "SERVICING FACILITY CITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Servicing Facility city found in the claim information. ",
+      "fieldNumber_": 81
+    },
+    {
+      "fieldNumber": 82,
+      "fieldName": "SERVICING FACILITY STATE",
+      "dataType": "POINTER",
+      "rawType": "P5'",
+      "required": false,
+      "pointerTo": 5,
+      "helpText": "Enter the Servicing Facility state found in the claim information. ",
+      "fieldNumber_": 82
+    },
+    {
+      "fieldNumber": 83,
+      "fieldName": "SERVICING FACILITY ZIP",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "Enter the Servicing Facility zip code, in either the 5 digit format (e.g. 12345) or 9 digit format (e.g. 12345-6789 or 123456789). ",
+      "fieldNumber_": 83
+    },
+    {
+      "fieldNumber": 85,
+      "fieldName": "UNIQUE CLAIM IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a unique identifier for tracking claims.  Fee5010  Project. ",
+      "fieldNumber_": 85
+    },
+    {
+      "fieldNumber": 86,
+      "fieldName": "DoD INVOICE NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The DoD invoice number that is associated with the invoice. Note that if the invoice vendor is not a federal vendor then this field is null. ",
+      "fieldNumber_": 86
+    },
+    {
+      "fieldNumber": 87,
+      "fieldName": "IPAC VENDOR AGREEMENT",
+      "dataType": "POINTER",
+      "rawType": "P161.95'",
+      "required": false,
+      "pointerTo": 161.95,
+      "helpText": "The IPAC Agreement record that is associated with this invoice. Note that  if the invoice vendor is not a federal vendor this is field is null. ",
+      "fieldNumber_": 87
+    },
+    {
+      "fieldNumber": 88,
+      "fieldName": "AUTHORIZATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the authorization numbers transmitted from FBCS. ",
+      "fieldNumber_": 88
+    },
+    {
+      "fieldNumber": 89,
+      "fieldName": "CLAIM LEVEL ALLOWED AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2",
+      "length": 10,
+      "required": false,
+      "helpText": "This field is for internal use only. FBCS will populate the value, if  available, for claims sent to VistA from FBCS. ",
+      "fieldNumber_": 89
+    },
+    {
+      "fieldNumber": 90,
+      "fieldName": "PAYMENT METHODOLOGY",
+      "dataType": "POINTER",
+      "rawType": "P163.98'",
+      "required": false,
+      "pointerTo": 163.98,
+      "helpText": "The values in this field come from FBCS and represents the actual payment methodology used in FBCS to adjudicate the claim. ",
+      "fieldNumber_": 90
+    },
+    {
+      "fieldNumber": 91,
+      "fieldName": "ATTACHMENT ID",
+      "dataType": "SUBFILE",
+      "rawType": "162.591A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 162.591,
+      "fieldNumber_": 91
+    }
+  ],
+  "fieldCount": 153,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACK", "field": },
+    {"name": "ACN", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AG", "field": },
+    {"name": "AH", "field": },
+    {"name": "AJ", "field": },
+    {"name": "AK", "field": },
+    {"name": "AK1", "field": },
+    {"name": "AL", "field": },
+    {"name": "AP", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "DODI", "field": },
+    {"name": "IPAC", "field": },
+    {"name": "162.5", "field": .01, "type": "regular"},
+    {"name": "162.5", "field": 2, "type": "regular"},
+    {"name": "162.5", "field": 2, "type": "regular"},
+    {"name": "162.5", "field": 2, "type": "regular"},
+    {"name": "162.5", "field": 3, "type": "regular"},
+    {"name": "162.5", "field": 3, "type": "regular"},
+    {"name": "162.5", "field": 3, "type": "regular"},
+    {"name": "162.5", "field": 4, "type": "regular"},
+    {"name": "162.5", "field": 15, "type": "regular"},
+    {"name": "162.5", "field": 19, "type": "regular"},
+    {"name": "162.5", "field": 19, "type": "regular"},
+    {"name": "162.5", "field": 20, "type": "regular"},
+    {"name": "162.5", "field": 48, "type": "regular"},
+    {"name": "162.5", "field": 60, "type": "regular"},
+    {"name": "162.5", "field": 86, "type": "regular"},
+    {"name": "162.5", "field": 87, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

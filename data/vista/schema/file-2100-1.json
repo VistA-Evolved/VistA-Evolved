@@ -1,0 +1,199 @@
+{
+  "fileNumber": 2100.1,
+  "fileName": "GENERIC CODE SHEET STACK",
+  "globalRoot": "2100.1",
+  "globalReference": "^GECS(2100.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DOCUMENT IDENTIFIER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is used to store the FMS document identifier.  The form of the document identifier is tt-sta123456  -sta789 where:   tt     - is the 2 alpha transaction type (ex: IV);   sta    - is the three digit station number (ex: 460);   123456 - is the FMS obligation/reference number (ex: I40001);   789    - is the FMS batch number (ex: 001). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYSTEM",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FMS;",
+      "helpText": "This field is used to store the system which created the code sheet. Currently the only system which interfaces to the stack file is the FMS code sheets. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE@TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date and time the code sheet was entered into the stack file for transmission. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Q:QUEUED FOR TRANSMISSION;M:MARKED FOR IMMEDIATE TRANSMISSION BY EVENT;T:TRANSMITTED;E:ERROR DURING TRANSMISSION;A:ACCEPTED BY FMS;R:REJECTED BY FMS;F:FINAL - NO FURTHER ACTIVITY ALLOWED;",
+      "helpText": "This is the status of the stack file entry.  Status's range from:   Q: queued for transmission   M: marked for immediate transmission   T: transmitted to Austin   E: error in transmission   A: accepted by FMS   R: rejected by FMS   F: final - no further activity allowed ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DESCRIPTION OF EVENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the description of the event which caused the code sheet to be created.  The description is for informational purposes and will appear on the Stack Status Report. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.1,
+      "fieldName": "USER COMMENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store free text comments which can be entered by the user and will appear on the Stack Status Report.  ",
+      "fieldNumber_": 4.1
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SEGMENT (ENTRY IN FILE 2101.2)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the free text segment entry from file 2101.2 which was used to create the code sheet. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "ERRORS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store any errors which occurred during the transmission of the code sheet.  If an error occurs the stack status will be set to 'E'rror and the ERRORS field will store the description of the error.  The user can use the Stack Status Report to display code sheets which resulted in errors during transmission.  Examples of  errors would be no code sheets to transmit, unable to create a mailman message, etc.   ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MANUAL OR AUTOMATIC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MANUAL;A:AUTOMATIC;",
+      "helpText": "This field is used to indicate if the stack file code sheet was manually created or automatically created.  For the accept/reject processing, only code sheets which have been automatically created and rejected should be regenerated and retransmitted by the event code. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "DOCUMENT LOOKUP KEY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores an option document lookup key that can be used to find a specific document in generic code sheets.  For example, if a package sends a monthly code sheet, it could enter the key as SV-3001200 for SV documents sent for the month 12/2000. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CODE SHEET",
+      "dataType": "SUBFILE",
+      "rawType": "2100.11",
+      "required": false,
+      "helpText": "This field is used to store the actual code sheet which will be transmitted. ",
+      "isMultiple": true,
+      "subFileNumber": 2100.11,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "SIZE OF CODE SHEET",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field is used to store the size of the code sheet.  The field is used internally by the Generic Code Sheet Package during transmission.  When the code sheets are transmitted from the stack file, the code sheets are grouped into mail messages depending on the size of the code sheet. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.2,
+      "fieldName": "CHECKSUM",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0I",
+      "length": 9,
+      "required": false,
+      "helpText": "This field is used to store the checksum of the automatically created code sheet. ",
+      "fieldNumber_": 11.2
+    },
+    {
+      "fieldNumber": 11.3,
+      "fieldName": "HOLD DATE",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field stores the date the code sheet will be transmitted on. ",
+      "fieldNumber_": 11.3
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "TRANSMITTED MAIL MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "2100.12",
+      "required": false,
+      "helpText": "This field is used to store the mail message number which was used for the transmission of the code sheet.  This field is multiple for large code sheets (greater then 30K) which require more than one mail message for transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 2100.12,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "OLD TRANSMITTED MAIL MESSAGES",
+      "dataType": "SUBFILE",
+      "rawType": "2100.121",
+      "required": false,
+      "helpText": "This field is used to store the old mail messages which were used to transmit the stack file entry.  When the stack entry is retransmitted,  this field is used to keep a history of previous mail messages used  for transmission. ",
+      "isMultiple": true,
+      "subFileNumber": 2100.121,
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "EVENT ACCEPT/REJECT CODE",
+      "dataType": "MUMPS",
+      "rawType": "KI",
+      "required": false,
+      "helpText": "This field stores the mumps code which is executed when processing accept or reject messages.  This field is not editable through VA FileMan. It is set in the routine GECSSDCT. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "SPECIAL PARAMETERS",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field is used to store any special parameters required to rebuild the code sheet. ",
+      "fieldNumber_": 26
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "AM1", "field": },
+    {"name": "AM2", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "BID", "field": },
+    {"name": "KEY", "field": },
+    {"name": "2100.1", "field": .01, "type": "regular"},
+    {"name": "2100.1", "field": .01, "type": "regular"},
+    {"name": "2100.1", "field": 3, "type": "regular"},
+    {"name": "2100.1", "field": 8, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

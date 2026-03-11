@@ -1,0 +1,540 @@
+{
+  "fileNumber": 342,
+  "fileName": "AR SITE PARAMETER",
+  "globalRoot": "342P",
+  "globalReference": "^RC(342,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'X",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the site that the AR activity will be tracked for.  A station can only have one site defined and multiple divisional sites are not currently supported.  This identifies charges or events to a particular site in the event that information is shared or sent to a centralized system. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SUPPRESS RIGHTS & OBLIGATIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Suppression of Rights and Obligations for RX copayment and Means Test bills can be accomplished by setting this parameter to 'YES'.  All patients should be given their notice of Rights and Obligations, but some sites may wish to have these notices pre-printed or duplicated, rather than having the AR software print them individually. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST BILL NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the last number used on bills and FMS transactions. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UB PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This parameter defines the device to which Universal Billing forms (UBs) for Reimbursable Health Insurance bills are to print.  A 'nightly process' is run every night by the AR system and one of the tasks that this process runs is the printing of the UB forms.  This parameter needs to be set to the device which contains the UB forms for printing. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PHARMACY COPAY STATEMENT INFO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:BRIEF;2:EXPANDED;",
+      "helpText": "This parameter defines the type of information to be displayed on the patient statement for RX copays.  Some patients may want to have very detailed information about any RX copay charges on their statement, while others may require brief information.  This parameter will be the default for ALL patients and will define the amount of information displayed on the patient statement.   A second related parameter can be defined for each patient that will over-ride this site parameter.  For example, i",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "LAST EVENT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last number used by event number driver. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "ALC (DEPOSITS)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ALC code as assigned by Financial Management. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "REPORT PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This parameter defines the report printer for the AR system.  A 'nightly process' is run every night by the AR system and one of the tasks that this process runs is the printing of the Patient Statements and Follow-up reports.  This parameter needs to be set to the device that these reports should be printed. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SUPPRESS ZERO BALANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This parameter allows the site to suppress printing patient statements that have a zero balance.  A patient may have had activity during a particular month that has left the account balance at zero (ex., patient got a $2.00 charge and paid it immediately).  The system will print this activity to inform the patient on a patient statement. This information, even though the account balance is zero, is printed to confirm the payment was applied correctly and also for reimbursement and 'proof' of pay",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "DATE/TIME SYSTEM LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is set by the system and should not be directly edited. The AR nightly process is suppose to run every night to update interest and administrative charges, print patient statements, print UB bills, create refund bills, etc.  This parameter is set when this process has completed every night.  If the process does not complete, the AR clerk will be warned and IRM should take action to resolve the problem.  If the process does not run to completion, certain events that must occur may have",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "SITE STATEMENT DAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the day of the month that the site will send statements to CCPC. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "LOCAL CCPC STATEMENTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO STATEMENTS TO LOCAL MAIL GROUP;1:SEND STATEMENTS TO LOCAL MAIL GROUP;",
+      "helpText": "This answer will determine whether the RCCPC STATEMENTS mail group receives the CCPC Patient Statement transmission messages that go to the CCPC. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "CCPC START-UP DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This date will reflect the first statement date that the waiver rights statements are printed. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "AUTO-DECREASE FIRST PARTY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "When set to YES, this field will turn on the automatic decrease  adjustment of first party co-pays, when payment is received for a related  third party claim. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "AUTO-DECREASE FIRST PARTY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This parameter determines the number of days to wait, after auto-posting of a 3rd party ERA, before applying the auto-decrease to an eligible, related 1st party copay. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "METRICS RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field contains the number of days VistA will retain on-site usage  metrics gathered within the AR software package.  The maximum number of  days to be retained on site will be 365 days.  The default # days will be  180. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "AUTO-DECREASE 1ST PARTY MANUAL",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "When set to YES, this field will turn on the automatic decrease  adjustment of first party co-pays, when payment is received for a related  third party claim that has been manually processed as opposed to  auto-posting. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "STATEMENT COMMENT 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When printing Patient Statements, the site can have pre-defined text print on the first page of every statement.  This parameter defines the first line of free-text comment to be displayed on every patient statement. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "STATEMENT COMMENT 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "When printing Patient Statements, the site can have pre-defined text print on the first page of every statement.  This parameter defines the second line of free-text comment to be displayed on every patient statement. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "DATE OF MASTER IRS OFFSET",
+      "dataType": "DATE",
+      "rawType": "RDOX",
+      "required": true,
+      "helpText": "The date entered into this parameter will be the date the system automatically attempts to create IRS MASTER code sheets to be sent to IRS.  IRS Master code sheets can only be run certain times of the year.  If a site does not wish to have these code sheets automatically generated, this field should remain empty and the option should be used to create the IRS master code sheets. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "DATE OF IRS OFFSET LETTER",
+      "dataType": "DATE",
+      "rawType": "RDOX",
+      "required": true,
+      "helpText": "The date entered into this parameter will be the date the system automatically attempts to print IRS OFFSET letters to be sent to patients.  IRS offset letters can only be printed certain times of the year.  If a site does not wish to have these letters print automatically, this field should remain empty and the option should be used to print the IRS offset letters. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "IRS OFFSET AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,2",
+      "length": 5,
+      "required": true,
+      "helpText": "The IRS charges the VA a fee for each account sent to IRS for offset against IRS refunds.  The fee is set each year by IRS and should be entered into this field.  The amount entered into this field will be added to the total amount forwarded to IRS for each account.   This fee is only charges to VA if the IRS collects money. The fee is also not added to the AR system since the patient does not owe this money unless the IRS actually offsets a refund. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "RESPONSIBLE FOR IRS CODESHEETS",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "If a site wishes to have the Master Code sheets or update code sheets generated, a person with a valid electronic signature MUST be entered into this field.  If IFCAP package requires that a person be identified as the 'responsible official' for code sheets.  The person entered into this field will be entered as the responsible official with each IRS OFFSET code sheet only. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "TOP STATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This code is a two character alpha-numeric code that is tr ansmitted to Treasury on Treasury Offset documents.  It is used to identify the site to Treasury.   Without this code, sites will not be able to access their data. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RATE EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "342.04D",
+      "required": false,
+      "helpText": "This multiple stores information relating to the interest rate, penalty rate, and administration charges to apply to accounts and bills that are past due.  Each year these rates can change and the rate at the time a bill is created remains in effect for that bill until it is closed. ",
+      "isMultiple": true,
+      "subFileNumber": 342.04,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "BURSTER MACHINE CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is the MUMPS code that will be executed to WRITE out a burster machine mark.  The burster machine mark indicates the beginning of a new letter so the machine will 'stuff' the envelope.  The write command could be, for example, a solid black line so that when the printed document is inserted into the burster machine it recognizes the beginning of a new letter.   Different burster machines work differently so the manual must be referred to for instructions.   The mark will appear in the middl",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "INTEGRATED SITE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will used to determine if the sat station prompt should be asked during the creation of a receivable. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7.02,
+      "fieldName": "NUMBER OF DAYS EFT UNMATCHED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field allows the user to select how many days an EFT (electronic funds transfer) shall age before it is reported as unmatched. ",
+      "fieldNumber_": 7.02
+    },
+    {
+      "fieldNumber": 7.03,
+      "fieldName": "NUMBER OF DAYS ERA UNMATCHED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field allows the user to select how many days an ERA (electronic remittance advice) shall age before it is reported as unmatched. ",
+      "fieldNumber_": 7.03
+    },
+    {
+      "fieldNumber": 7.04,
+      "fieldName": "#DAYS ENTRY CAN REMAIN IN SUSP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The number of days a payment can remain in suspense once it has been  placed there by the AR staff. ",
+      "fieldNumber_": 7.04
+    },
+    {
+      "fieldNumber": 7.05,
+      "fieldName": "AUTO-AUDIT MEDICAL PAPER BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No prompt to allow a site to audit their Medical Paper Bills during  the AR Nightly Process. ",
+      "fieldNumber_": 7.05
+    },
+    {
+      "fieldNumber": 7.06,
+      "fieldName": "AUTO-AUDIT RX PAPER BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No prompt to see if the site wishes to audit their Pharmacy Paper  Bills during the AR Nightly Process. ",
+      "fieldNumber_": 7.06
+    },
+    {
+      "fieldNumber": 7.07,
+      "fieldName": "AUTO-AUDIT MEDICAL EDI BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No prompt to allow a site to audit their Medical EDI Bills during the AR Nightly Process. ",
+      "fieldNumber_": 7.07
+    },
+    {
+      "fieldNumber": 7.08,
+      "fieldName": "AUTO-AUDIT RX EDI BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No prompt to see if the site wishes to audit their Pharmacy EDI Bills during the AR Nightly Process. ",
+      "fieldNumber_": 7.08
+    },
+    {
+      "fieldNumber": 7.09,
+      "fieldName": "AUTO-AUDIT TRICARE BILLS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:No;1:Yes;",
+      "helpText": "A Yes/No prompt to allow a site to audit their Tricare Bills during the AR Nightly Process. ",
+      "fieldNumber_": 7.09
+    },
+    {
+      "fieldNumber": 8.01,
+      "fieldName": "# OF DAYS FOR RD ELIG CHG RPT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This field allows the user to select how many days in the past Rated Disability Changes will be checked for the Rated Disability Eligibility Change Report which is scheduled by IRM to be run on a  recurring basis. If no value is added in this field the report will  default to 31 days. ",
+      "fieldNumber_": 8.01
+    },
+    {
+      "fieldNumber": 8.02,
+      "fieldName": "NUMBER OF DAYS FOR DMC REPORTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field allows the user to select how many days in the past bills for  episodes of care will be included for the following reports when  scheduled by IRM to be run on a recurring basis:    DMC Debt Validity Report     DMC Debt Validity Management Report     Rated Disability Eligibility Change Report    The minimum value for this field is 365 days (1 year) and the maximum value is 3650 days (10 years). If no value is added in this field the report will default to 365 days. ",
+      "fieldNumber_": 8.02
+    },
+    {
+      "fieldNumber": 9.4,
+      "fieldName": "PATCH POST INIT HISTORY",
+      "dataType": "SUBFILE",
+      "rawType": "342.01",
+      "required": false,
+      "helpText": "This field is used internally by AR to track when post inits are run at sites. ",
+      "isMultiple": true,
+      "subFileNumber": 342.01,
+      "fieldNumber_": 9.4
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "1ST PARTY AUTO-DECREASE TYPES",
+      "dataType": "POINTER",
+      "rawType": "342.014P",
+      "required": false,
+      "helpText": "This multiple will be used to determine which IB ACTION TYPE(s) are  eligible for 1st party auto-decrease when an ERA containing a related  third party bill is auto-posted. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 20.01,
+      "fieldName": "VITRIA STANDARD DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will contain the name of the specific directory into the nightly task will place the data files.  This will be the standard directory which Vitria will scan for files to retrieve. ",
+      "fieldNumber_": 20.01
+    },
+    {
+      "fieldNumber": 20.02,
+      "fieldName": "MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP3.8'",
+      "required": true,
+      "pointerTo": 3.8,
+      "helpText": "This field will point to the mail group that will receive any specific error messages to be received at the user level. ",
+      "fieldNumber_": 20.02
+    },
+    {
+      "fieldNumber": 20.03,
+      "fieldName": "DATE OF LAST TRANSMISSION",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field will contain the last date that the transmission of a batch occurred.  The field will be used to check the validity of a date field in the event someone re-indexes one of the main files used in the CBO AR Data Extract. ",
+      "fieldNumber_": 20.03
+    },
+    {
+      "fieldNumber": 20.04,
+      "fieldName": "CBO STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ON;0:OFF;",
+      "helpText": "This field will be set to '1' if this system is 'ON' or '0' if  this system is 'OFF'. Only test systems will be allowed to 'turn off' the CBO AR Data Extract. ",
+      "fieldNumber_": 20.04
+    },
+    {
+      "fieldNumber": 20.05,
+      "fieldName": "MAXIMUM NUMBER RECORDS",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field will be used to split up large data extracts into multiple batches. ",
+      "fieldNumber_": 20.05
+    },
+    {
+      "fieldNumber": 20.06,
+      "fieldName": "SYSTEM TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TEST;P:PRODUCTION;",
+      "helpText": "Designates whether the system is a Test or Production system. ",
+      "fieldNumber_": 20.06
+    },
+    {
+      "fieldNumber": 20.07,
+      "fieldName": "LEGACY SITE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field should be answered 'Yes' if the install site is a legacy site.  This field should be answered 'No' if the install site is NOT a legacy site. ",
+      "fieldNumber_": 20.07
+    },
+    {
+      "fieldNumber": 20.08,
+      "fieldName": "PRIMARY DOMAIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field should be the domain name of the primary VA site for the legacy site.  It is important to have this value in order for acknowledgement messages to be forwarded to the legacy site. ",
+      "fieldNumber_": 20.08
+    },
+    {
+      "fieldNumber": 20.09,
+      "fieldName": "EXTRACT RUNNING?",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field will be set when the running of CBO AR Data Extract starts.  This is to prevent multiple jobs from running at the same time and impacting normal system function. ",
+      "fieldNumber_": 20.09
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "EMERGENCY RESPONSE BEGIN DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field stores the date/time the emergency began. When this field is populated, an emergency situation is in effect, which will cause the suspension of TOP and DMC referrals, CCPC statements and interest and admin charges from being calculated. If the date falls within this beginning date and the Emergency Response End date, the suspension will take place. ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "EMERGENCY RESPONSE END DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "This field stores the date/time the emergency ends. When this field is populated, an emergency situation is in effect, which will cause the suspension of TOP and DMC referrals, CCPC statements and interest and admin charges from being calculated. If the date falls within this end date and the Emergency Response Begin date, the suspension will take place. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "TCSP REFERRAL STOP FLAG",
+      "dataType": "SET",
+      "rawType": "342.02SA",
+      "required": false,
+      "helpText": "Stop flag to stop or reactivate TCSP referrals for site ",
+      "isMultiple": true,
+      "subFileNumber": 342.02,
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CROSS-SERVICING START DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date that the Cross-Servicing Process begins. The Due Process Notification for debts originally less than $25.00 will stop after one year from this date. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "STATEMENT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0aI",
+      "length": 3,
+      "required": false,
+      "helpText": "This field controls the maximum number of lines that appear on a statement. ",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "LOCAL STATEMENT PRINTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ30X",
+      "length": 30X,
+      "required": true,
+      "helpText": " This parameter defines the local device to which over size  statements will print. ",
+      "fieldNumber_": 102
+    }
+  ],
+  "fieldCount": 54,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "342", "field": .01, "type": "regular"},
+    {"name": "", "field": 30, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

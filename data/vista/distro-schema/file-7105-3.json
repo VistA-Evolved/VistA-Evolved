@@ -1,0 +1,70 @@
+{
+  "fileNumber": 7105.3,
+  "fileName": "NOIS OFFICE",
+  "globalRoot": "7105.3",
+  "globalReference": "^FSC(\"ISC\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the office used by the NOIS software. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYMS",
+      "dataType": "SUBFILE",
+      "rawType": "7105.31",
+      "required": false,
+      "helpText": "These are the synonyms of the NOIS offices. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.31,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.7,
+      "fieldName": "WEB LINK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter a web link (URL). This link will be available on any call where the location has this office. ",
+      "fieldNumber_": 1.7
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RESOURCE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the resource device used to process calls edited where the reporting location is supported by this office. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "CLIENT LOOKUP",
+      "dataType": "SUBFILE",
+      "rawType": "7105.399",
+      "required": false,
+      "helpText": "Names used by this office by the client. ",
+      "isMultiple": true,
+      "subFileNumber": 7105.399,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "ACL", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "7105.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

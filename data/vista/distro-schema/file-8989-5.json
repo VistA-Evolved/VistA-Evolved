@@ -1,0 +1,84 @@
+{
+  "fileNumber": 8989.5,
+  "fileName": "PARAMETERS",
+  "globalRoot": "8989.5",
+  "globalReference": "^XTV(8989.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTITY",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "helpText": "This is the entity to which the parameter applies.  It is a variable  pointer.  An entity may be any of the following:        USR  User      (   200  New Person file       )      CLS  Class     (  8930  Usr Class file        )      TEA  Team      (404.51  Team file             )      LOC  Location  (    44  Hospital Location file)      SRV  Service   (    49  Service/Section file  )      DIV  Division  (     4  Institution file      )      SYS  System    (   4.2  Domain file           )      PKG",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PARAMETER",
+      "dataType": "POINTER",
+      "rawType": "R*P8989.51'",
+      "required": true,
+      "pointerTo": 8989.51,
+      "helpText": "This is the parameter that is being assigned a value for this entity. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INSTANCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This contains an instance identifier for cases where there may be multiple  instances of a parameter for the same entity.  It is required.  (It defaults  to 1 in cases where multiple instances are not allowed.) ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFXO",
+      "required": true,
+      "helpText": "This is the value for the parameter.  The allowable values are checked  according to the data type listed for the parameter in the PARAMETER  DEFINITION file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "WORD PROCESSING TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "8989.502",
+      "required": false,
+      "helpText": "If the parameter type is word processing, the word processing text is contained here and the VALUE field may contain a one line title for the word processing text. ",
+      "isMultiple": true,
+      "subFileNumber": 8989.502,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "M CODE",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "When a parameter is of type M (for MUMPS code), the executable code is  stored here, rather than in the VALUE field. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AC3", "field": },
+    {"name": "AC4", "field": },
+    {"name": "B", "field": },
+    {"name": "8989.5", "field": .01, "type": "regular"},
+    {"name": "8989.5", "field": .01, "type": "regular"},
+    {"name": "8989.5", "field": .02, "type": "regular"},
+    {"name": "8989.5", "field": .03, "type": "regular"},
+    {"name": "8989.5", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^XTV(8989.51,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8989.51,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",$$EXT^XPARDD($P(^(0),U,3),$P(^(0),U,2),\"I\")"}
+  ]
+}

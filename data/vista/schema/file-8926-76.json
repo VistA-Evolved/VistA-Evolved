@@ -1,0 +1,39 @@
+{
+  "fileNumber": 8926.76,
+  "fileName": "TIU LOINC DOCUMENT TYPE SYNONYMS",
+  "globalRoot": "8926.76",
+  "globalReference": "^TIU(8926.76,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the text of the Document Type synonym. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DOCUMENT TYPE",
+      "dataType": "POINTER",
+      "rawType": "R*P8926.6'",
+      "required": true,
+      "pointerTo": 8926.6,
+      "helpText": "This field is a reference to the LOINC Standard Document Type to which the synonym corresponds. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "DTYP", "field": },
+    {"name": "8926.76", "field": .01, "type": "regular"},
+    {"name": "8926.76", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W.02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^TIU(8926.6,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(8926.6,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

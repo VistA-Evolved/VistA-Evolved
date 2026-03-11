@@ -1,0 +1,72 @@
+{
+  "fileNumber": 699.6,
+  "fileName": "DIAG/THERAP INTERVENT",
+  "globalRoot": "699.6",
+  "globalReference": "^MCAR(699.6,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field stores a list of techniques used in various Medical procedures. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "*PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "699.61P",
+      "required": false,
+      "helpText": "This field is used as a screen to differentiate which technique is used by which Medical procedure. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PROCEDURE NAME",
+      "dataType": "SUBFILE",
+      "rawType": "699.62",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 699.62,
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "INDICATED THERAPY USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:INDICATED THERAPY-GI;2:INDICATED THERAPY-PULMONARY;12:INDICATED THERAPY-BOTH;",
+      "helpText": "This field is used as a flag to determine whether a technique can be used as an 'Indicated Therapy' for Endoscopies. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "CATH SURGICAL RISK PROCEDURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:USED ON CATH SURGICAL RISK REPORT;",
+      "helpText": "This field is used to determine whether a technique is selectable for the Catheterization Surgical Risk entry. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "BA", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "699.6", "field": .01, "type": "regular"},
+    {"name": "699.6", "field": .01, "type": "regular"},
+    {"name": "699.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

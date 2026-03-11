@@ -1,0 +1,285 @@
+{
+  "fileNumber": 14.71,
+  "fileName": "TASKMAN MONITOR",
+  "globalRoot": "14.71",
+  "globalReference": "^%ZIS(14.71,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field holds the FM date that this set of monitor data is for. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "BOX-VOLUME PAIR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field holds the Taskman ZTPAIR data. It should match a current Taskman Box-Volume pair. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "Task Count 0",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 00:00-00:59. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "Task Count 1",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 1:00-1:59. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "Task Count 2",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 2:00-2:59. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "Task Count 3",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 3:00-3:59. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "Task Count 4",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 4:00-4:59. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "Task Count 5",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 5:00-5:59. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "Task Count 6",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 6:00-6:59. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "Task Count 7",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 7:00-7:59. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "Task Count 8",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 8:00-8:59. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "Task Count 9",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 9:00-9:59. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "Task Count 10",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 10:00-10:59. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "Task Count 11",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 11:00-11:59. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "Task Count 12",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 12:00-12:59. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "Task Count 13",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 13:00-13:59. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "Task Count 14",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 14:00-14:59. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "Task Count 15",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 15:00-15:59. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "Task Count 16",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 16:00-16:59. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "Task Count 17",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 17:00-17:59. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "Task Count 18",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 18:00-18:59. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "Task Count 19",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 19:00-19:59. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "Task Count 20",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 20:00-20:59. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "Task Count 21",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 21:00-21:59. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "Task Count 22",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 22:00-22:59. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "Task Count 23",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This field holds the count of the number of tasks that the manager moved from the schedule queue for time 23:00-23:59. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "Daily Total",
+      "dataType": "COMPUTED",
+      "rawType": "CJ6",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": 101
+    }
+  ],
+  "fieldCount": 27,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "14.71", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

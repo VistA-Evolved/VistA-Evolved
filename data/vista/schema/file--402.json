@@ -1,0 +1,144 @@
+{
+  "fileNumber": .402,
+  "fileName": "INPUT TEMPLATE",
+  "globalRoot": ".402",
+  "globalReference": "^DIE(",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "READ ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FILE",
+      "dataType": "POINTER",
+      "rawType": "P1'I",
+      "required": false,
+      "pointerTo": 1,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "USER #",
+      "dataType": "NUMERIC",
+      "rawType": "N",
+      "required": false,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WRITE ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".4021",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .4021,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 1620,
+      "fieldName": "EDIT FIELDS",
+      "dataType": "COMPUTED",
+      "rawType": "Cm",
+      "required": false,
+      "helpText": "This multi-line field displays all the \"EDIT\" prompts of this Input Template ",
+      "fieldNumber_": 1620
+    },
+    {
+      "fieldNumber": 1815,
+      "fieldName": "ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1815
+    },
+    {
+      "fieldNumber": 1816,
+      "fieldName": "PREVIOUS ROUTINE INVOKED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": 1816
+    },
+    {
+      "fieldNumber": 1819,
+      "fieldName": "COMPILED",
+      "dataType": "COMPUTED",
+      "rawType": "CJ3",
+      "length": 3,
+      "required": false,
+      "fieldNumber_": 1819
+    },
+    {
+      "fieldNumber": 21400,
+      "fieldName": "BUILD(S)",
+      "dataType": "COMPUTED",
+      "rawType": "Cmp9.6",
+      "required": false,
+      "helpText": "This computed field searches the Build File(#9.6) for Builds containing the Edit Template. A list of the identified Builds is created for display.  Multiple Builds will be shown if appropriate. ",
+      "fieldNumber_": 21400
+    },
+    {
+      "fieldNumber": 21409,
+      "fieldName": "CANONIC FOR THIS FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES",
+      "helpText": "The Input Template identified as CANONIC will always be presented  to the user for selection at the EDIT WHICH FIELD: prompt. ",
+      "fieldNumber_": 21409
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": ".402", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": 4, "type": "regular"},
+    {"name": "", "field": 1815, "type": "regular"},
+    {"name": "", "field": 21409, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N D,D1,D2 S D2=^(0) S:$X>30 D1(1,\"F\")=\"!\" S D=$P(D2,U,2) S:D D1(2)=\"(\"_$$DATE^DIUTL(D)_\")\",D1(2,\"F\")=\"?30\" S D=$P(D2,U,5) S:D D1(3)=\" User #\"_D,D1(3,\"F\")=\"?50\" S D=$P(D2,U,4) S:D D1(4)=\" File #\"_D,D1(4,\"F\")=\"?59\" D EN^DDIOL(.D1)"},
+    {"field": WRITED, "value": "I $G(DZ)?1\"???\".E N % S %=0 F  S %=$O(^DIE(Y,\"%D\",%)) Q:%'>0  I $D(^(%,0))#2 D EN^DDIOL(^(0),\"\",\"!?5\")"}
+  ]
+}

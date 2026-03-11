@@ -1,0 +1,55 @@
+{
+  "fileNumber": 1.13,
+  "fileName": "FILEGRAM ERROR LOG",
+  "globalRoot": "1.13",
+  "globalReference": "^DIAR(1.13,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "FILEGRAM NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "LINE OF ERROR",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ERROR CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 2100,
+      "fieldName": "FILEGRAM",
+      "dataType": "SUBFILE",
+      "rawType": "1.1321",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1.1321,
+      "fieldNumber_": 2100
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1.13", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

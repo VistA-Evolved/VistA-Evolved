@@ -1,0 +1,128 @@
+{
+  "fileNumber": 301.9,
+  "fileName": "IVM SITE PARAMETER",
+  "globalRoot": "301.9",
+  "globalReference": "^IVM(301.9,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "STATION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the station number of your facility (DHCP site) that will receive/send HL7 messages to the IVM CENTER (non-DHCP application). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "IVM MESSAGES MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP3.8'",
+      "required": true,
+      "pointerTo": 3.8,
+      "helpText": "Members of this mail group will receive messages pertaining to erroneous data transmitted to the IVM Center and for data to be uploaded from the IVM Center. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SUPPRESS SSN UPLOAD MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPPRESS MESSAGE;0:DON'T SUPPRESS MESSAGE;",
+      "helpText": "  This field will contain a 0 if the facility will be notified that updated SSN data has been received from the IVM Center.  It will contain a 1 if facility will not be notified.  Default is 0. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SUPPRESS DEMOGRAPHIC MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SUPPRESS MESSAGE;0:DON'T SUPPRESS MESSAGE;",
+      "helpText": "  This field will contain a 0 if the facility will be notified that updated demographic data has been received from the IVM Center.  It will contain a 1 if facility will not be notified.  Default is 0. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "VERSION 2.0 INSTALL DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is used to store the date that the site first installed IVM v2.0.  The field is used to determine how far back in time to check to see whether nightly transmissions have been received by the IVM Center. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TRANSMIT ENROLLMENT EVENTS?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:DO NOT TRANSMIT;1:TRANSMIT;",
+      "helpText": "This field will serve as a switch to turn on and off the transmission of enrollment events to HEC. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "ENROLLMENT ALERT MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "RP3.8'",
+      "required": true,
+      "pointerTo": 3.8,
+      "helpText": "Members of this mail group will receive messages pertaining to the upload of Enrollment/Eligibility data from the Health Eligibility Center (HEC). ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "ENROLLMENT ALERT REMOTE MAIL GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This field contains the remote mail group and domain that will receive Enrollment alert messages. (i.e.  mailgroup@domain) ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "QUERY INCOME YEAR",
+      "dataType": "DATE",
+      "rawType": "301.9001DA",
+      "required": false,
+      "helpText": "This multiple will contain information for Queries received from the IVM center. ",
+      "isMultiple": true,
+      "subFileNumber": 301.9001,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "ENROLLMENT QUERY ACTIVE?",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "0:NOT ACTIVE;1:ACTIVE;",
+      "helpText": "This field will serve as a switch to turn on and off transmission of Enrollment queries sent to HEC from VistA. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "DCD MESSAGING ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ACTIVE;1:ACTIVE;",
+      "helpText": "This field will serve as a switch to turn on and off DCD messaging between VistA and the HEC. ",
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AB1", "field": },
+    {"name": "B", "field": },
+    {"name": "301.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

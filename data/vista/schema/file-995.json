@@ -1,0 +1,96 @@
+{
+  "fileNumber": 995,
+  "fileName": "CIRN EVENT ASSOCIATION",
+  "globalRoot": "995",
+  "globalReference": "^RGEQASN(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "EVENT TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Name given to CIRN event that describes the condition that triggers the event. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "HL7 EVENT PROTOCOL",
+      "dataType": "POINTER",
+      "rawType": "*P101'",
+      "required": false,
+      "pointerTo": 101,
+      "helpText": "If an event triggers an HL7 message to be transmitted to other stations, the event protocol that is triggered should be store in this field. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PRIORITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The priority field defines the system priority that background queue is assigned.  A priority of 1 is lowest to priority 10 highest. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "HANG TIME (SECONDS)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "When an event is put on a queue to be processed, a separate job is started in the background to process the entries on the queue.  After all entries on the queue are processed, the job can continue to monitor the queue for new entries.  The hang time defines the amount of time the job stays active waiting for new entries.  If no entries are placed in the queue within the hang time, the background job stops. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "When a queue is disabled, no entries will be processed on the queue. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Routine line tag to use to process event entries on the queue. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Name of routine to use to process event entries on the queue. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 99,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "995.099",
+      "required": false,
+      "helpText": "This field holds a detailed explanation of this event type and the format of its associated event stub. ",
+      "isMultiple": true,
+      "subFileNumber": 995.099,
+      "fieldNumber_": 99
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "995", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

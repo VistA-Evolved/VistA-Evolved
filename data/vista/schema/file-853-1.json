@@ -1,0 +1,55 @@
+{
+  "fileNumber": 853.1,
+  "fileName": "VPS HL7 SITE PARAMETERS",
+  "globalRoot": "853.1",
+  "globalReference": "^VPS(853.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter name with lenght 3-30 characters. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:Yes;N:No;",
+      "helpText": "This field indicates whether or not VPS HL7 is active. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LAST TRANSMIT ERROR DT/TM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field is the Date/Time when the last transmission attempt is  unsuccessful. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LAST TRANSMISSION ERROR TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the error message when the last HL7 transmission attempt is  unsuccessful. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "853.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

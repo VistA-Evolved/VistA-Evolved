@@ -1,0 +1,73 @@
+{
+  "fileNumber": 7100.3,
+  "fileName": "NOIS ALERT",
+  "globalRoot": "7100.3P",
+  "globalReference": "^FSCD(\"ALERT\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "USER (SENDER)",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "This is the user who has sent or scheduled the notification. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CALL",
+      "dataType": "POINTER",
+      "rawType": "P7100'",
+      "required": false,
+      "pointerTo": 7100,
+      "helpText": "This is the NOIS call used by the notification. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a message sent with the notification. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the notification was sent. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DELIVERY DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date the alert will be delivered. ",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 5,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "ALERT", "field": },
+    {"name": "AUC", "field": },
+    {"name": "AUC1", "field": },
+    {"name": "B", "field": },
+    {"name": "7100.3", "field": .01, "type": "regular"},
+    {"name": "7100.3", "field": .01, "type": "regular"},
+    {"name": "7100.3", "field": .01, "type": "regular"},
+    {"name": "7100.3", "field": 1, "type": "regular"},
+    {"name": "7100.3", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

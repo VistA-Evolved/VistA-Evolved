@@ -1,0 +1,27 @@
+{
+  "fileNumber": 634,
+  "fileName": "HBHC TRANSMIT",
+  "globalRoot": "",
+  "globalReference": "^HBHC(634,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSMIT RECORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field represents Form 3 (Evaluation/Admission), Form 4 (Visit), Form 5 (Discharge), and Form 6 (Corrections) records generated for electronic transmission to Austin via MailMan.  Form 7 (Medical  Foster Home (MFH) home specific) records are also included if the site is a sanctioned MFH site.  Field allows for 200 character fixed length record of free text.  Field updated by package only, no user input. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "634", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

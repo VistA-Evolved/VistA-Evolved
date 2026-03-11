@@ -1,0 +1,36 @@
+{
+  "fileNumber": 910.1,
+  "fileName": "ESP ACTIVITY REPORT",
+  "globalRoot": "910.1D",
+  "globalReference": "^ESP(910.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DATE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date when the activities were performed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "OFFICER",
+      "dataType": "POINTER",
+      "rawType": "910.11P",
+      "required": false,
+      "helpText": "This is the officer who performed the activities being reported. The officer's name must be entered into the NEW PERSON file (#200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "910.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

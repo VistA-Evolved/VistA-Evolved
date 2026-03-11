@@ -1,0 +1,105 @@
+{
+  "fileNumber": 2006.59935,
+  "fileName": "CLEANUP OF JPEG IMAGES STORED AS DICOM IMAGES",
+  "globalRoot": "2006.59935",
+  "globalReference": "^MAG(2006.59935,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ORIGINAL MAGIEN",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ12,0",
+      "length": 12,
+      "required": true,
+      "helpText": "This is the IMAGE file entry that needs to be corrected. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "IMAGE SAVE DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the Fileman date and time that the image was saved. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "UNKNOWN:Unknown status;FIXED:Corrected;",
+      "helpText": "This is the status of IMAGE file entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "FIXED DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date and time that the IMAGE file was corrected. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ERROR MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ80",
+      "length": 80,
+      "required": false,
+      "helpText": "This is the error message if the cleanup failed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "IMAGE AUDIT IEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the IMAGE AUDIT file (#2005.1) entry that has been corrected. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "SOP INSTANCE UID",
+      "dataType": "FREE-TEXT",
+      "rawType": "FJ64",
+      "length": 64,
+      "required": false,
+      "helpText": "This is the SOP Instance UID (0008,0018) of the new DICOM image. SOP is a DICOM Service-Object Pair; UID is a Unique Identifier. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "NEW MAGIEN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ12,0",
+      "length": 12,
+      "required": false,
+      "helpText": "This is the MAGIEN of the new DICOM object that was created to replace the JPEG.DCM. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "FINISHED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time that the entries in ^MAG(2005,MAGIEN) were updated. ",
+      "fieldNumber_": 9
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.59935", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

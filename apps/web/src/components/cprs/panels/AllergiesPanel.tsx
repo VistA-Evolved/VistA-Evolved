@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useDataCache, type Allergy } from '@/stores/data-cache';
-import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { API_BASE } from '@/lib/api-config';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
@@ -42,7 +41,6 @@ function formatReactions(reactions: string): string[] {
 
 export default function AllergiesPanel({ dfn }: AllergiesPanelProps) {
   const { fetchDomain, getDomain, getDomainMeta, isLoading } = useDataCache();
-  const { openModal } = useCPRSUI();
   const [selected, setSelected] = useState<Allergy | null>(null);
   const [filter, setFilter] = useState<'all' | 'severe' | 'moderate' | 'mild'>('all');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -50,7 +48,7 @@ export default function AllergiesPanel({ dfn }: AllergiesPanelProps) {
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState('');
   const [addSuccess, setAddSuccess] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
 

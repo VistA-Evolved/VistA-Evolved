@@ -1,0 +1,56 @@
+{
+  "fileNumber": 47.761,
+  "fileName": "SOURCE OF NOTIFICATION BUSINESS RULES",
+  "globalRoot": "47.761",
+  "globalReference": "^DG(47.761,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE OF NOTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "RP47.76'",
+      "required": true,
+      "pointerTo": 47.76,
+      "helpText": "SOURCE OF NOTIFICATION identifies the entry from the SOURCE OF  NOTIFICATIONS (#47.76) file that has valid corresponding SUPPORTING  DOCUMENTATION TYPES (#47.75) entry(ies). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "RSa",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "ACTIVE? will indicate whether the business rules for this SOURCE OF  NOTIFICATION are active and available for use. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The DATE LAST UPDATED is a date attribute for when the business rule for  the corresponding SOURCE OF NOTIFICATION was last changed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DOCUMENT TYPES",
+      "dataType": "POINTER",
+      "rawType": "47.7611PA",
+      "required": false,
+      "helpText": "For each SOURCE OF NOTIFICATION, the DOCUMENT TYPES multiple specifies the allowable DOCUMENT TYPE(s) that will be considered as a valid combination  business rule. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "47.761", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

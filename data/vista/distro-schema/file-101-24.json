@@ -1,0 +1,428 @@
+{
+  "fileNumber": 101.24,
+  "fileName": "OE/RR REPORT",
+  "globalRoot": "101.24",
+  "globalReference": "^ORD(101.24,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the Number field for the file. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Name of the report. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the code that identifies the report.  Each tab in CPRS that uses reports looks for this ID in order to process the report. Each tab also uses a unique set of ID's.  An ID of 5 on the Reports Tab may not identify the same report on a different tab. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "REMOTE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;2:REMOTE ONLY;",
+      "helpText": "This field is used to identify which reports allow remote access through Remote Data Views. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "QUALIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:HSType;2:DateTime;3:Imaging;4:NutrAssess;19:MedicineProcedure;39:ListView;5:HSComponent;6:HSWPComponent;28:Surgery;",
+      "helpText": "This field identifies which qualifier to use when processing the report. Examples of qualifiers are HSType, DateTime, Imaging and NutrAssess. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the routine that is invoked to produce the report. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the entry point for the ROUTINE that is invoked to produce the report. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FIXED;1:FIXED W/DATE;2:FIXED W/HEADER;3:FIXED W/DATE&HEADER;4:SPECIALIZED;5:GRAPHIC;6:LISTVIEW;",
+      "helpText": "This field puts reports into a category that is evaluated by the GUI when the report is processed. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "TAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REPORTS TAB;L:LABS TAB;C:COVER SHEET;CD:COVER SHEET DETAILS;",
+      "helpText": "This fields identifies the appropriate tab for a report in CPRS. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "MIXEDCASE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is used in the cover sheet and is used to display the returned list in mixed case. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "INVERT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to invert a list of data returned in the Cover sheet ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "TEXT COLOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Black:BLACK;Maroon:MAROON;Green:GREEN;Olive:OLIVE;Purple:PURPLE;Teal:TEAL;Red:RED;Lime:LIME;Yellow:YELLOW;Blue:BLUE;Fuchsia:FUCHSIA;Aqua:AQUA;",
+      "helpText": "This field determines the text color for the returned data. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "R:REPORT;H:HTML;L:LISTMAN ONLY;S:SELECTION LIST;V:LISTVIEW;M:MENU;G:GRAPH;",
+      "helpText": "This field identifies the type for an entry. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "RPC",
+      "dataType": "POINTER",
+      "rawType": "P8994'",
+      "required": false,
+      "pointerTo": 8994,
+      "helpText": "This is the RPC that is called inside the GUI to produce the report. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "DATE FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "D:DATE ONLY;T:DATE WITH TIME;",
+      "helpText": "This field determines what kind of format to display date/time fields. ",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "DATE PIECE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is used on the Cover Sheet to determine which piece the date field occupies. ",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "TAB POSITIONS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the value that will be used for the Tab property for the listbox associated with this report on the Cover Sheet. ",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "PIECES",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used by the Cover Sheet to determine what pieces of data to display in the listbox. ",
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .18,
+      "fieldName": "DETAIL REPORT",
+      "dataType": "POINTER",
+      "rawType": "*P101.24'",
+      "required": false,
+      "pointerTo": 101.24,
+      "helpText": "This field is used to get the details of an item on the cover sheet. ",
+      "fieldNumber_": .18
+    },
+    {
+      "fieldNumber": .19,
+      "fieldName": "REPORT TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the entry point tag for a report extract. ",
+      "fieldNumber_": .19
+    },
+    {
+      "fieldNumber": .191,
+      "fieldName": "REPORT ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the routine associated with the REPORT TAG for report extracts. ",
+      "fieldNumber_": .191
+    },
+    {
+      "fieldNumber": .192,
+      "fieldName": "REPORT COMPONENT",
+      "dataType": "POINTER",
+      "rawType": "P142.1'",
+      "required": false,
+      "pointerTo": 142.1,
+      "helpText": "This is the report component associated with this report. ",
+      "fieldNumber_": .192
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "PARAM 1",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 1st parameter passed to the RPC, if needed. ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": .22,
+      "fieldName": "PARAM 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the 2nd parameter passed to the RPC, if needed. ",
+      "fieldNumber_": .22
+    },
+    {
+      "fieldNumber": .23,
+      "fieldName": "HEADING",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the heading used on the Cover sheet for the list of items. ",
+      "fieldNumber_": .23
+    },
+    {
+      "fieldNumber": .24,
+      "fieldName": "DESCRIPTIVE TEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is a more descriptive name than what might be included in the  NAME field. ",
+      "fieldNumber_": .24
+    },
+    {
+      "fieldNumber": .25,
+      "fieldName": "NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used by the Cover Sheet routines to define the node in the ^XTMP global to store the data. ",
+      "fieldNumber_": .25
+    },
+    {
+      "fieldNumber": .26,
+      "fieldName": "PRINT TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the entry point tag used when printing reports that do their own Write statements. ",
+      "fieldNumber_": .26
+    },
+    {
+      "fieldNumber": .27,
+      "fieldName": "PRINT ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the entry point routine used when printing reports that do their own Write statements. ",
+      "fieldNumber_": .27
+    },
+    {
+      "fieldNumber": .28,
+      "fieldName": "EXTRACT TAG",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the entry point for the extract routine that pulls the data from package API's and/or package files. ",
+      "fieldNumber_": .28
+    },
+    {
+      "fieldNumber": .29,
+      "fieldName": "EXTRACT ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This is the extract routine that pulls data from package API's and/or package files. ",
+      "fieldNumber_": .29
+    },
+    {
+      "fieldNumber": .41,
+      "fieldName": "SORT ORDER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used when sorting columns of data on at grid within CPRS. It determines the sort order to be used in a multi-column sort.  The primary sort column is always the column header clicked on by the user. If this field has values in the form #:#, then a multi-column sort is done, using the column numbers identified in this field for the second and third level sorting. ",
+      "fieldNumber_": .41
+    },
+    {
+      "fieldNumber": .42,
+      "fieldName": "MAXIMUM DAYS BACK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field restricts the report date range to the maximum value specified. ",
+      "fieldNumber_": .42
+    },
+    {
+      "fieldNumber": .43,
+      "fieldName": "FHIE REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field identifies reports that are available through FHIE. The item in this field is the code for the report available through the FHIE server. ",
+      "fieldNumber_": .43
+    },
+    {
+      "fieldNumber": .44,
+      "fieldName": "DIRECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field allows a report to make a direct remote data call to a remote site.  Use caution in setting this field to yes.  It has the effect of disabling CPRS until the remote call is finished, but also may speed up the query by bypassing taskman latency. ",
+      "fieldNumber_": .44
+    },
+    {
+      "fieldNumber": .45,
+      "fieldName": "HDR REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field flags reports that are generated from the HDR. ",
+      "fieldNumber_": .45
+    },
+    {
+      "fieldNumber": .46,
+      "fieldName": "HDR ROUTINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HDR routine that modifies HDR data for CPRS. ",
+      "fieldNumber_": .46
+    },
+    {
+      "fieldNumber": .47,
+      "fieldName": "HDR ENTRY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the HDR entry point that modifies HDR data for CPRS. ",
+      "fieldNumber_": .47
+    },
+    {
+      "fieldNumber": .48,
+      "fieldName": "FHIE DATA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field is used to tell CPRS that DOD/FHIE data can be accessed for this report.  Special code has to be written by CPRS and DOD for this to happen. ",
+      "fieldNumber_": .48
+    },
+    {
+      "fieldNumber": .49,
+      "fieldName": "FHIE/REMOTE DATA ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field determines if a report can show local VA data and Remote  data. Enter YES if LOCAL data should be excluded from the report. Some Department of Defense (DOD) reports don't have a VistA equivalent (Questionnaires, Histories). An entry of YES would be appropriate for those kinds of reports. ",
+      "fieldNumber_": .49
+    },
+    {
+      "fieldNumber": .491,
+      "fieldName": "DISABLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This field will disable a report. ",
+      "fieldNumber_": .491
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "COLUMN HEADERS",
+      "dataType": "SUBFILE",
+      "rawType": "101.243",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 101.243,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ITEM",
+      "dataType": "POINTER",
+      "rawType": "101.241P",
+      "required": false,
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 43,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "101.24", "field": .01, "type": "regular"},
+    {"name": "101.24", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .23, "value": "W:$D(^(2)) \"   \",$P(^(2),U,3)"},
+    {"field": .24, "value": "W:$D(^(2)) \"   \",$P(^(2),U,4)"}
+  ]
+}

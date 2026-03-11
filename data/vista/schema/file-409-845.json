@@ -1,0 +1,39 @@
+{
+  "fileNumber": 409.845,
+  "fileName": "SDEC PREFERENCES AND SPECIAL NEEDS",
+  "globalRoot": "409.845",
+  "globalReference": "^SDEC(409.845,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "This is where the PATIENT is defined for the Patient Preferences. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PREFERENCES",
+      "dataType": "SET",
+      "rawType": "409.8451SA",
+      "required": false,
+      "helpText": "Multiple patient preferences are defined here for a specific patient. ",
+      "isMultiple": true,
+      "subFileNumber": 409.8451,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "409.845", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

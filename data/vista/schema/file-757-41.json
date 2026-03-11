@@ -1,0 +1,61 @@
+{
+  "fileNumber": 757.41,
+  "fileName": "SHORTCUT CONTEXT",
+  "globalRoot": "757.41",
+  "globalReference": "^LEX(757.41,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CONTEXT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the name of the context in which shortcuts will be used.  It is a selectable user default. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ALLOW SITE EDIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "This is a flag which indicates if a site should be allowed to edit the shortcuts.  Not all shortcut context should be editable at the site.  For example, it should not be permitted to add shortcuts to the context \"Null,\" which was designed to be void of shortcuts.  Some shortcut context may be provided by and controlled by applications, and should not be edited at the sites.  However, this is the exception and not the rule.  The majority of  the shortcuts will be site editable. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CONTEXT DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": "757.411",
+      "required": false,
+      "helpText": "This is a description of the intent of the context usage. ",
+      "isMultiple": true,
+      "subFileNumber": 757.411,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SCREEN",
+      "dataType": "MUMPS",
+      "rawType": "K",
+      "required": false,
+      "helpText": "This is MUMPS code in the form of an IF statement without an action to  perform, similar Fileman's to DIC(\"S\").  It is used as a screen during look-up in the expression file to return only those expressions which qualifiy in this context.  For example, the context \"ICD DIAGNOSIS/PROCEDURES\" has a screen which excludes all expressions not linked to an ICD-9 code. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "757.41", "field": .01, "type": "regular"},
+    {"name": "757.41", "field": .01, "type": "regular"},
+    {"name": "757.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

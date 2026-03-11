@@ -1,0 +1,159 @@
+{
+  "fileNumber": 403.5,
+  "fileName": "RECALL REMINDERS",
+  "globalRoot": "403.5",
+  "globalReference": "^SD(403.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Recall Reminder patient name this is a pointer to the patient file #2. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ACCESSION#",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the lab order number or the lab accession number if known. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "Fa",
+      "required": false,
+      "helpText": "Comments needed for this recall entry.  ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 2.6,
+      "fieldName": "FAST/NON-FASTING",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "f:FASTING;n:NON-FASTING;",
+      "helpText": "If the  patient has had lab tests ordered for this recall visit, select either Fasting or Non-Fasting labs. If the patient has no labs orders leave blank. ",
+      "fieldNumber_": 2.6
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TEST/APP.",
+      "dataType": "POINTER",
+      "rawType": "RP403.51'a",
+      "required": true,
+      "pointerTo": 403.51,
+      "helpText": "This is the type of Recall Visit that is assigned for this entry. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "RP403.54'a",
+      "required": true,
+      "pointerTo": 403.54,
+      "helpText": "The provider who is assigned for this Recall entry. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "RP44'a",
+      "required": true,
+      "pointerTo": 44,
+      "helpText": "This is the Hospital Location which this patient will have the Recall  entry assigned.  ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 4.7,
+      "fieldName": "LENGTH OF APPT.",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0a",
+      "length": 3,
+      "required": false,
+      "helpText": "The length of appointment (in minutes) that will be required once scheduled. ",
+      "fieldNumber_": 4.7
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "RECALL DATE",
+      "dataType": "DATE",
+      "rawType": "RDXI",
+      "required": true,
+      "helpText": "Recall Date is a date the provider has requested the patient to return.  This must be a future exact date. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.5,
+      "fieldName": "RECALL DATE (PER PATIENT)",
+      "dataType": "DATE",
+      "rawType": "DXI",
+      "required": false,
+      "helpText": "This is the Recall Date that the patient is requesting. It can be  different from the Recall Date, which is what the Provider has requested.  This must be a future exact date. ",
+      "fieldNumber_": 5.5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE REMINDER SENT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the first letter/card was printed and sent to  the Veteran. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USER WHO ENTERED RECALL",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User who enter or edit a Recall entry. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "DATE/TIME RECALL ADDED",
+      "dataType": "DATE",
+      "rawType": "DXI",
+      "required": false,
+      "helpText": "Date and Time this recall reminder was added. Cannot be in the future. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SECOND PRINT",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that the second letter/card was printed and sent. ",
+      "fieldNumber_": 8
+    }
+  ],
+  "fieldCount": 14,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "E", "field": },
+    {"name": "403.5", "field": .01, "type": "regular"},
+    {"name": "403.5", "field": 4, "type": "regular"},
+    {"name": "403.5", "field": 4.5, "type": "regular"},
+    {"name": "403.5", "field": 5, "type": "regular"},
+    {"name": "", "field": 5, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 4.5, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SC(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(44,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": 5, "value": "W \"   \",$E($P(^(0),U,6),4,5)_\"-\"_$E($P(^(0),U,6),6,7)_\"-\"_$E($P(^(0),U,6),2,3)"}
+  ]
+}

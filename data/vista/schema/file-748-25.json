@@ -1,0 +1,40 @@
+{
+  "fileNumber": 748.25,
+  "fileName": "SURVEY QUESTIONS",
+  "globalRoot": "748.25P",
+  "globalReference": "^QA(748.25,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SURVEY",
+      "dataType": "POINTER",
+      "rawType": "P748'X",
+      "required": false,
+      "pointerTo": 748,
+      "helpText": "This field points to file 748, the SURVEY file.  It is DINUMed for each entry in the SURVEY file. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "QUESTION",
+      "dataType": "SUBFILE",
+      "rawType": "748.26I",
+      "required": false,
+      "helpText": "This field has the internal entry number of a question, which can be different from the actual question number or question position on a survey.  For example the IFN may be 1 but the question may come out as 20 on the actual survey because questions may be swapped around. ",
+      "isMultiple": true,
+      "subFileNumber": 748.26,
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "E", "field": },
+    {"name": "748.25", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

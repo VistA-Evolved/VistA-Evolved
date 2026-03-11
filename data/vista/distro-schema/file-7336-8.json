@@ -1,0 +1,197 @@
+{
+  "fileNumber": 7336.8,
+  "fileName": "OFM PROJ CATEGORY",
+  "globalRoot": "7336.8",
+  "globalReference": "^OFM(7336.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field gives the name of a project category. The field is used to  determine prioritization points for NRM, Minor, and Minor Misc. programs, as well as, budget category for all programs.   NOTE: New entries to the OFM Project Category File require Programmer access. Care should be taken when entering new project categories, as new entries may not be eligible for prioritization points. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "APPLICABLE PROGRAMS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a comma delimited list of applicable programs. The list entered here will determine the choices displayed during project application.  (Examples: MM,NR,MA  or MM,MI) ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NRM CATEGORY GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an NRM category group name associated with the project category. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MINOR & MINOR MISC CATEGORY GR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an Minor and Minor Misc. category group name associated with the project category. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAJOR CATEGORY GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an Major category group name associated with the project category. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "FACILITY TYPE SELECTABLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains a comma delimited list of facility types. The list entered here will determine the choices displayed during project application.  (Examples: VHA,VBA,NCS  or VBA,NCS etc) ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "VBA CATEGORY GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an VBA category group name associated with the project category. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NCS CATEGORY GROUP",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains an NCS category group name associated with the project category. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 7.5,
+      "fieldName": "FMS CODE (VHA)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The FMS # code that corresponds to the project category for VHA facilities. VBA facilities use a code of 'VB' and NCS facilities use a code of 'CM'. ",
+      "fieldNumber_": 7.5
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MA BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.9'",
+      "required": false,
+      "pointerTo": 7336.9,
+      "helpText": "This field is a pointer to the OFM Budget Category (#7336.8) associated with a Major program in this project category. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "MI BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.9'",
+      "required": false,
+      "pointerTo": 7336.9,
+      "helpText": "This field is a pointer to the OFM Budget Category (#7336.8) associated with a Minor program in this project category. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "MM BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.9'",
+      "required": false,
+      "pointerTo": 7336.9,
+      "helpText": "This field is a pointer to the OFM Budget Category (#7336.8) associated with a Minor Misc. program in this project category. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NRM BUDGET CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "*P7336.9'",
+      "required": false,
+      "pointerTo": 7336.9,
+      "helpText": "This field is a pointer to the OFM Budget Category (#7336.8) associated with a NRM program in this project category. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NRM PRIORITY POINTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains a number between 0 and 15 of priority points to be assigned to an NRM program in this project category. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "MINOR PRIORITY POINTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a slash ('/') delimited list of priority points to be assigned to an Minor program in this project category. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "MINOR MISC PRIORITY POINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains a slash ('/') delimited list of priority points to be assigned to an Minor Misc. program in this project category. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "LEASE PRIORITY POINTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains a number of priority points to be assigned to a LEASE project with this project category. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "NRM BONUS CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates if the entry is a NRM bonus category. It determines the choices displayed for Bonus Category during editing of projects. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "NRM BONUS CATEGORY POINTS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field contains a number between 0 and 15 of priority points to be assigned to a NRM project with the bonus category. ",
+      "fieldNumber_": 17
+    }
+  ],
+  "fieldCount": 19,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7336.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

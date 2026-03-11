@@ -1,0 +1,38 @@
+{
+  "fileNumber": 2263.3,
+  "fileName": "ASISTS DOL NATURE OF INJURY CODES",
+  "globalRoot": "2263.3",
+  "globalReference": "^OOPS(2263.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFIX",
+      "required": true,
+      "helpText": "This is the Description of the Nature of Injury Code for the table file used for transmitting claims to Department of Labor (DOL) electronically. THIS FILE SHOULD NOT BE MODIFIED BY THE FIELD. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "This is the Nature of Injury Code as defined by DOL. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "2263.3", "field": .01, "type": "regular"},
+    {"name": "2263.3", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

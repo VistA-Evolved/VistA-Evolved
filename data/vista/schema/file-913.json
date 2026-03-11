@@ -1,0 +1,191 @@
+{
+  "fileNumber": 913,
+  "fileName": "ESP WANTS & WARRANTS",
+  "globalRoot": "913P",
+  "globalReference": "^ESP(913,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP910",
+      "required": true,
+      "pointerTo": 910,
+      "helpText": "Enter the name of the wanted person.  Use the standard program format of:  LAST,FIRST MIDDLE.  The name must be entered into the >Master Name File (910). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ISSUE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that the wanted person documentation or flagged patient bulletin is issued. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EXPIRE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter the date that the wanted person documentation or flagged patient bulletin is due to expire. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "UOR NUMBER",
+      "dataType": "POINTER",
+      "rawType": "P912'OX",
+      "required": false,
+      "pointerTo": 912,
+      "helpText": "Enter the number of the Uniform Offense Report which contains additional information on this wanted flag. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ARREST;D:DETAIN;I:FI & RELEASE;O:OBSERVE & NOTIFY;",
+      "helpText": "Enter the code designator for the reason why the wanted bulletin was issued. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "DETAINER STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "Enter the current status for the wanted bulletin.  It must be designated as either Active or Inactive. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "WARRANT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "F:FEDERAL WARRANT;S:STATE WARRANT;Q:QUESTIONING;H:HEARING OFFICER COMMITTED;C:COURT COMMITTED;P:PHYSICIAN'S CERTIFICATES;E:EMERGENCY PETITION INITIATED;",
+      "helpText": "Enter the type of legal reason or documentation justifying issuance of the wanted bulletin. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "ISSUING AGENCY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name of the agency issuing the original documentation or request which resulted in the initiation of the wanted bulletin. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "WARRANT NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the control number assigned to the legal document that justified initiation of the wanted bulletin. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "WARRANT DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date that the legal documentation was issued. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "REPORTING OFFICER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the VA police officer initiating the wanted bulletin. The officer's name must be entered in the NEW PERSON file (200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "REVIEWED BY",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Enter the name of the VA police officer reviewing the entry.  The officer's name must be entered in the NEW PERSON file (200) and must also be assigned the ESP POLICE Security Key. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "REVIEW DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Enter a date that the wanted bulletin was last reviewed to determine that the justification for the bulletin was still valid.  This is particularly important when the bulletin was issued as a result of a Hearing Officer Committment that is only valid for 6 months from time of issue. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "ADMISSION DATE",
+      "dataType": "DATE",
+      "rawType": "DX",
+      "required": false,
+      "helpText": "Enter the date of the individual's current admission to the Medical Center.  This information will help clarify time periods for detainer requests from outside law enforcement agencies. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "WARD",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the name or number of the ward where the individual is currently assigned. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CHARGES",
+      "dataType": "POINTER",
+      "rawType": "913.01P",
+      "required": false,
+      "helpText": "This field is used to record pending charges against an individual and other descriptive data. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NOTIFY",
+      "dataType": "SUBFILE",
+      "rawType": "913.02",
+      "required": false,
+      "helpText": "This field is used to record pertinent data about who is to be notified as a result of some action required by the Want & Warrant entry. ",
+      "isMultiple": true,
+      "subFileNumber": 913.02,
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "REMARKS (CAUTION)",
+      "dataType": "SUBFILE",
+      "rawType": "913.03",
+      "required": false,
+      "helpText": "Enter any information that may be necessary to identify reasons for using additional caution when confronting the individual. ",
+      "isMultiple": true,
+      "subFileNumber": 913.03,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 18,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "913", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

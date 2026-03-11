@@ -1,0 +1,2203 @@
+{
+  "fileNumber": 2006.18,
+  "fileName": "IMAGING USER PREFERENCE",
+  "globalRoot": "2006.18",
+  "globalReference": "^MAG(2006.18,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The preference style name. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This field will contain the name of the user.  This field is a pointer to the New Person file (200). ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ABS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of abstract images to be displayed. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "GROUP ABS COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The number of abstract images to be displayed in a group. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "MAIN STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;1:fsMDIForm;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the type of window style for the main window. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAIN LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left main window settings. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MAIN TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top main window settings. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MAIN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The main window width settings. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "MAIN HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The main window height settings. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 8.5,
+      "fieldName": "MAIN TOOLBAR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This determines if the Main Toolbar is Visible or Not. ",
+      "fieldNumber_": 8.5
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ABS STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the type of window style for the abstract image window. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "ABS LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left abstract window settings. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "ABS TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top abstract window settings. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "ABS WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The abstract window width settings. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "ABS HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The abstract window height settings. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "GROUP STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for a group of abstracts. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "GROUP LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left group window settings. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "GROUP TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top group window settings. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "GROUP WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The group window width settings. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "GROUP HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The group window height settings. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "FULL STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for a full image display. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "FULL LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left full image window settings. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "FULL TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top full image window settings. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "FULL WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The full image window width settings. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "FULL HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The full image window height settings. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "REPORT STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for a report display. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "REPORT LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left report window settings. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "REPORT TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top report window settings. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "REPORT WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The report window width settings. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "REPORT HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The report window height settings. ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "REPORT FONT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Set of codes for the fonts to be used in report display. ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "REPORT FONT STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Regular;1:Italic;2:Bold;3:Bold Italic;",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "REPORT FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The font size for report display. ",
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "DOC STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for a document. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "DOC LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left document window settings. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "DOC TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top document window settings. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "DOC WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The document window width settings. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "DOC HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The document window height settings. ",
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "ABS IMAGE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "ABS IMAGE HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "GROUP IMAGE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The group image window width settings. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "GROUP IMAGE HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The group image window height settings. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "IMAGEGRID STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;1:fsMDIForm;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for an image grid. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "IMAGEGRID LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The image grid left window settings. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "IMAGEGRID TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The image grid top window settings. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "IMAGEGRID WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The image grid width window settings. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "IMAGEGRID HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The image grid height window settings. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "DOC FITWIDTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Whether the document should fit the width defined. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "DOC FITHEIGHT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Whether the document should fit the height defined. ",
+      "fieldNumber_": 47
+    },
+    {
+      "fieldNumber": 48,
+      "fieldName": "DOC BANDINGMODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Normal;1:Mouse Up Zoom;2:Right Click Zoom;3:Pan;",
+      "helpText": "Set of codes defining the banding mode. ",
+      "fieldNumber_": 48
+    },
+    {
+      "fieldNumber": 49,
+      "fieldName": "ABS SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Whether or not to display abstracts. ",
+      "fieldNumber_": 49
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "IMAGEGRID SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Whether or not to display the image grid. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "REMOTE CONNECT [FUTURE USE]",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "[FOR FUTURE USE] This field tells whether this computer was signed on remotely, or is a part of the Sites Network. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "VIEWJBOX IMAGES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Control whether images from the jukebox will be displayed. ",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "REVERSE ORDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Display images in reverse order. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 54,
+      "fieldName": "RADEXAMS STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;1:fsMDIForm;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for a Radiology Exam display. ",
+      "fieldNumber_": 54
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "RADEXAMS LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The radiology exams left window settings. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 56,
+      "fieldName": "RADEXAMS TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The radiology exams top window settings. ",
+      "fieldNumber_": 56
+    },
+    {
+      "fieldNumber": 57,
+      "fieldName": "RADEXAMS WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The radiology exams width window settings. ",
+      "fieldNumber_": 57
+    },
+    {
+      "fieldNumber": 58,
+      "fieldName": "RADEXAMS HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The radiology exams height window settings. ",
+      "fieldNumber_": 58
+    },
+    {
+      "fieldNumber": 59,
+      "fieldName": "RADEXAMS SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Radiology exams view preference. ",
+      "fieldNumber_": 59
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "SMTP/POP Server Address",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The default SMTP/POP3 server to send and receive emailed images.  It must be a server that can handle SMTP and POP3 mail protocols. ",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "Image Email Address",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the email address of the person who will receive images. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "Alias",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This name will appear on the Message header. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "POP3 Username",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the account username for the POP3 server where user will receive image mail from. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 64,
+      "fieldName": "POP3 Password",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The POP3 password for the user to login and retrieve messages from the POP3 server. ",
+      "fieldNumber_": 64
+    },
+    {
+      "fieldNumber": 65,
+      "fieldName": "PCanywhere Script Name",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The user's script name to send images via PCanywhere. ",
+      "fieldNumber_": 65
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "LAST TEN PATIENTS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The last ten patients the user last referenced. ",
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 67,
+      "fieldName": "PATIENT LIST",
+      "dataType": "POINTER",
+      "rawType": "2006.1867PA",
+      "required": false,
+      "fieldNumber_": 67
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "APP SAVE ON EXIT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This value determines if settings will be automatically saved on exit. ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "APP ABS FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the font size for Abstract captions. Sizes can be 6 through 12. ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 72,
+      "fieldName": "APP GRP ABS FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the font size for Abstract captions in Group Window. Sizes can be 6 through 12. ",
+      "fieldNumber_": 72
+    },
+    {
+      "fieldNumber": 73,
+      "fieldName": "APP IMAGE FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the font size for Full Resolution Image captions. Sizes can be from 6 through 12. ",
+      "fieldNumber_": 73
+    },
+    {
+      "fieldNumber": 74,
+      "fieldName": "APP RELEASE NOTES [FUTURE USE]",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is reserved for future functionality ",
+      "fieldNumber_": 74
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "APP ALT VIDEO VIEWER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "VistA Imaging Display includes a viewer that will play video files. The user can also view video files in an alternate viewer. If 'YES' is entered an alternate viewer will be used for video files. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "APP VIDEO AUTO PLAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "The Video file can be automatically started when it is open and the  Imaging Video viewer is being used.  This is ignored when using any  alternate video viewer. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 77,
+      "fieldName": "APP ALT PDF VIEWER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "VistA Imaging Display includes a viewer that will display PDF files. The user can also view PDF files in an alternate viewer. If 'YES' is entered an alternate viewer will be used for PDF files. ",
+      "fieldNumber_": 77
+    },
+    {
+      "fieldNumber": 78,
+      "fieldName": "SHOW DELETED IMAGE PLACEHOLDER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "The value of this field controls the visibility of the deleted image placeholder in VistA Imaging Display. ",
+      "fieldNumber_": 78
+    },
+    {
+      "fieldNumber": 79,
+      "fieldName": "SUPPRESS PRINT SUMMARY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is enabled so that the user can suppress the printing of the  'Print Summary' at the end of a Multi-Image print. The Print Summary is a  list of all images in the filtered image list and the print status of  each image. ",
+      "fieldNumber_": 79
+    },
+    {
+      "fieldNumber": 80,
+      "fieldName": "APP ALT XML VIEWER",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "when YES, XML Files will be opened with the application  configured through Windows OS to Open XML Files. when NO, XML Files will open in the Imaging Viewer. The Default is NO. ",
+      "fieldNumber_": 80
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "EKG STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "EKG LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "EKG TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "EKG WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 104,
+      "fieldName": "EKG HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 104
+    },
+    {
+      "fieldNumber": 105,
+      "fieldName": "EKG SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "fieldNumber_": 105
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "DICOM WIN STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "fieldNumber_": 110
+    },
+    {
+      "fieldNumber": 111,
+      "fieldName": "DICOM WIN LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 111
+    },
+    {
+      "fieldNumber": 112,
+      "fieldName": "DICOM WIN TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 112
+    },
+    {
+      "fieldNumber": 113,
+      "fieldName": "DICOM WIN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 113
+    },
+    {
+      "fieldNumber": 114,
+      "fieldName": "DICOM WIN HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "fieldNumber_": 114
+    },
+    {
+      "fieldNumber": 115,
+      "fieldName": "DICOM SCROLL SPEED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This number is used to control the speed of painting the next image in the control.  The minimum and maximum scroll speeds will change depending on the workstation and the type of image.  The min and  max are set in the GUI. (from 1 to 10000) ",
+      "fieldNumber_": 115
+    },
+    {
+      "fieldNumber": 116,
+      "fieldName": "DICOM CINE SPEED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This number is used to control the speed of painting the next image in the Cine control.  The minimum and maximum scroll speeds will change depending on the workstation and the type of image.  The min and max are set in the GUI.  (from 1 to 10000) ",
+      "fieldNumber_": 116
+    },
+    {
+      "fieldNumber": 117,
+      "fieldName": "DICOM STACK PAGING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Different settings;2:Same settings;3:Image settings;",
+      "helpText": "This value is the default stack view 'paging settings' preference.  1 =   Page With Different Settings,        When selected, each stack will page with the settings held        from the previous image in that stack  2 =   Page With Same Settings,        When selected, each stack will page with the settings from the        stack that changed images.  If the left stack changes images, both        stacks will change images and then set their view settings        (window/level, zoom, etc) to the sam",
+      "fieldNumber_": 117
+    },
+    {
+      "fieldNumber": 118,
+      "fieldName": "DICOM LAYOUT PAGING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Selected window settings;2:Individual Image settings;",
+      "helpText": "This value is the default layout view 'paging settings' preference  1 = Use Selected Window Settings      When selected, and the user changes images, the next      image loaded will use the same settings as the previous image.  2 = Use Individual Image Settings      When selected, each image will automatically set itself based      on the contents of the image.  It does not matter what      settings the previous image had. ",
+      "fieldNumber_": 118
+    },
+    {
+      "fieldNumber": 119,
+      "fieldName": "DICOM STACK PAGE TOGETHER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This setting tells if the Images in the Dicom Viewer should stack together by default. If 'YES' then two stack views will page together. This does not  guarantee they will always be on the same image number, but as  one stack changes images, the other stack will follow. ",
+      "fieldNumber_": 119
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "DICOM ORIENTATION LABELS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This setting tells if the orientation labels should be  displayed by default.  Orientation labels show the 'right' and 'left'  side of a radiology image. If 'YES' then the orientation labels are displayed on the middle left   side of the image. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "DICOM PIXEL VALUE SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This value determines if the pixel values will be displayed  as a popup hint when the mouse is stopped over an image  in the Dicom Viewer.  If 'YES', when the user clicks on an image the hint will change  to the value of the pixel at the location clicked.  If 'NO'   then the hint will contain series and study description information. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "DICOM MEASURE COLOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This setting is the color specified by the user for ruler measurements. Colors are stored as integer representations of the selected color. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "DICOM MEASURE LINE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is the line width in pixels for ruler measurements that are displayed on the image. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DICOM MEASURE UNITS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Inches;1:Feet;4:Micrometers;5:Millimeters;6:Centimeters;",
+      "helpText": "This field stores the unit of measurement for the ruler drawn on images displayed in the Dicom Viewer. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "DICOM SETTINGS WINDOW LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:Device Settings;2:Histogram settings;",
+      "helpText": "This value is the window level setting for radiology images. Possible settings for window level display are:  1 = Use device window level settings.       When selected the image will be automatically window leveled      using values specified in the DICOM header (if available).  2 = Histogram window level settings.        When selected the image will be window leveled using      the contents of the image. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "NOTESWIN STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;1:fsMDIForm;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Set of codes defining the window style for TIU Documents window ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "NOTESWIN LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The left setting for the TIU Documents window position.  ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "NOTESWIN TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The top setting for the TIU Documents window position. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "NOTESWIN WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The width of the TIU Documents window. ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "NOTESWIN HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The Height of the TIU Documents window. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "NOTESWIN SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Whether or not to automatically open (show)  this window when a patient is selected. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 137,
+      "fieldName": "ABS COLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of columns in the Abstract window. ",
+      "fieldNumber_": 137
+    },
+    {
+      "fieldNumber": 138,
+      "fieldName": "ABS MAXLOAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the maximum number of abstracts to load in the Abstract window.  ",
+      "fieldNumber_": 138
+    },
+    {
+      "fieldNumber": 140,
+      "fieldName": "FULL COLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of columns in the Full Resolution window.  ",
+      "fieldNumber_": 140
+    },
+    {
+      "fieldNumber": 141,
+      "fieldName": "FULL MAXLOAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the maximum number of images to load in the Full Resolution window. ",
+      "fieldNumber_": 141
+    },
+    {
+      "fieldNumber": 143,
+      "fieldName": "DOC COLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of columns in the Document window. ",
+      "fieldNumber_": 143
+    },
+    {
+      "fieldNumber": 144,
+      "fieldName": "DOC MAXLOAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the maximum number of images to load in the Document window. ",
+      "fieldNumber_": 144
+    },
+    {
+      "fieldNumber": 146,
+      "fieldName": "GRP COLS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of columns in the Group window. ",
+      "fieldNumber_": 146
+    },
+    {
+      "fieldNumber": 147,
+      "fieldName": "GRP MAXLOAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the maximum number of images to load in the Group Abstract window. ",
+      "fieldNumber_": 147
+    },
+    {
+      "fieldNumber": 148,
+      "fieldName": "ABS TOOLBAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Show or Hide the toolbar on the Abstract window. ",
+      "fieldNumber_": 148
+    },
+    {
+      "fieldNumber": 149,
+      "fieldName": "FULL TOOLBAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Show or Hide the toolbar on the Full Resolution window. ",
+      "fieldNumber_": 149
+    },
+    {
+      "fieldNumber": 150,
+      "fieldName": "DOC TOOLBAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Show or Hide the toolbar on the Document window. ",
+      "fieldNumber_": 150
+    },
+    {
+      "fieldNumber": 151,
+      "fieldName": "GRP TOOLBAR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Show or Hide the toolbar on the Group Abstract window. ",
+      "fieldNumber_": 151
+    },
+    {
+      "fieldNumber": 152,
+      "fieldName": "ABS ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of rows of images to display in the Abstract window. ",
+      "fieldNumber_": 152
+    },
+    {
+      "fieldNumber": 153,
+      "fieldName": "FULL ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": " This field contains the number of rows of images to display in the Full Resolution window. ",
+      "fieldNumber_": 153
+    },
+    {
+      "fieldNumber": 154,
+      "fieldName": "DOC ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of rows of images to display in the Document window. ",
+      "fieldNumber_": 154
+    },
+    {
+      "fieldNumber": 155,
+      "fieldName": "GRP ROWS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field contains the number of rows of images in the Group Abstract window. ",
+      "fieldNumber_": 155
+    },
+    {
+      "fieldNumber": 156,
+      "fieldName": "ABS LOCKSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Lock the size of the image when resizing the window.  User will see more images, not bigger images. ",
+      "fieldNumber_": 156
+    },
+    {
+      "fieldNumber": 157,
+      "fieldName": "FULL LOCKSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Lock the size of the image when resizing the window. User will see more images, not bigger images ",
+      "fieldNumber_": 157
+    },
+    {
+      "fieldNumber": 158,
+      "fieldName": "DOC LOCKSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Lock the size of the image when resizing the window. User will see more images, not bigger images ",
+      "fieldNumber_": 158
+    },
+    {
+      "fieldNumber": 159,
+      "fieldName": "GRP LOCKSIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "Lock the size of the image when resizing the window. User will see more images, not bigger images ",
+      "fieldNumber_": 159
+    },
+    {
+      "fieldNumber": 163,
+      "fieldName": "COLUMN WIDTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a Comma delimited string of widths of the columns  in the image list window.   $p(columnwidths,',',1)= width of column 1 etc. ",
+      "fieldNumber_": 163
+    },
+    {
+      "fieldNumber": 164,
+      "fieldName": "FULL IMAGE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the Width of the Images in the Full Resolution window ",
+      "fieldNumber_": 164
+    },
+    {
+      "fieldNumber": 165,
+      "fieldName": "FULL IMAGE HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the Height of the Images in the Full Resolution window. ",
+      "fieldNumber_": 165
+    },
+    {
+      "fieldNumber": 174,
+      "fieldName": "VIEW REMOTE ABS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "If True, Imaging display will always display abstracts  even if they are located on remote servers If False, Imaging display will only display abstracts  if they are on local servers. In a Consolidated Site, 'Local Site' is where the User logs into All others are considered 'Remote Sites'. ",
+      "fieldNumber_": 174
+    },
+    {
+      "fieldNumber": 175,
+      "fieldName": "ABS PREVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "if Yes, the Image Abstract will be displayed when the user selects an  an entry from the Image List. ",
+      "fieldNumber_": 175
+    },
+    {
+      "fieldNumber": 176,
+      "fieldName": "REPORT PREVIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "if Yes, the Image Report will be displayed when the user selects an an entry from the Image List. ",
+      "fieldNumber_": 176
+    },
+    {
+      "fieldNumber": 177,
+      "fieldName": "FILTER DEFAULT",
+      "dataType": "POINTER",
+      "rawType": "P2005.87'",
+      "required": false,
+      "pointerTo": 2005.87,
+      "helpText": "Pointer to the Image List filter file. This is the users default Image Filter. ",
+      "fieldNumber_": 177
+    },
+    {
+      "fieldNumber": 178,
+      "fieldName": "FILTER TABS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If set to YES (1), the list of filters will be displayed across the top of image list window as Tabs. This will allow quick access to different filters, and subsets of images. ",
+      "fieldNumber_": 178
+    },
+    {
+      "fieldNumber": 179,
+      "fieldName": "FILTER TABS MULTILINE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If YES (1) then filters will be displayed as multi-line tabs when there are too many to fit in one line.  This will allow all filters to be visible when the window is resized, or there are too many to fit in one line. If NO (0) and too many filters exist to display in one line, then scroll buttons will be displayed to the right of the last visible filter.  The  user can use the scroll buttons to access any filters (tabs) that aren't visible. ",
+      "fieldNumber_": 179
+    },
+    {
+      "fieldNumber": 180,
+      "fieldName": "TIU TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the Top pixel location of the Notes Window in Capture. ",
+      "fieldNumber_": 180
+    },
+    {
+      "fieldNumber": 181,
+      "fieldName": "TIU LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the Left pixel location of the Notes Window in Capture. ",
+      "fieldNumber_": 181
+    },
+    {
+      "fieldNumber": 182,
+      "fieldName": "TIU HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the pixel Height of the Notes Window in Capture. ",
+      "fieldNumber_": 182
+    },
+    {
+      "fieldNumber": 183,
+      "fieldName": "TIU WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the pixel Width of the Notes Window in Capture. ",
+      "fieldNumber_": 183
+    },
+    {
+      "fieldNumber": 184,
+      "fieldName": "TIU PREVIEW HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the pixel height of the Preview Panel in the Notes Window in Capture. ",
+      "fieldNumber_": 184
+    },
+    {
+      "fieldNumber": 185,
+      "fieldName": "TIU TEXT HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the pixel height of the Text area in the Notes Window in Capture. ",
+      "fieldNumber_": 185
+    },
+    {
+      "fieldNumber": 186,
+      "fieldName": "TIU TITLE HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the pixel height of the Title List in the Notes Window in Capture. ",
+      "fieldNumber_": 186
+    },
+    {
+      "fieldNumber": 187,
+      "fieldName": "TIU PREVIEW ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Enter '1' to make the Preview Panel in the Notes Window visible. ",
+      "fieldNumber_": 187
+    },
+    {
+      "fieldNumber": 188,
+      "fieldName": "TIU SHOW ADDENDUMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Enter '1' to show related Addendums in the Note Listing. ",
+      "fieldNumber_": 188
+    },
+    {
+      "fieldNumber": 189,
+      "fieldName": "TIU VISIT LOCATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the IEN ~ NAME of the Visit Location default to use for New Notes. ",
+      "fieldNumber_": 189
+    },
+    {
+      "fieldNumber": 190,
+      "fieldName": "TIU STATUS ICONS ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Enter '1' to use icons in the Note Listing to represent the Note Status. ",
+      "fieldNumber_": 190
+    },
+    {
+      "fieldNumber": 191,
+      "fieldName": "TIU LIST COUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "Maximun number of Notes to list. ",
+      "fieldNumber_": 191
+    },
+    {
+      "fieldNumber": 192,
+      "fieldName": "TIU LIST MONTHS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "List a Patient's Notes for this number of Previous Months. ",
+      "fieldNumber_": 192
+    },
+    {
+      "fieldNumber": 193,
+      "fieldName": "TIU LIST FROM",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "List a Patient's note in the Date Range starting with This Date. ",
+      "fieldNumber_": 193
+    },
+    {
+      "fieldNumber": 194,
+      "fieldName": "TIU LIST TO",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "List a Patient's note in the Date Range ending with This Date. ",
+      "fieldNumber_": 194
+    },
+    {
+      "fieldNumber": 195,
+      "fieldName": "TIU NOTE GLYPHS ON",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Enter '1' to use glyphs rather than text to display note info. This refers to the Note-Status-Location information field that  is displayed when a Progress Note is selected. ",
+      "fieldNumber_": 195
+    },
+    {
+      "fieldNumber": 196,
+      "fieldName": "TIU USE DEFAULT LOCATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Enter '1' to Use the defaults for Visit Location. Enter '0' to be prompted each time a visit location is needed. ",
+      "fieldNumber_": 196
+    },
+    {
+      "fieldNumber": 200,
+      "fieldName": "TELEREADER FORM STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:on;0:off;",
+      "helpText": "This is a set of codes to define the window style for TeleReader (this  field is not currently being used). ",
+      "fieldNumber_": 200
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "TELEREADER LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This defines the left side of the TeleReader window settings. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "TELEREADER TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This defines the top side of the TeleReader window settings. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "TELEREADER WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This defines the TeleReader window width settings. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "TELEREADER HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This defines the TeleReader window height settings. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "TELEREADER SHOW OR NOT SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SHOW;0:NOT SHOW;",
+      "helpText": "Determines if the user wants to have the TeleReader visible or not (this  field is not currently being used). ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 206,
+      "fieldName": "TELEREADER UNREAD COL WIDTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This determines the width of the columns in the TeleReader Unread Window. ",
+      "fieldNumber_": 206
+    },
+    {
+      "fieldNumber": 207,
+      "fieldName": "TELEREADER AUTO-LAUNCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if TeleReader should automatically launch CPRS and Display  when the user selects a study (if they are not already launched). ",
+      "fieldNumber_": 207
+    },
+    {
+      "fieldNumber": 208,
+      "fieldName": "TELEREADER VIEW ALL STUDIES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if TeleReader should view all studies or only studies  available to the user for resulting. ",
+      "fieldNumber_": 208
+    },
+    {
+      "fieldNumber": 209,
+      "fieldName": "TELEREADER SHOW DIALOG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if TeleReader should show the Specialties dialog at startup. ",
+      "fieldNumber_": 209
+    },
+    {
+      "fieldNumber": 210,
+      "fieldName": "TELEREADER SAVE SETTINGS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if the user wants to save their user preferences when the user  logs off. ",
+      "fieldNumber_": 210
+    },
+    {
+      "fieldNumber": 211,
+      "fieldName": "TELEREADER READ COL WIDTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This determines the width of the columns in the TeleReader Read Window. ",
+      "fieldNumber_": 211
+    },
+    {
+      "fieldNumber": 220.01,
+      "fieldName": "SHOW IMAGE TREE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This field controls visibility of the tree view  panel in the Image List window of clinical client applications (Display, Capture, etc.). ",
+      "fieldNumber_": 220.01
+    },
+    {
+      "fieldNumber": 220.02,
+      "fieldName": "ENABLE AUTOSELECT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This field controls if tree view and list items  (in the clinical client applications) are automatically selected after the mouse pointer  hovers over them for amount of time longer than that defined by the value of the DELAY FOR AUTOSELECT field (220.03). ",
+      "fieldNumber_": 220.02
+    },
+    {
+      "fieldNumber": 220.03,
+      "fieldName": "AUTOSELECT SPEED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Slow;1:Medium;2:Fast;",
+      "helpText": "This field determines the amount of time after  which a tree or list item is automatically selected if the value of the ENABLE AUTOSELECT  field (220.02) is TRUE.  Field values are interpreted as follows:      Code  Description   Delay   ----  -----------  -------     0   Slow         1000 ms     1   Medium        500 ms     2   Fast          250 ms ",
+      "fieldNumber_": 220.03
+    },
+    {
+      "fieldNumber": 220.04,
+      "fieldName": "SYNCHRONIZE IMAGE SELECTIONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field controls synchronization of  image selections in all components of the Image List window of the clinical client applications  (Display, Capture, etc.). ",
+      "fieldNumber_": 220.04
+    },
+    {
+      "fieldNumber": 220.05,
+      "fieldName": "WHERE TO SHOW ABSTRACTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:List Window;1:Separate Window;",
+      "helpText": "Value of this field determines whether the list  of image abstracts is shown in a panel of the Image List window or in a separate window. ",
+      "fieldNumber_": 220.05
+    },
+    {
+      "fieldNumber": 220.06,
+      "fieldName": "POSITION OF ABSTRACTS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Left;1:Bottom;2:Below Tree View;3:Separate Window;",
+      "helpText": "Value of this field controls where the list of  image abstracts is shown in the Image List window (if the value of the WHERE TO SHOW ABSTRACT field (220.05) is TRUE). ",
+      "fieldNumber_": 220.06
+    },
+    {
+      "fieldNumber": 220.07,
+      "fieldName": "WHERE TO SHOW IMAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:List Window;1:Separate Window;",
+      "helpText": "Value of this field determines whether images are shown in a panel of the Image List window or in a separate window. ",
+      "fieldNumber_": 220.07
+    },
+    {
+      "fieldNumber": 220.08,
+      "fieldName": "SHOW TREE SORT BUTTONS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field controls visibility of the  sort buttons above the tree view in the Image  List window. ",
+      "fieldNumber_": 220.08
+    },
+    {
+      "fieldNumber": 220.09,
+      "fieldName": "AUTOEXPAND TREE ITEMS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field determines if items of the tree view in the Image List window are automatically expanded when they are selected. At the same time, previously expanded items are automatically collapsed. ",
+      "fieldNumber_": 220.09
+    },
+    {
+      "fieldNumber": 220.1,
+      "fieldName": "ABSTRACT LIST SCROLL MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Vertical;1:Horizontal;",
+      "helpText": "Value of this fields determines the direction of  scrolling and presence of the corresponding scroll bar in the list of image abstracts. ",
+      "fieldNumber_": 220.1
+    },
+    {
+      "fieldNumber": 220.11,
+      "fieldName": "IMAGE LIST SCROLL MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:Vertical;1:Horizontal;",
+      "helpText": "Value of this fields determines the direction of scrolling (if several images are open at the same  time) and presence of the corresponding scroll bar in the image list. ",
+      "fieldNumber_": 220.11
+    },
+    {
+      "fieldNumber": 220.12,
+      "fieldName": "SHOW LIST VIEW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "This field controls visibility of the list view panel in the Image List window of clinical client applications (Display, Capture, etc.). ",
+      "fieldNumber_": 220.12
+    },
+    {
+      "fieldNumber": 220.13,
+      "fieldName": "LAYOUT OF IMAGE LIST WINDOW",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores a string that determines the layout of the Image List window of clinical client applications (Display, Capture, etc.). ",
+      "fieldNumber_": 220.13
+    },
+    {
+      "fieldNumber": 221.01,
+      "fieldName": "VERIFY WINDOW STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Value of this field controls style of the Verification window of clinical client applications (Display, Capture, etc.). ",
+      "fieldNumber_": 221.01
+    },
+    {
+      "fieldNumber": 221.02,
+      "fieldName": "VERIFY LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the horizontal coordinate of the left side of the Image Verify window. ",
+      "fieldNumber_": 221.02
+    },
+    {
+      "fieldNumber": 221.03,
+      "fieldName": "VERIFY TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores vertical coordinate of the top  side of the Image Verify window. ",
+      "fieldNumber_": 221.03
+    },
+    {
+      "fieldNumber": 221.04,
+      "fieldName": "VERIFY WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the width (in pixels) of the Image Verify window. ",
+      "fieldNumber_": 221.04
+    },
+    {
+      "fieldNumber": 221.05,
+      "fieldName": "VERIFY HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the height (in pixels) of the Image Verify window. ",
+      "fieldNumber_": 221.05
+    },
+    {
+      "fieldNumber": 221.06,
+      "fieldName": "VERIFY SHOW IMAGE REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field controls visibility of the report preview panel in the Image Verify window. ",
+      "fieldNumber_": 221.06
+    },
+    {
+      "fieldNumber": 221.07,
+      "fieldName": "VERIFY SHOW IMAGE INFO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field controls visibility of the  image information panel in the Image Verify  window. ",
+      "fieldNumber_": 221.07
+    },
+    {
+      "fieldNumber": 221.08,
+      "fieldName": "VERIFY AUTOHIDE QUICK FILTER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "Value of this field controls visibility of the  quick filter panel in the Image Verify window.    If the value is TRUE, then the quick filter panel is automatically hidden after the search is done and the list of images is loaded. ",
+      "fieldNumber_": 221.08
+    },
+    {
+      "fieldNumber": 221.09,
+      "fieldName": "VERIFY SINGLE VIEW ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "If value of this field is TRUE, then the image  viewer can show only a single image during the  image verification process. Otherwise, multiple images can be opened. ",
+      "fieldNumber_": 221.09
+    },
+    {
+      "fieldNumber": 221.1,
+      "fieldName": "VERIFY COLUMN WIDTHS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field stores comma separated column widths (in pixels) for the image list view in the Image Verify window. ",
+      "fieldNumber_": 221.1
+    },
+    {
+      "fieldNumber": 222.01,
+      "fieldName": "EDIT WINDOW STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:fsMDIChild;2:fsNormal;3:fsStayOnTop;",
+      "helpText": "Value of this field controls style of the Image Index Edit window of clinical client applications (Display, Capture, etc.). ",
+      "fieldNumber_": 222.01
+    },
+    {
+      "fieldNumber": 222.02,
+      "fieldName": "EDIT LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the horizontal coordinate of the left side of the Image Index Edit window. ",
+      "fieldNumber_": 222.02
+    },
+    {
+      "fieldNumber": 222.03,
+      "fieldName": "EDIT TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the vertical coordinate of the top side of the Image Index Edit window. ",
+      "fieldNumber_": 222.03
+    },
+    {
+      "fieldNumber": 222.04,
+      "fieldName": "EDIT WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the width (in pixels) of the Image Index Edit window. ",
+      "fieldNumber_": 222.04
+    },
+    {
+      "fieldNumber": 222.05,
+      "fieldName": "EDIT HEIGHT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field stores the height (in pixels) of the Image Index Edit window. ",
+      "fieldNumber_": 222.05
+    },
+    {
+      "fieldNumber": 250,
+      "fieldName": "ANNOTATION CAPTURE FONT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the text font of the Capture annotation tools. The default is \"Arial\". ",
+      "fieldNumber_": 250
+    },
+    {
+      "fieldNumber": 251,
+      "fieldName": "ANNOTATION CAPTURE FONT STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR;1:BOLD;2:ITALIC;3:BOLD ITALIC;",
+      "helpText": "This defines the text font style of the Capture annotation tools. The default is 'Regular'. ",
+      "fieldNumber_": 251
+    },
+    {
+      "fieldNumber": 252,
+      "fieldName": "ANNOTATION CAPTURE FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This defines the text font size in points of the Capture annotation tools. Each point is 1/72nd of an inch. A font size of 72 results in letters 1 inch high.  The default is 36. ",
+      "fieldNumber_": 252
+    },
+    {
+      "fieldNumber": 253,
+      "fieldName": "ANNOTATION CAPTURE LINE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the line width of the Capture annotation tools. The default is 5. ",
+      "fieldNumber_": 253
+    },
+    {
+      "fieldNumber": 254,
+      "fieldName": "ANNOTATION CAPTURE COLOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the color of the Capture annotation tools. The default is 32768 (GREEN). For example:  BLACK - 0, WHITE - 16777215, MEDIUM GREY - 10789024, SILVER - 12632256, MAROON - 128, RED - 255 OLIVE - 32896, YELLOW - 65535, GREEN - 32768, LIME - 65280, TEAL - 8421376, AQUA - 16776960 NAVY - 8388608, BLUE - 16711680, PURPLE - 8388736, FUCHSIA -16711935 Reference: AccuSoft ImageGear MD ",
+      "fieldNumber_": 254
+    },
+    {
+      "fieldNumber": 255,
+      "fieldName": "ANNOTATION CAPTURE OPACITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the opacity of the Capture annotation tools. The default is 159. It is the degree to which light is not allowed to travel through Opaque  context. ",
+      "fieldNumber_": 255
+    },
+    {
+      "fieldNumber": 256,
+      "fieldName": "ANNOTATION CAPTURE ARROW STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:POINTER;1:SOLID;2:OPEN;3:POINTER SOLID;4:NONE;",
+      "helpText": "This defines the arrow style of the Capture annotation tools. The default is 0 - Pointer. ",
+      "fieldNumber_": 256
+    },
+    {
+      "fieldNumber": 257,
+      "fieldName": "ANNOTATION CAPTURE ARROWLENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the arrow length of the Capture annotation tools. The default is 35. ",
+      "fieldNumber_": 257
+    },
+    {
+      "fieldNumber": 258,
+      "fieldName": "ANNOTATION CAPTURE ARROW ANGLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This defines the arrow angle of the Capture annotation tools (10-60 degrees). The default is 35 degrees. ",
+      "fieldNumber_": 258
+    },
+    {
+      "fieldNumber": 259,
+      "fieldName": "ANNOTATION CAPTURE G WIN LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the global setting of the Capture annotation window left position on the screen (dot pixel). ",
+      "fieldNumber_": 259
+    },
+    {
+      "fieldNumber": 260,
+      "fieldName": "ANNOTATION CAPTURE G WIN TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the global setting of the Capture annotation window top position on the screen (dot pixel). ",
+      "fieldNumber_": 260
+    },
+    {
+      "fieldNumber": 270,
+      "fieldName": "ANNOTATION DISPLAY FONT NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This defines the text font of the Display annotation tools. The default is \"Arial\". ",
+      "fieldNumber_": 270
+    },
+    {
+      "fieldNumber": 271,
+      "fieldName": "ANNOTATION DISPLAY FONT STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:REGULAR;1:BOLD;2:ITALIC;3:BOLD ITALIC;",
+      "helpText": "This defines the text font style of the Display annotation tools. The default is 'Regular'.  ",
+      "fieldNumber_": 271
+    },
+    {
+      "fieldNumber": 272,
+      "fieldName": "ANNOTATION DISPLAY FONT SIZE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This defines the text font size in points of the Display annotation tools. Each point is 1/72nd of an inch. A font size of 72 results in letters 1 inch high. The default is 36. ",
+      "fieldNumber_": 272
+    },
+    {
+      "fieldNumber": 273,
+      "fieldName": "ANNOTATION DISPLAY LINE WIDTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the line width of the Display annotation tools. The default is 5. ",
+      "fieldNumber_": 273
+    },
+    {
+      "fieldNumber": 274,
+      "fieldName": "ANNOTATION DISPLAY COLOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This defines the color of the Display annotation tools. The default is 32768 (GREEN). For example: BLACK - 0, WHITE - 16777215, MEDIUM GREY - 10789024,  SILVER - 12632256, MAROON - 128, RED - 255 OLIVE - 32896, YELLOW - 65535, GREEN - 32768,  LIME - 65280, TEAL - 8421376, AQUA - 16776960 NAVY - 8388608, BLUE - 16711680, PURPLE - 8388736,  FUCHSIA -16711935 Reference: AccuSoft ImageGear MD ",
+      "fieldNumber_": 274
+    },
+    {
+      "fieldNumber": 275,
+      "fieldName": "ANNOTATION DISPLAY OPACITY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the opacity of the Display annotation tools. The default is 159. It is the degree to which light is not allowed to travel through Opaque context. ",
+      "fieldNumber_": 275
+    },
+    {
+      "fieldNumber": 276,
+      "fieldName": "ANNOTATION DISPLAY ARROW STYLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:POINTER;1:SOLID;2:OPEN;3:POINTER SOLID;4:NONE;",
+      "helpText": "This defines the arrow style of the Display annotation tools. The default is 0 - Pointer. ",
+      "fieldNumber_": 276
+    },
+    {
+      "fieldNumber": 277,
+      "fieldName": "ANNOTATION DISPLAY ARROWLENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This defines the arrow length of the Display annotation tools. The default is 35. ",
+      "fieldNumber_": 277
+    },
+    {
+      "fieldNumber": 278,
+      "fieldName": "ANNOTATION DISPLAY ARROW ANGLE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This defines the arrow angle of the Display annotation tools (10-60 degrees). The default is 35 degrees. ",
+      "fieldNumber_": 278
+    },
+    {
+      "fieldNumber": 279,
+      "fieldName": "ANNOTATION DISPLAY G WIN LEFT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the global setting of the Display annotation window left position on the screen (dot pixel).  ",
+      "fieldNumber_": 279
+    },
+    {
+      "fieldNumber": 280,
+      "fieldName": "ANNOTATION DISPLAY G WIN TOP",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This defines the global setting of the Display annotation window top position on the screen (dot pixel). ",
+      "fieldNumber_": 280
+    },
+    {
+      "fieldNumber": 281,
+      "fieldName": "ANNOTATION DISPLAY AUTO SHOW",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This defines the auto-show annotation of Display image. ",
+      "fieldNumber_": 281
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "RIVER AUTO CONNECT ENABLED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ENABLED;0:DISABLED;",
+      "helpText": "Determines if the display client should automatically connect to remote  sites for the selected patient. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "RIVER CONNECT VISN ONLY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if the display client should automatically connect to remote  sites only in the users VISN. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "RIVER HIDE EMPTY SITES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if the display client should hide sites with 0 (zero) images on the RIV (Remote Image View) toolbar. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "RIVER HIDE DISCONNECTED SITES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Determines if the display client should hide disconnected sites on the  RIV (Remote Image View) toolbar. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "RIVER AUTO CONNECT DOD",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "Determines if the display client should automatically connect to  DoD sites for the selected patient. ",
+      "fieldNumber_": 304
+    }
+  ],
+  "fieldCount": 222,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "2006.18", "field": .01, "type": "regular"},
+    {"name": "2006.18", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

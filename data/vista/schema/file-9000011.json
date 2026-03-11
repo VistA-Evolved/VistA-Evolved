@@ -1,0 +1,418 @@
+{
+  "fileNumber": 9000011,
+  "fileName": "PROBLEM",
+  "globalRoot": "9000011IP",
+  "globalReference": "^AUPNPROB(",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIAGNOSIS",
+      "dataType": "POINTER",
+      "rawType": "R*P80'",
+      "required": true,
+      "pointerTo": 80,
+      "helpText": "This is the ICD coded diagnosis of the narrative entered describing this problem. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "RP9000001'I",
+      "required": true,
+      "pointerTo": 9000001,
+      "helpText": "This is the patient for whom this problem has been observed and recorded. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE LAST MODIFIED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the last date/time this problem was changed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "P:PERSONAL HISTORY;F:FAMILY HISTORY;",
+      "helpText": "This flag is used by the IHS Problem List to indicate if this problem is documented for historical purposes. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "PROVIDER NARRATIVE",
+      "dataType": "POINTER",
+      "rawType": "R*P9999999.27",
+      "required": true,
+      "pointerTo": 9999999.27,
+      "helpText": "This contains the actual text used by the provider to describe this problem. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "FACILITY",
+      "dataType": "POINTER",
+      "rawType": "RP9999999.06'I",
+      "required": true,
+      "pointerTo": 9999999.06,
+      "helpText": "This is the facility at which this problem was originally observed and documented. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "NMBR",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,2X",
+      "length": 6,
+      "required": true,
+      "helpText": "This is a number which, together with the Patient (#.02) and Facility (#.06) fields, serves as a unique identifier for this problem.  Up to 2 decimal places may be used to indicate that a problem is a result of, or related to, another problem. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "DATE ENTERED",
+      "dataType": "DATE",
+      "rawType": "RDI",
+      "required": true,
+      "helpText": "This is the date this problem was entered into this file. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "A:ACTIVE;I:INACTIVE;",
+      "helpText": "This is the current activity status of this problem, whether active or inactive; if more detail is needed, a notation may be filed with this problem. ",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "DATE OF ONSET",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the approximate date this problem appeared, as precisely as known. ",
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PROBLEM",
+      "dataType": "POINTER",
+      "rawType": "P757.01'",
+      "required": false,
+      "pointerTo": 757.01,
+      "helpText": "This field contains the standardized text stored in the Clinical Lexicon for this problem. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "CONDITION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "T:TRANSCRIBED;P:PERMANENT;H:HIDDEN;",
+      "helpText": "This reflects the current condition of this entry, whether transcribed by a clerk from the paper chart, entered or verified by a provider, or marked as removed from the patient's list. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "ENTERED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the user who actually entered this problem into this file. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "RECORDING PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'X",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider who first recorded this problem, either on the paper chart or online. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "RESPONSIBLE PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the provider currently responsible for treating this problem. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P49'",
+      "required": false,
+      "pointerTo": 49,
+      "helpText": "This is the service primarily involved in the treatment of this problem; the DHCP Problem List defaults this field to the service defined in File #200 for the Recording Provider of this problem, upon entry of the problem.  It may later be used to categorize problems for screening and sorting. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "DATE RESOLVED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this problem was resolved or inactivated, as precisely as known. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This is the clinic in which this patient is being seen for this problem. The problem list may be screened based on this value, to change one's view of the list. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "DATE RECORDED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this problem was originally recorded, either online or in the paper chart; it may be the same as, or earlier than, the Date Entered. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "SERVICE CONNECTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If the patient has service connection on file in the DHCP Patient file #2, this problem specifically may be flagged as being service connected. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 1.11,
+      "fieldName": "AGENT ORANGE EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this problem is related to a patient's exposure to Agent Orange, it may be flagged here. ",
+      "fieldNumber_": 1.11
+    },
+    {
+      "fieldNumber": 1.12,
+      "fieldName": "IONIZING RADIATION EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this problem is related to a patient's exposure to ionizing radiation, it may be flagged here. ",
+      "fieldNumber_": 1.12
+    },
+    {
+      "fieldNumber": 1.13,
+      "fieldName": "PERSIAN GULF EXPOSURE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this problem is related to a patient's service in the Persian Gulf, it may be flagged here. ",
+      "fieldNumber_": 1.13
+    },
+    {
+      "fieldNumber": 1.14,
+      "fieldName": "PRIORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACUTE;C:CHRONIC;",
+      "helpText": "This is a flag to indicate how critical this problem is for this patient; problems marked as Acute will be flagged on the Problem List display. ",
+      "fieldNumber_": 1.14
+    },
+    {
+      "fieldNumber": 1.15,
+      "fieldName": "HEAD AND/OR NECK CANCER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this problem is related to the treatment of head and/or neck cancer  associated with nose or throat radium treatments, it may be flagged here. ",
+      "fieldNumber_": 1.15
+    },
+    {
+      "fieldNumber": 1.16,
+      "fieldName": "MILITARY SEXUAL TRAUMA",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If this problem is related to the treatment of military sexual trauma, it may be flagged here. ",
+      "fieldNumber_": 1.16
+    },
+    {
+      "fieldNumber": 1.17,
+      "fieldName": "COMBAT VETERAN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 1.17
+    },
+    {
+      "fieldNumber": 1.18,
+      "fieldName": "SHIPBOARD HAZARD & DEFENSE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "fieldNumber_": 1.18
+    },
+    {
+      "fieldNumber": 1101,
+      "fieldName": "NOTE FACILITY",
+      "dataType": "POINTER",
+      "rawType": "9000011.11PA",
+      "required": false,
+      "helpText": "This is the location at which the notes in this multiple originated. ",
+      "fieldNumber_": 1101
+    },
+    {
+      "fieldNumber": 80001,
+      "fieldName": "SNOMED CT CONCEPT CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A clinical idea to which a unique ConceptID has been assigned in SNOMED CT. Each Concept is represented by a row in the Concepts Table. ",
+      "fieldNumber_": 80001
+    },
+    {
+      "fieldNumber": 80002,
+      "fieldName": "SNOMED CT DESIGNATION CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A single SNOMED Concept may have multiple Designations, where a  Designation may be considered an alternate way of expressing the concept.  Synonyms, lexical variants, abbreviations are all different types of  designations. In many cases, a problem (as reported by the patient) and a  finding indicating a problem will share the same concept and concept code  (e.g., abdominal pain), but will have different designation codes (i.e.,  the generic \"abdominal pain  and \"abdominal pain (finding)  share ",
+      "fieldNumber_": 80002
+    },
+    {
+      "fieldNumber": 80003,
+      "fieldName": "VHAT CONCEPT VUID (FUTURE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "VHA Unique ID (VUID) for the VHAT Concept. A unique meaningless integer assigned to a corresponding concept VHA wide.   This field is being implemented to allow a more rapidly extensible  vocabulary for VA, while international normative standard coding systems  continue to evolve more slowly. The precise definition of the concept  Polytrauma may prove to be a useful example. Although the term has  become common among US Military and VA physicians to describe a seriously  injured (i.e., Injury Se",
+      "fieldNumber_": 80003
+    },
+    {
+      "fieldNumber": 80004,
+      "fieldName": "VHAT DESIGNATION VUID (FUTURE)",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "VHA Unique ID (VUID) for the VHAT Designation. A unique meaningless integer assigned to a corresponding designation VHA wide.   VHAT Concept/Designation Code pairs function in a manner identical to  that of SNOMED CT Concept/Designation Codes (i.e., they support the  unique identification of clinical concepts, along with the many  alternative ways in which a given concept may be expressed). ",
+      "fieldNumber_": 80004
+    },
+    {
+      "fieldNumber": 80005,
+      "fieldName": "SNOMED CT-TO-ICD MAP STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:N/A;1:PENDING;2:COMPLETED;",
+      "helpText": "This Set of Codes type field is set to PENDING when an unmapped Clinical Finding is selected as a patient's problem. It is updated programmatically to COMPLETE when NTRT deploys a new SNOMED CT to ICD mapping for  the problem in question.   NOTE: THIS FIELD SHOULD NEVER BE UPDATED BY AN END USER. ",
+      "fieldNumber_": 80005
+    },
+    {
+      "fieldNumber": 80101,
+      "fieldName": "UNIQUE NEW TERM REQUESTED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:False;1:True;",
+      "helpText": "Indicates whether the user requested a new term during the process of  entering a freetext problem. It should only be populated automatically by  program code.    NOTE: THIS FIELD SHOULD NEVER BE UPDATED BY AN END USER. ",
+      "fieldNumber_": 80101
+    },
+    {
+      "fieldNumber": 80102,
+      "fieldName": "UNIQUE TERM REQUEST COMMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Please provide clarification of the new term request. For example, if the requested term is an acronym or abbreviation, the comment field  accommodates the fully specified name, etc. ",
+      "fieldNumber_": 80102
+    },
+    {
+      "fieldNumber": 80201,
+      "fieldName": "DATE OF INTEREST",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date when the DIAGNOSIS (#.01) and CODING SYSTEM (#80202)  fields were filed or modified. This allows proper resolution of the code,  irrespective of code set versions, etc.   ",
+      "fieldNumber_": 80201
+    },
+    {
+      "fieldNumber": 80202,
+      "fieldName": "CODING SYSTEM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This identifies the Coding System to which the Code belongs. It  corresponds to the Coding System Abbreviation in the ICD Coding Systems  File, to optimize internal/external API calls for resolving codes,  independent of their code set version, and to facilitate transition from  ICD-9-CM to ICD-10-CM.   Examples include:   CODING SYS    ABBREV       NOMENCLATURE    ICD FILE ---------------------------------------------    10D          ICD-10-CM      ICD Diagnosis    ICD          ICD-9-CM       I",
+      "fieldNumber_": 80202
+    },
+    {
+      "fieldNumber": 80300,
+      "fieldName": "MAPPING TARGETS",
+      "dataType": "SUBFILE",
+      "rawType": "9000011.803A",
+      "required": false,
+      "helpText": "This multiple includes mapped expressions: complications, comorbidities, and compound diagnoses. e.g., the single SNOMED CT concept Diabetic neuropathy (230572002) is mapped to two ICD-9-CM diagnoses: DIABETES WITH NEUROLOGICAL MANIFESTATIONS, TYPE II OR UNSPECIFIED TYPE, NOT STATED AS UNCONTROLLED (250.60) and POLYNEUROPATHY IN DIABETES (357.2). ",
+      "isMultiple": true,
+      "subFileNumber": 9000011.803,
+      "fieldNumber_": 80300
+    }
+  ],
+  "fieldCount": 39,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AATOO", "field": },
+    {"name": "AATOO2", "field": },
+    {"name": "AC", "field": },
+    {"name": "ACTIVE", "field": },
+    {"name": "ACTIVE1", "field": },
+    {"name": "ASCT", "field": },
+    {"name": "AV1", "field": },
+    {"name": "AV9", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "MODIFIED", "field": },
+    {"name": "9000011", "field": .01, "type": "regular"},
+    {"name": "9000011", "field": .01, "type": "regular"},
+    {"name": "9000011", "field": .02, "type": "regular"},
+    {"name": "9000011", "field": .02, "type": "regular"},
+    {"name": "9000011", "field": .02, "type": "regular"},
+    {"name": "9000011", "field": .03, "type": "regular"},
+    {"name": "9000011", "field": .06, "type": "regular"},
+    {"name": "9000011", "field": .06, "type": "regular"},
+    {"name": "9000011", "field": .07, "type": "regular"},
+    {"name": "9000011", "field": .12, "type": "regular"},
+    {"name": "9000011", "field": 1.01, "type": "regular"},
+    {"name": "9000011", "field": 80001, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$S($D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),@(\"$E(\"_DIC_\"Y,0),0)\")"},
+    {"field": .06, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DIC(4,+$P(^(0),U,6),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(4,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .07, "value": "W \"   \",$P(^(0),U,7)"}
+  ]
+}

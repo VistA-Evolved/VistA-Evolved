@@ -1,0 +1,126 @@
+{
+  "fileNumber": 2005.03,
+  "fileName": "PARENT DATA FILE",
+  "globalRoot": "2005.03",
+  "globalReference": "^MAG(2005.03,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "FILE/SUBFILE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ14,5",
+      "length": 14,
+      "required": false,
+      "helpText": "This is the actual number of a file or sub-file of a file. Some examples of the .001 field are: For Radiology Reports file it is 74, for the Message file (MailMan) it is 3.9, for Endoscopy (Medicine) 655, for Surgery 130, and for Surgical Pathology it is 63.08 (the sub-file number of Lab Data file, 63). ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "FILE/SUBFILE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the actual name of the file or sub-file of a file. Some examples would be Message, Surgery, Surgical Pathology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ABBREVIATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the commonly used abbreviation for the file or sub-file. Some examples would be SUR, MAIL, ENDO, SP etc. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "GLOBAL ROOT TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ROOT1;2:ROOT2;3:ROOT3;",
+      "helpText": "This is used in the editing and deletion of image pointers in other files. Since the Image file (2005) is pointed to by a variety of files a system had to be created to enable backward navigation. The global root data types or forms have been put into three groups:    ROOT1 -   like \"^RARPT(\"; \"^SRO(\"; \"^LR(\";  ROOT2 -   like \"^XMB(3.9,\"; \"^MCAR(699,\"  ROOT3 -   like \"^LR(D0,\"\"SP\"\",\"                  SUB-FILE of ^LR(                    (where D0 = LRDFN) ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "FILE POINTER",
+      "dataType": "POINTER",
+      "rawType": "P1'",
+      "required": false,
+      "pointerTo": 1,
+      "helpText": "This is the parent file pointing to ^DIC( - in most cases it will also be the .001 field since it will be a parent file itself. But in the case of sub-files, like the laboratory sub-files, it will not be the .001 field, but the number of the parent file. For example the Radiology entry has 74 for the .001 field and 74 for this field. However the Surgical Pathology entry has 68.03 for the .001 field, and 63 for the .04 field. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "PACKAGE INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "RAD:RAD;LAB:LAB;MED:MED;NOTE:NOTE;CP:CP;SUR:SUR;CONS:CONS;PHOTOID:PHOTOID;NONE:NONE;",
+      "helpText": "This is the abbreviation of the application (package) that the image is attached to.  ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "CLASS INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.82'",
+      "required": false,
+      "pointerTo": 2005.82,
+      "helpText": "The classification of the image.  CLASS is an index field used for sorting and searching. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "TYPE INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.83'",
+      "required": false,
+      "pointerTo": 2005.83,
+      "helpText": "The TYPE of image. TYPE is an index field used for sorting and searching. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "PROC/EVENT INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.85'",
+      "required": false,
+      "pointerTo": 2005.85,
+      "helpText": "The PROCEDURE/EVENT for the image.  PROCEDURE/EVENT is an index field used for sorting and searching. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "SPEC/SUBSPEC INDEX",
+      "dataType": "POINTER",
+      "rawType": "P2005.84'",
+      "required": false,
+      "pointerTo": 2005.84,
+      "helpText": "The SPECIALTY/SUBSPECIALTY of the image.  SPECIALTY/SUBSPECIALTY is an index field used for sorting and searching. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "ORIGIN INDEX",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VA;N:NON-VA;",
+      "helpText": "This field indicates whether an image or document originated inside or  outside of VA. ",
+      "fieldNumber_": 45
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2005.03", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

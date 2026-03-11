@@ -1,0 +1,890 @@
+{
+  "fileNumber": 2006.1,
+  "fileName": "IMAGING SITE PARAMETERS",
+  "globalRoot": "2006.1I",
+  "globalReference": "^MAG(2006.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "INSTITUTION NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4X",
+      "required": true,
+      "pointerTo": 4,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CURRENT NAMESPACE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The Image file is 14 characters. Each facility has its own unique namespace (e.g., Washington is WAS, Baltimore is BAL). ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "IMAGE NETWORK WRITE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2005.2",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the current network share for image file captures and archive retrieval.  This field will need to be  manually changed when a share reaches low water mark. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .031,
+      "fieldName": "CURRENT RAID GROUP",
+      "dataType": "POINTER",
+      "rawType": "*P2005.2'X",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field indicates the RAID group of shares that the system is currently writing to.  This group is an entry in the NETWORK  LOCATION file and has a GRP storage type. ",
+      "fieldNumber_": .031
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ASSOCIATED INSTITUTIONS",
+      "dataType": "POINTER",
+      "rawType": "2006.12P",
+      "required": false,
+      "helpText": "Through the use of the subfield's whole file cross-reference  this set of values will allow a site to make use of the imaging  network of a second institution to store and support images. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "GCC EXPORT LOC",
+      "dataType": "POINTER",
+      "rawType": "*P2005.2'X",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the external network share for Generic  Carbon Copy (GCC) where image files are copied to. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "IMAGE NETWORK IMPORT LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2005.2",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the IMPORT network share where the IMPORT  queues are copied to. This share is within the local Imaging Network. ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "SITE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a unique identifying string for the site where the Imaging Server is installed.  By convention, the abbreviation should correspond to the 3-character string used for the site in naming the file servers.  E.g., for Washington, D.C., the code is \"WAS\", corresponding to vhaWASimm1. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "PACS INTERFACE SWITCH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF PACS INTERFACE;1:ON PACS INTERFACE;",
+      "helpText": "This field is \"NULL\" if there is no DICOM Gateway interface. If there is a DICOM Gateway, this field serves as a switch to turn the interface ON or OFF. If it is OFF no messages will be transmitted from VistA to the DICOM Gateway; if ON, then the messages will be transmitted. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PACS DIRECTORY",
+      "dataType": "POINTER",
+      "rawType": "P2005.2",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the DICOM Gateway network location share  where PACS images are written by the Commercial PACS SYSTEM,  and where VistA first reads them. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "PACS IMAGE WRITE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "P2005.2",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the current write network share for the  DICOM Image Gateways. DICOM images are first read from the DICOM directory and later converted and copied to the network location specified by this field. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "JUKEBOX WRITE LOCATION",
+      "dataType": "POINTER",
+      "rawType": "*P2005.2'X",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This field identifies the JUKEBOX 'current write' network share that will receive the Background Processor JUKEBOX queues for newly acquired Image files.  ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "IHE PACS HL7 INTERFACE ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This field contains a flag that indicates whether HL7 ADT messages should  be sent using the IHE-based interface developed in Imaging Patch  MAG*3.0*49. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TRACK ABSTRACT ACCESSES",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field controls whether user access to image abstracts will cause the LAST ACCESS DATE field in the Image file to be updated. The LAST ACCESS DATE field is used to determine when full and abstract images are removed from magnetic disks and become available only from optical disk. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "PURGE-RETENTION DAYS FULL FILE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ5,0",
+      "length": 5,
+      "required": true,
+      "helpText": "This field is used by the Background Processor Purge to determine the number of days to retain full image files. All FULL images that have not been accessed in this many days will be removed from magnetic storage by the Background Processor Purge. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "RETENTION DAYS HL7 & DICOM",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ6,0X",
+      "length": 6,
+      "required": true,
+      "helpText": "This field is used as the default value, in days, by the DICOM Text Gateway for three different user menu driven purges.   1) This field is used by the Purge Old Modality Worklist Entries menu option to determine the number of retention days from the date of creation of the Modality Worklist Entries.   2) This field is used by the Purge Old DICOM Message Files menu option to determine the number of retention days from the date of creation of the DICOM messages that were sent to commercial PACS. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SERVER TASK",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,0",
+      "length": 10,
+      "required": false,
+      "helpText": "This field identifies the Kernel scheduled task number for the monthly site report.  The Background Processor Monitor utility (menu option [MAGQ BPMONITOR]) reads and updates this field  when verifying the monthly site report has been tasked or  re-tasked by this utility.   This automated process reports version and Imaging system  statusback to the development site in order to serve the site  better. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PERCENT SERVER RESERVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0X",
+      "length": 2,
+      "required": false,
+      "helpText": "This field allows sites to increase the amount of space that  is maintained in reserve for each individual Image server share.   The minimum value is 1. The default value is 5.   The RPC, MAGQ FS CHNGE, uses this value to determine the RAID  Group advance and is part of the automatic Purge algorithm.   When this value cannot be maintained, a CRITICAL LOW MESSAGE  is triggered.  ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 11.5,
+      "fieldName": "TIER 2 RESERVE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field allows sites to define a minimum percentage of free space in the tier 2 storage device in order to prevent loss of cache space for temporary storage. The default value is 5. The Background Processor JUKEBOX queue will not write to the currently designated tier 2 storage share if this percent storage capacity is not available or accessible from the Background Processor application. ",
+      "fieldNumber_": 11.5
+    },
+    {
+      "fieldNumber": 11.9,
+      "fieldName": "DATE OF LAST CRITICAL MESSAGE",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "It is a parameter used in combination with the CRITICAL LOW MESSAGE INTERVAL to determine if it is appropriate to send a new message  when the VistA cache space falls below the PERCENT SERVER RESERVE value. This field should not be edited directly by a user. ",
+      "fieldNumber_": 11.9
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "FILE TYPES",
+      "dataType": "SUBFILE",
+      "rawType": "2006.112",
+      "required": false,
+      "helpText": "This field identifies acceptable file types on image captures and is read  by the Background Processor to migrate files across the network shares  and jukeboxes. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.112,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 12.5,
+      "fieldName": "MULTI NAMESPACE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.11",
+      "required": false,
+      "helpText": "This multiple field is used to store all previously used image prefixes from the CURRENT NAMESPACE field. Any time the CURRENT NAMESPACE field is changed, enter the previous name in this multiple field. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.11,
+      "fieldNumber_": 12.5
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "NO AUTOWRITE UPDATE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:AUTOWRITE UPDATE OK;1:NO AUTOWRITE UPDATE;",
+      "helpText": "This field enables or disables the Background Processor function which evaluates the space availability on each of the online magnetic shares and assigns the current write location to the share with the  greatest space available both for PACS and regular image capture.   RPC, MAGQ FS CHNGE, utilizes this field when evaluating the current write location. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "PURGE-RETENTION DAYS BIG FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0X",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used by the Background Processor purge to determine the number of days to retain BIG files. All BIG images that have  not been accessed in this many days will be removed from magnetic storage by the Background Processor purge. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "PURGE-RETENTION DAYS ABS FILE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used by the Background Processor purge to determine the number of days to retain ABS files. All ABS images that have not been accessed in this many days will be removed from magnetic storage by the Background Processor purge. ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "PURGE-RETENTION DAYS PHOTOID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used by the Background Processor purge to determine the number of days to retain images designate as PHOTO IDs by the Image file. All PhotoID images that have not been accessed  in this many days will be removed from magnetic storage by the Background  Processor purge. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "IMPORT QUEUE SECURITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field enables network security for the Import Queue. ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "NET USERNAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field contains the NT username that the Imaging application uses to access images from the Image shares. ",
+      "fieldNumber_": 50
+    },
+    {
+      "fieldNumber": 51,
+      "fieldName": "NET PASSWORD",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the network password for the NET USERNAME entity.  The password is encrypted. ",
+      "fieldNumber_": 51
+    },
+    {
+      "fieldNumber": 52,
+      "fieldName": "NET UPDATE DIRECTORY",
+      "dataType": "POINTER",
+      "rawType": "P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This is the directory where Imaging releases, to be tested, are copied. Workstations with the \"WRKS RUNS TEST UPDATES\" field set to True will check the directory, defined in this field, for the latest Imaging software to test.  A site can limit the number of workstations that will use this procedure to test new versions of the software.  When a site is satisfied with the new version, it copies MAGSETUP.EXE to the NETUPDATE DIRECTORY where all workstations will be updated. This field points to th",
+      "fieldNumber_": 52
+    },
+    {
+      "fieldNumber": 53,
+      "fieldName": "NET UPDATE TEST DIRECTORY",
+      "dataType": "POINTER",
+      "rawType": "P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "This is the directory where Imaging releases to be tested are copied.  Workstations with NET UPDATE TEST DIRECTORY Field of the IMAGING WORKSTATIONS file = TRUE will check this directory for new versions of Imaging (MAGSETUP.EXE) A site can limit the number of workstations that will test new versions of imaging this way.  When a site is satisfied with the new version, they copy MAGSETUP.EXE to the NET UPDATE DIRECTORY where all workstations will update from. ",
+      "fieldNumber_": 53
+    },
+    {
+      "fieldNumber": 55,
+      "fieldName": "NET SITE SERVICE",
+      "dataType": "POINTER",
+      "rawType": "P2005.2'",
+      "required": false,
+      "pointerTo": 2005.2,
+      "helpText": "The VistA Site Service is used by Remote Image Views to gain access to remote sites. ",
+      "fieldNumber_": 55
+    },
+    {
+      "fieldNumber": 60,
+      "fieldName": "AUTOPURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "fieldNumber_": 60
+    },
+    {
+      "fieldNumber": 60.1,
+      "fieldName": "PURGE BY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "DA:DATE ACCESSED;DC:DATE CREATED;DM:DATE MODIFIED;",
+      "helpText": "This parameter is used by the Purge application. These date criteria apply to the dates within the Master File Table of the network share being purged.  ",
+      "fieldNumber_": 60.1
+    },
+    {
+      "fieldNumber": 60.2,
+      "fieldName": "EXPRESS PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This enables the Purge application to expedite the purge on a given share if no files are actively being purged.  This works with field EXPRESS PURGE RATE (#60.3). ",
+      "fieldNumber_": 60.2
+    },
+    {
+      "fieldNumber": 60.3,
+      "fieldName": "EXPRESS PURGE RATE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "helpText": "This value determines if there is enough idle purge activity on a share to cease processing on the share.   ",
+      "fieldNumber_": 60.3
+    },
+    {
+      "fieldNumber": 60.4,
+      "fieldName": "LAST PURGE BPWS",
+      "dataType": "POINTER",
+      "rawType": "P2006.8'",
+      "required": false,
+      "pointerTo": 2006.8,
+      "fieldNumber_": 60.4
+    },
+    {
+      "fieldNumber": 60.5,
+      "fieldName": "RAID PURGE FACTOR",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "This factor (a number between 0 and 100), when multiplied by  the Percent Server Reserve (#11), determines the automatic  purge event triggered by the BP Queue Processor.   The RPC, MAGQ FS CHNGE, uses this value and is part of the automatic Purge algorithm. ",
+      "fieldNumber_": 60.5
+    },
+    {
+      "fieldNumber": 61,
+      "fieldName": "SCHEDULED PURGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is used to determine whether the BP Queue Processor enables a scheduled purge process. The frequency is determined by the frequency days and the date of the last purge. A default value of 28 days is used if the frequency value is null.  A  default value of 2400 hours is used if the PURGE TIME is not set. ",
+      "fieldNumber_": 61
+    },
+    {
+      "fieldNumber": 61.1,
+      "fieldName": "DATE OF LAST PURGE",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is the date of a last scheduled purge process was executed and is automatically set at the beginning of a scheduled purge. ",
+      "fieldNumber_": 61.1
+    },
+    {
+      "fieldNumber": 61.2,
+      "fieldName": "SCHEDULED PURGE FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "When the Scheduled Purge process is enabled, this value in days  (between 1 and 365) is added to the date of the last purge for  the BP Queue Processor to evaluate for launching a purge process. ",
+      "fieldNumber_": 61.2
+    },
+    {
+      "fieldNumber": 61.3,
+      "fieldName": "DATE OF SCHEDULED PURGE",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is the scheduled date of the next scheduled purge.  It is set at the end of an automated purge by adding the SCHEDULE PURGE FREQUENCY (#61.2) parameter to the date of the last purge.  It may be set by the user to establish a new schedule. ",
+      "fieldNumber_": 61.3
+    },
+    {
+      "fieldNumber": 61.4,
+      "fieldName": "SCHEDULED PURGE TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "This number (between 0 and 2359) for military time determines the time of day to trigger the Scheduled Purge.  If this number is undefined, the BP Queue Processor uses the default value of 0 if the Scheduled Purge option is enabled and the frequency days plus date of last purge threshold are reached. ",
+      "fieldNumber_": 61.4
+    },
+    {
+      "fieldNumber": 62,
+      "fieldName": "SCHEDULED VERIFIER",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field is used to determine whether the BP Queue Processor enables a scheduled verifier process. ",
+      "fieldNumber_": 62
+    },
+    {
+      "fieldNumber": 62.1,
+      "fieldName": "DATE OF LAST VERIFY",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is the date of a last scheduled verifier application and is automatically set at the beginning of a scheduled verifier execution.  ",
+      "fieldNumber_": 62.1
+    },
+    {
+      "fieldNumber": 62.2,
+      "fieldName": "SCHEDULED VERIFIER FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "When the Scheduled Verifier process is enabled, this number in days (between 1 and 365) is added to the date of the last verify for the BP Queue Processor to evaluate in launching a verify process. ",
+      "fieldNumber_": 62.2
+    },
+    {
+      "fieldNumber": 62.3,
+      "fieldName": "DATE OF SCHEDULED VERIFIER",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is evaluated by active BP Processors to trigger a BP Verifier process at the date and time designated by the user. In conjunction with the SCHEDULED VERIFER time, this field  co-defines the timing of this process. ",
+      "fieldNumber_": 62.3
+    },
+    {
+      "fieldNumber": 62.4,
+      "fieldName": "SCHEDULED VERIFIER TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0X",
+      "length": 4,
+      "required": false,
+      "helpText": "This number (between 0 and 2359) for military time is used to determine the time of the day to trigger the Scheduled Verifier.  If this number is undefined, the BP Verifier uses the default  value of 0 if the Scheduled Verify option is enabled and the  frequency days plus date of last verify threshold are reached. ",
+      "fieldNumber_": 62.4
+    },
+    {
+      "fieldNumber": 62.5,
+      "fieldName": "LAST VERIFY BP WS",
+      "dataType": "POINTER",
+      "rawType": "P2006.8'",
+      "required": false,
+      "pointerTo": 2006.8,
+      "helpText": "This field references the BP Server that executed the Verifier process and therefore has the log files that document that  activity.  The intention of this field is to assist the support staff in locating the BP Verifier activity log files for the  last purge. ",
+      "fieldNumber_": 62.5
+    },
+    {
+      "fieldNumber": 62.6,
+      "fieldName": "SCHEDULED VERIFY TEXT CHECK",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field enables the BP Verifier to validate the RAID text files for patient identification consistencies. ",
+      "fieldNumber_": 62.6
+    },
+    {
+      "fieldNumber": 63,
+      "fieldName": "SCHEDULED RG ADVANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:OFF;1:ON;",
+      "helpText": "This field enables the automatic RAID Group Advance.  It is necessary to set the date of the next RG ADVANCE DATE (63.3) and the RG ADVANCE TIME (63.4).  If the RG ADVANCE TIME is  null, the default is 0. ",
+      "fieldNumber_": 63
+    },
+    {
+      "fieldNumber": 63.1,
+      "fieldName": "RG ADVANCE FREQUENCY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This number in days (between 1 and 365) and the RG ADVANCE TIME determine the date and time of the next scheduled RAID Group Advance.  ",
+      "fieldNumber_": 63.1
+    },
+    {
+      "fieldNumber": 63.2,
+      "fieldName": "DATE OF LAST RG ADVANCE",
+      "dataType": "DATE",
+      "rawType": "DO",
+      "required": false,
+      "helpText": "This is the date of the last scheduled RAID Group Advance was executed and is automatically set at the beginning of a RAID Group Advance execution.  ",
+      "fieldNumber_": 63.2
+    },
+    {
+      "fieldNumber": 63.3,
+      "fieldName": "RG ADVANCE DATE",
+      "dataType": "DATE",
+      "rawType": "DXO",
+      "required": false,
+      "helpText": "This is the scheduled date (today or later) of the next RAID GROUP advance.   ",
+      "fieldNumber_": 63.3
+    },
+    {
+      "fieldNumber": 63.4,
+      "fieldName": "RG ADVANCE TIME",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This number (between 0 and 2359) for military time is the time of day of the RAID Group advance function. If this number is undefined, the BP Queue Processor uses the default value  of 0 if the Scheduled RAID Group Advance option is enabled  and the frequency days plus date of last RAID Group Advance threshold are reached. ",
+      "fieldNumber_": 63.4
+    },
+    {
+      "fieldNumber": 66,
+      "fieldName": "BP MAIL MESSAGE",
+      "dataType": "SUBFILE",
+      "rawType": "2006.166A",
+      "required": false,
+      "helpText": "This table allows each Imaging site to manage the local distribution of all BP Queue Processor messages as well as the monthly and ad hoc site usage reports. ",
+      "isMultiple": true,
+      "subFileNumber": 2006.166,
+      "fieldNumber_": 66
+    },
+    {
+      "fieldNumber": 70,
+      "fieldName": "CT PRESETS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": " A Series of CT Presets delimited by '~'.  Defined at the site.  These are used by the Imaging Display Radiology Viewer.  They are presented to the user on the CT Presets Menu Option.  example of two :  Abdomen|350|1041~Bone|500|1274 ",
+      "fieldNumber_": 70
+    },
+    {
+      "fieldNumber": 71,
+      "fieldName": "CT PRESETS 2",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "A Series of CT Presets delimited by '~'.  Defined at the site. These are used by the Imaging Display Radiology Viewer on Clients running Patch 72 or later. They are presented to the user on the CT Presets Menu Option. example of two : Abdomen|350|1041~Bone|500|1274 ",
+      "fieldNumber_": 71
+    },
+    {
+      "fieldNumber": 75,
+      "fieldName": "DISPLAY HELP URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Display Client help menu has an option to open the VistA Imaging Clinical Display User Manual. The User Manual is on the VistA Imaging Sharepoint Web site. Enter the url of the Display User Manual here. ",
+      "fieldNumber_": 75
+    },
+    {
+      "fieldNumber": 76,
+      "fieldName": "CAPTURE HELP URL",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Capture Client help menu has an option to open the VistA Imaging Clinical Capture User Manual. The User Manual is on the VistA Imaging Sharepoint Web site. Enter the url of the Capture User Manual here. ",
+      "fieldNumber_": 76
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "DEFAULT USER PREFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2006.18'",
+      "required": false,
+      "pointerTo": 2006.18,
+      "helpText": "This field contains the user preference setting for first time users of the Imaging System.  This field points to the Imaging User Preference file (2005.18).  If this field is empty, the default user preferences  are created by the imaging routines. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 101,
+      "fieldName": "DEFAULT MUSE SITE #",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "  Enter the default MUSE site that the Imaging Display application will connect to. Site numbers are usually 1,2,3... etc. If this field is empty, the application will default to 1.   Most sites that have a MUSE server that serves EKG data to a  single Medical Center would have the MUSE site number set to 1.  If multiple sites  are sharing a single MUSE server, each site could be assigned  a unique MUSE site number by Marquette.  In some cases a single  shared MUSE database has been created to s",
+      "fieldNumber_": 101
+    },
+    {
+      "fieldNumber": 102,
+      "fieldName": "PCT FREE SPACE DICOM MSGS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "The value of this field is the minimum percentage of free space for a DICOM server. ",
+      "fieldNumber_": 102
+    },
+    {
+      "fieldNumber": 103,
+      "fieldName": "RETENTION DAYS DICOM MSGS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "The value of this parameter is the number of days that DICOM messages are to be retained. The subroutine that purges old DICOM messages will only remove messages that are older than this number of days. ",
+      "fieldNumber_": 103
+    },
+    {
+      "fieldNumber": 120,
+      "fieldName": "USE CAPTURE KEYS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:TRUE;0:FALSE;",
+      "helpText": "This field controls whether the Image capture security keys will be used. If set to true, the appropriate keys must be given for the appropriate Image capture.  'Capture' functionality and Procedure lookup functionality will not be allowed from the capture window if the user does not have the proper security key allocated.  The Medicine procedure selection window will only display the types of procedures that the user has keys for. ",
+      "fieldNumber_": 120
+    },
+    {
+      "fieldNumber": 121,
+      "fieldName": "TIMEOUT WINDOWS DISPLAY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This is the number of Minutes used as the Time Out for the Imaging Display   Application.  If no activity occurs for this number of minutes, the user   will be prompted with a dialog window and given 30 seconds to   'Click' on the 'Stay Connected' button or the application will be closed. ",
+      "fieldNumber_": 121
+    },
+    {
+      "fieldNumber": 122,
+      "fieldName": "TIMEOUT WINDOWS CAPTURE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of Minutes used as the Time Out for the Imaging Capture Application.  If no activity occurs for this number of minutes, the user  will be prompted with a dialog window and given 30 seconds to  'Click' on the 'Stay Connected' button or the application will be closed. ",
+      "fieldNumber_": 122
+    },
+    {
+      "fieldNumber": 123,
+      "fieldName": "TIMEOUT WINDOWS VISTARAD",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "  This is the number of Minutes used as Time Out for the Imaging VISTARad   Application.  If no activity occurs for this number of minutes, the user   will be prompted with a dialog window and given 30 seconds to   'Click' on the 'Stay Connected' button or the application will be closed. ",
+      "fieldNumber_": 123
+    },
+    {
+      "fieldNumber": 124,
+      "fieldName": "DICOM GATEWAY ACCESS CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "The value of this field is a string that may be used by a DICOM Gateway when it needs to provide an ACCESS CODE to the VistA system.   This field is also used for auto-login for the BP Queue  Processor, Purge and Verifier applications. This value is  stored encrypted. ",
+      "fieldNumber_": 124
+    },
+    {
+      "fieldNumber": 125,
+      "fieldName": "DICOM GATEWAY VERIFY CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "The value of this field is a string that may be used by a DICOM Gateway when it needs to provide a VERIFY CODE to a VistA system.   This field is also used for auto-login for the BP Queue  Processor, Purge and Verifier applications. This value is stored encrypted. ",
+      "fieldNumber_": 125
+    },
+    {
+      "fieldNumber": 126,
+      "fieldName": "LAST ROUTING ACTIVITY",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date (FileMan format, date only, no time). This value indicates the most recent date on which any routing activity took place at the current site.    Routing activity can be either Rule Evaluation or Image Transmission. ",
+      "fieldNumber_": 126
+    },
+    {
+      "fieldNumber": 127,
+      "fieldName": "LAST ROUTING CHECK",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The value of this field is a date (FileMan format, date only, no time part). This value indicates the most recent date on which a check was performed whether or not Routing is still active at the current site. ",
+      "fieldNumber_": 127
+    },
+    {
+      "fieldNumber": 130,
+      "fieldName": "*VERSION CHECKING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field is obsolete. The value of the field does not control which Imaging Clients are  supported. ",
+      "fieldNumber_": 130
+    },
+    {
+      "fieldNumber": 131,
+      "fieldName": "TELEREADER TIMEOUT (MINUTES)",
+      "dataType": "NUMERIC",
+      "rawType": "NJ6,0",
+      "length": 6,
+      "required": false,
+      "helpText": "The number of minutes that the TeleReader application  will remain active before closing due to inactivity.  If this field is undefined, the application will not timeout. Max value is 999999, no decimals allowed. ",
+      "fieldNumber_": 131
+    },
+    {
+      "fieldNumber": 132,
+      "fieldName": "VERSION NAG MESSAGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": " Enter Yes to display a message to clients that are supported, but  are not the released version.   This message will inform the user  that they should update their version of Imaging Client  to the released version.    Enter No to suppress the message.  No message will display. ",
+      "fieldNumber_": 132
+    },
+    {
+      "fieldNumber": 133,
+      "fieldName": "TIMEOUT WINDOWS IMPORTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of Minutes used as the timeout for the Imaging Importer Application. If no activity occurs for this number of minutes, the user will be prompted with a dialog window and given 30 seconds to click on the 'Stay Connected' button or the application will be closed. (MAG*3.0*136) ",
+      "fieldNumber_": 133
+    },
+    {
+      "fieldNumber": 134,
+      "fieldName": "TELEPATH UNREAD-RETENTION DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field is used as the default value, in days, by the TELEPATHOLOGY  UNREAD WORKLIST for purges. An unread case will be purged after this number of days. ",
+      "fieldNumber_": 134
+    },
+    {
+      "fieldNumber": 135,
+      "fieldName": "TIMEOUT WINDOWS TELEPATHOLOGY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of Minutes used as Time Out for the Imaging Telepathology Application.  If no activity occurs for this number of minutes, the user will be prompted with a dialog window and given 30 seconds to 'Click' on  the 'Stay Connected' button or the application will be closed. ",
+      "fieldNumber_": 135
+    },
+    {
+      "fieldNumber": 201,
+      "fieldName": "VISTARAD GROUPING",
+      "dataType": "POINTER",
+      "rawType": "2006.1201P",
+      "required": false,
+      "helpText": "This field allows multiple Institutions and/or Associated Institutions to be grouped together within VistARad for purposes of Exam Locking and Unread Exams lists display. ",
+      "fieldNumber_": 201
+    },
+    {
+      "fieldNumber": 202,
+      "fieldName": "DEFAULT VISTARAD USERPREF RAD",
+      "dataType": "POINTER",
+      "rawType": "*P2006.68'",
+      "required": false,
+      "pointerTo": 2006.68,
+      "helpText": "Points to a reference MAGJ USER DATA file entry which will serve as the default for initializing new radiologist's profiles. ",
+      "fieldNumber_": 202
+    },
+    {
+      "fieldNumber": 203,
+      "fieldName": "DEFAULT VISTARAD USERPREF NON",
+      "dataType": "POINTER",
+      "rawType": "*P2006.68'",
+      "required": false,
+      "pointerTo": 2006.68,
+      "helpText": "Points to a reference MAGJ USER DATA file entry which will serve as the default for initializing new NON-radiologist's profiles. ",
+      "fieldNumber_": 203
+    },
+    {
+      "fieldNumber": 204,
+      "fieldName": "SEND ANATOMIC PATHOLOGY HL7",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "This field governs the sending of Anatomic Pathology HL7 messages. These messages would be sent to Digital Pathology Systems and other systems used in pathology.   Set this field to YES to send these HL7 messages. ",
+      "fieldNumber_": 204
+    },
+    {
+      "fieldNumber": 205,
+      "fieldName": "ENABLE TELEPATH WORKLIST",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "NO:NO;YES:YES;",
+      "helpText": "This field controls the storage of new Anatomic Pathology cases in the MAG PATH CASELIST file (#2005.42).   Set this field to YES to store new cases in this file. ",
+      "fieldNumber_": 205
+    },
+    {
+      "fieldNumber": 300,
+      "fieldName": "RAD TECHNOLOGIST",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the Radiology Technologist who will be responsible for  the importing of the exam. ",
+      "fieldNumber_": 300
+    },
+    {
+      "fieldNumber": 301,
+      "fieldName": "RAD FILM SIZE",
+      "dataType": "POINTER",
+      "rawType": "*P78.4'",
+      "required": false,
+      "pointerTo": 78.4,
+      "helpText": "This is the Film Size to be associated with imported exams. ",
+      "fieldNumber_": 301
+    },
+    {
+      "fieldNumber": 302,
+      "fieldName": "RAD PRIMARY DIAGNOSTIC CODE",
+      "dataType": "POINTER",
+      "rawType": "*P78.3'",
+      "required": false,
+      "pointerTo": 78.3,
+      "helpText": "This is the primary diagnostic code to be associated with imported exams. ",
+      "fieldNumber_": 302
+    },
+    {
+      "fieldNumber": 303,
+      "fieldName": "RAD PRIMARY CAMERA/EQUIP/RM",
+      "dataType": "POINTER",
+      "rawType": "*P78.6'",
+      "required": false,
+      "pointerTo": 78.6,
+      "helpText": "This is the primary camera/equip/room to be associated with imported exams. ",
+      "fieldNumber_": 303
+    },
+    {
+      "fieldNumber": 304,
+      "fieldName": "RAD CPT MODIFIERS",
+      "dataType": "POINTER",
+      "rawType": "P81.3'",
+      "required": false,
+      "pointerTo": 81.3,
+      "helpText": "This is the CPT modifier to be associated with imported exams. ",
+      "fieldNumber_": 304
+    },
+    {
+      "fieldNumber": 305,
+      "fieldName": "IMPORTER PROCEDURE/DAY MAX",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This field will determine the maximum number of orders that the Importer may create for a patient for a single procedure on the same day. ",
+      "fieldNumber_": 305
+    }
+  ],
+  "fieldCount": 89,
+  "crossReferences": [
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2006.1", "field": .01, "type": "regular"},
+    {"name": "2006.1", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

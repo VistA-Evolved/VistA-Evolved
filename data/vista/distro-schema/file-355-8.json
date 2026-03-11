@@ -1,0 +1,57 @@
+{
+  "fileNumber": 355.8,
+  "fileName": "SPONSOR",
+  "globalRoot": "355.8",
+  "globalReference": "^IBA(355.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SPONSOR",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "RV",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MILITARY STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACTIVE DUTY;R:RETIRED;",
+      "helpText": "This field is used to determine if the sponsor is an Active Duty member of the military, or a Military retiree.  This information about the sponsor is useful in determining the type of medical benefits that are available to the patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "BRANCH",
+      "dataType": "POINTER",
+      "rawType": "P23'",
+      "required": false,
+      "pointerTo": 23,
+      "helpText": "This field is used to store the branch of the military in which the sponsor is currently enrolled or is retired from.  This field must be printed on claim forms submitted to the Tricare fiscal intermediary. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "RANK",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This field is used to store the sponsor's current or retired rank in the military.  This information is useful in determining the type of medical benefits that are available to the patient. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "355.8", "field": .01, "type": "regular"},
+    {"name": "355.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

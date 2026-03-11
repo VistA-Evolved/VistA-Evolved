@@ -1,0 +1,56 @@
+{
+  "fileNumber": 58.64,
+  "fileName": "PADE USER",
+  "globalRoot": "58.64",
+  "globalReference": "^PS(58.64,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "The PADE USER name as defined on the PADE vendor system. Enter only data that is actually part of the person's name. Do not include extra titles, identification, flags, local information, etc. Enter the person's name in 'LAST,FIRST MIDDLE SUFFIX' format. This value must be 3-35 characters in length and may contain only uppercase alpha characters, spaces, apostrophes, hyphens and one comma. All other characters and parenthetical text will be removed. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PADE ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The PADE identifier for this user. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.1,
+      "fieldName": "PADE INBOUND SYSTEM",
+      "dataType": "POINTER",
+      "rawType": "RP58.601'",
+      "required": true,
+      "pointerTo": 58.601,
+      "helpText": "The PADE INVENTORY SYSTEM from which the PADE user was originally  received. ",
+      "fieldNumber_": 1.1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VISTA USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The VistA user associated with this PADE USER entry. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "58.64", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

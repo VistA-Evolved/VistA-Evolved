@@ -1,0 +1,237 @@
+{
+  "fileNumber": 357.95,
+  "fileName": "FORM DEFINITION",
+  "globalRoot": "357.95",
+  "globalReference": "^IBD(357.95,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FORM TYPE ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,0X",
+      "length": 9,
+      "required": true,
+      "helpText": "This number should be unique for the encounter form type. It equals the ien. Editing the form results in a new FORM TYPE ID being assigned. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE MARKED FOR DELETION",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date is when the form was deleted or edited. When the last printed form is accounted for the entry can be deleted. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "SOURCE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:AICS;2:PANDAS;3:TELEFORM;4:PEN;99:OTHER;",
+      "helpText": "The software that produced the form. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "RIGHT MARGIN",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0X",
+      "length": 3,
+      "required": false,
+      "helpText": "The width of the form in characters. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "PAGE LENGTH",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0",
+      "length": 3,
+      "required": true,
+      "helpText": "The length of the page. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "NUMBER OF PAGES",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "The encounter form may have multiple pages. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": .12,
+      "fieldName": "SCANNABLE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "fieldNumber_": .12
+    },
+    {
+      "fieldNumber": .13,
+      "fieldName": "FORM TYPE ID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,0",
+      "length": 9,
+      "required": false,
+      "fieldNumber_": .13
+    },
+    {
+      "fieldNumber": .14,
+      "fieldName": "PAPER SIZE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:LETTER (8 1/2 x 11);",
+      "fieldNumber_": .14
+    },
+    {
+      "fieldNumber": .15,
+      "fieldName": "ORIENTATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "p:PORTRAIT;",
+      "fieldNumber_": .15
+    },
+    {
+      "fieldNumber": .16,
+      "fieldName": "TEXT SIZE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:133 COLUMNS x 80 LINES;2:96 COLUMNS x 72 LINES;3:80 COLUMNS x 60 LINES;",
+      "fieldNumber_": .16
+    },
+    {
+      "fieldNumber": .17,
+      "fieldName": "VERSION",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,2",
+      "length": 5,
+      "required": false,
+      "fieldNumber_": .17
+    },
+    {
+      "fieldNumber": .2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date that this entry was created.  It is triggered when the entry is added. ",
+      "fieldNumber_": .2
+    },
+    {
+      "fieldNumber": .21,
+      "fieldName": "FORM NAME",
+      "dataType": "POINTER",
+      "rawType": "P357",
+      "required": false,
+      "pointerTo": 357,
+      "helpText": "This is the name of the form when this entry was created.  It is triggered when the entry is created.  ",
+      "fieldNumber_": .21
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BUBBLES",
+      "dataType": "SUBFILE",
+      "rawType": "357.951I",
+      "required": false,
+      "helpText": "The list of bubbles appearing on the form. ",
+      "isMultiple": true,
+      "subFileNumber": 357.951,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "HAND PRINT FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": "357.952",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 357.952,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PAGE INFORMATION",
+      "dataType": "SUBFILE",
+      "rawType": "357.953",
+      "required": false,
+      "helpText": "A list of the pages of a form that requires documentation of specific features. ",
+      "isMultiple": true,
+      "subFileNumber": 357.953,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "CLINICS USING THIS FORM",
+      "dataType": "POINTER",
+      "rawType": "357.9501P",
+      "required": false,
+      "helpText": "These are the clinics that use this form   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "PANDAS HEADERS",
+      "dataType": "SUBFILE",
+      "rawType": "357.9511",
+      "required": false,
+      "helpText": "A list of headers used by PANDAS. ",
+      "isMultiple": true,
+      "subFileNumber": 357.9511,
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12.01,
+      "fieldName": "PANDAS TIMESTAMP",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date and time the PANDAS form was last modified. ",
+      "fieldNumber_": 12.01
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "PANDAS FORMID",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "The form identifier used by PANDAS. ",
+      "fieldNumber_": 13
+    }
+  ],
+  "fieldCount": 21,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AC1", "field": },
+    {"name": "AD", "field": },
+    {"name": "AD1", "field": },
+    {"name": "ADEL", "field": },
+    {"name": "AE", "field": },
+    {"name": "AE1", "field": },
+    {"name": "AE2", "field": },
+    {"name": "AFC", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "357.95", "field": .01, "type": "regular"},
+    {"name": "357.95", "field": .02, "type": "regular"},
+    {"name": "357.95", "field": .03, "type": "regular"},
+    {"name": "357.95", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   Source: \",@(\"$P($P($C(59)_$S($D(^DD(357.95,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"},
+    {"field": .2, "value": "W \"    Created: \",$E($P(^(0),U,20),4,5)_\"-\"_$E($P(^(0),U,20),6,7)_\"-\"_$E($P(^(0),U,20),2,3)"},
+    {"field": .21, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^IBE(357,+$P(^(0),U,21),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(357,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   Form: \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

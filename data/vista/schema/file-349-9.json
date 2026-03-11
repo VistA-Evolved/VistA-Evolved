@@ -1,0 +1,87 @@
+{
+  "fileNumber": 349.9,
+  "fileName": "AR TRANSMISSION SEGMENTS",
+  "globalRoot": "349.9",
+  "globalReference": "^RCT(349.9,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP349.1",
+      "required": true,
+      "pointerTo": 349.1,
+      "helpText": "This is the name of the segment/router. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "MESSAGE SEQUENCE RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of messages received. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "LAST MESSAGE SEQUENCE RECEIVED",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the last message sequence number received. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REMOTE USER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the user name at the remote address which receives the transmission. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "DOMAIN NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the remote domain. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "DOMAIN",
+      "dataType": "POINTER",
+      "rawType": "P4.2'",
+      "required": false,
+      "pointerTo": 4.2,
+      "helpText": "This is the link to the DOMAIN file (4.2). ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:NOT ACTIVE;",
+      "helpText": "This field indicates if the domain is actively receiving tranmissions from the AR software. ",
+      "fieldNumber_": 21
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "349.9", "field": .01, "type": "regular"},
+    {"name": "", "field": 13, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

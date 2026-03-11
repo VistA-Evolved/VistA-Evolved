@@ -1,0 +1,86 @@
+{
+  "fileNumber": 142.99,
+  "fileName": "HEALTH SUMMARY PARAMETERS",
+  "globalRoot": "142.99",
+  "globalReference": "^GMT(142.99,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the entry in the Health Summary parameters file. The input transform will restrict entry to one record only, which must be named \"HOSPITAL.\" ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PROMPT FOR ACTION PROFILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "If this parameter is set to Y or YES, the user will be prompted to include the Outpatient Pharmacy Action Profile when printing Health Summaries by location (both interactive and batch mode) and by patient. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "INCLUDE COMMENTS FOR LABS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "If this parameter is set to Y or YES, the Chemistry & Hematology, the Lab Tests Selected and the Lab Cumulative Selected components will present comments for results. For the Chemistry & Hematology and the Lab Tests Selected components the comments will be displayed immediately following the results. For the Lab Cumulative Selected components a lower case letter will be displayed to the left of the date for entries with comments. Comments will be displayed after all the results are displayed wit",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "SPOOL DEVICE",
+      "dataType": "POINTER",
+      "rawType": "*P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This is the SPOOL DEVICE to which Health Summary output can be directed during a PDX request for one or more Health Summary Components. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "INCLUDE BAR CODES ON ACT PROF",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:yes;N:no;",
+      "helpText": "If this parameter is set to YES or YES, Bar Codes will be included when Outpatient Pharmacy Action Profiles are printed from Health Summary. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "ERROR MESSAGE RECIPIENT",
+      "dataType": "VARIABLE-POINTER",
+      "rawType": "V",
+      "required": false,
+      "helpText": "This is the user or mail group that will recieve error messages from the  Health Summary Package when they are sent.  Instances of when error  messages are sent would be when a tasked batch print job needs to exit  without producing a report. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "SHORT HS BY LOC COVERS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "N:No;Y:Yes;",
+      "helpText": "This parameter is to be used in conjunction with the Hospital Location  Health Summary [GMTS HS BY LOC] report to shorten the cover page for each  location.  When printing in standard Letter (8.5 x 11) format, the name  of the hospital location is printed six times which results in an  overflow onto the next page.  If this parameter is set to 'Y' the name  will only print one time, thus saving paper. ",
+      "fieldNumber_": .07
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "142.99", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

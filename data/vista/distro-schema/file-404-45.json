@@ -1,0 +1,66 @@
+{
+  "fileNumber": 404.45,
+  "fileName": "PCMM SERVER PATCH",
+  "globalRoot": "404.45",
+  "globalReference": "^SCTM(404.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SERVER PATCH NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the patch number for PCMM that was distributed by a KIDS build. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ASSOCIATED CLIENT",
+      "dataType": "POINTER",
+      "rawType": "P404.46'",
+      "required": false,
+      "pointerTo": 404.46,
+      "helpText": "This field points to the PCMM CLIENT PATCH file entries that can work with this server version. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "EFFECTIVE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date this server entry became effective. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE SERVER VERSION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate which SERVERs are active at this site.  It is possible to have more than one server version active at the site at one time. ",
+      "fieldNumber_": .04
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "ACT", "field": },
+    {"name": "ACT1", "field": },
+    {"name": "ASER", "field": },
+    {"name": "ASER1", "field": },
+    {"name": "B", "field": },
+    {"name": "404.45", "field": .01, "type": "regular"},
+    {"name": "404.45", "field": .01, "type": "regular"},
+    {"name": "404.45", "field": .01, "type": "regular"},
+    {"name": "404.45", "field": .02, "type": "regular"},
+    {"name": "404.45", "field": .02, "type": "regular"},
+    {"name": "404.45", "field": .04, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^SCTM(404.46,+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(404.46,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

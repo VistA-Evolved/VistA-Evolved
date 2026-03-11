@@ -1,0 +1,93 @@
+{
+  "fileNumber": 440.7,
+  "fileName": "MONTHLY ACCRUAL",
+  "globalRoot": "440.7",
+  "globalReference": "^PRCH(440.7,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "COMPILING DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date/time the accrual is compiled. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "FMS DOCUMENT COMPILE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "this is the date/time the SV-doc is sent to FMS. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DOCUMENT AMOUNT",
+      "dataType": "NUMERIC",
+      "rawType": "NJ11,2",
+      "length": 11,
+      "required": false,
+      "helpText": "This is the document total amount. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "DOCUMENT COUNTER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ8,0",
+      "length": 8,
+      "required": false,
+      "helpText": "This is the counter used to generate doc's id. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "EDIT DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the date of editing. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "FMS DOCUMENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is used for FMS documents data. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 50,
+      "fieldName": "DOCUMENT LINE",
+      "dataType": "SUBFILE",
+      "rawType": "440.701A",
+      "required": false,
+      "helpText": "This is the doc line multiple. ",
+      "isMultiple": true,
+      "subFileNumber": 440.701,
+      "fieldNumber_": 50
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "440.7", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

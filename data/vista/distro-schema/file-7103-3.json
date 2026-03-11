@@ -1,0 +1,35 @@
+{
+  "fileNumber": 7103.3,
+  "fileName": "NOIS EVENT TYPE",
+  "globalRoot": "7103.3",
+  "globalReference": "^FSC(\"ETYPE\",",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,0",
+      "length": 7,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "7103.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

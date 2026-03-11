@@ -1,0 +1,42 @@
+{
+  "fileNumber": 720.5,
+  "fileName": "EC EVENT CODE SCREENS/PROC REASON LINK",
+  "globalRoot": "720.5",
+  "globalReference": "^ECL(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE REASON",
+      "dataType": "POINTER",
+      "rawType": "P720.4'",
+      "required": false,
+      "pointerTo": 720.4,
+      "helpText": "This field contains the pointer to the procedure reason associated with the event code screen. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "EVENT CODE SCREEN",
+      "dataType": "POINTER",
+      "rawType": "P720.3'",
+      "required": false,
+      "pointerTo": 720.3,
+      "helpText": "This field contains the pointer to the procedure reason associated with the event code screen. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "720.5", "field": .01, "type": "regular"},
+    {"name": "720.5", "field": .01, "type": "regular"},
+    {"name": "720.5", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

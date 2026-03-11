@@ -1,0 +1,1697 @@
+{
+  "generatedAt": "2026-03-10T00:00:00Z",
+  "keys": {
+    "A1B2 SUPERVISOR": [
+      {"ien": 5210, "name": "A1B2 SUPER MENU"},
+      {"ien": 5211, "name": "A1B2 SUPER ACTIVATE"},
+      {"ien": 5221, "name": "A1B2 SUPER SYSTEM STATUS"},
+      {"ien": 5222, "name": "A1B2 SUPER TRANSMIT ODS DATA"}
+    ],
+    "ACKQ ADHOC": [
+      {"ien": 10002, "name": "ACKQAS ADHOC"}
+    ],
+    "AFJXMANAGER": [
+      {"ien": 9065, "name": "AFJXNHEX MANAGER"}
+    ],
+    "AJK1UB SUPERVISOR": [
+      {"ien": 10933, "name": "AJK1UB SUPERVISOR MENU"}
+    ],
+    "BPS MANAGER": [
+      {"ien": 12783, "name": "BPS MANAGER MENU"},
+      {"ien": 13290, "name": "BPS MENU MAINTENANCE"},
+      {"ien": 13293, "name": "BPS UNSTRAND SCREEN"},
+      {"ien": 13295, "name": "BPS STATISTICS SCREEN"},
+      {"ien": 13323, "name": "BPS REOPEN CLOSED CLAIM"}
+    ],
+    "BPS MASTER": [
+      {"ien": 12782, "name": "BPS SETUP MENU"},
+      {"ien": 12786, "name": "BPS SETUP REGISTER PHARMACY"},
+      {"ien": 12807, "name": "BPS SETUP PHARMACY"},
+      {"ien": 13299, "name": "BPS SETUP BASIC PARAMS"}
+    ],
+    "BPS REPORTS": [
+      {"ien": 12794, "name": "BPS MENU RPT MAIN"},
+      {"ien": 12839, "name": "BPS MENU RPT CLAIM STATUS"},
+      {"ien": 12850, "name": "BPS MENU RPT OTHER"},
+      {"ien": 12864, "name": "BPS RPT REJECTION"},
+      {"ien": 12865, "name": "BPS RPT PAYABLE"},
+      {"ien": 12871, "name": "BPS RPT TOTALS BY DAY"},
+      {"ien": 12881, "name": "BPS RPT NOT RELEASED"},
+      {"ien": 12883, "name": "BPS RPT REVERSAL"},
+      {"ien": 12884, "name": "BPS RPT CLOSED CLAIMS"},
+      {"ien": 13289, "name": "BPS RPT CMOP/ECME ACTIVITY"},
+      {"ien": 13294, "name": "BPS RPT PAYER SHEET DETAIL"},
+      {"ien": 13296, "name": "BPS RPT SETUP PHARMACIES"},
+      {"ien": 13297, "name": "BPS RPT TURNAROUND STATS"},
+      {"ien": 13298, "name": "BPS RPT RECENT TRANSACTIONS"},
+      {"ien": 13546, "name": "BPS RPT CLAIMS RESPONSE"},
+      {"ien": 14047, "name": "BPS RPT SPENDING ACCOUNT"},
+      {"ien": 14396, "name": "BPS RPT NON-BILLABLE REPORT"},
+      {"ien": 14942, "name": "BPS RPT DUPLICATE CLAIMS"},
+      {"ien": 15145, "name": "BPS RPT ERRORS"}
+    ],
+    "BPS SUPERVISOR": [
+      {"ien": 12894, "name": "IBCNR EDIT HIPAA NCPDP FLAG"},
+      {"ien": 14466, "name": "BPS OPECC PRODUCTIVITY REPORT"},
+      {"ien": 15177, "name": "BPS AUTO CLOSE REJECT"}
+    ],
+    "BPS USER": [
+      {"ien": 12792, "name": "BPS USER SCREEN"},
+      {"ien": 13941, "name": "BPS COB PROCESS SECOND TRICARE"}
+    ],
+    "BPSMENU": [
+      {"ien": 12784, "name": "BPSMENU"}
+    ],
+    "DDXP-DEFINE": [
+      {"ien": 7338, "name": "DDXP DEFINE FORMAT"}
+    ],
+    "DG CONSISTENCY": [
+      {"ien": 503, "name": "DG CONSISTENCY UPDATE"},
+      {"ien": 525, "name": "DG CONSISTENCY PURGE"},
+      {"ien": 526, "name": "DG CONSISTENCY REBUILD"},
+      {"ien": 544, "name": "DG CONSISTENCY CHECK"},
+      {"ien": 563, "name": "DG CONSISTENCY SUPERVISOR MENU"},
+      {"ien": 13497, "name": "DG Z07 CONSISTENCY CHECK"}
+    ],
+    "DG DETAIL": [
+      {"ien": 414, "name": "DG DEATH ENTRY"}
+    ],
+    "DG ELIGIBILITY": [
+      {"ien": 4465, "name": "DVB HUPLOAD"}
+    ],
+    "DG INSTITUTION": [
+      {"ien": 2684, "name": "DG INSTITUTION EDIT"}
+    ],
+    "DG MEANSTEST": [
+      {"ien": 483, "name": "DG MEANS TEST EDIT"},
+      {"ien": 485, "name": "DG MEANS TEST ADJUDICATE"},
+      {"ien": 488, "name": "DG MEANS TEST ADD"},
+      {"ien": 493, "name": "DG MEANS TEST SUPERVISOR MENU"},
+      {"ien": 7066, "name": "DG CO-PAY TEST ADD"},
+      {"ien": 7067, "name": "DG CO-PAY TEST EDIT"},
+      {"ien": 7069, "name": "DG CO-PAY TEST USER MENU"},
+      {"ien": 7070, "name": "DG CO-PAY TEST INCOMPLETE"},
+      {"ien": 7072, "name": "DG CO-PAY TEST SUPERVISOR MENU"},
+      {"ien": 11400, "name": "DGMTH HARDSHIPS"},
+      {"ien": 12316, "name": "EAS MERGE DUP MT/COPAY DEP"},
+      {"ien": 12317, "name": "EAS DELETE MT/COPAY DEPENDENT"},
+      {"ien": 12318, "name": "EAS DUPLICATE DEPENDENTS RPT"}
+    ],
+    "DG MTDELETE": [
+      {"ien": 537, "name": "DG MEANS TEST DELETE"},
+      {"ien": 7068, "name": "DG CO-PAY TEST DELETE"},
+      {"ien": 12206, "name": "EASEC LTC EXEMPTION TST DELETE"},
+      {"ien": 12388, "name": "EASEC LTC COPAY TEST DELETE"}
+    ],
+    "DG PTFREL": [
+      {"ien": 426, "name": "DG PTF DELETE"},
+      {"ien": 429, "name": "DG PTF RELEASE RECORD"},
+      {"ien": 430, "name": "DG PTF OPEN CLOSED RECORD"},
+      {"ien": 4569, "name": "DGPT CENSUS RELEASE RECORD"},
+      {"ien": 4572, "name": "DGPT CENSUS OPEN RECORD"}
+    ],
+    "DG PTFSUP": [
+      {"ien": 443, "name": "DG PTF CODING CLERK REPORT"},
+      {"ien": 445, "name": "DG PTF ICD DIAGNOSTIC SEARCH"},
+      {"ien": 446, "name": "DG PTF ICD SURGICAL SEARCH"},
+      {"ien": 518, "name": "DG PTF DRG REPORTS"},
+      {"ien": 522, "name": "DG PTF UPDATE DRG INFO"},
+      {"ien": 4565, "name": "DG PTF UPDATE TRANSFER DRG'S"},
+      {"ien": 4576, "name": "DGPT CENSUS SUPERVISOR"},
+      {"ien": 4577, "name": "DGPT CENSUS DATE EDIT"},
+      {"ien": 4578, "name": "DGPT CENSUS REGEN WORKFILE"},
+      {"ien": 4581, "name": "DGPT CENSUS CODING CLERK RPT"},
+      {"ien": 4582, "name": "DGPT CENSUS CODING REPORT"},
+      {"ien": 4597, "name": "DGPT SET XMIT FLAG"},
+      {"ien": 8679, "name": "DG PTF SUFFIX EFF DATE EDIT"},
+      {"ien": 13313, "name": "DGPT CENSUS DATE DISPLAY"}
+    ],
+    "DG PTFTRANS": [
+      {"ien": 463, "name": "DG PTF TRANSMISSION VADATS"},
+      {"ien": 491, "name": "DG PTF OPEN RELEASED"},
+      {"ien": 572, "name": "DG PTF 099 TRANSMISSION"},
+      {"ien": 4570, "name": "DGPT CENSUS TRANSMIT"},
+      {"ien": 4575, "name": "DGPT CENSUS OPEN RELEASED"},
+      {"ien": 4583, "name": "DGPT CENSUS 099 TRANSACTION"},
+      {"ien": 5659, "name": "DGPT TOOL RPO"},
+      {"ien": 11238, "name": "DG NPTF XMIT MENU"}
+    ],
+    "DG RUG CLOSE PAI": [
+      {"ien": 508, "name": "DG RUG CLOSE"}
+    ],
+    "DG RUG TRANSMISSION": [
+      {"ien": 555, "name": "DG RUG TRANSMISSION"}
+    ],
+    "DG SECURITY OFFICER": [
+      {"ien": 579, "name": "DG SECURITY PURGE PATIENTS"},
+      {"ien": 581, "name": "DG SECURITY PURGE LOG"},
+      {"ien": 583, "name": "DG SECURITY DISPLAY LOG"},
+      {"ien": 585, "name": "DG SECURITY OFFICER MENU"},
+      {"ien": 15078, "name": "DG VAS MODIFY"},
+      {"ien": 15080, "name": "DG VAS MENU"}
+    ],
+    "DG SENSITIVITY": [
+      {"ien": 576, "name": "DG SECURITY ENTER/EDIT"}
+    ],
+    "DG SUPERVISOR": [
+      {"ien": 417, "name": "DG SUPERVISOR MENU"},
+      {"ien": 587, "name": "DG RELEASE COMMENTS"},
+      {"ien": 2651, "name": "DG PATIENT TYPE PARAMETER EDIT"},
+      {"ien": 5434, "name": "DGPM G&L PARAMETER EDIT"},
+      {"ien": 11784, "name": "DGRU RAI PARAMETER ENTRY/EDIT"},
+      {"ien": 13080, "name": "DG PATIENT CE REPORT"}
+    ],
+    "DG VTS RIDESHARE": [
+      {"ien": 14360, "name": "DG VTS RIDESHARE"}
+    ],
+    "DGBT EDIT DENIAL LTRS": [
+      {"ien": 14287, "name": "DGBT EDIT DENIAL LETTERS"}
+    ],
+    "DGBT LOCAL VENDOR": [
+      {"ien": 12614, "name": "DGBT LOCAL VENDOR MENU"}
+    ],
+    "DGBT SUPERVISOR": [
+      {"ien": 3166, "name": "DGBT BENE TRAVEL RATES"},
+      {"ien": 5435, "name": "DGBT BENE TRAVEL ACCOUNT"},
+      {"ien": 14160, "name": "DGBT BENE TRAVEL CONFIG EDIT"}
+    ],
+    "DGFFP ACCESS": [
+      {"ien": 13058, "name": "DGFFP SET FUGITIVE FELON FLAG"},
+      {"ien": 13059, "name": "DGFFP CLR FUGITIVE FELON FLAG"},
+      {"ien": 13065, "name": "DGFFP FFP INQUIRY"}
+    ],
+    "DGJ CLERK SUPER": [
+      {"ien": 5665, "name": "DGJ IRT DELETE"},
+      {"ien": 5666, "name": "DGJ IRT EDITCOMP"}
+    ],
+    "DGJ LOCAL VENDOR": [
+      {"ien": 12909, "name": "DGJ LOCAL VENDOR ADD"}
+    ],
+    "DGJ SUPER": [
+      {"ien": 5673, "name": "DGJ IRT PARAMETERS"},
+      {"ien": 7360, "name": "DGJ ADD/EDIT DEFICIENCY"},
+      {"ien": 7367, "name": "DGJ IRT UPDATE STD. DEFIC."}
+    ],
+    "DGPF ASSIGNMENT": [
+      {"ien": 12393, "name": "DGPF RECORD FLAG ASSIGNMENT"},
+      {"ien": 14737, "name": "DGPF PRF TRANSFER REQUESTS"}
+    ],
+    "DGPF MANAGER": [
+      {"ien": 12399, "name": "DGPF RECORD FLAG MANAGEMENT"},
+      {"ien": 13212, "name": "DGPF ENABLE DIVISIONS"}
+    ],
+    "DGPF TRANSMISSIONS": [
+      {"ien": 13211, "name": "DGPF TRANSMISSION ERRORS"},
+      {"ien": 13213, "name": "DGPF MANUAL QUERY"},
+      {"ien": 13214, "name": "DGPF TRANSMISSION MGMT"},
+      {"ien": 14739, "name": "DGPF RECORD REFRESH"}
+    ],
+    "DGPNC": [
+      {"ien": 15144, "name": "DG NAME COMPONENT UPDATE"}
+    ],
+    "DGPRE EDIT": [
+      {"ien": 10320, "name": "DGPRE PRE-REGISTER OPTION"},
+      {"ien": 10322, "name": "DGPRE DISPLAY CALL LIST"}
+    ],
+    "DGPRE SUPV": [
+      {"ien": 10332, "name": "DGPRE SUPV MENU"}
+    ],
+    "DGYP IRM": [
+      {"ien": 7183, "name": "DGYP SD GLOBAL ESTIMATOR"}
+    ],
+    "DIEXTRACT": [
+      {"ien": 7343, "name": "DIAX EXTRACT MENU"},
+      {"ien": 7344, "name": "DIAX SELECT"},
+      {"ien": 7345, "name": "DIAX ADD/DELETE"},
+      {"ien": 7346, "name": "DIAX PRINT"},
+      {"ien": 7347, "name": "DIAX MODIFY"},
+      {"ien": 7348, "name": "DIAX CREATE"},
+      {"ien": 7349, "name": "DIAX UPDATE"},
+      {"ien": 7350, "name": "DIAX PURGE"},
+      {"ien": 7351, "name": "DIAX CANCEL"},
+      {"ien": 7352, "name": "DIAX VALIDATE"}
+    ],
+    "DVBA C RELEASE 2507": [
+      {"ien": 5706, "name": "DVBA C RELEASE C&P REQUESTS"}
+    ],
+    "DVBA CAPRI METRICS PURGE": [
+      {"ien": 15044, "name": "DVBA METRICS DATA PURGE"}
+    ],
+    "DVBA SUPERVISOR": [
+      {"ien": 4534, "name": "DVBA SITE PARAMETERS"},
+      {"ien": 4536, "name": "DVBA NEW REQUEST"}
+    ],
+    "DVBHINQ": [
+      {"ien": 3205, "name": "DVB HMENU-HINQ"},
+      {"ien": 3206, "name": "DVB HREQ-STATUSBYPAT"},
+      {"ien": 3209, "name": "DVB HSUSP-PRINTSUSP"},
+      {"ien": 3210, "name": "DVB HSUSP-UTILITY"},
+      {"ien": 3218, "name": "DVB HREQ-INDIVHREQ"},
+      {"ien": 3219, "name": "DVB HSUSP-PROCESSFILE"},
+      {"ien": 3221, "name": "DVB HREQ-GENERHREQ"},
+      {"ien": 4468, "name": "DVB HUPLOAD-MENU"}
+    ],
+    "EAS MT UES OVERRIDE": [
+      {"ien": 13524, "name": "EAS MT UES OVERRIDE"}
+    ],
+    "EAS MTSUPV": [
+      {"ien": 12199, "name": "EAS MT SETUP MENU"}
+    ],
+    "ECMGR": [
+      {"ien": 9664, "name": "ECMGR"}
+    ],
+    "ECXMGR": [
+      {"ien": 12506, "name": "ECX LAB RESULTS TRANS EDIT"},
+      {"ien": 12512, "name": "ECX FISCAL YEAR EXTRACT"},
+      {"ien": 12928, "name": "ECX DIVISION ID"},
+      {"ien": 12929, "name": "ECX WARD DSSDEPT"},
+      {"ien": 12939, "name": "ECXSCLOAD"},
+      {"ien": 12940, "name": "ECXSCEDIT"},
+      {"ien": 12946, "name": "ECXPURG"},
+      {"ien": 12947, "name": "ECXTRANS"},
+      {"ien": 12950, "name": "ECXSCAPPROV"},
+      {"ien": 12969, "name": "ECXLABRS"},
+      {"ien": 12970, "name": "ECX IV DIV EDIT"},
+      {"ien": 13559, "name": "ECXMENU"},
+      {"ien": 13561, "name": "ECXSETUP"},
+      {"ien": 13568, "name": "ECXTRYIT"},
+      {"ien": 13952, "name": "ECXDEFINE"},
+      {"ien": 14033, "name": "ECX SET MAX LINES"},
+      {"ien": 14273, "name": "ECXDELEF"},
+      {"ien": 15151, "name": "ECX KILL TASK"}
+    ],
+    "ECXPVE": [
+      {"ien": 13204, "name": "ECX PHA EDIT"}
+    ],
+    "EDPF KIOSKS": [
+      {"ien": 13996, "name": "EDPF BIGBOARD KIOSKS"}
+    ],
+    "EHM HITT MENU": [
+      {"ien": 15180, "name": "EHM-00001"}
+    ],
+    "EHM MGR": [
+      {"ien": 15179, "name": "EHM MAIN MENU"}
+    ],
+    "EN IT ASSIGNMENT": [
+      {"ien": 13605, "name": "ENIT TERMINATE RESP"},
+      {"ien": 13607, "name": "ENIT TRANSFER RESP"},
+      {"ien": 13608, "name": "ENIT ASSIGN RESP"},
+      {"ien": 13612, "name": "ENIT CERTIFY RESP"},
+      {"ien": 13615, "name": "ENIT ADD NEW PERSON"}
+    ],
+    "EN IT INVENTORY": [
+      {"ien": 13603, "name": "ENIT INVENTORY EDIT"}
+    ],
+    "ENEDNX": [
+      {"ien": 6433, "name": "ENCSN"},
+      {"ien": 6434, "name": "ENCMR"}
+    ],
+    "ENEQMED": [
+      {"ien": 10140, "name": "ENIN-EDIT-MULTI"}
+    ],
+    "ENFACS": [
+      {"ien": 9632, "name": "ENFA BETTER"},
+      {"ien": 9633, "name": "ENFA TRANSFER"},
+      {"ien": 9634, "name": "ENFA SEND BY CMR"},
+      {"ien": 9635, "name": "ENFA CHANGE"},
+      {"ien": 9636, "name": "ENFA DISP"},
+      {"ien": 9638, "name": "ENFA SEND SINGLE"},
+      {"ien": 9644, "name": "ENFA SEND BY STATION"},
+      {"ien": 9646, "name": "ENFA RECALC BALANCES"},
+      {"ien": 10460, "name": "ENFA AV"},
+      {"ien": 10462, "name": "ENFA EIL"}
+    ],
+    "ENMGR": [
+      {"ien": 295, "name": "ENMAN"},
+      {"ien": 10149, "name": "ENDELPM"},
+      {"ien": 10150, "name": "ENPM9"}
+    ],
+    "ENPLK003": [
+      {"ien": 8937, "name": "ENPLMFX"},
+      {"ien": 8940, "name": "ENPLMAX"}
+    ],
+    "ENWODEL": [
+      {"ien": 11201, "name": "ENWODEL"}
+    ],
+    "ENY2K_ROLL_UP": [
+      {"ien": 11172, "name": "ENY2K_NATIONAL"},
+      {"ien": 11173, "name": "ENY2K_NATIONAL_QUEUED"}
+    ],
+    "ESP CHIEF": [
+      {"ien": 8118, "name": "ESP VEHICLE REGISTRATION LOG"},
+      {"ien": 8135, "name": "ESP CRIMINAL STATUTE PRINT"},
+      {"ien": 8144, "name": "ESP EDIT OFFENSE REPORT"},
+      {"ien": 8149, "name": "ESP MAKE SENSITIVE"},
+      {"ien": 8181, "name": "ESP DELETE OFFENSE REPORT"},
+      {"ien": 8183, "name": "ESP GENERATE CRIME STATISTICS"},
+      {"ien": 8184, "name": "ESP PRINT CRIME REPORT"},
+      {"ien": 8185, "name": "ESP DELETE CRIME STATISTICS"},
+      {"ien": 8186, "name": "ESP CRIME REPORTS"},
+      {"ien": 8187, "name": "ESP ACTIVITY REPORT"},
+      {"ien": 8192, "name": "ESP TRANSMIT OR"},
+      {"ien": 8193, "name": "ESP TRANSMIT CRIME REPORT"},
+      {"ien": 8201, "name": "ESP EVIDENCE MAKE SENSITIVE"},
+      {"ien": 8205, "name": "ESP FILEMAN OPTIONS"}
+    ],
+    "ESP EVIDENCE": [
+      {"ien": 8157, "name": "ESP EVIDENCE/PROPERTY ADD/EDIT"}
+    ],
+    "ESP SUPERVISOR": [
+      {"ien": 8146, "name": "ESP CLOSE AN OFFENSE REPORT"},
+      {"ien": 8156, "name": "ESP REVIEW COMPLETED OR"}
+    ],
+    "FB ARCH": [
+      {"ien": 14072, "name": "FB ARCH DATA UPLOAD"},
+      {"ien": 14073, "name": "FB ARCH REMINDER DELAY"},
+      {"ien": 14590, "name": "FB ADD ARCH ELIGIBILITY"},
+      {"ien": 14591, "name": "FB PROJECT ARCH MENU"},
+      {"ien": 14592, "name": "FB VIEW ARCH ELIGIBILITY"}
+    ],
+    "FB IPAC VENDOR": [
+      {"ien": 14336, "name": "FBAA IPAC AGREEMENT DELETE"},
+      {"ien": 14337, "name": "FBAA IPAC AGREEMENT ENTER/EDIT"}
+    ],
+    "FBAA LEVEL 1 AUTH": [
+      {"ien": 2770, "name": "FBAA ENTER AUTHORIZATION"},
+      {"ien": 5767, "name": "FBCH LEGAL ENTITLEMENT"},
+      {"ien": 5768, "name": "FBCH MEDICAL ENTITLEMENT"},
+      {"ien": 5769, "name": "FBCH COMPLETE 7078"},
+      {"ien": 5770, "name": "FBCH EDIT 7078"},
+      {"ien": 5786, "name": "FBCNH POST COMMITMENTS"},
+      {"ien": 5787, "name": "FBCNH ESTIMATE FUNDS"},
+      {"ien": 5795, "name": "FBCNH ADMIT"},
+      {"ien": 5796, "name": "FBCNH TRANSFER"},
+      {"ien": 5797, "name": "FBCNH DISCHARGE"},
+      {"ien": 5798, "name": "FBCNH ENTER AUTHORIZATION"},
+      {"ien": 5806, "name": "FBCNH EDIT AUTHORIZATION"},
+      {"ien": 5812, "name": "FBCH 7078 SETUP"},
+      {"ien": 5815, "name": "FBCNH EDIT ADMISSION"},
+      {"ien": 5816, "name": "FBCNH EDIT TRANSFER"},
+      {"ien": 5817, "name": "FBCNH EDIT DISCHARGE"},
+      {"ien": 5818, "name": "FBCNH EDIT MOVEMENT"},
+      {"ien": 5819, "name": "FBCNH DELETE MOVEMENT MENU"},
+      {"ien": 5820, "name": "FBCNH DELETE ADMISSION"},
+      {"ien": 5821, "name": "FBCNH DELETE TRANSFER"},
+      {"ien": 5822, "name": "FBCNH DELETE DISCHARGE"},
+      {"ien": 5831, "name": "FBCH DELETE REQUEST"},
+      {"ien": 7798, "name": "FBUC ENTER"},
+      {"ien": 7799, "name": "FBUC MODIFY UNAUTHORIZED CLAIM"},
+      {"ien": 7800, "name": "FBUC DISPOSITION UNAUTH CLAIM"},
+      {"ien": 7801, "name": "FBUC REOPEN"},
+      {"ien": 7802, "name": "FBUC INITIATE APPEAL"},
+      {"ien": 7805, "name": "FBUC REQUEST INFORMATION"},
+      {"ien": 7806, "name": "FBUC RECEIVE INFORMATION"},
+      {"ien": 7808, "name": "FBUC UPDATE DATE LETTER SENT"},
+      {"ien": 7809, "name": "FBUC BATCH PRINT LETTERS"},
+      {"ien": 7812, "name": "FBUC LETTERS"},
+      {"ien": 7817, "name": "FBCNH ENTER VETERAN RATES"},
+      {"ien": 7818, "name": "FBAA TERMINATE ID CARD"},
+      {"ien": 7821, "name": "FBCNH RATE CHANGE"},
+      {"ien": 7822, "name": "FBUC ADD NEW PERSON"},
+      {"ien": 7824, "name": "FBUC ASSOCIATE"},
+      {"ien": 7833, "name": "FBUC REPRINT LETTER(S)"},
+      {"ien": 7839, "name": "FBUC DISASSOCIATE"},
+      {"ien": 11278, "name": "FBSH ENTER AUTH"},
+      {"ien": 11279, "name": "FBSH CHANGE AUTH"},
+      {"ien": 11280, "name": "FBSH DELETE AUTH"},
+      {"ien": 11281, "name": "FBSH REINSTATE AUTH"}
+    ],
+    "FBAA LEVEL 1 PMT": [
+      {"ien": 2766, "name": "FBAA ENTER PAYMENT"},
+      {"ien": 2769, "name": "FBAA DELETE PAYMENT"},
+      {"ien": 2776, "name": "FBAA CLOSE BATCH"},
+      {"ien": 2777, "name": "FBAA REOPEN BATCH"},
+      {"ien": 2784, "name": "FBAA ENTER PHARMACY INVOICE"},
+      {"ien": 2791, "name": "FBAA CLOSE OUT INVOICE"},
+      {"ien": 2792, "name": "FBAA COMPLETE PHARMACY INVOICE"},
+      {"ien": 2794, "name": "FBAA MEDICAL REIMBURSEMENT"},
+      {"ien": 2795, "name": "FBAA OPEN BATCH"},
+      {"ien": 2799, "name": "FBAA REINITIATE REJECTS"},
+      {"ien": 2806, "name": "FBAA BATCH EDIT"},
+      {"ien": 2807, "name": "FBAA TRAVEL ENTRY"},
+      {"ien": 2808, "name": "FBAA REIMBURSEMENT PHARMACY"},
+      {"ien": 2814, "name": "FBAA MULTIPLE PAYMENT ENTRY"},
+      {"ien": 2818, "name": "FBAA EDIT PHARMACY INVOICE"},
+      {"ien": 2822, "name": "FBAA EDIT PAYMENT"},
+      {"ien": 5773, "name": "FBCH ENTER PAYMENT"},
+      {"ien": 5774, "name": "FBCH EDIT PAYMENT"},
+      {"ien": 5780, "name": "FBCH OPEN BATCH"},
+      {"ien": 5792, "name": "FBCNH OPEN BATCH"},
+      {"ien": 5799, "name": "FBCNH ENTER PAYMENT"},
+      {"ien": 5804, "name": "FBCH PRICER RELEASE"},
+      {"ien": 5805, "name": "FBCH COMPLETE PAYMENT"},
+      {"ien": 5808, "name": "FBCNH EDIT PAYMENT"},
+      {"ien": 5823, "name": "FBCH REINITIATE PRICER REJECTS"},
+      {"ien": 5829, "name": "FBCH ANCILLARY PAYMENT"},
+      {"ien": 5830, "name": "FBCH OPEN ANCILLARY BATCH"},
+      {"ien": 5835, "name": "FBCH EDIT ANCILLARY PAYMENT"},
+      {"ien": 5839, "name": "FBAA OPEN PHARMACY BATCH"},
+      {"ien": 7780, "name": "FBCH REIMBURSEMENT INVOICE"},
+      {"ien": 7781, "name": "FBCH DELETE INVOICE"},
+      {"ien": 7783, "name": "FBCH ANCILLARY REIMBURSEMENT"},
+      {"ien": 7820, "name": "FBUC PAYMENTS"},
+      {"ien": 7836, "name": "FBAA BATCH DELETE"},
+      {"ien": 8631, "name": "FBCH MULTIPLE PAYMENTS"}
+    ],
+    "FBAA LEVEL 2": [
+      {"ien": 2765, "name": "FBAA SUPERVISOR OPTIONS"},
+      {"ien": 2802, "name": "FBAA MRA DELETE VENDOR"},
+      {"ien": 2805, "name": "FBAA VENDOR MRA MAIN MENU"},
+      {"ien": 2816, "name": "FBAA SUPERVISOR RELEASE"},
+      {"ien": 2817, "name": "FBAA PRINT 7079 GROUP"},
+      {"ien": 2823, "name": "FBAA EDIT INVOICE STATUS"},
+      {"ien": 2824, "name": "FBAA MRA VETERAN DELETE TYPE"},
+      {"ien": 2825, "name": "FBAA MRA VETERAN ADD TYPE"},
+      {"ien": 2826, "name": "FBAA MRA VETERAN CHANGE TYPE"},
+      {"ien": 2827, "name": "FBAA MRA VETERAN REINSTATE"},
+      {"ien": 2828, "name": "FBAA VETERAN MRA MAIN MENU"},
+      {"ien": 2829, "name": "FBAA QUEUE DATA FOR TRANS."},
+      {"ien": 2830, "name": "FBAA MRA VENDOR REINSTATE"},
+      {"ien": 5760, "name": "FBAA MEDICAL VOID PAYMENT"},
+      {"ien": 5761, "name": "FBAA PHARMACY VOID PAYMENT"},
+      {"ien": 5762, "name": "FBAA CANCEL MEDICAL VOID"},
+      {"ien": 5763, "name": "FBAA CANCEL PHARMACY VOID"},
+      {"ien": 5765, "name": "FBAA VOID PAYMENT MENU"},
+      {"ien": 7775, "name": "FBCH REOPEN REQUEST"},
+      {"ien": 7778, "name": "FBCH CANCEL 7078"},
+      {"ien": 7779, "name": "FBCH PRINT CANCELLED 7078"},
+      {"ien": 7791, "name": "FBCH VOID PAYMENT"},
+      {"ien": 7792, "name": "FBCH DELETE VOID"},
+      {"ien": 7793, "name": "FBCNH VOID PAYMENT"},
+      {"ien": 7794, "name": "FBCNH DELETE VOID"},
+      {"ien": 7797, "name": "FBCNH CANCEL 7078"},
+      {"ien": 7803, "name": "FBUC APPEAL EDIT"},
+      {"ien": 7804, "name": "FBUC COVA APPEAL"},
+      {"ien": 7832, "name": "FBCNH DELETE RATE"},
+      {"ien": 7837, "name": "FBAA FMS UPDATE"},
+      {"ien": 7838, "name": "FBCNH UPDATE VENDOR CONTRACT"},
+      {"ien": 7840, "name": "FBUC RETURN ADDRESS DIS/ED"},
+      {"ien": 7843, "name": "FBAA MRA'S AWAITING APPROVAL"},
+      {"ien": 12520, "name": "FBAA FPPS EDIT INVOICE"},
+      {"ien": 12521, "name": "FBCH FPPS EDIT INVOICE"},
+      {"ien": 12522, "name": "FBRX FPPS EDIT INVOICE"},
+      {"ien": 12527, "name": "FB FPPS PURGE"}
+    ],
+    "FBAAREJECT": [
+      {"ien": 2797, "name": "FBAA VOUCHER DELETE REJECT"}
+    ],
+    "FBAASUPERVISOR": [
+      {"ien": 2796, "name": "FBAA FINALIZE BATCH"},
+      {"ien": 2810, "name": "FBAA ENTER SITE PARAMETERS"},
+      {"ien": 2813, "name": "FBAA ENTER/EDIT LETTERS"},
+      {"ien": 5764, "name": "FBAA CLERK LOOK-UP"},
+      {"ien": 5788, "name": "FBAA FEE SCHEDULE"},
+      {"ien": 5789, "name": "FBAA CALCULATE SCHEDULE"},
+      {"ien": 5791, "name": "FBAA EDIT SCHEDULE"},
+      {"ien": 5800, "name": "FBAA REQUEUE MRA"},
+      {"ien": 5801, "name": "FBAA MRA PURGE"},
+      {"ien": 7776, "name": "FBCH PRINT REQUEST AUDIT"},
+      {"ien": 7807, "name": "FBUC REQUEST INFO FILE"},
+      {"ien": 11925, "name": "FBUC DISAPPROVAL REASONS FILE"},
+      {"ien": 11926, "name": "FBUC DISPOSITIONS FILE"},
+      {"ien": 12078, "name": "FBUC EXTENSION"},
+      {"ien": 14017, "name": "FB SEG DUTY RPT"},
+      {"ien": 14156, "name": "FBAA CONTRACT FILE"},
+      {"ien": 14212, "name": "FBAA REPROCESS BATCH"},
+      {"ien": 14213, "name": "FBAA RESEND VOUCHER MSG"},
+      {"ien": 14503, "name": "FB SEC KEY RPT"},
+      {"ien": 14504, "name": "FBUC CLERK LOOKUP"},
+      {"ien": 14505, "name": "FBCH CLERK LOOKUP"},
+      {"ien": 14506, "name": "FBCH REQUEST CLERK LOOKUP"}
+    ],
+    "FHMGR": [
+      {"ien": 14701, "name": "FHQUE"},
+      {"ien": 14702, "name": "FHQUE OPTION EDIT"},
+      {"ien": 14703, "name": "FHQUE TEST"}
+    ],
+    "GECS SETUP": [
+      {"ien": 3275, "name": "GECS SETUP"},
+      {"ien": 3276, "name": "GECS PURGE"}
+    ],
+    "GMPL IMPRT UTIL": [
+      {"ien": 14618, "name": "GMPL SELECTION LIST IMPORT"}
+    ],
+    "GMRA-ALLERGY VERIFY": [
+      {"ien": 6021, "name": "GMRA PATIENT A/AR VERIFY"}
+    ],
+    "GMTSMGR": [
+      {"ien": 3347, "name": "GMTSCD"}
+    ],
+    "HBHC MANAGER": [
+      {"ien": 7606, "name": "HBHC MANAGER MENU"}
+    ],
+    "HBHC MEDICAL FOSTER HOME": [
+      {"ien": 13827, "name": "HBHC MFH MENU"}
+    ],
+    "HBHC TRANSMIT": [
+      {"ien": 7603, "name": "HBHCXMT"}
+    ],
+    "HLOMAIN": [
+      {"ien": 13140, "name": "HLO MAIN MENU"}
+    ],
+    "HLOMGR": [
+      {"ien": 13138, "name": "HLO SYSTEM MONITOR"}
+    ],
+    "HMP ADMIN": [
+      {"ien": 14514, "name": "HMPMON SET SYS DASHBOARD RATE"},
+      {"ien": 14515, "name": "HMPMON SET PKG DASHBOARD RATE"}
+    ],
+    "IB AUTHORIZE": [
+      {"ien": 2665, "name": "IB AUTHORIZE BILL GENERATION"},
+      {"ien": 2668, "name": "IB CANCEL BILL"},
+      {"ien": 4592, "name": "IB RETURN BILL"},
+      {"ien": 6228, "name": "IB MT CLOCK MAINTENANCE"},
+      {"ien": 6229, "name": "IB FLAG CONTINUOUS PATIENTS"},
+      {"ien": 6231, "name": "IB CANCEL/EDIT/ADD CHARGES"},
+      {"ien": 6243, "name": "IB MT RELEASE CHARGES"},
+      {"ien": 6251, "name": "IB MT PASS CONV CHARGES"},
+      {"ien": 12263, "name": "IBAEC LTC CLOCK EDIT"},
+      {"ien": 14018, "name": "IB CORRECT REJECTED/DENIED"}
+    ],
+    "IB CLAIMS SUPERVISOR": [
+      {"ien": 8032, "name": "IBT SUPERVISORS MENU"}
+    ],
+    "IB EDIT": [
+      {"ien": 2662, "name": "IB EDIT BILLING INFO"},
+      {"ien": 4591, "name": "IB EDIT RETURNED BILL"},
+      {"ien": 14830, "name": "IBUC VISIT MAINT"},
+      {"ien": 15141, "name": "IBMH VISIT MAINT"}
+    ],
+    "IB INSURANCE COMPANY EDIT": [
+      {"ien": 8050, "name": "IBCN INSURANCE CO EDIT"}
+    ],
+    "IB MESSAGE MANAGEMENT": [
+      {"ien": 13327, "name": "IBCEMC MULT CSA MSG MANAGEMENT"}
+    ],
+    "IB PARAMETER EDIT": [
+      {"ien": 5326, "name": "IB EDIT SITE PARAMETERS"},
+      {"ien": 8034, "name": "IBT EDIT TRACKING PARAMETERS"},
+      {"ien": 8058, "name": "IB AUTO BILLER PARAMS"},
+      {"ien": 9631, "name": "IBJ MCCR SITE PARAMETERS"}
+    ],
+    "IB PROVIDER EDIT": [
+      {"ien": 12245, "name": "IBCE PROVIDER MAINT"}
+    ],
+    "IB SUPERVISOR": [
+      {"ien": 2664, "name": "IB BILLING SUPERVISOR MENU"},
+      {"ien": 2672, "name": "IB ACTIVATE REVENUE CODES"},
+      {"ien": 2673, "name": "IB SYSTEM DEFINITION MENU"},
+      {"ien": 4586, "name": "IB BILLING RATES FILE"},
+      {"ien": 10476, "name": "IBCR FAST ENTER BILLING RATES"},
+      {"ien": 10480, "name": "IBCR DELETE CHARGE ITEMS"},
+      {"ien": 10777, "name": "IB MRA BACKBILLING REPORT"},
+      {"ien": 11439, "name": "IB MT ON HOLD FIX"},
+      {"ien": 11677, "name": "IBCR ENTER TP NEG RATES"},
+      {"ien": 11678, "name": "IBAT INPT PROSTHETIC ITEMS"},
+      {"ien": 12240, "name": "IBCE 837 MANUAL TRANSMIT"},
+      {"ien": 12241, "name": "IBCE CLAIMS STATUS AWAITING"},
+      {"ien": 12731, "name": "IB EDIT E&M CODE QUANTITY FLAG"},
+      {"ien": 13111, "name": "IB CIDC INSURANCE SWITCH"},
+      {"ien": 13326, "name": "IBCR RC EXTRACT"},
+      {"ien": 13588, "name": "IBCR ENTER RC NATIONAL CHARGES"},
+      {"ien": 14304, "name": "IBCN UPDATE SUBSCRIBER INFO"},
+      {"ien": 14835, "name": "IBUC MULTI FAC COPAY PULL REQ"},
+      {"ien": 14896, "name": "IBCE RESUB FROM CSA RPT"},
+      {"ien": 15170, "name": "IBMH MULTI FAC COPAY PULL REQ"}
+    ],
+    "IBCI CM MULTIPLE CLAIM SEND": [
+      {"ien": 12254, "name": "IBCI MULTIPLE CLAIM SEND"}
+    ],
+    "IBCNE EIV IIU MAINTENANCE": [
+      {"ien": 12635, "name": "IBCNE AUTO MATCH ENTER/EDIT"},
+      {"ien": 12639, "name": "IBCNE AUTO MATCH BUFFER"},
+      {"ien": 12641, "name": "IBCNE PAYER EDIT"},
+      {"ien": 12643, "name": "IBCNE PAYER LINK"},
+      {"ien": 12646, "name": "IBCNE PAYER MAINTENANCE MENU"}
+    ],
+    "IBCNE IIV SUPERVISOR": [
+      {"ien": 12640, "name": "IBCNE REQUEST INQUIRY"}
+    ],
+    "IBCNF EDIT": [
+      {"ien": 14335, "name": "IBCNF EDIT CONFIGURATION"}
+    ],
+    "IBCNR E-PHARMACY SUPERVISOR": [
+      {"ien": 12886, "name": "IBCNR PLAN MATCH"},
+      {"ien": 12888, "name": "IBCNR EDIT NCPDP PROCESSOR"},
+      {"ien": 12889, "name": "IBCNR EDIT PBM"},
+      {"ien": 12890, "name": "IBCNR EDIT PLAN"},
+      {"ien": 12893, "name": "IBCNR GROUP PLAN MATCH"},
+      {"ien": 12895, "name": "IBCNR TEST PAYER SHEET MATCH"}
+    ],
+    "IBCNR ROI": [
+      {"ien": 13763, "name": "IBCNR RELEASE OF INFORMATION"}
+    ],
+    "IBD MANAGER": [
+      {"ien": 11248, "name": "IBDF FREE PENDING PAGES"}
+    ],
+    "IBDF IRM": [
+      {"ien": 8009, "name": "IBDF IRM OPTIONS"}
+    ],
+    "IBJD WORKLOAD ASSIGNMENT": [
+      {"ien": 11907, "name": "IBJD FOLLOW-UP WORKLOAD"},
+      {"ien": 11908, "name": "IBJD FOLLOW-UP AR PROD REPORT"}
+    ],
+    "IVM SYS": [
+      {"ien": 8364, "name": "IVM SYS PAR ENTER/EDIT"},
+      {"ien": 8365, "name": "IVM SYS TRANSMISSION REPORT"},
+      {"ien": 8366, "name": "IVM SYS PURGE TRANSMISSIONS"},
+      {"ien": 8369, "name": "IVM SYS MGR MENU"}
+    ],
+    "IVM UPLOAD": [
+      {"ien": 8358, "name": "IVM UPLOAD SSN"},
+      {"ien": 8359, "name": "IVM UPLOAD DEM"},
+      {"ien": 8360, "name": "IVM UPLOAD INS"},
+      {"ien": 8367, "name": "IVM UPLOAD MENU"}
+    ],
+    "KMPVOPS": [
+      {"ien": 14596, "name": "KMPV VSM MANAGEMENT"}
+    ],
+    "LRANAT": [
+      {"ien": 3923, "name": "LRAP"},
+      {"ien": 4007, "name": "LRAPL"}
+    ],
+    "LRAPMOD": [
+      {"ien": 12740, "name": "LRAPMRL"}
+    ],
+    "LRAPSUPER": [
+      {"ien": 3930, "name": "LRAPDAR"},
+      {"ien": 3962, "name": "LRAPTOP"},
+      {"ien": 3963, "name": "LRAPMOR"},
+      {"ien": 3964, "name": "LRAPETI"},
+      {"ien": 3965, "name": "LRAPDIS"},
+      {"ien": 3966, "name": "LRAPFUN"},
+      {"ien": 3967, "name": "LRAPPRO"},
+      {"ien": 3968, "name": "LRAPOCC"},
+      {"ien": 3990, "name": "LRAPSUPER"},
+      {"ien": 5376, "name": "LRAPQACD"},
+      {"ien": 5402, "name": "LRAPQOR"},
+      {"ien": 8458, "name": "LRUV"}
+    ],
+    "LRAR ARCHIVE": [
+      {"ien": 10028, "name": "LRAR ARCHIVE MAIN MENU"}
+    ],
+    "LRBLOODBANK": [
+      {"ien": 2045, "name": "LRBL"}
+    ],
+    "LRBLSUPER": [
+      {"ien": 2047, "name": "LRBLS"},
+      {"ien": 2053, "name": "LRBLDPL"},
+      {"ien": 2085, "name": "LRBLRUF"},
+      {"ien": 2093, "name": "LRBLSER"},
+      {"ien": 2106, "name": "LRBLDCU"},
+      {"ien": 2127, "name": "LRBLPCH"},
+      {"ien": 2147, "name": "LRBLDK"},
+      {"ien": 2148, "name": "LRBLDEX"},
+      {"ien": 2152, "name": "LRBLPRA"},
+      {"ien": 2157, "name": "LRBLDEDIT"},
+      {"ien": 2158, "name": "LRBLAD"},
+      {"ien": 2159, "name": "LRBLAR"},
+      {"ien": 2160, "name": "LRBLPEDIT"},
+      {"ien": 2161, "name": "LRBLDEF"},
+      {"ien": 2183, "name": "LRBLSNO"},
+      {"ien": 2201, "name": "LRBLSPP"},
+      {"ien": 2203, "name": "LRBLSRI"},
+      {"ien": 3919, "name": "LRBLSDPL"},
+      {"ien": 5385, "name": "LRBLCN"},
+      {"ien": 8436, "name": "LRBLPTXR"},
+      {"ien": 8467, "name": "LRBLVAL"},
+      {"ien": 8634, "name": "LRBLDMV"}
+    ],
+    "LRHYKEY": [
+      {"ien": 14051, "name": "LRHY SITE FILE EDIT"}
+    ],
+    "LRLAB": [
+      {"ien": 1165, "name": "LRADDTST"},
+      {"ien": 1189, "name": "LRMENU"},
+      {"ien": 1209, "name": "LRADD TO ACC"},
+      {"ien": 8401, "name": "LRFASTS"},
+      {"ien": 8402, "name": "LRUFCL"},
+      {"ien": 8403, "name": "LRUFCLS"},
+      {"ien": 9934, "name": "LRUCHGDIV"}
+    ],
+    "LRLIASON": [
+      {"ien": 1154, "name": "LRGV"},
+      {"ien": 1155, "name": "LRLIASON"},
+      {"ien": 1197, "name": "LRLLE DFT"},
+      {"ien": 1198, "name": "LRLLE PRO"},
+      {"ien": 1203, "name": "LRAC INITIALIZE"},
+      {"ien": 1204, "name": "LRLL TYPE"},
+      {"ien": 1238, "name": "LRCKPTR"},
+      {"ien": 1275, "name": "LRCHKFILES"},
+      {"ien": 1355, "name": "LRAC DIAG"},
+      {"ien": 1356, "name": "LRAC XREF"},
+      {"ien": 2189, "name": "LROPT"},
+      {"ien": 2205, "name": "LRDCOM"},
+      {"ien": 3949, "name": "LRAPHDR"},
+      {"ien": 4024, "name": "LRAPDFS"},
+      {"ien": 4037, "name": "LRWU5"},
+      {"ien": 4038, "name": "LRWU6"},
+      {"ien": 4039, "name": "LRWU7"},
+      {"ien": 5360, "name": "LA LAB TEST"},
+      {"ien": 5371, "name": "LRLIAISON"},
+      {"ien": 5380, "name": "LRAPQASP"},
+      {"ien": 5387, "name": "LRBLJUT"},
+      {"ien": 5389, "name": "LRBLPAB"},
+      {"ien": 5404, "name": "LRAPQADEL"},
+      {"ien": 8397, "name": "LRCAP CODE ADD"},
+      {"ien": 8400, "name": "LR BARCODE FORMAT LOAD"},
+      {"ien": 8425, "name": "LR WKLD MANUAL"},
+      {"ien": 8430, "name": "LR WKLD STATS ON"},
+      {"ien": 8431, "name": "LR WKLD STATS ON ACC AREA"},
+      {"ien": 8442, "name": "LR WKLD4"},
+      {"ien": 8461, "name": "LR WKLD LMIP 5"},
+      {"ien": 10342, "name": "LR REVIEW DATA NAMES"},
+      {"ien": 10570, "name": "LR LAB LIM FILE"},
+      {"ien": 10940, "name": "LR BAR CF"},
+      {"ien": 12739, "name": "LRAP ESIG SWITCH"},
+      {"ien": 13727, "name": "VBEC MAIN MENU"},
+      {"ien": 14167, "name": "LRWU7 EDIT"},
+      {"ien": 14168, "name": "LRCAPFF"},
+      {"ien": 14170, "name": "LRAC MOVE"},
+      {"ien": 14174, "name": "LA7V 62.47 EDIT SUSC"},
+      {"ien": 14175, "name": "LA7V 62.47 LOCAL IDENTIFIER"},
+      {"ien": 14180, "name": "LA7V 62.47 CLONE MSG CONFIG"},
+      {"ien": 14183, "name": "LA7V 62.47 ADD DOD"},
+      {"ien": 14184, "name": "LA7V 62.47 MAP SUSCS"},
+      {"ien": 14185, "name": "LA7S MAP NON-VA SNOMED CODES"},
+      {"ien": 14190, "name": "LA7S LOAD MAPPING SCT"},
+      {"ien": 14279, "name": "LRJ MAINT INACTIVE DT FILE 61"},
+      {"ien": 14280, "name": "LRJ MAINT INACTIVE DT FILE 62"}
+    ],
+    "LRMICRO": [
+      {"ien": 1101, "name": "LRMI"}
+    ],
+    "LRPHSUPER": [
+      {"ien": 1208, "name": "LRPHMAN"}
+    ],
+    "LRSUPER": [
+      {"ien": 1097, "name": "LR SUP SUMMARY"},
+      {"ien": 1106, "name": "LROC"},
+      {"ien": 1116, "name": "LRNEWSTART"},
+      {"ien": 1117, "name": "LRQCADDNAME"},
+      {"ien": 1141, "name": "LRMIVER"},
+      {"ien": 1150, "name": "LRTESTDIQ"},
+      {"ien": 1186, "name": "LRDIEATOMIC"},
+      {"ien": 1187, "name": "LRDIECOSMIC"},
+      {"ien": 1199, "name": "LRAC"},
+      {"ien": 1207, "name": "LRLL CONTROLS"},
+      {"ien": 1212, "name": "LRSUPERVISOR"},
+      {"ien": 1215, "name": "LRACS MANUAL"},
+      {"ien": 1267, "name": "LR COUNT ACC TESTS"},
+      {"ien": 1268, "name": "LR INF WARN"},
+      {"ien": 1327, "name": "LRSORA"},
+      {"ien": 1328, "name": "LRSORC"},
+      {"ien": 1425, "name": "LR ACC CONTROLS"},
+      {"ien": 2107, "name": "LRBLDAWARD"},
+      {"ien": 4021, "name": "LRAC PURGE"},
+      {"ien": 4026, "name": "LRAC FORCE"},
+      {"ien": 5355, "name": "LA AUTO ACC"},
+      {"ien": 5356, "name": "LA AUTO LLIST"},
+      {"ien": 8391, "name": "LR WKLD2"},
+      {"ien": 8392, "name": "LR WKLD3"},
+      {"ien": 8443, "name": "LR WKLD LMIP 1"},
+      {"ien": 8444, "name": "LR WKLD LMIP 2"},
+      {"ien": 8445, "name": "LR WKLD LMIP 3"},
+      {"ien": 8446, "name": "LR WKLD LMIP 4"},
+      {"ien": 8447, "name": "LRLISTE"},
+      {"ien": 8451, "name": "LRRP8"},
+      {"ien": 8457, "name": "LRCAPF"},
+      {"ien": 8466, "name": "LR WKLD LMIP 1 REPEAT"},
+      {"ien": 8473, "name": "LRTASK CUM FILEROOM"},
+      {"ien": 8474, "name": "LRAC MANUAL FILEROON CUM"},
+      {"ien": 14457, "name": "LRLISTPS"},
+      {"ien": 14656, "name": "LRMI EDIT INACT DT SINGLE 61.2"},
+      {"ien": 14657, "name": "LRMI EDIT INACT DT MULTI 61.2"}
+    ],
+    "LRVERIFY": [
+      {"ien": 1177, "name": "LRSTUF"},
+      {"ien": 1179, "name": "LRINSTCLR"},
+      {"ien": 1428, "name": "LRGVG"},
+      {"ien": 3956, "name": "LRAPR"},
+      {"ien": 5354, "name": "LA JOB"},
+      {"ien": 5357, "name": "LA LRLL/AC SWITCH"},
+      {"ien": 5359, "name": "LA WATCH"},
+      {"ien": 8356, "name": "LRZENTER"},
+      {"ien": 13661, "name": "LRAP ALERT"}
+    ],
+    "MAG DELETE": [
+      {"ien": 14234, "name": "MAG SYS-DELETE STUDY"}
+    ],
+    "MAG SYSTEM": [
+      {"ien": 11616, "name": "MAG SYS MENU"},
+      {"ien": 13319, "name": "MAG INDEX TERMS UPDATE"},
+      {"ien": 13320, "name": "MAG INDEX TERMS RESTORE"},
+      {"ien": 14235, "name": "MAGV AE SEC MX SETTINGS"},
+      {"ien": 14983, "name": "MAGD MAGDSTT QUEUE DELETE"},
+      {"ien": 14985, "name": "MAGD SET QUERY PARAMETERS"},
+      {"ien": 14989, "name": "MAGD CON STATISTICS DELETE"},
+      {"ien": 14990, "name": "MAGD RAD STATISTICS DELETE"},
+      {"ien": 15007, "name": "MAG MANAGE NEW SOP CLASSES"}
+    ],
+    "MAGD QR AUTO RETRIEVE": [
+      {"ien": 14980, "name": "MAGD RAD AUTO RETRIEVE"},
+      {"ien": 14981, "name": "MAGD CON AUTO RETRIEVE"}
+    ],
+    "MAGD QR MANUAL RETRIEVE": [
+      {"ien": 14975, "name": "MAGD QUERY/RETRIEVE"}
+    ],
+    "MAGD QR REPORT": [
+      {"ien": 14977, "name": "MAGD RAD RANGE CHECK"},
+      {"ien": 14978, "name": "MAGD CON RANGE CHECK"},
+      {"ien": 14979, "name": "MAGD RAD COUNT COMPARE"},
+      {"ien": 14982, "name": "MAGD CON COUNT COMPARE"},
+      {"ien": 14991, "name": "MAGD STOP AUTOMATIC PROCESSES"}
+    ],
+    "MCMANAGER": [
+      {"ien": 8711, "name": "MCARCATHMANAGER"},
+      {"ien": 8713, "name": "MCARECGMANGER"},
+      {"ien": 8715, "name": "MCARECHOMANAGER"},
+      {"ien": 8717, "name": "MCAREPMANAGER"},
+      {"ien": 8719, "name": "MCARHOLTERMANAGER"},
+      {"ien": 8721, "name": "MCARETTMANAGER"},
+      {"ien": 8808, "name": "MCARPULMENDMANG"},
+      {"ien": 8837, "name": "MCPFTMANAGER"},
+      {"ien": 8852, "name": "MCESRELGI"}
+    ],
+    "MD ADMINISTRATOR": [
+      {"ien": 14710, "name": "MD CONCONVERT"},
+      {"ien": 14711, "name": "MD PROCONVERT"}
+    ],
+    "MMRS SETUP": [
+      {"ien": 13925, "name": "MMRS MRSA WARD MAPPING SETUP"},
+      {"ien": 13927, "name": "MMRS ISLT ORD EDIT"},
+      {"ien": 14540, "name": "MMRS MRSA SITE PARAMETER SETUP"},
+      {"ien": 14541, "name": "MMRS MDRO LAB PARAMETER SETUP"},
+      {"ien": 14542, "name": "MMRS MDRO TOOLS SETUP MENU"},
+      {"ien": 14543, "name": "MMRS MDRO HIST DAYS EDIT"}
+    ],
+    "OATEMAINTENANCE": [
+      {"ien": 1551, "name": "OATE MAINTENANCE"}
+    ],
+    "OOPS DOL XMIT DATA": [
+      {"ien": 13218, "name": "OOPS DOL MANUAL XMIT DATA"}
+    ],
+    "OREPCSSITE": [
+      {"ien": 14263, "name": "OR EPCS SITE PARAMETER"}
+    ],
+    "OREPCSUSERS": [
+      {"ien": 14264, "name": "OR EPCS USERS PARAMETER"}
+    ],
+    "ORVCO": [
+      {"ien": 14919, "name": "ORVCO MENU"}
+    ],
+    "PCMM DATA EXTRACTS": [
+      {"ien": 14351, "name": "SCMC PCMM EXTRACT ROUTINES"},
+      {"ien": 14352, "name": "SCMC TEAM HISTORY FILE EXTRACT"},
+      {"ien": 14353, "name": "SCMC TEAM POSITION EXTRACT"},
+      {"ien": 14354, "name": "SCMC PRECEPTOR ASSIGN EXTRACT"},
+      {"ien": 14355, "name": "SCMC POSITION ASSIGN EXTRACT"},
+      {"ien": 14356, "name": "SCMC PAT TEAM ASSIGN EXTRACT"},
+      {"ien": 14357, "name": "SCMC PAT TEAM POS ASGN EXTRACT"},
+      {"ien": 14358, "name": "SCMC TEAM FILE EXTRACT"},
+      {"ien": 14359, "name": "SCMC TEAM POS HISTORY EXTRACT"}
+    ],
+    "PRCA CS STOP SITE": [
+      {"ien": 14822, "name": "PRCA STOP SITE"}
+    ],
+    "PRCA REPAYMENT PLAN": [
+      {"ien": 15038, "name": "PRCAC GRANT FORBEARANCE"}
+    ],
+    "PRCA RPP TECH": [
+      {"ien": 15128, "name": "PRCAC RPP WORKLIST"}
+    ],
+    "PRCA STATEMENT PARAMETER": [
+      {"ien": 7710, "name": "PRCA NOTIFICATION PARAMETERS"},
+      {"ien": 15111, "name": "PRCAE LOCAL STATEMENT PRINT"},
+      {"ien": 15112, "name": "PRCAE CLEAR LOCAL STMNT QUEUE"}
+    ],
+    "PRCA VENDOR": [
+      {"ien": 11176, "name": "PRCA VENDOR LINK"}
+    ],
+    "PRCADJ": [
+      {"ien": 3574, "name": "PRCAC TR ADJUSTMENT"}
+    ],
+    "PRCAF LATE CHARGES": [
+      {"ien": 3571, "name": "PRCAF U ADMIN.RATE"}
+    ],
+    "PRCASVC": [
+      {"ien": 3590, "name": "PRCA BIL APPROVE"},
+      {"ien": 3651, "name": "PRCA BIL AGENCY"},
+      {"ien": 10754, "name": "PRCA FMS RSC ENTER/EDIT"}
+    ],
+    "PRCFA SUPERVISOR": [
+      {"ien": 4413, "name": "PRCFA CLEAR LOCK"},
+      {"ien": 4415, "name": "PRCFA REBUILD CODE SHEET MAP"},
+      {"ien": 5627, "name": "PRCF AUDIT REPORTS"},
+      {"ien": 7574, "name": "PRCFA STACK DOCUMENTS"},
+      {"ien": 9513, "name": "PRC GECS PURGE"},
+      {"ien": 9516, "name": "PRC GECS STACK RETRANSMIT"},
+      {"ien": 10536, "name": "PRC SO TO AR"},
+      {"ien": 14449, "name": "RCDPE NR DISABLE/ENABLE"},
+      {"ien": 14451, "name": "RCDPE NR MANUAL START"},
+      {"ien": 14452, "name": "RCDPE NR MANUAL TRANSMIT"}
+    ],
+    "PRCFA TRANSMIT": [
+      {"ien": 1922, "name": "PRCFA TRANSMIT CODE SHEETS"},
+      {"ien": 1923, "name": "PRCFA RETRANSMIT BATCH"},
+      {"ien": 4416, "name": "PRCFA RR TRANSMIT"}
+    ],
+    "PRCFA VENDOR EDIT": [
+      {"ien": 9689, "name": "PRCO VRQ REVIEW"},
+      {"ien": 11174, "name": "PRCO AR VENDOR EDIT"}
+    ],
+    "PRCH AR": [
+      {"ien": 10271, "name": "PRCH APPROVE"},
+      {"ien": 13594, "name": "PRCH AO CANCEL INCOM PC ORDER"}
+    ],
+    "PRCH TRANSACTION COMPLETE": [
+      {"ien": 9568, "name": "PRCH ALL STATUS AMEND TO PO"},
+      {"ien": 9569, "name": "PRCH ALL STATUS AMEND TO REQ"}
+    ],
+    "PRCHADVOUCHER": [
+      {"ien": 1928, "name": "PRCH ADJUSTMENT VOUCHER"},
+      {"ien": 4316, "name": "PRCHPM REQN ADJ VOUCHER"}
+    ],
+    "PRCHASSIGN": [
+      {"ien": 1855, "name": "PRCHPC ASSIGN REQUEST"}
+    ],
+    "PRCHIMP": [
+      {"ien": 4309, "name": "PRCHPC IMPREST FUND MENU"}
+    ],
+    "PRCHITEM SUPER": [
+      {"ien": 14826, "name": "PRCHITEM_BULK_LOAD_VIA_HFS"},
+      {"ien": 14827, "name": "PRCHITEM MANUFACTURER E/E"},
+      {"ien": 14829, "name": "PRCHITEM MANUFACTURER LOAD"}
+    ],
+    "PRCHJFIS": [
+      {"ien": 14440, "name": "PRCHJ TRANS REPORT3"}
+    ],
+    "PRCHPM CS PURGE CODE SHEETS": [
+      {"ien": 4326, "name": "PRCHPM CS PURGE"},
+      {"ien": 13589, "name": "PRCHPM CS PURGE ALL"}
+    ],
+    "PRCHPM CS TRANSMIT": [
+      {"ien": 4298, "name": "PRCHPM CS TRANSMIT"},
+      {"ien": 4327, "name": "PRCHPM CS ADD TO BATCH"},
+      {"ien": 4328, "name": "PRCHPM CS DELETE FROM BATCH"},
+      {"ien": 9484, "name": "PRCHPM CS RE-TRANSMIT BATCH"}
+    ],
+    "PRCHRECDEL": [
+      {"ien": 1814, "name": "PRCHPM PO DEL REC"}
+    ],
+    "PRCHRPT": [
+      {"ien": 1941, "name": "PRCHOUT REPRINT"}
+    ],
+    "PRCMASTER": [
+      {"ien": 1953, "name": "PRCMASTER"}
+    ],
+    "PRCMID": [
+      {"ien": 3097, "name": "PRCMUSER"}
+    ],
+    "PRCNCMR": [
+      {"ien": 9946, "name": "PRCN NX CMR APP"},
+      {"ien": 9950, "name": "PRCN TURN CMR APP"},
+      {"ien": 9955, "name": "PRCN NX CMR MENU"},
+      {"ien": 9956, "name": "PRCN NX CMR STATUS"},
+      {"ien": 9977, "name": "PRCN NX CMR DISPLAY"},
+      {"ien": 9983, "name": "PRCN NX CMR RESUBMIT"}
+    ],
+    "PRCNEN": [
+      {"ien": 9964, "name": "PRCN NX ENG"},
+      {"ien": 9986, "name": "PRCN NX ENG MENU"}
+    ],
+    "PRCNEQP": [
+      {"ien": 9967, "name": "PRCN NX EQ COMM MENU"},
+      {"ien": 9968, "name": "PRCN NX EQ COMM COST"},
+      {"ien": 9969, "name": "PRCN NX EQ COMM APPROVE"}
+    ],
+    "PRCNPPM": [
+      {"ien": 9948, "name": "PRCN NX PPM"},
+      {"ien": 9951, "name": "PRCN TURN DISP"},
+      {"ien": 9952, "name": "PRCN NX PPM 2237"},
+      {"ien": 9953, "name": "PRCN NX PPM MENU"},
+      {"ien": 9958, "name": "PRCN NX SERVICE REPORT"},
+      {"ien": 9965, "name": "PRCN TURN PPM"},
+      {"ien": 9976, "name": "PRCN NX PPM STATUS"},
+      {"ien": 9978, "name": "PRCN NX PPM DISPLAY"},
+      {"ien": 9979, "name": "PRCN NX PPM CANCEL"},
+      {"ien": 9981, "name": "PRCN TURN PPM EDIT"},
+      {"ien": 9982, "name": "PRCN NX PPM EDIT"}
+    ],
+    "PRCNRNK": [
+      {"ien": 9971, "name": "PRCN NX EQ RANK"}
+    ],
+    "PRCNWHSE": [
+      {"ien": 9966, "name": "PRCN TURN WHSE"},
+      {"ien": 9984, "name": "PRCN TURN WHSE MENU"}
+    ],
+    "PRCP MGRKEY": [
+      {"ien": 9392, "name": "PRCP MANAGER MENU"},
+      {"ien": 11776, "name": "PRCP CONVERT SECONDARY"},
+      {"ien": 11777, "name": "PRCP UNDO CONVERSION"}
+    ],
+    "PRCP2 MGRKEY": [
+      {"ien": 9401, "name": "PRCP2 MANAGER MENU"}
+    ],
+    "PRCPAQOH": [
+      {"ien": 11964, "name": "PRCP LET STAFF REPLACE QOH"}
+    ],
+    "PRCPODI": [
+      {"ien": 13428, "name": "PRCP ON-DEMAND USERS"}
+    ],
+    "PRCPSSQOH": [
+      {"ien": 11965, "name": "PRCP REPLACE ON-HAND INVENTORY"}
+    ],
+    "PRCPW ADJAPPR": [
+      {"ien": 9432, "name": "PRCPW ADJUST APPROVAL"}
+    ],
+    "PRCPW MGRKEY": [
+      {"ien": 9412, "name": "PRCPW MANAGER MENU"}
+    ],
+    "PRCSCPO": [
+      {"ien": 1782, "name": "PRCSENA"},
+      {"ien": 1793, "name": "PRCSAPP"},
+      {"ien": 1936, "name": "PRCSRBCP"}
+    ],
+    "PRCT MGR": [
+      {"ien": 5610, "name": "PRCT PROGRAMMER (BARCODE)"}
+    ],
+    "PRMR ADVERSE FINDINGS NAME": [
+      {"ien": 2963, "name": "PRMR OSM PRINT SCREEN 3"},
+      {"ien": 2984, "name": "PRMR MON PR ADVERSE NAME"}
+    ],
+    "PRPF SUPERVISOR": [
+      {"ien": 3136, "name": "PRPF SUPERVISOR"},
+      {"ien": 10219, "name": "PRPF ARCHIVE"},
+      {"ien": 10222, "name": "PRPF PURGE"},
+      {"ien": 13269, "name": "PRPF DATA DIAGNOSTIC REPORT"}
+    ],
+    "PRSAWS9": [
+      {"ien": 13557, "name": "PRSA RECESS VIEWER-NURSE"}
+    ],
+    "PRSD PAID CODES": [
+      {"ien": 5914, "name": "PRSD UPDATE PAID CODES"},
+      {"ien": 7955, "name": "PRSD 05 CCORG EDIT"},
+      {"ien": 7961, "name": "PRSD COMPILE STRENGTH REPORT"},
+      {"ien": 7962, "name": "PRSD PRINT STRENGTH REPORT"}
+    ],
+    "PRSN DEP": [
+      {"ien": 14104, "name": "PRSN TOGGLE TK POC POST"}
+    ],
+    "PRSP EMP": [
+      {"ien": 13406, "name": "PRSP PTP MENU"}
+    ],
+    "PSA ORDERS": [
+      {"ien": 10583, "name": "PSA ORDERS MENU"},
+      {"ien": 10584, "name": "PSA UPLOAD PRIME VENDOR DATA"},
+      {"ien": 10585, "name": "PSA PROCESS PRIME VENDOR DATA"},
+      {"ien": 10586, "name": "PSA VERIFY INVOICES"},
+      {"ien": 10587, "name": "PSA PRINT ORDERS"},
+      {"ien": 12916, "name": "PSA GUI UPLOAD"}
+    ],
+    "PSAMGR": [
+      {"ien": 7971, "name": "PSA BALANCE ADJUSTMENTS"},
+      {"ien": 10588, "name": "PSA CREDIT RESOLUTION"},
+      {"ien": 10603, "name": "PSA TRANSFER DRUGS"},
+      {"ien": 12097, "name": "PSA DELETE INVOICES"},
+      {"ien": 12098, "name": "PSA MSG RECIPIENTS"},
+      {"ien": 13266, "name": "PSA OUTDATED MEDICATIONS"}
+    ],
+    "PSB BUMGR": [
+      {"ien": 12466, "name": "PSB BCBU MANAGEMENT MENU"},
+      {"ien": 12471, "name": "PSB BCBU VISTA MAIN"}
+    ],
+    "PSB MANAGER": [
+      {"ien": 11477, "name": "PSBO MV"},
+      {"ien": 11478, "name": "PSB MGR"},
+      {"ien": 13287, "name": "PSBO XA"}
+    ],
+    "PSD ERROR": [
+      {"ien": 8541, "name": "PSD ERR/ADJ PENDING REPORT"},
+      {"ien": 8542, "name": "PSD ERR/ADJ RESOLVED REPORT"},
+      {"ien": 8549, "name": "PSD ERR/ADJ EDIT"}
+    ],
+    "PSD PARAM": [
+      {"ien": 6690, "name": "PSD NAOU EDIT"},
+      {"ien": 6694, "name": "PSD SITE"}
+    ],
+    "PSD TECH": [
+      {"ien": 10154, "name": "PSD ON-HAND TECH"},
+      {"ien": 10155, "name": "PSD DAILY LOG TECH"},
+      {"ien": 10156, "name": "PSD PRINT VAULT TRANSFERS TECH"}
+    ],
+    "PSD TRAN": [
+      {"ien": 6713, "name": "PSD TRANSFER MENU"}
+    ],
+    "PSDMGR": [
+      {"ien": 6687, "name": "PSD MGR"},
+      {"ien": 6752, "name": "PSD DESTROY DRUGS"},
+      {"ien": 6761, "name": "PSD BALANCE ADJUSTMENTS"},
+      {"ien": 8534, "name": "PSD LABEL PHARM"},
+      {"ien": 15095, "name": "PSO EPCS DEA MANUAL ENTRY"}
+    ],
+    "PSGRPH": [
+      {"ien": 698, "name": "PSJU AOE"}
+    ],
+    "PSGW PARAM": [
+      {"ien": 751, "name": "PSGW SITE"}
+    ],
+    "PSGW PURGE": [
+      {"ien": 2314, "name": "PSGW PURGE"}
+    ],
+    "PSGW TRAN": [
+      {"ien": 2327, "name": "PSGW TRANSFER ENTRIES"}
+    ],
+    "PSGWMGR": [
+      {"ien": 719, "name": "PSGW WARD STOCK MAINT"},
+      {"ien": 14660, "name": "PSGW PACKAGE PARAMETERS"}
+    ],
+    "PSJ PADE ADV": [
+      {"ien": 14498, "name": "PSJ PADE DIVISION SETUP"}
+    ],
+    "PSJ PADE MGR": [
+      {"ien": 14488, "name": "PSJ PADE SETUP"},
+      {"ien": 14489, "name": "PSJ PADE INVENTORY SYSTEM"},
+      {"ien": 14490, "name": "PSJ PADE SEND AREA SETUP"},
+      {"ien": 14494, "name": "PSJ PADE INVENTORY MENU"},
+      {"ien": 14495, "name": "PSJ PADE DEVICE SETUP"}
+    ],
+    "PSJ RNURSE": [
+      {"ien": 10157, "name": "PSD NOT DELIVERED NURSE"}
+    ],
+    "PSJI MGR": [
+      {"ien": 590, "name": "PSJI SUPERVISOR"}
+    ],
+    "PSJI PURGE": [
+      {"ien": 594, "name": "PSJI PURGE"}
+    ],
+    "PSJU MGR": [
+      {"ien": 704, "name": "PSJU FILE"}
+    ],
+    "PSJU PL": [
+      {"ien": 695, "name": "PSJU RET"},
+      {"ien": 696, "name": "PSJU PL"},
+      {"ien": 697, "name": "PSJU PLMGR"},
+      {"ien": 701, "name": "PSJU PLDP"},
+      {"ien": 703, "name": "PSJU PLUP"},
+      {"ien": 713, "name": "PSJU PLRP"},
+      {"ien": 716, "name": "PSJU EUD"},
+      {"ien": 2350, "name": "PSJU CPDD"},
+      {"ien": 2351, "name": "PSJU PLATCS"}
+    ],
+    "PSJU RPH": [
+      {"ien": 2348, "name": "PSJU HOLD ALL"}
+    ],
+    "PSJU SITE MANAGER": [
+      {"ien": 11102, "name": "PSJU SYSTEM"}
+    ],
+    "PSN PPS ADMIN": [
+      {"ien": 14628, "name": "PSN PPS MANUAL DOWNLOAD"},
+      {"ien": 14630, "name": "PSN PPS REJECT FILE"},
+      {"ien": 14631, "name": "PSN PPS MANUAL INSTALL"},
+      {"ien": 14632, "name": "PSN PPS SCHEDULE INSTALL"},
+      {"ien": 14633, "name": "PSN PPS SCHEDULE DOWNLOAD"},
+      {"ien": 14635, "name": "PSN PPS PARAM"},
+      {"ien": 14636, "name": "PSN PPS MENU"}
+    ],
+    "PSN PPS COORD": [
+      {"ien": 14634, "name": "PSN PPS SSH KEY MANAGEMENT"}
+    ],
+    "PSNMGR": [
+      {"ien": 2245, "name": "PSNSTCL"},
+      {"ien": 5929, "name": "PSNFRMLY"},
+      {"ien": 11995, "name": "PSXX LOOP MARK"}
+    ],
+    "PSO EPHARMACY SITE MANAGER": [
+      {"ien": 13760, "name": "PSO ePHARM SITE PARAMETERS"},
+      {"ien": 14679, "name": "PSO EPHARMACY PATIENT COMMENTS"}
+    ],
+    "PSO SPMP ADMIN": [
+      {"ien": 14934, "name": "PSO SPMP VOID RX VIEW/EXPORT"}
+    ],
+    "PSO TRICARE/CHAMPVA MGR": [
+      {"ien": 13976, "name": "PSO TRI CVA OVERRIDE REPORT"}
+    ],
+    "PSOA PURGE": [
+      {"ien": 7088, "name": "PSO ARCHIVE"}
+    ],
+    "PSOINTERFACE": [
+      {"ien": 11094, "name": "PSO INTERFACE VIEW"},
+      {"ien": 11095, "name": "PSO INTERFACE REPRINT"},
+      {"ien": 11096, "name": "PSO INTERFACE PURGE"},
+      {"ien": 11097, "name": "PSO EXTERNAL INTERFACE"}
+    ],
+    "PSOLOCKCLOZ": [
+      {"ien": 5678, "name": "PSOL REGISTER PATIENT"},
+      {"ien": 5682, "name": "PSOL MANAGER"},
+      {"ien": 14759, "name": "PSJL MANAGER"}
+    ],
+    "PSORPH": [
+      {"ien": 2492, "name": "PSO VR"},
+      {"ien": 7113, "name": "PSO INTERVENTION DELETE"},
+      {"ien": 7114, "name": "PSO INTERVENTION VIEW"},
+      {"ien": 7115, "name": "PSO INTERVENTION NEW ENTRY"},
+      {"ien": 7116, "name": "PSO INTERVENTION MENU"},
+      {"ien": 7117, "name": "PSO INTERVENTION EDIT"},
+      {"ien": 7118, "name": "PSO INTERVENTION PRINTOUT"},
+      {"ien": 13300, "name": "PSO REJECTS WORKLIST"},
+      {"ien": 13302, "name": "PSO REJECTS VIEW/PROCESS"},
+      {"ien": 13548, "name": "PSO PMP SITE PREFERENCES"}
+    ],
+    "PSS ORDER CHECKS": [
+      {"ien": 14307, "name": "PSS DOSING ORDER CHECKS"}
+    ],
+    "PSX XMIT": [
+      {"ien": 12049, "name": "PSXR TRANSMIT MENU"}
+    ],
+    "PSXAUTOX": [
+      {"ien": 12048, "name": "PSXR AUTO TRANSMIT"},
+      {"ien": 12086, "name": "PSXR AUTO TRANSMIT CS"}
+    ],
+    "PSXCMOPMGR": [
+      {"ien": 10562, "name": "PSSXX MARK"},
+      {"ien": 11993, "name": "PSXX CMOP SERVER"},
+      {"ien": 11998, "name": "PSXX DRUG/ITEM MGMT"},
+      {"ien": 12044, "name": "PSXR CMOP MANAGER"},
+      {"ien": 12051, "name": "PSXR ACTIVATE"}
+    ],
+    "PSXRESUB": [
+      {"ien": 12057, "name": "PSXR RESUBMIT"}
+    ],
+    "PSXRTRAN": [
+      {"ien": 12046, "name": "PSXR RETRANSMIT"}
+    ],
+    "PX EOC EDIT": [
+      {"ien": 15160, "name": "PX COMPACT ACT EOC EDIT"},
+      {"ien": 15161, "name": "PX COMPACT EOC IP RETRACTION"},
+      {"ien": 17042, "name": "PX COMPACT ACT EOC DISPLAY"}
+    ],
+    "PXV IMM INVENTORY MGR": [
+      {"ien": 14417, "name": "PXTT EDIT IMMUNIZATION LOT"}
+    ],
+    "QAP MANAGER": [
+      {"ien": 8915, "name": "QAP POPULATE DEMOGRAPHIC FILE"},
+      {"ien": 8921, "name": "QAP FIX RESPONSE"}
+    ],
+    "RA DELETEXAM": [
+      {"ien": 1616, "name": "RA DELETEXAM"}
+    ],
+    "RA MGR": [
+      {"ien": 1697, "name": "RA OVERRIDE"},
+      {"ien": 9223, "name": "RA BTCHDEL DATE"},
+      {"ien": 9226, "name": "RA VALID STOP CODES"},
+      {"ien": 11882, "name": "RA XREF CLEANUP"},
+      {"ien": 12172, "name": "RA HL7 MESSAGE RESEND"},
+      {"ien": 13516, "name": "RA HL7 RESEND BY DATE RANGE"},
+      {"ien": 14645, "name": "RA ADT"},
+      {"ien": 14886, "name": "RA OVERRIDE REPORT"},
+      {"ien": 15047, "name": "RA EXAM ORDER SYNCH"}
+    ],
+    "RA RPTMGR": [
+      {"ien": 1620, "name": "RA DELETERPT"},
+      {"ien": 1694, "name": "RA UNVERIFY"},
+      {"ien": 13655, "name": "RA RESTORE REPORT"}
+    ],
+    "RA VERIFY": [
+      {"ien": 1664, "name": "RA RPTVERIFY"},
+      {"ien": 1686, "name": "RA BTCHVERIFY"},
+      {"ien": 3315, "name": "RA RPTONLINEVERIFY"}
+    ],
+    "RCCPC TRANSMIT": [
+      {"ien": 10088, "name": "RCCPC TRANSMIT"},
+      {"ien": 10089, "name": "RCCPC BUILD"}
+    ],
+    "RCDP TCSP FLAG": [
+      {"ien": 14606, "name": "RCDP TCSP FLAG CONTROL"}
+    ],
+    "RCDPE AUTO DEC": [
+      {"ien": 12528, "name": "RCDPE EDI LOCKBOX PARAMETERS"},
+      {"ien": 17041, "name": "RCDPE UNBAL DEPSOSIT FLAG"}
+    ],
+    "RJPTFARN": [
+      {"ien": 2030, "name": "RJPTFARN"}
+    ],
+    "RMPR LAB MENU": [
+      {"ien": 9205, "name": "RMPR LAB MENU"}
+    ],
+    "RMPR LAB SUPERVISOR": [
+      {"ien": 9203, "name": "RMPR 2529-3 ASSIGN"},
+      {"ien": 9206, "name": "RMPR COMPLETE 2529-3"},
+      {"ien": 9215, "name": "RMPR 10-2937a"}
+    ],
+    "RMPRMANAGER": [
+      {"ien": 6080, "name": "RMPR SITE PARA"},
+      {"ien": 6099, "name": "RMPR PURGE MENU"},
+      {"ien": 7668, "name": "RMPR SITE MENU"},
+      {"ien": 7674, "name": "RMPR CORR EDIT"},
+      {"ien": 11263, "name": "RMPR INV RECONCILE"},
+      {"ien": 11738, "name": "RMPR SET RENTAL FLAG"},
+      {"ien": 13251, "name": "RMPR INV PRINT ALL BARCODE"},
+      {"ien": 13253, "name": "RMPR INV REMOVE HCPCS/ITEM"},
+      {"ien": 14331, "name": "RMPR PURGE AGED"}
+    ],
+    "RMPRSUPERVISOR": [
+      {"ien": 6052, "name": "RMPR ADD ITEM MASTER"},
+      {"ien": 6070, "name": "RMPR CLOSE-OUT"},
+      {"ien": 6078, "name": "RMPR PRINT ALL ITEMS"},
+      {"ien": 6093, "name": "RMPR VEN/ITEM"},
+      {"ien": 10680, "name": "RMPR ADD/EDIT HCPCS SYNONYM"},
+      {"ien": 11264, "name": "RMPR INV PRINT LAB ITEM"},
+      {"ien": 11367, "name": "RMPO INACT/ACT"},
+      {"ien": 11825, "name": "RMPO HO PAT TEMPLATE UPDATE"},
+      {"ien": 13890, "name": "RMPR EDIT 2319 VENDOR/QTY/COST"}
+    ],
+    "ROR VA IRM": [
+      {"ien": 14191, "name": "ROR INITIALIZE"}
+    ],
+    "SC AD HOC TEMPLATE": [
+      {"ien": 11212, "name": "SCRPW AD HOC TEMPLATE DELETE"}
+    ],
+    "SC CONSULT": [
+      {"ien": 9838, "name": "SC MAKE CONSULT APPOINTMENT"}
+    ],
+    "SC PCMM ROLL": [
+      {"ien": 11229, "name": "SCMC PATIENT ASSIGN/UNASSIGN"}
+    ],
+    "SC PCMM SETUP": [
+      {"ien": 11415, "name": "SCMC PRECEPTOR CONVERSION"},
+      {"ien": 11655, "name": "SCMC PCMM EDIT PRACTIT #404.52"},
+      {"ien": 11658, "name": "SCMC PCMM ERR CODE REPORT"},
+      {"ien": 13216, "name": "SCMC PCMM NIGHTLY TASK"},
+      {"ien": 13219, "name": "SCMC INCONSISTENT POSITION"},
+      {"ien": 13220, "name": "SCMC RETRANSMIT"},
+      {"ien": 13225, "name": "SCMC INACTIVATED 30"},
+      {"ien": 13342, "name": "SCMC HL7 MENU"},
+      {"ien": 13343, "name": "SCMC EXTEND A PATIENT"},
+      {"ien": 13504, "name": "SCMC CLEAN GHOST ENTRIES"},
+      {"ien": 13505, "name": "SCMC CLEAN INSTITUTION"}
+    ],
+    "SCENI ENCOUNTER EDIT": [
+      {"ien": 10635, "name": "SCENI OP ENCOUNTER EDIT"},
+      {"ien": 14882, "name": "SCENI IEMM VISIT CORRECTION"}
+    ],
+    "SCMC PCMM RETRANSMIT": [
+      {"ien": 11657, "name": "SCMC PCMM TRANS ERROR PROC"},
+      {"ien": 11659, "name": "SCMC PCMM TRANS ERROR REPORT"}
+    ],
+    "SD SUPERVISOR": [
+      {"ien": 9919, "name": "SCDX AMBCAR RETRANS BY DATE"},
+      {"ien": 9987, "name": "SCDX AMBCAR RETRANS SEL REJ"},
+      {"ien": 10109, "name": "SCDX AMBCAR SUPERVISOR"},
+      {"ien": 10670, "name": "SCRPW CLINIC GROUP MAINT"},
+      {"ien": 11654, "name": "SCDX AMBCAR RETRANS ERROR"}
+    ],
+    "SDBUILD": [
+      {"ien": 624, "name": "SDBUILD"}
+    ],
+    "SDEC HELP": [
+      {"ien": 14880, "name": "SDEC HELP PANE EDIT (LOCAL)"}
+    ],
+    "SDECZMGR": [
+      {"ien": 14847, "name": "SDEC COMPILE AUDIT REPORT"}
+    ],
+    "SDRR MANAGER": [
+      {"ien": 13799, "name": "SDRR CONVERT ENTRIES"},
+      {"ien": 13805, "name": "SDRR PRINT MENU"},
+      {"ien": 13807, "name": "SDRR MANAGER MENU"}
+    ],
+    "SDSC SUPER": [
+      {"ien": 13525, "name": "SDSC SITE PARAMETER"},
+      {"ien": 13541, "name": "SDSC MANAGER SUMMARY REPORT"},
+      {"ien": 13545, "name": "SDSC PURGE NSC ENC"}
+    ],
+    "SDTOOL": [
+      {"ien": 14954, "name": "SD TELE STOP CODE"},
+      {"ien": 14955, "name": "SD TELE CLN UPDATE"},
+      {"ien": 14993, "name": "SD PROVIDER ADD/EDIT"},
+      {"ien": 15050, "name": "SD DEFAULT PROVIDER UPDATE"}
+    ],
+    "SDWL MENU": [
+      {"ien": 12319, "name": "SD WAIT LIST MENU"},
+      {"ien": 13154, "name": "SD WAIT LIST UTILITIES"},
+      {"ien": 13521, "name": "SDWL BATCH CLINIC CHANGE"}
+    ],
+    "SDWL PARAMETER": [
+      {"ien": 12326, "name": "SD WAIT LIST PAR ENTER/EDIT"},
+      {"ien": 13512, "name": "SD WAIT CLEAN-UP ENROLLEE MENU"}
+    ],
+    "SR CODER": [
+      {"ien": 11283, "name": "SRCODING UPDATE/VERIFY MENU"},
+      {"ien": 11287, "name": "SRCODING MENU"}
+    ],
+    "SR RISK ASSESSMENT": [
+      {"ien": 7296, "name": "SROA RISK ASSESSMENT"}
+    ],
+    "SR TRANSPLANT": [
+      {"ien": 13670, "name": "SR TRANSPLANT ASSESSMENT"}
+    ],
+    "SRCOORD": [
+      {"ien": 7281, "name": "SR OR UTIL"},
+      {"ien": 7314, "name": "SRO PACKAGE MANAGEMENT"},
+      {"ien": 7332, "name": "SROERR BACKFILL"}
+    ],
+    "SROAAMIS": [
+      {"ien": 3769, "name": "SROAMIS"}
+    ],
+    "SROANES": [
+      {"ien": 3757, "name": "SROMEN-ANES"},
+      {"ien": 3762, "name": "SROARPT"},
+      {"ien": 3777, "name": "SROADOC"},
+      {"ien": 3779, "name": "SROMEN-ANES TECH"},
+      {"ien": 3780, "name": "SROANES"},
+      {"ien": 3796, "name": "SROANES1"},
+      {"ien": 3817, "name": "SROANES-D"}
+    ],
+    "SROCHIEF": [
+      {"ien": 3764, "name": "SROCHIEF"},
+      {"ien": 7328, "name": "SRO UPDATE CANCELLED CASE"},
+      {"ien": 10103, "name": "SROQ MENU"}
+    ],
+    "SROCOMP": [
+      {"ien": 7323, "name": "SRO COMPLICATIONS MENU"}
+    ],
+    "SROEDIT": [
+      {"ien": 3802, "name": "SROMEN-REFER"},
+      {"ien": 3820, "name": "SROVER"},
+      {"ien": 3830, "name": "SROMEN-REST"}
+    ],
+    "SROPER": [
+      {"ien": 3755, "name": "SROPER"},
+      {"ien": 3760, "name": "SROMEN-COM"},
+      {"ien": 7272, "name": "SRONOP"},
+      {"ien": 7273, "name": "SRONOP-ENTER"}
+    ],
+    "SROREP": [
+      {"ien": 3768, "name": "SRORPTS"},
+      {"ien": 7274, "name": "SRONOP-ANNUAL"},
+      {"ien": 7275, "name": "SRONOR"}
+    ],
+    "SROREQ": [
+      {"ien": 3774, "name": "SROOPREQ"},
+      {"ien": 3775, "name": "SROP REQ"},
+      {"ien": 3797, "name": "SRSUPRQ"},
+      {"ien": 3810, "name": "SRSWREQ"},
+      {"ien": 3811, "name": "SRSREQCC"},
+      {"ien": 7331, "name": "SR SURGERY REQUEST"}
+    ],
+    "SROSCH": [
+      {"ien": 3773, "name": "SROSRES"},
+      {"ien": 3784, "name": "SRSCHD1"},
+      {"ien": 3798, "name": "SRSBOUT"},
+      {"ien": 3799, "name": "SRSBDEL"},
+      {"ien": 3800, "name": "SRSCHUP"},
+      {"ien": 3801, "name": "SRSCAN"},
+      {"ien": 3837, "name": "SRSUPC"},
+      {"ien": 7289, "name": "SRSCHDC"}
+    ],
+    "SROSURG": [
+      {"ien": 3832, "name": "SROCOMP"}
+    ],
+    "SROWAIT": [
+      {"ien": 3836, "name": "SROWAIT"}
+    ],
+    "SWFGSUPER": [
+      {"ien": 5248, "name": "SWFGCNHCFY"}
+    ],
+    "TIU MED MGT": [
+      {"ien": 13945, "name": "TIU MED MANAGEMENT"}
+    ],
+    "TIU MISSING TEXT CLEAN": [
+      {"ien": 12902, "name": "TIU MISSING TEXT CLEAN"}
+    ],
+    "VAQ EDIT FILE": [
+      {"ien": 7656, "name": "VAQ (EDIT) ENCRY FIELDS"},
+      {"ien": 7657, "name": "VAQ (EDIT) PARAMETER"},
+      {"ien": 7658, "name": "VAQ (EDIT) RELEASE GROUP"},
+      {"ien": 7660, "name": "VAQ (EDIT) SEGMENT GRP - ALL"},
+      {"ien": 7663, "name": "VAQ (EDIT) SEGMENT GRP - PUBL"},
+      {"ien": 7667, "name": "VAQ (EDIT) MAX LIMITS"}
+    ],
+    "VAQ LOAD": [
+      {"ien": 7652, "name": "VAQ PDX LOAD/EDIT"}
+    ],
+    "VAQ PURGE": [
+      {"ien": 7666, "name": "VAQ (MENU) PURGING"}
+    ],
+    "VAQ RPT": [
+      {"ien": 7639, "name": "VAQ (MENU) SYSTEM REPORTS"}
+    ],
+    "VAQ RPT USER": [
+      {"ien": 7633, "name": "VAQ WORKLOAD USER DEFINED"},
+      {"ien": 7650, "name": "VAQ TRANSACTIONS USER DEFINED"}
+    ],
+    "VPR HS ENABLE": [
+      {"ien": 14728, "name": "VPR HS ENABLE"}
+    ],
+    "XDR": [
+      {"ien": 7876, "name": "XDR MAIN MENU"},
+      {"ien": 7877, "name": "XDR DISPLAY SEARCH STATUS"}
+    ],
+    "XDRMGR": [
+      {"ien": 7875, "name": "XDR MANAGER UTILITIES"}
+    ],
+    "XM SUPER SEARCH": [
+      {"ien": 11653, "name": "XM SUPER SEARCH"}
+    ],
+    "XMBLOB": [
+      {"ien": 8085, "name": "XMBLOBSEND"}
+    ],
+    "XMMGR": [
+      {"ien": 5168, "name": "XMPURGE-BY-DATE"},
+      {"ien": 7997, "name": "XMYB-BROADCAST-VA-WIDE"},
+      {"ien": 8240, "name": "XMMGR-DIRECTORY-MAIN"}
+    ],
+    "XMNET": [
+      {"ien": 6368, "name": "XMEDITFWD"},
+      {"ien": 8247, "name": "XMOTHER-COMMUNICATIONS"}
+    ],
+    "XMTALK": [
+      {"ien": 3362, "name": "XMTALK"}
+    ],
+    "XQAL-DELETE": [
+      {"ien": 8979, "name": "XQALERT BY USER DELETE"}
+    ],
+    "XQSMDFM": [
+      {"ien": 6339, "name": "XQSMD LIMITED FM OPTIONS"}
+    ],
+    "XTLKZMGR": [
+      {"ien": 7852, "name": "XTLKMODPARK"},
+      {"ien": 7853, "name": "XTLKMODPARS"},
+      {"ien": 7858, "name": "XTLKUTILITIES"}
+    ],
+    "XTPM PATCH MONITOR MGR": [
+      {"ien": 13133, "name": "XTPM RERUN NIGHTLY"}
+    ],
+    "XTVS EDITOR": [
+      {"ien": 14936, "name": "XTVS PKG MGR EXT PACKAGE MSG"}
+    ],
+    "XUAUDITING": [
+      {"ien": 5143, "name": "DIAUDIT"}
+    ],
+    "XUEPCSEDIT": [
+      {"ien": 14248, "name": "XU EPCS EDIT DATA"},
+      {"ien": 15086, "name": "PSO DEA EDIT DATA"}
+    ],
+    "XUEXKEY": [
+      {"ien": 12158, "name": "XUEXKEY"}
+    ],
+    "XUFILEGRAM": [
+      {"ien": 5153, "name": "DIFG CREATE"},
+      {"ien": 5154, "name": "DIFG DISPLAY"},
+      {"ien": 5155, "name": "DIFG GENERATE"},
+      {"ien": 5157, "name": "DIFG SPECIFIERS"},
+      {"ien": 5158, "name": "DIFG INSTALL"},
+      {"ien": 5159, "name": "DIFG"}
+    ],
+    "XULM LOCKS": [
+      {"ien": 14768, "name": "XULM LOCK MANAGER MENU"}
+    ],
+    "XUMF INSTITUTION": [
+      {"ien": 11900, "name": "XUMF INSTITUTION"},
+      {"ien": 12160, "name": "XUMF IMF ADD EDIT"},
+      {"ien": 12161, "name": "XUMF DMIS ID LOAD"},
+      {"ien": 12668, "name": "XUMF LOAD INSTITUTION"},
+      {"ien": 12669, "name": "XUMF335 clean 4.1 and 4"}
+    ],
+    "XUMGR": [
+      {"ien": 61, "name": "XURESJOBDSM"},
+      {"ien": 99, "name": "XURESJOBISM"},
+      {"ien": 3415, "name": "XUFILEGRANT"},
+      {"ien": 3473, "name": "XUFILESINGLEADD"},
+      {"ien": 3483, "name": "XT-OPTION TEST"},
+      {"ien": 3488, "name": "XUFILERANGEASSIGN"},
+      {"ien": 3490, "name": "DI MGMT MENU"},
+      {"ien": 3527, "name": "XURESJOBVXD"},
+      {"ien": 5149, "name": "XUSESIG CLEAR"},
+      {"ien": 6213, "name": "IB PURGE/BASC TRANSFER CLEANUP"},
+      {"ien": 6238, "name": "IB PURGE MENU"},
+      {"ien": 6240, "name": "IB PURGE/FIND BILLING DATA"},
+      {"ien": 6241, "name": "IB PURGE/ARCHIVE BILLING DATA"},
+      {"ien": 6242, "name": "IB PURGE BILLING DATA"},
+      {"ien": 6247, "name": "IB PURGE LIST LOG ENTRIES"},
+      {"ien": 6248, "name": "IB PURGE LOG INQUIRY"},
+      {"ien": 6352, "name": "XUSERBLK"},
+      {"ien": 6354, "name": "XTLATSET"},
+      {"ien": 6364, "name": "XURESJOB"},
+      {"ien": 12315, "name": "XU-INSTITUTION-DEA"},
+      {"ien": 12642, "name": "IBCNE PURGE IIV DATA"},
+      {"ien": 12901, "name": "XU SID ASK"},
+      {"ien": 15012, "name": "XUEHRM ADD KEY USERS"},
+      {"ien": 15013, "name": "XUEHRM REM KEY USERS"},
+      {"ien": 17035, "name": "XUSERBLK TEMPLATE"}
+    ],
+    "XUPROG": [
+      {"ien": 29, "name": "XUPROG"},
+      {"ien": 79, "name": "XUSITEPARM"},
+      {"ien": 111, "name": "XUROUTINE IN"},
+      {"ien": 3359, "name": "XMUT-CHKFIL"},
+      {"ien": 7031, "name": "XMPSEND"},
+      {"ien": 9018, "name": "XPD MAIN"},
+      {"ien": 9786, "name": "ORE MGR"},
+      {"ien": 11035, "name": "OCX MAIN"},
+      {"ien": 11056, "name": "OR PARAM IRM MENU"},
+      {"ien": 11522, "name": "ORMTIME MAIN"},
+      {"ien": 13173, "name": "PRCPLO CLO SYSTEM PARAM"},
+      {"ien": 13814, "name": "SDRR IRM MENU"},
+      {"ien": 14723, "name": "PSO NON-VA PROVIDER INACTIVATE"},
+      {"ien": 14891, "name": "OR DST/CTB URL EDIT"}
+    ],
+    "XUPROGMODE": [
+      {"ien": 46, "name": "XUPROGMODE"},
+      {"ien": 47, "name": "XUPRGL"},
+      {"ien": 149, "name": "XMPACK"},
+      {"ien": 3384, "name": "XTOOLS"},
+      {"ien": 3385, "name": "XT-VERSION NUMBER"},
+      {"ien": 3386, "name": "XT-VARIABLE CHANGER"},
+      {"ien": 3387, "name": "XT-NUMBER BASE CHANGER"},
+      {"ien": 3451, "name": "XUPR RTN EDIT"},
+      {"ien": 6343, "name": "XT-PURGE ERRORS"},
+      {"ien": 6355, "name": "XTMOVE"},
+      {"ien": 6356, "name": "XTRDEL"},
+      {"ien": 6357, "name": "XTMOVE-IN"},
+      {"ien": 6358, "name": "XTRGRPE"},
+      {"ien": 9032, "name": "XPD INSTALLATION MENU"},
+      {"ien": 9049, "name": "XUERTRP CLEAN"},
+      {"ien": 10684, "name": "DMSQ PROJECT"},
+      {"ien": 10686, "name": "DMSQ PURGE"},
+      {"ien": 12142, "name": "LR LOINC HISTORICAL MAP MENU"},
+      {"ien": 12143, "name": "LR LOINC HISTORICAL MAPPER 63"},
+      {"ien": 12145, "name": "LR LOINC HISTORICAL RESTART 63"},
+      {"ien": 12146, "name": "LR LOINC HISTORICAL MODIFY"},
+      {"ien": 12905, "name": "PXRM INDEX BUILD"}
+    ],
+    "XUSCREENMAN": [
+      {"ien": 6321, "name": "DDS SCREEN MENU"}
+    ],
+    "XUSIG": [
+      {"ien": 14691, "name": "XUSESIG DEG"}
+    ],
+    "XUSNPIMTL": [
+      {"ien": 13443, "name": "XUS NPI MENU"}
+    ],
+    "ZTMQ": [
+      {"ien": 10348, "name": "LRZMJBAA"}
+    ]
+  },
+  "totalKeys": 294
+}

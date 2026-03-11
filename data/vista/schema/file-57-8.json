@@ -1,0 +1,36 @@
+{
+  "fileNumber": 57.8,
+  "fileName": "CLINIC GROUP",
+  "globalRoot": "57.8",
+  "globalReference": "^PS(57.8,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the clinic group. This will be displayed in options  such as Non-Verified/Pending and will be selectable for reports. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CLINIC",
+      "dataType": "POINTER",
+      "rawType": "57.81P",
+      "required": false,
+      "helpText": "This contains the list of all the clinics defined within this group. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "57.8", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

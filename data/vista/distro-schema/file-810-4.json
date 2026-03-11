@@ -1,0 +1,133 @@
+{
+  "fileNumber": 810.4,
+  "fileName": "REMINDER LIST RULE",
+  "globalRoot": "810.4",
+  "globalReference": "^PXRM(810.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "This is the name of the list rule.   National list rules are prefixed VA- and class national.  ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "SHORT DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a short description of the list rule. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:FINDING RULE;3:RULE SET;5:PATIENT LIST;2:REMINDER RULE;",
+      "helpText": "There are three types of rules in the file. Patient List Rules define an existing patient list. Finding Rules define reminder terms. Rule Sets contain both Finding and Patient List rules. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "REMINDER TERM",
+      "dataType": "POINTER",
+      "rawType": "P811.5'",
+      "required": false,
+      "pointerTo": 811.5,
+      "helpText": "Finding rules (type 1) use a reminder term (#811.5) to select patients  via the reminder package indexes. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "LIST RULE BEGINNING DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter an exact date, symbolic date, or 0 (zero) for no beginning date.  Symbolic dates can use \"T\" to represent the build end date or \"BDT\" for build beginning date.   This field is the beginning date/time (BDT) to use when searching for   findings that match a List Finding Rule. In order for patient data to meet the List Finding Rule criteria, the findings must have been documented on or after the BDT.   Reminder Rules and Patient List Rules do not use the Beginning date/time field.    The BDT ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LIST RULE ENDING DATE/TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Enter an exact date, symbolic date, or 0 (zero) for no ending date. Symbolic dates can use \"T\" to represent the build end date, or \"BDT\" for build beginning date.   This field is the ending date/time to use when searching for findings that match this list rule criteria. Findings must have been documented before the ending date/time. If no time is included, 11:59PM is assumed to be the time.   The rules for overriding date ranges is represented by the following equation, where \"<\" should be inter",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "USE EXISTING PT LIST",
+      "dataType": "POINTER",
+      "rawType": "P810.5'",
+      "required": false,
+      "pointerTo": 810.5,
+      "helpText": "This field is used by Patient List rules to identify an existing patient list in the Reminder Patient List file.  The existing  patient list is used as the patient source to perform the ADD,  SELECT, or REMOVE operation on the list rule.  The existing patient list is used to modify the temporary patient list built during list build processing.     For the  ADD operation the patients in the source list will be   added to the temporary patient list.     For the SELECT operation, the patients in th",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "USE EXTRACT PT LIST NAMED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is a free-text field that contains the name of the patient list to use when processing this list rule during an extract run. The patient list has not been created at the time the list rule is defined. In contrast, the USE EXISTING PT LIST field is used by patient list rule tools to reference a patient list already existing in the REMINDER PATIENT LIST file.   The name specified in the USE EXTRACT PT LIST NAMED will contain 'yyyy' for year and 'pnn' for reporting period. The nn is either the",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "REMINDER DEFINITION",
+      "dataType": "POINTER",
+      "rawType": "*P811.9'",
+      "required": false,
+      "pointerTo": 811.9,
+      "helpText": "This is a pointer to the Reminder Definition file #811.9. Reminders used to build patient lists must have an \"L\" in their USAGE field.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "SEQUENCE",
+      "dataType": "SUBFILE",
+      "rawType": "810.41I",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 810.41,
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 100,
+      "fieldName": "CLASS",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "N:NATIONAL;V:VISN;L:LOCAL;",
+      "helpText": "This is the CLASS of the rule. National rules cannot be edited. ",
+      "fieldNumber_": 100
+    },
+    {
+      "fieldNumber": 110,
+      "fieldName": "EDIT HISTORY",
+      "dataType": "DATE",
+      "rawType": "810.42D",
+      "required": false,
+      "helpText": "This multiple is used to record a history of changes to the rule. ",
+      "isMultiple": true,
+      "subFileNumber": 810.42,
+      "fieldNumber_": 110
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AD", "field": }
+  ],
+  "identifiers": [
+    {"field": .03, "value": "W \"   \",@(\"$P($P($C(59)_$S($D(^DD(810.4,.03,0)):$P(^(0),U,3),1:0)_$E(\"_DIC_\"Y,0),0),$C(59)_$P(^(0),U,3)_\"\":\"\",2),$C(59),1)\")"}
+  ]
+}

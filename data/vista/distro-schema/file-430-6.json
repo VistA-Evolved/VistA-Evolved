@@ -1,0 +1,60 @@
+{
+  "fileNumber": 430.6,
+  "fileName": "AR DEBT LIST",
+  "globalRoot": "430.6IO",
+  "globalReference": "^PRCA(430.6,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "BRIEF NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the brief name used to call up the cause of a bill. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FULL NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name for the cause of a bill. It is used in the form letters. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This is an internal code number used for file maintenance. The user will not see this number. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "TYPE",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "CP:PATIENT;V:VENDOR;NT:THIRD PARTY/INSTITUTION;O:PERSON;X:ALL TYPE;NOPV:VENDOR/PERSON/PATIENT/INSTITUTION;IO:INSURANCE/PERSON;NV:INSTITUTION/VENDOR;VO:VENDOR/PERSON;VON:VENDOR/PERSON/INSTITUTION;",
+      "helpText": "This is the type of the bill - Vendor, third party, patient, etc. Enter '??' for a listing of available types. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "430.6", "field": .01, "type": "regular"},
+    {"name": "430.6", "field": 1, "type": "regular"},
+    {"name": "430.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

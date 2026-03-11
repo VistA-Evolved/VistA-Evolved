@@ -1,0 +1,37 @@
+{
+  "fileNumber": 9009032.3,
+  "fileName": "APSP INTERVENTION TYPE",
+  "globalRoot": "9009032.3",
+  "globalReference": "^APSPQA(32.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0I",
+      "length": 5,
+      "required": false,
+      "helpText": "This field is used to select entries by their internal number. ",
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "TYPE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter a description of an error type to use with APSP  INTERVENTION FILE. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9009032.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

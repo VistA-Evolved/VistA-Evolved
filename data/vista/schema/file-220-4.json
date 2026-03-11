@@ -1,0 +1,35 @@
+{
+  "fileNumber": 220.4,
+  "fileName": "DENTAL BED SECTION",
+  "globalRoot": "220.4",
+  "globalReference": "^DIC(220.4,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .001,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "fieldNumber_": .001
+    },
+    {
+      "fieldNumber": .01,
+      "fieldName": "BED SECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "220.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

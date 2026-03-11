@@ -1,0 +1,46 @@
+{
+  "fileNumber": 46.5,
+  "fileName": "DG VAS CONFIG",
+  "globalRoot": "46.5",
+  "globalReference": "^DGAUDIT2(",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ1,0",
+      "length": 1,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "VAS STATUS",
+      "dataType": "SET",
+      "rawType": "Sa",
+      "required": false,
+      "setOfCodes": "0:Don't generate or send data;1:Generate and send data;2:Generate data, don't send;",
+      "helpText": "This field allows the VAS audit process to be stopped, started, and  paused. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VAS DEBUGGING FLAG",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "This is a DEBUGGING flag that can be turned on to allow a user to view a log file of information that would help in the Debugging process if an error were to occur.  ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "46.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

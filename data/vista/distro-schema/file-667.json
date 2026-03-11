@@ -1,0 +1,168 @@
+{
+  "fileNumber": 667,
+  "fileName": "VEHICLE OF RECORD",
+  "globalRoot": "667I",
+  "globalReference": "^RMPR(667,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "VEHICLE ID#",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the Identification Number on the vehicle of record, this is a Unique Key. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT NAME",
+      "dataType": "POINTER",
+      "rawType": "P665",
+      "required": false,
+      "pointerTo": 665,
+      "helpText": "This field is a pointer to the Prosthetics Patient File and is an internal entry number. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "VAF21-4502 DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The initial date that a veteran is issued the authority to purchase a Vehicle of record. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.1,
+      "fieldName": "ANKYLOSIS OR VOC REHAB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ANKYLOSIS;V:VOC REHAB;",
+      "helpText": "Contains set of codes for Ankylosis and Voc Rehab. ",
+      "fieldNumber_": 2.1
+    },
+    {
+      "fieldNumber": 2.2,
+      "fieldName": "TYPE OF TRANSACTION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "I:INITIAL ISSUE;R:REPLACE;S:SPARE;X:REPAIR;",
+      "helpText": "Explains what type of transaction is on this Vehicle of Records. ",
+      "fieldNumber_": 2.2
+    },
+    {
+      "fieldNumber": 2.3,
+      "fieldName": "PATIENT CATEGORY",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:SC/OP;2:SC/IP;3:NSC/IP;4:NSC/OP;",
+      "helpText": "This field stores the patient category for this vehicle transaction. ",
+      "fieldNumber_": 2.3
+    },
+    {
+      "fieldNumber": 2.4,
+      "fieldName": "SPECIAL CATEGORY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:SPECIAL LEGISLATION;2:A&A;3:PHC;",
+      "helpText": "This field stores the patient's special category if applicable for this vehicle transaction. ",
+      "fieldNumber_": 2.4
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "DATE PURCHASED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This is the date that the Vehicle was purchased. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "YEAR",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This is the model year of the vehicle. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "MAKE",
+      "dataType": "POINTER",
+      "rawType": "RP667.2",
+      "required": true,
+      "pointerTo": 667.2,
+      "helpText": "The make of the Vehicle purchased. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MODEL",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The model of the Vehicle that was purchased. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE PROCESSED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date that this transaction is being processed. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "EXCEPTION FLAG",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:ACTIVE;0:INACTIVE;",
+      "helpText": "This shows that the Vehicle of Record is active or inactive. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "EXCEPTION RULE COMMENTS",
+      "dataType": "SUBFILE",
+      "rawType": "667.01",
+      "required": false,
+      "helpText": "This is the general description of the vehicle purchased. ",
+      "isMultiple": true,
+      "subFileNumber": 667.01,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "STATION NAME",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "Pointer to the institution file. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 15,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "667", "field": .01, "type": "regular"},
+    {"name": "667", "field": 1, "type": "regular"},
+    {"name": "667", "field": 2, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

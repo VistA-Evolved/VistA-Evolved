@@ -1,0 +1,89 @@
+{
+  "fileNumber": 2005.6,
+  "fileName": "IMAGING PATIENT REFERENCE",
+  "globalRoot": "2005.6",
+  "globalReference": "^MAGV(2005.6,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENTERPRISE PATIENT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the patient's unique internal identifier designated by the issuer, as identified by the ASSIGNING ENTITY (#2) field. If that field is blank, this is the patient's DFN. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ASSIGNING AUTHORITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:DEPT OF VETERANS AFFAIRS;I:INDIAN HEALTH SERVICE;D:DEPT OF DEFENSE;",
+      "helpText": "This field indicates who issued the identifier in field #.01 (ENTERPRISE  PATIENT ID).  If this field is blank, it is assumed to be the VA. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "ID TYPE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "M:MEDICAL RECORD NUMBER;I:INTEGRATION CONTROL NUMBER;D:DFN;",
+      "helpText": "This field indicates what kind of patient identifier is represented by  the value in field #.01. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "SERVICE INSTITUTION REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2005.8",
+      "required": false,
+      "pointerTo": 2005.8,
+      "helpText": "This is the institution within VA, MHS or elsewhere at which the patient imaging service record was created. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ARTIFACT ON FILE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT ON FILE;1:AOF;",
+      "helpText": "This field is a flag that records if an artifact is on file or not. Artifact On File means that at least one Object is already stored on disk. An Object can be an image, an abstract or a text file. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:ACCESSIBLE;I:INACCESSIBLE;",
+      "helpText": "This field indicates whether the patient reference is ACCESSIBLE or INACCESSIBLE.   ACCESSIBLE means that the patient reference can be retrieved by imaging database methods and may have \"child\" procedure references that are cross referenced to this patient reference.   INACCESSIBLE means that the patient reference will not be retrieved by imaging database methods and will not have \"child\" procedure references. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "PATIENT FILE REFERENCE",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "If the ENTERPRISE PATIENT ID (#.01) field is a DFN then this field will point to the same patient entry in the PATIENT (#2) file. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "2005.6", "field": .01, "type": "regular"},
+    {"name": "2005.6", "field": 3, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

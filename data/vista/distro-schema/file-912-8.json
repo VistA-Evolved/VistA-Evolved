@@ -1,0 +1,39 @@
+{
+  "fileNumber": 912.8,
+  "fileName": "ESP CRIME TYPES",
+  "globalRoot": "912.8",
+  "globalReference": "^ESP(912.8,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFX",
+      "required": true,
+      "helpText": "Enter a crime type.  These crime types have been designated by the Security and Law Enforcement program directors.  Local sites should NOT add any additional crime types to the program. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CATEGORY",
+      "dataType": "POINTER",
+      "rawType": "P912.7'",
+      "required": false,
+      "pointerTo": 912.7,
+      "helpText": "Enter the primary crime category that applies to this crime type. ",
+      "fieldNumber_": .02
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "912.8", "field": .01, "type": "regular"},
+    {"name": "912.8", "field": .02, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

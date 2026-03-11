@@ -1,0 +1,60 @@
+{
+  "fileNumber": 409.74,
+  "fileName": "DELETED OUTPATIENT ENCOUNTER",
+  "globalRoot": "409.74D",
+  "globalReference": "^SD(409.74,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ENCOUNTER DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time deleted encounter supposedly took place. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "Patient deleted encounter referred to. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DELETION DATE/TIME",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "Date/time encounter was deleted. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "OLD ENCOUNTER ZERO NODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field will contain the zero node of the Outpatient Encounter that was deleted. ",
+      "fieldNumber_": 11
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "ADEL", "field": },
+    {"name": "B", "field": },
+    {"name": "PAT", "field": },
+    {"name": "409.74", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "409.74", "field": .02, "type": "regular"},
+    {"name": "409.74", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",Y,@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"}
+  ]
+}

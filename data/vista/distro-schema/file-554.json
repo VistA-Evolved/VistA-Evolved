@@ -1,0 +1,139 @@
+{
+  "fileNumber": 554,
+  "fileName": "CMOP OPERATIONS",
+  "globalRoot": "554",
+  "globalReference": "^PSX(554,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Free text name of the site.         ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "BACKGROUND FILE PROCESSES",
+      "dataType": "SET",
+      "rawType": "554.01SA",
+      "required": false,
+      "helpText": "  This sub-file contains data about the schedules for the different background file processes. ",
+      "isMultiple": true,
+      "subFileNumber": 554.01,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "COST",
+      "dataType": "DATE",
+      "rawType": "554.02DA",
+      "required": false,
+      "helpText": "The sub-file contains a log of queued cost jobs for the last 30 days. ",
+      "isMultiple": true,
+      "subFileNumber": 554.02,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RELEASE DATA",
+      "dataType": "DATE",
+      "rawType": "554.03DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 554.03,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "LAST TRANSMISSION DOWNLOADED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last transmission downloaded to the vendor system. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "LAST QUERY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last query executed. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LAST TRANSMISSION LABEL PRINT",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the last transmission that DHCP labels were printed for the entire transmission. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "CMOP DRUG Cost Missing reports",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This parameter controls the generation of the \"CMOP DRUG Cost Missing\" report. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "CMOP DOD IN DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The host directory where VA CMOP interagency messages are deposited for  CMOP processing. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "CMOP DOD OUT DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The host directory where VA CMOP places interagency messages to be picked up and processed by other agencies. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "CMOP DOD ARCHIVE DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The host directory where copies of all interagency messages, in and out,  are deposited. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "CMOP DOD HOLD DIRECTORY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The host directory where copies are kept of interagency messages that  experienced problems being processed by the VA CMOP. ",
+      "fieldNumber_": 23
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "AB", "field": },
+    {"name": "AC", "field": },
+    {"name": "AD", "field": },
+    {"name": "AF", "field": },
+    {"name": "AR", "field": },
+    {"name": "ARUN", "field": },
+    {"name": "AS", "field": },
+    {"name": "B", "field": },
+    {"name": "554", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

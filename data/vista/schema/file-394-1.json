@@ -1,0 +1,114 @@
+{
+  "fileNumber": 394.1,
+  "fileName": "*PDX DATA",
+  "globalRoot": "394.1",
+  "globalReference": "^VAT(394.1,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REQUEST #",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ7,0",
+      "length": 7,
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "AUTHORIZING FACILITY",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE/TIME OF REPLY",
+      "dataType": "POINTER",
+      "rawType": "P394'",
+      "required": false,
+      "pointerTo": 394,
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PHARMACY",
+      "dataType": "SUBFILE",
+      "rawType": "394.11",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.11,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "MAS",
+      "dataType": "SUBFILE",
+      "rawType": "394.12",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.12,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "LABRATORY",
+      "dataType": "SUBFILE",
+      "rawType": "394.13",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.13,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "RADIOLOGY",
+      "dataType": "SUBFILE",
+      "rawType": "394.14",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.14,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "SURGERY",
+      "dataType": "SUBFILE",
+      "rawType": "394.15",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.15,
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "MEDICINE",
+      "dataType": "SUBFILE",
+      "rawType": "394.16",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.16,
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "MINIMUM",
+      "dataType": "SUBFILE",
+      "rawType": "394.17",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 394.17,
+      "fieldNumber_": 7
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.1", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

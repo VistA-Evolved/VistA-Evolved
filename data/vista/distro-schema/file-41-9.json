@@ -1,0 +1,39 @@
+{
+  "fileNumber": 41.9,
+  "fileName": "CENSUS",
+  "globalRoot": "41.9P",
+  "globalReference": "^DG(41.9,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "RP42'X",
+      "required": true,
+      "pointerTo": 42,
+      "helpText": "This field points to the Ward Location File (#42) and contains the IFN  for that ward. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CENSUS",
+      "dataType": "DATE",
+      "rawType": "41.91DA",
+      "required": false,
+      "helpText": "This multiple contains all census data as compiled by the G&L and Bed Status Reports.  This data is used by the inpatient AMIS reports and MUST not be altered in any way. ",
+      "isMultiple": true,
+      "subFileNumber": 41.91,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "41.9", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

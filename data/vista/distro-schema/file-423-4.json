@@ -1,0 +1,48 @@
+{
+  "fileNumber": 423.4,
+  "fileName": "ISMS REASON CODES",
+  "globalRoot": "423.4I",
+  "globalReference": "^PRCF(423.4,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ3,0X",
+      "length": 3,
+      "required": true,
+      "helpText": "This is the numeric code identifying the ISMS reason message. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DESCRIPTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the text of the ISMS message giving a reason for an action. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "STAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "A:AVAILABLE;",
+      "helpText": "This is a code indicating the status of an ISMS reason message. ",
+      "fieldNumber_": 2
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "423.4", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": W, "value": "W ?10,$P(^PRCF(423.4,+Y,0),U,2)"},
+    {"field": W1, "value": "W ?55,\"STATUS = \",$P(^PRCF(423.4,+Y,0),U,3)"}
+  ]
+}

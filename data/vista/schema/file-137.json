@@ -1,0 +1,28 @@
+{
+  "fileNumber": 137,
+  "fileName": "CPT EXCLUSIONS",
+  "globalRoot": "137",
+  "globalReference": "^SRO(137,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "RP81'XI",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "This CPT code is on the list of VASQIP excluded CPT codes. ",
+      "fieldNumber_": .01
+    }
+  ],
+  "fieldCount": 1,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "137", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

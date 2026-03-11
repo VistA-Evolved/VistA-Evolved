@@ -1,0 +1,115 @@
+{
+  "fileNumber": 101.45,
+  "fileName": "AP DIALOG CONFIG",
+  "globalRoot": "101.45",
+  "globalReference": "^ORD(101.45,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFJ72",
+      "length": 72,
+      "required": true,
+      "helpText": "The name field is set automatically to match the name of the orderable  item. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "ALLOW OTHER SPECIMENS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "By allowing the item of 'OTHER' to display as a choice in the specimen  selection you will be allowing the user to select any entry from file 61  as a specimen for the selected orderable item. If there are no default  specimens configured then 'OTHER' will display regardless of the value  stored here. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "RESTRICT MULTIPLE SPECIMEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:FALSE;1:TRUE;",
+      "helpText": "When an orderable item is assigned multiple specimens it will, when this  field is true, hide all other specimens when the user selects one  specimen from the list. When this happens the down arrow for the combobox  in the GUI is changed to a plus sign \"+\" meaning that the user can only  add a duplicate specimen to the order rather than the others in this  configuration. In order to change the currently selected specimen  the user would need to delete all selections. Likewise, when this field  i",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ORDERABLE ITEM",
+      "dataType": "POINTER",
+      "rawType": "R*P101.43'",
+      "required": true,
+      "pointerTo": 101.43,
+      "helpText": "This is the laboratory orderable item defined by the screen as being  associated with a surgical pathology, cytology, or electron microscopy  lab test. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "NATIONAL STANDARD",
+      "dataType": "SET",
+      "rawType": "St11I",
+      "required": false,
+      "helpText": "Indicates this anatomic pathology order dialog is a national standard and should not be modified, since it is subject to being changed by future patches. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "INACTIVE",
+      "dataType": "SET",
+      "rawType": "St11",
+      "required": false,
+      "helpText": "When set to Yes this order dialog will not be available in CPRS. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ORDER PROMPTS",
+      "dataType": "SET",
+      "rawType": "101.451S",
+      "required": false,
+      "helpText": "Order Prompts refer to fields originally part of the Laboratory Order  Dialog and have logic associated to them outside of AP. ",
+      "isMultiple": true,
+      "subFileNumber": 101.451,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "PAGES",
+      "dataType": "SUBFILE",
+      "rawType": "101.452",
+      "required": false,
+      "helpText": "A page represents a word processing field for the order. Each page must  be labeled (PAGE NAME) and have a RESPONSE ID. If no additional  configuration is provided then it will just be a word processing field;  otherwise, builder blocks can be created to assist with populating the  word processing field. ",
+      "isMultiple": true,
+      "subFileNumber": 101.452,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "SPECIMEN",
+      "dataType": "POINTER",
+      "rawType": "101.453P",
+      "required": false,
+      "helpText": "When a specimen is added here you will be able to add builder blocks to  it to assist the user in creating a specimen description. These specimen  will be the only specimen selectable for this order unless 'Other' has  been allowed. Additionally, if there are no specimen here then the user  will be presented with 'Other' in which they can associate any specimen  to this orderable item. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROMPT CHANGE MESSAGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The 'PROMPT MESSAGE' is displayed when a specimen builder block is set to  change an order prompt value. When this happens you have the option to  notify the user of this change. There are three values that you will have  access to that can be used in your message: cType = the order prompt such  as URGENCY, oVal = the value of the order prompt before the change, and  nVal = is the value of the order prompt after the change, this value is  also provided because it could be that the intended chang",
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 10,
+  "crossReferences": [
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

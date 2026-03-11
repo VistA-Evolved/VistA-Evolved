@@ -1,0 +1,130 @@
+{
+  "fileNumber": 601.94,
+  "fileName": "MH CR SCRATCH",
+  "globalRoot": "601.94",
+  "globalReference": "^YTT(601.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "ID NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ11,0X",
+      "length": 11,
+      "required": true,
+      "helpText": "This is a unique number identifying this entry. It is the same as  the internal .001 DINUM.   You may enter 'New' and the correct number will automatically be assgined. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The field specifies the patient (File #2) about which the current  data applies. This is the DFN that is associated with the Instrument Results. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "RESPONSE DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/Time of responses given via the reminder. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INSTRUMENT",
+      "dataType": "POINTER",
+      "rawType": "P601.71'",
+      "required": false,
+      "pointerTo": 601.71,
+      "helpText": "Instrument from MHA3 file 601.71 that is the basis of the clinical  reminder. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "QUESTION",
+      "dataType": "POINTER",
+      "rawType": "P601.72'",
+      "required": false,
+      "pointerTo": 601.72,
+      "helpText": "Question number from file 601.72 MH Questions. This is the question being  asked as part of the specified instrument on which the Clinical Reminder  is based. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ANSWER",
+      "dataType": "POINTER",
+      "rawType": "P601.75'",
+      "required": false,
+      "pointerTo": 601.75,
+      "helpText": "This is the MH Choice selected as the answer. This is the answer to  the question in field 4. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "LEGACY VALUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The MH Choices file contains the individual selections possible in a multiple choice question.  Examples are Yes or No, True or False, 1.   Abraham Lincoln, 2. George Washington, 3. George W. Bush or 4. Richard Nixon. For instruments first defined in the legacy system MH INSTRUMENT file (#601), 1-3 characters are specified for a multiple choice answer.   If George Washington was the choice selected the legacy value would be 2.   Choices are pointed to by the MH CHOICETYPES file (#601.751) which ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "IS MULTIPLE CHOICE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "YES:Yes;NO:NO;",
+      "helpText": "Yes if Question is of Multiple choice type. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "This is the person who entered the clinical reminder. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "ANSWER TEXT",
+      "dataType": "SUBFILE",
+      "rawType": "601.949",
+      "required": false,
+      "helpText": "Full text of the free text answer. Only populated if the question   specified in field 4 is listed as free text in the MH Questions file (601.72). ",
+      "isMultiple": true,
+      "subFileNumber": 601.949,
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "HANDLE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Enter the Unique identifier of the windows session; formally called the  Handle. This is the Windows identification of the process calling the  MHA3 DLL. ",
+      "fieldNumber_": 10
+    }
+  ],
+  "fieldCount": 11,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "AE", "field": },
+    {"name": "B", "field": },
+    {"name": "601.94", "field": .01, "type": "regular"},
+    {"name": "601.94", "field": 2, "type": "regular"},
+    {"name": "601.94", "field": 10, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

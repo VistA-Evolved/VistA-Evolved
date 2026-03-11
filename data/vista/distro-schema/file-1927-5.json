@@ -1,0 +1,78 @@
+{
+  "fileNumber": 1927.5,
+  "fileName": "NUPA CARE PLAN TEXT CHANGE LOG",
+  "globalRoot": "1927.5",
+  "globalReference": "^NUPA(1927.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CARE PLAN",
+      "dataType": "POINTER",
+      "rawType": "RP1927.4'",
+      "required": true,
+      "pointerTo": 1927.4,
+      "helpText": "Pointer to an uploaded care plan. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "FIELD NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,1",
+      "length": 5,
+      "required": false,
+      "helpText": "Field number that was changed.  Do not edit this field via Fileman. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE/TIME OF CHANGE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date/time the field was changed.  Do not edit this field via Fileman. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User changing the field.  Do not edit this field via Fileman. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "OLD DATA",
+      "dataType": "SUBFILE",
+      "rawType": "1927.54",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 1927.54,
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "NEW DATA",
+      "dataType": "SUBFILE",
+      "rawType": "1927.55",
+      "required": false,
+      "helpText": "New value of the field.  Do not edit this field via Fileman. ",
+      "isMultiple": true,
+      "subFileNumber": 1927.55,
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 6,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "1927.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "fileNumber": 798.5,
+  "fileName": "ROR ICD SEARCH",
+  "globalRoot": "798.5",
+  "globalReference": "^ROR(798.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "REGISTRY",
+      "dataType": "POINTER",
+      "rawType": "RP798.1'X",
+      "required": true,
+      "pointerTo": 798.1,
+      "helpText": "YOU MUST NOT EDIT THIS FIELD IF IT IS PART OF A NATIONAL REGISTRY  DEFINITION.   The ICD codes defined for this registry will be used to select qualified  patients. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ICD CODE",
+      "dataType": "POINTER",
+      "rawType": "798.51P",
+      "required": false,
+      "helpText": "This multiple contains a list of ICD codes in the ICD DIAGNOSIS file (#80).  Selection rules for a registry use these codes to find new registry patients during the registry update process.    ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "ICD PROCEDURE CODE",
+      "dataType": "POINTER",
+      "rawType": "798.52P",
+      "required": false,
+      "helpText": "This multiple contains a list of ICD codes in the ICD OPERATION/PROCEDURE file (#80.1).  Selection rules for a registry use these codes to find new registry patients during the registry update process. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "INPATIENT CPT CODE",
+      "dataType": "POINTER",
+      "rawType": "798.53P",
+      "required": false,
+      "helpText": "This multiple contains a list of CPT codes in the CPT file (#81).  Selection rules for a registry use these codes to find new registry patients during the registry update process. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "798.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "fileNumber": 8925.94,
+  "fileName": "TIU DIVISION PRINT PARAMETERS",
+  "globalRoot": "8925.94",
+  "globalReference": "^TIU(8925.94,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "DIVISION",
+      "dataType": "POINTER",
+      "rawType": "RP40.8'",
+      "required": true,
+      "pointerTo": 40.8,
+      "helpText": "Division these print parameters will apply to when printing outpatient Progress Notes for the terminal digit sort for.  Notes for all location under this division will print unless they are excepted in the TIU PRINT PARAMETERS (#8925.93) file, field #3. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "LOCATION TO PRINT ON FOOTER",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The name of this division as it should apear in the footer of the progress notes and forms printed using the terminal digit outpatient sort.  This is useful for sites that want something other than what the external value of this division retirned by $$SITE^VASITE.  For example, the Waco division of the Central Texas Health Care System may want Central Texas HCS- Waco to appear in the footer instead of WACO VAMC. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "LAST PROGRESS NOTE PRINTED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This field keeps track of the DATE/TIME of the LAST progress note printed using the outpatient batch print by terminal digit sort.  At the completion of the print job the DATE/TIME the job begins calculating will be set into this field.  This value will be used as the starting point for the next batch of notes. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PROGRESS NOTES BATCH PRINTER",
+      "dataType": "POINTER",
+      "rawType": "P3.5'",
+      "required": false,
+      "pointerTo": 3.5,
+      "helpText": "This printer will be presented as the default when the outpatient terminal digit print option is interactively invoked.  ",
+      "fieldNumber_": 1.02
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "8925.94", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

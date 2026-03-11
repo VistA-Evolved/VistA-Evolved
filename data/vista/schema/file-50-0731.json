@@ -1,0 +1,144 @@
+{
+  "fileNumber": 50.0731,
+  "fileName": "DUE ANSWER SHEET",
+  "globalRoot": "50.0731",
+  "globalReference": "^PS(50.0731,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEQUENCE NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ8,0X",
+      "length": 8,
+      "required": true,
+      "helpText": "A Number which distinctly identifies a DUE ANSWER SHEET.  Automatically generated when a new DUE ANSWER SHEET is created. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "QUESTIONNAIRE",
+      "dataType": "POINTER",
+      "rawType": "P50.073'",
+      "required": false,
+      "pointerTo": 50.073,
+      "helpText": "The DUE QUESTIONNAIRE from which this DUE ANSWER SHEET was generated. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DRUG",
+      "dataType": "POINTER",
+      "rawType": "P50'",
+      "required": false,
+      "pointerTo": 50,
+      "helpText": "The Drug for which this DUE ANSWER SHEET was generated. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "RX #",
+      "dataType": "POINTER",
+      "rawType": "P52'",
+      "required": false,
+      "pointerTo": 52,
+      "helpText": "The Prescription number for which this DUE ANSWER SHEET was generated. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PROVIDER",
+      "dataType": "POINTER",
+      "rawType": "*P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The Provider answering this DUE ANSWER SHEET. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CREATED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The user who generated this DUE ANSWER SHEET.  This field will be null if the DUE ANSWER SHEET was generated from an Action Profile. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE/TIME CREATED",
+      "dataType": "DATE",
+      "rawType": "MD",
+      "required": false,
+      "helpText": "The Date and Time this DUE ANSWER SHEET was generated. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "P2'",
+      "required": false,
+      "pointerTo": 2,
+      "helpText": "The patient receiving the Drug for which this DUE ANSWER SHEET was generated. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "SECTION",
+      "dataType": "POINTER",
+      "rawType": "P50.0733",
+      "required": false,
+      "pointerTo": 50.0733,
+      "helpText": "The Section related to this DUE ANSWER SHEET.  This field should be used to group DUE ANSWER SHEETs into groups, e.g. Clinics, Services, Divisions, etc. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "LAST EDITED BY",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "The last User to edit this DUE ANSWER SHEET. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "SITE/DIVISION",
+      "dataType": "POINTER",
+      "rawType": "P59'",
+      "required": false,
+      "pointerTo": 59,
+      "helpText": "This field is used to sort and print the responses to the DUE ANSWER SHEETS  site/division. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "QUESTION",
+      "dataType": "SUBFILE",
+      "rawType": "50.07311AI",
+      "required": false,
+      "helpText": "This sub-file is used to enter the text associated with the DUE Questionnaire. ",
+      "isMultiple": true,
+      "subFileNumber": 50.07311,
+      "fieldNumber_": 20
+    }
+  ],
+  "fieldCount": 12,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "D", "field": },
+    {"name": "P", "field": },
+    {"name": "Q", "field": },
+    {"name": "50.0731", "field": .01, "type": "regular"},
+    {"name": "50.0731", "field": 1, "type": "regular"},
+    {"name": "50.0731", "field": 2, "type": "regular"},
+    {"name": "50.0731", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,450 @@
+{
+  "fileNumber": 133,
+  "fileName": "SURGERY SITE PARAMETERS",
+  "globalRoot": "133P",
+  "globalReference": "^SRO(133,",
+  "ddAccess": "",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE",
+      "dataType": "POINTER",
+      "rawType": "RP4'",
+      "required": true,
+      "pointerTo": 4,
+      "helpText": "This is the institution responsible for the Surgery service.  If the facility is multi-divisional, there will be more than one entry in this file.   ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "MAIL CODE FOR ANESTHESIA",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the mail code for the Anesthesia service.  It will be used to flag Anesthesiologists on the Anesthesia AMIS.   ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "CANCEL IVS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT CANCEL;1:CANCEL;",
+      "helpText": "This field indicates the site's preference to allow or not allow current IV orders for a patient to be cancelled when a surgical or non-OR procedure begins. If this field is set to NOT CANCEL, IV orders will not be cancelled. If this field is set to CANCEL, upon entering the anesthesia care start time for a case, the user will be prompted to cancel or not  cancel current IV orders if not more than 24 hours have passed since the start of the operation or procedure. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "LATEST 30-READMISSION REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FOX",
+      "required": false,
+      "helpText": "This field contains the latest fiscal quarter for which the 30-day  postoperative readmissions report has been transmitted to the VASQIP  database. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "CHIEF'S NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the Chief of Surgery.  The name will be displayed on management reports.   ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "LOCK AFTER HOW MANY DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ3,0",
+      "length": 3,
+      "required": false,
+      "helpText": "This is the number of days a case can be edited, after completion, without needing the Chief of Surgery's approval.   ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "REQUEST DEADLINE",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field is the time on the request cutoff day after which no requests can be made for a date.  Your answer must be in a military time format with leading zeros.  For example, a time of 7:00 AM MUST be entered in the format 07:00.  The time 7:00 PM would be entered 19:00. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "OR SCHEDULE DEVICES",
+      "dataType": "SUBFILE",
+      "rawType": "133.012",
+      "required": false,
+      "helpText": "This contains all devices which will be used when the Schedule of Operations is printed.   ",
+      "isMultiple": true,
+      "subFileNumber": 133.012,
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "SCHEDULE CLOSE TIME",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXO",
+      "required": false,
+      "helpText": "This field contains the time of day at which the surgery schedule for the following day is considered to be closed.  Any scheduled cases canceled after this time will be included in computing the cancellation rate for the facility.  The time entered in this field may be earlier than, but no later than, 15:00.  Your answer must be in a military time format with leading zeros.  For example, a time of 9:00 AM MUST be entered in the format 09:00. 15:00 is the default time for this field if no time i",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "VERSION NUMBER",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field contains the current version number of the Surgery software.   ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "CARDIAC ASSESSMENT IN USE(Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This determines whether the Cardiac Risk Assessment Module is being used at this facility. If so, enter 'YES', if not enter 'NO'. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "LATEST CASE WORKLOAD REPORT",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "This field contains the date (month/year) of the latest VASQIP monthly case workload report automatically tasked for transmission to the  national database.  This field is an uneditable field and is set automatically when the monthly case workload report is transmitted by way of the nightly task process. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "ASK FOR RISK PREOP INFO",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES if the user should be prompted for risk assessment preoperative information when entering a new case and when updating a requested or scheduled case. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "UPDATES TO PCE",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "O:OUTPATIENT ONLY;A:ALL CASES;N:PCE NOT UPDATED;",
+      "helpText": "This indicates the site's preference for PCE updating.  If this field contains O, PCE will be updated with outpatient case information only.  If this field contains A, PCE will be updated information from all cases, both inpatient and outpatient.  If this field contains N or is null, no PCE updating will occur. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 18.5,
+      "fieldName": "PCE UPDATE ACTIVATION DATE",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "This is the earliest date of operation for which surgical cases may be filed with PCE.  Surgical cases or non-OR procedures performed before this date will not be filed with PCE.  If no date is entered, this parameter will be ignored. ",
+      "fieldNumber_": 18.5
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "ASK CLASSIFICATION QUESTIONS",
+      "dataType": "SET",
+      "rawType": "SI",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field indicates whether the patient service connected classification questions should be asked when entering a new case or when updating an existing case. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "REQUEST CUTOFF FOR SUNDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:SATURDAY;2:FRIDAY;3:THURSDAY;4:WEDNESDAY;5:TUESDAY;6:MONDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Sunday scheduling.  Enter '0' if Sunday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Sunday is Saturday. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "REQUEST CUTOFF FOR MONDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:SUNDAY;2:SATURDAY;3:FRIDAY;4:THURSDAY;5:WEDNESDAY;6:TUESDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Monday scheduling.  Enter '0' if Monday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Monday is Sunday. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "REQUEST CUTOFF FOR TUESDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:MONDAY;2:SUNDAY;3:SATURDAY;4:FRIDAY;5:THURSDAY;6:WEDNESDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Tuesday scheduling.  Enter '0' if Tuesday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Tuesday is Monday. ",
+      "fieldNumber_": 22
+    },
+    {
+      "fieldNumber": 23,
+      "fieldName": "REQUEST CUTOFF FOR WEDNESDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:TUESDAY;2:MONDAY;3:SUNDAY;4:SATURDAY;5:FRIDAY;6:THURSDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Wednesday scheduling.  Enter '0' if Wednesday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Wednesday is Tuesday ",
+      "fieldNumber_": 23
+    },
+    {
+      "fieldNumber": 24,
+      "fieldName": "REQUEST CUTOFF FOR THURSDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:WEDNESDAY;2:TUESDAY;3:MONDAY;4:SUNDAY;5:SATURDAY;6:FRIDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Thursday scheduling.  Enter '0' if Thursday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Thursday is Wednesday. ",
+      "fieldNumber_": 24
+    },
+    {
+      "fieldNumber": 25,
+      "fieldName": "REQUEST CUTOFF FOR FRIDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:THURSDAY;2:WEDNESDAY;3:TUESDAY;4:MONDAY;5:SUNDAY;6:SATURDAY;",
+      "helpText": "Enter the day of the week on which the request deadline occurs for Friday scheduling.  Enter '0' if Friday scheduling is not allowed. If no entry is made in this field, the software will use Thursday as the request cutoff day for Friday.   ",
+      "fieldNumber_": 25
+    },
+    {
+      "fieldNumber": 26,
+      "fieldName": "REQUEST CUTOFF FOR SATURDAY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:SCHEDULING NOT ALLOWED;1:FRIDAY;2:THURSDAY;3:WEDNESDAY;4:TUESDAY;5:MONDAY;6:SUNDAY;",
+      "helpText": " Enter the day of the week on which the request deadline occurs for  Saturday scheduling.  Enter '0' if Saturday scheduling is not allowed.  If no entry is made in this field, the package will assume the request  cutoff day for Saturday is Friday. ",
+      "fieldNumber_": 26
+    },
+    {
+      "fieldNumber": 27,
+      "fieldName": "HOLIDAY SCHEDULING ALLOWED",
+      "dataType": "POINTER",
+      "rawType": "133.027P",
+      "required": false,
+      "helpText": " These are the holidays on which the scheduling of surgical cases will be  allowed. ",
+      "fieldNumber_": 27
+    },
+    {
+      "fieldNumber": 28,
+      "fieldName": "REQUIRED FIELDS FOR SCHEDULING",
+      "dataType": "POINTER",
+      "rawType": "133.028P",
+      "required": false,
+      "helpText": "This contains the names of fields that must be entered prior to scheduling a requested procedure.   ",
+      "fieldNumber_": 28
+    },
+    {
+      "fieldNumber": 29,
+      "fieldName": "NURSE INTRAOP REPORT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:PRINT TITLES WITH INFO ONLY;1:PRINT ALL FIELD TITLES;",
+      "helpText": "This determines the format of the Nurse Intraoperative Report.  Enter '1' if you want to list all field titles in the report regardless as to whether information has been entered for that field.  If you want a shorter report, enter '0'.  This format will print only those fields that have information entered.  If nothing is entered for this parameter, the report will include all field titles.   ",
+      "fieldNumber_": 29
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "OPERATION REPORT FORMAT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRINT ALL FIELD TITLES;0:PRINT TITLES WITH INFO ONLY;",
+      "helpText": "This determines the format of the Operation Report.  If you want to  display all field titles on the report and 'N/A' for those fields that do not have information entered, select format '1'.  If you only want to display field titles when information has been entered, select format '0'.   ",
+      "fieldNumber_": 30
+    },
+    {
+      "fieldNumber": 31,
+      "fieldName": "VASQIP 30 DAY FOLLOW-UP LETTER",
+      "dataType": "SUBFILE",
+      "rawType": "133.031",
+      "required": false,
+      "helpText": "This field contains the text of the VASQIP 30-day follow-up letter to be printed and mailed to the patient approximately 30 days following surgery. ",
+      "isMultiple": true,
+      "subFileNumber": 133.031,
+      "fieldNumber_": 31
+    },
+    {
+      "fieldNumber": 32,
+      "fieldName": "LATEST QUARTERLY REPORT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FXOI",
+      "required": false,
+      "helpText": "This field contains the latest fiscal quarter for which the Quarterly Report has been transmitted to the Surgical Service, Headquarters, national database. ",
+      "fieldNumber_": 32
+    },
+    {
+      "fieldNumber": 33,
+      "fieldName": "SURGICAL RESIDENTS (Y/N)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO;1:YES;",
+      "helpText": "This field indicates whether surgery may be performed by residents at this facility.  Enter NO if all surgeons at this facility are staff surgeons. If this field is NO an attending surgeon will not be required by the PCE interface and cases with no attend code will be counted as Level 0 (Staff Alone) on the Quarterly Report. ",
+      "fieldNumber_": 33
+    },
+    {
+      "fieldNumber": 34,
+      "fieldName": "HL7 V. 1.5 COMPATIBLE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "If applications communicating with the Surgery HL7 interface must use the interface designed for use with HL7 V. 1.5, enter YES.  Otherwise, enter NO or leave this field blank. ",
+      "fieldNumber_": 34
+    },
+    {
+      "fieldNumber": 35,
+      "fieldName": "INACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "Enter YES to make this SURGERY SITE inactive and to prevent its selection and use by Surgery users. ",
+      "fieldNumber_": 35
+    },
+    {
+      "fieldNumber": 36,
+      "fieldName": "CPT COPYRIGHT NOTICE DATE",
+      "dataType": "DATE",
+      "rawType": "133.036DA",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 133.036,
+      "fieldNumber_": 36
+    },
+    {
+      "fieldNumber": 37,
+      "fieldName": "AUTOMATED CASE CART ORDERING",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This indicates whether the CoreFLS interface for Surgery is in use at this facility. If so, enter YES. Otherwise, enter NO or leave blank. ",
+      "fieldNumber_": 37
+    },
+    {
+      "fieldNumber": 38,
+      "fieldName": "CPT ON NURSE INTRAOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO, DO NOT INCLUDE CPT;1:YES, INCLUDE CPT;",
+      "helpText": "If this field is set to YES, INCLUDE CPT, the principal CPT code  will be required before electronic signature can be applied and the CPT code will be part of the report. If the field is null or set to NO, DO NOT INCLUDE CPT, the principal CPT code will not be required before electronic signature can be applied and the CPT code will not be part of the report. ",
+      "fieldNumber_": 38
+    },
+    {
+      "fieldNumber": 39,
+      "fieldName": "ICD ON NURSE INTRAOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NO, DO NOT INCLUDE ICD;1:YES, INCLUDE ICD;",
+      "helpText": "If this field is set to YES, INCLUDE ICD, the principal diagnosis  code will be required before electronic signature can be applied and the ICD code will be part of the report.  If the field is null or set to NO, DO NOT INCLUDE ICD, the principal diagnosis code will  not be required before electronic signature can be applied. ",
+      "fieldNumber_": 39
+    },
+    {
+      "fieldNumber": 40,
+      "fieldName": "ANESTHESIA REPORT IN USE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This YES/NO field determines if the Anesthesia Report should be  created and electronically signed.  Only if this field is marked YES will the functionality be invoked to create the Anesthesia Report  for a case in TIU. ",
+      "fieldNumber_": 40
+    },
+    {
+      "fieldNumber": 41,
+      "fieldName": "DEFAULT BLOOD COMPONENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "This field contains the default blood type used during surgery.  If a certain type is used frequently, this field should be completed. ",
+      "fieldNumber_": 41
+    },
+    {
+      "fieldNumber": 42,
+      "fieldName": "DEFAULT CLINIC FOR DOCUMENTS",
+      "dataType": "POINTER",
+      "rawType": "*P44'",
+      "required": false,
+      "pointerTo": 44,
+      "helpText": "This non-count clinic is the default clinic for this division. It will be the location passed to TIU when Surgery documents are created if no other location can be identified. ",
+      "fieldNumber_": 42
+    },
+    {
+      "fieldNumber": 43,
+      "fieldName": "CODE ISSUE MAIL GROUP",
+      "dataType": "POINTER",
+      "rawType": "P3.8'",
+      "required": false,
+      "pointerTo": 3.8,
+      "helpText": "This is the name of the mail group that will receive all coding issue  messages sent by the Risk Assessment Nurse Reviewer.  When the Non-Cardiac and Cardiac Risk Assessment option Alert Coder Regarding Coding Issues is used, a mail message is sent to the person  that coded the Surgery case and the mail group identified in this field. ",
+      "fieldNumber_": 43
+    },
+    {
+      "fieldNumber": 44,
+      "fieldName": "KIDNEY TRANSPLANTS ASSESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This determines whether Kidney Transplants are performed and assessed at this facility. If so, enter 'YES', if not enter 'NO'. Answer YES  if transplants are done at an affiliated non-VA medical center, but assessed by the Transplant Coordinator at this facility. ",
+      "fieldNumber_": 44
+    },
+    {
+      "fieldNumber": 45,
+      "fieldName": "LIVER TRANSPLANTS ASSESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This determines whether Liver Transplants are performed and assessed  at this facility. If so, enter 'YES', if not enter 'NO'. Answer YES  if transplants are done at an affiliated non-VA medical center, but assessed by the Transplant Coordinator at this facility. ",
+      "fieldNumber_": 45
+    },
+    {
+      "fieldNumber": 46,
+      "fieldName": "LUNG TRANSPLANTS ASSESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This determines whether Lung Transplants are performed and assessed  at this facility. If so, enter 'YES', if not enter 'NO'. Answer YES  if transplants are done at an affiliated non-VA medical center, but assessed by the Transplant Coordinator at this facility. ",
+      "fieldNumber_": 46
+    },
+    {
+      "fieldNumber": 47,
+      "fieldName": "HEART TRANSPLANTS ASSESSED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "Y:YES;N:NO;",
+      "helpText": "This determines whether Heart Transplants are performed and assessed  at this facility. If so, enter 'YES', if not enter 'NO'. Answer YES  if transplants are done at an affiliated non-VA medical center, but assessed by the Transplant Coordinator at this facility. ",
+      "fieldNumber_": 47
+    }
+  ],
+  "fieldCount": 44,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "133", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

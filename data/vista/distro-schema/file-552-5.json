@@ -1,0 +1,40 @@
+{
+  "fileNumber": 552.5,
+  "fileName": "CMOP COST STATS",
+  "globalRoot": "552.5",
+  "globalReference": "^PSX(552.5,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FACILITY",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ4,0",
+      "length": 4,
+      "required": true,
+      "helpText": "This field contains the remote facility that transmitted the prescriptions  to the host site. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "DIVISION",
+      "dataType": "SUBFILE",
+      "rawType": "552.51A",
+      "required": false,
+      "helpText": "This sub-file contains the data for the pharmacy division that initiated  the prescription. ",
+      "isMultiple": true,
+      "subFileNumber": 552.51,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AD", "field": },
+    {"name": "B", "field": },
+    {"name": "552.5", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

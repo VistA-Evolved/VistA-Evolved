@@ -1,0 +1,124 @@
+{
+  "fileNumber": 124.3,
+  "fileName": "GMR TEXT",
+  "globalRoot": "124.3IP",
+  "globalReference": "^GMR(124.3,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TEXT BLOCK",
+      "dataType": "POINTER",
+      "rawType": "R*P124.2'",
+      "required": true,
+      "pointerTo": 124.2,
+      "helpText": "The topic/lead frame associated with the information. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "PATIENT",
+      "dataType": "POINTER",
+      "rawType": "RP2'",
+      "required": true,
+      "pointerTo": 2,
+      "helpText": "The patient associated with the filed information. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date/time this text was created. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SELECTION",
+      "dataType": "POINTER",
+      "rawType": "124.31PA",
+      "required": false,
+      "helpText": "A record of all AGGREGATE TERMs selected, and any FREE TEXT entered for this TEXT BLOCK. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AUTHOR",
+      "dataType": "POINTER",
+      "rawType": "RP200'",
+      "required": true,
+      "pointerTo": 200,
+      "helpText": "User who created the text. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ENTERED IN ERROR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Flag to designate if a text block has been entered in error. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 5.1,
+      "fieldName": "DATE ENTERED IN ERROR",
+      "dataType": "DATE",
+      "rawType": "DI",
+      "required": false,
+      "helpText": "Date that this text was flagged as being in error. ",
+      "fieldNumber_": 5.1
+    },
+    {
+      "fieldNumber": 5.2,
+      "fieldName": "USER ENTERING IN ERROR",
+      "dataType": "POINTER",
+      "rawType": "P200'I",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "User that flagged the text as entered in error. ",
+      "fieldNumber_": 5.2
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "DATE LAST UPDATED",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "This field contains the date/time this GMR Text entry was last updated. The data in this field is triggered from the Audit Trail multiple and Date Created field and cannot be changed via FileMan. ",
+      "fieldNumber_": 6
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "AA", "field": },
+    {"name": "AA01", "field": },
+    {"name": "AA02", "field": },
+    {"name": "AEET", "field": },
+    {"name": "ALIST", "field": },
+    {"name": "AUPD", "field": },
+    {"name": "AUPDT", "field": },
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "D", "field": },
+    {"name": "124.3", "field": .01, "type": "regular"},
+    {"name": "124.3", "field": .01, "type": "regular"},
+    {"name": "", "field": .01, "type": "regular"},
+    {"name": "124.3", "field": .01, "type": "regular"},
+    {"name": "124.3", "field": .02, "type": "regular"},
+    {"name": "124.3", "field": .02, "type": "regular"},
+    {"name": "124.3", "field": .03, "type": "regular"},
+    {"name": "124.3", "field": .03, "type": "regular"},
+    {"name": "124.3", "field": .03, "type": "regular"},
+    {"name": "124.3", "field": 5, "type": "regular"},
+    {"name": "124.3", "field": 6, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "S %I=Y,Y=$S('$D(^(0)):\"\",$D(^DPT(+$P(^(0),U,2),0))#2:$P(^(0),U,1),1:\"\"),C=$P(^DD(2,.01,0),U,2) D Y^DIQ:Y]\"\" W \"   \",!?5,$E(Y,1,30),@(\"$E(\"_DIC_\"%I,0),0)\") S Y=%I K %I"},
+    {"field": .03, "value": "W \"   \",?40 S %I=Y,Y=$P(^(0),U,3) D DT^DIQ S Y=%I K %I"}
+  ]
+}

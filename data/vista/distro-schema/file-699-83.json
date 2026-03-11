@@ -1,0 +1,39 @@
+{
+  "fileNumber": 699.83,
+  "fileName": "LOCATION OF PAIN/PNEUMONIAS",
+  "globalRoot": "699.83",
+  "globalReference": "^MCAR(699.83,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field is pointed to by the Location of Pain field for GI Endoscopies and the Location of Pneumonia for Pulmonary Endoscopies.  The data is a specified list of sub-anatomies that are commonly used by these two fields. NOTE:  The Location of Pain field has been removed from  the GI Endoscopy templates in version 2. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "MEDICAL USE",
+      "dataType": "SET",
+      "rawType": "699.831S",
+      "required": false,
+      "helpText": "This field is used to determine whether an item can be selected for GI Endoscopies, Pulmonary Endoscopies or both. ",
+      "isMultiple": true,
+      "subFileNumber": 699.831,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "699.83", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

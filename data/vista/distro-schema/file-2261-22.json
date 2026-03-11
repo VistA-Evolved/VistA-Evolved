@@ -1,0 +1,36 @@
+{
+  "fileNumber": 2261.22,
+  "fileName": "ASISTS INCIDENT SOURCE",
+  "globalRoot": "2261.22",
+  "globalReference": "^OOPS(2261.22,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SOURCE OF INCIDENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the incident source. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "INCIDENT SOURCE CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This field contains the code defining the primary source causing the incident. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2261.22", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

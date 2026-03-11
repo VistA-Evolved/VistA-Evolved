@@ -1,0 +1,91 @@
+{
+  "fileNumber": 69.71,
+  "fileName": "LR CPRS PARAMETERS",
+  "globalRoot": "69.71",
+  "globalReference": "^LAB(69.71,",
+  "ddAccess": "",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Enter the name of the parameter. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CPRS SCREEN",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;",
+      "helpText": "Enter the screen for the test. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "TEST SUBSCRIPT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "MI:MI;BB:BB;EM:EM;SP:SP;CY:CY;AU:AU;CH:CH;",
+      "helpText": "Enter the test subscript for this parameter ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "SYNONYM",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is another name for the entry. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "QUESTIONS",
+      "dataType": "SUBFILE",
+      "rawType": "69.712",
+      "required": false,
+      "helpText": "Contains the question to be asked of the user. ",
+      "isMultiple": true,
+      "subFileNumber": 69.712,
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "URL LINK",
+      "dataType": "SUBFILE",
+      "rawType": "69.713",
+      "required": false,
+      "helpText": "This field contains URL for additional information. ",
+      "isMultiple": true,
+      "subFileNumber": 69.713,
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "CPRS ID NAME",
+      "dataType": "SUBFILE",
+      "rawType": "69.714",
+      "required": false,
+      "helpText": "Enter the CPRS ID name ",
+      "isMultiple": true,
+      "subFileNumber": 69.714,
+      "fieldNumber_": 4
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "69.71", "field": .01, "type": "regular"},
+    {"name": "69.71", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

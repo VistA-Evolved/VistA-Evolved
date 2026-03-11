@@ -1,0 +1,56 @@
+{
+  "fileNumber": 6910.2,
+  "fileName": "ENG SOFTWARE OPTIONS",
+  "globalRoot": "6910.2",
+  "globalReference": "^ENG(6910.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "FEATURE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Brief identification of the feature or function in question. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "CHOICES",
+      "dataType": "SUBFILE",
+      "rawType": "6910.21",
+      "required": false,
+      "helpText": "Description of the possible choices. ",
+      "isMultiple": true,
+      "subFileNumber": 6910.21,
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "SELECTION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "Selection made by user from among all possible choices. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "REFERENCE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Routine(s) affected by this feature. ",
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "6910.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

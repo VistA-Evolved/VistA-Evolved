@@ -1,0 +1,91 @@
+{
+  "fileNumber": 509850.4,
+  "fileName": "A&SP PROCEDURE CODE",
+  "globalRoot": "509850.4IP",
+  "globalReference": "^ACK(509850.4,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "POINTER",
+      "rawType": "RP81'X",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "The CODE field contains the pointer to the CPT-4 procedure code for  Audiology and Speech Pathology. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "CLINIC STOP",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "S:SPEECH;A:AUDIOLOGY;SA:EITHER;",
+      "helpText": "The CLINIC STOP field contains A for AUDIOLOGY, S for SPEECH PATHOLOGY,  or SA for EITHER Speech or Audiology.  The CPT CODE is used for one of  these clinic stops. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "*CARD CODE",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "The CARD CODE field has been marked for deletion.  Card code capability  was not implemented in QUASAR V. 1.0.  Eighteen months after the release  of QUASAR V. 2.0, this field can be removed. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "ACTIVE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:INACTIVE;1:ACTIVE;",
+      "helpText": "The ACTIVE field contains 0 for INACTIVE or 1 for ACTIVE.  Because  entries in the A&SP PROCEDURE CODE file are pointed to by the PROCEDURE  CODE field in the A&SP CLINIC VISIT file, entries should not be deleted.    Periodically, CPT-4 codes are inactivated by the code developers, the  Department of Veterans Affairs, or the Director, Audiology and Speech  Pathology Service (VAHQ).  Procedure codes which are not to be used are  marked as inactive. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "MODIFIERS ALLOWED",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "No longer used after the installation of Quasar Version 3.0. The MODIFIERS ALLOWED field activates or inactivates CPT-4 code modifiers  (i.e., 0 for NO or 1 for YES).  CPT-4 codes for Audiology and Speech  Pathology may not adequately describe the scope or variety of procedures  seen by audiologists and speech pathologists.  Recognizing this  deficiency, modifiers have been developed for certain codes to clarify  procedures or to provide codes for procedures where no codes now exist. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ7,2",
+      "length": 7,
+      "required": false,
+      "helpText": "The COST field contains the current unit cost for each CPT-4 procedure. You can use average community costs from private sector hospitals and  clinics, Medicare reimbursement rates, or insurance UCRs. You can also  enter real costs, if these are known. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ALLOWABLE MODIFIERS",
+      "dataType": "SUBFILE",
+      "rawType": "509850.41",
+      "required": false,
+      "helpText": "The ALLOWABLE MODIFIERS field is a multiple field containing the letter,  description, and cost for a CPT-4 procedure code. ",
+      "isMultiple": true,
+      "subFileNumber": 509850.41,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 7,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "509850.4", "field": .01, "type": "regular"},
+    {"name": "509850.4", "field": .05, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": ""}
+  ]
+}

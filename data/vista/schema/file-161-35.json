@@ -1,0 +1,37 @@
+{
+  "fileNumber": 161.35,
+  "fileName": "FEE BASIS PROJECT ARCH JUSTIFICATION",
+  "globalRoot": "161.35",
+  "globalReference": "^FBAA(161.35,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROJECT ARCH JUSTIFICATION",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the justification reason for Project Access to care Received  Close to Home (ARCH). ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "ACTIVE?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if the Justification is active or not. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "161.35", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

@@ -1,0 +1,396 @@
+{
+  "fileNumber": 9002313.78,
+  "fileName": "BPS INSURER DATA",
+  "globalRoot": "9002313.78",
+  "globalReference": "^BPS(9002313.78,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "TRANSACTION ID",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ20,5",
+      "length": 20,
+      "required": true,
+      "helpText": "This is a numeric identifier that follows the same format as the IEN of the BPS TRANSACTION (#9002313.59) file. For billing requests and reversals, this is the Prescription IEN, followed by a decimal point, followed by the Fill Number left-padded with zeros up to four places and then followed by the COB indicator (1-Primary, 2-Secondary, 3-Tertiary). For a Eligibility Verification request, this is the Patient IEN, followed by a decimal point, followed by the Policy Number (with 9000 added to it)",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "B1 PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet used to a submit billing request for this  particular insurer.  Billing request transmissions will be formatted per  the specifications in this payer sheet. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "B2 PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "The Reversal payer sheet to be used to send reversals to the Insurer. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "B3 PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet to be used for a rebill request for this insurer. Rebill transmission will be formatted per the specifications in this  payer sheet. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "CERTIFY MODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:CERTIFY MODE OFF;1:CERTFIY MODE ON;",
+      "helpText": "Certify mode is used for certifying software when required by switches and claims end processors. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "CERTIFICATION",
+      "dataType": "POINTER",
+      "rawType": "P9002313.31'",
+      "required": false,
+      "pointerTo": 9002313.31,
+      "helpText": "This field is used during certification testing, and points to the entry  to use to pull certification data. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "INSURANCE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the free text name of the Insurance Company as determined by  Integrated Billing insurance files. ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "PLAN ID",
+      "dataType": "POINTER",
+      "rawType": "P355.3'",
+      "required": false,
+      "pointerTo": 355.3,
+      "helpText": "Group Insurance Plan used for the claim ",
+      "fieldNumber_": .08
+    },
+    {
+      "fieldNumber": .09,
+      "fieldName": "COB INDICATOR",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "Coordination Of Benefits (COB) indicator for the payer. ",
+      "fieldNumber_": .09
+    },
+    {
+      "fieldNumber": .1,
+      "fieldName": "E1 PAYER SHEET",
+      "dataType": "POINTER",
+      "rawType": "P9002313.92'",
+      "required": false,
+      "pointerTo": 9002313.92,
+      "helpText": "This is the payer sheet to be used for eligibility verification requests  for this insurer.  Eligibility verification transmissions will be  formatted per the specifications in this payer sheet. ",
+      "fieldNumber_": .1
+    },
+    {
+      "fieldNumber": .11,
+      "fieldName": "POLICY NUMBER",
+      "dataType": "NUMERIC",
+      "rawType": "NJ4,0",
+      "length": 4,
+      "required": false,
+      "helpText": "This is the policy number assigned for this particular patient and  insurer. ",
+      "fieldNumber_": .11
+    },
+    {
+      "fieldNumber": 1.01,
+      "fieldName": "BIN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Card Issuer ID or Bank ID Number used for network routing. ",
+      "fieldNumber_": 1.01
+    },
+    {
+      "fieldNumber": 1.02,
+      "fieldName": "PCN",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "The Processor Control Number for this claim. ",
+      "fieldNumber_": 1.02
+    },
+    {
+      "fieldNumber": 1.03,
+      "fieldName": "GROUP ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID assigned to the cardholder group or employer group. ",
+      "fieldNumber_": 1.03
+    },
+    {
+      "fieldNumber": 1.04,
+      "fieldName": "CARDHOLDER ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "ID number assigned to Cardholder/Subscriber. ",
+      "fieldNumber_": 1.04
+    },
+    {
+      "fieldNumber": 1.05,
+      "fieldName": "PATIENT RELATIONSHIP CODE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT SPECIFIED;1:CARDHOLDER (SELF);2:SPOUSE;3:CHILD;4:OTHER;",
+      "helpText": "This stores the relationship of the patient to insurance subscriber and  will be used to populate the NCPDP 306-C6 (PATIENT RELATIONSHIP CODE) field. ",
+      "fieldNumber_": 1.05
+    },
+    {
+      "fieldNumber": 1.06,
+      "fieldName": "CARDHOLDER FIRST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "First name of the Cardholder/Subscriber. ",
+      "fieldNumber_": 1.06
+    },
+    {
+      "fieldNumber": 1.07,
+      "fieldName": "CARDHOLDER LAST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Last name of the Cardholder/Subscriber. ",
+      "fieldNumber_": 1.07
+    },
+    {
+      "fieldNumber": 1.08,
+      "fieldName": "HOME PLAN STATE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Usually the state where the member lives or purchased their coverage. ",
+      "fieldNumber_": 1.08
+    },
+    {
+      "fieldNumber": 1.09,
+      "fieldName": "PERSON CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Person Code that will be placed in NCPDP field 303-C3 (Person  Code).  This value is specified by the third-party payer and is found on  the patient's insurance card. ",
+      "fieldNumber_": 1.09
+    },
+    {
+      "fieldNumber": 2.01,
+      "fieldName": "DISPENSING FEE SUBMITTED",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fee amount submitted for the cost associated with dispensing this  prescription. ",
+      "fieldNumber_": 2.01
+    },
+    {
+      "fieldNumber": 2.02,
+      "fieldName": "BASIS OF COST DETERMINATION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "01:AWP;05:Cost Calculations;07:Usual & Customary;",
+      "helpText": "Code indicating the method by which 'Ingredient Cost Submitted' was  calculated. ",
+      "fieldNumber_": 2.02
+    },
+    {
+      "fieldNumber": 2.03,
+      "fieldName": "USUAL & CUSTOMARY CHARGE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Amount charged cash customers for the prescription exclusive of sales tax  or other amounts claimed. ",
+      "fieldNumber_": 2.03
+    },
+    {
+      "fieldNumber": 2.04,
+      "fieldName": "GROSS AMOUNT DUE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Total price claimed from all sources.  For prescription claim request, field represents a sum of 'Ingredient Cost Submitted' (4Ø9-D9), 'Dispensing Fee Submitted' (412-DC), 'Flat Sales Tax Amount Submitted'(481-HA), 'Percentage Sales Tax Amount Submitted' (482-GE), 'Incentive Amount Submitted' (438-E3), 'Other Amount Claimed' (48Ø-H9). For service claim request, field represents a sum of 'Professional Services Fee Submitted' (477-BE), 'Flat Sales Tax Amount Submitted'(481-HA), 'Percentage Sales T",
+      "fieldNumber_": 2.04
+    },
+    {
+      "fieldNumber": 2.05,
+      "fieldName": "ADMINISTRATIVE FEE",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Fee charged for any costs related to preparing the prescription. ",
+      "fieldNumber_": 2.05
+    },
+    {
+      "fieldNumber": 2.06,
+      "fieldName": "SOFTWARE VENDOR CERT ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Certification number assigned by the payer for submission of claims. ",
+      "fieldNumber_": 2.06
+    },
+    {
+      "fieldNumber": 2.07,
+      "fieldName": "MAXIMUM NCPDP TRANSACTIONS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ5,0",
+      "length": 5,
+      "required": false,
+      "helpText": "This is the maximum number of transactions that can be bundled in a  transmission.  It is specified by the NCPDP processor. ",
+      "fieldNumber_": 2.07
+    },
+    {
+      "fieldNumber": 2.08,
+      "fieldName": "INGREDIENT COST",
+      "dataType": "NUMERIC",
+      "rawType": "NJ9,2",
+      "length": 9,
+      "required": false,
+      "helpText": "This is the INGREDIENT COST that will be placed in the NCPDP field 409-D9  (INGREDIENT COST SUBMITTED) field of the NCPDP submission. ",
+      "fieldNumber_": 2.08
+    },
+    {
+      "fieldNumber": 3.01,
+      "fieldName": "GROUP NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the group name from the Group Insurance File. ",
+      "fieldNumber_": 3.01
+    },
+    {
+      "fieldNumber": 3.02,
+      "fieldName": "INSURANCE CO PHONE #",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the Claim (RX) phone number from the Insurance Company file. ",
+      "fieldNumber_": 3.02
+    },
+    {
+      "fieldNumber": 3.03,
+      "fieldName": "PHARMACY PLAN ID",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the ID of the plan file. ",
+      "fieldNumber_": 3.03
+    },
+    {
+      "fieldNumber": 3.04,
+      "fieldName": "ELIGIBILITY",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "V:VETERAN;T:TRICARE;C:CHAMPVA;",
+      "helpText": "The insurance eligibility type of the claim. ",
+      "fieldNumber_": 3.04
+    },
+    {
+      "fieldNumber": 3.05,
+      "fieldName": "INSURANCE COMPANY",
+      "dataType": "POINTER",
+      "rawType": "P36'",
+      "required": false,
+      "pointerTo": 36,
+      "helpText": "This is the INSURANCE COMPANY from file #36. ",
+      "fieldNumber_": 3.05
+    },
+    {
+      "fieldNumber": 3.06,
+      "fieldName": "PLAN COB",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:PRIMARY;2:SECONDARY;3:TERTIARY;",
+      "helpText": "The Coordination of Benefits indicator of the patient's insurance plan. This field is a copy of the (#.2) COORDINATION OF BENEFITS field of the (#.3121) INSURANCE TYPE multiple of the PATIENT file (#2). ",
+      "fieldNumber_": 3.06
+    },
+    {
+      "fieldNumber": 4.01,
+      "fieldName": "B1 PAYER SHEET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the Billing Request Payer Sheet, which comes from the RECORD FORMAT NAME (#.01) field of the BPS NCPDP FORMATS (#9002313.92)  file. ",
+      "fieldNumber_": 4.01
+    },
+    {
+      "fieldNumber": 4.02,
+      "fieldName": "B2 PAYER SHEET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "B2 Payer sheet.  The value of the field (#.01) Record Format Name of the file (#9002313.92) BPS NCPDP FORMATS ien Textual description of this record format. ",
+      "fieldNumber_": 4.02
+    },
+    {
+      "fieldNumber": 4.03,
+      "fieldName": "B3 PAYER SHEET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the Rebill Payer Sheet, which comes from the RECORD FORMAT NAME (#.01) field of the BPS NCPDP FORMATS (#9002313.92)  file. ",
+      "fieldNumber_": 4.03
+    },
+    {
+      "fieldNumber": 4.04,
+      "fieldName": "E1 PAYER SHEET NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the Eligibility Payer Sheet, which comes from the  RECORD FORMAT NAME (#.01) field of the BPS NCPDP FORMATS (#9002313.92) file. ",
+      "fieldNumber_": 4.04
+    },
+    {
+      "fieldNumber": 5.01,
+      "fieldName": "USER",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "ID (IEN of the NEW PERSON file) of the user name who entered this record. ",
+      "fieldNumber_": 5.01
+    },
+    {
+      "fieldNumber": 5.02,
+      "fieldName": "DATE AND TIME WAS CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date and time the record was created. ",
+      "fieldNumber_": 5.02
+    }
+  ],
+  "fieldCount": 40,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "9002313.78", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

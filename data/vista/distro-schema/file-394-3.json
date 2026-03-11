@@ -1,0 +1,34 @@
+{
+  "fileNumber": 394.3,
+  "fileName": "*PDX STATUS",
+  "globalRoot": "394.3",
+  "globalReference": "^VAT(394.3,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "CODE",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "STATUS",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "394.3", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

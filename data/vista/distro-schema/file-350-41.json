@@ -1,0 +1,95 @@
+{
+  "fileNumber": 350.41,
+  "fileName": "UPDATE BILLABLE AMBULATORY SURGICAL CODE",
+  "globalRoot": "350.41P",
+  "globalReference": "^IBE(350.41,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "PROCEDURE",
+      "dataType": "POINTER",
+      "rawType": "RP81'",
+      "required": true,
+      "pointerTo": 81,
+      "helpText": "The ambulatory procedure to be added to or updated in 350.4. It is not necessary that this procedure already have entries in either 350.4 or 409.71 but it is required that the procedure already be active  in 81. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DATE EFFECTIVE",
+      "dataType": "DATE",
+      "rawType": "RD",
+      "required": true,
+      "helpText": "The date that this procedure entry becomes effective for billing. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "OLD RATE GROUP",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "This is the rate group that the procedure belongs to before this entry is activated, as defined by the HCFA document. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": .04,
+      "fieldName": "NEW RATE GROUP",
+      "dataType": "POINTER",
+      "rawType": "P350.1'",
+      "required": false,
+      "pointerTo": 350.1,
+      "helpText": "The rate group for this procedure after this entry is activated. ",
+      "fieldNumber_": .04
+    },
+    {
+      "fieldNumber": .05,
+      "fieldName": "DATE LOADED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "The date the HCFA information was loaded into this file. ",
+      "fieldNumber_": .05
+    },
+    {
+      "fieldNumber": .06,
+      "fieldName": "UPDATE ACTION",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:CREATED;2:ACTIVATED;3:CHANGED GROUPS;4:DEACTIVATED;",
+      "helpText": "The result caused by this entry on the procedure. ",
+      "fieldNumber_": .06
+    },
+    {
+      "fieldNumber": .07,
+      "fieldName": "STATUS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "0:NOT TRANSFERED;1:TRANSFERED;",
+      "helpText": "A flag indicating if this entry has been successfully transferred to the billing file 350.4 (and therefore activated).  If this is null then the  transfer program has not yet processed this procedure (entry). ",
+      "fieldNumber_": .07
+    },
+    {
+      "fieldNumber": .08,
+      "fieldName": "ERROR",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Description of the error which prevented the entry from transferring to  350.4.  This field is edited automatically by the transfer program. ",
+      "fieldNumber_": .08
+    }
+  ],
+  "fieldCount": 8,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "350.41", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": .02, "value": "W \"   \",$E($P(^(0),U,2),4,5)_\"-\"_$E($P(^(0),U,2),6,7)_\"-\"_$E($P(^(0),U,2),2,3)"}
+  ]
+}

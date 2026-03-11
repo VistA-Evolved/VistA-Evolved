@@ -1,0 +1,39 @@
+{
+  "fileNumber": 211.2,
+  "fileName": "*NURS GRADE/STEP",
+  "globalRoot": "211.2",
+  "globalReference": "^NURSF(211.2,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "GRADE/STEP",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "Name of a specific grade/step. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "GRADE/STEP SALARY",
+      "dataType": "NUMERIC",
+      "rawType": "NJ10,2X",
+      "length": 10,
+      "required": false,
+      "helpText": "Indicates the salary of a specific grade/step. ",
+      "fieldNumber_": 1
+    }
+  ],
+  "fieldCount": 2,
+  "crossReferences": [
+    {"name": "AC", "field": },
+    {"name": "B", "field": },
+    {"name": "211.2", "field": .01, "type": "regular"},
+    {"name": "211.2", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

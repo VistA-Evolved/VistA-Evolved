@@ -1,0 +1,57 @@
+{
+  "fileNumber": 800001,
+  "fileName": "HMP PANEL",
+  "globalRoot": "800001",
+  "globalReference": "^HMPPANEL(",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "POINTER",
+      "rawType": "R*P810.4'",
+      "required": true,
+      "pointerTo": 810.4,
+      "helpText": "This is the name of an applied rule set. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": .02,
+      "fieldName": "DISPLAY NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "This is the full name of the applied rule set. ",
+      "fieldNumber_": .02
+    },
+    {
+      "fieldNumber": .03,
+      "fieldName": "PATIENT LIST NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "This is the name of the patient list. ",
+      "fieldNumber_": .03
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "ORDER DIALOGS",
+      "dataType": "POINTER",
+      "rawType": "800001.05P",
+      "required": false,
+      "helpText": "This sub-file contains ORDER DIALOG entries. ",
+      "fieldNumber_": 5
+    }
+  ],
+  "fieldCount": 4,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "800001", "field": .01, "type": "regular"},
+    {"name": "800001", "field": .03, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

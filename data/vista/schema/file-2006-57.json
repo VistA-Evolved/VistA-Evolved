@@ -1,0 +1,46 @@
+{
+  "fileNumber": 2006.57,
+  "fileName": "DICOM HL7 SEGMENT",
+  "globalRoot": "2006.57",
+  "globalReference": "^MAGDICOM(2006.57,",
+  "ddAccess": "N",
+  "securityAudit": "audited",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SEGMENT",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the abbreviation for the name of the segment. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "helpText": "The value of this field is the name of the segment (fully written out). ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "ELEMENT",
+      "dataType": "SUBFILE",
+      "rawType": "2006.5701A",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": 2006.5701,
+      "fieldNumber_": 3
+    }
+  ],
+  "fieldCount": 3,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "2006.57", "field": .01, "type": "regular"}
+  ],
+  "identifiers": [
+
+  ]
+}

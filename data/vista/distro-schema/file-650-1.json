@@ -1,0 +1,306 @@
+{
+  "fileNumber": 650.1,
+  "fileName": "SOCIAL WORK SITE PARAMETERS",
+  "globalRoot": "650.1OI",
+  "globalReference": "^SOWK(650.1,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "SITE NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RFI",
+      "required": true,
+      "helpText": "Enter site for the Social Work service. ",
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 1,
+      "fieldName": "AMIS SITE SUFFIX",
+      "dataType": "FREE-TEXT",
+      "rawType": "FX",
+      "required": false,
+      "helpText": "The AMIS site suffix is the one or two upper case characters that identifies the facility.  The three digit facility number may be 521, the suffix may be 'RQ' or 'Q' for the primary facility, which translates into 521RQ OR 521Q. The satellite clinic suffix may be 'RS' or 'S' which translates into 521RS  or 521S.  Only the suffix need be entered. ",
+      "fieldNumber_": 1
+    },
+    {
+      "fieldNumber": 1.5,
+      "fieldName": "DOES CLERK ENTER ALL CASES?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to restrict the entering of case data to the social  worker that is opening, closing and making corrections to cases.  If the  social work clerk/secretary is the person that will be opening cases, this  field must be answered 'Yes'. ",
+      "fieldNumber_": 1.5
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "AUTOMATIC TRANSMISSION",
+      "dataType": "SET",
+      "rawType": "RS",
+      "required": true,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if your site is transmitting electronically using DHCP.  If 'YES' is entered, cases will only be  deleted if cases are closed and transmitted to Austin.  If 'NO' is entered, all closed cases will be deleted.   ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 2.5,
+      "fieldName": "USE OF AGE LEVEL",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if the age level of the patient will be  used as a high risk indicator. ",
+      "fieldNumber_": 2.5
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "AGE LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ2,0",
+      "length": 2,
+      "required": true,
+      "helpText": "This field is used for a possible high-risk criteria. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 3.5,
+      "fieldName": "INCOME LESS THAN LOCAL AMOUNT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if the income level of the patient will be used as a high risk indicator. ",
+      "fieldNumber_": 3.5
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "INCOME LEVEL",
+      "dataType": "NUMERIC",
+      "rawType": "RNJ9,2",
+      "length": 9,
+      "required": true,
+      "helpText": "Minimum income level for possible high-risk criteria. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 4.5,
+      "fieldName": "USE OF HIGH-RISK WARD(S)",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if wards will be used as high risk indicators. ",
+      "fieldNumber_": 4.5
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "HIGH-RISK WARD(S)",
+      "dataType": "POINTER",
+      "rawType": "650.11P",
+      "required": false,
+      "helpText": "Ward(s) that may be used for possible high-risk criteria. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "TIE DATA BASE ASSESSMENT TO CASE REGISTRY ?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to determine if Case Management System will be associated to Clinical Assessment Module.   ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 6.5,
+      "fieldName": "SPECIAL PATIENT POPULATIONS",
+      "dataType": "SUBFILE",
+      "rawType": "650.17I",
+      "required": false,
+      "helpText": "This field will contain special population entries used to identify certain patients (e.g., Homeless, HIV/AIDS, Native American  and Spinal Cord Injury (SCI)). ",
+      "isMultiple": true,
+      "subFileNumber": 650.17,
+      "fieldNumber_": 6.5
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "NSC INSURANCE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if non service connected insurance will be used as a high risk indicator. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 8,
+      "fieldName": "FEMALE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if the female sex is a high risk indicator. ",
+      "fieldNumber_": 8
+    },
+    {
+      "fieldNumber": 9,
+      "fieldName": "AGE 70 OR > & 2 OR MORE OPC",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to indicate if age 70 or greater and two or more OPT clinics will be used as a high risk indicator. ",
+      "fieldNumber_": 9
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "GENERAL DELIVERY ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This is to be used to indicate if the general delivery address will be used as a high risk indicator. ",
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 11,
+      "fieldName": "NO ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if a patient has 'no address' as a  high risk indicator. ",
+      "fieldNumber_": 11
+    },
+    {
+      "fieldNumber": 12,
+      "fieldName": "NO TEMPORARY ADDRESS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if no 'temporary address' is available as a high risk indicator provided there is not a permanent address. ",
+      "fieldNumber_": 12
+    },
+    {
+      "fieldNumber": 13,
+      "fieldName": "IRREGULAR DISCHARGE",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if irregular discharge will be used as a high risk indicator. ",
+      "fieldNumber_": 13
+    },
+    {
+      "fieldNumber": 14,
+      "fieldName": "SAME DIAGNOSIS IN ONE MONTH",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if patient was re-admitted within one month for same diagnosis as a high risk indicator. ",
+      "fieldNumber_": 14
+    },
+    {
+      "fieldNumber": 15,
+      "fieldName": "RCH/CNH AND SEEN BY SWS",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is to be used to indicate if patient has been seen by social work  service and AMIS location equals RCH or CNH. ",
+      "fieldNumber_": 15
+    },
+    {
+      "fieldNumber": 16,
+      "fieldName": "ADMISSION DUE TO ACCIDENT",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field will be used to indicate if 'Admission Due To Accident' will be used as a high risk indicator. ",
+      "fieldNumber_": 16
+    },
+    {
+      "fieldNumber": 16.5,
+      "fieldName": "SOCIAL WORK HOSPITAL LOCATIONS",
+      "dataType": "POINTER",
+      "rawType": "650.12PA",
+      "required": false,
+      "helpText": "This field is used to show what hospital locations that social work will receive credit for outpatient visits (clinic stops). ",
+      "fieldNumber_": 16.5
+    },
+    {
+      "fieldNumber": 17,
+      "fieldName": "PACKAGE VERSION",
+      "dataType": "FREE-TEXT",
+      "rawType": "FI",
+      "required": false,
+      "helpText": "This field will be used to store the current version of installed software. ",
+      "fieldNumber_": 17
+    },
+    {
+      "fieldNumber": 18,
+      "fieldName": "ELAPSED DAYS",
+      "dataType": "NUMERIC",
+      "rawType": "NJ2,0",
+      "length": 2,
+      "required": false,
+      "helpText": "This field can be used to screen cases based on elapsed days.  Elapsed days are the number of days between patient admission to the medical center and when a case is opened by social work service. ",
+      "fieldNumber_": 18
+    },
+    {
+      "fieldNumber": 19,
+      "fieldName": "CLINICS",
+      "dataType": "POINTER",
+      "rawType": "650.119PA",
+      "required": false,
+      "helpText": "This field is used to enter social work service named clinics.  These clinics will be used to count outpatient visits to social work service. ",
+      "fieldNumber_": 19
+    },
+    {
+      "fieldNumber": 20,
+      "fieldName": "ARE MANHOURS TO BE COUNTED?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, COUNT MANHOURS;0:NO, DO NOT COUNT MANHOURS;",
+      "helpText": "This field is used to allow manhours to be counted for direct services provided to veteran. ",
+      "fieldNumber_": 20
+    },
+    {
+      "fieldNumber": 21,
+      "fieldName": "ASK PROBLEMS ON OPENINGS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES, ASK PROBLEMS ON OPENINGS;0:NO, DO NOT ASK ON OPENINGS;",
+      "helpText": "This field is used to determine if psycho-social problems are asked when cases are opened.  If yes is entered a preliminary problem list may be entered when cases are being opened.  When the cases are being closed this preliminary list can be edited and outcomes to problems added. ",
+      "fieldNumber_": 21
+    },
+    {
+      "fieldNumber": 22,
+      "fieldName": "SERVICES PROVIDED ON OPENINGS?",
+      "dataType": "SET",
+      "rawType": "S",
+      "required": false,
+      "setOfCodes": "1:YES;0:NO;",
+      "helpText": "This field is used to determine if direct services provided are asked when cases are opened.  If yes is entered, a preliminary list of services may be entered when cases are being opened.  When the cases are being closed this preliminary list can be edited. ",
+      "fieldNumber_": 22
+    }
+  ],
+  "fieldCount": 29,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "C", "field": },
+    {"name": "W", "field": },
+    {"name": "650.1", "field": .01, "type": "regular"},
+    {"name": "650.1", "field": 1, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": 1, "value": "W \"   \",$P(^(0),U,2)"}
+  ]
+}

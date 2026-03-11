@@ -1,0 +1,106 @@
+{
+  "fileNumber": .46,
+  "fileName": "IMPORT TEMPLATE",
+  "globalRoot": ".46",
+  "globalReference": "^DIST(.46,",
+  "ddAccess": "N",
+  "securityAudit": "",
+  "fields": [
+    {
+      "fieldNumber": .01,
+      "fieldName": "NAME",
+      "dataType": "FREE-TEXT",
+      "rawType": "RF",
+      "required": true,
+      "fieldNumber_": .01
+    },
+    {
+      "fieldNumber": 2,
+      "fieldName": "DATE CREATED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date that the import template was created. ",
+      "fieldNumber_": 2
+    },
+    {
+      "fieldNumber": 3,
+      "fieldName": "READ ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Access codes necessary to use the Import Template. If null, anyone can use the template. ",
+      "fieldNumber_": 3
+    },
+    {
+      "fieldNumber": 4,
+      "fieldName": "PRIMARY FILE",
+      "dataType": "POINTER",
+      "rawType": "RP1'",
+      "required": true,
+      "pointerTo": 1,
+      "helpText": "File that is the starting point for data import. ",
+      "fieldNumber_": 4
+    },
+    {
+      "fieldNumber": 5,
+      "fieldName": "CREATOR",
+      "dataType": "POINTER",
+      "rawType": "P200'",
+      "required": false,
+      "pointerTo": 200,
+      "helpText": "Person who created the import template. ",
+      "fieldNumber_": 5
+    },
+    {
+      "fieldNumber": 6,
+      "fieldName": "WRITE ACCESS",
+      "dataType": "FREE-TEXT",
+      "rawType": "F",
+      "required": false,
+      "helpText": "Access codes needed to change or delete the import template.  If null, anyone can change or delete the template. ",
+      "fieldNumber_": 6
+    },
+    {
+      "fieldNumber": 7,
+      "fieldName": "DATE LAST USED",
+      "dataType": "DATE",
+      "rawType": "D",
+      "required": false,
+      "helpText": "Date template was last used. ",
+      "fieldNumber_": 7
+    },
+    {
+      "fieldNumber": 10,
+      "fieldName": "DESCRIPTION",
+      "dataType": "SUBFILE",
+      "rawType": ".461",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .461,
+      "fieldNumber_": 10
+    },
+    {
+      "fieldNumber": 30,
+      "fieldName": "IMPORT FIELDS",
+      "dataType": "SUBFILE",
+      "rawType": ".463",
+      "required": false,
+      "isMultiple": true,
+      "subFileNumber": .463,
+      "fieldNumber_": 30
+    }
+  ],
+  "fieldCount": 9,
+  "crossReferences": [
+    {"name": "B", "field": },
+    {"name": "F", "field": },
+    {"name": "F1", "field": },
+    {"name": ".46", "field": .01, "type": "regular"},
+    {"name": ".46", "field": .01, "type": "regular"},
+    {"name": ".46", "field": 4, "type": "regular"}
+  ],
+  "identifiers": [
+    {"field": WRITE, "value": "N D,D1,D2 S D2=^(0) S:$X>30 D1(1,\"F\")=\"!\" S D=$P(D2,U,2) S:D D1(2)=\"(\"_$$DATE^DIUTL(D)_\")\",D1(2,\"F\")=\"?30\" S D=$P(D2,U,5) S:D D1(3)=\"User #\"_D,D1(3,\"F\")=\"?47\" S D=$P(D2,U,4) S:D D1(4)=\" File #\"_D,D1(4,\"F\")=\"?59\" D EN^DDIOL(.D1)"}
+  ]
+}
